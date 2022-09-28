@@ -12,6 +12,16 @@ GIT_COMMIT:=$(shell git describe --dirty --always)
 VERSION:=$(shell grep 'VERSION' pkg/version/version.go | awk '{ print $$4 }' | tr -d '"')
 EXTRA_RUN_ARGS?=
 BUF_VERSION:=1.0.0-rc9
+GOTEST=$(GOCMD) test
+GOVET=$(GOCMD) vet
+EXPORT_RESULT ?= false
+DC=docker-compose -f compose/docker-compose.yaml -f compose/docker-compose-newrelic.yaml
+
+.PHONY: help
+.DEFAULT_GOAL := help
+
+help:
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 run:
 	go run -ldflags "-s -w -X github.com/SimifiniiCTO/simfinii/pkg/version.REVISION=$(GIT_COMMIT)" cmd/podinfo/* \
@@ -112,31 +122,30 @@ start-minikube-deployment:
 .PHONY: stop-minikube-deployment
 stop-minikube-deployment:
 	./scripts/local-nuke.sh
-	
-compose-up:
-	docker-compose \
-		-f compose/docker-compose.yaml \
-		-f compose/docker-compose-ngrok.yaml up 
 
-compose-up-d:
-	docker-compose \
-		-f compose/docker-compose.yaml \
-		-f compose/docker-compose-newrelic.yaml \
-		-f compose/docker-compose-ngrok.yaml up --detach
+stop: ## Stop all Docker Containers run in Compose
+	$(DC) stop
 
-compose-down:
-	docker-compose \
-		-f compose/docker-compose.yaml \
-		-f compose/docker-compose-newrelic.yaml \
-		-f compose/docker-compose-ngrok.yaml down
+clean: stop ## Clean all Docker Containers and Volumes
+	$(DC) down --rmi local --remove-orphans -v
+	$(DC) rm -f -v
+
+build: clean ## Rebuild the Docker Image for use by Compose
+	$(DC) build
+
+start: stop ## Run the Application as a docker compose workflow
+	$(DC) up
+
+run-background: stop ## Run the Application
+	$(DC) up --detach
 
 .PHONY: test
-test: compose-up-d
+test: run-background
 	echo "waiting for services to be ready to accept connections"
 	sleep 60
 	go test ./... -coverprofile cover.out
 	docker ps -a 
-	make compose-down
+	make stop
 
 generate:
 	docker run -v $$(pwd):/src -w /src --rm bufbuild/buf:$(BUF_VERSION) generate
@@ -147,3 +156,48 @@ lint:
 
 deploy:
 	./deploy/deploy.sh
+
+stop.cluster: ## Delete kind cluster
+	kind delete cluster 
+
+start.cluster: ## Starts a local kind cluster
+	kind create cluster || true
+
+start.linkerd:  ## Setup LinkerD in local kubernetes cluster
+	linkerd check --pre
+	linkerd install | kubectl apply -f -
+	linkerd viz install | kubectl apply -f -
+	linkerd check
+	linkerd viz dashboard &
+
+.PHONY: tilt
+start.k8s: stop.cluster start.cluster start.linkerd ## Start local tilt dev workflow
+	tilt up
+
+test.unit: start ## Run the tests of the project
+ifeq ($(EXPORT_RESULT), true)
+	GO111MODULE=off go get -u github.com/jstemmer/go-junit-report
+	$(eval OUTPUT_OPTIONS = | tee /dev/tty | go-junit-report -set-exit-code > junit-report.xml)
+endif
+	$(GOTEST) -v -race ./... $(OUTPUT_OPTIONS)
+
+test.integration:
+	$(ENV_INTEGRATION_TEST) $(GOTEST) -tags=integration ./internal/integration -v -count=1
+
+coverage: ## Generate coverage report
+	$(GOTEST) -cover -covermode=count -coverprofile=profile.cov ./...
+	$(GOCMD) tool cover -func profile.cov
+ifeq ($(EXPORT_RESULT), true)
+	GO111MODULE=off go get -u github.com/AlekSi/gocov-xml
+	GO111MODULE=off go get -u github.com/axw/gocov/gocov
+	gocov convert profile.cov | gocov-xml > coverage.xml
+endif
+
+clean.files: ## Remove
+	rm -f ./junit-report.xml checkstyle-report.xml ./coverage.xml ./profile.cov
+
+kill.docker.desktop:
+	pkill -SIGHUP -f /Applications/Docker.app 'docker serve' 
+
+start.docker.desktop:
+	./integration-test/docker-desktop.sh

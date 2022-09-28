@@ -229,3 +229,39 @@ minikube delete
 ```
 
 ref: https://github.com/duyquang6/wager-management-be
+
+### Postman Collection
+To access the public postman collection refernce [postman public uri](https://documenter.getpostman.com/view/4045899/2s83fADrhH)
+
+#### Adding New API & Postman Collection
+To add a new api, follow the below steps
+1) Edit the fis_service.proto file present in the rpc `/proto` folder
+2) Open a terminal instance and run `make gen`
+3) Add the file with the api name in `/pkg/grpc` adhering to the following convention `rpc_{api_name}.go`
+4) Add the necessary support code to as your business logic and associated unit tests
+5) In your terminal run `make start`
+6) Open a browser and hit `http://localhost:9096/sw` to access the service's swagger definition and find your newly added api endpoint
+7) Test it via the swagger definition and then open the postman application
+8) Import the contents of the `/collection` folder in postman and add your new api endpoint in postman then export and update the contents of the `/collection` folder
+9) Create a Pull Request
+
+### Local Development
+#### Install devspace
+install tilt via Homebrew
+```bash
+brew install tilt 
+```
+
+install kubectl-buildkit, ngrok and coreutils via Homebrew
+```bash
+brew tap vmware-tanzu/buildkit-cli-for-kubectl https://github.com/vmware-tanzu/buildkit-cli-for-kubectl
+brew install kubectl-buildkit
+brew install coreutils
+brew install --cask ngrok
+```
+
+install awslocal and awscli
+```bash
+pip install awscli-local
+brew install awscli
+```
