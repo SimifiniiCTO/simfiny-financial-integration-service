@@ -1,4 +1,4 @@
-FROM golang:1.16-alpine as builder
+FROM golang:1.18-alpine as builder
 
 ARG REVISION
 
@@ -24,7 +24,7 @@ RUN CGO_ENABLED=0 go build -ldflags \
     						"-s -w -X github.com/SimifiniiCTO/simfinii/src/backend/services//financial-integration-service/pkg/version.REVISION=${REVISION}" \
 							-a -o bin/podcli cmd/podcli/*
 
-FROM alpine:3.14
+FROM alpine
 
 ARG BUILD_DATE
 ARG VERSION
