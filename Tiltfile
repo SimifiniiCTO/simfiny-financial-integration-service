@@ -98,7 +98,7 @@ kubectl_build('feelguuds/financial-integration-service:latest',
               live_update=[
                  # Sync files from host to container
                  sync('./pkg', '/go/src/github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg'),
-                sync('./rpc', '/go/src/github.com/SimifiniiCTO/simfiny-financial-integration-service/rpc'),
+                 sync('./rpc', '/go/src/github.com/SimifiniiCTO/simfiny-financial-integration-service/proto'),
                  # Execute commands inside the container when certain
                  # paths change
                  #run('/src/codegen.sh', trigger=['./app/api'])
