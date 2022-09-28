@@ -16,6 +16,6 @@ fi
 
 echo "installing user service in default namespace"
 helm upgrade --install service ./charts/financial-integration-service \
-             --values ./charts/financial-integration-service/values-prod.yaml \
+             --values ./charts/financial-integration-service/values-production.yaml \
              --set replicaCount=1 \
              -n ${namespace}
