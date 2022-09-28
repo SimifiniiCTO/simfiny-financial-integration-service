@@ -1,0 +1,181 @@
+{{- $namespace := .Release.Namespace -}}
+{{- $svctag := "svc.cluster.local" -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "fis.fullname" . }}
+  labels:
+    {{- include "fis.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.hpa.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+        maxSurge: 2
+        maxUnavailable: 0
+  selector:
+    matchLabels:
+      {{- include "fis.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "fis.selectorLabels" . | nindent 8 }}
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "{{ .Values.service.httpPort }}"
+        {{- range $key, $value := .Values.podAnnotations }}
+        {{ $key }}: {{ $value | quote }}
+        {{- end }}
+    spec:
+      terminationGracePeriodSeconds: 30
+      {{- if .Values.serviceAccount.enabled }}
+      serviceAccountName: {{ template "fis.serviceAccountName" . }}
+      {{- end }}
+      {{- if eq .Values.service.environment "local" }}
+      initContainers:
+      - name: init-postgres-service-dependency
+        image: busybox:1.28
+        command: ['sh', '-c', "until nslookup financial-integration-service-db.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for financial-integration-service-db.; sleep 20; done"]
+	 {{- if .Values.redis.enabled }}
+      - name: init-redis-service-dependency
+        image: busybox:1.28
+        command: ['sh', '-c', "until nslookup financial-integration-service-redis.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for financial-integration-service-redis.; sleep 20; done"]
+	  {{- end }}
+	  {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- if .Values.securityContext }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          {{- else if (or .Values.service.hostPort .Values.tls.hostPort) }}
+          securityContext:
+            allowPrivilegeEscalation: true
+            capabilities:
+              drop:
+                - ALL
+              add:
+                - NET_BIND_SERVICE
+          {{- end }}
+          command:
+            - ./podinfo
+            - --port={{ .Values.service.httpPort | default 9898 }}
+            {{- if .Values.host }}
+            - --host={{ .Values.host }}
+            {{- end }}
+            {{- if .Values.tls.enabled }}
+            - --secure-port={{ .Values.tls.port }}
+            {{- end }}
+            {{- if .Values.tls.certPath }}
+            - --cert-path={{ .Values.tls.certPath }}
+            {{- end }}
+            {{- if .Values.service.metricsPort }}
+            - --port-metrics={{ .Values.service.metricsPort }}
+            {{- end }}
+            {{- if .Values.service.grpcPort }}
+            - --grpc-port={{ .Values.service.grpcPort }}
+            {{- end }}
+            {{- if .Values.service.grpcService }}
+            - --grpc-service-name={{ .Values.service.grpcService }}
+            {{- end }}
+            {{- range .Values.backends }}
+            - --backend-url={{ . }}
+            {{- end }}
+            {{- if .Values.cache }}
+            - --cache-server={{ .Values.cache }}
+            {{- else if .Values.redis.enabled }}
+            - --cache-server={{ template "fis.fullname" . }}-redis:6379
+            {{- end }}
+            - --level={{ .Values.logLevel }}
+            - --random-delay={{ .Values.faults.delay }}
+            - --random-error={{ .Values.faults.error }}
+            {{- if .Values.faults.unhealthy }}
+            - --unhealthy
+            {{- end }}
+            {{- if .Values.faults.unready }}
+            - --unready
+            {{- end }}
+            {{- if .Values.h2c.enabled }}
+            - --h2c
+            {{- end }}
+            {{- if eq .Values.service.environment "local" }}
+            - --dbhost={{ .Values.database.host }}.{{ $namespace }}.{{ $svctag }}
+            {{- else }}
+            - --dbhost={{ .Values.database.host }}
+            {{- end }}
+            - --dbport={{ .Values.database.port }}
+            - --dbuser={{ .Values.database.user }}
+            - --dbpassword={{ .Values.database.password }}
+            - --dbname={{ .Values.database.name }}
+            - --max-db-conn-attempts={{ .Values.database.max_connection_attempts }}
+            - --max-db-conn-retries={{ .Values.database.max_connection_retries }}
+            - --max-db-retry-timeout={{ .Values.database.max_connection_retry_timeout }}
+            - --max-db-retry-sleep-interval={{ .Values.database.max_connection_retry_sleep_interval }}
+            - --dbsslmode={{ .Values.database.sslMode }}
+            {{- if .Values.plaid.enabled }}
+            - --plaid-client-id={{ .Values.plaid.client_id }}
+            - --plaid-secret-key={{ .Values.plaid.secret_key }}
+            - --plaid-env={{ .Values.plaid.env }}
+            - --plaid-webhook-url={{ .Values.plaid.webhook_url }}
+            - --plaid-redirect-url={{ .Values.plaid.redirect_url }}
+            {{- end }}
+            {{- if .Values.newRelic.enabled}}
+            - --newrelic-key={{ .Values.newRelic.key }}
+            {{- end }}
+            - --env={{ .Values.service.env }}
+          env:
+          {{- if .Values.ui.message }}
+          - name: fis_UI_MESSAGE
+            value: {{ quote .Values.ui.message }}
+          {{- end }}
+          {{- if .Values.ui.logo }}
+          - name: fis_UI_LOGO
+            value: {{ .Values.ui.logo }}
+          {{- end }}
+          {{- if .Values.ui.color }}
+          - name: fis_UI_COLOR
+            value: {{ quote .Values.ui.color }}
+          {{- end }}
+          {{- if .Values.backend }}
+          - name: fis_BACKEND_URL
+            value: {{ .Values.backend }}
+          {{- end }}
+          ports:
+            {{- if .Values.service.grpcPort }}
+            - name: grpc
+              containerPort: {{ .Values.service.grpcPort }}
+              protocol: TCP
+            {{- end }}
+          volumeMounts:
+          - name: data
+            mountPath: /data
+          {{- if .Values.tls.enabled }}
+          - name: tls
+            mountPath: {{ .Values.tls.certPath | default "/data/cert" }}
+            readOnly: true
+          {{- end }}
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+      volumes:
+      - name: data
+        emptyDir: {}
+      {{- if .Values.tls.enabled }}
+      - name: tls
+        secret:
+          secretName: {{ template "fis.tlsSecretName" . }}
+      {{- end }}

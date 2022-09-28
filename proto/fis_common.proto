@@ -1,0 +1,35 @@
+syntax = "proto3";
+package fis_common;
+option go_package = "github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service/proto";
+import "fis_schema.proto";
+
+message AccountsResponseMetadata {
+  repeated fis_schema.DepositAccount deposit = 1;
+  repeated fis_schema.CreditAccount credit = 2;
+  repeated fis_schema.MortgageLoanAccount mortgage = 3;
+  repeated fis_schema.StudentLoanAccount studentLoan = 4;
+  repeated fis_schema.InvestmentAccount investments = 5;
+};
+
+enum AccountType {
+  INVESTMENT = 0;
+  CREDIT = 1;
+  DEPOSITORY = 2;
+  LOAN = 3;
+  BROKERAGE = 4;
+  OTHER = 5;
+};
+
+message AccountBalance {
+  string plaidAccountID = 1;
+  string accountName = 2;
+  fis_schema.Balance balance = 3;
+}
+
+message Liabilities {
+  repeated fis_schema.CreditAccount credit = 1;
+  repeated fis_schema.MortgageLoanAccount mortgage = 2;
+  repeated fis_schema.StudentLoanAccount studentLoan = 3;
+}
+
+message Investments { repeated fis_schema.InvestmentAccount investments = 1; }

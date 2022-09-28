@@ -1,0 +1,215 @@
+syntax = "proto3";
+
+import "gorm/options/gorm.proto";
+
+package fis_schema;
+option go_package = "github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service/proto";
+
+// Security provides information specific to financial security
+message Security {
+  option (gorm.opts) = {
+    ormable : true,
+  };
+  uint64 Id = 1
+      [ (gorm.field).tag =
+            {type : "serial" primary_key : true, auto_increment : true} ];
+  bool IsCashEquivalent = 2;
+  uint64 ClosePrice = 3;
+  string CurrencyCode = 4;
+  string SecurityID = 5;
+  string TickerSymbol = 6;
+  string SecurityType = 7;
+  string SecurityName = 8;
+};
+
+// The balance table is the single source of truth for account balances in our
+// backend
+message Balance {
+  option (gorm.opts) = {
+    ormable : true,
+  };
+  uint64 Id = 1
+      [ (gorm.field).tag =
+            {type : "serial" primary_key : true, auto_increment : true} ];
+  double AvailableFunds = 2;
+  double CurrentFunds = 3;
+  string CurrencyCode = 4;
+  uint64 BalanceLimit = 5;
+};
+
+// A virtual account abstracts a grouping of separate plaid accounts a user can
+// have
+message VirtualAccount {
+  option (gorm.opts) = {
+    ormable : true,
+  };
+  uint64 Id = 1;
+  string AccessToken = 2;
+  uint64 UserID = 3;
+  repeated DepositAccount DepositAccountID = 4
+      [ (gorm.field).has_many.preload = true ];
+  repeated CreditAccount CreditAccountID = 5
+      [ (gorm.field).has_many.preload = true ];
+  repeated MortgageLoanAccount MortgageLoanAccountID = 6
+      [ (gorm.field).has_many.preload = true ];
+  repeated StudentLoanAccount StudentLoanAccountID = 7
+      [ (gorm.field).has_many.preload = true ];
+	repeated InvestmentAccount InvestmentAccountID = 8
+	[ (gorm.field).has_many.preload = true ];
+	bool Active = 9;
+	string PlaidItemID = 10;
+};
+
+message DepositAccount {
+  option (gorm.opts) = {
+    ormable : true,
+  };
+  uint64 Id = 1;
+  string PlaidAccountID = 2;
+  string AccountSubtype = 3;
+  string AccountType = 4;
+  string AccountName = 5;
+  Balance BalanceID = 6 [ (gorm.field).has_one.preload = true ];
+};
+
+message CreditAccount {
+  option (gorm.opts) = {
+    ormable : true,
+  };
+  uint64 Id = 1;
+  string PlaidAccountID = 2;
+  string AccountSubtype = 3;
+  string AccountType = 4;
+  bool IsOverdue = 5;
+  double LastPaymentAmount = 6;
+  string LastPaymentDate = 7;
+  string LastStatementIssueDate = 8;
+  double MinimumPaymentAmount = 9;
+  string NextPaymentDueDate = 10;
+  repeated APR Aprs = 11 [ (gorm.field).has_many.preload = true ];
+	Balance BalanceID = 12 [ (gorm.field).has_one.preload = true ];
+	string AccountName = 13;
+};
+
+message APR {
+  option (gorm.opts) = {
+    ormable : true,
+  };
+  uint64 Id = 1;
+  double APRPercentage = 2;
+  string APRType = 3;
+  double BalanceSubjectToAPR = 4;
+  double InterestChargeAmount = 5;
+};
+
+message MortgageLoanAccount {
+  option (gorm.opts) = {
+    ormable : true,
+  };
+  uint64 Id = 1;
+  string PlaidAccountID = 2;
+  string AccountSubtype = 3;
+  string AccountType = 4;
+  string AccountNumber = 5;
+  double CurrentLateFee = 6;
+  double EscrowBalance = 7;
+  bool HasPmi = 8;
+  bool HasPrepaymentPenalty = 9;
+  double LastPaymentAmount = 10;
+  string LastPaymentDate = 11;
+  string LoanTerm = 12;
+  string LoanTypeDescription = 13;
+  string MaturityDate = 14;
+  double NexMonthlyPayment = 15;
+  string NextPaymentDueDate = 16;
+  string OriginationDate = 17;
+  double OriginationPrincipalAmount = 18;
+  double PastDueAmount = 19;
+  Interest InterestID = 20 [ (gorm.field).has_one.preload = true ];
+  Address AddressID = 21 [ (gorm.field).has_one.preload = true ];
+  double InterestPaidYTD = 22;
+  double PrincipalPaidYTD = 23;
+	Balance BalanceID = 24 [ (gorm.field).has_one.preload = true ];
+	string AccountName = 25;
+};
+
+message Interest {
+  option (gorm.opts) = {
+    ormable : true,
+  };
+  uint64 Id = 1;
+  double Percentage = 2;
+  string Type = 3;
+};
+
+message Address {
+  option (gorm.opts) = {
+    ormable : true,
+  };
+  uint64 Id = 1;
+  string City = 2;
+  string Country = 3;
+  string Region = 4;
+  string Street = 5;
+};
+
+message StudentLoanAccount {
+  option (gorm.opts) = {
+    ormable : true,
+  };
+  uint64 Id = 1;
+  string PlaidAccountID = 2;
+  string AccountSubtype = 3;
+  string AccountType = 4;
+  string AccountNumber = 5;
+  repeated string DisbursementDates = 6;
+  string ExpectedPayoffDate = 7;
+  string Guarantor = 8;
+  double InterestRatePercentage = 9;
+  bool IsOverdue = 10;
+  double LastPaymentAmount = 11;
+  string LastPaymentDate = 12;
+  string LastStatementIssueDate = 13;
+  string LoanStatementIssueDate = 14;
+  string LoanName = 15;
+  string LoanRepaymentEndDate = 16;
+  double MinimumPaymentAmount = 17;
+  string NextPaymentDueDate = 18;
+  string OriginationDate = 19;
+  double OriginationPrincipalAmount = 20;
+  double OutstandingInterestAmount = 21;
+  string PaymentReferenceNumber = 22;
+  string SequenceNumber = 23;
+  Pslf PslfID = 24 [ (gorm.field).has_one.preload = true ];
+  string RepaymentPlan = 25;
+  Address ServisorAddressID = 26 [ (gorm.field).has_one.preload = true ];
+  double InterestPaidYTD = 27;
+  double PrincipalPaidYTD = 28;
+	Balance BalanceID = 29 [ (gorm.field).has_one.preload = true ];
+	string AccountName = 30;
+};
+
+message Pslf {
+  option (gorm.opts) = {
+    ormable : true,
+  };
+  uint64 Id = 1;
+  string EstimatedEligibilityDate = 2;
+  uint64 PaymentsMade = 3;
+  uint64 PaymentsRemaining = 4;
+};
+
+message InvestmentAccount {
+  option (gorm.opts) = {
+    ormable : true,
+  };
+  uint64 Id = 1;
+  string PlaidAccountID = 2;
+  string AccountSubtype = 3;
+  string AccountType = 4;
+  string AccountName = 5;
+
+  Balance BalanceID = 6 [ (gorm.field).has_one.preload = true ];
+  repeated Security SecurityID = 7 [ (gorm.field).has_many.preload = true ];
+};
+

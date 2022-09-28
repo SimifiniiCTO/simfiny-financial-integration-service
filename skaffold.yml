@@ -1,0 +1,25 @@
+apiVersion: skaffold/v2beta28
+kind: Config
+metadata:
+  name: feelguuds/financial-integration-service
+
+build:
+  artifacts:
+    - image: feelguuds/financial-integration-service
+      context: .
+      docker:
+        dockerfile: Dockerfile
+        noCache: false
+  tagPolicy:
+    envTemplate:
+      template: "latest"
+
+    
+deploy:
+  helm:
+    releases:
+      - name: financial-integration-service
+        chartPath: charts/financial-integration-service
+        skipBuildDependencies: true
+        valuesFiles:
+          - charts/financial-integration-service/values.yaml

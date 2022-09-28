@@ -1,0 +1,44 @@
+version: '3.7'
+
+services:
+  financial_integration_svc:
+    build:
+      context: "../"
+      dockerfile: Dockerfile.dev
+    container_name: financial_integration_svc
+    ports:
+      - "9098:9898" # http port
+      - "9096:9896" # grpc port
+    restart: always
+    environment:
+      - newrelic-key=3000
+    networks:
+      - fis
+    volumes:
+      - '..:/go/src/github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service'
+    env_file:
+      - ../financial-integration-service.env
+    depends_on:
+      - financial_integration_svc_db
+
+  financial_integration_svc_db:
+    image: postgres:latest
+    container_name: financial_integration_svc_db
+    ports:
+      - "6000:5432"
+    environment:
+      - POSTGRES_PASSWORD=financial_integration_svc
+      - POSTGRES_USER=financial_integration_svc
+      - POSTGRES_DB=financial_integration_svc
+      - PGDATA=/data/financial_integration_svc_db
+    volumes:
+      - financial_integration_svc_db:/data/financial_integration_svc_db
+    networks:
+      - fis
+
+networks:
+  fis:
+    driver: bridge
+
+volumes:
+  financial_integration_svc_db: {}

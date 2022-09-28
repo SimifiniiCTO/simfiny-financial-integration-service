@@ -1,0 +1,97 @@
+syntax = "proto3";
+package fis_service;
+option go_package = "github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service/proto";
+
+import "fis_schema.proto";
+import "fis_common.proto";
+import "google/api/annotations.proto";
+
+service FinancialIntegrationService {
+  rpc InitiateAccountSetupAndGetLinkToken(InitiateAccountSetupRequest) returns (InitiateAccountSetupResponse){};
+  rpc CreateAccountWithTokenExchange(CreateAccountTokenExchangeRequest) returns (CreateAccountTokenExchangeResponse) {};
+  rpc DeleteAccount(DeleteAccountRequest) returns (DeleteAccountResponse) {};
+  rpc GetAccounts(GetAccountsRequest) returns (GetAccountsResponse) {};
+  rpc GetAccountsByType(GetAccountsByTypeRequest) returns (GetAccountsByTypeResponse) {};
+  rpc GetAccountsBalances(GetAccountsBalanceRequest) returns (GetAccountsBalanceResponse) {};
+  rpc GetLiabilities(GetLiabilitiesRequest) returns (GetLiabilitiesResponse) {};
+  rpc GetInvestments(GetInvestmentsRequest) returns (GetInvestmentsResponse) {};
+  rpc GetVirtualAccount(GetAccountRequest) returns (GetAccountResponse) {};
+  rpc GetVirtualAccountId(GetVirtualAccountIdRequest) returns (GetVirtualAccountIdResponse) {}
+}
+
+message InitiateAccountSetupRequest { uint64 userID = 1; }
+
+message InitiateAccountSetupResponse {
+  string linkToken = 1;
+  string expiration = 2;
+  string plaidRequestID = 3;
+}
+
+message CreateAccountTokenExchangeRequest {
+  string publicToken = 1;
+  uint64 userID = 2;
+}
+
+message CreateAccountTokenExchangeResponse { uint64 virtualAccountID = 1; }
+
+message DeleteAccountRequest {
+  uint64 virtualAccountID = 1;
+  uint64 userID = 2;
+}
+
+message DeleteAccountResponse {
+  string requestID = 1;
+  bool removed = 2;
+}
+
+message GetAccountsRequest {
+  uint64 virtualAccountID = 1;
+  uint64 userID = 2;
+}
+
+message GetAccountsResponse { fis_common.AccountsResponseMetadata accounts = 1; };
+
+message GetAccountsByTypeRequest {
+  uint64 virtualAccountID = 1;
+  uint64 userID = 2;
+  fis_common.AccountType accountType = 3;
+};
+
+message GetAccountsByTypeResponse {
+  fis_common.AccountsResponseMetadata accounts = 1;
+}
+
+message GetAccountsBalanceRequest {
+  uint64 virtualAccountID = 1;
+  uint64 userID = 2;
+}
+
+message GetAccountsBalanceResponse {
+  repeated fis_common.AccountBalance accountBalances = 1;
+}
+
+message GetLiabilitiesRequest {
+  uint64 virtualAccountID = 1;
+  uint64 userID = 2;
+}
+
+message GetLiabilitiesResponse { fis_common.Liabilities liabilities = 1; }
+
+message GetInvestmentsRequest {
+  uint64 virtualAccountID = 1;
+  uint64 userID = 2;
+}
+
+message GetInvestmentsResponse { fis_common.Investments investments = 1; }
+
+message GetAccountRequest { uint64 virtualAccountID = 1; }
+
+message GetAccountResponse { fis_schema.VirtualAccount virtualAccount = 1; }
+
+message GetVirtualAccountIdRequest {
+    uint64 userID = 1;
+}
+
+message GetVirtualAccountIdResponse {
+    uint64 virtualAccountID = 1;
+}

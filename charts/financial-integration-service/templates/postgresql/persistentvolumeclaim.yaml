@@ -1,0 +1,16 @@
+{{- if .Values.postgresLocalDB.enabled -}}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: financial-integration-service-db
+  name: financial-integration-service-db
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+status: {}
+{{- end }}

@@ -1,0 +1,62 @@
+{{- if .Values.postgresLocalDB.enabled -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -c --file docker-compose.yaml
+    kompose.version: 1.19.0 (f63a961c)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: financial-integration-service-db
+  name: financial-integration-service-db
+spec:
+  progressDeadlineSeconds: 2147483647
+  replicas: 1
+  revisionHistoryLimit: 2147483647
+  selector:
+    matchLabels:
+      io.kompose.service: financial-integration-service-db
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -c --file docker-compose.yaml
+        kompose.version: 1.19.0 (f63a961c)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: financial-integration-service-db
+    spec:
+      containers:
+      - env:
+        - name: PGDATA
+          value: /data/financial_integration_service
+        - name: POSTGRES_DB
+          value: financial_integration_service
+        - name: POSTGRES_PASSWORD
+          value: financial_integration_service
+        - name: POSTGRES_USER
+          value: financial_integration_service
+        image: postgres
+        imagePullPolicy: Always
+        name: postgres
+        ports:
+        - containerPort: 5432
+          protocol: TCP
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /data/financial_integration_service
+          name: financial-integration-service-db
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: financial-integration-service-db
+        persistentVolumeClaim:
+          claimName: financial-integration-service-db
+status: {}
+{{- end }}

@@ -1,0 +1,25 @@
+type: google.api.Service
+config_version: 3
+
+http:
+  rules:
+    - selector: fis_service.FinancialIntegrationService.InitiateAccountSetupAndGetLinkToken
+      post: /api/v1/token/setup/{userID}
+    - selector: fis_service.FinancialIntegrationService.CreateAccountWithTokenExchange
+      post: /api/v1/token/exchange/{userID}/{publicToken}
+    - selector: fis_service.FinancialIntegrationService.DeleteAccount
+      delete: /api/v1/account/user/{userID}/account/{virtualAccountID}
+    - selector: fis_service.FinancialIntegrationService.GetAccounts
+      get: /api/v1/accounts/user/{userID}/account/{virtualAccountID}
+    - selector: fis_service.FinancialIntegrationService.GetAccountsByType
+      get: /api/v1/type/{accountType}/user/{userID}/account/{virtualAccountID}
+    - selector: fis_service.FinancialIntegrationService.GetAccountsBalances
+      get: /api/v1/balances/user/{userID}/account/{virtualAccountID}
+    - selector: fis_service.FinancialIntegrationService.GetLiabilities
+      get: /api/v1/liabilities/user/{userID}/account/{virtualAccountID}
+    - selector: fis_service.FinancialIntegrationService.GetInvestments
+      get: /api/v1/investments/user/{userID}/account/{virtualAccountID}
+    - selector: fis_service.FinancialIntegrationService.GetVirtualAccount
+      get: /api/v1/account/{virtualAccountID}
+    - selector: fis_service.FinancialIntegrationService.GetVirtualAccountId
+      get: /api/v1/account/user/{userID}

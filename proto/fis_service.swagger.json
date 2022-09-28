@@ -1,0 +1,1100 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "fis_service.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "FinancialIntegrationService"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/v1/account/user/{userID}": {
+      "get": {
+        "operationId": "FinancialIntegrationService_GetVirtualAccountId",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/fis_serviceGetVirtualAccountIdResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userID",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "FinancialIntegrationService"
+        ]
+      }
+    },
+    "/api/v1/account/user/{userID}/account/{virtualAccountID}": {
+      "delete": {
+        "operationId": "FinancialIntegrationService_DeleteAccount",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/fis_serviceDeleteAccountResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userID",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "virtualAccountID",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "FinancialIntegrationService"
+        ]
+      }
+    },
+    "/api/v1/account/{virtualAccountID}": {
+      "get": {
+        "operationId": "FinancialIntegrationService_GetVirtualAccount",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/fis_serviceGetAccountResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "virtualAccountID",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "FinancialIntegrationService"
+        ]
+      }
+    },
+    "/api/v1/accounts/user/{userID}/account/{virtualAccountID}": {
+      "get": {
+        "operationId": "FinancialIntegrationService_GetAccounts",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/fis_serviceGetAccountsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userID",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "virtualAccountID",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "FinancialIntegrationService"
+        ]
+      }
+    },
+    "/api/v1/balances/user/{userID}/account/{virtualAccountID}": {
+      "get": {
+        "operationId": "FinancialIntegrationService_GetAccountsBalances",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/fis_serviceGetAccountsBalanceResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userID",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "virtualAccountID",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "FinancialIntegrationService"
+        ]
+      }
+    },
+    "/api/v1/investments/user/{userID}/account/{virtualAccountID}": {
+      "get": {
+        "operationId": "FinancialIntegrationService_GetInvestments",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/fis_serviceGetInvestmentsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userID",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "virtualAccountID",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "FinancialIntegrationService"
+        ]
+      }
+    },
+    "/api/v1/liabilities/user/{userID}/account/{virtualAccountID}": {
+      "get": {
+        "operationId": "FinancialIntegrationService_GetLiabilities",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/fis_serviceGetLiabilitiesResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userID",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "virtualAccountID",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "FinancialIntegrationService"
+        ]
+      }
+    },
+    "/api/v1/token/exchange/{userID}/{publicToken}": {
+      "post": {
+        "operationId": "FinancialIntegrationService_CreateAccountWithTokenExchange",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/fis_serviceCreateAccountTokenExchangeResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userID",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "publicToken",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "FinancialIntegrationService"
+        ]
+      }
+    },
+    "/api/v1/token/setup/{userID}": {
+      "post": {
+        "operationId": "FinancialIntegrationService_InitiateAccountSetupAndGetLinkToken",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/fis_serviceInitiateAccountSetupResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userID",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "FinancialIntegrationService"
+        ]
+      }
+    },
+    "/api/v1/type/{accountType}/user/{userID}/account/{virtualAccountID}": {
+      "get": {
+        "operationId": "FinancialIntegrationService_GetAccountsByType",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/fis_serviceGetAccountsByTypeResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "accountType",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "INVESTMENT",
+              "CREDIT",
+              "DEPOSITORY",
+              "LOAN",
+              "BROKERAGE",
+              "OTHER"
+            ]
+          },
+          {
+            "name": "userID",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "virtualAccountID",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "FinancialIntegrationService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "fis_commonAccountBalance": {
+      "type": "object",
+      "properties": {
+        "plaidAccountID": {
+          "type": "string"
+        },
+        "accountName": {
+          "type": "string"
+        },
+        "balance": {
+          "$ref": "#/definitions/fis_schemaBalance"
+        }
+      }
+    },
+    "fis_commonAccountType": {
+      "type": "string",
+      "enum": [
+        "INVESTMENT",
+        "CREDIT",
+        "DEPOSITORY",
+        "LOAN",
+        "BROKERAGE",
+        "OTHER"
+      ],
+      "default": "INVESTMENT"
+    },
+    "fis_commonAccountsResponseMetadata": {
+      "type": "object",
+      "properties": {
+        "deposit": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/fis_schemaDepositAccount"
+          }
+        },
+        "credit": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/fis_schemaCreditAccount"
+          }
+        },
+        "mortgage": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/fis_schemaMortgageLoanAccount"
+          }
+        },
+        "studentLoan": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/fis_schemaStudentLoanAccount"
+          }
+        },
+        "investments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/fis_schemaInvestmentAccount"
+          }
+        }
+      }
+    },
+    "fis_commonInvestments": {
+      "type": "object",
+      "properties": {
+        "investments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/fis_schemaInvestmentAccount"
+          }
+        }
+      }
+    },
+    "fis_commonLiabilities": {
+      "type": "object",
+      "properties": {
+        "credit": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/fis_schemaCreditAccount"
+          }
+        },
+        "mortgage": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/fis_schemaMortgageLoanAccount"
+          }
+        },
+        "studentLoan": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/fis_schemaStudentLoanAccount"
+          }
+        }
+      }
+    },
+    "fis_schemaAPR": {
+      "type": "object",
+      "properties": {
+        "Id": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "APRPercentage": {
+          "type": "number",
+          "format": "double"
+        },
+        "APRType": {
+          "type": "string"
+        },
+        "BalanceSubjectToAPR": {
+          "type": "number",
+          "format": "double"
+        },
+        "InterestChargeAmount": {
+          "type": "number",
+          "format": "double"
+        }
+      }
+    },
+    "fis_schemaAddress": {
+      "type": "object",
+      "properties": {
+        "Id": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "City": {
+          "type": "string"
+        },
+        "Country": {
+          "type": "string"
+        },
+        "Region": {
+          "type": "string"
+        },
+        "Street": {
+          "type": "string"
+        }
+      }
+    },
+    "fis_schemaBalance": {
+      "type": "object",
+      "properties": {
+        "Id": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "AvailableFunds": {
+          "type": "number",
+          "format": "double"
+        },
+        "CurrentFunds": {
+          "type": "number",
+          "format": "double"
+        },
+        "CurrencyCode": {
+          "type": "string"
+        },
+        "BalanceLimit": {
+          "type": "string",
+          "format": "uint64"
+        }
+      },
+      "title": "The balance table is the single source of truth for account balances in our\nbackend"
+    },
+    "fis_schemaCreditAccount": {
+      "type": "object",
+      "properties": {
+        "Id": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "PlaidAccountID": {
+          "type": "string"
+        },
+        "AccountSubtype": {
+          "type": "string"
+        },
+        "AccountType": {
+          "type": "string"
+        },
+        "IsOverdue": {
+          "type": "boolean"
+        },
+        "LastPaymentAmount": {
+          "type": "number",
+          "format": "double"
+        },
+        "LastPaymentDate": {
+          "type": "string"
+        },
+        "LastStatementIssueDate": {
+          "type": "string"
+        },
+        "MinimumPaymentAmount": {
+          "type": "number",
+          "format": "double"
+        },
+        "NextPaymentDueDate": {
+          "type": "string"
+        },
+        "Aprs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/fis_schemaAPR"
+          }
+        },
+        "BalanceID": {
+          "$ref": "#/definitions/fis_schemaBalance"
+        },
+        "AccountName": {
+          "type": "string"
+        }
+      }
+    },
+    "fis_schemaDepositAccount": {
+      "type": "object",
+      "properties": {
+        "Id": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "PlaidAccountID": {
+          "type": "string"
+        },
+        "AccountSubtype": {
+          "type": "string"
+        },
+        "AccountType": {
+          "type": "string"
+        },
+        "AccountName": {
+          "type": "string"
+        },
+        "BalanceID": {
+          "$ref": "#/definitions/fis_schemaBalance"
+        }
+      }
+    },
+    "fis_schemaInterest": {
+      "type": "object",
+      "properties": {
+        "Id": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "Percentage": {
+          "type": "number",
+          "format": "double"
+        },
+        "Type": {
+          "type": "string"
+        }
+      }
+    },
+    "fis_schemaInvestmentAccount": {
+      "type": "object",
+      "properties": {
+        "Id": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "PlaidAccountID": {
+          "type": "string"
+        },
+        "AccountSubtype": {
+          "type": "string"
+        },
+        "AccountType": {
+          "type": "string"
+        },
+        "AccountName": {
+          "type": "string"
+        },
+        "BalanceID": {
+          "$ref": "#/definitions/fis_schemaBalance"
+        },
+        "SecurityID": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/fis_schemaSecurity"
+          }
+        }
+      }
+    },
+    "fis_schemaMortgageLoanAccount": {
+      "type": "object",
+      "properties": {
+        "Id": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "PlaidAccountID": {
+          "type": "string"
+        },
+        "AccountSubtype": {
+          "type": "string"
+        },
+        "AccountType": {
+          "type": "string"
+        },
+        "AccountNumber": {
+          "type": "string"
+        },
+        "CurrentLateFee": {
+          "type": "number",
+          "format": "double"
+        },
+        "EscrowBalance": {
+          "type": "number",
+          "format": "double"
+        },
+        "HasPmi": {
+          "type": "boolean"
+        },
+        "HasPrepaymentPenalty": {
+          "type": "boolean"
+        },
+        "LastPaymentAmount": {
+          "type": "number",
+          "format": "double"
+        },
+        "LastPaymentDate": {
+          "type": "string"
+        },
+        "LoanTerm": {
+          "type": "string"
+        },
+        "LoanTypeDescription": {
+          "type": "string"
+        },
+        "MaturityDate": {
+          "type": "string"
+        },
+        "NexMonthlyPayment": {
+          "type": "number",
+          "format": "double"
+        },
+        "NextPaymentDueDate": {
+          "type": "string"
+        },
+        "OriginationDate": {
+          "type": "string"
+        },
+        "OriginationPrincipalAmount": {
+          "type": "number",
+          "format": "double"
+        },
+        "PastDueAmount": {
+          "type": "number",
+          "format": "double"
+        },
+        "InterestID": {
+          "$ref": "#/definitions/fis_schemaInterest"
+        },
+        "AddressID": {
+          "$ref": "#/definitions/fis_schemaAddress"
+        },
+        "InterestPaidYTD": {
+          "type": "number",
+          "format": "double"
+        },
+        "PrincipalPaidYTD": {
+          "type": "number",
+          "format": "double"
+        },
+        "BalanceID": {
+          "$ref": "#/definitions/fis_schemaBalance"
+        },
+        "AccountName": {
+          "type": "string"
+        }
+      }
+    },
+    "fis_schemaPslf": {
+      "type": "object",
+      "properties": {
+        "Id": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "EstimatedEligibilityDate": {
+          "type": "string"
+        },
+        "PaymentsMade": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "PaymentsRemaining": {
+          "type": "string",
+          "format": "uint64"
+        }
+      }
+    },
+    "fis_schemaSecurity": {
+      "type": "object",
+      "properties": {
+        "Id": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "IsCashEquivalent": {
+          "type": "boolean"
+        },
+        "ClosePrice": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "CurrencyCode": {
+          "type": "string"
+        },
+        "SecurityID": {
+          "type": "string"
+        },
+        "TickerSymbol": {
+          "type": "string"
+        },
+        "SecurityType": {
+          "type": "string"
+        },
+        "SecurityName": {
+          "type": "string"
+        }
+      },
+      "title": "Security provides information specific to financial security"
+    },
+    "fis_schemaStudentLoanAccount": {
+      "type": "object",
+      "properties": {
+        "Id": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "PlaidAccountID": {
+          "type": "string"
+        },
+        "AccountSubtype": {
+          "type": "string"
+        },
+        "AccountType": {
+          "type": "string"
+        },
+        "AccountNumber": {
+          "type": "string"
+        },
+        "DisbursementDates": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "ExpectedPayoffDate": {
+          "type": "string"
+        },
+        "Guarantor": {
+          "type": "string"
+        },
+        "InterestRatePercentage": {
+          "type": "number",
+          "format": "double"
+        },
+        "IsOverdue": {
+          "type": "boolean"
+        },
+        "LastPaymentAmount": {
+          "type": "number",
+          "format": "double"
+        },
+        "LastPaymentDate": {
+          "type": "string"
+        },
+        "LastStatementIssueDate": {
+          "type": "string"
+        },
+        "LoanStatementIssueDate": {
+          "type": "string"
+        },
+        "LoanName": {
+          "type": "string"
+        },
+        "LoanRepaymentEndDate": {
+          "type": "string"
+        },
+        "MinimumPaymentAmount": {
+          "type": "number",
+          "format": "double"
+        },
+        "NextPaymentDueDate": {
+          "type": "string"
+        },
+        "OriginationDate": {
+          "type": "string"
+        },
+        "OriginationPrincipalAmount": {
+          "type": "number",
+          "format": "double"
+        },
+        "OutstandingInterestAmount": {
+          "type": "number",
+          "format": "double"
+        },
+        "PaymentReferenceNumber": {
+          "type": "string"
+        },
+        "SequenceNumber": {
+          "type": "string"
+        },
+        "PslfID": {
+          "$ref": "#/definitions/fis_schemaPslf"
+        },
+        "RepaymentPlan": {
+          "type": "string"
+        },
+        "ServisorAddressID": {
+          "$ref": "#/definitions/fis_schemaAddress"
+        },
+        "InterestPaidYTD": {
+          "type": "number",
+          "format": "double"
+        },
+        "PrincipalPaidYTD": {
+          "type": "number",
+          "format": "double"
+        },
+        "BalanceID": {
+          "$ref": "#/definitions/fis_schemaBalance"
+        },
+        "AccountName": {
+          "type": "string"
+        }
+      }
+    },
+    "fis_schemaVirtualAccount": {
+      "type": "object",
+      "properties": {
+        "Id": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "AccessToken": {
+          "type": "string"
+        },
+        "UserID": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "DepositAccountID": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/fis_schemaDepositAccount"
+          }
+        },
+        "CreditAccountID": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/fis_schemaCreditAccount"
+          }
+        },
+        "MortgageLoanAccountID": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/fis_schemaMortgageLoanAccount"
+          }
+        },
+        "StudentLoanAccountID": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/fis_schemaStudentLoanAccount"
+          }
+        },
+        "InvestmentAccountID": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/fis_schemaInvestmentAccount"
+          }
+        },
+        "Active": {
+          "type": "boolean"
+        },
+        "PlaidItemID": {
+          "type": "string"
+        }
+      },
+      "title": "A virtual account abstracts a grouping of separate plaid accounts a user can\nhave"
+    },
+    "fis_serviceCreateAccountTokenExchangeResponse": {
+      "type": "object",
+      "properties": {
+        "virtualAccountID": {
+          "type": "string",
+          "format": "uint64"
+        }
+      }
+    },
+    "fis_serviceDeleteAccountResponse": {
+      "type": "object",
+      "properties": {
+        "requestID": {
+          "type": "string"
+        },
+        "removed": {
+          "type": "boolean"
+        }
+      }
+    },
+    "fis_serviceGetAccountResponse": {
+      "type": "object",
+      "properties": {
+        "virtualAccount": {
+          "$ref": "#/definitions/fis_schemaVirtualAccount"
+        }
+      }
+    },
+    "fis_serviceGetAccountsBalanceResponse": {
+      "type": "object",
+      "properties": {
+        "accountBalances": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/fis_commonAccountBalance"
+          }
+        }
+      }
+    },
+    "fis_serviceGetAccountsByTypeResponse": {
+      "type": "object",
+      "properties": {
+        "accounts": {
+          "$ref": "#/definitions/fis_commonAccountsResponseMetadata"
+        }
+      }
+    },
+    "fis_serviceGetAccountsResponse": {
+      "type": "object",
+      "properties": {
+        "accounts": {
+          "$ref": "#/definitions/fis_commonAccountsResponseMetadata"
+        }
+      }
+    },
+    "fis_serviceGetInvestmentsResponse": {
+      "type": "object",
+      "properties": {
+        "investments": {
+          "$ref": "#/definitions/fis_commonInvestments"
+        }
+      }
+    },
+    "fis_serviceGetLiabilitiesResponse": {
+      "type": "object",
+      "properties": {
+        "liabilities": {
+          "$ref": "#/definitions/fis_commonLiabilities"
+        }
+      }
+    },
+    "fis_serviceGetVirtualAccountIdResponse": {
+      "type": "object",
+      "properties": {
+        "virtualAccountID": {
+          "type": "string",
+          "format": "uint64"
+        }
+      }
+    },
+    "fis_serviceInitiateAccountSetupResponse": {
+      "type": "object",
+      "properties": {
+        "linkToken": {
+          "type": "string"
+        },
+        "expiration": {
+          "type": "string"
+        },
+        "plaidRequestID": {
+          "type": "string"
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    }
+  }
+}
