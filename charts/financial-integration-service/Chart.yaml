@@ -4,10 +4,10 @@ appVersion: 6.0.3
 name: financial-integration-service
 engine: gotpl
 description: Financial Integration Service Helm chart for Kubernetes
-home: https://github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service
+home: https://github.com/SimifiniiCTO/simfiny-financial-integration-service
 maintainers:
   - email: yoan@simfinii.com
     name: yoan yomba 
 sources:
-  - https://github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service
+  - https://github.com/SimifiniiCTO/simfiny-financial-integration-service
 kubeVersion: ">=1.19.0-0"

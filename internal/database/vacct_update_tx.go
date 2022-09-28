@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 
-	schema "github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service/proto"
+	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/proto"
 	"github.com/newrelic/go-agent/v3/newrelic"
 	core_database "github.com/yoanyombapro1234/FeelGuuds_Core/core/core-database"
 	"gorm.io/gorm"

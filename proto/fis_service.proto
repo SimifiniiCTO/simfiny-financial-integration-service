@@ -1,6 +1,6 @@
 syntax = "proto3";
 package fis_service;
-option go_package = "github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service/proto";
+option go_package = "github.com/SimifiniiCTO/simfiny-financial-integration-service/proto";
 
 import "fis_schema.proto";
 import "fis_common.proto";

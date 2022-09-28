@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 
-	schema "github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service/proto"
+	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/proto"
 )
 
 func (db *Db) validateVirtualAcct(ctx context.Context, vAcctOrm *schema.VirtualAccountORM) error {

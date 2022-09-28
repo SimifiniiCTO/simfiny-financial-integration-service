@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 
-	proto "github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service/proto"
+	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/proto"
 )
 
 func (s *Server) GetInvestments(ctx context.Context, request *proto.GetInvestmentsRequest) (*proto.GetInvestmentsResponse, error) {

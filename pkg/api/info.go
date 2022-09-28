@@ -6,7 +6,7 @@ import (
 	"runtime"
 	"strconv"
 
-	"github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service/pkg/version"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/version"
 )
 
 // Info godoc

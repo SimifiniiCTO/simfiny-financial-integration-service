@@ -20,11 +20,11 @@ var doc = `{
         "title": "{{.Title}}",
         "contact": {
             "name": "Source Code",
-            "url": "https://github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service"
+            "url": "https://github.com/SimifiniiCTO/simfiny-financial-integration-service"
         },
         "license": {
             "name": "MIT License",
-            "url": "https://github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service/blob/master/LICENSE"
+            "url": "https://github.com/SimifiniiCTO/simfiny-financial-integration-service/blob/master/LICENSE"
         },
         "version": "{{.Version}}"
     },

@@ -17,7 +17,7 @@ COPY . .
 RUN go mod download
 
 RUN CGO_ENABLED=0 go build -ldflags \
-    						"-s -w -X github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service/pkg/version.REVISION=${REVISION}" \
+    						"-s -w -X github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/version.REVISION=${REVISION}" \
 							-a -o bin/podinfo cmd/podinfo/*
 
 RUN CGO_ENABLED=0 go build -ldflags \

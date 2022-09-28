@@ -5,7 +5,7 @@ import (
 	"errors"
 	"strconv"
 
-	proto "github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service/proto"
+	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/proto"
 	"github.com/newrelic/go-agent/v3/newrelic"
 	"github.com/plaid/plaid-go/plaid"
 	"go.uber.org/zap"

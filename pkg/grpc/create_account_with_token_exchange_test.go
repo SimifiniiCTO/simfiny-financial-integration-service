@@ -5,9 +5,9 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service/internal/helper"
-	"github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service/internal/plaidhandler"
-	proto "github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service/proto"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/helper"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/plaidhandler"
+	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/proto"
 	"github.com/plaid/plaid-go/plaid"
 	"github.com/stretchr/testify/assert"
 )

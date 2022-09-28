@@ -1,10 +1,10 @@
 package grpc
 
 import (
-	"github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service/internal/database"
-	"github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service/internal/plaidhandler"
-	"github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service/pkg/metrics"
-	proto "github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service/proto"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/database"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/plaidhandler"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/metrics"
+	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/proto"
 	nrGrpcCompatibleVersion "github.com/newrelic/go-agent"
 	"github.com/newrelic/go-agent/v3/newrelic"
 	"github.com/plaid/plaid-go/plaid"

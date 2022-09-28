@@ -3,7 +3,7 @@ syntax = "proto3";
 import "gorm/options/gorm.proto";
 
 package fis_schema;
-option go_package = "github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service/proto";
+option go_package = "github.com/SimifiniiCTO/simfiny-financial-integration-service/proto";
 
 // Security provides information specific to financial security
 message Security {

@@ -5,8 +5,8 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service/internal/helper"
-	schema "github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service/proto"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/helper"
+	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/proto"
 	"github.com/stretchr/testify/assert"
 )
 

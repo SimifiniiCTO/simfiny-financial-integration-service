@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 
-	"github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service/proto"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/proto"
 )
 
 func (s *Server) GetVirtualAccountId(ctx context.Context, request *proto.GetVirtualAccountIdRequest) (*proto.GetVirtualAccountIdResponse, error) {

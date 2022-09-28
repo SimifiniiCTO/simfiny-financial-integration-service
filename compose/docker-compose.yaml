@@ -15,7 +15,7 @@ services:
     networks:
       - fis
     volumes:
-      - '..:/go/src/github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service'
+      - '..:/go/src/github.com/SimifiniiCTO/simfiny-financial-integration-service'
     env_file:
       - ../financial-integration-service.env
     depends_on:

@@ -3,7 +3,7 @@ package plaidhandler
 import (
 	"context"
 
-	"github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service/proto"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/proto"
 )
 
 func (p *PlaidWrapper) CallPlaidAPIAndPopulateVirtualAccount(ctx context.Context, accessToken *string) (*proto.VirtualAccount, error) {

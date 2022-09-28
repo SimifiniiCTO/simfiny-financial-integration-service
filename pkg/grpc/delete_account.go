@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 
-	proto "github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service/proto"
+	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/proto"
 )
 
 func (s *Server) DeleteAccount(ctx context.Context, request *proto.DeleteAccountRequest) (*proto.DeleteAccountResponse, error) {

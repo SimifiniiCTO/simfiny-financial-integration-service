@@ -3,7 +3,7 @@ package api
 import (
 	"net/http"
 
-	"github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service/pkg/version"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/version"
 )
 
 // Version godoc

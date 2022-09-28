@@ -1,7 +1,7 @@
 package transformer
 
 import (
-	schema "github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service/proto"
+	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/proto"
 	"github.com/plaid/plaid-go/plaid"
 )
 

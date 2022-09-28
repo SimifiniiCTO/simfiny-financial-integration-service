@@ -11,8 +11,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service/internal/database"
-	"github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service/proto"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/database"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/proto"
 	"github.com/labstack/gommon/log"
 	"github.com/newrelic/go-agent/v3/integrations/nrzap"
 	"github.com/newrelic/go-agent/v3/newrelic"
@@ -23,12 +23,12 @@ import (
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
 
-	"github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service/pkg/api"
-	"github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service/pkg/grpc"
-	"github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service/pkg/metrics"
-	"github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service/pkg/middleware"
-	"github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service/pkg/signals"
-	"github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service/pkg/version"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/api"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/grpc"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/metrics"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/middleware"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/signals"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/version"
 )
 
 var environments = map[string]plaid.Environment{

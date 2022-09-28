@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"sync"
 
-	"github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service/pkg/version"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/version"
 	"go.uber.org/zap"
 )
 

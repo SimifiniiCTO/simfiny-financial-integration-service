@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service/pkg/metrics"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/metrics"
 	rkgrpcctx "github.com/rookie-ninja/rk-grpc/interceptor/context"
 	rkgrpcmid "github.com/rookie-ninja/rk-grpc/v2/middleware"
 	"google.golang.org/grpc"

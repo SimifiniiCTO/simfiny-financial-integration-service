@@ -5,9 +5,9 @@ import (
 	"log"
 	"net"
 
-	"github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service/internal/database"
-	"github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service/internal/plaidhandler"
-	proto "github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service/proto"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/database"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/plaidhandler"
+	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/proto"
 	"github.com/newrelic/go-agent/v3/newrelic"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"

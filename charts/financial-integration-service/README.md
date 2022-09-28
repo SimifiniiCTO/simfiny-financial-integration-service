@@ -8,7 +8,7 @@ $ helm repo add simfinii https://github.com/SimifiniiCTO/simfinii
 $ helm install my-release simfinii/financial-integration-service
 ```
 
-**Homepage:** <https://github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service>
+**Homepage:** <https://github.com/SimifiniiCTO/simfiny-financial-integration-service>
 
 ## Maintainers
 
@@ -45,7 +45,7 @@ Kubernetes: `>=1.19.0-0`
 
 ## Source Code
 
-* <https://github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service>
+* <https://github.com/SimifiniiCTO/simfiny-financial-integration-service>
 
 ## Installing the Chart
 

@@ -4,8 +4,8 @@ import (
 	"context"
 	"errors"
 
-	"github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service/internal/transformer"
-	"github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service/proto"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/transformer"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/proto"
 	"github.com/plaid/plaid-go/plaid"
 )
 

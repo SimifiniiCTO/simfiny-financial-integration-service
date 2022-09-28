@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service/internal/service_errors"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/service_errors"
 	core_database "github.com/yoanyombapro1234/FeelGuuds_Core/core/core-database"
 	"go.uber.org/zap"
 	"gorm.io/gorm"

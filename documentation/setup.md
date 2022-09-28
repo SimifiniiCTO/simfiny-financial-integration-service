@@ -9,7 +9,7 @@ executing any of the below operations.
 ### Running Service Locally With Live Reload During Development
 To run the service and it's dependencies with live reload enabled to expedite development, open the terminal and run the following command
 ```bash
-cd ~/go/src/github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service
+cd ~/go/src/github.com/SimifiniiCTO/simfiny-financial-integration-service
 make compose-up
 ```
 
@@ -19,7 +19,7 @@ opt to run the service in the background ... run `make compose-up-d instead
 ### Running Minikube locally
 In order to start a local minikube cluster perform the following
 ```bash
-cd ~/go/src/github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service
+cd ~/go/src/github.com/SimifiniiCTO/simfiny-financial-integration-service
 make mk-start
 ```
 
@@ -30,7 +30,7 @@ this container as well as dependent services into the cluster. Lastly, it opens,
 deployment, services, pods, ...etc
 
 ```bash
-cd ~/go/src/github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service
+cd ~/go/src/github.com/SimifiniiCTO/simfiny-financial-integration-service
 make kube-deploy
 ```
 
@@ -39,13 +39,13 @@ If you want to deploy with the docker container present on dockerhub instead of 
 ### Stopping And Deleting Minikube Cluster
 To stop minikube cluster run
 ```bash
-cd ~/go/src/github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service
+cd ~/go/src/github.com/SimifiniiCTO/simfiny-financial-integration-service
 make mk-stop
 ```
 
 To delete the minikube cluster run
 ```bash
-cd ~/go/src/github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service
+cd ~/go/src/github.com/SimifiniiCTO/simfiny-financial-integration-service
 make mk-delete
 ```
 
@@ -53,7 +53,7 @@ make mk-delete
 #### Unit Tests
 To run service level unit tests run
 ```bash
-cd ~/go/src/github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service
+cd ~/go/src/github.com/SimifiniiCTO/simfiny-financial-integration-service
 make test
 ```
 
@@ -64,13 +64,13 @@ run a set of tests against them all
 To run integration tests, make sure you have a minikube cluster up and running as well as have deployed the set of dependent helm charts. For
 reference, utilize the following commands to execute a suite of E2E tests against the service in the cluster.
 ```bash
-cd ~/go/src/github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service
+cd ~/go/src/github.com/SimifiniiCTO/simfiny-financial-integration-service
 make integration-test
 ```
 
 #### Suite Of Tests
 To run all tests execute the following set of commands
 ```bash
-cd ~/go/src/github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service
+cd ~/go/src/github.com/SimifiniiCTO/simfiny-financial-integration-service
 make test
 ```

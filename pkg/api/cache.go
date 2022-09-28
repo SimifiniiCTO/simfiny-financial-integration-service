@@ -9,7 +9,7 @@ import (
 	"github.com/gorilla/mux"
 	"go.uber.org/zap"
 
-	"github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service/pkg/version"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/version"
 )
 
 // Cache godoc

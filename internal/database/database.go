@@ -4,8 +4,8 @@ import (
 	"context"
 	"time"
 
-	"github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service/internal/service_errors"
-	schema "github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service/proto"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/service_errors"
+	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/proto"
 	"github.com/newrelic/go-agent/v3/newrelic"
 	core_database "github.com/yoanyombapro1234/FeelGuuds_Core/core/core-database"
 	"go.uber.org/zap"

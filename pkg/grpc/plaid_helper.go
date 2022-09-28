@@ -3,7 +3,7 @@ package grpc
 import (
 	"context"
 
-	proto "github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service/proto"
+	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/proto"
 )
 
 // populateBalanceObjWithMortgageLoanAcct populates a balance slice with balance objects tied to mortgage loan accounts

@@ -11,10 +11,10 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service/internal/database"
-	_ "github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service/pkg/api/docs"
-	"github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service/pkg/fscache"
-	"github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service/proto"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/database"
+	_ "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/api/docs"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/fscache"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/proto"
 	"github.com/gomodule/redigo/redis"
 	"github.com/gorilla/mux"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
@@ -35,10 +35,10 @@ import (
 // @description Go microservice template for Kubernetes.
 
 // @contact.name Source Code
-// @contact.url https://github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service
+// @contact.url https://github.com/SimifiniiCTO/simfiny-financial-integration-service
 
 // @license.name MIT License
-// @license.url https://github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service/blob/master/LICENSE
+// @license.url https://github.com/SimifiniiCTO/simfiny-financial-integration-service/blob/master/LICENSE
 
 // @host localhost:9898
 // @BasePath /

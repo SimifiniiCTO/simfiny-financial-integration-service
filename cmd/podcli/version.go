@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service/pkg/version"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/version"
 	"github.com/spf13/cobra"
 )
 

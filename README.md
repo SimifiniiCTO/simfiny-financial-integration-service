@@ -90,7 +90,7 @@ financial-integration-service/financial-integration-service
 Kustomize:
 
 ```bash
-kubectl apply -k github.com/SimifiniiCTO/simfinii/src/backend/services/financial-integration-service//kustomize
+kubectl apply -k github.com/SimifiniiCTO/simfiny-financial-integration-service//kustomize
 ```
 
 Docker:
