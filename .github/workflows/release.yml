@@ -35,7 +35,7 @@ jobs:
           command: |
             helmv3 template ./charts/financial-integration-service --set linkerd.profile.enabled=false --set hpa.enabled=false | kubeval --strict --kubernetes-version 1.19.11 --schema-location https://raw.githubusercontent.com/yannh/kubernetes-json-schema/main
       - name: Publish Service Helm Chart
-        uses: stefanprodan/helm-gh-pages@main
+        uses: stefanprodan/helm-gh-pages@master
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           charts_dir: ./charts
