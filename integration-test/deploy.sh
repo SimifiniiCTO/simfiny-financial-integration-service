@@ -18,4 +18,5 @@ echo "installing user service in default namespace"
 helm upgrade --install service ./charts/financial-integration-service \
              --values ./charts/financial-integration-service/values.production.yaml \
              --set replicaCount=1 \
+             --set linkerd.profile.enabled=false \
              -n ${namespace}
