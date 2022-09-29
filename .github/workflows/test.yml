@@ -26,28 +26,6 @@ jobs:
         uses: cue-lang/setup-cue@main
       - name: Run unit tests
         run: make test.unit
-      - name: Generate CUE definitions
-        run: make cue-mod
-      - name: Verify CUE formatting
-        working-directory: ./cue
-        run: |
-          cue fmt .
-          status=$(git status . --porcelain)
-          [[ -z "$status" ]] || {
-            echo "CUE files are not correctly formatted"
-            echo "$status"
-            git diff
-            exit 1
-          }
-      - name: Validate CUE
-        working-directory: ./cue
-        run: cue vet --all-errors --concrete .
-      - name: Check if working tree is dirty
-        run: |
-          if [[ $(git diff --stat) != '' ]]; then
-            echo 'run make test and commit changes'
-            exit 1
-          fi
       - name: Setup Helm
         uses: ./.github/actions/helm
         with:
@@ -64,10 +42,3 @@ jobs:
           helmv3: 3.6.0
           command: |
             helmv3 template ./charts/financial-integration-service --set linkerd.profile.enabled=false | kubeval --strict --kubernetes-version 1.19.11 --schema-location https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master
-      - name: Validate kustomization
-        uses: stefanprodan/kube-tools@v1
-        with:
-          kubectl: 1.19.11
-          command: |
-            kustomize build ./kustomize | kubeval --strict --kubernetes-version 1.19.11 --schema-location https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master
-            kustomize build ./kustomize | conftest test -p .github/policy -
