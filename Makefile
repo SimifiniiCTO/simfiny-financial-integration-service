@@ -174,7 +174,7 @@ start.linkerd:  ## Setup LinkerD in local kubernetes cluster
 start.k8s: stop.cluster start.cluster start.linkerd ## Start local tilt dev workflow
 	tilt up
 
-test.unit: start ## Run the tests of the project
+test.unit: run-background ## Run the tests of the project
 ifeq ($(EXPORT_RESULT), true)
 	GO111MODULE=off go get -u github.com/jstemmer/go-junit-report
 	$(eval OUTPUT_OPTIONS = | tee /dev/tty | go-junit-report -set-exit-code > junit-report.xml)
