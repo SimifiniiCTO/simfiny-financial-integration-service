@@ -1,23 +1,30 @@
-name: Service Release 
+name: release
 
 on:
   push:
     branches:
-      - "main"
+      - "master"
+
+permissions:
+  contents: write # needed to write releases
+  id-token: write # needed for keyless signing
+  packages: write # needed for ghcr access
 
 jobs:
-  publish-charts:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+  publish-artifacts:
     strategy:
       matrix:
         helm-version:
           - 3.8.1
     runs-on: ubuntu-latest
-    container:
-      image: lucasalt/act_base:latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+      - uses: sigstore/cosign-installer@main
+      - uses: fluxcd/flux2/action@main
+      - name: Setup Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.18.x
       - name: Setup Helm
         uses: ./.github/actions/helm
         with:
@@ -26,55 +33,15 @@ jobs:
         uses: docker/setup-qemu-action@v1
         with:
           platforms: all
-      - name: Validate Service Helm Chart
-        uses: stefanprodan/kube-tools@v1
-        with:
-          kubectl: 1.19.11
-          helm: 2.17.0
-          helmv3: 3.6.0
-          command: |
-            helmv3 template ./charts/financial-integration-service --set linkerd.profile.enabled=false --set hpa.enabled=false | kubeval --strict --kubernetes-version 1.19.11 --schema-location https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master
-      - name: Publish Service Helm Chart
-        uses: stefanprodan/helm-gh-pages@master
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          charts_dir: ./charts
-          target_dir: ./service
-          commit_username: yoanyombapro1234
-          commit_email: yoanyombapro@gmail.com
-      - name: Check if working tree is dirty
-        run: |
-          if [[ $(git diff --stat) != '' ]]; then
-            echo 'run make test and commit changes'
-            exit 1
-          fi
-      - name: Debug failure
-        if: failure()
-        run: |
-          kubectl logs -l app=social-service || true
-  
-  publish-images:
-    needs: [publish-charts]
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: Setup Go
-        uses: actions/setup-go@v2
-        with:
-          go-version: 1.17.x
-      - name: Setup QEMU
-        uses: docker/setup-qemu-action@v1
-        with:
-          platforms: all
       - name: Setup Docker Buildx
         id: buildx
-        uses: docker/setup-buildx-action@v1
+        uses: docker/setup-buildx-action@v2
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
         with:
-          buildkitd-flags: "--debug"
+          registry: ghcr.io
+          username: ${{ secrets.CLUSTER_NAME }}
+          password: ${{ secrets.SIMFINY_PERSONAL_TOKEN }}
       - name: Login to Docker Hub
         uses: docker/login-action@v1
         with:
@@ -83,31 +50,73 @@ jobs:
       - name: Prepare
         id: prep
         run: |
+          HELM_VERSION=$(grep 'VERSION' pkg/version/version.go | awk '{ print $4 }' | tr -d '"')
           VERSION=sha-${GITHUB_SHA::8}
           if [[ $GITHUB_REF == refs/tags/* ]]; then
             VERSION=${GITHUB_REF/refs\/tags\//}
           fi
           echo ::set-output name=BUILD_DATE::$(date -u +'%Y-%m-%dT%H:%M:%SZ')
           echo ::set-output name=VERSION::${VERSION}
-      - name: Publish Multi-Arch Image User Service
+          echo ::set-output name=REVISION::${GITHUB_SHA}
+          echo ::set-output name=HELM_VERSION::${HELM_VERSION}
+      - name: Validate Service Helm Chart
+        uses: stefanprodan/kube-tools@v1
+        with:
+          kubectl: 1.19.11
+          helm: 2.17.0
+          helmv3: 3.6.0
+          command: |
+            helmv3 template ./charts/financial-integration-service --set linkerd.profile.enabled=false --set hpa.enabled=false | kubeval --strict --kubernetes-version 1.19.11 --schema-location https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master
+      - name: Publish Helm chart to GHCR
+        run: |
+          HELM_EXPERIMENTAL_OCI=1
+          helm package charts/financial-integration-service --version ${{ steps.prep.outputs.HELM_VERSION }}
+          helm push financial-integration-service-${{ steps.prep.outputs.HELM_VERSION }}.tgz oci://ghcr.io/simifiniicto/charts
+          rm financial-integration-service-${{ steps.prep.outputs.HELM_VERSION }}.tgz
+      - name: Publish Flux OCI artifact to GHCR
+        run: |
+          flux push artifact oci://ghcr.io/simifiniicto/manifests/financial-integration-service:${{ steps.prep.outputs.HELM_VERSION }} \
+            --path="./kustomize" \
+            --source="${{ github.event.repository.html_url }}" \
+            --revision="${GITHUB_REF_NAME}/${GITHUB_SHA}"
+          flux tag artifact oci://ghcr.io/simifiniicto/manifests/financial-integration-service:${{ steps.prep.outputs.HELM_VERSION }} --tag latest
+      - name: Publish config artifact
+        run: |
+          flux push artifact oci://ghcr.io/simifiniicto/financial-integration-service-deploy:${{ steps.prep.outputs.HELM_VERSION }} \
+            --path="./kustomize" \
+            --source="${{ github.event.repository.html_url }}" \
+            --revision="${GITHUB_REF_NAME}/${GITHUB_SHA}"
+          flux tag artifact oci://ghcr.io/simifiniicto/financial-integration-service-deploy:${{ steps.prep.outputs.HELM_VERSION }} --tag latest
+      - name: Publish Service Helm Chart
+        uses: stefanprodan/helm-gh-pages@master
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          charts_dir: ./charts
+          target_dir: ./financial-integration-service
+          commit_username: yoanyombapro1234
+          commit_email: yoanyombapro@gmail.com                
+      - name: Generate images meta
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: |
+            docker.io/feelguuds/financial-integration-service
+            ghcr.io/SimifiniiCTO/financial-integration-service
+          tags: |
+            type=raw,value=${{ steps.prep.outputs.VERSION }}
+            type=raw,value=latest
+      - name: Publish Multi-Arch Image Social Service
         uses: docker/build-push-action@v2
         with:
           push: true
           builder: ${{ steps.buildx.outputs.name }}
           context: .
           file: ./Dockerfile
-          platforms: linux/amd64
-          tags: |
-            docker.io/feelguuds/social-service:${{ steps.prep.outputs.VERSION }}
-            docker.io/feelguuds/social-service:latest
-          labels: |
-            org.opencontainers.image.title=${{ github.event.repository.name }}
-            org.opencontainers.image.description=${{ github.event.repository.description }}
-            org.opencontainers.image.source=${{ github.event.repository.html_url }}
-            org.opencontainers.image.url=${{ github.event.repository.html_url }}
-            org.opencontainers.image.revision=${{ github.sha }}
-            org.opencontainers.image.version=${{ steps.prep.outputs.VERSION }}
-            org.opencontainers.image.created=${{ steps.prep.outputs.BUILD_DATE }}
+          platforms:  linux/amd64
+          build-args: |
+            REVISION=${{ steps.prep.outputs.REVISION }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
       - name: Publish base image of Service
         uses: docker/build-push-action@v2
         with:
@@ -116,24 +125,18 @@ jobs:
           context: .
           platforms: linux/amd64
           file: ./Dockerfile.base
-          tags: docker.io/feelguuds/social-service-base:latest
-      - name: Check if working tree is dirty
-        run: |
-          if [[ $(git diff --stat) != '' ]]; then
-            echo 'run make test and commit changes'
-            exit 1
-          fi
+          tags: docker.io/feelguuds/financial-integration-service-base:latest
       - name: Debug failure
         if: failure()
         run: |
-          kubectl logs -l app=social-service || true  
+          kubectl logs -l app=financial-integration-service || true  
+
   deploy:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    needs: [publish-images, publish-charts]
+    needs: [publish-artifacts]
     runs-on: ubuntu-latest
     env:
       working-directory: .
-      cluster: k8s1abf2730-32ce-4d8f-87a1-b84e112534d3
+      cluster: ${{ secrets.CLUSTER_NAME }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -164,4 +167,21 @@ jobs:
         run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{env.cluster}}
       - name: Deploy to DigitalOcean Kubernetes
         working-directory: ${{env.working-directory}}
-        run: ./deploy/deploy.sh
+        run: ./deploy/deploy.sh -n prod
+
+  notes:
+    needs: [publish-artifacts, deploy]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ./.github/actions/release-notes
+      - name: Generate release notes
+        run: |
+          echo 'CHANGELOG' > /tmp/release.txt
+          github-release-notes -org simifiniicto -repo financial-integration-service -since-latest-release >> /tmp/release.txt
+      - name: Publish release
+        uses: goreleaser/goreleaser-action@v3
+        with:
+          version: latest
+          args: release --release-notes=/tmp/release.txt --skip-validate
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
