@@ -1,5 +1,16 @@
 builds:
-  - main: ./
+  - main: ./cmd/podinfo
+    binary: main
+    ldflags: -s -w -X github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/version.REVISION={{.Commit}}
+    goos:
+      - windows
+      - darwin
+      - linux
+    goarch:
+      - amd64
+    env:
+      - CGO_ENABLED=0
+  - main: ./cmd/podcli
     binary: main
     ldflags: -s -w -X github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/version.REVISION={{.Commit}}
     goos:
