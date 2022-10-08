@@ -169,19 +169,45 @@ jobs:
         working-directory: ${{env.working-directory}}
         run: ./deploy/deploy.sh -n prod
 
-  notes:
+  release-notes:
     needs: [publish-artifacts, deploy]
     runs-on: ubuntu-latest
+    env:
+      working-directory: .
+      cluster: ${{ secrets.CLUSTER_NAME }}
     steps:
-      - uses: ./.github/actions/release-notes
-      - name: Generate release notes
-        run: |
-          echo 'CHANGELOG' > /tmp/release.txt
-          github-release-notes -org simifiniicto -repo financial-integration-service -since-latest-release >> /tmp/release.txt
-      - name: Publish release
-        uses: goreleaser/goreleaser-action@v3
+      - name: Checkout code
+        uses: actions/checkout@v2
         with:
-          version: latest
-          args: release --release-notes=/tmp/release.txt --skip-validate
+          fetch-depth: 0
+      - name: Changelog
+        uses: Bullrich/generate-release-changelog@master
+        id: Changelog
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            ${{ steps.Changelog.outputs.changelog }}
+          draft: false
+          prerelease: false
+          
+  bump-tags:
+    needs: [publish-artifacts, deploy, release-notes]
+    runs-on: ubuntu-22.04
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        ref: ${{ github.event.pull_request.head.sha }}
+        fetch-depth: '0'
+    - name: Bump version and push tag
+      uses: anothrNick/github-tag-action@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        WITH_V: true
