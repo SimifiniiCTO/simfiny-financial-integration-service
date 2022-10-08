@@ -1,5 +1,6 @@
 builds:
   - main: ./cmd/podinfo
+    id: main
     binary: main
     ldflags: -s -w -X github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/version.REVISION={{.Commit}}
     goos:
@@ -12,6 +13,7 @@ builds:
       - CGO_ENABLED=0
   - main: ./cmd/podcli
     binary: main
+    id: cli
     ldflags: -s -w -X github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/version.REVISION={{.Commit}}
     goos:
       - windows
