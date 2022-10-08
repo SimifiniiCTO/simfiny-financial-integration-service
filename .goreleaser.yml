@@ -1,6 +1,6 @@
 builds:
-  - main: ./cmd/podcli
-    binary: podcli
+  - main: .
+    binary: main
     ldflags: -s -w -X github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/version.REVISION={{.Commit}}
     goos:
       - windows
