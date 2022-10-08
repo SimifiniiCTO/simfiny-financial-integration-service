@@ -12,7 +12,7 @@ builds:
     env:
       - CGO_ENABLED=0
   - main: ./cmd/podcli
-    binary: main
+    binary: cli
     id: cli
     ldflags: -s -w -X github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/version.REVISION={{.Commit}}
     goos:
