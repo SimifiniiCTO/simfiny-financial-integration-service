@@ -114,11 +114,11 @@ certificate:
 # metrics-server add-on required
 autoscaling:
   enabled: true
-  minReplicas: 3
-  maxReplicas: 5
+  minReplicas: 2
+  maxReplicas: 3
   # average total CPU usage per pod (1-100)
   cpu: 95
-  # average memory usage per pod (100Mi-1Gi)
+  # average memory usage per pod (1-100)
   memory: 95
   # average http requests per second per pod (k8s-prometheus-adapter)
   requests: 10000
