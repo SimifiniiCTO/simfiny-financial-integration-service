@@ -118,7 +118,7 @@ autoscaling:
   # average total CPU usage per pod (1-100)
   cpu: 80
   # average memory usage per pod (100Mi-1Gi)
-  memory: 800Mi
+  memory: 80
   # average http requests per second per pod (k8s-prometheus-adapter)
   requests: 10000
 
