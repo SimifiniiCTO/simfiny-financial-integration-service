@@ -114,6 +114,7 @@ certificate:
 # metrics-server add-on required
 autoscaling:
   enabled: true
+  minReplicas: 3
   maxReplicas: 5
   # average total CPU usage per pod (1-100)
   cpu: 80
@@ -168,10 +169,10 @@ serviceMonitor:
 
 resources:
   limits:
-    memory: 256Mi
+    memory: "256Mi"
   requests:
-    cpu: 100m
-    memory: 64Mi
+    cpu: "100m"
+    memory: "64Mi"
 
 nodeSelector: {}
 
