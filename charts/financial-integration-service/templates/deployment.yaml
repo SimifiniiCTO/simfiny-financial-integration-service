@@ -23,8 +23,6 @@ spec:
       labels:
         {{- include "fis.selectorLabels" . | nindent 8 }}
       annotations:
-        prometheus.io/scrape: "true"
-        prometheus.io/port: "{{ .Values.service.httpPort }}"
         {{- range $key, $value := .Values.podAnnotations }}
         {{ $key }}: {{ $value | quote }}
         {{- end }}

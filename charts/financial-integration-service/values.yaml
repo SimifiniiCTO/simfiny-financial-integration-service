@@ -189,3 +189,6 @@ linkerd:
     enabled: true
   annotations:
     linkerd.io/inject: enabled # Controls whether or not a pod should be injected; accepted values are enabled, disabled and ingress
+    prometheus.io/scrape: "true"
+    prometheus.io/port: 4191"
+    prometheus.io/path: "/metrics"
