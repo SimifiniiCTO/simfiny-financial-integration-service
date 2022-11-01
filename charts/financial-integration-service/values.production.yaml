@@ -187,6 +187,6 @@ integrationTests:
 
 linkerd:
   profile:
-    enabled: false
+    enabled: true
   annotations:
     linkerd.io/inject: enabled # Controls whether or not a pod should be injected; accepted values are enabled, disabled and ingress
