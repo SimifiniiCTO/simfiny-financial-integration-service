@@ -30,7 +30,7 @@ jobs:
         with:
           version: 3.8.1
       - name: Setup QEMU
-        uses: docker/setup-qemu-action@v1
+        uses: docker/setup-qemu-action@v2
         with:
           platforms: all
       - name: Setup Docker Buildx
@@ -55,10 +55,10 @@ jobs:
           if [[ $GITHUB_REF == refs/tags/* ]]; then
             VERSION=${GITHUB_REF/refs\/tags\//}
           fi
-          echo ::set-output name=BUILD_DATE::$(date -u +'%Y-%m-%dT%H:%M:%SZ')
-          echo ::set-output name=VERSION::${VERSION}
-          echo ::set-output name=REVISION::${GITHUB_SHA}
-          echo ::set-output name=HELM_VERSION::${HELM_VERSION}
+          echo name=BUILD_DATE::$(date -u +'%Y-%m-%dT%H:%M:%SZ') >> $GITHUB_OUTPUT
+          echo name=VERSION::${VERSION} >> $GITHUB_OUTPUT
+          echo name=REVISION::${GITHUB_SHA} >> $GITHUB_OUTPUT
+          echo name=HELM_VERSION::${HELM_VERSION} >> $GITHUB_OUTPUT
       - name: Validate Service Helm Chart
         uses: stefanprodan/kube-tools@v1
         with:
@@ -94,7 +94,7 @@ jobs:
           charts_dir: ./charts
           target_dir: ./financial-integration-service
           commit_username: yoanyombapro1234
-          commit_email: yoanyombapro@gmail.com                
+          commit_email: yoanyombapro@gmail.com
       - name: Generate images meta
         id: meta
         uses: docker/metadata-action@v4
@@ -112,7 +112,7 @@ jobs:
           builder: ${{ steps.buildx.outputs.name }}
           context: .
           file: ./Dockerfile
-          platforms:  linux/amd64
+          platforms: linux/amd64
           build-args: |
             REVISION=${{ steps.prep.outputs.REVISION }}
           tags: ${{ steps.meta.outputs.tags }}
@@ -129,7 +129,7 @@ jobs:
       - name: Debug failure
         if: failure()
         run: |
-          kubectl logs -l app=financial-integration-service || true  
+          kubectl logs -l app=financial-integration-service || true
 
   deploy:
     needs: [publish-artifacts]
@@ -139,7 +139,7 @@ jobs:
       cluster: ${{ secrets.CLUSTER_NAME }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Setup Go
@@ -147,7 +147,7 @@ jobs:
         with:
           go-version: 1.17.x
       - name: Setup QEMU
-        uses: docker/setup-qemu-action@v1
+        uses: docker/setup-qemu-action@v2
         with:
           platforms: all
       - name: Setup Docker Buildx
@@ -210,17 +210,17 @@ jobs:
           args: release --release-notes=/tmp/release.txt --skip-validate --rm-dist
         env:
           GITHUB_TOKEN: ${{ secrets.SIMFINY_PERSONAL_TOKEN }} #${{ secrets.GITHUB_TOKEN }}
-          
+
   bump-tags:
     needs: [publish-artifacts, deploy, release-notes]
     runs-on: ubuntu-22.04
     steps:
-    - uses: actions/checkout@v3
-      with:
-        ref: ${{ github.event.pull_request.head.sha }}
-        fetch-depth: '0'
-    - name: Bump version and push tag
-      uses: anothrNick/github-tag-action@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        WITH_V: true
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: "0"
+      - name: Bump version and push tag
+        uses: anothrNick/github-tag-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WITH_V: true

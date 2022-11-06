@@ -4,14 +4,14 @@ on:
   pull_request:
   push:
     branches:
-      - 'main'
+      - "main"
 
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Restore Go cache
         uses: actions/cache@v1
         with:
@@ -31,7 +31,7 @@ jobs:
         with:
           version: 3.8.1
       - name: Setup QEMU
-        uses: docker/setup-qemu-action@v1
+        uses: docker/setup-qemu-action@v2
         with:
           platforms: all
       - name: Validate Helm chart
