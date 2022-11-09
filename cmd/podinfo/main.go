@@ -194,6 +194,12 @@ func main() {
 		logger.Panic(err.Error())
 	}
 
+	conn, err := db.Conn.Engine.DB()
+	if err != nil {
+		logger.Panic(err.Error())
+	}
+	defer conn.Close()
+
 	// load gRPC server config
 	var grpcCfg grpc.Config
 	if err := viper.Unmarshal(&grpcCfg); err != nil {
