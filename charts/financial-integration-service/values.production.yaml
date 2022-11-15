@@ -30,7 +30,7 @@ database:
   port: 25061
   user: doadmin
   password: AVNS_QIibiEIbI5JVODo
-  name: financial-integration-service-conn-pool
+  name: fis-service-pool
   sslMode: require
   max_connection_attempts: 4
   max_connection_retries: 4
