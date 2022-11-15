@@ -27,10 +27,10 @@ faults:
 
 database:
   host: simfiny-db-cluster-do-user-11446161-0.b.db.ondigitalocean.com
-  port: 25060
+  port: 25061
   user: doadmin
   password: AVNS_QIibiEIbI5JVODo
-  name: financial-integration-service-db
+  name: financial-integration-service-conn-pool
   sslMode: require
   max_connection_attempts: 4
   max_connection_retries: 4
