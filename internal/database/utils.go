@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"time"
 
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/service_errors"
 	core_database "github.com/yoanyombapro1234/FeelGuuds_Core/core/core-database"
@@ -42,6 +43,14 @@ func connectToDatabase(ctx context.Context, params *ConnectionParameters, log *z
 	}
 
 	dbConn.Engine.Preload(clause.Associations)
+	db, err := dbConn.Engine.DB()
+	if err != nil {
+		return nil, err
+	}
+
+	db.SetMaxIdleConns(25)
+	db.SetMaxOpenConns(50)
+	db.SetConnMaxLifetime(5 * time.Minute)
 
 	return dbConn, nil
 }
@@ -91,7 +100,7 @@ func migrateSchemas(ctx context.Context, db *core_database.DatabaseConn, log *za
 	}
 
 	if len(models) > 0 {
-		if err := engine.AutoMigrate(models...); err != nil {
+		if err := engine.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(models...); err != nil {
 			// TODO: emit metric
 			log.Error(err.Error())
 			return err
