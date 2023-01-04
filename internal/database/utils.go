@@ -38,9 +38,7 @@ func connectToDatabase(ctx context.Context, params *ConnectionParameters, log *z
 		return nil, err
 	}
 
-	if err := migrateSchemas(ctx, dbConn, log, models...); err != nil {
-		return nil, err
-	}
+	_ = migrateSchemas(ctx, dbConn, log, models...)
 
 	dbConn.Engine.Preload(clause.Associations)
 	db, err := dbConn.Engine.DB()
