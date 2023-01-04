@@ -8,14 +8,14 @@ app:
   #  iconUrl: "http://example.com"                           # Optional, default: ""
   #  docsUrl: ["http://example.com"]                         # Optional, default: []
   maintainers: ["yoan yomba"] # Optional, default: []
-zapLogger:
+logger:
   - name: zap-logger # Required
-    description: "Description of entry" # Optional
+    description: "logging library for service" # Optional
     zap:
       level: info # Optional, default: info, options: [debug, DEBUG, info, INFO, warn, WARN, dpanic, DPANIC, panic, PANIC, fatal, FATAL]
       development: false # Optional, default: true
-      disableCaller: false # Optional, default: false
-      disableStacktrace: false # Optional, default: true
+      disableCaller: true # Optional, default: false
+      disableStacktrace: true # Optional, default: true
       sampling:
         initial: 0 # Optional, default: 0
         thereafter: 0 # Optional, default: 0
@@ -23,65 +23,40 @@ zapLogger:
       encoderConfig:
         messageKey: "msg" # Optional, default: "msg"
         levelKey: "level" # Optional, default: "level"
-        timeKey: "ts" # Optional, default: "ts"
+        timeKey: "time" # Optional, default: "ts"
         nameKey: "logger" # Optional, default: "logger"
         callerKey: "caller" # Optional, default: "caller"
-        functionKey: "" # Optional, default: ""
-        stacktraceKey: "stacktrace" # Optional, default: "msg"
+        functionKey: "func" # Optional, default: ""
+        stacktraceKey: "msg" # Optional, default: "msg"
         lineEnding: "\n" # Optional, default: "\n"
         levelEncoder: "capitalColor" # Optional, default: "capitalColor", options: [capital, capitalColor, color, lowercase]
         timeEncoder: "iso8601" # Optional, default: "iso8601", options: [rfc3339nano, RFC3339Nano, rfc3339, RFC3339, iso8601, ISO8601, millis, nanos]
-        durationEncoder: "string" # Optional, default: "string", options: [string, nanos, ms]
+        durationEncoder: "ms" # Optional, default: "string", options: [string, nanos, ms]
         callerEncoder: "" # Optional, default: ""
         nameEncoder: "" # Optional, default: ""
         consoleSeparator: "" # Optional, default: ""
       outputPaths: ["stdout"] # Optional, default: ["stdout"], stdout would be replaced if specified
       errorOutputPaths: ["stderr"] # Optional, default: ["stderr"], stderr would be replaced if specified
       initialFields: # Optional, default: empty map
-        key: "value"
-    lumberjack:
-      filename: "rkapp.log" # Optional, default: It uses <processname>-lumberjack.log in os.TempDir() if empty.
-      maxsize: 1024 # Optional, default: 1024 (MB)
-      maxage: 7 # Optional, default: 7 (days)
-      maxbackups: 3 # Optional, default: 3 (days)
-      localtime: true # Optional, default: true
-      compress: true # Optional, default: true
+        service: "financial-integration-service"
+      compress: true
 event:
-  - name: event-logger                                        # Required
-    description: "Description of entry"                   # Optional
-    domain: "*"                                           # Optional, default: "*"
-    encoding: json                                     # Optional, default: console
-    outputPaths: ["stdout"]                               # Optional, default: [stdout]
-#cred:
-#  - name: "local-cred"                                    # Required
-#    description: "Description of entry"                   # Optional
-#    provider: "localFs"                                   # Required, etcd, consul, localFs, remoteFs are supported options
-#    locale: "*::*::*::*"                                  # Required, default: ""
-#    paths:                                                # Optional
-#      - "example/boot/full/cred.yaml"
-#cert:                                                     # Optional
-#  - name: "local-cert"                                    # Required
-#    provider: "localFs"                                   # Required, etcd, consul, localFs, remoteFs are supported options
-#    locale: "*::*::*::*"                                  # Required, default: ""
-#    description: "Description of entry"                   # Optional
-#    serverCertPath: "example/boot/full/server.pem"        # Optional, default: "", path of certificate on local FS
-#    serverKeyPath: "example/boot/full/server-key.pem"     # Optional, default: "", path of certificate on local FS
-#    clientCertPath: "example/boot/full/server.pem"        # Optional, default: "", path of certificate on local FS
-#config:
-#  - name: my-config                                       # Required
-#    locale: "*::*::*::*"                                  # Required
-#    path: config/default.yaml                             # Required
-#    description: "Description of entry"                   # Optional
+  - name: service-event-logger
+    outputPaths: ["stdout"]
+    encoding: json # Optional, default: console
+    enabled: true
+    domain: "*"
 grpc:
   - name: financial-integration-service # Required, Name of grpc entry
     port: 9896 # Required, Port of grpc entry
     enabled: true # Required, Enable grpc entry
     enableReflection: true # Optional, Enable grpc server reflection, https://github.com/grpc/grpc/blob/master/doc/server-reflection.md
     enableRkGwOption: true # Optional, Enable grpc gateway server option as RK style
+    description: The Financial Integration service for the simfinii platform
+    loggerEntry: zap-logger
+    eventEntry: service-event-logger
     pprof:
       enabled: true
-      path: "/profile"    
-    description: The financial integration service for the simfinii platform
     prom:
       enabled: true # Enable prometheus client
     commonService:
@@ -91,10 +66,12 @@ grpc:
     sw:
       enabled: true # Optional, Enable Swagger UI
       jsonPath: "proto/swagger" # Boot will look for swagger config files from this folder
+    gwMappingFilePaths:
+      - "proto/gw_mapping.yaml" # Boot will look for gateway mapping files and load information into memory
     docs:
       enabled: true                                       # Optional, default: false
-      path: "/docs"                                        # Optional, default: "docs"
-      specPath: ""                                        # Optional
+      path: "docs"                                        # Optional, default: "docs"
+      specPath: "proto"                                        # Optional
       headers: ["sw:rk"]                                  # Optional, default: []
       style:                                              # Optional
         theme: "light"                                    # Optional, default: "light"
@@ -103,40 +80,24 @@ grpc:
       enabled: true                                       # Optional, default: false
       path: "/static"                                     # Optional, default: /static
       sourceType: local                                   # Required, options: pkger, local
-      sourcePath: "."                                     # Required, full path of source directory
-    gwMappingFilePaths:
-      - "proto/gw_mapping.yaml" # Boot will look for gateway mapping files and load information into memory
-    interceptors:
-      loggingZap:
-        enabled: true
-      meta:
-        enabled: true
-      tracingTelemetry:
-        enabled: true
-      timeout:
-        enabled: false # Optional, default: false
-        timeoutMs: 5000 # Optional, default: 5000
+      sourcePath: "."  
     middleware:
+      errorModel: amazon
       meta:
         enabled: true                                     # Optional, default: false
         prefix: "rk"                                      # Optional, default: "rk"
       trace:
         enabled: true
-        exporter:
-          file:
-            enabled: true
-            outputPath: "stdout"
       prom:
         enabled: true                                     # Optional, default: false
       logging:
         enabled: true
-        ignore: [""]
-        loggerEncoding: "json"
-        eventEncoding: "json"
+        loggerEncoding: "flatten"
+        eventEncoding: "flatten"
       timeout:
         enabled: true                                    # Optional, default: false
         ignore: [""]                                      # Optional, default: []
-        timeoutMs: 5000                                   # Optional, default: 5000
+        timeoutMs: 20000                                   # Optional, default: 5000
         paths:
           - path: "/rk/v1/healthy"                        # Optional, default: ""
             timeoutMs: 1000                               # Optional, default: 5000
@@ -144,10 +105,8 @@ grpc:
         enabled: false                                    # Optional, default: false
         ignore: [""]                                      # Optional, default: []
         algorithm: "leakyBucket"                          # Optional, default: "tokenBucket"
-        reqPerSec: 100                                    # Optional, default: 1000000
         paths:
           - path: "/rk/v1/healthy"                        # Optional, default: ""
-            reqPerSec: 0                                  # Optional, default: 1000000
       secure:
         enabled: true                                     # Optional, default: false
         ignore: [""]                                      # Optional, default: []
