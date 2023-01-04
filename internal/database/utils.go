@@ -100,7 +100,7 @@ func migrateSchemas(ctx context.Context, db *core_database.DatabaseConn, log *za
 	}
 
 	if len(models) > 0 {
-		if err := engine.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(models...); err != nil {
+		if err := engine.AutoMigrate(models...); err != nil {
 			// TODO: emit metric
 			log.Error(err.Error())
 			return err
