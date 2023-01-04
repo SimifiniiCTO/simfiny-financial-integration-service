@@ -57,7 +57,7 @@ plaid:
   # If you don't see the institution you want in Link, remove any products you aren't using.
   # Important: When moving to Production, make sure to update this list with only the products
   # you plan to use. Otherwise, you may be billed for unneeded products.
-  products: transactions,auth,identity,assets,investments,liabilities
+  products: transactions,auth,balance,investments,liabilities
 
 newRelic:
   enabled: true

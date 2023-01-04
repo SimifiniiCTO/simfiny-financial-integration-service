@@ -25,13 +25,14 @@ type Server struct {
 }
 
 type Config struct {
-	Port             int    `mapstructure:"grpc-port"`
-	GatewayPort      int    `mapstructure:"grpc-gateway-port"`
-	ServiceName      string `mapstructure:"grpc-service-name"`
-	PlaidWebhookURI  string `mapstructure:"plaid-webhook-url"`
-	PlaidRedirectURI string `mapstructure:"plaid-redirect-url"`
-	NewRelicLicense  string `mapstructure:"newrelic-key"`
-	Environment      string `mapstructure:"env"`
+	Port             int              `mapstructure:"grpc-port"`
+	GatewayPort      int              `mapstructure:"grpc-gateway-port"`
+	ServiceName      string           `mapstructure:"grpc-service-name"`
+	PlaidWebhookURI  string           `mapstructure:"plaid-webhook-url"`
+	PlaidRedirectURI string           `mapstructure:"plaid-redirect-url"`
+	NewRelicLicense  string           `mapstructure:"newrelic-key"`
+	Environment      string           `mapstructure:"env"`
+	PlaidProducts    []plaid.Products `mapstructure:"plaid-products"`
 }
 
 func NewServer(config *Config, logger *zap.Logger, telemetry *newrelic.Application, db *database.Db, plaidClient *plaid.APIClient, engine *telemetry.MetricsEngine) (*Server, error) {
