@@ -40,8 +40,8 @@ database:
 plaid:
   enabled: true
   client_id: 61eb5d49ea3b4700127560d1
-  secret_key: 465686056e8fd1b87db3d993d096d8
-  env: sandbox
+  secret_key: 49ed22a2ee591f4e3f366c4474438d
+  env: production
   webhook_url: ""
   # Only required for OAuth:
   # For sandbox, set PLAID_REDIRECT_URI to 'http://localhost:3000/'
@@ -52,12 +52,12 @@ plaid:
   # For development or production, you will need to use an https:// url
   # If you are not set up to use localhost with https:// on your system, you will be unable to test OAuth in development or production.
   # In this case you can leave the PLAID_REDIRECT_URI blank.
-  redirect_url: ""
+  redirect_url: "https://simfiny.app/oauth"
   # Only institutions that support ALL listed products will be displayed in Link.
   # If you don't see the institution you want in Link, remove any products you aren't using.
   # Important: When moving to Production, make sure to update this list with only the products
   # you plan to use. Otherwise, you may be billed for unneeded products.
-  products: transactions,auth,identity,assets,investments,liabilities
+  products: transactions,auth,balance,investments,liabilities
 
 newRelic:
   enabled: true

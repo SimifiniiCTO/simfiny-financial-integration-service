@@ -1,9 +1,9 @@
 package grpc
 
 import (
+	telemetry "github.com/SimifiniiCTO/core/core-telemetry"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/database"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/plaidhandler"
-	"github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/metrics"
 	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/proto"
 	nrGrpcCompatibleVersion "github.com/newrelic/go-agent"
 	"github.com/newrelic/go-agent/v3/newrelic"
@@ -21,20 +21,21 @@ type Server struct {
 	conn                          *database.Db
 	plaidClient                   *plaid.APIClient
 	plaidInternalHandler          *plaidhandler.PlaidWrapper
-	MetricsEngine                 *metrics.MetricsEngine
+	MetricsEngine                 *telemetry.MetricsEngine
 }
 
 type Config struct {
-	Port             int    `mapstructure:"grpc-port"`
-	GatewayPort      int    `mapstructure:"grpc-gateway-port"`
-	ServiceName      string `mapstructure:"grpc-service-name"`
-	PlaidWebhookURI  string `mapstructure:"plaid-webhook-url"`
-	PlaidRedirectURI string `mapstructure:"plaid-redirect-url"`
-	NewRelicLicense  string `mapstructure:"newrelic-key"`
-	Environment      string `mapstructure:"env"`
+	Port             int              `mapstructure:"grpc-port"`
+	GatewayPort      int              `mapstructure:"grpc-gateway-port"`
+	ServiceName      string           `mapstructure:"grpc-service-name"`
+	PlaidWebhookURI  string           `mapstructure:"plaid-webhook-url"`
+	PlaidRedirectURI string           `mapstructure:"plaid-redirect-url"`
+	NewRelicLicense  string           `mapstructure:"newrelic-key"`
+	Environment      string           `mapstructure:"env"`
+	PlaidProducts    []plaid.Products `mapstructure:"plaid-products"`
 }
 
-func NewServer(config *Config, logger *zap.Logger, telemetry *newrelic.Application, db *database.Db, plaidClient *plaid.APIClient, engine *metrics.MetricsEngine) (*Server, error) {
+func NewServer(config *Config, logger *zap.Logger, telemetry *newrelic.Application, db *database.Db, plaidClient *plaid.APIClient, engine *telemetry.MetricsEngine) (*Server, error) {
 	pHandler, err := plaidhandler.NewPlaidWrapper(plaidClient, telemetry, logger)
 	if err != nil {
 		return nil, err

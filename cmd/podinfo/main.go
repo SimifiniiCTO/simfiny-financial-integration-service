@@ -11,22 +11,22 @@ import (
 	"strings"
 	"time"
 
+	telemetry "github.com/SimifiniiCTO/core/core-telemetry"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/database"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/proto"
 	"github.com/labstack/gommon/log"
 	"github.com/newrelic/go-agent/v3/integrations/nrzap"
 	"github.com/newrelic/go-agent/v3/newrelic"
 	"github.com/plaid/plaid-go/plaid"
-	rkboot "github.com/rookie-ninja/rk-boot"
-	rkgrpc "github.com/rookie-ninja/rk-grpc/boot"
+	rkboot "github.com/rookie-ninja/rk-boot/v2"
+	rkentry "github.com/rookie-ninja/rk-entry/v2/entry"
+	rkgrpc "github.com/rookie-ninja/rk-grpc/v2/boot"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
 
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/api"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/grpc"
-	"github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/metrics"
-	"github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/middleware"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/signals"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/version"
 )
@@ -87,8 +87,9 @@ func main() {
 	fs.String("plaid-client-id", "61eb5d49ea3b4700127560d1", "plaid client id")
 	fs.String("plaid-secret-key", "465686056e8fd1b87db3d993d096d8", "plaid secret key")
 	fs.String("plaid-env", "sandbox", "plaid environment")
-	fs.String("plaid-webhook-url", "", "plaid webhook url")
-	fs.String("plaid-redirect-url", "", "plaid redirect url")
+	fs.String("plaid-webhook-url", "http://localhost:3000/webhook", "plaid webhook url")
+	fs.String("plaid-redirect-url", "http://localhost:3000/", "plaid redirect url")
+	fs.StringSlice("plaid-products", []string{"transactions", "auth", "balance", "investments", "liabilities"}, "plaid products to enable")
 	fs.String("env", "dev", "current environment")
 	fs.String("grpc-service-endpoint", "http://localhost:9896", "grpc api endpoint for service")
 	fs.Int("grpc-gateway-port", 8090, "grpc gateway port")
@@ -119,6 +120,8 @@ func main() {
 	LoadEnvVariables(fs)
 	// Create a new boot instance.
 	boot := rkboot.NewBoot()
+	// configure logging
+	logger := rkentry.GlobalAppCtx.GetLoggerEntry("zap-logger").Logger
 
 	// load config from file
 	if _, fileErr := os.Stat(filepath.Join(viper.GetString("config-path"), viper.GetString("config"))); fileErr == nil {
@@ -129,26 +132,15 @@ func main() {
 		}
 	}
 
-	// configure logging
-	logger := boot.GetZapLoggerEntry("zap-logger").Logger
-
 	// configure new relic sdk
-	var newrelicLicenseKey = viper.GetString("newrelic-key")
-	var serviceName = viper.GetString("grpc-service-name")
-	telemetry, err := InitializeNewrelicSDK(newrelicLicenseKey, serviceName, logger)
+	nrClient, err := InitializeNewrelicSDK(logger)
 	if err != nil {
 		logger.Panic(err.Error())
 	}
 
-	// configure metrics engine
-	var version = viper.GetString("version")
-	var docs = viper.GetString("service-environment")
-	var environment = viper.GetString("service-environment")
-	var pointOfContact = viper.GetString("point-of-contact")
-	var metricsReportingEnabled = viper.GetBool("metrics-reporting-enabled")
-	mEng, err := metrics.InitializeServiceMetricEngine(newrelicLicenseKey, serviceName, version, docs, pointOfContact, environment, logger, metricsReportingEnabled)
+	svcTelemetry, err := initTelemetrySDK(logger, nrClient)
 	if err != nil {
-		logger.Panic(err.Error())
+		log.Panic(err.Error())
 	}
 
 	// configure plaid client
@@ -189,7 +181,7 @@ func main() {
 		logger.Panic("`random-delay-unit` accepted values are: s|ms")
 	}
 
-	db, err := InitializeDbConn(ctx, logger, telemetry)
+	db, err := InitializeDbConn(ctx, logger, nrClient)
 	if err != nil {
 		logger.Panic(err.Error())
 	}
@@ -208,16 +200,23 @@ func main() {
 
 	// start gRPC server
 	if grpcCfg.Port > 0 {
-		grpcSrv, _ := grpc.NewServer(&grpcCfg, logger, telemetry, db, plaidClient, mEng)
-		engine := grpcSrv.MetricsEngine
-		metrics := engine.Metrics
+		grpcSrv, _ := grpc.NewServer(&grpcCfg, logger, nrClient, db, plaidClient, svcTelemetry.Engine)
 
-		// Get grpc entry with name
-		grpcEntry := boot.GetEntry("financial-integration-service").(*rkgrpc.GrpcEntry)
+		grpcEntry := rkgrpc.GetGrpcEntry("financial-integration-service")
 		grpcEntry.AddRegFuncGrpc(grpcSrv.RegisterGrpcServer)
 		grpcEntry.AddRegFuncGw(proto.RegisterFinancialIntegrationServiceHandlerFromEndpoint)
-		grpcEntry.AddUnaryInterceptors(middleware.RequestLatencyUnaryServerInterceptor(engine, metrics), middleware.RequestCountUnaryServerInterceptor(engine, metrics), middleware.ErrorCountUnaryServerInterceptor(engine, metrics))
-		grpcEntry.AddStreamInterceptors(middleware.RequestLatencyStreamServerInterceptor(engine, metrics), middleware.RequestCountStreamServerInterceptor(engine, metrics), middleware.ErrorCountStreamServerInterceptor(engine, metrics))
+
+		grpcEntry.AddUnaryInterceptors(
+			svcTelemetry.RequestLatencyUnaryServerInterceptor(),
+			svcTelemetry.RequestCountUnaryServerInterceptor(),
+			svcTelemetry.ErrorCountUnaryServerInterceptor(),
+			svcTelemetry.RequestTimeUnaryServerInterceptor(),
+			svcTelemetry.TxnUnaryServerInterceptor())
+
+		grpcEntry.AddStreamInterceptors(
+			svcTelemetry.RequestLatencyStreamServerInterceptor(),
+			svcTelemetry.RequestCountStreamServerInterceptor(),
+			svcTelemetry.ErrorCountStreamServerInterceptor())
 
 		// Bootstrap
 		boot.Bootstrap(context.Background())
@@ -240,13 +239,16 @@ func main() {
 	)
 
 	// start HTTP server
-	srv, _ := api.NewServer(&srvCfg, logger, telemetry, db, plaidClient)
+	srv, _ := api.NewServer(&srvCfg, logger, nrClient, db, plaidClient)
 	stopCh := signals.SetupSignalHandler()
 	srv.ListenAndServe(stopCh)
 }
 
 // InitializeNewrelicSDK configures the new relic sdk with metadata specific to this service
-func InitializeNewrelicSDK(newrelicLicenseKey string, serviceName string, logger *zap.Logger) (*newrelic.Application, error) {
+func InitializeNewrelicSDK(logger *zap.Logger) (*newrelic.Application, error) {
+	var newrelicLicenseKey = viper.GetString("newrelic-key")
+	var serviceName = viper.GetString("grpc-service-name")
+
 	if newrelicLicenseKey != "" {
 		return newrelic.NewApplication(
 			newrelic.ConfigAppName(serviceName),
@@ -278,6 +280,34 @@ func InitializeNewrelicSDK(newrelicLicenseKey string, serviceName string, logger
 	}
 
 	return nil, errors.New(fmt.Sprintf("invalid input parameter. param: newrelicLicenseKey = %s", newrelicLicenseKey))
+}
+
+// initTelemetrySDK initializes the telemetry engine with the parameters provided in the config or environment variable file
+func initTelemetrySDK(logger *zap.Logger, nrClient *newrelic.Application) (*telemetry.Telemetry, error) {
+	serviceName := viper.GetString("grpc-service-name")
+	licenseKey := viper.GetString("newrelic-key")
+	version := viper.GetString("version")
+	environment := viper.GetString("service-environment")
+	pointOfContact := viper.GetString("point-of-contact")
+	metricsReportingEnabled := viper.GetBool("metrics-reporting-enabled")
+
+	params := &telemetry.TelemetryParams{
+		ServiceName:        serviceName,
+		Version:            version,
+		PointOfContact:     pointOfContact,
+		Environment:        environment,
+		NewRelicLicenseKey: licenseKey,
+		Logger:             logger,
+		Enabled:            metricsReportingEnabled,
+		Client:             nrClient,
+	}
+
+	engine, err := telemetry.New(params)
+	if err != nil {
+		return nil, err
+	}
+
+	return engine, nil
 }
 
 func InitializePlaidClient(plaidClientID, plaidSecretKey, plaidEnv string) (*plaid.APIClient, error) {

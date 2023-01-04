@@ -89,23 +89,19 @@ func (s *Server) performnOperationAgainstPlaidProdEnv(ctx context.Context, userI
 		plaid.PRODUCTS_AUTH,
 		plaid.PRODUCTS_LIABILITIES,
 		plaid.PRODUCTS_INVESTMENTS,
-		plaid.PRODUCTS_CREDIT_DETAILS,
-		plaid.PRODUCTS_ASSETS,
-		plaid.PRODUCTS_INCOME})
+		plaid.PRODUCTS_TRANSACTIONS,
+		plaid.PRODUCTS_BALANCE,
+	})
 	plaidRequest.SetLinkCustomizationName(s.config.ServiceName)
 	plaidRequest.SetWebhook(s.config.PlaidWebhookURI)
 	plaidRequest.SetRedirectUri(s.config.PlaidRedirectURI)
-	plaidRequest.SetAccountFilters(plaid.LinkTokenAccountFilters{
-		Depository: &plaid.DepositoryFilter{
-			AccountSubtypes: []plaid.AccountSubtype{
-				plaid.ACCOUNTSUBTYPE_CHECKING,
-				plaid.ACCOUNTSUBTYPE_SAVINGS,
-				plaid.ACCOUNTSUBTYPE_BROKERAGE,
-				plaid.ACCOUNTSUBTYPE_CREDIT_CARD},
-		},
-	})
 
-	resp, _, err := s.plaidClient.PlaidApi.LinkTokenCreate(ctx).LinkTokenCreateRequest(*plaidRequest).Execute()
+	resp, _, err := s.
+		plaidClient.
+		PlaidApi.
+		LinkTokenCreate(ctx).
+		LinkTokenCreateRequest(*plaidRequest).
+		Execute()
 	if err != nil {
 		s.logger.Error(err.Error())
 		return plaid.LinkTokenCreateResponse{}, err

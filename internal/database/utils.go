@@ -9,6 +9,7 @@ import (
 	core_database "github.com/yoanyombapro1234/FeelGuuds_Core/core/core-database"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 type ConnectionParameters struct {
@@ -39,6 +40,8 @@ func connectToDatabase(ctx context.Context, params *ConnectionParameters, log *z
 	if err := migrateSchemas(ctx, dbConn, log, models...); err != nil {
 		return nil, err
 	}
+
+	dbConn.Engine.Preload(clause.Associations)
 
 	return dbConn, nil
 }

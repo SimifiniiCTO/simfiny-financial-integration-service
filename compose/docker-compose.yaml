@@ -7,8 +7,8 @@ services:
       dockerfile: Dockerfile.dev
     container_name: financial_integration_svc
     ports:
-      - "9098:9898" # http port
-      - "9096:9896" # grpc port
+      - "9898:9898" # http port
+      - "9896:9896" # grpc port
     restart: always
     environment:
       - newrelic-key=3000
