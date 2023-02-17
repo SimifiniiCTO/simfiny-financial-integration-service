@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - "main"
+      - "release"
 
 permissions:
   contents: write # needed to write releases
@@ -18,6 +19,17 @@ jobs:
           - 3.8.1
     runs-on: ubuntu-latest
     steps:
+      - name: Get Release Version
+        run: |
+          export RELEASE_VERSION=${GITHUB_REF#refs/*/}
+          echo RELEASE_VERSION: ${RELEASE_VERSION}
+          echo "RELEASE_VERSION=${RELEASE_VERSION}" >> $GITHUB_ENV
+      - name: Get Github Branch Name
+        run: |
+          # Short name for current branch. For PRs, use target branch (base ref)
+          GIT_BRANCH=${GITHUB_BASE_REF:-${GITHUB_REF#refs/heads/}}
+          echo GIT_BRANCH: ${GIT_BRANCH}
+          echo "GIT_BRANCH=${GIT_BRANCH}" >> $GITHUB_ENV
       - uses: actions/checkout@v3
       - uses: sigstore/cosign-installer@main
       - uses: fluxcd/flux2/action@main
@@ -104,11 +116,12 @@ jobs:
             ghcr.io/SimifiniiCTO/financial-integration-service
           tags: |
             type=raw,value=${{ steps.prep.outputs.VERSION }}
-            type=raw,value=latest
+            type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
+            type=raw,value=staging-${{ steps.prep.outputs.VERSION }},enable=${{ github.ref == format('refs/heads/{0}', 'release') }}
       - name: Publish Multi-Arch Image Social Service
         uses: docker/build-push-action@v2
         with:
-          push: true
+          push: ${{ github.event_name != 'pull_request' }}
           builder: ${{ steps.buildx.outputs.name }}
           context: .
           file: ./Dockerfile
@@ -136,7 +149,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       working-directory: .
-      cluster: ${{ secrets.CLUSTER_NAME }}
+      staging-cluster: ${{ secrets.STAGING_CLUSTER_NAME }}
+      production-cluster: ${{ secrets.PRODUCTION_CLUSTER_NAME }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -161,13 +175,21 @@ jobs:
         uses: digitalocean/action-doctl@v2
         with:
           token: ${{ secrets.DIGITALOCEAN_TOKEN }}
-      - name: Save DigitalOcean kubeconfig with short-lived credentials
-        run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{env.cluster}}
-      - name: Deploy to DigitalOcean Kubernetes
+      - name: Deploy To Staging Environment
+        if: github.ref == 'refs/heads/release'
         working-directory: ${{env.working-directory}}
-        run: ./deploy/deploy.sh -n prod
+        run: |
+          doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{env.staging-cluster}}
+          ./deploy/deploy.sh -n staging
+      - name: Deploy To Production Environment
+        if: github.ref == 'refs/heads/main'
+        working-directory: ${{env.working-directory}}
+        run: |
+          doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{env.production-cluster}}
+          ./deploy/deploy.sh -n prod
 
   release-notes:
+    if: github.ref == 'refs/heads/main'
     needs: [publish-artifacts, deploy]
     runs-on: ubuntu-latest
     env:
@@ -210,6 +232,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.SIMFINY_PERSONAL_TOKEN }} #${{ secrets.GITHUB_TOKEN }}
 
   bump-tags:
+    if: github.ref == 'refs/heads/main'
     needs: [publish-artifacts, deploy, release-notes]
     runs-on: ubuntu-22.04
     steps:
