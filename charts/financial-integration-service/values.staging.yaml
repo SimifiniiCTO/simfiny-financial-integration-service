@@ -115,7 +115,7 @@ certificate:
 autoscaling:
   enabled: true
   minReplicas: 1
-  maxReplicas: 2
+  maxReplicas: 1
   # average total CPU usage per pod (1-100)
   cpu: 99
   # average memory usage per pod (1-100)
