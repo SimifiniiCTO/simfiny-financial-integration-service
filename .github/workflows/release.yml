@@ -117,7 +117,7 @@ jobs:
           tags: |
             type=raw,value=${{ steps.prep.outputs.VERSION }}
             type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
-            type=raw,value=staging-${{ steps.prep.outputs.VERSION }},enable=${{ github.ref == format('refs/heads/{0}', 'release') }}
+            type=raw,value=staging,enable=${{ github.ref == format('refs/heads/{0}', 'release') }}
       - name: Publish Multi-Arch Image Social Service
         uses: docker/build-push-action@v2
         with:
