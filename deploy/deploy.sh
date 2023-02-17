@@ -14,5 +14,10 @@ if [[ $namespaceStatus != "Active" ]]; then
     kubectl create namespace ${namespace}
 fi
 
-echo "installing financial integration service in ${namespace} namespace"
-helm upgrade --install financial-integration-service ./charts/financial-integration-service --values ./charts/financial-integration-service/values.production.yaml -n ${namespace}
+if [[ $namespace == "prod" ]]; then 
+    echo "installing service in production namespace"
+    helm upgrade --install financial-integration-service ./charts/financial-integration-service --values ./charts/financial-integration-service/values.production.yaml -n ${namespace}
+else 
+    echo "installing service in staging namespace"
+    helm upgrade --install financial-integration-service ./charts/financial-integration-service --values ./charts/financial-integration-service/values.staging.yaml -n ${namespace}
+fi
