@@ -1,0 +1,376 @@
+syntax = "proto3";
+
+package api.v1;
+
+import "protoc-gen-gorm/options/gorm.proto";
+import "google/protobuf/timestamp.proto";
+import "validate/validate.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "github.com/SimifiniiCTO/simfiny-financial-integration-service/generate/api/v1";
+
+enum GoalStatus {
+  GOAL_STATUS_UNSPECIFIED = 0;
+  GOAL_STATUS_ACTIVE = 1;
+  GOAL_STATUS_INACTIVE = 2;
+  GOAL_STATUS_COMPLETED = 3;
+  GOAL_STATUS_DELETE = 4;
+}
+
+enum GoalType {
+  GOAL_TYPE_UNSPECIFIED = 0;
+  GOAL_TYPE_SAVINGS = 1;
+  GOAL_TYPE_INVESTMENT = 2;
+  GOAL_TYPE_DEBT = 3;
+  GOAL_TYPE_EXPENSE = 4;
+}
+
+enum PocketType {
+  POCKET_TYPE_UNSPECIFIED = 0;
+  POCKET_TYPE_DISCRETIONARY_SPENDING = 1;
+  POCKET_TYPE_FUN_MONEY = 2;
+  POCKET_TYPE_DEBT_REDUCTION = 3;
+  POCKET_TYPE_EMERGENCY_FUND = 4;
+}
+
+// UserProfile stores high level user profile details
+// such as the id, user_id tied to the profile, and many more
+message UserProfile {
+  option (gorm.opts) = {ormable: true};
+
+  // id
+  uint64 id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+
+  uint64 user_id = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+
+  // many bank accounts (connected) can be tied to a user
+  repeated BankAccount bank_accounts = 3 [(gorm.field).has_many.preload = true];
+}
+
+message BankAccount {
+  option (gorm.opts) = {ormable: true};
+
+  // id
+  uint64 id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+
+  // the user id to which this bank account is tied to
+  string user_id = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+
+  // the bank account name
+  string name = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+
+  // the bank account number
+  string number = 4 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+
+  // the bank account type
+  string type = 5 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+
+  // the bank account balance
+  float balance = 6 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+
+  // the bank account currency
+  string currency = 7 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+
+  double current_funds = 9;
+  uint64 balance_limit = 10;
+
+  // the set of "virtualized accounts this user witholds"
+  // NOTE: these pockets are automatically created by the system
+  // when a user connects a bank account
+  repeated Pocket pockets = 11 [
+    (gorm.field).has_many.preload = true,
+    (validate.rules).repeated.min_items = 0,
+    (validate.rules).repeated.max_items = 4
+  ];
+}
+
+// Pocket is an abstraction of a over a bank account. A user can has at most 4 pockets per connected account
+// NOTE: these pockets are automatically created by the system and should not be exposed for mutation
+// by any client. The only operations that can be performed against a pocket are:
+// 1. Get the pocket
+// 2. Get the pocket's smart goals
+// 3. Adding a smart goal to the pocket
+message Pocket {
+  option (gorm.opts) = {ormable: true};
+
+  // id
+  uint64 id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+
+  // the set of smart goals this user witholds
+  repeated SmartGoal goals = 3 [
+    (gorm.field).has_many.preload = true,
+    (validate.rules).repeated.min_items = 0
+  ];
+
+  // The type of the pocket
+  PocketType type = 4;
+}
+
+/*
+   SmartGoal: The Goals table stores information about each financial goal, including the name of the goal,
+   its description, the target amount of money the user wants to save or invest, and the expected date of completion.
+   
+   The Goals table also includes columns for the start date of the goal, the current amount of money saved or
+    invested towards the goal, and a boolean flag indicating whether the goal has been achieved.
+    These additional columns allow the user to track their progress towards the goal and see how much
+    more they need to save or invest to reach their target amount.
+*/
+message SmartGoal {
+  option (gorm.opts) = {ormable: true};
+
+  // id
+  uint64 id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  // the user id to which this goal is tied to
+  string user_id = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+
+  // The name of the goal
+  // Validations:
+  // - must be at least 3 characters long
+  string name = 3 [
+    (validate.rules).string = {min_bytes: 3},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      min_length: 0,
+      example: "\"Buy a car\""
+    }
+  ];
+
+  // The description of the goal
+  // Validations:
+  // - must be at least 3 characters long
+  string description = 4 [
+    (validate.rules).string = {min_bytes: 3},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      min_length: 0,
+      example: "\"Buy a car\""
+    }
+  ];
+
+  // wether the goal has been achieved or not
+  bool is_completed = 5 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "true"}];
+
+  // the time the goal was created
+  google.protobuf.Timestamp created_at = 6;
+  // the time the goal was updated
+  google.protobuf.Timestamp updated_at = 7;
+  // the time the goal was deleted
+  google.protobuf.Timestamp deleted_at = 8;
+
+  // The type of the goal
+  GoalType goal_type = 9 [(validate.rules).message.required = true];
+
+  // The duration of the goal
+  string duration = 10 [
+    (validate.rules).string = {min_bytes: 3},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      min_length: 0,
+      example: "\"Active\""
+    }
+  ];
+
+  // the start date of the goal
+  string start_date = 11 [
+    (validate.rules).string = {min_bytes: 3},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      min_length: 0,
+      example: "\"Active\""
+    }
+  ];
+
+  // the end date of the goal
+  string end_date = 12 [
+    (validate.rules).string = {min_bytes: 3},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      min_length: 0,
+      example: "\"Active\""
+    }
+  ];
+
+  // the target amount of the goal
+  // amount of money the user wants to save or invest
+  string target_amount = 13 [
+    (validate.rules).string = {min_bytes: 3},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      min_length: 0,
+      example: "\"Active\""
+    }
+  ];
+
+  // the current amount of the goal
+  // current amount of money saved or invested towards the goal
+  string current_amount = 14 [
+    (validate.rules).string = {min_bytes: 3},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      min_length: 0,
+      example: "\"Active\""
+    }
+  ];
+
+  // Milestones associated with the goal
+  repeated Milestone milestones = 15 [
+    (gorm.field).has_many.preload = true,
+    (validate.rules).repeated.min_items = 0
+  ];
+
+  // Forecasts associated with the goal
+  Forecast forecasts = 16 [(gorm.field).has_one.preload = true];
+}
+
+// The Forecast table stores information about each forecast generated for a particular goal,
+// including the forecast date, the forecasted amount of money saved or invested for the
+// goal by the target date, and the variance between the forecasted and target amounts.
+// This allows the user to track how well they are progressing towards their goal and make adjustments as needed.
+message Forecast {
+  option (gorm.opts) = {ormable: true};
+
+  // id
+  uint64 id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+
+  // the forecasted amount of the goal
+  string forecasted_amount = 2 [
+    (validate.rules).string = {min_bytes: 3},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      min_length: 0,
+      example: "\"Active\""
+    }
+  ];
+
+  // the forecasted completion date of the goal
+  string forecasted_completion_date = 3 [
+    (validate.rules).string = {min_bytes: 3},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      min_length: 0,
+      example: "\"Active\""
+    }
+  ];
+
+  // the forecasted variance of the goal between the forecasted and target amounts
+  string variance_amount = 4 [
+    (validate.rules).string = {min_bytes: 3},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      min_length: 0,
+      example: "\"Active\""
+    }
+  ];
+}
+
+/*
+   Milestone: represents a milestone in the context of simfinni. A financial milestone that is both smart
+   and achievable. A milestone is a sub goal of a goal and is tied to a goal by the goal id
+*/
+message Milestone {
+  option (gorm.opts) = {ormable: true};
+
+  // id
+  uint64 id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+
+  // The name of the milestone
+  // Validations:
+  // - must be at least 3 characters long
+  string name = 2 [
+    (validate.rules).string = {min_bytes: 3},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      min_length: 0,
+      example: "\"Buy a car\""
+    }
+  ];
+
+  // The description of the miletone
+  // Validations:
+  // - must be at least 3 characters long
+  string description = 3 [
+    (validate.rules).string = {min_bytes: 3},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      min_length: 0,
+      example: "\"Buy a car\""
+    }
+  ];
+
+  // the target date of the milestone
+  // Validations:
+  // - must be at least 3 characters long
+  string target_date = 4 [
+    (validate.rules).string.min_len = 10,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "\"testtagdescription\""}
+  ];
+
+  // the target amount of the milestone
+  string target_amount = 5 [
+    (validate.rules).string = {min_bytes: 3},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      min_length: 0,
+      example: "\"Active\""
+    }
+  ];
+
+  // wethe milestone is completed or not
+  bool is_completed = 6 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "true"}];
+
+  // the time the goal was created
+  google.protobuf.Timestamp created_at = 10;
+  // the time the goal was updated
+  google.protobuf.Timestamp updated_at = 11;
+  // the time the goal was deleted
+  google.protobuf.Timestamp deleted_at = 12;
+  // the budget associated with the milestone
+  repeated Budget budget = 13 [(gorm.field).has_many.preload = true];
+}
+
+// The Budgets table stores information about each budget created by the user,
+// including the name of the budget, the start and end dates, and the user ID.
+message Budget {
+  option (gorm.opts) = {ormable: true};
+
+  // id
+  uint64 id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  // The name of the budget
+  string name = 2 [
+    (validate.rules).string = {min_bytes: 10},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      min_length: 10,
+      example: "\"Buy a car\""
+    }
+  ];
+
+  string description = 3;
+  // the time the goal was created
+  string start_date = 4;
+  // the time the goal was updated
+  string end_date = 5;
+  // category associated with the goal
+  Category category = 6 [(gorm.field).has_one.preload = true];
+}
+
+/*
+   The Categories table stores information about the different categories of expenses or income,
+   such as "Housing", "Food", "Transportation", and "Entertainment". Each category has one or more
+   subcategories, which are stored in the Subcategories table.
+   
+   For example, the "Housing" category might have subcategories for "Rent", "Utilities", and "Home Maintenance".
+*/
+message Category {
+  option (gorm.opts) = {ormable: true};
+
+  // id
+  uint64 id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+
+  // The name of the category
+  string name = 2 [
+    (validate.rules).string = {min_bytes: 3},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      min_length: 3,
+      example: "\"Housing\""
+    }
+  ];
+
+  // The description of the category
+  string description = 3 [
+    (validate.rules).string = {min_bytes: 10},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      min_length: 10,
+      example: "\"Housing is a category primarily for housing\""
+    }
+  ];
+
+  // the sub categories of the category
+  repeated string subcategories = 4;
+}

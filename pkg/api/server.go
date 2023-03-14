@@ -11,10 +11,6 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/database"
-	_ "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/api/docs"
-	"github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/fscache"
-	"github.com/SimifiniiCTO/simfiny-financial-integration-service/proto"
 	"github.com/gomodule/redigo/redis"
 	"github.com/gorilla/mux"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
@@ -28,6 +24,11 @@ import (
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 	"google.golang.org/grpc"
+
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/database"
+	_ "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/api/docs"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/fscache"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/proto"
 )
 
 // @title FIS-Service API
