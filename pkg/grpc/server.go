@@ -10,8 +10,8 @@ import (
 	"google.golang.org/grpc"
 
 	telemetry "github.com/SimifiniiCTO/core/core-telemetry"
-	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/generated/api/v1"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/database"
+	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/instrumentation"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/plaidhandler"
 )

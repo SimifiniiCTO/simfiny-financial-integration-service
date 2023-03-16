@@ -19,9 +19,9 @@ import (
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 
-	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/generated/api/v1"
-	"github.com/SimifiniiCTO/simfiny-financial-integration-service/generated/dal"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/database"
+	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/dal"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/plaidhandler"
 )
 

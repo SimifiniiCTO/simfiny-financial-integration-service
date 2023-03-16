@@ -8,6 +8,7 @@ import (
 	"context"
 	"strings"
 
+	apiv1 "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 	"gorm.io/gorm/schema"
@@ -17,8 +18,6 @@ import (
 	"gorm.io/gen/helper"
 
 	"gorm.io/plugin/dbresolver"
-
-	apiv1 "github.com/SimifiniiCTO/simfiny-financial-integration-service/generated/api/v1"
 )
 
 func newInvestmentSecurityORM(db *gorm.DB, opts ...gen.DOOption) investmentSecurityORM {

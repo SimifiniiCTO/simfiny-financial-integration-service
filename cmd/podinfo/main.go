@@ -21,8 +21,8 @@ import (
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
 
-	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/generated/api/v1"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/database"
+	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/instrumentation"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/api"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/grpc"

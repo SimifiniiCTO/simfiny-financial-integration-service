@@ -5,7 +5,7 @@ import (
 	"reflect"
 	"testing"
 
-	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/generated/api/v1"
+	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 )
 
 func TestServer_GetPocket(t *testing.T) {

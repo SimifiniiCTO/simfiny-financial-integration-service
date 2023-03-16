@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/generated/api/v1"
+	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 )
 
 // GetUserProfileByUserID obtains a user profile by user_id if it exists within the database

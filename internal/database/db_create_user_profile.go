@@ -6,7 +6,7 @@ import (
 
 	"gorm.io/gorm"
 
-	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/generated/api/v1"
+	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 )
 
 // CreateUserProfile implements DatabaseOperations

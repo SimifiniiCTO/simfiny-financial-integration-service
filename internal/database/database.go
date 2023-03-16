@@ -7,8 +7,8 @@ import (
 	core_database "github.com/yoanyombapro1234/FeelGuuds_Core/core/core-database"
 	"go.uber.org/zap"
 
-	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/generated/api/v1"
-	"github.com/SimifiniiCTO/simfiny-financial-integration-service/generated/dal"
+	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/dal"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/instrumentation"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/service_errors"
 )

@@ -10,8 +10,8 @@ import (
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 
-	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/generated/api/v1"
-	"github.com/SimifiniiCTO/simfiny-financial-integration-service/generated/dal"
+	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/dal"
 )
 
 const dbName = "gen_test.db"

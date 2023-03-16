@@ -18,7 +18,7 @@ import (
 
 	"gorm.io/plugin/dbresolver"
 
-	apiv1 "github.com/SimifiniiCTO/simfiny-financial-integration-service/generated/api/v1"
+	apiv1 "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 )
 
 func newUserProfileORM(db *gorm.DB, opts ...gen.DOOption) userProfileORM {
