@@ -6,11 +6,13 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/service_errors"
+	newrelic "github.com/newrelic/go-agent"
 	core_database "github.com/yoanyombapro1234/FeelGuuds_Core/core/core-database"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
+
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/service_errors"
 )
 
 type ConnectionParameters struct {
@@ -20,6 +22,17 @@ type ConnectionParameters struct {
 	DatabaseName string
 	Port         int
 	SslMode      string
+}
+
+// startDatastoreSpan generates a datastore span
+func (db *Db) startDatastoreSpan(ctx context.Context, name string) *newrelic.DatastoreSegment {
+	if db.Instrumentation != nil {
+		txn := db.Instrumentation.GetTraceFromContext(ctx)
+		span := db.Instrumentation.StartDatastoreSegment(txn, name)
+		return span
+	}
+
+	return nil
 }
 
 // connectToDatabase establish and connects to a database instance

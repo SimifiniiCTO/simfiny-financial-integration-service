@@ -3,7 +3,7 @@ syntax = "proto3";
 package api.v1;
 
 import "protoc-gen-gorm/options/gorm.proto";
-import "google/protobuf/timestamp.proto";
+// import "google/protobuf/timestamp.proto";
 import "validate/validate.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 
@@ -39,12 +39,194 @@ message UserProfile {
   option (gorm.opts) = {ormable: true};
 
   // id
-  uint64 id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
-
-  uint64 user_id = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
-
+  uint64 id = 1 [
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}
+    ];
+  // the user id tied to the profile
+  uint64 user_id = 2 [
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""},
+    (validate.rules).uint64.gt = 0
+  ];
   // many bank accounts (connected) can be tied to a user
   repeated BankAccount bank_accounts = 3 [(gorm.field).has_many.preload = true];
+  // investment accounts tied to a user 
+  repeated InvestmentAccount investment_accounts = 4 [(gorm.field).has_many.preload = true];
+  // credit accounts tied to a user
+  repeated CreditAccount credit_accounts = 5 [(gorm.field).has_many.preload = true];
+  // mortgage accounts tied to a user
+  repeated MortgageAccount mortgage_accounts = 6 [(gorm.field).has_many.preload = true];
+  // student loan accounts tied to a user
+  repeated StudentLoanAccount student_loan_accounts = 7 [(gorm.field).has_many.preload = true];
+  // the user plaid access token
+  string plaid_access_token = 8 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+
+  // the customer id tied to the stripe account
+  string stripe_customer_id = 9 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+}
+
+message StudentLoanAccount {
+  option (gorm.opts) = {ormable: true};
+
+  // id
+  uint64 id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  string plaid_account_id = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  repeated string disbursement_dates = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  string expected_payoff_date = 4 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  string guarantor = 5 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  double interest_rate_percentage = 6 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  bool is_overdue = 7 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  double last_payment_amount = 8 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  string last_payment_date = 9 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  string last_statement_issue_date = 10 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  string loan_name = 11 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  string loan_end_date = 12 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  double minimum_payment_amount = 13 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  string next_payment_due_date = 14 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  string origination_date = 15 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  double origination_principal_amount = 16 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  double outstanding_interest_amount = 17 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  string payment_reference_number = 18 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  string sequence_number = 21 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  double ytd_interest_paid = 23 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  double ytd_principal_paid = 24 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  string loan_type = 25 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  string pslf_status_estimated_eligibility_date = 26 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  int32 pslf_status_payments_made = 27 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  int32 pslf_status_payments_remaining = 28 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  string repayment_plan_type = 29 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  string repayment_plan_description = 30 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  string servicer_address_city = 31 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  string servicer_address_postal_code = 32 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  string servicer_address_state = 33 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  string servicer_address_street = 34 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  string servicer_address_region = 35 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  string servicer_address_country = 36 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  // the user id to which this bank account is tied to
+  string user_id = 37 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  // the account name
+  string name = 38 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+}
+
+message CreditAccount {
+  option (gorm.opts) = {ormable: true};
+
+  // id
+  uint64 id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+
+  // the user id to which this bank account is tied to
+  string user_id = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+
+  // the account name
+  string name = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+
+  // the bank account number
+  string number = 4 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+
+  // the bank account type
+  string type = 5 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+
+  // the bank account balance
+  float balance = 6 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+
+  // current funds on the account
+  double current_funds = 9;
+  // balance limit
+  uint64 balance_limit = 10;
+
+  // plaid account id mapped to this bank account
+  string plaid_account_id = 12;
+  // accoint subtype
+  string subtype = 13;
+  // wether the account is overdue
+  bool is_overdue = 14;
+  // the last payment amount
+  double last_payment_amount = 15;
+  // the last payment date
+  string last_payment_date = 16;
+  // the last statement issue date
+  string last_statement_issue_date = 17;
+  // the minimum amount due date
+  double minimum_amount_due_date = 18;
+  // the next payment date
+  string next_payment_date = 19; 
+  // the aprs
+  repeated Apr aprs = 20 [ (gorm.field).has_many.preload = true ];
+  // the last statement balance
+  double last_statement_balance = 21;
+  // the minimum payment amount
+  double minimum_payment_amount = 22;
+  // the next payment due date
+  string next_payment_due_date = 23;
+}
+
+message MortgageAccount {
+  option (gorm.opts) = {ormable: true};
+  uint64 id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  string plaid_account_id = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  string account_number = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  double current_late_fee = 4 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  double escrow_balance = 5 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  bool has_pmi = 6 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  bool has_prepayment_penalty = 7 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  double last_payment_amount = 9 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  string last_payment_date = 10 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  string loan_term = 11 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  string loan_type_description = 12 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  string maturity_date = 13 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  double next_monthly_payment = 14 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  string next_payment_due_date = 15 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  double original_principal_balance = 16 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  double original_property_value = 17 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  double outstanding_principal_balance = 18 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  double payment_amount = 19 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  string payment_date = 20 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  string origination_date = 25 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  double origination_principal_amount = 26 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  double past_due_amount = 28 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  double ytd_interest_paid = 29 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  double ytd_principal_paid = 30 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  string property_address_city = 31 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  string property_address_state = 32 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  string property_address_street = 33 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  string property_address_postal_code = 34 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  string property_region = 35 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  string property_country = 36 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  double interest_rate_percentage = 37 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  string interest_rate_type = 38 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+}
+
+message InvestmentAccount {
+  option (gorm.opts) = {ormable: true};
+
+  // id
+  uint64 id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+
+  // the user id to which this bank account is tied to
+  string user_id = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+
+  // the account name
+  string name = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+
+  // the bank account number
+  string number = 4 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+
+  // the bank account type
+  string type = 5 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+
+  // the bank account balance
+  float balance = 6 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+
+  double current_funds = 9;
+  uint64 balance_limit = 10;
+
+  // plaid account id mapped to this bank account
+  string plaid_account_id = 12;
+  // accoint subtype
+  string subtype = 13;
+  // invesment holding is the set of securities this account witholds
+  repeated InvesmentHolding holdings = 7 [ (gorm.field).has_many.preload = true ];  
+  // the set of securities this account witholds
+  repeated InvestmentSecurity securities = 8 [ (gorm.field).has_many.preload = true ];
 }
 
 message BankAccount {
@@ -82,6 +264,12 @@ message BankAccount {
     (validate.rules).repeated.min_items = 0,
     (validate.rules).repeated.max_items = 4
   ];
+
+  // plaid account id mapped to this bank account
+  string plaid_account_id = 12;
+  // account subtype
+  string subtype = 13;
+
 }
 
 // Pocket is an abstraction of a over a bank account. A user can has at most 4 pockets per connected account
@@ -148,15 +336,8 @@ message SmartGoal {
   // wether the goal has been achieved or not
   bool is_completed = 5 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "true"}];
 
-  // the time the goal was created
-  google.protobuf.Timestamp created_at = 6;
-  // the time the goal was updated
-  google.protobuf.Timestamp updated_at = 7;
-  // the time the goal was deleted
-  google.protobuf.Timestamp deleted_at = 8;
-
   // The type of the goal
-  GoalType goal_type = 9 [(validate.rules).message.required = true];
+  GoalType goal_type = 9;
 
   // The duration of the goal
   string duration = 10 [
@@ -305,12 +486,6 @@ message Milestone {
   // wethe milestone is completed or not
   bool is_completed = 6 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "true"}];
 
-  // the time the goal was created
-  google.protobuf.Timestamp created_at = 10;
-  // the time the goal was updated
-  google.protobuf.Timestamp updated_at = 11;
-  // the time the goal was deleted
-  google.protobuf.Timestamp deleted_at = 12;
   // the budget associated with the milestone
   repeated Budget budget = 13 [(gorm.field).has_many.preload = true];
 }
@@ -373,4 +548,180 @@ message Category {
 
   // the sub categories of the category
   repeated string subcategories = 4;
+}
+
+message InvesmentHolding {
+  option (gorm.opts) = {ormable: true};
+
+  // id
+  uint64 id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+
+  // The name of the investment holding
+  string name = 2 [
+    (validate.rules).string = {min_bytes: 3},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      min_length: 3,
+      example: "\"nfdkjfjksdhjhfjsdhjgf\""
+    }
+  ];
+
+  // plaid account id
+  string plaid_account_id = 3 [
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"k67E4xKvMlhmleEa4pg9hlwGGNnnEeixPolGm\""
+    }
+  ];
+
+  double cost_basis = 4 [
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"15\""
+    }
+  ];
+
+  double institution_price = 5 [
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"13.73\""
+    }
+  ];
+
+  string institution_price_as_of = 6 [
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"2021-04-13\""
+    }
+  ];
+
+  string institution_price_datetime = 7 [
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"2022-06-07T23:01:00Z\""
+    }
+  ];
+
+  double institution_value = 8  [
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"4437.35905\""
+    }
+  ];
+
+  string iso_currency_code = 9 [
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"USD\""
+    }
+  ];
+
+  double quantity = 10  [
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"25000\""
+    }
+  ];
+
+  string security_id = 11 [
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"vLRMV3MvY1FYNP91on35CJD5QN5rw9Fpa9qOL\""
+    }
+  ];
+
+  string unofficial_currency_code = 12 [
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"USD\""
+    }
+  ];
+}
+
+message InvestmentSecurity {
+  option (gorm.opts) = {ormable: true};
+
+  // id
+  uint64 id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+
+  double close_price = 2  [
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\" 0.140034616\""
+    }
+  ];
+  string close_price_as_of = 3  [
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"2022-01-24\""
+    }
+  ];
+  string cusip = 4 [
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"dfkjhdgjdhhgd\""
+    }
+  ];
+  string institution_id = 5 [
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"ins_3\""
+    }
+  ];
+  string institution_security_id = 6 [
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"dfkjhdgjdhhgd\""
+    }
+  ];
+  bool is_cash_equivalent = 7 [
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"true\""
+    }
+  ];
+  string isin = 8 [
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"dfkjhdgjdhhgd\""
+    }
+  ];
+  string iso_currency_code = 9 [
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"USD\""
+    }
+  ];
+  string name = 10[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"Dogecoin\""
+    }
+  ];
+  string proxy_security_id = 11[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"dfkjhdgjdhhgd\""
+    }
+  ];
+  string security_id = 12 [
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"vLRMV3MvY1FYNP91on35CJD5QN5rw9Fpa9qOL\""
+    }
+  ];
+  string sedol = 13 [
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"dfkjhdgjdhhgd\""
+    }
+  ];
+  string ticker_symbol = 14 [
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"DOGE\""
+    }
+  ];
+  string type = 15 [
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"cryptocurrency\""
+    }
+  ];
+  string unofficial_currency_code = 16 [
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"USD\""
+    }
+  ];
+  string update_datetime = 17 [
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"2022-06-07T23:01:00Z\""
+    }
+  ];
+}
+
+message Apr {
+  option (gorm.opts) = {
+    ormable : true,
+  };
+  uint64 id = 1;
+  double percentage = 2;
+  string type = 3;
+  double balance_subject_to_apr = 4;
+  double interest_charge_amount = 5;
 }

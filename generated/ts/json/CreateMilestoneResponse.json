@@ -1,0 +1,17 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/CreateMilestoneResponse",
+    "definitions": {
+        "CreateMilestoneResponse": {
+            "properties": {
+                "milestone_id": {
+                    "type": "string",
+                    "description": "The milestone id"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Create Milestone Response"
+        }
+    }
+}

@@ -12,7 +12,7 @@ logger:
   - name: zap-logger # Required
     description: "logging library for service" # Optional
     zap:
-      level: info # Optional, default: info, options: [debug, DEBUG, info, INFO, warn, WARN, dpanic, DPANIC, panic, PANIC, fatal, FATAL]
+      level: warn # Optional, default: info, options: [debug, DEBUG, info, INFO, warn, WARN, dpanic, DPANIC, panic, PANIC, fatal, FATAL]
       development: false # Optional, default: true
       disableCaller: true # Optional, default: false
       disableStacktrace: true # Optional, default: true
@@ -65,7 +65,7 @@ grpc:
       enabled: true # Optional, Enable RK TV
     sw:
       enabled: true # Optional, Enable Swagger UI
-      jsonPath: "proto/swagger" # Boot will look for swagger config files from this folder
+      jsonPath: "generated/api/v1" # Boot will look for swagger config files from this folder
     gwMappingFilePaths:
       - "proto/gw_mapping.yaml" # Boot will look for gateway mapping files and load information into memory
     docs:
@@ -97,10 +97,8 @@ grpc:
       timeout:
         enabled: true                                    # Optional, default: false
         ignore: [""]                                      # Optional, default: []
-        timeoutMs: 20000                                   # Optional, default: 5000
         paths:
           - path: "/rk/v1/healthy"                        # Optional, default: ""
-            timeoutMs: 1000                               # Optional, default: 5000
       rateLimit:
         enabled: false                                    # Optional, default: false
         ignore: [""]                                      # Optional, default: []

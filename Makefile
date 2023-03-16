@@ -16,7 +16,7 @@ GOCMD=go
 GOTEST=$(GOCMD) test
 GOVET=$(GOCMD) vet
 EXPORT_RESULT ?= false
-DC=docker-compose -f compose/docker-compose.yaml -f compose/docker-compose-newrelic.yaml
+DC=docker-compose -f docker-compose.yaml
 
 .PHONY: help
 .DEFAULT_GOAL := help
@@ -151,7 +151,7 @@ test: run-background
 generate:
 	docker run -v $$(pwd):/src -w /src --rm bufbuild/buf:$(BUF_VERSION) generate
 
-lint:
+buf-lint:
 	docker run -v $$(pwd):/src -w /src --rm bufbuild/buf:$(BUF_VERSION) lint
 	docker run -v $$(pwd):/src -w /src --rm bufbuild/buf:$(BUF_VERSION) breaking --against 'https://github.com/johanbrandhorst/grpc-gateway-boilerplate.git#branch=master'
 
@@ -175,7 +175,7 @@ start.linkerd:  ## Setup LinkerD in local kubernetes cluster
 start.k8s: stop.cluster start.cluster start.linkerd ## Start local tilt dev workflow
 	tilt up
 
-test.unit: run-background ## Run the tests of the project
+test.unit:  ## Run the tests of the project
 ifeq ($(EXPORT_RESULT), true)
 	GO111MODULE=off go get -u github.com/jstemmer/go-junit-report
 	$(eval OUTPUT_OPTIONS = | tee /dev/tty | go-junit-report -set-exit-code > junit-report.xml)
@@ -203,6 +203,11 @@ kill.docker.desktop:
 start.docker.desktop:
 	./integration-test/docker-desktop.sh
 
-
 gen:
 	cd api && make && cd ..
+	./generate.sh
+
+lint:
+	golangci-lint run
+
+precommit: fmt test.unit

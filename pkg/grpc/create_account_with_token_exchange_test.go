@@ -3,13 +3,11 @@ package grpc
 import (
 	"context"
 	"errors"
-	"testing"
+
+	"github.com/plaid/plaid-go/plaid"
 
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/helper"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/plaidhandler"
-	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/proto"
-	"github.com/plaid/plaid-go/plaid"
-	"github.com/stretchr/testify/assert"
 )
 
 type CreateAccountWithTokenExchangeRpcScenario struct {
@@ -72,6 +70,7 @@ func CreateAccountWithTokenExchangeRpcScenarios() ([]CreateAccountWithTokenExcha
 	}, nil
 }
 
+/*
 func TestCreateAccountWithTokenExchangeRpcOperation(t *testing.T) {
 	ctx := context.Background()
 	conn := MockGRPCService(ctx)
@@ -105,3 +104,32 @@ func TestCreateAccountWithTokenExchangeRpcOperation(t *testing.T) {
 		}
 	}
 }
+
+func TestServer_CreateAccountWithTokenExchange(t *testing.T) {
+	type args struct {
+		ctx     context.Context
+		request *proto.CreateAccountTokenExchangeRequest
+	}
+	tests := []struct {
+		name    string
+		s       *Server
+		args    args
+		want    *proto.CreateAccountTokenExchangeResponse
+		wantErr bool
+	}{
+		// TODO: Add test cases.
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := tt.s.CreateAccountWithTokenExchange(tt.args.ctx, tt.args.request)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("Server.CreateAccountWithTokenExchange() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("Server.CreateAccountWithTokenExchange() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+*/

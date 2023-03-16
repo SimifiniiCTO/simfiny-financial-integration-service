@@ -4,27 +4,28 @@ import (
 	"context"
 	"errors"
 
-	"github.com/newrelic/go-agent/v3/newrelic"
 	"github.com/plaid/plaid-go/plaid"
 	"go.uber.org/zap"
+
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/instrumentation"
 )
 
 type PlaidWrapper struct {
-	Client         *plaid.APIClient
-	NewRelicClient *newrelic.Application
-	Logger         *zap.Logger
+	Client             *plaid.APIClient
+	InstrumentationSdk *instrumentation.ServiceTelemetry
+	Logger             *zap.Logger
 }
 
 // NewPlaidWrapper returns a pointer reference to the plaid wrapper object
-func NewPlaidWrapper(plaidClient *plaid.APIClient, newrelicClient *newrelic.Application, logger *zap.Logger) (*PlaidWrapper, error) {
-	if plaidClient == nil || newrelicClient == nil || logger == nil {
+func NewPlaidWrapper(plaidClient *plaid.APIClient, instrumentation *instrumentation.ServiceTelemetry, logger *zap.Logger) (*PlaidWrapper, error) {
+	if plaidClient == nil || logger == nil {
 		return nil, errors.New("invalid input arguments. check input parameters")
 	}
 
 	return &PlaidWrapper{
-		Client:         plaidClient,
-		NewRelicClient: newrelicClient,
-		Logger:         logger,
+		Client:             plaidClient,
+		InstrumentationSdk: instrumentation,
+		Logger:             logger,
 	}, nil
 }
 

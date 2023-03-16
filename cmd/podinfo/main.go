@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -12,8 +11,8 @@ import (
 	"time"
 
 	"github.com/labstack/gommon/log"
+	newrelic "github.com/newrelic/go-agent"
 	"github.com/newrelic/go-agent/v3/integrations/nrzap"
-	"github.com/newrelic/go-agent/v3/newrelic"
 	"github.com/plaid/plaid-go/plaid"
 	rkboot "github.com/rookie-ninja/rk-boot/v2"
 	rkentry "github.com/rookie-ninja/rk-entry/v2/entry"
@@ -22,13 +21,13 @@ import (
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
 
-	telemetry "github.com/SimifiniiCTO/core/core-telemetry"
+	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/generated/api/v1"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/database"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/instrumentation"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/api"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/grpc"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/signals"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/version"
-	"github.com/SimifiniiCTO/simfiny-financial-integration-service/proto"
 )
 
 var environments = map[string]plaid.Environment{
@@ -49,6 +48,7 @@ func main() {
 	fs.String("level", "info", "log level debug, info, warn, error, flat or panic")
 	fs.StringSlice("backend-url", []string{}, "backend service URL")
 	fs.Duration("http-client-timeout", 2*time.Minute, "client timeout duration")
+	fs.Duration("rpc-timeout", 500*time.Millisecond, "client timeout duration")
 	fs.Duration("http-server-timeout", 30*time.Second, "server read and write timeout duration")
 	fs.Duration("http-server-shutdown-timeout", 5*time.Second, "server graceful shutdown timeout duration")
 	fs.String("data-path", "/data", "data local path")
@@ -73,11 +73,11 @@ func main() {
 	// TODO: ensure this comes from env variables
 	fs.String("newrelic-key", "62fd721c712d5863a4e75b8f547b7c1ea884NRAL", "new relic license key")
 	// database connection environment variables
-	fs.String("dbhost", "financial_integration_svc_db", "database host string")
+	fs.String("dbhost", "service-db", "database host string")
 	fs.Int("dbport", 5432, "database port")
-	fs.String("dbuser", "financial_integration_svc", "database user string")
-	fs.String("dbpassword", "financial_integration_svc", "database password string")
-	fs.String("dbname", "financial_integration_svc", "database name")
+	fs.String("dbuser", "service-db", "database user string")
+	fs.String("dbpassword", "service-db", "database password string")
+	fs.String("dbname", "service-db", "database name")
 	fs.String("dbsslmode", "disable", "wether tls connection is enabled")
 	fs.Int("max-db-conn-attempts", 2, "max database connection attempts")
 	fs.Int("max-db-conn-retries", 2, "max database connection attempts")
@@ -98,6 +98,7 @@ func main() {
 	fs.String("service-documentation", "https://github.com/SimifiniiCTO/simfinii/blob/main/src/backend/services/user-service/documentation/setup.md", "location of service docs")
 	fs.String("point-of-contact", "yoanyomba", "service point of contact")
 	fs.Bool("metrics-reporting-enabled", true, "enable metrics reporting")
+	fs.String("stripe-api-key", "sk_test_4eC39HqLyjWDarjtT1zdp7dc", "")
 
 	ctx := context.Background()
 	versionFlag := fs.BoolP("version", "v", false, "get version number")
@@ -133,21 +134,15 @@ func main() {
 	}
 
 	// configure new relic sdk
-	nrClient, err := InitializeNewrelicSDK(logger)
+	app, err := configureNewrelicSDK(logger)
 	if err != nil {
 		logger.Panic(err.Error())
 	}
 
-	svcTelemetry, err := initTelemetrySDK(logger, nrClient)
-	if err != nil {
-		log.Panic(err.Error())
-	}
+	instrumentation := configureServiceTelemetryInstance(app)
 
 	// configure plaid client
-	var plaidClientID = viper.GetString("plaid-client-id")
-	var plaidSecretKey = viper.GetString("plaid-secret-key")
-	var plaidEnv = viper.GetString("plaid-env")
-	plaidClient, err := InitializePlaidClient(plaidClientID, plaidSecretKey, plaidEnv)
+	plaidClient, err := configurePlaidSDK()
 	if err != nil {
 		logger.Panic(err.Error())
 	}
@@ -181,7 +176,7 @@ func main() {
 		logger.Panic("`random-delay-unit` accepted values are: s|ms")
 	}
 
-	db, err := InitializeDbConn(ctx, logger, nrClient)
+	db, err := configureDatabaseConn(ctx, logger, instrumentation)
 	if err != nil {
 		logger.Panic(err.Error())
 	}
@@ -200,24 +195,21 @@ func main() {
 
 	// start gRPC server
 	if grpcCfg.Port > 0 {
-		grpcSrv, _ := grpc.NewServer(&grpcCfg, logger, nrClient, db, plaidClient, svcTelemetry.Engine)
+		grpcSrv, err := grpc.NewServer(&grpc.Params{
+			Config:      &grpcCfg,
+			Logger:      logger,
+			Db:          db,
+			PlaidClient: plaidClient,
+		})
+		if err != nil {
+			logger.Panic(err.Error())
+		}
 
 		grpcEntry := rkgrpc.GetGrpcEntry("financial-integration-service")
 		grpcEntry.AddRegFuncGrpc(grpcSrv.RegisterGrpcServer)
-		grpcEntry.AddRegFuncGw(proto.RegisterFinancialIntegrationServiceHandlerFromEndpoint)
+		grpcEntry.AddRegFuncGw(proto.RegisterFinancialServiceHandlerFromEndpoint)
 
-		grpcEntry.AddUnaryInterceptors(
-			svcTelemetry.RequestLatencyUnaryServerInterceptor(),
-			svcTelemetry.RequestCountUnaryServerInterceptor(),
-			svcTelemetry.ErrorCountUnaryServerInterceptor(),
-			svcTelemetry.RequestTimeUnaryServerInterceptor(),
-			svcTelemetry.TxnUnaryServerInterceptor())
-
-		grpcEntry.AddStreamInterceptors(
-			svcTelemetry.RequestLatencyStreamServerInterceptor(),
-			svcTelemetry.RequestCountStreamServerInterceptor(),
-			svcTelemetry.ErrorCountStreamServerInterceptor())
-
+		// TODO: add grpc interceptor middleware to emit metrics on various gRPC calls
 		// Bootstrap
 		boot.Bootstrap(context.Background())
 
@@ -239,81 +231,64 @@ func main() {
 	)
 
 	// start HTTP server
-	srv, _ := api.NewServer(&srvCfg, logger, nrClient, db, plaidClient)
+	srv, _ := api.NewServer(&srvCfg, logger, instrumentation, db, plaidClient)
 	stopCh := signals.SetupSignalHandler()
 	srv.ListenAndServe(stopCh)
 }
 
-// InitializeNewrelicSDK configures the new relic sdk with metadata specific to this service
-func InitializeNewrelicSDK(logger *zap.Logger) (*newrelic.Application, error) {
+// configurNewrelicSDK configures the new relic sdk with metadata specific to this service
+func configureNewrelicSDK(logger *zap.Logger) (newrelic.Application, error) {
 	var newrelicLicenseKey = viper.GetString("newrelic-key")
 	var serviceName = viper.GetString("grpc-service-name")
 
 	if newrelicLicenseKey != "" {
-		return newrelic.NewApplication(
-			newrelic.ConfigAppName(serviceName),
-			newrelic.ConfigLicense(newrelicLicenseKey),
-			func(cfg *newrelic.Config) {
-				cfg.ErrorCollector.RecordPanics = true
-				cfg.ErrorCollector.Enabled = true
-				cfg.TransactionEvents.Enabled = true
-				cfg.Enabled = true
-				cfg.TransactionEvents.Enabled = true
-				cfg.Attributes.Enabled = true
-				cfg.BrowserMonitoring.Enabled = true
-				cfg.TransactionTracer.Enabled = true
-				cfg.SpanEvents.Enabled = true
-				cfg.RuntimeSampler.Enabled = true
-				cfg.DistributedTracer.Enabled = true
-				cfg.AppName = serviceName
-				cfg.BrowserMonitoring.Enabled = true
-				cfg.CustomInsightsEvents.Enabled = true
-				cfg.DatastoreTracer.InstanceReporting.Enabled = true
-				cfg.DatastoreTracer.QueryParameters.Enabled = true
-				cfg.DatastoreTracer.DatabaseNameReporting.Enabled = true
-			},
-			// Use nrzap to register the logger with the agent:
-			nrzap.ConfigLogger(logger.Named("newrelic")),
-			newrelic.ConfigDistributedTracerEnabled(true),
-			newrelic.ConfigEnabled(true),
-		)
+		cfg := newrelic.NewConfig(serviceName, newrelicLicenseKey)
+		cfg.ErrorCollector.CaptureEvents = true
+		cfg.ErrorCollector.Enabled = true
+		cfg.TransactionEvents.Enabled = true
+		cfg.Enabled = true
+		cfg.TransactionEvents.Enabled = true
+		cfg.Attributes.Enabled = true
+		cfg.BrowserMonitoring.Enabled = true
+		cfg.TransactionTracer.Enabled = true
+		cfg.SpanEvents.Enabled = true
+		cfg.RuntimeSampler.Enabled = true
+		cfg.DistributedTracer.Enabled = true
+		cfg.AppName = serviceName
+		cfg.BrowserMonitoring.Enabled = true
+		cfg.CustomInsightsEvents.Enabled = true
+		cfg.DatastoreTracer.InstanceReporting.Enabled = true
+		cfg.DatastoreTracer.QueryParameters.Enabled = true
+		cfg.DatastoreTracer.DatabaseNameReporting.Enabled = true
+		cfg.Logger = nrzap.Transform(logger.Named("newrelic"))
+		cfg.DistributedTracer.Enabled = true
+		cfg.Enabled = true
+
+		app, err := newrelic.NewApplication(cfg)
+		if err != nil {
+			return nil, err
+		}
+
+		return app, nil
 	}
 
-	return nil, errors.New(fmt.Sprintf("invalid input parameter. param: newrelicLicenseKey = %s", newrelicLicenseKey))
+	return nil, fmt.Errorf("invalid input parameter. param: newrelicLicenseKey = %s", newrelicLicenseKey)
 }
 
-// initTelemetrySDK initializes the telemetry engine with the parameters provided in the config or environment variable file
-func initTelemetrySDK(logger *zap.Logger, nrClient *newrelic.Application) (*telemetry.Telemetry, error) {
-	serviceName := viper.GetString("grpc-service-name")
-	licenseKey := viper.GetString("newrelic-key")
-	version := viper.GetString("version")
-	environment := viper.GetString("service-environment")
-	pointOfContact := viper.GetString("point-of-contact")
-	metricsReportingEnabled := viper.GetBool("metrics-reporting-enabled")
+func configurePlaidSDK() (*plaid.APIClient, error) {
+	var (
+		plaidClientID  = viper.GetString("plaid-client-id")
+		plaidSecretKey = viper.GetString("plaid-secret-key")
+		plaidEnv       = viper.GetString("plaid-env")
+	)
 
-	params := &telemetry.TelemetryParams{
-		ServiceName:        serviceName,
-		Version:            version,
-		PointOfContact:     pointOfContact,
-		Environment:        environment,
-		NewRelicLicenseKey: licenseKey,
-		Logger:             logger,
-		Enabled:            metricsReportingEnabled,
-		Client:             nrClient,
-	}
-
-	engine, err := telemetry.New(params)
-	if err != nil {
-		return nil, err
-	}
-
-	return engine, nil
-}
-
-func InitializePlaidClient(plaidClientID, plaidSecretKey, plaidEnv string) (*plaid.APIClient, error) {
 	if plaidClientID == "" || plaidSecretKey == "" {
-		return nil, errors.New(fmt.Sprintf("invalid input arguments. plaidClientId: %s, plaidSecretKey: %s", plaidClientID, plaidSecretKey))
+		return nil, fmt.Errorf(
+			"invalid input arguments. plaidClientId: %s, plaidSecretKey: %s",
+			plaidClientID,
+			plaidSecretKey)
 	}
+
 	configuration := plaid.NewConfiguration()
 	configuration.AddDefaultHeader("PLAID-CLIENT-ID", plaidClientID)
 	configuration.AddDefaultHeader("PLAID-SECRET", plaidSecretKey)
@@ -321,7 +296,7 @@ func InitializePlaidClient(plaidClientID, plaidSecretKey, plaidEnv string) (*pla
 	return plaid.NewAPIClient(configuration), nil
 }
 
-func InitializeDbConn(ctx context.Context, logger *zap.Logger, telemetry *newrelic.Application) (*database.Db, error) {
+func configureDatabaseConn(ctx context.Context, logger *zap.Logger, instrumentation *instrumentation.ServiceTelemetry) (*database.Db, error) {
 	host := viper.GetString("dbhost")
 	port := viper.GetInt("dbport")
 	user := viper.GetString("dbuser")
@@ -334,9 +309,10 @@ func InitializeDbConn(ctx context.Context, logger *zap.Logger, telemetry *newrel
 	maxDBRetryTimeout := viper.GetDuration("max-db-retry-timeout")
 	maxDBSleepInterval := viper.GetDuration("max-db-retry-sleep-interval")
 
-	// initialize a newrelic txn to trace the db connection event
-	txn := telemetry.StartTransaction("database-connection")
-	defer txn.End()
+	if instrumentation != nil {
+		txn := instrumentation.StartTransaction("database-connection")
+		defer txn.End()
+	}
 
 	initializationParams := &database.ConnectionInitializationParams{
 		ConnectionParams: &database.ConnectionParameters{
@@ -352,7 +328,7 @@ func InitializeDbConn(ctx context.Context, logger *zap.Logger, telemetry *newrel
 		MaxRetriesPerOperation: maxRetriesPerDBConnectionAttempt,
 		RetryTimeOut:           maxDBRetryTimeout,
 		RetrySleepInterval:     maxDBSleepInterval,
-		Telemetry:              telemetry,
+		Instrumentation:        instrumentation,
 	}
 
 	db, err := database.New(ctx, initializationParams)
@@ -427,4 +403,21 @@ func LoadEnvVariables(fs *pflag.FlagSet) {
 		log.Error(err.Error())
 		return
 	}
+}
+
+// configureServiceTelemetryInstance configures the service telemetry instance object
+func configureServiceTelemetryInstance(app newrelic.Application) *instrumentation.ServiceTelemetry {
+	metricsEnabled := viper.GetBool("metrics-reporting-enabled")
+	env := viper.GetString("service-environment")
+	serviceName := viper.GetString("grpc-service-name")
+
+	opts := []instrumentation.ServiceTelemetryOption{
+		instrumentation.WithServiceName(serviceName),
+		instrumentation.WithServiceVersion(version.VERSION),
+		instrumentation.WithServiceEnvironment(env),
+		instrumentation.WithMetricsEnabled(metricsEnabled),
+		instrumentation.WithNewrelicSdk(app),
+	}
+
+	return instrumentation.NewServiceTelemetry(opts...)
 }

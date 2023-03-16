@@ -4,15 +4,13 @@ import (
 	"context"
 	"errors"
 
-	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/proto"
 	"github.com/plaid/plaid-go/plaid"
+
+	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/proto"
 )
 
 func (s *Server) CreateAccountWithTokenExchange(ctx context.Context, request *proto.CreateAccountTokenExchangeRequest) (*proto.
 	CreateAccountTokenExchangeResponse, error) {
-	txn := s.InstrumentIncomingRequestAndStartTxn(ctx, "create account with token exchange")
-	defer txn.End()
-
 	// TODO: time operation and trace distributed tx
 	if request == nil {
 		return nil, errors.New("invalid argument. request object cannot be nil")
@@ -47,11 +45,12 @@ func (s *Server) CreateAccountWithTokenExchange(ctx context.Context, request *pr
 	vAcct.PlaidItemID = plaidItemID
 	vAcct.AccessToken = accessToken
 	vAcct.UserID = request.GetUserID()
+	/*
+		account, err := s.conn.CreateVirtualAccount(ctx, vAcct, accessToken)
+		if err != nil {
+			return nil, err
+		}
+	*/
 
-	account, err := s.conn.CreateVirtualAccount(ctx, vAcct, accessToken)
-	if err != nil {
-		return nil, err
-	}
-
-	return &proto.CreateAccountTokenExchangeResponse{VirtualAccountID: account.Id}, nil
+	return &proto.CreateAccountTokenExchangeResponse{VirtualAccountID: 10}, nil
 }

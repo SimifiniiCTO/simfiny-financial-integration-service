@@ -265,3 +265,9 @@ install awslocal and awscli
 pip install awscli-local
 brew install awscli
 ```
+
+## Security
+- [] encrypt all plaid data written in our datastore
+  * ref: <https://medium.com/swlh/securing-information-in-database-using-data-encryption-written-in-go-4b2754214050>
+  * <https://github.com/purnaresa/secureme/blob/master/db-encryption/main.go>
+  * [1] ref: <https://github.com/wultra/powerauth-server/blob/develop/docs/Encrypting-Records-in-Database.md>

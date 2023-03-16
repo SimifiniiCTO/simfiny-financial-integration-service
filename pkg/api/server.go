@@ -14,7 +14,7 @@ import (
 	"github.com/gomodule/redigo/redis"
 	"github.com/gorilla/mux"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
-	"github.com/newrelic/go-agent/v3/newrelic"
+	newrelic "github.com/newrelic/go-agent"
 	"github.com/plaid/plaid-go/plaid"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/spf13/viper"
@@ -26,6 +26,7 @@ import (
 	"google.golang.org/grpc"
 
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/database"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/instrumentation"
 	_ "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/api/docs"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/fscache"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/proto"
@@ -82,18 +83,18 @@ type Config struct {
 }
 
 type Server struct {
-	router      *mux.Router
-	logger      *zap.Logger
-	config      *Config
-	pool        *redis.Pool
-	handler     http.Handler
-	telemetry   *newrelic.Application
-	conn        *database.Db
-	plaidClient *plaid.APIClient
-	grpcGw      *runtime.ServeMux
+	router          *mux.Router
+	logger          *zap.Logger
+	config          *Config
+	pool            *redis.Pool
+	handler         http.Handler
+	instrumentation *instrumentation.ServiceTelemetry
+	conn            *database.Db
+	plaidClient     *plaid.APIClient
+	grpcGw          *runtime.ServeMux
 }
 
-func NewServer(config *Config, logger *zap.Logger, telemetry *newrelic.Application, db *database.Db, plaidClient *plaid.APIClient) (*Server, error) {
+func NewServer(config *Config, logger *zap.Logger, telemetry *instrumentation.ServiceTelemetry, db *database.Db, plaidClient *plaid.APIClient) (*Server, error) {
 	opts := []grpc.DialOption{grpc.WithInsecure()}
 	gw := runtime.NewServeMux()
 	ctx := context.Background()
@@ -102,13 +103,13 @@ func NewServer(config *Config, logger *zap.Logger, telemetry *newrelic.Applicati
 	}
 
 	srv := &Server{
-		router:      mux.NewRouter(),
-		logger:      logger,
-		config:      config,
-		telemetry:   telemetry,
-		conn:        db,
-		plaidClient: plaidClient,
-		grpcGw:      gw,
+		router:          mux.NewRouter(),
+		logger:          logger,
+		config:          config,
+		instrumentation: telemetry,
+		conn:            db,
+		plaidClient:     plaidClient,
+		grpcGw:          gw,
 	}
 
 	return srv, nil
@@ -118,36 +119,36 @@ func (s *Server) registerHandlers() {
 	s.router.Handle("/grpc-gateway", s.grpcGw)
 	s.router.Handle("/metrics", promhttp.Handler())
 	s.router.PathPrefix("/debug/pprof/").Handler(http.DefaultServeMux)
-	s.router.HandleFunc(newrelic.WrapHandleFunc(s.telemetry, "/", s.indexHandler)).HeadersRegexp("User-Agent", "^Mozilla.*").Methods("GET")
-	s.router.HandleFunc(newrelic.WrapHandleFunc(s.telemetry, "/", s.infoHandler)).Methods("GET")
-	s.router.HandleFunc(newrelic.WrapHandleFunc(s.telemetry, "/version", s.versionHandler)).Methods("GET")
-	s.router.HandleFunc(newrelic.WrapHandleFunc(s.telemetry, "/echo", s.echoHandler)).Methods("POST")
-	s.router.HandleFunc(newrelic.WrapHandleFunc(s.telemetry, "/env", s.envHandler)).Methods("GET", "POST")
-	s.router.HandleFunc(newrelic.WrapHandleFunc(s.telemetry, "/headers", s.echoHeadersHandler)).Methods("GET", "POST")
-	s.router.HandleFunc(newrelic.WrapHandleFunc(s.telemetry, "/delay/{wait:[0-9]+}", s.delayHandler)).Methods("GET").Name("delay")
-	s.router.HandleFunc(newrelic.WrapHandleFunc(s.telemetry, "/healthz", s.healthzHandler)).Methods("GET")
-	s.router.HandleFunc(newrelic.WrapHandleFunc(s.telemetry, "/readyz", s.readyzHandler)).Methods("GET")
-	s.router.HandleFunc(newrelic.WrapHandleFunc(s.telemetry, "/readyz/enable", s.enableReadyHandler)).Methods("POST")
-	s.router.HandleFunc(newrelic.WrapHandleFunc(s.telemetry, "/readyz/disable", s.disableReadyHandler)).Methods("POST")
-	s.router.HandleFunc(newrelic.WrapHandleFunc(s.telemetry, "/panic", s.panicHandler)).Methods("GET")
-	s.router.HandleFunc(newrelic.WrapHandleFunc(s.telemetry, "/status/{code:[0-9]+}", s.statusHandler)).Methods("GET", "POST", "PUT").Name("status")
-	s.router.HandleFunc(newrelic.WrapHandleFunc(s.telemetry, "/store", s.storeWriteHandler)).Methods("POST", "PUT")
-	s.router.HandleFunc(newrelic.WrapHandleFunc(s.telemetry, "/store/{hash}", s.storeReadHandler)).Methods("GET").Name("store")
-	s.router.HandleFunc(newrelic.WrapHandleFunc(s.telemetry, "/cache/{key}", s.cacheWriteHandler)).Methods("POST", "PUT")
-	s.router.HandleFunc(newrelic.WrapHandleFunc(s.telemetry, "/cache/{key}", s.cacheDeleteHandler)).Methods("DELETE")
-	s.router.HandleFunc(newrelic.WrapHandleFunc(s.telemetry, "/cache/{key}", s.cacheReadHandler)).Methods("GET").Name("cache")
-	s.router.HandleFunc(newrelic.WrapHandleFunc(s.telemetry, "/configs", s.configReadHandler)).Methods("GET")
-	s.router.HandleFunc(newrelic.WrapHandleFunc(s.telemetry, "/token", s.tokenGenerateHandler)).Methods("POST")
-	s.router.HandleFunc(newrelic.WrapHandleFunc(s.telemetry, "/token/validate", s.tokenValidateHandler)).Methods("GET")
-	s.router.HandleFunc(newrelic.WrapHandleFunc(s.telemetry, "/api/info", s.infoHandler)).Methods("GET")
-	s.router.HandleFunc(newrelic.WrapHandleFunc(s.telemetry, "/api/echo", s.echoHandler)).Methods("POST")
-	s.router.HandleFunc(newrelic.WrapHandleFunc(s.telemetry, "/ws/echo", s.echoWsHandler))
-	s.router.HandleFunc(newrelic.WrapHandleFunc(s.telemetry, "/chunked", s.chunkedHandler))
-	s.router.HandleFunc(newrelic.WrapHandleFunc(s.telemetry, "/chunked/{wait:[0-9]+}", s.chunkedHandler))
+	s.router.HandleFunc(newrelic.WrapHandleFunc(s.instrumentation.NewrelicSdk, "/", s.indexHandler)).HeadersRegexp("User-Agent", "^Mozilla.*").Methods("GET")
+	s.router.HandleFunc(newrelic.WrapHandleFunc(s.instrumentation.NewrelicSdk, "/", s.infoHandler)).Methods("GET")
+	s.router.HandleFunc(newrelic.WrapHandleFunc(s.instrumentation.NewrelicSdk, "/version", s.versionHandler)).Methods("GET")
+	s.router.HandleFunc(newrelic.WrapHandleFunc(s.instrumentation.NewrelicSdk, "/echo", s.echoHandler)).Methods("POST")
+	s.router.HandleFunc(newrelic.WrapHandleFunc(s.instrumentation.NewrelicSdk, "/env", s.envHandler)).Methods("GET", "POST")
+	s.router.HandleFunc(newrelic.WrapHandleFunc(s.instrumentation.NewrelicSdk, "/headers", s.echoHeadersHandler)).Methods("GET", "POST")
+	s.router.HandleFunc(newrelic.WrapHandleFunc(s.instrumentation.NewrelicSdk, "/delay/{wait:[0-9]+}", s.delayHandler)).Methods("GET").Name("delay")
+	s.router.HandleFunc(newrelic.WrapHandleFunc(s.instrumentation.NewrelicSdk, "/healthz", s.healthzHandler)).Methods("GET")
+	s.router.HandleFunc(newrelic.WrapHandleFunc(s.instrumentation.NewrelicSdk, "/readyz", s.readyzHandler)).Methods("GET")
+	s.router.HandleFunc(newrelic.WrapHandleFunc(s.instrumentation.NewrelicSdk, "/readyz/enable", s.enableReadyHandler)).Methods("POST")
+	s.router.HandleFunc(newrelic.WrapHandleFunc(s.instrumentation.NewrelicSdk, "/readyz/disable", s.disableReadyHandler)).Methods("POST")
+	s.router.HandleFunc(newrelic.WrapHandleFunc(s.instrumentation.NewrelicSdk, "/panic", s.panicHandler)).Methods("GET")
+	s.router.HandleFunc(newrelic.WrapHandleFunc(s.instrumentation.NewrelicSdk, "/status/{code:[0-9]+}", s.statusHandler)).Methods("GET", "POST", "PUT").Name("status")
+	s.router.HandleFunc(newrelic.WrapHandleFunc(s.instrumentation.NewrelicSdk, "/store", s.storeWriteHandler)).Methods("POST", "PUT")
+	s.router.HandleFunc(newrelic.WrapHandleFunc(s.instrumentation.NewrelicSdk, "/store/{hash}", s.storeReadHandler)).Methods("GET").Name("store")
+	s.router.HandleFunc(newrelic.WrapHandleFunc(s.instrumentation.NewrelicSdk, "/cache/{key}", s.cacheWriteHandler)).Methods("POST", "PUT")
+	s.router.HandleFunc(newrelic.WrapHandleFunc(s.instrumentation.NewrelicSdk, "/cache/{key}", s.cacheDeleteHandler)).Methods("DELETE")
+	s.router.HandleFunc(newrelic.WrapHandleFunc(s.instrumentation.NewrelicSdk, "/cache/{key}", s.cacheReadHandler)).Methods("GET").Name("cache")
+	s.router.HandleFunc(newrelic.WrapHandleFunc(s.instrumentation.NewrelicSdk, "/configs", s.configReadHandler)).Methods("GET")
+	s.router.HandleFunc(newrelic.WrapHandleFunc(s.instrumentation.NewrelicSdk, "/token", s.tokenGenerateHandler)).Methods("POST")
+	s.router.HandleFunc(newrelic.WrapHandleFunc(s.instrumentation.NewrelicSdk, "/token/validate", s.tokenValidateHandler)).Methods("GET")
+	s.router.HandleFunc(newrelic.WrapHandleFunc(s.instrumentation.NewrelicSdk, "/api/info", s.infoHandler)).Methods("GET")
+	s.router.HandleFunc(newrelic.WrapHandleFunc(s.instrumentation.NewrelicSdk, "/api/echo", s.echoHandler)).Methods("POST")
+	s.router.HandleFunc(newrelic.WrapHandleFunc(s.instrumentation.NewrelicSdk, "/ws/echo", s.echoWsHandler))
+	s.router.HandleFunc(newrelic.WrapHandleFunc(s.instrumentation.NewrelicSdk, "/chunked", s.chunkedHandler))
+	s.router.HandleFunc(newrelic.WrapHandleFunc(s.instrumentation.NewrelicSdk, "/chunked/{wait:[0-9]+}", s.chunkedHandler))
 	s.router.PathPrefix("/swagger/").Handler(httpSwagger.Handler(
 		httpSwagger.URL("/swagger/doc.json"),
 	))
-	s.router.HandleFunc(newrelic.WrapHandleFunc(s.telemetry, "/swagger.json", func(w http.ResponseWriter, r *http.Request) {
+	s.router.HandleFunc(newrelic.WrapHandleFunc(s.instrumentation.NewrelicSdk, "/swagger.json", func(w http.ResponseWriter, r *http.Request) {
 		doc, err := swag.ReadDoc()
 		if err != nil {
 			s.logger.Error("swagger error", zap.Error(err), zap.String("path", "/swagger.json"))

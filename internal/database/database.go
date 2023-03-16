@@ -4,27 +4,26 @@ import (
 	"context"
 	"time"
 
-	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/service_errors"
-	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/proto"
-	"github.com/newrelic/go-agent/v3/newrelic"
 	core_database "github.com/yoanyombapro1234/FeelGuuds_Core/core/core-database"
 	"go.uber.org/zap"
+
+	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/generated/api/v1"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/generated/dal"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/instrumentation"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/service_errors"
 )
 
 // DatabaseOperations provides an interface which any database tied to this service should implement
 type DatabaseOperations interface {
-	FindVirtualAcctID(ctx context.Context, vAcctID uint64) (*schema.VirtualAccount, error)
-	findVirtualAcctByIDTxn(ctx context.Context, txn *newrelic.Transaction, vAcctID uint64) core_database.CmplxTx
-	FindVirtualAcctByUserID(ctx context.Context, userID uint64) (*schema.VirtualAccount, error)
-	findVirtualAcctByUserIDTxn(ctx context.Context, txn *newrelic.Transaction, userID uint64) core_database.CmplxTx
-	CreateVirtualAccount(ctx context.Context, vAcct *schema.VirtualAccount, accessToken string) (*schema.VirtualAccount, error)
-	createVirtualAccountTxn(ctx context.Context, txn *newrelic.Transaction, vAcct *schema.VirtualAccount, accessToken string) core_database.CmplxTx
-	DeactivateVirtualAccount(ctx context.Context, vAcctID uint64) error
-	deactivateVirtualAccountTxn(ctx context.Context, txn *newrelic.Transaction, vAcctID uint64) core_database.Tx
-	SaveVirtualAccountRecord(ctx context.Context, vAcct *schema.VirtualAccount) error
-	saveVirtualAccountTxFunc(ctx context.Context, txn *newrelic.Transaction, vAcct *schema.VirtualAccount) core_database.Tx
-	UpdateVirtualAccount(ctx context.Context, vAcct *schema.VirtualAccount, vAcctID uint64) error
-	updateVirtualAccountTxn(ctx context.Context, txn *newrelic.Transaction, vAcct *schema.VirtualAccount, vAcctID uint64) core_database.Tx
+	// Account Operations
+	// CreateUserProfile creates a user profile
+	CreateUserProfile(ctx context.Context, profile *schema.UserProfile) (*schema.UserProfile, error)
+	// DeleteUserProfileByUserId deletes a user profile by user id
+	DeleteUserProfileByUserID(ctx context.Context, userID uint64) error
+	// UpdateUserProfile updates a user profile
+	UpdateUserProfile(ctx context.Context, profile *schema.UserProfile) error
+	// GetUserProfileByUserID retrieves a user profile by user id
+	GetUserProfileByUserID(ctx context.Context, userID uint64) (*schema.UserProfile, error)
 }
 
 // Db withholds connection to a postgres database as well as a logging handler
@@ -46,7 +45,9 @@ type Db struct {
 	// that the system sleeps
 	OperationSleepInterval time.Duration
 	// Telemetry defines the object by which we will emit metrics, trace requests, and database operations
-	Telemetry *newrelic.Application
+	Instrumentation *instrumentation.ServiceTelemetry
+	// QueryOperator is the object that will be used to execute database queries
+	QueryOperator *dal.Query
 }
 
 var _ DatabaseOperations = (*Db)(nil)
@@ -70,7 +71,7 @@ type ConnectionInitializationParams struct {
 	// that the system sleeps
 	RetrySleepInterval time.Duration
 	// Telemetry defines the object by which we will emit metrics, trace requests, and database operations
-	Telemetry *newrelic.Application
+	Instrumentation *instrumentation.ServiceTelemetry
 }
 
 // New creates a database connection and returns the connection object
@@ -84,7 +85,7 @@ func New(ctx context.Context, params *ConnectionInitializationParams) (*Db,
 	}
 
 	logger := params.Logger
-	databaseModels := schema.Schemas()
+	databaseModels := schema.GetDatabaseSchemas()
 
 	conn, err := connectToDatabase(ctx, params.ConnectionParams, params.Logger, databaseModels...)
 
@@ -101,6 +102,7 @@ func New(ctx context.Context, params *ConnectionInitializationParams) (*Db,
 		MaxRetriesPerOperation: params.MaxRetriesPerOperation,
 		RetryTimeOut:           params.RetryTimeOut,
 		OperationSleepInterval: params.RetrySleepInterval,
-		Telemetry:              params.Telemetry,
+		Instrumentation:        params.Instrumentation,
+		QueryOperator:          dal.Use(conn.Engine),
 	}, nil
 }

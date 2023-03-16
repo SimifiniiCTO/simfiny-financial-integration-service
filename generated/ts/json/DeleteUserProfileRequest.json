@@ -1,0 +1,18 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/DeleteUserProfileRequest",
+    "definitions": {
+        "DeleteUserProfileRequest": {
+            "properties": {
+                "user_id": {
+                    "type": "string",
+                    "description": "The account ID associated with the user. NOTE: This user_id is the simfiny backend platform wide user id Validations: - user_id must be greater than 0"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Delete User Profile Request",
+            "description": "UpdateUserProfileRequest: Represents the request object invoked against the user service to delete a user profile"
+        }
+    }
+}

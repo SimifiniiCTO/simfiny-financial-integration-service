@@ -19,6 +19,12 @@ message CreateUserProfileRequest {
     (validate.rules).message.required = true,
     (google.api.field_behavior) = REQUIRED
   ];
+
+  // the email of the account to create
+  string email = 2 [
+    (validate.rules).string.email = true,
+    (google.api.field_behavior) = REQUIRED
+  ];
 }
 
 // CreateUserProfileResponse: Represents the response object returned as a response to
@@ -163,25 +169,10 @@ message DeleteBankAccountResponse {
 }
 
 message UpdateBankAccountRequest {
-  // The account ID associated with the user
-  // Validations:
-  // - user_id must be greater than 0
-  uint64 user_id = 1 [
-    (validate.rules).uint64.gt = 0,
-    (google.api.field_behavior) = REQUIRED
-  ];
-  // The bank account id
-  // Validations:
-  // - bank_account_id must be greater than 0
-  uint64 bank_account_id = 2 [
-    (validate.rules).uint64.gt = 0,
-    (google.api.field_behavior) = REQUIRED
-  ];
   // The bank account to update
   // Validations:
   // - cannot be nil hence required
   BankAccount bank_account = 3 [
-    (validate.rules).message.required = true,
     (google.api.field_behavior) = REQUIRED
   ];
 }
@@ -246,20 +237,6 @@ message CreateSmartGoalResponse {
 }
 
 message UpdateSmartGoalRequest {
-  // The pocket account id
-  // Validations:
-  // - pocket_account_id must be greater than 0
-  uint64 pocket_id = 1 [
-    (validate.rules).uint64.gt = 0,
-    (google.api.field_behavior) = REQUIRED
-  ];
-  // The smart goal id
-  // Validations:
-  // - smart_goal_id must be greater than 0
-  uint64 smart_goal_id = 2 [
-    (validate.rules).uint64.gt = 0,
-    (google.api.field_behavior) = REQUIRED
-  ];
   // The smart goal to update
   // Validations:
   // - cannot be nil hence required
@@ -341,24 +318,10 @@ message DeleteMilestoneResponse {
 }
 
 message UpdateMilestoneRequest {
-  // The smart goal id
-  // Validations:
-  // - smart_goal_id must be greater than 0
-  uint64 smart_goal_id = 1 [
-    (validate.rules).uint64.gt = 0,
-    (google.api.field_behavior) = REQUIRED
-  ];
-  // The milestone id
-  // Validations:
-  // - milestone_id must be greater than 0
-  uint64 milestone_id = 2 [
-    (validate.rules).uint64.gt = 0,
-    (google.api.field_behavior) = REQUIRED
-  ];
   // The milestone to update
   // Validations:
   // - cannot be nil hence required
-  Milestone milestone = 3 [
+  Milestone milestone = 1 [
     (validate.rules).message.required = true,
     (google.api.field_behavior) = REQUIRED
   ];
@@ -451,14 +414,6 @@ message CreateBudgetResponse {
 }
 
 message UpdateBudgetRequest {
-  // The budget id
-  // Validations:
-  // - budget_id must be greater than 0
-  uint64 budget_id = 1 [
-    (validate.rules).uint64.gt = 0,
-    (google.api.field_behavior) = REQUIRED
-  ];
-
   // The budget to update
   // Validations:
   // - cannot be nil hence required
@@ -544,4 +499,131 @@ message ReadynessCheckRequest {}
 
 message ReadynessCheckResponse {
   bool healthy = 1;
+}
+
+message PlaidInitiateTokenExchangeRequest {
+  // The user id
+  // Validations:
+  // - user_id must be greater than 0
+  uint64 user_id = 1 [
+    (validate.rules).uint64.gt = 0,
+    (google.api.field_behavior) = REQUIRED
+  ];
+}
+
+message PlaidInitiateTokenExchangeResponse {
+  string link_token = 1;
+  string expiration = 2;
+  string plaid_request_id = 3;
+}
+
+message PlaidExchangeTokenRequest {
+  // The user id
+  // Validations:
+  // - user_id must be greater than 0
+  uint64 user_id = 1 [
+    (validate.rules).uint64.gt = 0,
+    (google.api.field_behavior) = REQUIRED
+  ];
+  // The public token
+  // Validations:
+  // - cannot be nil hence required
+  string public_token = 2 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+}
+
+message PlaidExchangeTokenResponse {
+  // wether the operation was successful
+  bool success = 1 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+}
+
+message GetInvestmentAcccountRequest {
+  // The user id
+  // Validations:
+  // - user_id must be greater than 0
+  uint64 user_id = 1 [
+    (validate.rules).uint64.gt = 0,
+    (google.api.field_behavior) = REQUIRED
+  ];
+  // The investment account id
+  // Validations:
+  // - investment_account_id must be greater than 0
+  uint64 investment_account_id = 2 [
+    (validate.rules).uint64.gt = 0,
+    (google.api.field_behavior) = REQUIRED
+  ];
+}
+
+message GetInvestmentAcccountResponse {
+  // The investment account
+  InvestmentAccount investment_account = 1;
+}
+
+message GetMortageAccountRequest {
+  // The user id
+  // Validations:
+  // - user_id must be greater than 0
+  uint64 user_id = 1 [
+    (validate.rules).uint64.gt = 0,
+    (google.api.field_behavior) = REQUIRED
+  ];
+  // The mortage account id
+  // Validations:
+  // - mortage_account_id must be greater than 0
+  uint64 mortage_account_id = 2 [
+    (validate.rules).uint64.gt = 0,
+    (google.api.field_behavior) = REQUIRED
+  ];
+}
+
+message GetMortageAccountResponse {
+  // The mortage account
+  MortgageAccount mortage_account = 1;
+}
+
+message GetLiabilityAccountRequest {
+  // The user id
+  // Validations:
+  // - user_id must be greater than 0
+  uint64 user_id = 1 [
+    (validate.rules).uint64.gt = 0,
+    (google.api.field_behavior) = REQUIRED
+  ];
+  // The liability account id
+  // Validations:
+  // - liability_account_id must be greater than 0
+  uint64 liability_account_id = 2 [
+    (validate.rules).uint64.gt = 0,
+    (google.api.field_behavior) = REQUIRED
+  ];
+}
+
+message GetLiabilityAccountResponse {
+  // The liability account
+  CreditAccount liability_account = 1;
+}
+
+message GetStudentLoanAccountRequest {
+  // The user id
+  // Validations:
+  // - user_id must be greater than 0
+  uint64 user_id = 1 [
+    (validate.rules).uint64.gt = 0,
+    (google.api.field_behavior) = REQUIRED
+  ];
+  // The student loan account id
+  // Validations:
+  // - student_loan_account_id must be greater than 0
+  uint64 student_loan_account_id = 2 [
+    (validate.rules).uint64.gt = 0,
+    (google.api.field_behavior) = REQUIRED
+  ];
+}
+
+message GetStudentLoanAccountResponse {
+  // The student loan account
+  StudentLoanAccount student_loan_account = 1;
 }

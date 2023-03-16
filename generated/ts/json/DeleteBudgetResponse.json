@@ -1,0 +1,17 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/DeleteBudgetResponse",
+    "definitions": {
+        "DeleteBudgetResponse": {
+            "properties": {
+                "deleted": {
+                    "type": "boolean",
+                    "description": "The budget id"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Delete Budget Response"
+        }
+    }
+}

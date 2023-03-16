@@ -5,16 +5,13 @@ import (
 	"errors"
 	"strconv"
 
-	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/proto"
-	"github.com/newrelic/go-agent/v3/newrelic"
 	"github.com/plaid/plaid-go/plaid"
 	"go.uber.org/zap"
+
+	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/proto"
 )
 
 func (s *Server) InitiateAccountSetupAndGetLinkToken(ctx context.Context, request *proto.InitiateAccountSetupRequest) (*proto.InitiateAccountSetupResponse, error) {
-	txn := s.InstrumentIncomingRequestAndStartTxn(ctx, "initiate account setup and get link token")
-	defer txn.End()
-
 	if request == nil {
 		return nil, errors.New("invalid argument. request object cannot be nil")
 	}
@@ -22,12 +19,6 @@ func (s *Server) InitiateAccountSetupAndGetLinkToken(ctx context.Context, reques
 	if request.GetUserID() == 0 {
 		return nil, errors.New("invalid request object. user id cannot be 0")
 	}
-
-	segment := newrelic.Segment{
-		StartTime: txn.StartSegmentNow(),
-		Name:      "plaid_link_token_create_outbound_request",
-	}
-	defer segment.End()
 
 	if s.config.Environment == "dev" {
 		s.logger.Info("calling dev plaid account")

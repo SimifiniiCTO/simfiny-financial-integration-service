@@ -1,0 +1,17 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/DeleteMilestoneResponse",
+    "definitions": {
+        "DeleteMilestoneResponse": {
+            "properties": {
+                "deleted": {
+                    "type": "boolean",
+                    "description": "The milestone id"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Delete Milestone Response"
+        }
+    }
+}

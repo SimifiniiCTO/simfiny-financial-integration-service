@@ -1,0 +1,53 @@
+version: '3.7'
+
+services:
+  service:
+    tty: true # Makes color output work nicely.
+    build:
+      context: .
+      dockerfile: ./Dockerfile.dev
+    working_dir: /build
+    container_name: service
+    ports:
+      - "9896:9896" # grpc port
+    restart: always
+    environment:
+      - air_wd=/build
+    networks:
+      - service-network
+    volumes:
+      - '.:/go/src/github.com/SimifiniiCTO/simfiny-financial-integration-service'
+      - goData:/go/pkg/mod
+      - ./:/build
+    env_file:
+      - ./service.env
+    depends_on:
+      - service-db
+    command:
+      - bash
+      - -c
+      - /build/compose/api-entrypoint.sh
+
+  service-db:
+    image: postgres:latest
+    container_name: service-db
+    ports:
+      - "6000:5432"
+    environment:
+      - POSTGRES_PASSWORD=service-db
+      - POSTGRES_USER=service-db
+      - POSTGRES_DB=service-db
+      - PGDATA=/data/service-db
+    volumes:
+      - service-db:/data/service-db
+    networks:
+      - service-network
+
+networks:
+  service-network:
+    driver: bridge
+
+volumes:
+  service-db: {}
+  tmpData:
+  goData:

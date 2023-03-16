@@ -1,0 +1,3503 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Simfiny",
+    "description": "With our AI-driven financial recommendations track your spending, create a budget, save for the future, all while connecting with others who are on the same financial journey as you !",
+    "version": "0.1",
+    "contact": {
+      "name": "YoanYomba",
+      "url": "https://simfiny.co",
+      "email": "yoan@simfinii.com"
+    },
+    "license": {
+      "name": "Apache-2.0",
+      "url": "https://github.com/openfga/openfga/blob/main/LICENSE"
+    }
+  },
+  "tags": [
+    {
+      "name": "FinancialService"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/v1/account/{userId}/investment/{investmentAccountId}": {
+      "get": {
+        "summary": "get investment account by id",
+        "description": "This endpoint returns the investment account if the investment account exists",
+        "operationId": "GetInvestmentAccount",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": ".api.v1.GetInvestmentAccountResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "description": "The user id\nValidations:\n- user_id must be greater than 0",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "investmentAccountId",
+            "description": "The investment account id\nValidations:\n- investment_account_id must be greater than 0",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "investment account"
+        ]
+      }
+    },
+    "/api/v1/account/{userId}/liability/{liabilityAccountId}": {
+      "get": {
+        "summary": "get liability account by id",
+        "description": "This endpoint returns the liability account if the liability account exists",
+        "operationId": "GetLiabilityAccount",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/GetLiabilityAccountResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "description": "The user id\nValidations:\n- user_id must be greater than 0",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "liabilityAccountId",
+            "description": "The liability account id\nValidations:\n- liability_account_id must be greater than 0",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "liability account"
+        ]
+      }
+    },
+    "/api/v1/account/{userId}/mortage/{mortageAccountId}": {
+      "get": {
+        "summary": "get mortage account by id",
+        "description": "This endpoint returns the mortage account if the mortage account exists",
+        "operationId": "GetMortageAccount",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/GetMortageAccountResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "description": "The user id\nValidations:\n- user_id must be greater than 0",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "mortageAccountId",
+            "description": "The mortage account id\nValidations:\n- mortage_account_id must be greater than 0",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "mortage account"
+        ]
+      }
+    },
+    "/api/v1/account/{userId}/student-loan/{studentLoanAccountId}": {
+      "get": {
+        "summary": "get student loan account by id",
+        "description": "This endpoint returns the student loan account if the student loan account exists",
+        "operationId": "GetStudentLoanAccount",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/GetStudentLoanAccountResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "description": "The user id\nValidations:\n- user_id must be greater than 0",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "studentLoanAccountId",
+            "description": "The student loan account id\nValidations:\n- student_loan_account_id must be greater than 0",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "student loan account"
+        ]
+      }
+    },
+    "/api/v1/bank-account": {
+      "put": {
+        "summary": "update a bank account for a given user profile",
+        "description": "This endpoint updates a bank account if the user record id and bank account id exists",
+        "operationId": "UpdateBankAccount",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/UpdateBankAccountResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdateBankAccountRequest"
+            }
+          }
+        ],
+        "tags": [
+          "bank account"
+        ]
+      }
+    },
+    "/api/v1/bank-account/profile/{userId}": {
+      "post": {
+        "summary": "create a bank account for a given user profile",
+        "description": "This endpoint creates a bank account for a given user profile",
+        "operationId": "CreateBankAccount",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": ".api.v1.CreateUserResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "description": "The account ID associated with the user\nValidations:\n- user_id must be greater than 0",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "bankAccount": {
+                  "$ref": "#/definitions/BankAccount",
+                  "title": "The bank account to create\nValidations:\n- cannot be nil hence required"
+                }
+              },
+              "title": "CreateBankAccountRequest: Represents the request object invoked against the financial\nservice to create a bank account for a given user",
+              "required": [
+                "bankAccount"
+              ]
+            }
+          }
+        ],
+        "tags": [
+          "bank account"
+        ]
+      }
+    },
+    "/api/v1/bank-account/{bankAccountId}/profile/{userId}": {
+      "get": {
+        "summary": "get a bank account for a given user profile",
+        "description": "This endpoint returns the bank account if the user record id and bank account id exists\nexample: /api/v1/bank-account?user_id=xxxxxx\u0026\u0026bank_account_id=xxxxxxx",
+        "operationId": "GetBankAccount",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/GetBankAccountResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "bankAccountId",
+            "description": "The bank account id\nValidations:\n- bank_account_id must be greater than 0",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "userId",
+            "description": "The account ID associated with the user\nValidations:\n- user_id must be greater than 0",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "bank account"
+        ]
+      },
+      "delete": {
+        "summary": "deletes a bank account for a given user profile",
+        "description": "This endpoint performs a delete operation on a user profile based on the provided parametersThis deletion operation spans multiple services (plaid) as user details are stored across a suite of our backend servicesThe operation itself is an atomic one of nature. Either all services successfully delete the recod or we fail the requestDivergent state is not expected to be encountered with this endpoint.",
+        "operationId": "DeleteUserProfile",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/DeleteBankAccountResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "bankAccountId",
+            "description": "The bank account id\nValidations:\n- bank_account_id must be greater than 0",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "userId",
+            "description": "The account ID associated with the user\nValidations:\n- user_id must be greater than 0",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "bank account"
+        ]
+      }
+    },
+    "/api/v1/budget": {
+      "get": {
+        "summary": "get all budgets",
+        "description": "This endpoint returns all budgets",
+        "operationId": "GetAllBudgets",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/GetAllBudgetsResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "pocketId",
+            "description": "The pocket account id\nValidations:\n- pocket_account_id must be greater than 0",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "smartGoalId",
+            "description": "The smart goal id\nValidations:\n- smart_goal_id must be greater than 0",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "milestoneId",
+            "description": "The milestone id\nValidations:\n- milestone_id must be greater than 0",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "budget"
+        ]
+      },
+      "post": {
+        "summary": "create a budget",
+        "description": "This endpoint creates a budget",
+        "operationId": "CreateBudget",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/CreateBudgetResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "pocketId",
+            "description": "The pocket account id\nValidations:\n- pocket_account_id must be greater than 0",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "milestroneId",
+            "description": "The milestone to associate this budget with",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "budget.id",
+            "description": "id",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "budget.name",
+            "description": "The name of the budget",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "budget.description",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "budget.startDate",
+            "description": "the time the goal was created",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "budget.endDate",
+            "description": "the time the goal was updated",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "budget.category.id",
+            "description": "id",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "budget.category.name",
+            "description": "The name of the category",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "budget.category.description",
+            "description": "The description of the category",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "budget.category.subcategories",
+            "description": "the sub categories of the category",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          }
+        ],
+        "tags": [
+          "budget"
+        ]
+      },
+      "put": {
+        "summary": "updates a budget",
+        "description": "This endpoint updates a budget",
+        "operationId": "UpdatesBudget",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/UpdateBudgetResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdateBudgetRequest"
+            }
+          }
+        ],
+        "tags": [
+          "budget"
+        ]
+      }
+    },
+    "/api/v1/budget/{budgetId}": {
+      "get": {
+        "summary": "get budget by id",
+        "description": "This endpoint returns the budget if the budget exists",
+        "operationId": "GetBudget",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/GetBudgetResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "budgetId",
+            "description": "The budget id\nValidations:\n- budget_id must be greater than 0",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "budget"
+        ]
+      },
+      "delete": {
+        "summary": "delete a budget",
+        "description": "This endpoint deletes a budget",
+        "operationId": "DeleteBudget",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/DeleteBudgetResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "budgetId",
+            "description": "The budget id\nValidations:\n- budget_id must be greater than 0",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "budget"
+        ]
+      }
+    },
+    "/api/v1/forecast/{smartGoalId}": {
+      "get": {
+        "summary": "get forecast by id",
+        "description": "This endpoint returns the forecast if the forecast exists",
+        "operationId": "GetForecast",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/GetForecastResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "smartGoalId",
+            "description": "The smart goal id\nValidations:\n- smart_goal_id must be greater than 0",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "forecast"
+        ]
+      }
+    },
+    "/api/v1/health": {
+      "get": {
+        "summary": "health check",
+        "description": "This endpoint performs a healc check on the service",
+        "operationId": "HealthCheck",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/HealthCheckResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "tags": [
+          "service health"
+        ]
+      }
+    },
+    "/api/v1/milestone": {
+      "post": {
+        "summary": "create a milestone",
+        "description": "This endpoint creates a milestone",
+        "operationId": "CreateMilestone",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/CreateMilestoneResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "smartGoalId",
+            "description": "The smart goal id\nValidations:\n- smart_goal_id must be greater than 0",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "milestone.id",
+            "description": "id",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "milestone.name",
+            "description": "The name of the milestone\nValidations:\n- must be at least 3 characters long",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "milestone.description",
+            "description": "The description of the miletone\nValidations:\n- must be at least 3 characters long",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "milestone.targetDate",
+            "description": "the target date of the milestone\nValidations:\n- must be at least 3 characters long",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "milestone.targetAmount",
+            "description": "the target amount of the milestone",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "milestone.isCompleted",
+            "description": "wethe milestone is completed or not",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "milestone"
+        ]
+      },
+      "put": {
+        "summary": "updates a milestone",
+        "description": "This endpoint updates a milestone",
+        "operationId": "UpdatesMilestone",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/UpdateMilestoneResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdateMilestoneRequest"
+            }
+          }
+        ],
+        "tags": [
+          "milestone"
+        ]
+      }
+    },
+    "/api/v1/milestone/smart-goal/{smartGoalId}": {
+      "get": {
+        "summary": "get milestones by smart goal id",
+        "description": "This endpoint returns the milestones if the smart goal exists",
+        "operationId": "GetMilestones",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/GetMilestonesBySmartGoalIdResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "smartGoalId",
+            "description": "The smart goal id\nValidations:\n- smart_goal_id must be greater than 0",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "milestone"
+        ]
+      }
+    },
+    "/api/v1/milestone/{milestoneId}/smart-goal/{smartGoalId}": {
+      "get": {
+        "summary": "get milestone by id",
+        "description": "This endpoint returns the milestone if the milestone exists",
+        "operationId": "GetMilestone",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": ".api.v1.GetMilestoneByIdResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "milestoneId",
+            "description": "The milestone id\nValidations:\n- milestone_id must be greater than 0",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "smartGoalId",
+            "description": "The smart goal id\nValidations:\n- smart_goal_id must be greater than 0",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "milestone"
+        ]
+      },
+      "delete": {
+        "summary": "delete a milestone",
+        "description": "This endpoint deletes a milestone",
+        "operationId": "DeleteMilestone",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/DeleteMilestoneResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "milestoneId",
+            "description": "The milestone id\nValidations:\n- milestone_id must be greater than 0",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "smartGoalId",
+            "description": "The smart goal id\nValidations:\n- smart_goal_id must be greater than 0",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "milestone"
+        ]
+      }
+    },
+    "/api/v1/plaid/exchange-token": {
+      "post": {
+        "summary": "exchange plaid token",
+        "description": "This endpoint exchanges a plaid link token for a plaid access token",
+        "operationId": "ExchangePlaidToken",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/PlaidExchangeTokenResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PlaidExchangeTokenRequest"
+            }
+          }
+        ],
+        "tags": [
+          "plaid"
+        ]
+      }
+    },
+    "/api/v1/plaid/initiate-token-exchange": {
+      "post": {
+        "summary": "initiate plaid setup",
+        "description": "This endpoint initiates a plaid link token creation",
+        "operationId": "InitiatePlaidSetup",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": ".api.v1.PlaidSetupResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PlaidInitiateTokenExchangeRequest"
+            }
+          }
+        ],
+        "tags": [
+          "plaid"
+        ]
+      }
+    },
+    "/api/v1/pocket/{pocketId}": {
+      "get": {
+        "summary": "get a pocket",
+        "description": "This endpoint returns the pocket if the pocket exists\nexample: /api/v1/pocket/xxxxxxx",
+        "operationId": "GetPocket",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/GetPocketResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "pocketId",
+            "description": "The pocket account id\nValidations:\n- pocket_account_id must be greater than 0",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "pocket"
+        ]
+      }
+    },
+    "/api/v1/profile": {
+      "post": {
+        "summary": "create a user profile",
+        "description": "This endpoint performs an a creation operation of a user profile based on the provided parametersThis operation is implemented as a distributed transactions as this operation can span multiple services",
+        "operationId": "CreateUserProfile",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/CreateUserProfileResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateUserProfileRequest"
+            }
+          }
+        ],
+        "tags": [
+          "user profile"
+        ]
+      },
+      "put": {
+        "summary": "update a user profile",
+        "description": "This endpoint performs an updates operation on a user profile based on the provided parametersThis update operation can span multiple services on specific cases (such as when the client is explicitly attempting to update the email of the user)All update operations are atomic by nature hence we should not expect any form of divergent state",
+        "operationId": "UpdateUserProfile",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": ".api.v1.UpdateUserResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdateUserProfileRequest"
+            }
+          }
+        ],
+        "tags": [
+          "user profile"
+        ]
+      }
+    },
+    "/api/v1/profile/{userId}": {
+      "get": {
+        "summary": "Gets a user profile",
+        "description": "Queries and obtains a user profile based on the provided parameters",
+        "operationId": "GetUserProfile",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/GetUserProfileResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "description": "The account ID associated with the user.\nNOTE: This user_id is the simfiny backend platform wide user id\nValidations:\n- user_id must be greater than 0",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "user profile"
+        ]
+      },
+      "delete": {
+        "summary": "deletes a user profile",
+        "description": "This endpoint performs a delete operation on a user profile based on the provided parametersThis deletion operation spans multiple services (plaid) as user details are stored across a suite of our backend servicesThe operation itself is an atomic one of nature. Either all services successfully delete the recod or we fail the requestDivergent state is not expected to be encountered with this endpoint.",
+        "operationId": "DeleteUserProfile",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/DeleteUserProfileResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "description": "The account ID associated with the user.\nNOTE: This user_id is the simfiny backend platform wide user id\nValidations:\n- user_id must be greater than 0",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "user profile"
+        ]
+      }
+    },
+    "/api/v1/ready": {
+      "get": {
+        "summary": "readyness check",
+        "description": "This endpoint performs a readiness check on the service",
+        "operationId": "ReadynessCheck",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ReadynessCheckResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "tags": [
+          "service readyness"
+        ]
+      }
+    },
+    "/api/v1/smart-goal": {
+      "post": {
+        "summary": "create a smart goal",
+        "description": "This endpoint creates a smart goal",
+        "operationId": "CreateSmartGoal",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/CreateSmartGoalResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "pocketId",
+            "description": "The pocket account id\nValidations:\n- pocket_account_id must be greater than 0",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "smartGoal.id",
+            "description": "id",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "smartGoal.userId",
+            "description": "the user id to which this goal is tied to",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "smartGoal.name",
+            "description": "The name of the goal\nValidations:\n- must be at least 3 characters long",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "smartGoal.description",
+            "description": "The description of the goal\nValidations:\n- must be at least 3 characters long",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "smartGoal.isCompleted",
+            "description": "wether the goal has been achieved or not",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "smartGoal.goalType",
+            "description": "The type of the goal",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "GOAL_TYPE_UNSPECIFIED",
+              "GOAL_TYPE_SAVINGS",
+              "GOAL_TYPE_INVESTMENT",
+              "GOAL_TYPE_DEBT",
+              "GOAL_TYPE_EXPENSE"
+            ],
+            "default": "GOAL_TYPE_UNSPECIFIED"
+          },
+          {
+            "name": "smartGoal.duration",
+            "description": "The duration of the goal",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "smartGoal.startDate",
+            "description": "the start date of the goal",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "smartGoal.endDate",
+            "description": "the end date of the goal",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "smartGoal.targetAmount",
+            "description": "the target amount of the goal\namount of money the user wants to save or invest",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "smartGoal.currentAmount",
+            "description": "the current amount of the goal\ncurrent amount of money saved or invested towards the goal",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "smartGoal.forecasts.id",
+            "description": "id",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "smartGoal.forecasts.forecastedAmount",
+            "description": "the forecasted amount of the goal",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "smartGoal.forecasts.forecastedCompletionDate",
+            "description": "the forecasted completion date of the goal",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "smartGoal.forecasts.varianceAmount",
+            "description": "the forecasted variance of the goal between the forecasted and target amounts",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "smart goals"
+        ]
+      },
+      "put": {
+        "summary": "update a smart goal",
+        "description": "This endpoint updates a smart goal",
+        "operationId": "UpdateSmartGoal",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/UpdateSmartGoalResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdateSmartGoalRequest"
+            }
+          }
+        ],
+        "tags": [
+          "smart goals"
+        ]
+      }
+    },
+    "/api/v1/smart-goal/pocket/{pocketId}": {
+      "get": {
+        "summary": "get smart goals by pocket id",
+        "description": "This endpoint returns the smart goals if the pocket exists",
+        "operationId": "GetSmartGoalsByPocketId",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/GetSmartGoalsByPocketIdResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "pocketId",
+            "description": "The pocket account id\nValidations:\n- pocket_account_id must be greater than 0",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "smart goals"
+        ]
+      }
+    },
+    "/api/v1/smart-goal/{smartGoalId}/pocket/{pocketId}": {
+      "delete": {
+        "summary": "delete a smart goal",
+        "description": "This endpoint deletes a smart goal",
+        "operationId": "DeleteSmartGoal",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/DeleteSmartGoalResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "smartGoalId",
+            "description": "The smart goal id\nValidations:\n- smart_goal_id must be greater than 0",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "pocketId",
+            "description": "The pocket account id\nValidations:\n- pocket_account_id must be greater than 0",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "smart goals"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "Any": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "Apr": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "percentage": {
+          "type": "number",
+          "format": "double"
+        },
+        "type": {
+          "type": "string"
+        },
+        "balanceSubjectToApr": {
+          "type": "number",
+          "format": "double"
+        },
+        "interestChargeAmount": {
+          "type": "number",
+          "format": "double"
+        }
+      }
+    },
+    "BankAccount": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uint64",
+          "title": "id"
+        },
+        "userId": {
+          "type": "string",
+          "title": "the user id to which this bank account is tied to"
+        },
+        "name": {
+          "type": "string",
+          "title": "the bank account name"
+        },
+        "number": {
+          "type": "string",
+          "title": "the bank account number"
+        },
+        "type": {
+          "type": "string",
+          "title": "the bank account type"
+        },
+        "balance": {
+          "type": "number",
+          "format": "float",
+          "title": "the bank account balance"
+        },
+        "currency": {
+          "type": "string",
+          "title": "the bank account currency"
+        },
+        "currentFunds": {
+          "type": "number",
+          "format": "double"
+        },
+        "balanceLimit": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "pockets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Pocket"
+          },
+          "title": "the set of \"virtualized accounts this user witholds\"\nNOTE: these pockets are automatically created by the system\nwhen a user connects a bank account"
+        },
+        "plaidAccountId": {
+          "type": "string",
+          "title": "plaid account id mapped to this bank account"
+        },
+        "subtype": {
+          "type": "string",
+          "title": "account subtype"
+        }
+      }
+    },
+    "Budget": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uint64",
+          "title": "id"
+        },
+        "name": {
+          "type": "string",
+          "example": "Buy a car",
+          "title": "The name of the budget",
+          "minLength": 10
+        },
+        "description": {
+          "type": "string"
+        },
+        "startDate": {
+          "type": "string",
+          "title": "the time the goal was created"
+        },
+        "endDate": {
+          "type": "string",
+          "title": "the time the goal was updated"
+        },
+        "category": {
+          "$ref": "#/definitions/Category",
+          "title": "category associated with the goal"
+        }
+      },
+      "description": "The Budgets table stores information about each budget created by the user,\nincluding the name of the budget, the start and end dates, and the user ID."
+    },
+    "Category": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uint64",
+          "title": "id"
+        },
+        "name": {
+          "type": "string",
+          "example": "Housing",
+          "title": "The name of the category",
+          "minLength": 3
+        },
+        "description": {
+          "type": "string",
+          "example": "Housing is a category primarily for housing",
+          "title": "The description of the category",
+          "minLength": 10
+        },
+        "subcategories": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "the sub categories of the category"
+        }
+      },
+      "description": "The Categories table stores information about the different categories of expenses or income,\nsuch as \"Housing\", \"Food\", \"Transportation\", and \"Entertainment\". Each category has one or more\nsubcategories, which are stored in the Subcategories table.\n\nFor example, the \"Housing\" category might have subcategories for \"Rent\", \"Utilities\", and \"Home Maintenance\"."
+    },
+    "CreateBankAccountResponse": {
+      "type": "object",
+      "properties": {
+        "bankAccountId": {
+          "type": "string",
+          "format": "uint64",
+          "title": "The bank account id"
+        }
+      },
+      "title": "CreateBankAccountResponse: Represents the response object returned as a response to\nthe `create bank account` request"
+    },
+    "CreateBudgetResponse": {
+      "type": "object",
+      "properties": {
+        "budgetId": {
+          "type": "string",
+          "format": "uint64",
+          "title": "The budget id"
+        }
+      }
+    },
+    "CreateMilestoneResponse": {
+      "type": "object",
+      "properties": {
+        "milestoneId": {
+          "type": "string",
+          "format": "uint64",
+          "title": "The milestone id"
+        }
+      }
+    },
+    "CreateSmartGoalResponse": {
+      "type": "object",
+      "properties": {
+        "smartGoalId": {
+          "type": "string",
+          "format": "uint64",
+          "title": "The smart goal id"
+        }
+      }
+    },
+    "CreateUserProfileRequest": {
+      "type": "object",
+      "properties": {
+        "profile": {
+          "$ref": "#/definitions/UserProfile",
+          "title": "User profile to create\nValidations:\n- cannot be nil hence required"
+        },
+        "email": {
+          "type": "string",
+          "title": "the email of the account to create"
+        }
+      },
+      "title": "CreateUserProfileRequest: Represents the request object invoked against the user\nservice to create a user profile",
+      "required": [
+        "profile",
+        "email"
+      ]
+    },
+    "CreateUserProfileResponse": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "format": "uint64"
+        }
+      },
+      "title": "CreateUserProfileResponse: Represents the response object returned as a response to\nthe `create user profile` request"
+    },
+    "CreditAccount": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uint64",
+          "title": "id"
+        },
+        "userId": {
+          "type": "string",
+          "title": "the user id to which this bank account is tied to"
+        },
+        "name": {
+          "type": "string",
+          "title": "the account name"
+        },
+        "number": {
+          "type": "string",
+          "title": "the bank account number"
+        },
+        "type": {
+          "type": "string",
+          "title": "the bank account type"
+        },
+        "balance": {
+          "type": "number",
+          "format": "float",
+          "title": "the bank account balance"
+        },
+        "currentFunds": {
+          "type": "number",
+          "format": "double",
+          "title": "current funds on the account"
+        },
+        "balanceLimit": {
+          "type": "string",
+          "format": "uint64",
+          "title": "balance limit"
+        },
+        "plaidAccountId": {
+          "type": "string",
+          "title": "plaid account id mapped to this bank account"
+        },
+        "subtype": {
+          "type": "string",
+          "title": "accoint subtype"
+        },
+        "isOverdue": {
+          "type": "boolean",
+          "title": "wether the account is overdue"
+        },
+        "lastPaymentAmount": {
+          "type": "number",
+          "format": "double",
+          "title": "the last payment amount"
+        },
+        "lastPaymentDate": {
+          "type": "string",
+          "title": "the last payment date"
+        },
+        "lastStatementIssueDate": {
+          "type": "string",
+          "title": "the last statement issue date"
+        },
+        "minimumAmountDueDate": {
+          "type": "number",
+          "format": "double",
+          "title": "the minimum amount due date"
+        },
+        "nextPaymentDate": {
+          "type": "string",
+          "title": "the next payment date"
+        },
+        "aprs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Apr"
+          },
+          "title": "the aprs"
+        },
+        "lastStatementBalance": {
+          "type": "number",
+          "format": "double",
+          "title": "the last statement balance"
+        },
+        "minimumPaymentAmount": {
+          "type": "number",
+          "format": "double",
+          "title": "the minimum payment amount"
+        },
+        "nextPaymentDueDate": {
+          "type": "string",
+          "title": "the next payment due date"
+        }
+      }
+    },
+    "DeleteBankAccountResponse": {
+      "type": "object",
+      "properties": {
+        "deleted": {
+          "type": "boolean",
+          "example": "true",
+          "title": "The bank account id"
+        }
+      }
+    },
+    "DeleteBudgetResponse": {
+      "type": "object",
+      "properties": {
+        "deleted": {
+          "type": "boolean",
+          "title": "The budget id"
+        }
+      }
+    },
+    "DeleteMilestoneResponse": {
+      "type": "object",
+      "properties": {
+        "deleted": {
+          "type": "boolean",
+          "title": "The milestone id"
+        }
+      }
+    },
+    "DeleteSmartGoalResponse": {
+      "type": "object",
+      "properties": {
+        "deleted": {
+          "type": "boolean",
+          "title": "The smart goal id"
+        }
+      }
+    },
+    "DeleteUserProfileResponse": {
+      "type": "object",
+      "properties": {
+        "profileDeleted": {
+          "type": "boolean"
+        }
+      },
+      "title": "DeleteUserProfileResponse: Represents the response object returned as a response to\nthe `delete user profile` request"
+    },
+    "ErrorCode": {
+      "type": "string",
+      "enum": [
+        "no_error",
+        "validation_error",
+        "authorization_model_not_found",
+        "authorization_model_resolution_too_complex",
+        "invalid_write_input",
+        "cannot_allow_duplicate_tuples_in_one_request",
+        "cannot_allow_duplicate_types_in_one_request",
+        "cannot_allow_multiple_references_to_one_relation",
+        "invalid_continuation_token",
+        "invalid_tuple_set",
+        "invalid_check_input",
+        "invalid_expand_input",
+        "unsupported_user_set",
+        "invalid_object_format",
+        "write_failed_due_to_invalid_input",
+        "authorization_model_assertions_not_found",
+        "latest_authorization_model_not_found",
+        "type_not_found",
+        "relation_not_found",
+        "empty_relation_definition",
+        "invalid_user",
+        "invalid_tuple",
+        "unknown_relation",
+        "store_id_invalid_length",
+        "assertions_too_many_items",
+        "id_too_long",
+        "authorization_model_id_too_long",
+        "tuple_key_value_not_specified",
+        "tuple_keys_too_many_or_too_few_items",
+        "page_size_invalid",
+        "param_missing_value",
+        "difference_base_missing_value",
+        "subtract_base_missing_value",
+        "object_too_long",
+        "relation_too_long",
+        "type_definitions_too_few_items",
+        "type_invalid_length",
+        "type_invalid_pattern",
+        "relations_too_few_items",
+        "relations_too_long",
+        "relations_invalid_pattern",
+        "object_invalid_pattern",
+        "query_string_type_continuation_token_mismatch",
+        "exceeded_entity_limit",
+        "invalid_contextual_tuple",
+        "duplicate_contextual_tuple",
+        "invalid_authorization_model",
+        "unsupported_schema_version"
+      ],
+      "default": "no_error"
+    },
+    "Forecast": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uint64",
+          "title": "id"
+        },
+        "forecastedAmount": {
+          "type": "string",
+          "example": "Active",
+          "title": "the forecasted amount of the goal"
+        },
+        "forecastedCompletionDate": {
+          "type": "string",
+          "example": "Active",
+          "title": "the forecasted completion date of the goal"
+        },
+        "varianceAmount": {
+          "type": "string",
+          "example": "Active",
+          "title": "the forecasted variance of the goal between the forecasted and target amounts"
+        }
+      },
+      "description": "The Forecast table stores information about each forecast generated for a particular goal,\nincluding the forecast date, the forecasted amount of money saved or invested for the\ngoal by the target date, and the variance between the forecasted and target amounts.\nThis allows the user to track how well they are progressing towards their goal and make adjustments as needed."
+    },
+    "GetAllBudgetsResponse": {
+      "type": "object",
+      "properties": {
+        "budgets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Budget"
+          },
+          "title": "The budgets"
+        }
+      }
+    },
+    "GetBankAccountResponse": {
+      "type": "object",
+      "properties": {
+        "bankAccount": {
+          "$ref": "#/definitions/BankAccount",
+          "title": "The bank account"
+        }
+      },
+      "title": "GetBankAccountResponse: Represents the response object returned as a response to\nthe `get bank account` request"
+    },
+    "GetBudgetResponse": {
+      "type": "object",
+      "properties": {
+        "budget": {
+          "$ref": "#/definitions/Budget",
+          "title": "The budget"
+        }
+      }
+    },
+    "GetForecastResponse": {
+      "type": "object",
+      "properties": {
+        "forecast": {
+          "$ref": "#/definitions/Forecast",
+          "title": "The forecast"
+        }
+      }
+    },
+    "GetInvestmentAcccountResponse": {
+      "type": "object",
+      "properties": {
+        "investmentAccount": {
+          "$ref": "#/definitions/InvestmentAccount",
+          "title": "The investment account"
+        }
+      }
+    },
+    "GetLiabilityAccountResponse": {
+      "type": "object",
+      "properties": {
+        "liabilityAccount": {
+          "$ref": "#/definitions/CreditAccount",
+          "title": "The liability account"
+        }
+      }
+    },
+    "GetMilestoneResponse": {
+      "type": "object",
+      "properties": {
+        "milestone": {
+          "$ref": "#/definitions/Milestone",
+          "title": "The milestone"
+        }
+      }
+    },
+    "GetMilestonesBySmartGoalIdResponse": {
+      "type": "object",
+      "properties": {
+        "milestones": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Milestone"
+          },
+          "title": "The milestones"
+        }
+      }
+    },
+    "GetMortageAccountResponse": {
+      "type": "object",
+      "properties": {
+        "mortageAccount": {
+          "$ref": "#/definitions/MortgageAccount",
+          "title": "The mortage account"
+        }
+      }
+    },
+    "GetPocketResponse": {
+      "type": "object",
+      "properties": {
+        "pocket": {
+          "$ref": "#/definitions/Pocket",
+          "title": "The pocket account"
+        }
+      }
+    },
+    "GetSmartGoalsByPocketIdResponse": {
+      "type": "object",
+      "properties": {
+        "smartGoals": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SmartGoal"
+          },
+          "title": "The smart goals"
+        }
+      }
+    },
+    "GetStudentLoanAccountResponse": {
+      "type": "object",
+      "properties": {
+        "studentLoanAccount": {
+          "$ref": "#/definitions/StudentLoanAccount",
+          "title": "The student loan account"
+        }
+      }
+    },
+    "GetUserProfileResponse": {
+      "type": "object",
+      "properties": {
+        "profile": {
+          "$ref": "#/definitions/UserProfile"
+        }
+      },
+      "title": "GetUserProfileResponse: Represents the response object returned as a response to\nthe `get user profile` request"
+    },
+    "GoalType": {
+      "type": "string",
+      "enum": [
+        "GOAL_TYPE_UNSPECIFIED",
+        "GOAL_TYPE_SAVINGS",
+        "GOAL_TYPE_INVESTMENT",
+        "GOAL_TYPE_DEBT",
+        "GOAL_TYPE_EXPENSE"
+      ],
+      "default": "GOAL_TYPE_UNSPECIFIED"
+    },
+    "HealthCheckResponse": {
+      "type": "object",
+      "properties": {
+        "healthy": {
+          "type": "boolean"
+        }
+      }
+    },
+    "InternalErrorCode": {
+      "type": "string",
+      "enum": [
+        "no_internal_error",
+        "internal_error",
+        "cancelled",
+        "deadline_exceeded",
+        "already_exists",
+        "resource_exhausted",
+        "failed_precondition",
+        "aborted",
+        "out_of_range",
+        "unavailable",
+        "data_loss"
+      ],
+      "default": "no_internal_error"
+    },
+    "InternalErrorMessageResponse": {
+      "type": "object",
+      "example": {
+        "code": "internal_error",
+        "message": "Internal Server Error"
+      },
+      "properties": {
+        "code": {
+          "$ref": "#/definitions/InternalErrorCode"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "InvesmentHolding": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uint64",
+          "title": "id"
+        },
+        "name": {
+          "type": "string",
+          "example": "nfdkjfjksdhjhfjsdhjgf",
+          "title": "The name of the investment holding",
+          "minLength": 3
+        },
+        "plaidAccountId": {
+          "type": "string",
+          "example": "k67E4xKvMlhmleEa4pg9hlwGGNnnEeixPolGm",
+          "title": "plaid account id"
+        },
+        "costBasis": {
+          "type": "number",
+          "format": "double",
+          "example": "15"
+        },
+        "institutionPrice": {
+          "type": "number",
+          "format": "double",
+          "example": "13.73"
+        },
+        "institutionPriceAsOf": {
+          "type": "string",
+          "example": "2021-04-13"
+        },
+        "institutionPriceDatetime": {
+          "type": "string",
+          "example": "2022-06-07T23:01:00Z"
+        },
+        "institutionValue": {
+          "type": "number",
+          "format": "double",
+          "example": "4437.35905"
+        },
+        "isoCurrencyCode": {
+          "type": "string",
+          "example": "USD"
+        },
+        "quantity": {
+          "type": "number",
+          "format": "double",
+          "example": "25000"
+        },
+        "securityId": {
+          "type": "string",
+          "example": "vLRMV3MvY1FYNP91on35CJD5QN5rw9Fpa9qOL"
+        },
+        "unofficialCurrencyCode": {
+          "type": "string",
+          "example": "USD"
+        }
+      }
+    },
+    "InvestmentAccount": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uint64",
+          "title": "id"
+        },
+        "userId": {
+          "type": "string",
+          "title": "the user id to which this bank account is tied to"
+        },
+        "name": {
+          "type": "string",
+          "title": "the account name"
+        },
+        "number": {
+          "type": "string",
+          "title": "the bank account number"
+        },
+        "type": {
+          "type": "string",
+          "title": "the bank account type"
+        },
+        "balance": {
+          "type": "number",
+          "format": "float",
+          "title": "the bank account balance"
+        },
+        "currentFunds": {
+          "type": "number",
+          "format": "double"
+        },
+        "balanceLimit": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "plaidAccountId": {
+          "type": "string",
+          "title": "plaid account id mapped to this bank account"
+        },
+        "subtype": {
+          "type": "string",
+          "title": "accoint subtype"
+        },
+        "holdings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/InvesmentHolding"
+          },
+          "title": "invesment holding is the set of securities this account witholds"
+        },
+        "securities": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/InvestmentSecurity"
+          },
+          "title": "the set of securities this account witholds"
+        }
+      }
+    },
+    "InvestmentSecurity": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uint64",
+          "title": "id"
+        },
+        "closePrice": {
+          "type": "number",
+          "format": "double",
+          "example": " 0.140034616"
+        },
+        "closePriceAsOf": {
+          "type": "string",
+          "example": "2022-01-24"
+        },
+        "cusip": {
+          "type": "string",
+          "example": "dfkjhdgjdhhgd"
+        },
+        "institutionId": {
+          "type": "string",
+          "example": "ins_3"
+        },
+        "institutionSecurityId": {
+          "type": "string",
+          "example": "dfkjhdgjdhhgd"
+        },
+        "isCashEquivalent": {
+          "type": "boolean",
+          "example": "true"
+        },
+        "isin": {
+          "type": "string",
+          "example": "dfkjhdgjdhhgd"
+        },
+        "isoCurrencyCode": {
+          "type": "string",
+          "example": "USD"
+        },
+        "name": {
+          "type": "string",
+          "example": "Dogecoin"
+        },
+        "proxySecurityId": {
+          "type": "string",
+          "example": "dfkjhdgjdhhgd"
+        },
+        "securityId": {
+          "type": "string",
+          "example": "vLRMV3MvY1FYNP91on35CJD5QN5rw9Fpa9qOL"
+        },
+        "sedol": {
+          "type": "string",
+          "example": "dfkjhdgjdhhgd"
+        },
+        "tickerSymbol": {
+          "type": "string",
+          "example": "DOGE"
+        },
+        "type": {
+          "type": "string",
+          "example": "cryptocurrency"
+        },
+        "unofficialCurrencyCode": {
+          "type": "string",
+          "example": "USD"
+        },
+        "updateDatetime": {
+          "type": "string",
+          "example": "2022-06-07T23:01:00Z"
+        }
+      }
+    },
+    "Milestone": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uint64",
+          "title": "id"
+        },
+        "name": {
+          "type": "string",
+          "example": "Buy a car",
+          "title": "The name of the milestone\nValidations:\n- must be at least 3 characters long"
+        },
+        "description": {
+          "type": "string",
+          "example": "Buy a car",
+          "title": "The description of the miletone\nValidations:\n- must be at least 3 characters long"
+        },
+        "targetDate": {
+          "type": "string",
+          "example": "testtagdescription",
+          "title": "the target date of the milestone\nValidations:\n- must be at least 3 characters long"
+        },
+        "targetAmount": {
+          "type": "string",
+          "example": "Active",
+          "title": "the target amount of the milestone"
+        },
+        "isCompleted": {
+          "type": "boolean",
+          "example": true,
+          "title": "wethe milestone is completed or not"
+        },
+        "budget": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Budget"
+          },
+          "title": "the budget associated with the milestone"
+        }
+      },
+      "title": "Milestone: represents a milestone in the context of simfinni. A financial milestone that is both smart\nand achievable. A milestone is a sub goal of a goal and is tied to a goal by the goal id"
+    },
+    "MortgageAccount": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "plaidAccountId": {
+          "type": "string"
+        },
+        "accountNumber": {
+          "type": "string"
+        },
+        "currentLateFee": {
+          "type": "number",
+          "format": "double"
+        },
+        "escrowBalance": {
+          "type": "number",
+          "format": "double"
+        },
+        "hasPmi": {
+          "type": "boolean"
+        },
+        "hasPrepaymentPenalty": {
+          "type": "boolean"
+        },
+        "lastPaymentAmount": {
+          "type": "number",
+          "format": "double"
+        },
+        "lastPaymentDate": {
+          "type": "string"
+        },
+        "loanTerm": {
+          "type": "string"
+        },
+        "loanTypeDescription": {
+          "type": "string"
+        },
+        "maturityDate": {
+          "type": "string"
+        },
+        "nextMonthlyPayment": {
+          "type": "number",
+          "format": "double"
+        },
+        "nextPaymentDueDate": {
+          "type": "string"
+        },
+        "originalPrincipalBalance": {
+          "type": "number",
+          "format": "double"
+        },
+        "originalPropertyValue": {
+          "type": "number",
+          "format": "double"
+        },
+        "outstandingPrincipalBalance": {
+          "type": "number",
+          "format": "double"
+        },
+        "paymentAmount": {
+          "type": "number",
+          "format": "double"
+        },
+        "paymentDate": {
+          "type": "string"
+        },
+        "originationDate": {
+          "type": "string"
+        },
+        "originationPrincipalAmount": {
+          "type": "number",
+          "format": "double"
+        },
+        "pastDueAmount": {
+          "type": "number",
+          "format": "double"
+        },
+        "ytdInterestPaid": {
+          "type": "number",
+          "format": "double"
+        },
+        "ytdPrincipalPaid": {
+          "type": "number",
+          "format": "double"
+        },
+        "propertyAddressCity": {
+          "type": "string"
+        },
+        "propertyAddressState": {
+          "type": "string"
+        },
+        "propertyAddressStreet": {
+          "type": "string"
+        },
+        "propertyAddressPostalCode": {
+          "type": "string"
+        },
+        "propertyRegion": {
+          "type": "string"
+        },
+        "propertyCountry": {
+          "type": "string"
+        },
+        "interestRatePercentage": {
+          "type": "number",
+          "format": "double"
+        },
+        "interestRateType": {
+          "type": "string"
+        }
+      }
+    },
+    "NotFoundErrorCode": {
+      "type": "string",
+      "enum": [
+        "no_not_found_error",
+        "undefined_endpoint",
+        "store_id_not_found",
+        "unimplemented"
+      ],
+      "default": "no_not_found_error"
+    },
+    "PathUnknownErrorMessageResponse": {
+      "type": "object",
+      "example": {
+        "code": "undefined_endpoint",
+        "message": "Endpoint not enabled"
+      },
+      "properties": {
+        "code": {
+          "$ref": "#/definitions/NotFoundErrorCode"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "PlaidExchangeTokenRequest": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "format": "uint64",
+          "title": "The user id\nValidations:\n- user_id must be greater than 0"
+        },
+        "publicToken": {
+          "type": "string",
+          "title": "The public token\nValidations:\n- cannot be nil hence required"
+        }
+      },
+      "required": [
+        "userId",
+        "publicToken"
+      ]
+    },
+    "PlaidExchangeTokenResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "title": "wether the operation was successful"
+        }
+      },
+      "required": [
+        "success"
+      ]
+    },
+    "PlaidInitiateTokenExchangeRequest": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "format": "uint64",
+          "title": "The user id\nValidations:\n- user_id must be greater than 0"
+        }
+      },
+      "required": [
+        "userId"
+      ]
+    },
+    "PlaidInitiateTokenExchangeResponse": {
+      "type": "object",
+      "properties": {
+        "linkToken": {
+          "type": "string"
+        },
+        "expiration": {
+          "type": "string"
+        },
+        "plaidRequestId": {
+          "type": "string"
+        }
+      }
+    },
+    "Pocket": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uint64",
+          "title": "id"
+        },
+        "goals": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SmartGoal"
+          },
+          "title": "the set of smart goals this user witholds"
+        },
+        "type": {
+          "$ref": "#/definitions/PocketType",
+          "title": "The type of the pocket"
+        }
+      },
+      "title": "Pocket is an abstraction of a over a bank account. A user can has at most 4 pockets per connected account\nNOTE: these pockets are automatically created by the system and should not be exposed for mutation\nby any client. The only operations that can be performed against a pocket are:\n1. Get the pocket\n2. Get the pocket's smart goals\n3. Adding a smart goal to the pocket"
+    },
+    "PocketType": {
+      "type": "string",
+      "enum": [
+        "POCKET_TYPE_UNSPECIFIED",
+        "POCKET_TYPE_DISCRETIONARY_SPENDING",
+        "POCKET_TYPE_FUN_MONEY",
+        "POCKET_TYPE_DEBT_REDUCTION",
+        "POCKET_TYPE_EMERGENCY_FUND"
+      ],
+      "default": "POCKET_TYPE_UNSPECIFIED"
+    },
+    "ReadynessCheckResponse": {
+      "type": "object",
+      "properties": {
+        "healthy": {
+          "type": "boolean"
+        }
+      }
+    },
+    "SmartGoal": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uint64",
+          "title": "id"
+        },
+        "userId": {
+          "type": "string",
+          "title": "the user id to which this goal is tied to"
+        },
+        "name": {
+          "type": "string",
+          "example": "Buy a car",
+          "title": "The name of the goal\nValidations:\n- must be at least 3 characters long"
+        },
+        "description": {
+          "type": "string",
+          "example": "Buy a car",
+          "title": "The description of the goal\nValidations:\n- must be at least 3 characters long"
+        },
+        "isCompleted": {
+          "type": "boolean",
+          "example": true,
+          "title": "wether the goal has been achieved or not"
+        },
+        "goalType": {
+          "$ref": "#/definitions/GoalType",
+          "title": "The type of the goal"
+        },
+        "duration": {
+          "type": "string",
+          "example": "Active",
+          "title": "The duration of the goal"
+        },
+        "startDate": {
+          "type": "string",
+          "example": "Active",
+          "title": "the start date of the goal"
+        },
+        "endDate": {
+          "type": "string",
+          "example": "Active",
+          "title": "the end date of the goal"
+        },
+        "targetAmount": {
+          "type": "string",
+          "example": "Active",
+          "title": "the target amount of the goal\namount of money the user wants to save or invest"
+        },
+        "currentAmount": {
+          "type": "string",
+          "example": "Active",
+          "title": "the current amount of the goal\ncurrent amount of money saved or invested towards the goal"
+        },
+        "milestones": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Milestone"
+          },
+          "title": "Milestones associated with the goal"
+        },
+        "forecasts": {
+          "$ref": "#/definitions/Forecast",
+          "title": "Forecasts associated with the goal"
+        }
+      },
+      "description": "SmartGoal: The Goals table stores information about each financial goal, including the name of the goal,\nits description, the target amount of money the user wants to save or invest, and the expected date of completion.\n\nThe Goals table also includes columns for the start date of the goal, the current amount of money saved or\ninvested towards the goal, and a boolean flag indicating whether the goal has been achieved.\nThese additional columns allow the user to track their progress towards the goal and see how much\nmore they need to save or invest to reach their target amount."
+    },
+    "Status": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Any"
+          }
+        }
+      }
+    },
+    "StudentLoanAccount": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uint64",
+          "title": "id"
+        },
+        "plaidAccountId": {
+          "type": "string"
+        },
+        "disbursementDates": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "expectedPayoffDate": {
+          "type": "string"
+        },
+        "guarantor": {
+          "type": "string"
+        },
+        "interestRatePercentage": {
+          "type": "number",
+          "format": "double"
+        },
+        "isOverdue": {
+          "type": "boolean"
+        },
+        "lastPaymentAmount": {
+          "type": "number",
+          "format": "double"
+        },
+        "lastPaymentDate": {
+          "type": "string"
+        },
+        "lastStatementIssueDate": {
+          "type": "string"
+        },
+        "loanName": {
+          "type": "string"
+        },
+        "loanEndDate": {
+          "type": "string"
+        },
+        "minimumPaymentAmount": {
+          "type": "number",
+          "format": "double"
+        },
+        "nextPaymentDueDate": {
+          "type": "string"
+        },
+        "originationDate": {
+          "type": "string"
+        },
+        "originationPrincipalAmount": {
+          "type": "number",
+          "format": "double"
+        },
+        "outstandingInterestAmount": {
+          "type": "number",
+          "format": "double"
+        },
+        "paymentReferenceNumber": {
+          "type": "string"
+        },
+        "sequenceNumber": {
+          "type": "string"
+        },
+        "ytdInterestPaid": {
+          "type": "number",
+          "format": "double"
+        },
+        "ytdPrincipalPaid": {
+          "type": "number",
+          "format": "double"
+        },
+        "loanType": {
+          "type": "string"
+        },
+        "pslfStatusEstimatedEligibilityDate": {
+          "type": "string"
+        },
+        "pslfStatusPaymentsMade": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "pslfStatusPaymentsRemaining": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "repaymentPlanType": {
+          "type": "string"
+        },
+        "repaymentPlanDescription": {
+          "type": "string"
+        },
+        "servicerAddressCity": {
+          "type": "string"
+        },
+        "servicerAddressPostalCode": {
+          "type": "string"
+        },
+        "servicerAddressState": {
+          "type": "string"
+        },
+        "servicerAddressStreet": {
+          "type": "string"
+        },
+        "servicerAddressRegion": {
+          "type": "string"
+        },
+        "servicerAddressCountry": {
+          "type": "string"
+        },
+        "userId": {
+          "type": "string",
+          "title": "the user id to which this bank account is tied to"
+        },
+        "name": {
+          "type": "string",
+          "title": "the account name"
+        }
+      }
+    },
+    "UpdateBankAccountRequest": {
+      "type": "object",
+      "properties": {
+        "bankAccount": {
+          "$ref": "#/definitions/BankAccount",
+          "title": "The bank account to update\nValidations:\n- cannot be nil hence required"
+        }
+      },
+      "required": [
+        "bankAccount"
+      ]
+    },
+    "UpdateBankAccountResponse": {
+      "type": "object",
+      "properties": {
+        "updated": {
+          "type": "boolean",
+          "title": "The bank account id"
+        },
+        "bankAccount": {
+          "$ref": "#/definitions/BankAccount",
+          "title": "The bank account"
+        }
+      }
+    },
+    "UpdateBudgetRequest": {
+      "type": "object",
+      "properties": {
+        "budget": {
+          "$ref": "#/definitions/Budget",
+          "title": "The budget to update\nValidations:\n- cannot be nil hence required"
+        }
+      },
+      "required": [
+        "budget"
+      ]
+    },
+    "UpdateBudgetResponse": {
+      "type": "object",
+      "properties": {
+        "budget": {
+          "$ref": "#/definitions/Budget",
+          "title": "The budget id"
+        }
+      }
+    },
+    "UpdateMilestoneRequest": {
+      "type": "object",
+      "properties": {
+        "milestone": {
+          "$ref": "#/definitions/Milestone",
+          "title": "The milestone to update\nValidations:\n- cannot be nil hence required"
+        }
+      },
+      "required": [
+        "milestone"
+      ]
+    },
+    "UpdateMilestoneResponse": {
+      "type": "object",
+      "properties": {
+        "milestone": {
+          "$ref": "#/definitions/Milestone",
+          "title": "The milestone id"
+        }
+      }
+    },
+    "UpdateSmartGoalRequest": {
+      "type": "object",
+      "properties": {
+        "smartGoal": {
+          "$ref": "#/definitions/SmartGoal",
+          "title": "The smart goal to update\nValidations:\n- cannot be nil hence required"
+        }
+      },
+      "required": [
+        "smartGoal"
+      ]
+    },
+    "UpdateSmartGoalResponse": {
+      "type": "object",
+      "properties": {
+        "smartGoalId": {
+          "type": "string",
+          "format": "uint64",
+          "title": "The smart goal id"
+        }
+      }
+    },
+    "UpdateUserProfileRequest": {
+      "type": "object",
+      "properties": {
+        "profile": {
+          "$ref": "#/definitions/UserProfile",
+          "title": "User profile to update\nValidation:\n- cannot nil hence required"
+        }
+      },
+      "title": "UpdateUserProfileRequest: Represents the request object invoked against the user\nservice to update a user profile",
+      "required": [
+        "profile"
+      ]
+    },
+    "UpdateUserProfileResponse": {
+      "type": "object",
+      "properties": {
+        "profileUpdated": {
+          "type": "boolean"
+        },
+        "profile": {
+          "$ref": "#/definitions/UserProfile"
+        }
+      },
+      "title": "UpdateUserProfileResponse: Represents the response object returned as a response to\nthe `update user profile` request"
+    },
+    "UserProfile": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uint64",
+          "title": "id"
+        },
+        "userId": {
+          "type": "string",
+          "format": "uint64",
+          "title": "the user id tied to the profile"
+        },
+        "bankAccounts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BankAccount"
+          },
+          "title": "many bank accounts (connected) can be tied to a user"
+        },
+        "investmentAccounts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/InvestmentAccount"
+          },
+          "title": "investment accounts tied to a user"
+        },
+        "creditAccounts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CreditAccount"
+          },
+          "title": "credit accounts tied to a user"
+        },
+        "mortgageAccounts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/MortgageAccount"
+          },
+          "title": "mortgage accounts tied to a user"
+        },
+        "studentLoanAccounts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/StudentLoanAccount"
+          },
+          "title": "student loan accounts tied to a user"
+        },
+        "plaidAccessToken": {
+          "type": "string",
+          "title": "the user plaid access token"
+        },
+        "stripeCustomerId": {
+          "type": "string",
+          "title": "the customer id tied to the stripe account"
+        }
+      },
+      "title": "UserProfile stores high level user profile details\nsuch as the id, user_id tied to the profile, and many more"
+    },
+    "ValidationErrorMessageResponse": {
+      "type": "object",
+      "example": {
+        "code": "validation_error",
+        "message": "Generic validation error"
+      },
+      "properties": {
+        "code": {
+          "$ref": "#/definitions/ErrorCode"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

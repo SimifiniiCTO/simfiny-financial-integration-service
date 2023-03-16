@@ -1,0 +1,120 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/CreateMilestoneRequest",
+    "definitions": {
+        "CreateMilestoneRequest": {
+            "properties": {
+                "smart_goal_id": {
+                    "type": "string",
+                    "description": "The smart goal id Validations: - smart_goal_id must be greater than 0"
+                },
+                "milestone": {
+                    "$ref": "#/definitions/api.v1.Milestone",
+                    "additionalProperties": true,
+                    "description": "The milestone to create Validations: - cannot be nil hence required"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Create Milestone Request"
+        },
+        "api.v1.Budget": {
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "id"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "The name of the budget"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "start_date": {
+                    "type": "string",
+                    "description": "the time the goal was created"
+                },
+                "end_date": {
+                    "type": "string",
+                    "description": "the time the goal was updated"
+                },
+                "category": {
+                    "$ref": "#/definitions/api.v1.Category",
+                    "additionalProperties": true,
+                    "description": "category associated with the goal"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Budget",
+            "description": "The Budgets table stores information about each budget created by the user, including the name of the budget, the start and end dates, and the user ID."
+        },
+        "api.v1.Category": {
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "id"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "The name of the category"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "The description of the category"
+                },
+                "subcategories": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array",
+                    "description": "the sub categories of the category"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Category",
+            "description": "The Categories table stores information about the different categories of expenses or income, such as \"Housing\", \"Food\", \"Transportation\", and \"Entertainment\". Each category has one or more subcategories, which are stored in the Subcategories table. For example, the \"Housing\" category might have subcategories for \"Rent\", \"Utilities\", and \"Home Maintenance\"."
+        },
+        "api.v1.Milestone": {
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "id"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "The name of the milestone Validations: - must be at least 3 characters long"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "The description of the miletone Validations: - must be at least 3 characters long"
+                },
+                "target_date": {
+                    "type": "string",
+                    "description": "the target date of the milestone Validations: - must be at least 3 characters long"
+                },
+                "target_amount": {
+                    "type": "string",
+                    "description": "the target amount of the milestone"
+                },
+                "is_completed": {
+                    "type": "boolean",
+                    "description": "wethe milestone is completed or not"
+                },
+                "budget": {
+                    "items": {
+                        "$ref": "#/definitions/api.v1.Budget"
+                    },
+                    "type": "array",
+                    "description": "the budget associated with the milestone"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Milestone",
+            "description": "Milestone: represents a milestone in the context of simfinni. A financial milestone that is both smart and achievable. A milestone is a sub goal of a goal and is tied to a goal by the goal id"
+        }
+    }
+}

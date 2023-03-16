@@ -21,12 +21,9 @@ plugins:
     opt:
       - paths=source_relative
     strategy: directory
-  - plugin: gorm
+  - remote: buf.build/imerkle/plugins/protoc-gen-gorm:v1.0.0
     out: ../../generated
-    opt:
-      - paths=source_relative
-      - engine=postgres
-      - enums=string
+    opt: paths=source_relative,engine=postgres,enums=string
   - remote: buf.build/jirkad/plugins/protoc-gen-validate:v0.6.7
     out: ../../generated
     opt:
