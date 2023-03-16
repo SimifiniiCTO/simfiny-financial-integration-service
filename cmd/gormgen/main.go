@@ -30,7 +30,7 @@ func main() {
 
 func generateQueryFiles() {
 	g := gen.NewGenerator(gen.Config{
-		OutPath:           "../../generated/dal",
+		OutPath:           "../../internal/generated/dal",
 		WithUnitTest:      true,
 		FieldNullable:     true,
 		FieldCoverable:    true,
