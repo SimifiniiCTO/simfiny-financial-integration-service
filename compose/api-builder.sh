@@ -21,4 +21,4 @@ TAGS="development,mini,noui,icons"
 [ -d "pkg/icons/sources/simple-icons" ] && TAGS="${TAGS},simple_icons"
 
 echo "[builder] building the financial integration service now with tags (${TAGS})..."
-go build -ldflags "${LDFLAGS}" -tags=${TAGS} -o /usr/bin/simfiny github.com/SimifiniiCTO/simfiny-financial-integration-service
+go build -ldflags "${LDFLAGS}" -tags=${TAGS} -o /usr/bin/simfiny github.com/SimifiniiCTO/simfiny-financial-integration-service/cmd/podinfo

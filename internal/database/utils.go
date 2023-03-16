@@ -41,11 +41,14 @@ func connectToDatabase(ctx context.Context, params *ConnectionParameters, log *z
 	var dbConn *core_database.DatabaseConn
 	connectionString := configureConnectionString(ctx, params.Host, params.User, params.Password, params.DatabaseName, params.Port, params.SslMode)
 
+	log.Info("connecting to database", zap.Any("params", params))
 	log.Info(connectionString)
 
 	if dbConn = core_database.NewDatabaseConn(connectionString, "postgres"); dbConn == nil {
 		return nil, errors.New("failed to connect to merchant component database")
 	}
+
+	log.Info("db connection is valid")
 
 	if err := pingDatabase(ctx, dbConn); err != nil {
 		return nil, err

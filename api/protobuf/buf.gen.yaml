@@ -5,7 +5,7 @@ managed:
   java_package_prefix: com
   java_string_check_utf8: false
   go_package_prefix:
-    default: github.com/SimifiniiCTO/simfiny-user-service/generate/go/api/v1
+    default: github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1
     except:
       - buf.build/types/dependencies
       - buf.build/googleapis/googleapis

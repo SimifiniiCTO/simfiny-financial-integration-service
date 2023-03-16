@@ -73,11 +73,11 @@ func main() {
 	// TODO: ensure this comes from env variables
 	fs.String("newrelic-key", "62fd721c712d5863a4e75b8f547b7c1ea884NRAL", "new relic license key")
 	// database connection environment variables
-	fs.String("dbhost", "service-db", "database host string")
+	fs.String("dbhost", "service_db", "database host string")
 	fs.Int("dbport", 5432, "database port")
-	fs.String("dbuser", "service-db", "database user string")
-	fs.String("dbpassword", "service-db", "database password string")
-	fs.String("dbname", "service-db", "database name")
+	fs.String("dbuser", "service_db", "database user string")
+	fs.String("dbpassword", "service_db", "database password string")
+	fs.String("dbname", "service_db", "database name")
 	fs.String("dbsslmode", "disable", "wether tls connection is enabled")
 	fs.Int("max-db-conn-attempts", 2, "max database connection attempts")
 	fs.Int("max-db-conn-retries", 2, "max database connection attempts")
@@ -95,7 +95,7 @@ func main() {
 	fs.Int("grpc-gateway-port", 8090, "grpc gateway port")
 
 	fs.String("service-environment", "dev", "environment in which service is running")
-	fs.String("service-documentation", "https://github.com/SimifiniiCTO/simfinii/blob/main/src/backend/services/user-service/documentation/setup.md", "location of service docs")
+	fs.String("service-documentation", "https://github.com/SimifiniiCTO/simfinii/blob/main/src/backend/services/simfiny-financial-integration-service/documentation/setup.md", "location of service docs")
 	fs.String("point-of-contact", "yoanyomba", "service point of contact")
 	fs.Bool("metrics-reporting-enabled", true, "enable metrics reporting")
 	fs.String("stripe-api-key", "sk_test_4eC39HqLyjWDarjtT1zdp7dc", "")
@@ -133,12 +133,15 @@ func main() {
 		}
 	}
 
+	logger.Info("starting service ....")
+
 	// configure new relic sdk
 	app, err := configureNewrelicSDK(logger)
 	if err != nil {
 		logger.Panic(err.Error())
 	}
 
+	logger.Info("successfully initialized newrelic sdk ....")
 	instrumentation := configureServiceTelemetryInstance(app)
 
 	// configure plaid client
@@ -146,6 +149,8 @@ func main() {
 	if err != nil {
 		logger.Panic(err.Error())
 	}
+
+	logger.Info("successfully initialized plaid sdk ....")
 
 	// start stress tests if any
 	beginStressTest(viper.GetInt("stress-cpu"), viper.GetInt("stress-memory"), logger)
@@ -176,16 +181,21 @@ func main() {
 		logger.Panic("`random-delay-unit` accepted values are: s|ms")
 	}
 
+	logger.Info("initializing database ....")
 	db, err := configureDatabaseConn(ctx, logger, instrumentation)
 	if err != nil {
 		logger.Panic(err.Error())
 	}
+
+	logger.Info("successfully initialized database ....")
 
 	conn, err := db.Conn.Engine.DB()
 	if err != nil {
 		logger.Panic(err.Error())
 	}
 	defer conn.Close()
+
+	logger.Info("successfully initialized database ....")
 
 	// load gRPC server config
 	var grpcCfg grpc.Config
@@ -309,11 +319,6 @@ func configureDatabaseConn(ctx context.Context, logger *zap.Logger, instrumentat
 	maxDBRetryTimeout := viper.GetDuration("max-db-retry-timeout")
 	maxDBSleepInterval := viper.GetDuration("max-db-retry-sleep-interval")
 
-	if instrumentation != nil {
-		txn := instrumentation.StartTransaction("database-connection")
-		defer txn.End()
-	}
-
 	initializationParams := &database.ConnectionInitializationParams{
 		ConnectionParams: &database.ConnectionParameters{
 			Host:         host,
@@ -384,7 +389,7 @@ func beginStressTest(cpus int, mem int, logger *zap.Logger) {
 
 // LoadEnvVariables binds a set of flags to and loads environment variables
 func LoadEnvVariables(fs *pflag.FlagSet) {
-	viper.AddConfigPath("/go/src/github.com/SimifiniiCTO/simfinii/src/backend/services/user-service")
+	viper.AddConfigPath("/go/src/github.com/SimifiniiCTO/simfinii/src/backend/services/simfiny-financial-integration-service")
 	viper.BindPFlags(fs)
 	viper.RegisterAlias("BACKEND_SERVICE_URLS", "BACKEND_URL")
 	viper.SetConfigName("financial-integration-service")
