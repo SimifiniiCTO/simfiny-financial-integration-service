@@ -33,3 +33,17 @@ var ErrInvalidInputParam *FieldConfigurationError = &FieldConfigurationError{
 		OAuthErrorDescription: "",
 	},
 }
+
+var ErrInvalidDbObject *FieldConfigurationError = &FieldConfigurationError{
+	err: &ServiceError{
+		Code:                  ErrorCodeInvalidConfigurationParameters,
+		Err:                   errors.New("invalid parameters. please check database object and assert its parameters are of expected value"),
+		GRPCStatusCode:        codes.Internal,
+		Msg:                   "",
+		Param:                 "",
+		RequestID:             "",
+		Type:                  ErrorTypeParameters,
+		OAuthError:            "",
+		OAuthErrorDescription: "",
+	},
+}

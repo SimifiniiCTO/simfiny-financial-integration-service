@@ -4,7 +4,9 @@ import (
 	"context"
 	"time"
 
+	"github.com/labstack/gommon/log"
 	"go.uber.org/zap"
+	"gorm.io/gorm"
 
 	core_database "github.com/SimifiniiCTO/core/core-database"
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
@@ -135,37 +137,137 @@ type ConnectionInitializationParams struct {
 	RetrySleepInterval time.Duration
 	// Telemetry defines the object by which we will emit metrics, trace requests, and database operations
 	Instrumentation *instrumentation.ServiceTelemetry
+	QueryTimeout    *time.Duration
 }
 
-// New creates a database connection and returns the connection object
-func New(ctx context.Context, params *ConnectionInitializationParams) (*Db,
-	error) {
-	errInvalidInputParams := service_errors.ErrInvalidInputParam
+func New(ctx context.Context, opts ...Option) (*Db, error) {
+	database := &Db{}
 
-	// TODO: generate a span for the database connection attempt
-	if params == nil || (params != nil && (params.ConnectionParams == nil || params.Logger == nil)) {
-		return nil, errInvalidInputParams
+	for _, opt := range opts {
+		opt(database)
 	}
 
-	logger := params.Logger
-	databaseModels := schema.GetDatabaseSchemas()
-
-	conn, err := connectToDatabase(ctx, params.ConnectionParams, params.Logger, databaseModels...)
-
-	if err != nil {
+	// validate the database object
+	if err := database.Validate(); err != nil {
 		return nil, err
 	}
 
-	logger.Info("Successfully connected to the database")
+	// configure the database connection
+	if err := database.configureConnection(); err != nil {
+		return nil, err
+	}
 
-	return &Db{
-		Conn:                   conn,
-		Logger:                 logger,
-		MaxConnectionAttempts:  params.MaxConnectionAttempts,
-		MaxRetriesPerOperation: params.MaxRetriesPerOperation,
-		RetryTimeOut:           params.RetryTimeOut,
-		OperationSleepInterval: params.RetrySleepInterval,
-		Instrumentation:        params.Instrumentation,
-		QueryOperator:          dal.Use(conn.Engine),
-	}, nil
+	// ping the database
+	if err := database.pingDatabase(); err != nil {
+		return nil, err
+	}
+
+	// perform migrations
+	if err := database.performSchemaMigration(); err != nil {
+		return nil, err
+	}
+
+	return database, nil
+}
+
+func (db *Db) Validate() error {
+	if db.Conn == nil {
+		return service_errors.ErrInvalidDbObject
+	}
+
+	if db.Logger == nil {
+		return service_errors.ErrInvalidDbObject
+	}
+
+	if db.MaxConnectionAttempts == 0 {
+		return service_errors.ErrInvalidDbObject
+	}
+
+	if db.MaxRetriesPerOperation == 0 {
+		return service_errors.ErrInvalidDbObject
+	}
+
+	if db.RetryTimeOut == 0 {
+		return service_errors.ErrInvalidDbObject
+	}
+
+	if db.OperationSleepInterval == 0 {
+		return service_errors.ErrInvalidDbObject
+	}
+
+	if db.Instrumentation == nil {
+		return service_errors.ErrInvalidDbObject
+	}
+
+	if db.QueryOperator == nil {
+		return service_errors.ErrInvalidDbObject
+	}
+
+	return nil
+}
+
+func (db *Db) performSchemaMigration() error {
+	var (
+		engine *gorm.DB
+		models = schema.GetDatabaseSchemas()
+	)
+
+	if db == nil {
+		return service_errors.ErrInvalidAcctParam
+	}
+
+	if engine = db.Conn.Engine; engine == nil {
+		return service_errors.ErrInvalidGormDbOject
+	}
+
+	if len(models) > 0 {
+		if err := engine.AutoMigrate(models...); err != nil {
+			// TODO: emit metric
+			log.Error(err.Error())
+			return err
+		}
+
+		log.Info("successfully migrated database schemas")
+	}
+
+	return nil
+}
+
+func (db *Db) pingDatabase() error {
+	if db == nil {
+		return service_errors.ErrInvalidAcctParam
+	}
+
+	conn, err := db.Conn.Engine.DB()
+	if err != nil {
+		return err
+	}
+
+	if err := conn.Ping(); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (db *Db) configureConnection() error {
+	connectionInstance, err := db.Conn.Engine.DB()
+	if err != nil {
+		return err
+	}
+
+	// configure the connection pool
+	// TODO: refactpr to obtain from env var
+	connectionInstance.SetMaxIdleConns(25)
+	connectionInstance.SetMaxOpenConns(50)
+	connectionInstance.SetConnMaxLifetime(5 * time.Minute)
+
+	// configure the database engine
+	db.Conn.Engine.FullSaveAssociations = true
+	db.Conn.Engine.SkipDefaultTransaction = false
+	db.Conn.Engine.PrepareStmt = true
+	db.Conn.Engine.DisableAutomaticPing = false
+	db.Conn.Engine = db.Conn.Engine.Set("gorm:auto_preload", true)
+
+	return nil
 }

@@ -36,35 +36,35 @@ func (db *Db) startDatastoreSpan(ctx context.Context, name string) *newrelic.Dat
 }
 
 // connectToDatabase establish and connects to a database instance
-func connectToDatabase(ctx context.Context, params *ConnectionParameters, log *zap.Logger, models ...interface{}) (*core_database.DatabaseConn, error) {
+func connectToDatabase(ctx context.Context, params *ConnectionInitializationParams, log *zap.Logger, models ...interface{}) (*core_database.DatabaseConn, error) {
 
 	var (
-		dbConn    *core_database.DatabaseConn
-		dbConnStr *string
-		err       error
+		dbConn     *core_database.DatabaseConn
+		dbConnStr  *string
+		err        error
+		connParams = params.ConnectionParams
 	)
 
-	if dbConnStr, err = formatDbConnectionString(ctx, params); err != nil {
+	if dbConnStr, err = formatDbConnectionString(ctx, connParams); err != nil {
 		return nil, err
 	}
 
-	timeout := 1 * time.Second
-	retries := 3
-	retryTimeout := 1 * time.Second
-	retrySleep := 1 * time.Second
+	log.Info(fmt.Sprintf("connecting to database: %s", *dbConnStr))
 
 	dbConn = core_database.NewDatabaseConn(
 		&core_database.Parameters{
-			QueryTimeout:              &timeout,      // REFACTOR into env var.
-			MaxConnectionRetries:      &retries,      // REFACTOR into env var.
-			MaxConnectionRetryTimeout: &retryTimeout, // REFACTOR into env var.
-			RetrySleep:                &retrySleep,   // REFACTOR into env var.
+			QueryTimeout:              params.QueryTimeout,           // REFACTOR into env var.
+			MaxConnectionRetries:      &params.MaxConnectionAttempts, // REFACTOR into env var.
+			MaxConnectionRetryTimeout: &params.RetryTimeOut,          // REFACTOR into env var.
+			RetrySleep:                &params.RetrySleepInterval,    // REFACTOR into env var.
 			ConnectionString:          dbConnStr,
 		})
 
 	if dbConn == nil {
 		return nil, errors.New("failed to connect to merchant component database")
 	}
+
+	log.Info("database connection established now")
 
 	if err := pingDatabase(ctx, dbConn); err != nil {
 		return nil, err
@@ -147,4 +147,10 @@ func migrateSchemas(ctx context.Context, db *core_database.DatabaseConn, log *za
 	}
 
 	return nil
+}
+
+func ConfigureConnectionString(host, user, password, databaseName, sslMode string, port int) string {
+	return fmt.Sprintf("host=%s port=%d user=%s "+
+		"password=%s dbname=%s sslmode=%s",
+		host, port, user, password, databaseName, sslMode)
 }
