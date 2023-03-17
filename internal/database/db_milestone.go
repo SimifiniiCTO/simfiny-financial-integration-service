@@ -14,6 +14,10 @@ func (db *Db) UpdateMilestone(ctx context.Context, milestone *schema.Milestone) 
 		defer span.End()
 	}
 
+	if milestone == nil {
+		return fmt.Errorf("milestone must be provided")
+	}
+
 	if milestone.Id == 0 {
 		return fmt.Errorf("milestone id must be provided. got: %d", milestone.Id)
 	}
@@ -24,8 +28,14 @@ func (db *Db) UpdateMilestone(ctx context.Context, milestone *schema.Milestone) 
 		return fmt.Errorf("milestone with id %d does not exist", milestone.Id)
 	}
 
+	// convert schema to orm
+	milestoneOrm, err := milestone.ToORM(ctx)
+	if err != nil {
+		return err
+	}
+
 	// perform the update operation
-	result, err := m.WithContext(ctx).Where(m.Id.Eq(milestone.Id)).Updates(milestone)
+	result, err := m.WithContext(ctx).Where(m.Id.Eq(milestone.Id)).Updates(milestoneOrm)
 	if err != nil {
 		return err
 	}
@@ -50,7 +60,11 @@ func (db *Db) GetMilestone(ctx context.Context, milestoneID uint64) (*schema.Mil
 
 	// ensure the milestone exists
 	m := db.QueryOperator.MilestoneORM
-	milestoneOrm, err := m.WithContext(ctx).Where(m.Id.Eq(milestoneID)).First()
+	milestoneOrm, err := m.
+		WithContext(ctx).
+		Where(m.Id.Eq(milestoneID)).
+		Preload(m.Budget.Category).
+		First()
 	if err != nil {
 		return nil, fmt.Errorf("milestone with id %d does not exist", milestoneID)
 	}
@@ -77,23 +91,21 @@ func (db *Db) GetMilestonesByGoalID(ctx context.Context, goalID uint64) ([]*sche
 
 	// ensure the goal exists
 	g := db.QueryOperator.SmartGoalORM
-	smartGoal, err := g.WithContext(ctx).Where(g.Id.Eq(goalID)).First()
+	smartGoal, err := g.
+		WithContext(ctx).
+		Where(g.Id.Eq(goalID)).
+		Preload(g.Milestones.Budget.Category).
+		First()
 	if err != nil {
 		return nil, fmt.Errorf("goal with id %d does not exist", goalID)
 	}
 
-	// convert orm to schema
-	milestones := make([]*schema.Milestone, len(smartGoal.Milestones))
-	for i, milestoneOrm := range smartGoal.Milestones {
-		milestone, err := milestoneOrm.ToPB(ctx)
-		if err != nil {
-			return nil, err
-		}
-
-		milestones[i] = &milestone
+	goals, err := smartGoal.ToPB(ctx)
+	if err != nil {
+		return nil, err
 	}
 
-	return milestones, nil
+	return goals.Milestones, nil
 }
 
 // DeleteMilestone implements DatabaseOperations

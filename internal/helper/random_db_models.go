@@ -9,6 +9,11 @@ func GenerateBugetCategory() *schema.Category {
 		Id:          0,
 		Name:        GenerateRandomString(10),
 		Description: GenerateRandomString(10),
+		Subcategories: []string{
+			GenerateRandomString(10),
+			GenerateRandomString(10),
+			GenerateRandomString(10),
+		},
 	}
 }
 
