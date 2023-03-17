@@ -33,7 +33,7 @@ func (s *Server) CreateBudget(ctx context.Context, req *proto.CreateBudgetReques
 	}
 
 	// create the required budget
-	budget, err := s.conn.CreateBudget(ctx, req.GoalId, req.MilestroneId, req.Budget)
+	budget, err := s.conn.CreateBudget(ctx, req.MilestroneId, req.Budget)
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
