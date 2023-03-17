@@ -360,16 +360,6 @@ func request_FinancialService_GetBankAccount_0(ctx context.Context, marshaler ru
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "bank_account_id", err)
 	}
 
-	val, ok = pathParams["user_id"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "user_id")
-	}
-
-	protoReq.UserId, err = runtime.Uint64(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "user_id", err)
-	}
-
 	msg, err := client.GetBankAccount(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
@@ -394,16 +384,6 @@ func local_request_FinancialService_GetBankAccount_0(ctx context.Context, marsha
 	protoReq.BankAccountId, err = runtime.Uint64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "bank_account_id", err)
-	}
-
-	val, ok = pathParams["user_id"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "user_id")
-	}
-
-	protoReq.UserId, err = runtime.Uint64(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "user_id", err)
 	}
 
 	msg, err := server.GetBankAccount(ctx, &protoReq)
@@ -445,6 +425,10 @@ func local_request_FinancialService_UpdateBankAccount_0(ctx context.Context, mar
 
 }
 
+var (
+	filter_FinancialService_DeleteBankAccount_0 = &utilities.DoubleArray{Encoding: map[string]int{"bank_account_id": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
+)
+
 func request_FinancialService_DeleteBankAccount_0(ctx context.Context, marshaler runtime.Marshaler, client FinancialServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq DeleteBankAccountRequest
 	var metadata runtime.ServerMetadata
@@ -466,14 +450,11 @@ func request_FinancialService_DeleteBankAccount_0(ctx context.Context, marshaler
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "bank_account_id", err)
 	}
 
-	val, ok = pathParams["user_id"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "user_id")
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
-	protoReq.UserId, err = runtime.Uint64(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "user_id", err)
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_FinancialService_DeleteBankAccount_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
 	msg, err := client.DeleteBankAccount(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -502,14 +483,11 @@ func local_request_FinancialService_DeleteBankAccount_0(ctx context.Context, mar
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "bank_account_id", err)
 	}
 
-	val, ok = pathParams["user_id"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "user_id")
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
-	protoReq.UserId, err = runtime.Uint64(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "user_id", err)
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_FinancialService_DeleteBankAccount_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
 	msg, err := server.DeleteBankAccount(ctx, &protoReq)
@@ -712,16 +690,6 @@ func request_FinancialService_DeleteSmartGoal_0(ctx context.Context, marshaler r
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "smart_goal_id", err)
 	}
 
-	val, ok = pathParams["pocket_id"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "pocket_id")
-	}
-
-	protoReq.PocketId, err = runtime.Uint64(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "pocket_id", err)
-	}
-
 	msg, err := client.DeleteSmartGoal(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
@@ -746,16 +714,6 @@ func local_request_FinancialService_DeleteSmartGoal_0(ctx context.Context, marsh
 	protoReq.SmartGoalId, err = runtime.Uint64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "smart_goal_id", err)
-	}
-
-	val, ok = pathParams["pocket_id"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "pocket_id")
-	}
-
-	protoReq.PocketId, err = runtime.Uint64(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "pocket_id", err)
 	}
 
 	msg, err := server.DeleteSmartGoal(ctx, &protoReq)
@@ -820,16 +778,6 @@ func request_FinancialService_DeleteMilestone_0(ctx context.Context, marshaler r
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "milestone_id", err)
 	}
 
-	val, ok = pathParams["smart_goal_id"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "smart_goal_id")
-	}
-
-	protoReq.SmartGoalId, err = runtime.Uint64(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "smart_goal_id", err)
-	}
-
 	msg, err := client.DeleteMilestone(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
@@ -854,16 +802,6 @@ func local_request_FinancialService_DeleteMilestone_0(ctx context.Context, marsh
 	protoReq.MilestoneId, err = runtime.Uint64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "milestone_id", err)
-	}
-
-	val, ok = pathParams["smart_goal_id"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "smart_goal_id")
-	}
-
-	protoReq.SmartGoalId, err = runtime.Uint64(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "smart_goal_id", err)
 	}
 
 	msg, err := server.DeleteMilestone(ctx, &protoReq)
@@ -926,16 +864,6 @@ func request_FinancialService_GetMilestone_0(ctx context.Context, marshaler runt
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "milestone_id", err)
 	}
 
-	val, ok = pathParams["smart_goal_id"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "smart_goal_id")
-	}
-
-	protoReq.SmartGoalId, err = runtime.Uint64(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "smart_goal_id", err)
-	}
-
 	msg, err := client.GetMilestone(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
@@ -960,16 +888,6 @@ func local_request_FinancialService_GetMilestone_0(ctx context.Context, marshale
 	protoReq.MilestoneId, err = runtime.Uint64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "milestone_id", err)
-	}
-
-	val, ok = pathParams["smart_goal_id"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "smart_goal_id")
-	}
-
-	protoReq.SmartGoalId, err = runtime.Uint64(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "smart_goal_id", err)
 	}
 
 	msg, err := server.GetMilestone(ctx, &protoReq)
@@ -1804,7 +1722,7 @@ func RegisterFinancialServiceHandlerServer(ctx context.Context, mux *runtime.Ser
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/api.v1.FinancialService/GetBankAccount", runtime.WithHTTPPathPattern("/api/v1/bank-account/{bank_account_id}/profile/{user_id}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/api.v1.FinancialService/GetBankAccount", runtime.WithHTTPPathPattern("/api/v1/bank-account/{bank_account_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1854,7 +1772,7 @@ func RegisterFinancialServiceHandlerServer(ctx context.Context, mux *runtime.Ser
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/api.v1.FinancialService/DeleteBankAccount", runtime.WithHTTPPathPattern("/api/v1/bank-account/{bank_account_id}/profile/{user_id}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/api.v1.FinancialService/DeleteBankAccount", runtime.WithHTTPPathPattern("/api/v1/bank-account/{bank_account_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1979,7 +1897,7 @@ func RegisterFinancialServiceHandlerServer(ctx context.Context, mux *runtime.Ser
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/api.v1.FinancialService/DeleteSmartGoal", runtime.WithHTTPPathPattern("/api/v1/smart-goal/{smart_goal_id}/pocket/{pocket_id}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/api.v1.FinancialService/DeleteSmartGoal", runtime.WithHTTPPathPattern("/api/v1/smart-goal/{smart_goal_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2029,7 +1947,7 @@ func RegisterFinancialServiceHandlerServer(ctx context.Context, mux *runtime.Ser
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/api.v1.FinancialService/DeleteMilestone", runtime.WithHTTPPathPattern("/api/v1/milestone/{milestone_id}/smart-goal/{smart_goal_id}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/api.v1.FinancialService/DeleteMilestone", runtime.WithHTTPPathPattern("/api/v1/milestone/{milestone_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2079,7 +1997,7 @@ func RegisterFinancialServiceHandlerServer(ctx context.Context, mux *runtime.Ser
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/api.v1.FinancialService/GetMilestone", runtime.WithHTTPPathPattern("/api/v1/milestone/{milestone_id}/smart-goal/{smart_goal_id}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/api.v1.FinancialService/GetMilestone", runtime.WithHTTPPathPattern("/api/v1/milestone/{milestone_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2622,7 +2540,7 @@ func RegisterFinancialServiceHandlerClient(ctx context.Context, mux *runtime.Ser
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/api.v1.FinancialService/GetBankAccount", runtime.WithHTTPPathPattern("/api/v1/bank-account/{bank_account_id}/profile/{user_id}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/api.v1.FinancialService/GetBankAccount", runtime.WithHTTPPathPattern("/api/v1/bank-account/{bank_account_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2666,7 +2584,7 @@ func RegisterFinancialServiceHandlerClient(ctx context.Context, mux *runtime.Ser
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/api.v1.FinancialService/DeleteBankAccount", runtime.WithHTTPPathPattern("/api/v1/bank-account/{bank_account_id}/profile/{user_id}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/api.v1.FinancialService/DeleteBankAccount", runtime.WithHTTPPathPattern("/api/v1/bank-account/{bank_account_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2776,7 +2694,7 @@ func RegisterFinancialServiceHandlerClient(ctx context.Context, mux *runtime.Ser
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/api.v1.FinancialService/DeleteSmartGoal", runtime.WithHTTPPathPattern("/api/v1/smart-goal/{smart_goal_id}/pocket/{pocket_id}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/api.v1.FinancialService/DeleteSmartGoal", runtime.WithHTTPPathPattern("/api/v1/smart-goal/{smart_goal_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2820,7 +2738,7 @@ func RegisterFinancialServiceHandlerClient(ctx context.Context, mux *runtime.Ser
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/api.v1.FinancialService/DeleteMilestone", runtime.WithHTTPPathPattern("/api/v1/milestone/{milestone_id}/smart-goal/{smart_goal_id}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/api.v1.FinancialService/DeleteMilestone", runtime.WithHTTPPathPattern("/api/v1/milestone/{milestone_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2864,7 +2782,7 @@ func RegisterFinancialServiceHandlerClient(ctx context.Context, mux *runtime.Ser
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/api.v1.FinancialService/GetMilestone", runtime.WithHTTPPathPattern("/api/v1/milestone/{milestone_id}/smart-goal/{smart_goal_id}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/api.v1.FinancialService/GetMilestone", runtime.WithHTTPPathPattern("/api/v1/milestone/{milestone_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -3184,11 +3102,11 @@ var (
 
 	pattern_FinancialService_CreateBankAccount_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"api", "v1", "bank-account", "profile", "user_id"}, ""))
 
-	pattern_FinancialService_GetBankAccount_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5}, []string{"api", "v1", "bank-account", "bank_account_id", "profile", "user_id"}, ""))
+	pattern_FinancialService_GetBankAccount_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v1", "bank-account", "bank_account_id"}, ""))
 
 	pattern_FinancialService_UpdateBankAccount_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "bank-account"}, ""))
 
-	pattern_FinancialService_DeleteBankAccount_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5}, []string{"api", "v1", "bank-account", "bank_account_id", "profile", "user_id"}, ""))
+	pattern_FinancialService_DeleteBankAccount_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v1", "bank-account", "bank_account_id"}, ""))
 
 	pattern_FinancialService_GetPocket_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v1", "pocket", "pocket_id"}, ""))
 
@@ -3198,15 +3116,15 @@ var (
 
 	pattern_FinancialService_UpdateSmartGoal_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "smart-goal"}, ""))
 
-	pattern_FinancialService_DeleteSmartGoal_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5}, []string{"api", "v1", "smart-goal", "smart_goal_id", "pocket", "pocket_id"}, ""))
+	pattern_FinancialService_DeleteSmartGoal_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v1", "smart-goal", "smart_goal_id"}, ""))
 
 	pattern_FinancialService_CreateMilestone_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "milestone"}, ""))
 
-	pattern_FinancialService_DeleteMilestone_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5}, []string{"api", "v1", "milestone", "milestone_id", "smart-goal", "smart_goal_id"}, ""))
+	pattern_FinancialService_DeleteMilestone_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v1", "milestone", "milestone_id"}, ""))
 
 	pattern_FinancialService_UpdateMilestone_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "milestone"}, ""))
 
-	pattern_FinancialService_GetMilestone_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5}, []string{"api", "v1", "milestone", "milestone_id", "smart-goal", "smart_goal_id"}, ""))
+	pattern_FinancialService_GetMilestone_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v1", "milestone", "milestone_id"}, ""))
 
 	pattern_FinancialService_GetMilestonesBySmartGoalId_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"api", "v1", "milestone", "smart-goal", "smart_goal_id"}, ""))
 

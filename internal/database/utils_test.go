@@ -5,7 +5,9 @@ import (
 	"reflect"
 	"testing"
 
-	core_database "github.com/yoanyombapro1234/FeelGuuds_Core/core/core-database"
+	core_database "github.com/SimifiniiCTO/core/core-database"
+	newrelic "github.com/newrelic/go-agent"
+	"github.com/stretchr/testify/assert"
 	"go.uber.org/zap"
 )
 
@@ -19,10 +21,25 @@ func Test_connectToDatabase(t *testing.T) {
 	tests := []struct {
 		name    string
 		args    args
-		want    *core_database.DatabaseConn
 		wantErr bool
 	}{
 		// TODO: Add test cases.
+		{
+			name: "test connect to database",
+			args: args{
+				ctx: context.Background(),
+				params: &ConnectionParameters{
+					Host:         "localhost",
+					User:         "service_db",
+					Password:     "service_db",
+					DatabaseName: "service_db",
+					Port:         5433,
+					SslMode:      "disable",
+				},
+				log: zap.NewNop(),
+			},
+			wantErr: false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -31,8 +48,9 @@ func Test_connectToDatabase(t *testing.T) {
 				t.Errorf("connectToDatabase() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("connectToDatabase() = %v, want %v", got, tt.want)
+
+			if tt.wantErr == false {
+				assert.NotNil(t, got)
 			}
 		})
 	}
@@ -54,32 +72,6 @@ func Test_pingDatabase(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			if err := pingDatabase(tt.args.ctx, tt.args.dbConn); (err != nil) != tt.wantErr {
 				t.Errorf("pingDatabase() error = %v, wantErr %v", err, tt.wantErr)
-			}
-		})
-	}
-}
-
-func Test_configureConnectionString(t *testing.T) {
-	type args struct {
-		ctx      context.Context
-		host     string
-		user     string
-		password string
-		dbname   string
-		port     int
-		sslMode  string
-	}
-	tests := []struct {
-		name string
-		args args
-		want string
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := configureConnectionString(tt.args.ctx, tt.args.host, tt.args.user, tt.args.password, tt.args.dbname, tt.args.port, tt.args.sslMode); got != tt.want {
-				t.Errorf("configureConnectionString() = %v, want %v", got, tt.want)
 			}
 		})
 	}
@@ -121,6 +113,55 @@ func Test_migrateSchemas(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			if err := migrateSchemas(tt.args.ctx, tt.args.db, tt.args.log, tt.args.models...); (err != nil) != tt.wantErr {
 				t.Errorf("migrateSchemas() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}
+
+func TestDb_startDatastoreSpan(t *testing.T) {
+	type args struct {
+		ctx  context.Context
+		name string
+	}
+	tests := []struct {
+		name string
+		db   *Db
+		args args
+		want *newrelic.DatastoreSegment
+	}{
+		// TODO: Add test cases.
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := tt.db.startDatastoreSpan(tt.args.ctx, tt.args.name); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("Db.startDatastoreSpan() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_formatDbConnectionString(t *testing.T) {
+	type args struct {
+		ctx    context.Context
+		params *ConnectionParameters
+	}
+	tests := []struct {
+		name    string
+		args    args
+		want    *string
+		wantErr bool
+	}{
+		// TODO: Add test cases.
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := formatDbConnectionString(tt.args.ctx, tt.args.params)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("formatDbConnectionString() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("formatDbConnectionString() = %v, want %v", got, tt.want)
 			}
 		})
 	}

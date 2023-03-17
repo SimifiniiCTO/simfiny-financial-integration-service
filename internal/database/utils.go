@@ -7,11 +7,11 @@ import (
 	"time"
 
 	newrelic "github.com/newrelic/go-agent"
-	core_database "github.com/yoanyombapro1234/FeelGuuds_Core/core/core-database"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
+	core_database "github.com/SimifiniiCTO/core/core-database"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/service_errors"
 )
 
@@ -36,25 +36,43 @@ func (db *Db) startDatastoreSpan(ctx context.Context, name string) *newrelic.Dat
 }
 
 // connectToDatabase establish and connects to a database instance
-func connectToDatabase(ctx context.Context, params *ConnectionParameters, log *zap.Logger, models ...interface{}) (*core_database.DatabaseConn,
-	error) {
-	var dbConn *core_database.DatabaseConn
-	connectionString := configureConnectionString(ctx, params.Host, params.User, params.Password, params.DatabaseName, params.Port, params.SslMode)
+func connectToDatabase(ctx context.Context, params *ConnectionParameters, log *zap.Logger, models ...interface{}) (*core_database.DatabaseConn, error) {
 
-	log.Info("connecting to database", zap.Any("params", params))
-	log.Info(connectionString)
+	var (
+		dbConn    *core_database.DatabaseConn
+		dbConnStr *string
+		err       error
+	)
 
-	if dbConn = core_database.NewDatabaseConn(connectionString, "postgres"); dbConn == nil {
-		return nil, errors.New("failed to connect to merchant component database")
+	if dbConnStr, err = formatDbConnectionString(ctx, params); err != nil {
+		return nil, err
 	}
 
-	log.Info("db connection is valid")
+	timeout := 1 * time.Second
+	retries := 3
+	retryTimeout := 1 * time.Second
+	retrySleep := 1 * time.Second
+
+	dbConn = core_database.NewDatabaseConn(
+		&core_database.Parameters{
+			QueryTimeout:              &timeout,      // REFACTOR into env var.
+			MaxConnectionRetries:      &retries,      // REFACTOR into env var.
+			MaxConnectionRetryTimeout: &retryTimeout, // REFACTOR into env var.
+			RetrySleep:                &retrySleep,   // REFACTOR into env var.
+			ConnectionString:          dbConnStr,
+		})
+
+	if dbConn == nil {
+		return nil, errors.New("failed to connect to merchant component database")
+	}
 
 	if err := pingDatabase(ctx, dbConn); err != nil {
 		return nil, err
 	}
 
-	_ = migrateSchemas(ctx, dbConn, log, models...)
+	if err := migrateSchemas(ctx, dbConn, log, models...); err != nil {
+		return nil, err
+	}
 
 	dbConn.Engine.Preload(clause.Associations)
 	db, err := dbConn.Engine.DB()
@@ -85,11 +103,16 @@ func pingDatabase(ctx context.Context, dbConn *core_database.DatabaseConn) error
 }
 
 // configureConnectionString constructs database connection string from a set of params
-func configureConnectionString(ctx context.Context, host, user, password, dbname string, port int, sslMode string) string {
-	connectionString := fmt.Sprintf("host=%s port=%d user=%s "+
+func formatDbConnectionString(ctx context.Context, params *ConnectionParameters) (*string, error) {
+	if params == nil {
+		return nil, fmt.Errorf("invalid input argument. params cannot be nil")
+	}
+
+	connectionStr := fmt.Sprintf("host=%s port=%d user=%s "+
 		"password=%s dbname=%s sslmode=%s",
-		host, port, user, password, dbname, sslMode)
-	return connectionString
+		params.Host, params.Port, params.User, params.Password, params.DatabaseName, params.SslMode)
+
+	return &connectionStr, nil
 }
 
 // configureDatabaseConnection configures a database connection

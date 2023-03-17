@@ -35,7 +35,7 @@ func newMilestoneORM(db *gorm.DB, opts ...gen.DOOption) milestoneORM {
 	_milestoneORM.SmartGoalId = field.NewUint64(tableName, "smart_goal_id")
 	_milestoneORM.TargetAmount = field.NewString(tableName, "target_amount")
 	_milestoneORM.TargetDate = field.NewString(tableName, "target_date")
-	_milestoneORM.Budget = milestoneORMHasManyBudget{
+	_milestoneORM.Budget = milestoneORMHasOneBudget{
 		db: db.Session(&gorm.Session{}),
 
 		RelationField: field.NewRelation("Budget", "apiv1.BudgetORM"),
@@ -62,7 +62,7 @@ type milestoneORM struct {
 	SmartGoalId  field.Uint64
 	TargetAmount field.String
 	TargetDate   field.String
-	Budget       milestoneORMHasManyBudget
+	Budget       milestoneORMHasOneBudget
 
 	fieldMap map[string]field.Expr
 }
@@ -123,7 +123,7 @@ func (m milestoneORM) replaceDB(db *gorm.DB) milestoneORM {
 	return m
 }
 
-type milestoneORMHasManyBudget struct {
+type milestoneORMHasOneBudget struct {
 	db *gorm.DB
 
 	field.RelationField
@@ -133,7 +133,7 @@ type milestoneORMHasManyBudget struct {
 	}
 }
 
-func (a milestoneORMHasManyBudget) Where(conds ...field.Expr) *milestoneORMHasManyBudget {
+func (a milestoneORMHasOneBudget) Where(conds ...field.Expr) *milestoneORMHasOneBudget {
 	if len(conds) == 0 {
 		return &a
 	}
@@ -146,22 +146,22 @@ func (a milestoneORMHasManyBudget) Where(conds ...field.Expr) *milestoneORMHasMa
 	return &a
 }
 
-func (a milestoneORMHasManyBudget) WithContext(ctx context.Context) *milestoneORMHasManyBudget {
+func (a milestoneORMHasOneBudget) WithContext(ctx context.Context) *milestoneORMHasOneBudget {
 	a.db = a.db.WithContext(ctx)
 	return &a
 }
 
-func (a milestoneORMHasManyBudget) Model(m *apiv1.MilestoneORM) *milestoneORMHasManyBudgetTx {
-	return &milestoneORMHasManyBudgetTx{a.db.Model(m).Association(a.Name())}
+func (a milestoneORMHasOneBudget) Model(m *apiv1.MilestoneORM) *milestoneORMHasOneBudgetTx {
+	return &milestoneORMHasOneBudgetTx{a.db.Model(m).Association(a.Name())}
 }
 
-type milestoneORMHasManyBudgetTx struct{ tx *gorm.Association }
+type milestoneORMHasOneBudgetTx struct{ tx *gorm.Association }
 
-func (a milestoneORMHasManyBudgetTx) Find() (result []*apiv1.BudgetORM, err error) {
+func (a milestoneORMHasOneBudgetTx) Find() (result *apiv1.BudgetORM, err error) {
 	return result, a.tx.Find(&result)
 }
 
-func (a milestoneORMHasManyBudgetTx) Append(values ...*apiv1.BudgetORM) (err error) {
+func (a milestoneORMHasOneBudgetTx) Append(values ...*apiv1.BudgetORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -169,7 +169,7 @@ func (a milestoneORMHasManyBudgetTx) Append(values ...*apiv1.BudgetORM) (err err
 	return a.tx.Append(targetValues...)
 }
 
-func (a milestoneORMHasManyBudgetTx) Replace(values ...*apiv1.BudgetORM) (err error) {
+func (a milestoneORMHasOneBudgetTx) Replace(values ...*apiv1.BudgetORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -177,7 +177,7 @@ func (a milestoneORMHasManyBudgetTx) Replace(values ...*apiv1.BudgetORM) (err er
 	return a.tx.Replace(targetValues...)
 }
 
-func (a milestoneORMHasManyBudgetTx) Delete(values ...*apiv1.BudgetORM) (err error) {
+func (a milestoneORMHasOneBudgetTx) Delete(values ...*apiv1.BudgetORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -185,11 +185,11 @@ func (a milestoneORMHasManyBudgetTx) Delete(values ...*apiv1.BudgetORM) (err err
 	return a.tx.Delete(targetValues...)
 }
 
-func (a milestoneORMHasManyBudgetTx) Clear() error {
+func (a milestoneORMHasOneBudgetTx) Clear() error {
 	return a.tx.Clear()
 }
 
-func (a milestoneORMHasManyBudgetTx) Count() int64 {
+func (a milestoneORMHasOneBudgetTx) Count() int64 {
 	return a.tx.Count()
 }
 

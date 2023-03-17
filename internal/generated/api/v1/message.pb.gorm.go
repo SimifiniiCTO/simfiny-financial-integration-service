@@ -832,7 +832,7 @@ type BankAccountORM struct {
 	Pockets        []*PocketORM `gorm:"foreignkey:BankAccountId;association_foreignkey:Id;preload:true"`
 	Subtype        string
 	Type           string
-	UserId         string
+	UserId         uint64
 	UserProfileId  *uint64
 }
 
@@ -855,7 +855,7 @@ func (m *BankAccount) ToORM(ctx context.Context) (BankAccountORM, error) {
 	to.UserId = m.UserId
 	to.Name = m.Name
 	to.Number = m.Number
-	to.Type = m.Type
+	to.Type = BankAccountType_name[int32(m.Type)]
 	to.Balance = m.Balance
 	to.Currency = m.Currency
 	to.CurrentFunds = m.CurrentFunds
@@ -893,7 +893,7 @@ func (m *BankAccountORM) ToPB(ctx context.Context) (BankAccount, error) {
 	to.UserId = m.UserId
 	to.Name = m.Name
 	to.Number = m.Number
-	to.Type = m.Type
+	to.Type = BankAccountType(BankAccountType_value[m.Type])
 	to.Balance = m.Balance
 	to.Currency = m.Currency
 	to.CurrentFunds = m.CurrentFunds
@@ -1245,7 +1245,7 @@ type ForecastWithAfterToPB interface {
 }
 
 type MilestoneORM struct {
-	Budget       []*BudgetORM `gorm:"foreignkey:MilestoneId;association_foreignkey:Id;preload:true"`
+	Budget       *BudgetORM `gorm:"foreignkey:MilestoneId;association_foreignkey:Id"`
 	Description  string
 	Id           uint64
 	IsCompleted  bool
@@ -1276,16 +1276,12 @@ func (m *Milestone) ToORM(ctx context.Context) (MilestoneORM, error) {
 	to.TargetDate = m.TargetDate
 	to.TargetAmount = m.TargetAmount
 	to.IsCompleted = m.IsCompleted
-	for _, v := range m.Budget {
-		if v != nil {
-			if tempBudget, cErr := v.ToORM(ctx); cErr == nil {
-				to.Budget = append(to.Budget, &tempBudget)
-			} else {
-				return to, cErr
-			}
-		} else {
-			to.Budget = append(to.Budget, nil)
+	if m.Budget != nil {
+		tempBudget, err := m.Budget.ToORM(ctx)
+		if err != nil {
+			return to, err
 		}
+		to.Budget = &tempBudget
 	}
 	if posthook, ok := interface{}(m).(MilestoneWithAfterToORM); ok {
 		err = posthook.AfterToORM(ctx, &to)
@@ -1309,16 +1305,12 @@ func (m *MilestoneORM) ToPB(ctx context.Context) (Milestone, error) {
 	to.TargetDate = m.TargetDate
 	to.TargetAmount = m.TargetAmount
 	to.IsCompleted = m.IsCompleted
-	for _, v := range m.Budget {
-		if v != nil {
-			if tempBudget, cErr := v.ToPB(ctx); cErr == nil {
-				to.Budget = append(to.Budget, &tempBudget)
-			} else {
-				return to, cErr
-			}
-		} else {
-			to.Budget = append(to.Budget, nil)
+	if m.Budget != nil {
+		tempBudget, err := m.Budget.ToPB(ctx)
+		if err != nil {
+			return to, err
 		}
+		to.Budget = &tempBudget
 	}
 	if posthook, ok := interface{}(m).(MilestoneWithAfterToPB); ok {
 		err = posthook.AfterToPB(ctx, &to)
@@ -5853,7 +5845,8 @@ func DefaultApplyFieldMaskMilestone(ctx context.Context, patchee *Milestone, pat
 		return nil, errors.NilArgumentError
 	}
 	var err error
-	for _, f := range updateMask.Paths {
+	var updatedBudget bool
+	for i, f := range updateMask.Paths {
 		if f == prefix+"Id" {
 			patchee.Id = patcher.Id
 			continue
@@ -5878,7 +5871,24 @@ func DefaultApplyFieldMaskMilestone(ctx context.Context, patchee *Milestone, pat
 			patchee.IsCompleted = patcher.IsCompleted
 			continue
 		}
+		if !updatedBudget && strings.HasPrefix(f, prefix+"Budget.") {
+			updatedBudget = true
+			if patcher.Budget == nil {
+				patchee.Budget = nil
+				continue
+			}
+			if patchee.Budget == nil {
+				patchee.Budget = &Budget{}
+			}
+			if o, err := DefaultApplyFieldMaskBudget(ctx, patchee.Budget, patcher.Budget, &field_mask.FieldMask{Paths: updateMask.Paths[i:]}, prefix+"Budget.", db); err != nil {
+				return nil, err
+			} else {
+				patchee.Budget = o
+			}
+			continue
+		}
 		if f == prefix+"Budget" {
+			updatedBudget = true
 			patchee.Budget = patcher.Budget
 			continue
 		}

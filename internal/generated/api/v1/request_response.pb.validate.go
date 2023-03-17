@@ -1358,17 +1358,6 @@ func (m *GetBankAccountRequest) validate(all bool) error {
 
 	var errors []error
 
-	if m.GetUserId() <= 0 {
-		err := GetBankAccountRequestValidationError{
-			field:  "UserId",
-			reason: "value must be greater than 0",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
-	}
-
 	if m.GetBankAccountId() <= 0 {
 		err := GetBankAccountRequestValidationError{
 			field:  "BankAccountId",
@@ -3101,17 +3090,6 @@ func (m *DeleteSmartGoalRequest) validate(all bool) error {
 
 	var errors []error
 
-	if m.GetPocketId() <= 0 {
-		err := DeleteSmartGoalRequestValidationError{
-			field:  "PocketId",
-			reason: "value must be greater than 0",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
-	}
-
 	if m.GetSmartGoalId() <= 0 {
 		err := DeleteSmartGoalRequestValidationError{
 			field:  "SmartGoalId",
@@ -3585,17 +3563,6 @@ func (m *DeleteMilestoneRequest) validate(all bool) error {
 	}
 
 	var errors []error
-
-	if m.GetSmartGoalId() <= 0 {
-		err := DeleteMilestoneRequestValidationError{
-			field:  "SmartGoalId",
-			reason: "value must be greater than 0",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
-	}
 
 	if m.GetMilestoneId() <= 0 {
 		err := DeleteMilestoneRequestValidationError{
@@ -4342,17 +4309,6 @@ func (m *GetMilestoneRequest) validate(all bool) error {
 
 	var errors []error
 
-	if m.GetSmartGoalId() <= 0 {
-		err := GetMilestoneRequestValidationError{
-			field:  "SmartGoalId",
-			reason: "value must be greater than 0",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
-	}
-
 	if m.GetMilestoneId() <= 0 {
 		err := GetMilestoneRequestValidationError{
 			field:  "MilestoneId",
@@ -4840,17 +4796,6 @@ func (m *CreateBudgetRequest) validate(all bool) error {
 	}
 
 	var errors []error
-
-	if m.GetPocketId() <= 0 {
-		err := CreateBudgetRequestValidationError{
-			field:  "PocketId",
-			reason: "value must be greater than 0",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
-	}
 
 	if m.GetMilestroneId() <= 0 {
 		err := CreateBudgetRequestValidationError{

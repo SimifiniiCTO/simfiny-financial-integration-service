@@ -65,7 +65,7 @@ export interface GetUserProfileResponse {
 }
 
 /**
- * UpdateUserProfileRequest: Represents the request object invoked against the user
+ * teUserProfileRequest: Represents the request object invoked against the user
  * service to delete a user profile
  */
 export interface DeleteUserProfileRequest {
@@ -141,12 +141,6 @@ export interface CreateBankAccountResponse {
  * service to get a bank account for a given user and bank account id
  */
 export interface GetBankAccountRequest {
-  /**
-   * The account ID associated with the user
-   * Validations:
-   * - user_id must be greater than 0
-   */
-  userId: number;
   /**
    * The bank account id
    * Validations:
@@ -264,12 +258,6 @@ export interface UpdateSmartGoalResponse {
 
 export interface DeleteSmartGoalRequest {
   /**
-   * The pocket account id
-   * Validations:
-   * - pocket_account_id must be greater than 0
-   */
-  pocketId: number;
-  /**
    * The smart goal id
    * Validations:
    * - smart_goal_id must be greater than 0
@@ -303,12 +291,6 @@ export interface CreateMilestoneResponse {
 }
 
 export interface DeleteMilestoneRequest {
-  /**
-   * The smart goal id
-   * Validations:
-   * - smart_goal_id must be greater than 0
-   */
-  smartGoalId: number;
   /**
    * The milestone id
    * Validations:
@@ -352,12 +334,6 @@ export interface GetMilestonesBySmartGoalIdResponse {
 
 export interface GetMilestoneRequest {
   /**
-   * The smart goal id
-   * Validations:
-   * - smart_goal_id must be greater than 0
-   */
-  smartGoalId: number;
-  /**
    * The milestone id
    * Validations:
    * - milestone_id must be greater than 0
@@ -385,12 +361,6 @@ export interface GetForecastResponse {
 }
 
 export interface CreateBudgetRequest {
-  /**
-   * The pocket account id
-   * Validations:
-   * - pocket_account_id must be greater than 0
-   */
-  pocketId: number;
   /** The milestone to associate this budget with */
   milestroneId: number;
   /**
@@ -1158,16 +1128,13 @@ export const CreateBankAccountResponse = {
 };
 
 function createBaseGetBankAccountRequest(): GetBankAccountRequest {
-  return { userId: 0, bankAccountId: 0 };
+  return { bankAccountId: 0 };
 }
 
 export const GetBankAccountRequest = {
   encode(message: GetBankAccountRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.userId !== 0) {
-      writer.uint32(8).uint64(message.userId);
-    }
     if (message.bankAccountId !== 0) {
-      writer.uint32(16).uint64(message.bankAccountId);
+      writer.uint32(8).uint64(message.bankAccountId);
     }
     return writer;
   },
@@ -1180,9 +1147,6 @@ export const GetBankAccountRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.userId = longToNumber(reader.uint64() as Long);
-          break;
-        case 2:
           message.bankAccountId = longToNumber(reader.uint64() as Long);
           break;
         default:
@@ -1194,15 +1158,11 @@ export const GetBankAccountRequest = {
   },
 
   fromJSON(object: any): GetBankAccountRequest {
-    return {
-      userId: isSet(object.userId) ? Number(object.userId) : 0,
-      bankAccountId: isSet(object.bankAccountId) ? Number(object.bankAccountId) : 0,
-    };
+    return { bankAccountId: isSet(object.bankAccountId) ? Number(object.bankAccountId) : 0 };
   },
 
   toJSON(message: GetBankAccountRequest): unknown {
     const obj: any = {};
-    message.userId !== undefined && (obj.userId = Math.round(message.userId));
     message.bankAccountId !== undefined && (obj.bankAccountId = Math.round(message.bankAccountId));
     return obj;
   },
@@ -1213,7 +1173,6 @@ export const GetBankAccountRequest = {
 
   fromPartial<I extends Exact<DeepPartial<GetBankAccountRequest>, I>>(object: I): GetBankAccountRequest {
     const message = createBaseGetBankAccountRequest();
-    message.userId = object.userId ?? 0;
     message.bankAccountId = object.bankAccountId ?? 0;
     return message;
   },
@@ -1616,7 +1575,7 @@ function createBaseGetSmartGoalsByPocketIdRequest(): GetSmartGoalsByPocketIdRequ
 export const GetSmartGoalsByPocketIdRequest = {
   encode(message: GetSmartGoalsByPocketIdRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.pocketId !== 0) {
-      writer.uint32(8).uint64(message.pocketId);
+      writer.uint32(16).uint64(message.pocketId);
     }
     return writer;
   },
@@ -1628,7 +1587,7 @@ export const GetSmartGoalsByPocketIdRequest = {
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        case 1:
+        case 2:
           message.pocketId = longToNumber(reader.uint64() as Long);
           break;
         default:
@@ -1728,10 +1687,10 @@ function createBaseCreateSmartGoalRequest(): CreateSmartGoalRequest {
 export const CreateSmartGoalRequest = {
   encode(message: CreateSmartGoalRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.pocketId !== 0) {
-      writer.uint32(8).uint64(message.pocketId);
+      writer.uint32(16).uint64(message.pocketId);
     }
     if (message.smartGoal !== undefined) {
-      SmartGoal.encode(message.smartGoal, writer.uint32(18).fork()).ldelim();
+      SmartGoal.encode(message.smartGoal, writer.uint32(26).fork()).ldelim();
     }
     return writer;
   },
@@ -1743,10 +1702,10 @@ export const CreateSmartGoalRequest = {
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        case 1:
+        case 2:
           message.pocketId = longToNumber(reader.uint64() as Long);
           break;
-        case 2:
+        case 3:
           message.smartGoal = SmartGoal.decode(reader, reader.uint32());
           break;
         default:
@@ -1943,14 +1902,11 @@ export const UpdateSmartGoalResponse = {
 };
 
 function createBaseDeleteSmartGoalRequest(): DeleteSmartGoalRequest {
-  return { pocketId: 0, smartGoalId: 0 };
+  return { smartGoalId: 0 };
 }
 
 export const DeleteSmartGoalRequest = {
   encode(message: DeleteSmartGoalRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.pocketId !== 0) {
-      writer.uint32(8).uint64(message.pocketId);
-    }
     if (message.smartGoalId !== 0) {
       writer.uint32(16).uint64(message.smartGoalId);
     }
@@ -1964,9 +1920,6 @@ export const DeleteSmartGoalRequest = {
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        case 1:
-          message.pocketId = longToNumber(reader.uint64() as Long);
-          break;
         case 2:
           message.smartGoalId = longToNumber(reader.uint64() as Long);
           break;
@@ -1979,15 +1932,11 @@ export const DeleteSmartGoalRequest = {
   },
 
   fromJSON(object: any): DeleteSmartGoalRequest {
-    return {
-      pocketId: isSet(object.pocketId) ? Number(object.pocketId) : 0,
-      smartGoalId: isSet(object.smartGoalId) ? Number(object.smartGoalId) : 0,
-    };
+    return { smartGoalId: isSet(object.smartGoalId) ? Number(object.smartGoalId) : 0 };
   },
 
   toJSON(message: DeleteSmartGoalRequest): unknown {
     const obj: any = {};
-    message.pocketId !== undefined && (obj.pocketId = Math.round(message.pocketId));
     message.smartGoalId !== undefined && (obj.smartGoalId = Math.round(message.smartGoalId));
     return obj;
   },
@@ -1998,7 +1947,6 @@ export const DeleteSmartGoalRequest = {
 
   fromPartial<I extends Exact<DeepPartial<DeleteSmartGoalRequest>, I>>(object: I): DeleteSmartGoalRequest {
     const message = createBaseDeleteSmartGoalRequest();
-    message.pocketId = object.pocketId ?? 0;
     message.smartGoalId = object.smartGoalId ?? 0;
     return message;
   },
@@ -2172,14 +2120,11 @@ export const CreateMilestoneResponse = {
 };
 
 function createBaseDeleteMilestoneRequest(): DeleteMilestoneRequest {
-  return { smartGoalId: 0, milestoneId: 0 };
+  return { milestoneId: 0 };
 }
 
 export const DeleteMilestoneRequest = {
   encode(message: DeleteMilestoneRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.smartGoalId !== 0) {
-      writer.uint32(8).uint64(message.smartGoalId);
-    }
     if (message.milestoneId !== 0) {
       writer.uint32(16).uint64(message.milestoneId);
     }
@@ -2193,9 +2138,6 @@ export const DeleteMilestoneRequest = {
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        case 1:
-          message.smartGoalId = longToNumber(reader.uint64() as Long);
-          break;
         case 2:
           message.milestoneId = longToNumber(reader.uint64() as Long);
           break;
@@ -2208,15 +2150,11 @@ export const DeleteMilestoneRequest = {
   },
 
   fromJSON(object: any): DeleteMilestoneRequest {
-    return {
-      smartGoalId: isSet(object.smartGoalId) ? Number(object.smartGoalId) : 0,
-      milestoneId: isSet(object.milestoneId) ? Number(object.milestoneId) : 0,
-    };
+    return { milestoneId: isSet(object.milestoneId) ? Number(object.milestoneId) : 0 };
   },
 
   toJSON(message: DeleteMilestoneRequest): unknown {
     const obj: any = {};
-    message.smartGoalId !== undefined && (obj.smartGoalId = Math.round(message.smartGoalId));
     message.milestoneId !== undefined && (obj.milestoneId = Math.round(message.milestoneId));
     return obj;
   },
@@ -2227,7 +2165,6 @@ export const DeleteMilestoneRequest = {
 
   fromPartial<I extends Exact<DeepPartial<DeleteMilestoneRequest>, I>>(object: I): DeleteMilestoneRequest {
     const message = createBaseDeleteMilestoneRequest();
-    message.smartGoalId = object.smartGoalId ?? 0;
     message.milestoneId = object.milestoneId ?? 0;
     return message;
   },
@@ -2291,7 +2228,7 @@ function createBaseUpdateMilestoneRequest(): UpdateMilestoneRequest {
 export const UpdateMilestoneRequest = {
   encode(message: UpdateMilestoneRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.milestone !== undefined) {
-      Milestone.encode(message.milestone, writer.uint32(10).fork()).ldelim();
+      Milestone.encode(message.milestone, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -2303,7 +2240,7 @@ export const UpdateMilestoneRequest = {
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        case 1:
+        case 2:
           message.milestone = Milestone.decode(reader, reader.uint32());
           break;
         default:
@@ -2509,14 +2446,11 @@ export const GetMilestonesBySmartGoalIdResponse = {
 };
 
 function createBaseGetMilestoneRequest(): GetMilestoneRequest {
-  return { smartGoalId: 0, milestoneId: 0 };
+  return { milestoneId: 0 };
 }
 
 export const GetMilestoneRequest = {
   encode(message: GetMilestoneRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.smartGoalId !== 0) {
-      writer.uint32(8).uint64(message.smartGoalId);
-    }
     if (message.milestoneId !== 0) {
       writer.uint32(16).uint64(message.milestoneId);
     }
@@ -2530,9 +2464,6 @@ export const GetMilestoneRequest = {
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        case 1:
-          message.smartGoalId = longToNumber(reader.uint64() as Long);
-          break;
         case 2:
           message.milestoneId = longToNumber(reader.uint64() as Long);
           break;
@@ -2545,15 +2476,11 @@ export const GetMilestoneRequest = {
   },
 
   fromJSON(object: any): GetMilestoneRequest {
-    return {
-      smartGoalId: isSet(object.smartGoalId) ? Number(object.smartGoalId) : 0,
-      milestoneId: isSet(object.milestoneId) ? Number(object.milestoneId) : 0,
-    };
+    return { milestoneId: isSet(object.milestoneId) ? Number(object.milestoneId) : 0 };
   },
 
   toJSON(message: GetMilestoneRequest): unknown {
     const obj: any = {};
-    message.smartGoalId !== undefined && (obj.smartGoalId = Math.round(message.smartGoalId));
     message.milestoneId !== undefined && (obj.milestoneId = Math.round(message.milestoneId));
     return obj;
   },
@@ -2564,7 +2491,6 @@ export const GetMilestoneRequest = {
 
   fromPartial<I extends Exact<DeepPartial<GetMilestoneRequest>, I>>(object: I): GetMilestoneRequest {
     const message = createBaseGetMilestoneRequest();
-    message.smartGoalId = object.smartGoalId ?? 0;
     message.milestoneId = object.milestoneId ?? 0;
     return message;
   },
@@ -2729,14 +2655,11 @@ export const GetForecastResponse = {
 };
 
 function createBaseCreateBudgetRequest(): CreateBudgetRequest {
-  return { pocketId: 0, milestroneId: 0, budget: undefined };
+  return { milestroneId: 0, budget: undefined };
 }
 
 export const CreateBudgetRequest = {
   encode(message: CreateBudgetRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.pocketId !== 0) {
-      writer.uint32(8).uint64(message.pocketId);
-    }
     if (message.milestroneId !== 0) {
       writer.uint32(16).uint64(message.milestroneId);
     }
@@ -2753,9 +2676,6 @@ export const CreateBudgetRequest = {
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        case 1:
-          message.pocketId = longToNumber(reader.uint64() as Long);
-          break;
         case 2:
           message.milestroneId = longToNumber(reader.uint64() as Long);
           break;
@@ -2772,7 +2692,6 @@ export const CreateBudgetRequest = {
 
   fromJSON(object: any): CreateBudgetRequest {
     return {
-      pocketId: isSet(object.pocketId) ? Number(object.pocketId) : 0,
       milestroneId: isSet(object.milestroneId) ? Number(object.milestroneId) : 0,
       budget: isSet(object.budget) ? Budget.fromJSON(object.budget) : undefined,
     };
@@ -2780,7 +2699,6 @@ export const CreateBudgetRequest = {
 
   toJSON(message: CreateBudgetRequest): unknown {
     const obj: any = {};
-    message.pocketId !== undefined && (obj.pocketId = Math.round(message.pocketId));
     message.milestroneId !== undefined && (obj.milestroneId = Math.round(message.milestroneId));
     message.budget !== undefined && (obj.budget = message.budget ? Budget.toJSON(message.budget) : undefined);
     return obj;
@@ -2792,7 +2710,6 @@ export const CreateBudgetRequest = {
 
   fromPartial<I extends Exact<DeepPartial<CreateBudgetRequest>, I>>(object: I): CreateBudgetRequest {
     const message = createBaseCreateBudgetRequest();
-    message.pocketId = object.pocketId ?? 0;
     message.milestroneId = object.milestroneId ?? 0;
     message.budget = (object.budget !== undefined && object.budget !== null)
       ? Budget.fromPartial(object.budget)
@@ -2965,7 +2882,7 @@ function createBaseDeleteBudgetRequest(): DeleteBudgetRequest {
 export const DeleteBudgetRequest = {
   encode(message: DeleteBudgetRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.budgetId !== 0) {
-      writer.uint32(8).uint64(message.budgetId);
+      writer.uint32(16).uint64(message.budgetId);
     }
     return writer;
   },
@@ -2977,7 +2894,7 @@ export const DeleteBudgetRequest = {
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        case 1:
+        case 2:
           message.budgetId = longToNumber(reader.uint64() as Long);
           break;
         default:

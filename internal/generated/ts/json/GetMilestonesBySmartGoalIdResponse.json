@@ -102,10 +102,8 @@
                     "description": "wethe milestone is completed or not"
                 },
                 "budget": {
-                    "items": {
-                        "$ref": "#/definitions/api.v1.Budget"
-                    },
-                    "type": "array",
+                    "$ref": "#/definitions/api.v1.Budget",
+                    "additionalProperties": true,
                     "description": "the budget associated with the milestone"
                 }
             },

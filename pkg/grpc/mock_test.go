@@ -12,7 +12,7 @@ import (
 	"testing"
 	"time"
 
-	core_database "github.com/yoanyombapro1234/FeelGuuds_Core/core/core-database"
+	core_database "github.com/SimifiniiCTO/core/core-database"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/test/bufconn"

@@ -1041,32 +1041,57 @@ func (m *BankAccount) validate(all bool) error {
 
 	// no validation rules for Id
 
-	// no validation rules for UserId
-
-	// no validation rules for Name
-
-	// no validation rules for Number
-
-	// no validation rules for Type
-
-	// no validation rules for Balance
-
-	// no validation rules for Currency
-
-	// no validation rules for CurrentFunds
-
-	// no validation rules for BalanceLimit
-
-	if len(m.GetPockets()) > 4 {
+	if m.GetUserId() <= 0 {
 		err := BankAccountValidationError{
-			field:  "Pockets",
-			reason: "value must contain no more than 4 item(s)",
+			field:  "UserId",
+			reason: "value must be greater than 0",
 		}
 		if !all {
 			return err
 		}
 		errors = append(errors, err)
 	}
+
+	if len(m.GetName()) < 3 {
+		err := BankAccountValidationError{
+			field:  "Name",
+			reason: "value length must be at least 3 bytes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if len(m.GetNumber()) < 8 {
+		err := BankAccountValidationError{
+			field:  "Number",
+			reason: "value length must be at least 8 bytes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	// no validation rules for Type
+
+	if m.GetBalance() <= 0 {
+		err := BankAccountValidationError{
+			field:  "Balance",
+			reason: "value must be greater than 0",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	// no validation rules for Currency
+
+	// no validation rules for CurrentFunds
+
+	// no validation rules for BalanceLimit
 
 	for idx, item := range m.GetPockets() {
 		_, _ = idx, item
@@ -1404,10 +1429,10 @@ func (m *SmartGoal) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	if len(m.GetTargetAmount()) < 3 {
+	if len(m.GetTargetAmount()) < 1 {
 		err := SmartGoalValidationError{
 			field:  "TargetAmount",
-			reason: "value length must be at least 3 bytes",
+			reason: "value length must be at least 1 bytes",
 		}
 		if !all {
 			return err
@@ -1415,10 +1440,10 @@ func (m *SmartGoal) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	if len(m.GetCurrentAmount()) < 3 {
+	if len(m.GetCurrentAmount()) < 0 {
 		err := SmartGoalValidationError{
 			field:  "CurrentAmount",
-			reason: "value length must be at least 3 bytes",
+			reason: "value length must be at least 0 bytes",
 		}
 		if !all {
 			return err
@@ -1770,38 +1795,33 @@ func (m *Milestone) validate(all bool) error {
 
 	// no validation rules for IsCompleted
 
-	for idx, item := range m.GetBudget() {
-		_, _ = idx, item
-
-		if all {
-			switch v := interface{}(item).(type) {
-			case interface{ ValidateAll() error }:
-				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, MilestoneValidationError{
-						field:  fmt.Sprintf("Budget[%v]", idx),
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			case interface{ Validate() error }:
-				if err := v.Validate(); err != nil {
-					errors = append(errors, MilestoneValidationError{
-						field:  fmt.Sprintf("Budget[%v]", idx),
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			}
-		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
-			if err := v.Validate(); err != nil {
-				return MilestoneValidationError{
-					field:  fmt.Sprintf("Budget[%v]", idx),
+	if all {
+		switch v := interface{}(m.GetBudget()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, MilestoneValidationError{
+					field:  "Budget",
 					reason: "embedded message failed validation",
 					cause:  err,
-				}
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, MilestoneValidationError{
+					field:  "Budget",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
 			}
 		}
-
+	} else if v, ok := interface{}(m.GetBudget()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return MilestoneValidationError{
+				field:  "Budget",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
 	}
 
 	if len(errors) > 0 {

@@ -1,8 +1,11 @@
 package database
 
 import (
+	"context"
+	"testing"
 	"time"
 
+	"github.com/stretchr/testify/assert"
 	"go.uber.org/zap"
 
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
@@ -44,15 +47,188 @@ var (
 	}
 )
 
+// createUserProfileAndBankAccountForTest creates a user profile and bank account for testing purposes
+func createUserProfileAndBankAccountForTest(t *testing.T, ctx context.Context, conn *Db) (*schema.UserProfile, *schema.BankAccount) {
+	sampleUserID := uint64(helper.GenerateRandomId(10000, 3000000))
+	userProfile, err := conn.CreateUserProfile(ctx, &schema.UserProfile{
+		UserId: sampleUserID,
+	})
+	assert.Nil(t, err)
+
+	// generate bank account
+	bankAccount, err := conn.CreateBankAccount(ctx, sampleUserID, helper.GenerateBankAccount())
+	assert.Nil(t, err)
+
+	return userProfile, bankAccount
+}
+
+func generateBankAccount() *schema.BankAccount {
+	return &schema.BankAccount{
+		UserId:       uint64(helper.GenerateRandomId(100000, 3000000)),
+		Name:         helper.GenerateRandomString(10),
+		Number:       helper.GenerateRandomString(10),
+		Type:         schema.BankAccountType_BANK_ACCOUNT_TYPE_MANUAL,
+		Balance:      float32(helper.GenerateRandomId(1000, 100000)),
+		Currency:     helper.GenerateRandomString(10),
+		CurrentFunds: float64(helper.GenerateRandomId(1000, 100000)),
+		BalanceLimit: uint64(helper.GenerateRandomId(1000, 100000)),
+		Pockets: []*schema.Pocket{
+			{
+				Goals: []*schema.SmartGoal{
+					{
+						UserId:        helper.GenerateRandomString(10),
+						Name:          helper.GenerateRandomString(10),
+						Description:   helper.GenerateRandomString(10),
+						IsCompleted:   false,
+						GoalType:      schema.GoalType_GOAL_TYPE_DEBT,
+						Duration:      helper.GenerateRandomString(10),
+						StartDate:     helper.GenerateRandomString(10),
+						EndDate:       helper.GenerateRandomString(10),
+						TargetAmount:  helper.GenerateRandomString(10),
+						CurrentAmount: helper.GenerateRandomString(10),
+					},
+				},
+				Type: schema.PocketType_POCKET_TYPE_DEBT_REDUCTION,
+			},
+			{
+				Goals: []*schema.SmartGoal{
+					{
+
+						UserId:        helper.GenerateRandomString(10),
+						Name:          helper.GenerateRandomString(10),
+						Description:   helper.GenerateRandomString(10),
+						IsCompleted:   false,
+						GoalType:      schema.GoalType_GOAL_TYPE_EXPENSE,
+						Duration:      helper.GenerateRandomString(10),
+						StartDate:     helper.GenerateRandomString(10),
+						EndDate:       helper.GenerateRandomString(10),
+						TargetAmount:  helper.GenerateRandomString(10),
+						CurrentAmount: helper.GenerateRandomString(10),
+					},
+					{
+						UserId:        helper.GenerateRandomString(10),
+						Name:          helper.GenerateRandomString(10),
+						Description:   helper.GenerateRandomString(10),
+						IsCompleted:   false,
+						GoalType:      schema.GoalType_GOAL_TYPE_SAVINGS,
+						Duration:      helper.GenerateRandomString(10),
+						StartDate:     helper.GenerateRandomString(10),
+						EndDate:       helper.GenerateRandomString(10),
+						TargetAmount:  helper.GenerateRandomString(10),
+						CurrentAmount: helper.GenerateRandomString(10),
+					},
+					{
+						UserId:        helper.GenerateRandomString(10),
+						Name:          helper.GenerateRandomString(10),
+						Description:   helper.GenerateRandomString(10),
+						IsCompleted:   false,
+						GoalType:      schema.GoalType_GOAL_TYPE_INVESTMENT,
+						Duration:      helper.GenerateRandomString(10),
+						StartDate:     helper.GenerateRandomString(10),
+						EndDate:       helper.GenerateRandomString(10),
+						TargetAmount:  helper.GenerateRandomString(10),
+						CurrentAmount: helper.GenerateRandomString(10),
+					},
+				},
+				Type: schema.PocketType_POCKET_TYPE_EMERGENCY_FUND,
+			},
+			{
+				Goals: []*schema.SmartGoal{
+					{
+						UserId:        helper.GenerateRandomString(10),
+						Name:          helper.GenerateRandomString(10),
+						Description:   helper.GenerateRandomString(10),
+						IsCompleted:   false,
+						GoalType:      schema.GoalType_GOAL_TYPE_EXPENSE,
+						Duration:      helper.GenerateRandomString(10),
+						StartDate:     helper.GenerateRandomString(10),
+						EndDate:       helper.GenerateRandomString(10),
+						TargetAmount:  helper.GenerateRandomString(10),
+						CurrentAmount: helper.GenerateRandomString(10),
+					},
+					{
+						UserId:        helper.GenerateRandomString(10),
+						Name:          helper.GenerateRandomString(10),
+						Description:   helper.GenerateRandomString(10),
+						IsCompleted:   false,
+						GoalType:      schema.GoalType_GOAL_TYPE_SAVINGS,
+						Duration:      helper.GenerateRandomString(10),
+						StartDate:     helper.GenerateRandomString(10),
+						EndDate:       helper.GenerateRandomString(10),
+						TargetAmount:  helper.GenerateRandomString(10),
+						CurrentAmount: helper.GenerateRandomString(10),
+					},
+					{
+						UserId:        helper.GenerateRandomString(10),
+						Name:          helper.GenerateRandomString(10),
+						Description:   helper.GenerateRandomString(10),
+						IsCompleted:   false,
+						GoalType:      schema.GoalType_GOAL_TYPE_INVESTMENT,
+						Duration:      helper.GenerateRandomString(10),
+						StartDate:     helper.GenerateRandomString(10),
+						EndDate:       helper.GenerateRandomString(10),
+						TargetAmount:  helper.GenerateRandomString(10),
+						CurrentAmount: helper.GenerateRandomString(10),
+					},
+				},
+				Type: schema.PocketType_POCKET_TYPE_FUN_MONEY,
+			},
+			{
+				Goals: []*schema.SmartGoal{
+					{
+						UserId:        helper.GenerateRandomString(10),
+						Name:          helper.GenerateRandomString(10),
+						Description:   helper.GenerateRandomString(10),
+						IsCompleted:   false,
+						GoalType:      schema.GoalType_GOAL_TYPE_EXPENSE,
+						Duration:      helper.GenerateRandomString(10),
+						StartDate:     helper.GenerateRandomString(10),
+						EndDate:       helper.GenerateRandomString(10),
+						TargetAmount:  helper.GenerateRandomString(10),
+						CurrentAmount: helper.GenerateRandomString(10),
+					},
+					{
+						UserId:        helper.GenerateRandomString(10),
+						Name:          helper.GenerateRandomString(10),
+						Description:   helper.GenerateRandomString(10),
+						IsCompleted:   false,
+						GoalType:      schema.GoalType_GOAL_TYPE_SAVINGS,
+						Duration:      helper.GenerateRandomString(10),
+						StartDate:     helper.GenerateRandomString(10),
+						EndDate:       helper.GenerateRandomString(10),
+						TargetAmount:  helper.GenerateRandomString(10),
+						CurrentAmount: helper.GenerateRandomString(10),
+					},
+					{
+						UserId:        helper.GenerateRandomString(10),
+						Name:          helper.GenerateRandomString(10),
+						Description:   helper.GenerateRandomString(10),
+						IsCompleted:   false,
+						GoalType:      schema.GoalType_GOAL_TYPE_INVESTMENT,
+						Duration:      helper.GenerateRandomString(10),
+						StartDate:     helper.GenerateRandomString(10),
+						EndDate:       helper.GenerateRandomString(10),
+						TargetAmount:  helper.GenerateRandomString(10),
+						CurrentAmount: helper.GenerateRandomString(10),
+					},
+				},
+				Type: schema.PocketType_POCKET_TYPE_DISCRETIONARY_SPENDING,
+			},
+		},
+		PlaidAccountId: helper.GenerateRandomString(10),
+		Subtype:        helper.GenerateRandomString(10),
+	}
+}
+
 func genereateRandomUserProfileForTest() *schema.UserProfile {
 	return &schema.UserProfile{
 		UserId: uint64(helper.GenerateRandomId(100000, 3000000)),
 		BankAccounts: []*schema.BankAccount{
 			{
-				UserId:       helper.GenerateRandomString(10),
+				UserId:       uint64(helper.GenerateRandomId(100000, 3000000)),
 				Name:         helper.GenerateRandomString(10),
 				Number:       helper.GenerateRandomString(10),
-				Type:         helper.GenerateRandomString(10),
+				Type:         schema.BankAccountType_BANK_ACCOUNT_TYPE_MANUAL,
 				Balance:      float32(helper.GenerateRandomId(1000, 100000)),
 				Currency:     helper.GenerateRandomString(10),
 				CurrentFunds: float64(helper.GenerateRandomId(1000, 100000)),
@@ -206,16 +382,124 @@ func genereateRandomUserProfileForTest() *schema.UserProfile {
 		},
 		InvestmentAccounts: []*schema.InvestmentAccount{
 			{
-				UserId:       helper.GenerateRandomString(10),
-				Name:         helper.GenerateRandomString(10),
-				Number:       helper.GenerateRandomString(10),
-				Type:         helper.GenerateRandomString(10),
-				Balance:      float32(helper.GenerateRandomId(1000, 100000)),
-				CurrentFunds: float64(helper.GenerateRandomId(1000, 100000)),
-				BalanceLimit: uint64(helper.GenerateRandomId(1000, 100000)),
+				Id:             0,
+				UserId:         helper.GenerateRandomString(10),
+				Name:           helper.GenerateRandomString(10),
+				Number:         helper.GenerateRandomString(10),
+				Type:           helper.GenerateRandomString(10),
+				Balance:        float32(helper.GenerateRandomId(1000, 100000)),
+				CurrentFunds:   float64(helper.GenerateRandomId(1000, 100000)),
+				BalanceLimit:   uint64(helper.GenerateRandomId(1000, 100000)),
+				PlaidAccountId: helper.GenerateRandomString(10),
+				Subtype:        helper.GenerateRandomString(10),
+				Holdings: []*schema.InvesmentHolding{
+					{
+						Name:                     helper.GenerateRandomString(10),
+						PlaidAccountId:           helper.GenerateRandomString(10),
+						CostBasis:                float64(helper.GenerateRandomId(1000, 100000)),
+						InstitutionPrice:         float64(helper.GenerateRandomId(1000, 100000)),
+						InstitutionPriceAsOf:     helper.GenerateRandomString(10),
+						InstitutionPriceDatetime: helper.GenerateRandomString(10),
+						InstitutionValue:         float64(helper.GenerateRandomId(1000, 100000)),
+						IsoCurrencyCode:          helper.GenerateRandomString(10),
+						Quantity:                 float64(helper.GenerateRandomId(1000, 100000)),
+						SecurityId:               helper.GenerateRandomString(10),
+						UnofficialCurrencyCode:   helper.GenerateRandomString(10),
+					},
+					{
+						Name:                     helper.GenerateRandomString(10),
+						PlaidAccountId:           helper.GenerateRandomString(10),
+						CostBasis:                float64(helper.GenerateRandomId(1000, 100000)),
+						InstitutionPrice:         float64(helper.GenerateRandomId(1000, 100000)),
+						InstitutionPriceAsOf:     helper.GenerateRandomString(10),
+						InstitutionPriceDatetime: helper.GenerateRandomString(10),
+						InstitutionValue:         float64(helper.GenerateRandomId(1000, 100000)),
+						IsoCurrencyCode:          helper.GenerateRandomString(10),
+						Quantity:                 float64(helper.GenerateRandomId(1000, 100000)),
+						SecurityId:               helper.GenerateRandomString(10),
+						UnofficialCurrencyCode:   helper.GenerateRandomString(10),
+					},
+				},
+				Securities: []*schema.InvestmentSecurity{
+					{
+						ClosePrice:             float64(helper.GenerateRandomId(1000, 100000)),
+						ClosePriceAsOf:         helper.GenerateRandomString(10),
+						Cusip:                  helper.GenerateRandomString(10),
+						InstitutionId:          helper.GenerateRandomString(10),
+						InstitutionSecurityId:  helper.GenerateRandomString(10),
+						IsCashEquivalent:       false,
+						Isin:                   helper.GenerateRandomString(10),
+						IsoCurrencyCode:        helper.GenerateRandomString(10),
+						Name:                   helper.GenerateRandomString(10),
+						ProxySecurityId:        helper.GenerateRandomString(10),
+						SecurityId:             helper.GenerateRandomString(10),
+						Sedol:                  helper.GenerateRandomString(10),
+						TickerSymbol:           helper.GenerateRandomString(10),
+						Type:                   helper.GenerateRandomString(10),
+						UnofficialCurrencyCode: helper.GenerateRandomString(10),
+						UpdateDatetime:         helper.GenerateRandomString(10),
+					},
+					{
+						ClosePrice:             float64(helper.GenerateRandomId(1000, 100000)),
+						ClosePriceAsOf:         helper.GenerateRandomString(10),
+						Cusip:                  helper.GenerateRandomString(10),
+						InstitutionId:          helper.GenerateRandomString(10),
+						InstitutionSecurityId:  helper.GenerateRandomString(10),
+						IsCashEquivalent:       false,
+						Isin:                   helper.GenerateRandomString(10),
+						IsoCurrencyCode:        helper.GenerateRandomString(10),
+						Name:                   helper.GenerateRandomString(10),
+						ProxySecurityId:        helper.GenerateRandomString(10),
+						SecurityId:             helper.GenerateRandomString(10),
+						Sedol:                  helper.GenerateRandomString(10),
+						TickerSymbol:           helper.GenerateRandomString(10),
+						Type:                   helper.GenerateRandomString(10),
+						UnofficialCurrencyCode: helper.GenerateRandomString(10),
+						UpdateDatetime:         helper.GenerateRandomString(10),
+					},
+					{
+						ClosePrice:             float64(helper.GenerateRandomId(1000, 100000)),
+						ClosePriceAsOf:         helper.GenerateRandomString(10),
+						Cusip:                  helper.GenerateRandomString(10),
+						InstitutionId:          helper.GenerateRandomString(10),
+						InstitutionSecurityId:  helper.GenerateRandomString(10),
+						IsCashEquivalent:       false,
+						Isin:                   helper.GenerateRandomString(10),
+						IsoCurrencyCode:        helper.GenerateRandomString(10),
+						Name:                   helper.GenerateRandomString(10),
+						ProxySecurityId:        helper.GenerateRandomString(10),
+						SecurityId:             helper.GenerateRandomString(10),
+						Sedol:                  helper.GenerateRandomString(10),
+						TickerSymbol:           helper.GenerateRandomString(10),
+						Type:                   helper.GenerateRandomString(10),
+						UnofficialCurrencyCode: helper.GenerateRandomString(10),
+						UpdateDatetime:         helper.GenerateRandomString(10),
+					},
+				},
 			},
 		},
 		CreditAccounts: []*schema.CreditAccount{
+			{
+				UserId:                 helper.GenerateRandomString(10),
+				Name:                   helper.GenerateRandomString(10),
+				Number:                 helper.GenerateRandomString(10),
+				Type:                   helper.GenerateRandomString(10),
+				Balance:                float32(helper.GenerateRandomId(1000, 100000)),
+				CurrentFunds:           float64(helper.GenerateRandomId(1000, 100000)),
+				BalanceLimit:           uint64(helper.GenerateRandomId(1000, 100000)),
+				PlaidAccountId:         helper.GenerateRandomString(10),
+				Subtype:                helper.GenerateRandomString(10),
+				IsOverdue:              false,
+				LastPaymentAmount:      float64(helper.GenerateRandomId(1000, 100000)),
+				LastPaymentDate:        helper.GenerateRandomString(10),
+				LastStatementIssueDate: helper.GenerateRandomString(10),
+				MinimumAmountDueDate:   float64(helper.GenerateRandomId(1000, 100000)),
+				NextPaymentDate:        helper.GenerateRandomString(10),
+				Aprs:                   []*schema.Apr{},
+				LastStatementBalance:   float64(helper.GenerateRandomId(1000, 100000)),
+				MinimumPaymentAmount:   float64(helper.GenerateRandomId(1000, 100000)),
+				NextPaymentDueDate:     helper.GenerateRandomString(10),
+			},
 			{
 				UserId:                 helper.GenerateRandomString(10),
 				Name:                   helper.GenerateRandomString(10),

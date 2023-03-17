@@ -2,35 +2,57 @@ package grpc
 
 import (
 	"context"
-	"reflect"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 
 	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 )
 
 func TestServer_HealthCheck(t *testing.T) {
+	conn, client := setupPreconditions()
+	defer conn.Close()
+
+	// ensure the conn and client are not nil
+	assert.NotNil(t, client)
+	assert.NotNil(t, conn)
+
 	type args struct {
-		in0 context.Context
-		in1 *proto.HealthCheckRequest
+		ctx context.Context
+		req *proto.HealthCheckRequest
 	}
 	tests := []struct {
 		name    string
-		s       *Server
 		args    args
-		want    *proto.HealthCheckResponse
 		wantErr bool
 	}{
-		// TODO: Add test cases.
+		{
+			name: "[success] HealthCheck",
+			args: args{
+				ctx: context.Background(),
+				req: &proto.HealthCheckRequest{},
+			},
+			wantErr: false,
+		},
+		{
+			name: "[failure] HealthCheck - invalid request",
+			args: args{
+				ctx: context.Background(),
+				req: nil,
+			},
+			wantErr: true,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := tt.s.HealthCheck(tt.args.in0, tt.args.in1)
+			got, err := client.HealthCheck(tt.args.ctx, tt.args.req)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("Server.HealthCheck() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("Server.HealthCheck() = %v, want %v", got, tt.want)
+			if !tt.wantErr {
+				assert.NotNil(t, got)
+				assert.True(t, got.Healthy)
 			}
 		})
 	}

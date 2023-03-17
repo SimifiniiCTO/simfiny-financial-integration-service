@@ -73,8 +73,8 @@ func main() {
 	// TODO: ensure this comes from env variables
 	fs.String("newrelic-key", "62fd721c712d5863a4e75b8f547b7c1ea884NRAL", "new relic license key")
 	// database connection environment variables
-	fs.String("dbhost", "service_db", "database host string")
-	fs.Int("dbport", 5432, "database port")
+	fs.String("dbhost", "localhost", "database host string")
+	fs.Int("dbport", 5433, "database port")
 	fs.String("dbuser", "service_db", "database user string")
 	fs.String("dbpassword", "service_db", "database password string")
 	fs.String("dbname", "service_db", "database name")

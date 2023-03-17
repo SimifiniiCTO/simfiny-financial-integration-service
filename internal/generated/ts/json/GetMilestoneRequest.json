@@ -4,10 +4,6 @@
     "definitions": {
         "GetMilestoneRequest": {
             "properties": {
-                "smart_goal_id": {
-                    "type": "string",
-                    "description": "The smart goal id Validations: - smart_goal_id must be greater than 0"
-                },
                 "milestone_id": {
                     "type": "string",
                     "description": "The milestone id Validations: - milestone_id must be greater than 0"

@@ -2,35 +2,89 @@ package grpc
 
 import (
 	"context"
-	"reflect"
+	"fmt"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
+
 	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/helper"
 )
 
 func TestServer_DeleteUserProfile(t *testing.T) {
+	conn, client := setupPreconditions()
+	defer conn.Close()
+
+	// ensure the conn and client are not nil
+	assert.NotNil(t, client)
+	assert.NotNil(t, conn)
+
 	type args struct {
-		in0 context.Context
-		in1 *proto.DeleteUserProfileRequest
+		ctx context.Context
+		req *proto.DeleteUserProfileRequest
 	}
 	tests := []struct {
-		name    string
-		s       *Server
-		args    args
-		want    *proto.DeleteUserProfileResponse
-		wantErr bool
+		name                    string
+		args                    args
+		wantErr                 bool
+		shouldCreateUserProfile bool
 	}{
 		// TODO: Add test cases.
+		{
+			name: "[success] DeleteUserProfile",
+			args: args{
+				ctx: context.Background(),
+				req: &proto.DeleteUserProfileRequest{
+					UserId: uint64(helper.GenerateRandomId(10000, 11000)),
+				},
+			},
+			wantErr:                 false,
+			shouldCreateUserProfile: true,
+		},
+		{
+			name: "[failure] DeleteUserProfile - invalid request",
+			args: args{
+				ctx: context.Background(),
+				req: &proto.DeleteUserProfileRequest{
+					UserId: 0,
+				},
+			},
+			wantErr:                 true,
+			shouldCreateUserProfile: false,
+		},
+		{
+			name: "[failure] DeleteUserProfile - user profile not found",
+			args: args{
+				ctx: context.Background(),
+				req: &proto.DeleteUserProfileRequest{
+					UserId: 1,
+				},
+			},
+			wantErr:                 true,
+			shouldCreateUserProfile: false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := tt.s.DeleteUserProfile(tt.args.in0, tt.args.in1)
+			if tt.shouldCreateUserProfile {
+				_, err := client.CreateUserProfile(tt.args.ctx, &proto.CreateUserProfileRequest{
+					Profile: &proto.UserProfile{
+						UserId: tt.args.req.UserId,
+					},
+					Email: fmt.Sprintf("%s@gmail.com", helper.GenerateRandomString(10)),
+				})
+
+				assert.Nil(t, err)
+			}
+
+			got, err := client.DeleteUserProfile(tt.args.ctx, tt.args.req)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("Server.DeleteUserProfile() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("Server.DeleteUserProfile() = %v, want %v", got, tt.want)
+
+			if !tt.wantErr && got == nil {
+				t.Errorf("Server.DeleteUserProfile() got = %v, want %v", got, tt.wantErr)
 			}
 		})
 	}

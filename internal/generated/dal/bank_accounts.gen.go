@@ -38,7 +38,7 @@ func newBankAccountORM(db *gorm.DB, opts ...gen.DOOption) bankAccountORM {
 	_bankAccountORM.PlaidAccountId = field.NewString(tableName, "plaid_account_id")
 	_bankAccountORM.Subtype = field.NewString(tableName, "subtype")
 	_bankAccountORM.Type = field.NewString(tableName, "type")
-	_bankAccountORM.UserId = field.NewString(tableName, "user_id")
+	_bankAccountORM.UserId = field.NewUint64(tableName, "user_id")
 	_bankAccountORM.UserProfileId = field.NewUint64(tableName, "user_profile_id")
 	_bankAccountORM.Pockets = bankAccountORMHasManyPockets{
 		db: db.Session(&gorm.Session{}),
@@ -111,7 +111,7 @@ type bankAccountORM struct {
 	PlaidAccountId field.String
 	Subtype        field.String
 	Type           field.String
-	UserId         field.String
+	UserId         field.Uint64
 	UserProfileId  field.Uint64
 	Pockets        bankAccountORMHasManyPockets
 
@@ -140,7 +140,7 @@ func (b *bankAccountORM) updateTableName(table string) *bankAccountORM {
 	b.PlaidAccountId = field.NewString(table, "plaid_account_id")
 	b.Subtype = field.NewString(table, "subtype")
 	b.Type = field.NewString(table, "type")
-	b.UserId = field.NewString(table, "user_id")
+	b.UserId = field.NewUint64(table, "user_id")
 	b.UserProfileId = field.NewUint64(table, "user_profile_id")
 
 	b.fillFieldMap()

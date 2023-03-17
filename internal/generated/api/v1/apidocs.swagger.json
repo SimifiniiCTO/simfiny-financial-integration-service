@@ -391,7 +391,7 @@
         ]
       }
     },
-    "/api/v1/bank-account/{bankAccountId}/profile/{userId}": {
+    "/api/v1/bank-account/{bankAccountId}": {
       "get": {
         "summary": "get a bank account for a given user profile",
         "description": "This endpoint returns the bank account if the user record id and bank account id exists\nexample: /api/v1/bank-account?user_id=xxxxxx\u0026\u0026bank_account_id=xxxxxxx",
@@ -432,14 +432,6 @@
           {
             "name": "bankAccountId",
             "description": "The bank account id\nValidations:\n- bank_account_id must be greater than 0",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "format": "uint64"
-          },
-          {
-            "name": "userId",
-            "description": "The account ID associated with the user\nValidations:\n- user_id must be greater than 0",
             "in": "path",
             "required": true,
             "type": "string",
@@ -498,7 +490,7 @@
           {
             "name": "userId",
             "description": "The account ID associated with the user\nValidations:\n- user_id must be greater than 0",
-            "in": "path",
+            "in": "query",
             "required": true,
             "type": "string",
             "format": "uint64"
@@ -613,14 +605,6 @@
           }
         },
         "parameters": [
-          {
-            "name": "pocketId",
-            "description": "The pocket account id\nValidations:\n- pocket_account_id must be greater than 0",
-            "in": "query",
-            "required": true,
-            "type": "string",
-            "format": "uint64"
-          },
           {
             "name": "milestroneId",
             "description": "The milestone to associate this budget with",
@@ -1037,6 +1021,74 @@
             "in": "query",
             "required": false,
             "type": "boolean"
+          },
+          {
+            "name": "milestone.budget.id",
+            "description": "id",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "milestone.budget.name",
+            "description": "The name of the budget",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "milestone.budget.description",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "milestone.budget.startDate",
+            "description": "the time the goal was created",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "milestone.budget.endDate",
+            "description": "the time the goal was updated",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "milestone.budget.category.id",
+            "description": "id",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "milestone.budget.category.name",
+            "description": "The name of the category",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "milestone.budget.category.description",
+            "description": "The description of the category",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "milestone.budget.category.subcategories",
+            "description": "the sub categories of the category",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
           }
         ],
         "tags": [
@@ -1146,7 +1198,7 @@
         ]
       }
     },
-    "/api/v1/milestone/{milestoneId}/smart-goal/{smartGoalId}": {
+    "/api/v1/milestone/{milestoneId}": {
       "get": {
         "summary": "get milestone by id",
         "description": "This endpoint returns the milestone if the milestone exists",
@@ -1187,14 +1239,6 @@
           {
             "name": "milestoneId",
             "description": "The milestone id\nValidations:\n- milestone_id must be greater than 0",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "format": "uint64"
-          },
-          {
-            "name": "smartGoalId",
-            "description": "The smart goal id\nValidations:\n- smart_goal_id must be greater than 0",
             "in": "path",
             "required": true,
             "type": "string",
@@ -1245,14 +1289,6 @@
           {
             "name": "milestoneId",
             "description": "The milestone id\nValidations:\n- milestone_id must be greater than 0",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "format": "uint64"
-          },
-          {
-            "name": "smartGoalId",
-            "description": "The smart goal id\nValidations:\n- smart_goal_id must be greater than 0",
             "in": "path",
             "required": true,
             "type": "string",
@@ -1935,7 +1971,7 @@
         ]
       }
     },
-    "/api/v1/smart-goal/{smartGoalId}/pocket/{pocketId}": {
+    "/api/v1/smart-goal/{smartGoalId}": {
       "delete": {
         "summary": "delete a smart goal",
         "description": "This endpoint deletes a smart goal",
@@ -1976,14 +2012,6 @@
           {
             "name": "smartGoalId",
             "description": "The smart goal id\nValidations:\n- smart_goal_id must be greater than 0",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "format": "uint64"
-          },
-          {
-            "name": "pocketId",
-            "description": "The pocket account id\nValidations:\n- pocket_account_id must be greater than 0",
             "in": "path",
             "required": true,
             "type": "string",
@@ -2040,6 +2068,7 @@
         },
         "userId": {
           "type": "string",
+          "format": "uint64",
           "title": "the user id to which this bank account is tied to"
         },
         "name": {
@@ -2051,7 +2080,7 @@
           "title": "the bank account number"
         },
         "type": {
-          "type": "string",
+          "$ref": "#/definitions/BankAccountType",
           "title": "the bank account type"
         },
         "balance": {
@@ -2086,7 +2115,24 @@
           "type": "string",
           "title": "account subtype"
         }
-      }
+      },
+      "required": [
+        "name",
+        "number",
+        "type",
+        "balance",
+        "currency",
+        "currentFunds"
+      ]
+    },
+    "BankAccountType": {
+      "type": "string",
+      "enum": [
+        "BANK_ACCOUNT_TYPE_UNSPECIFIED",
+        "BANK_ACCOUNT_TYPE_PLAID",
+        "BANK_ACCOUNT_TYPE_MANUAL"
+      ],
+      "default": "BANK_ACCOUNT_TYPE_UNSPECIFIED"
     },
     "Budget": {
       "type": "object",
@@ -2850,10 +2896,7 @@
           "title": "wethe milestone is completed or not"
         },
         "budget": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Budget"
-          },
+          "$ref": "#/definitions/Budget",
           "title": "the budget associated with the milestone"
         }
       },
@@ -3085,7 +3128,10 @@
         "POCKET_TYPE_DISCRETIONARY_SPENDING",
         "POCKET_TYPE_FUN_MONEY",
         "POCKET_TYPE_DEBT_REDUCTION",
-        "POCKET_TYPE_EMERGENCY_FUND"
+        "POCKET_TYPE_EMERGENCY_FUND",
+        "POCKET_TYPE_INVESTMENT",
+        "POCKET_TYPE_SHORT_TERM_SAVINGS",
+        "POCKET_TYPE_LONG_TERM_SAVINGS"
       ],
       "default": "POCKET_TYPE_UNSPECIFIED"
     },

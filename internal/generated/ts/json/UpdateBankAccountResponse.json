@@ -37,8 +37,23 @@
                     "description": "the bank account number"
                 },
                 "type": {
-                    "type": "string",
-                    "description": "the bank account type"
+                    "enum": [
+                        "BANK_ACCOUNT_TYPE_UNSPECIFIED",
+                        0,
+                        "BANK_ACCOUNT_TYPE_PLAID",
+                        1,
+                        "BANK_ACCOUNT_TYPE_MANUAL",
+                        2
+                    ],
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "integer"
+                        }
+                    ],
+                    "title": "Bank Account Type"
                 },
                 "balance": {
                     "type": "number",
@@ -184,10 +199,8 @@
                     "description": "wethe milestone is completed or not"
                 },
                 "budget": {
-                    "items": {
-                        "$ref": "#/definitions/api.v1.Budget"
-                    },
-                    "type": "array",
+                    "$ref": "#/definitions/api.v1.Budget",
+                    "additionalProperties": true,
                     "description": "the budget associated with the milestone"
                 }
             },
@@ -220,7 +233,13 @@
                         "POCKET_TYPE_DEBT_REDUCTION",
                         3,
                         "POCKET_TYPE_EMERGENCY_FUND",
-                        4
+                        4,
+                        "POCKET_TYPE_INVESTMENT",
+                        5,
+                        "POCKET_TYPE_SHORT_TERM_SAVINGS",
+                        6,
+                        "POCKET_TYPE_LONG_TERM_SAVINGS",
+                        7
                     ],
                     "oneOf": [
                         {

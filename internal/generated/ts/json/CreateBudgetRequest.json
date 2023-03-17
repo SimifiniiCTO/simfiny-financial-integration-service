@@ -4,10 +4,6 @@
     "definitions": {
         "CreateBudgetRequest": {
             "properties": {
-                "pocket_id": {
-                    "type": "string",
-                    "description": "The pocket account id Validations: - pocket_account_id must be greater than 0"
-                },
                 "milestrone_id": {
                     "type": "string",
                     "description": "The milestone to associate this budget with"

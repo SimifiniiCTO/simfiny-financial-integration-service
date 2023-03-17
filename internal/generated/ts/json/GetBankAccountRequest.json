@@ -4,10 +4,6 @@
     "definitions": {
         "GetBankAccountRequest": {
             "properties": {
-                "user_id": {
-                    "type": "string",
-                    "description": "The account ID associated with the user Validations: - user_id must be greater than 0"
-                },
                 "bank_account_id": {
                     "type": "string",
                     "description": "The bank account id Validations: - bank_account_id must be greater than 0"

@@ -2,35 +2,57 @@ package grpc
 
 import (
 	"context"
-	"reflect"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 
 	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 )
 
 func TestServer_ReadynessCheck(t *testing.T) {
+	conn, client := setupPreconditions()
+	defer conn.Close()
+
+	// ensure the conn and client are not nil
+	assert.NotNil(t, client)
+	assert.NotNil(t, conn)
+
 	type args struct {
-		in0 context.Context
-		in1 *proto.ReadynessCheckRequest
+		ctx context.Context
+		req *proto.ReadynessCheckRequest
 	}
 	tests := []struct {
 		name    string
-		s       *Server
 		args    args
-		want    *proto.ReadynessCheckResponse
 		wantErr bool
 	}{
-		// TODO: Add test cases.
+		{
+			name: "Test ReadynessCheck",
+			args: args{
+				ctx: context.Background(),
+				req: &proto.ReadynessCheckRequest{},
+			},
+			wantErr: false,
+		},
+		{
+			name: "Test ReadynessCheck - invalid request",
+			args: args{
+				ctx: context.Background(),
+				req: nil,
+			},
+			wantErr: true,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := tt.s.ReadynessCheck(tt.args.in0, tt.args.in1)
+			got, err := client.ReadynessCheck(tt.args.ctx, tt.args.req)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("Server.ReadynessCheck() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("Server.ReadynessCheck() = %v, want %v", got, tt.want)
+			if !tt.wantErr {
+				assert.NotNil(t, got)
+				assert.True(t, got.Healthy)
 			}
 		})
 	}

@@ -6,6 +6,7 @@ import "protoc-gen-gorm/options/gorm.proto";
 // import "google/protobuf/timestamp.proto";
 import "validate/validate.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
+import "google/api/field_behavior.proto";
 
 option go_package = "github.com/SimifiniiCTO/simfiny-financial-integration-service/generate/api/v1";
 
@@ -31,6 +32,15 @@ enum PocketType {
   POCKET_TYPE_FUN_MONEY = 2;
   POCKET_TYPE_DEBT_REDUCTION = 3;
   POCKET_TYPE_EMERGENCY_FUND = 4;
+  POCKET_TYPE_INVESTMENT = 5;
+  POCKET_TYPE_SHORT_TERM_SAVINGS = 6;
+  POCKET_TYPE_LONG_TERM_SAVINGS = 7;
+}
+
+enum BankAccountType {
+  BANK_ACCOUNT_TYPE_UNSPECIFIED = 0;
+  BANK_ACCOUNT_TYPE_PLAID = 1;
+  BANK_ACCOUNT_TYPE_MANUAL = 2;
 }
 
 // UserProfile stores high level user profile details
@@ -236,24 +246,49 @@ message BankAccount {
   uint64 id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
 
   // the user id to which this bank account is tied to
-  string user_id = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  uint64 user_id = 2 [
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""},
+    (validate.rules).uint64.gt = 0
+  ];
 
   // the bank account name
-  string name = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  string name = 3 [
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""},
+    (validate.rules).string = {min_bytes: 3},
+    (google.api.field_behavior) = REQUIRED
+  ];
 
   // the bank account number
-  string number = 4 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  string number = 4 [
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""},
+    (validate.rules).string = {min_bytes: 8},
+    (google.api.field_behavior) = REQUIRED
+  ];
 
   // the bank account type
-  string type = 5 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  BankAccountType type = 5 [
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""},
+    (google.api.field_behavior) = REQUIRED
+  ];
 
   // the bank account balance
-  float balance = 6 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  float balance = 6 [
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""},
+    (validate.rules).float.gt = 0,
+    (google.api.field_behavior) = REQUIRED  
+  ];
 
   // the bank account currency
-  string currency = 7 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  string currency = 7 [
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""},
+    (google.api.field_behavior) = REQUIRED
+  ];
 
-  double current_funds = 9;
+  double current_funds = 9 [
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""},
+    (google.api.field_behavior) = REQUIRED
+  ];
+
   uint64 balance_limit = 10;
 
   // the set of "virtualized accounts this user witholds"
@@ -261,15 +296,13 @@ message BankAccount {
   // when a user connects a bank account
   repeated Pocket pockets = 11 [
     (gorm.field).has_many.preload = true,
-    (validate.rules).repeated.min_items = 0,
-    (validate.rules).repeated.max_items = 4
+    (validate.rules).repeated.min_items = 0
   ];
 
   // plaid account id mapped to this bank account
   string plaid_account_id = 12;
   // account subtype
   string subtype = 13;
-
 }
 
 // Pocket is an abstraction of a over a bank account. A user can has at most 4 pockets per connected account
@@ -369,7 +402,7 @@ message SmartGoal {
   // the target amount of the goal
   // amount of money the user wants to save or invest
   string target_amount = 13 [
-    (validate.rules).string = {min_bytes: 3},
+    (validate.rules).string = {min_bytes: 1},
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       min_length: 0,
       example: "\"Active\""
@@ -379,7 +412,7 @@ message SmartGoal {
   // the current amount of the goal
   // current amount of money saved or invested towards the goal
   string current_amount = 14 [
-    (validate.rules).string = {min_bytes: 3},
+    (validate.rules).string = {min_bytes: 0},
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       min_length: 0,
       example: "\"Active\""
@@ -487,7 +520,7 @@ message Milestone {
   bool is_completed = 6 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "true"}];
 
   // the budget associated with the milestone
-  repeated Budget budget = 13 [(gorm.field).has_many.preload = true];
+   Budget budget = 13 [(gorm.field).has_many.preload = true];
 }
 
 // The Budgets table stores information about each budget created by the user,

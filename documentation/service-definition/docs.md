@@ -31,6 +31,7 @@
     - [StudentLoanAccount](#api-v1-StudentLoanAccount)
     - [UserProfile](#api-v1-UserProfile)
   
+    - [BankAccountType](#api-v1-BankAccountType)
     - [GoalStatus](#api-v1-GoalStatus)
     - [GoalType](#api-v1-GoalType)
     - [PocketType](#api-v1-PocketType)
@@ -329,10 +330,10 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | id | [uint64](#uint64) |  | id |
-| user_id | [string](#string) |  | the user id to which this bank account is tied to |
+| user_id | [uint64](#uint64) |  | the user id to which this bank account is tied to |
 | name | [string](#string) |  | the bank account name |
 | number | [string](#string) |  | the bank account number |
-| type | [string](#string) |  | the bank account type |
+| type | [BankAccountType](#api-v1-BankAccountType) |  | the bank account type |
 | balance | [float](#float) |  | the bank account balance |
 | currency | [string](#string) |  | the bank account currency |
 | current_funds | [double](#double) |  |  |
@@ -542,7 +543,7 @@ and achievable. A milestone is a sub goal of a goal and is tied to a goal by the
 | target_date | [string](#string) |  | the target date of the milestone Validations: - must be at least 3 characters long |
 | target_amount | [string](#string) |  | the target amount of the milestone |
 | is_completed | [bool](#bool) |  | wethe milestone is completed or not |
-| budget | [Budget](#api-v1-Budget) | repeated | the budget associated with the milestone |
+| budget | [Budget](#api-v1-Budget) |  | the budget associated with the milestone |
 
 
 
@@ -725,6 +726,19 @@ such as the id, user_id tied to the profile, and many more
  
 
 
+<a name="api-v1-BankAccountType"></a>
+
+### BankAccountType
+
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| BANK_ACCOUNT_TYPE_UNSPECIFIED | 0 |  |
+| BANK_ACCOUNT_TYPE_PLAID | 1 |  |
+| BANK_ACCOUNT_TYPE_MANUAL | 2 |  |
+
+
+
 <a name="api-v1-GoalStatus"></a>
 
 ### GoalStatus
@@ -767,6 +781,9 @@ such as the id, user_id tied to the profile, and many more
 | POCKET_TYPE_FUN_MONEY | 2 |  |
 | POCKET_TYPE_DEBT_REDUCTION | 3 |  |
 | POCKET_TYPE_EMERGENCY_FUND | 4 |  |
+| POCKET_TYPE_INVESTMENT | 5 |  |
+| POCKET_TYPE_SHORT_TERM_SAVINGS | 6 |  |
+| POCKET_TYPE_LONG_TERM_SAVINGS | 7 |  |
 
 
  
@@ -841,7 +858,6 @@ the `create bank account` request
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| pocket_id | [uint64](#uint64) |  | The pocket account id Validations: - pocket_account_id must be greater than 0 |
 | milestrone_id | [uint64](#uint64) |  | The milestone to associate this budget with |
 | budget | [Budget](#api-v1-Budget) |  | The budget to create Validations: - cannot be nil hence required |
 
@@ -1029,7 +1045,6 @@ the `create user profile` request
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| smart_goal_id | [uint64](#uint64) |  | The smart goal id Validations: - smart_goal_id must be greater than 0 |
 | milestone_id | [uint64](#uint64) |  | The milestone id Validations: - milestone_id must be greater than 0 |
 
 
@@ -1060,7 +1075,6 @@ the `create user profile` request
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| pocket_id | [uint64](#uint64) |  | The pocket account id Validations: - pocket_account_id must be greater than 0 |
 | smart_goal_id | [uint64](#uint64) |  | The smart goal id Validations: - smart_goal_id must be greater than 0 |
 
 
@@ -1086,7 +1100,7 @@ the `create user profile` request
 <a name="api-v1-DeleteUserProfileRequest"></a>
 
 ### DeleteUserProfileRequest
-UpdateUserProfileRequest: Represents the request object invoked against the user
+teUserProfileRequest: Represents the request object invoked against the user
 service to delete a user profile
 
 
@@ -1156,7 +1170,6 @@ service to get a bank account for a given user and bank account id
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| user_id | [uint64](#uint64) |  | The account ID associated with the user Validations: - user_id must be greater than 0 |
 | bank_account_id | [uint64](#uint64) |  | The bank account id Validations: - bank_account_id must be greater than 0 |
 
 
@@ -1310,7 +1323,6 @@ the `get bank account` request
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| smart_goal_id | [uint64](#uint64) |  | The smart goal id Validations: - smart_goal_id must be greater than 0 |
 | milestone_id | [uint64](#uint64) |  | The milestone id Validations: - milestone_id must be greater than 0 |
 
 

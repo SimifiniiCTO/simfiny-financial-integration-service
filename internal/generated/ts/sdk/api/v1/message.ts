@@ -112,6 +112,9 @@ export enum PocketType {
   POCKET_TYPE_FUN_MONEY = 2,
   POCKET_TYPE_DEBT_REDUCTION = 3,
   POCKET_TYPE_EMERGENCY_FUND = 4,
+  POCKET_TYPE_INVESTMENT = 5,
+  POCKET_TYPE_SHORT_TERM_SAVINGS = 6,
+  POCKET_TYPE_LONG_TERM_SAVINGS = 7,
   UNRECOGNIZED = -1,
 }
 
@@ -132,6 +135,15 @@ export function pocketTypeFromJSON(object: any): PocketType {
     case 4:
     case "POCKET_TYPE_EMERGENCY_FUND":
       return PocketType.POCKET_TYPE_EMERGENCY_FUND;
+    case 5:
+    case "POCKET_TYPE_INVESTMENT":
+      return PocketType.POCKET_TYPE_INVESTMENT;
+    case 6:
+    case "POCKET_TYPE_SHORT_TERM_SAVINGS":
+      return PocketType.POCKET_TYPE_SHORT_TERM_SAVINGS;
+    case 7:
+    case "POCKET_TYPE_LONG_TERM_SAVINGS":
+      return PocketType.POCKET_TYPE_LONG_TERM_SAVINGS;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -151,7 +163,52 @@ export function pocketTypeToJSON(object: PocketType): string {
       return "POCKET_TYPE_DEBT_REDUCTION";
     case PocketType.POCKET_TYPE_EMERGENCY_FUND:
       return "POCKET_TYPE_EMERGENCY_FUND";
+    case PocketType.POCKET_TYPE_INVESTMENT:
+      return "POCKET_TYPE_INVESTMENT";
+    case PocketType.POCKET_TYPE_SHORT_TERM_SAVINGS:
+      return "POCKET_TYPE_SHORT_TERM_SAVINGS";
+    case PocketType.POCKET_TYPE_LONG_TERM_SAVINGS:
+      return "POCKET_TYPE_LONG_TERM_SAVINGS";
     case PocketType.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export enum BankAccountType {
+  BANK_ACCOUNT_TYPE_UNSPECIFIED = 0,
+  BANK_ACCOUNT_TYPE_PLAID = 1,
+  BANK_ACCOUNT_TYPE_MANUAL = 2,
+  UNRECOGNIZED = -1,
+}
+
+export function bankAccountTypeFromJSON(object: any): BankAccountType {
+  switch (object) {
+    case 0:
+    case "BANK_ACCOUNT_TYPE_UNSPECIFIED":
+      return BankAccountType.BANK_ACCOUNT_TYPE_UNSPECIFIED;
+    case 1:
+    case "BANK_ACCOUNT_TYPE_PLAID":
+      return BankAccountType.BANK_ACCOUNT_TYPE_PLAID;
+    case 2:
+    case "BANK_ACCOUNT_TYPE_MANUAL":
+      return BankAccountType.BANK_ACCOUNT_TYPE_MANUAL;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return BankAccountType.UNRECOGNIZED;
+  }
+}
+
+export function bankAccountTypeToJSON(object: BankAccountType): string {
+  switch (object) {
+    case BankAccountType.BANK_ACCOUNT_TYPE_UNSPECIFIED:
+      return "BANK_ACCOUNT_TYPE_UNSPECIFIED";
+    case BankAccountType.BANK_ACCOUNT_TYPE_PLAID:
+      return "BANK_ACCOUNT_TYPE_PLAID";
+    case BankAccountType.BANK_ACCOUNT_TYPE_MANUAL:
+      return "BANK_ACCOUNT_TYPE_MANUAL";
+    case BankAccountType.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
   }
@@ -330,13 +387,13 @@ export interface BankAccount {
   /** id */
   id: number;
   /** the user id to which this bank account is tied to */
-  userId: string;
+  userId: number;
   /** the bank account name */
   name: string;
   /** the bank account number */
   number: string;
   /** the bank account type */
-  type: string;
+  type: BankAccountType;
   /** the bank account balance */
   balance: number;
   /** the bank account currency */
@@ -471,7 +528,7 @@ export interface Milestone {
   /** wethe milestone is completed or not */
   isCompleted: boolean;
   /** the budget associated with the milestone */
-  budget: Budget[];
+  budget: Budget | undefined;
 }
 
 /**
@@ -1938,10 +1995,10 @@ export const InvestmentAccount = {
 function createBaseBankAccount(): BankAccount {
   return {
     id: 0,
-    userId: "",
+    userId: 0,
     name: "",
     number: "",
-    type: "",
+    type: 0,
     balance: 0,
     currency: "",
     currentFunds: 0,
@@ -1957,8 +2014,8 @@ export const BankAccount = {
     if (message.id !== 0) {
       writer.uint32(8).uint64(message.id);
     }
-    if (message.userId !== "") {
-      writer.uint32(18).string(message.userId);
+    if (message.userId !== 0) {
+      writer.uint32(16).uint64(message.userId);
     }
     if (message.name !== "") {
       writer.uint32(26).string(message.name);
@@ -1966,8 +2023,8 @@ export const BankAccount = {
     if (message.number !== "") {
       writer.uint32(34).string(message.number);
     }
-    if (message.type !== "") {
-      writer.uint32(42).string(message.type);
+    if (message.type !== 0) {
+      writer.uint32(40).int32(message.type);
     }
     if (message.balance !== 0) {
       writer.uint32(53).float(message.balance);
@@ -2004,7 +2061,7 @@ export const BankAccount = {
           message.id = longToNumber(reader.uint64() as Long);
           break;
         case 2:
-          message.userId = reader.string();
+          message.userId = longToNumber(reader.uint64() as Long);
           break;
         case 3:
           message.name = reader.string();
@@ -2013,7 +2070,7 @@ export const BankAccount = {
           message.number = reader.string();
           break;
         case 5:
-          message.type = reader.string();
+          message.type = reader.int32() as any;
           break;
         case 6:
           message.balance = reader.float();
@@ -2047,10 +2104,10 @@ export const BankAccount = {
   fromJSON(object: any): BankAccount {
     return {
       id: isSet(object.id) ? Number(object.id) : 0,
-      userId: isSet(object.userId) ? String(object.userId) : "",
+      userId: isSet(object.userId) ? Number(object.userId) : 0,
       name: isSet(object.name) ? String(object.name) : "",
       number: isSet(object.number) ? String(object.number) : "",
-      type: isSet(object.type) ? String(object.type) : "",
+      type: isSet(object.type) ? bankAccountTypeFromJSON(object.type) : 0,
       balance: isSet(object.balance) ? Number(object.balance) : 0,
       currency: isSet(object.currency) ? String(object.currency) : "",
       currentFunds: isSet(object.currentFunds) ? Number(object.currentFunds) : 0,
@@ -2064,10 +2121,10 @@ export const BankAccount = {
   toJSON(message: BankAccount): unknown {
     const obj: any = {};
     message.id !== undefined && (obj.id = Math.round(message.id));
-    message.userId !== undefined && (obj.userId = message.userId);
+    message.userId !== undefined && (obj.userId = Math.round(message.userId));
     message.name !== undefined && (obj.name = message.name);
     message.number !== undefined && (obj.number = message.number);
-    message.type !== undefined && (obj.type = message.type);
+    message.type !== undefined && (obj.type = bankAccountTypeToJSON(message.type));
     message.balance !== undefined && (obj.balance = message.balance);
     message.currency !== undefined && (obj.currency = message.currency);
     message.currentFunds !== undefined && (obj.currentFunds = message.currentFunds);
@@ -2089,10 +2146,10 @@ export const BankAccount = {
   fromPartial<I extends Exact<DeepPartial<BankAccount>, I>>(object: I): BankAccount {
     const message = createBaseBankAccount();
     message.id = object.id ?? 0;
-    message.userId = object.userId ?? "";
+    message.userId = object.userId ?? 0;
     message.name = object.name ?? "";
     message.number = object.number ?? "";
-    message.type = object.type ?? "";
+    message.type = object.type ?? 0;
     message.balance = object.balance ?? 0;
     message.currency = object.currency ?? "";
     message.currentFunds = object.currentFunds ?? 0;
@@ -2442,7 +2499,7 @@ export const Forecast = {
 };
 
 function createBaseMilestone(): Milestone {
-  return { id: 0, name: "", description: "", targetDate: "", targetAmount: "", isCompleted: false, budget: [] };
+  return { id: 0, name: "", description: "", targetDate: "", targetAmount: "", isCompleted: false, budget: undefined };
 }
 
 export const Milestone = {
@@ -2465,8 +2522,8 @@ export const Milestone = {
     if (message.isCompleted === true) {
       writer.uint32(48).bool(message.isCompleted);
     }
-    for (const v of message.budget) {
-      Budget.encode(v!, writer.uint32(106).fork()).ldelim();
+    if (message.budget !== undefined) {
+      Budget.encode(message.budget, writer.uint32(106).fork()).ldelim();
     }
     return writer;
   },
@@ -2497,7 +2554,7 @@ export const Milestone = {
           message.isCompleted = reader.bool();
           break;
         case 13:
-          message.budget.push(Budget.decode(reader, reader.uint32()));
+          message.budget = Budget.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -2515,7 +2572,7 @@ export const Milestone = {
       targetDate: isSet(object.targetDate) ? String(object.targetDate) : "",
       targetAmount: isSet(object.targetAmount) ? String(object.targetAmount) : "",
       isCompleted: isSet(object.isCompleted) ? Boolean(object.isCompleted) : false,
-      budget: Array.isArray(object?.budget) ? object.budget.map((e: any) => Budget.fromJSON(e)) : [],
+      budget: isSet(object.budget) ? Budget.fromJSON(object.budget) : undefined,
     };
   },
 
@@ -2527,11 +2584,7 @@ export const Milestone = {
     message.targetDate !== undefined && (obj.targetDate = message.targetDate);
     message.targetAmount !== undefined && (obj.targetAmount = message.targetAmount);
     message.isCompleted !== undefined && (obj.isCompleted = message.isCompleted);
-    if (message.budget) {
-      obj.budget = message.budget.map((e) => e ? Budget.toJSON(e) : undefined);
-    } else {
-      obj.budget = [];
-    }
+    message.budget !== undefined && (obj.budget = message.budget ? Budget.toJSON(message.budget) : undefined);
     return obj;
   },
 
@@ -2547,7 +2600,9 @@ export const Milestone = {
     message.targetDate = object.targetDate ?? "";
     message.targetAmount = object.targetAmount ?? "";
     message.isCompleted = object.isCompleted ?? false;
-    message.budget = object.budget?.map((e) => Budget.fromPartial(e)) || [];
+    message.budget = (object.budget !== undefined && object.budget !== null)
+      ? Budget.fromPartial(object.budget)
+      : undefined;
     return message;
   },
 };

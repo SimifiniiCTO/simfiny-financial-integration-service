@@ -10,8 +10,8 @@ import (
 
 func TestServer_DeleteBankAccount(t *testing.T) {
 	type args struct {
-		in0 context.Context
-		in1 *proto.DeleteBankAccountRequest
+		ctx context.Context
+		req *proto.DeleteBankAccountRequest
 	}
 	tests := []struct {
 		name    string
@@ -21,10 +21,11 @@ func TestServer_DeleteBankAccount(t *testing.T) {
 		wantErr bool
 	}{
 		// TODO: Add test cases.
+
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := tt.s.DeleteBankAccount(tt.args.in0, tt.args.in1)
+			got, err := tt.s.DeleteBankAccount(tt.args.ctx, tt.args.req)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("Server.DeleteBankAccount() error = %v, wantErr %v", err, tt.wantErr)
 				return

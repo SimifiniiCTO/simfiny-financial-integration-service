@@ -12,7 +12,7 @@
             "additionalProperties": true,
             "type": "object",
             "title": "Delete User Profile Request",
-            "description": "UpdateUserProfileRequest: Represents the request object invoked against the user service to delete a user profile"
+            "description": "teUserProfileRequest: Represents the request object invoked against the user service to delete a user profile"
         }
     }
 }

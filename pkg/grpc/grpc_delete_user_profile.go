@@ -34,7 +34,10 @@ func (s *Server) DeleteUserProfile(ctx context.Context, req *proto.DeleteUserPro
 	// NOTE: we need to perform this asynchronously given we have to delete all user data or we can opt to
 	// soft delete and utilize a worker job to delete all user data in the background
 	// TODO: we need to seriously consider this
-	// TODO: make thi distributed tx to ensure all data is deleted also in stripe
+	// TODO:  perform this entire transaction as a distributed transaction that is atomic and consistent.
+	// via stripe
+	// ref: https://github.com/hibiken/asynq (redis based task queue)
+	// ref: https://github.com/temporalio/temporal-ecommerce (temporal deletion workflow)
 	if err := s.conn.DeleteUserProfileByUserID(ctx, req.UserId); err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
