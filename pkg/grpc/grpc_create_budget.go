@@ -17,7 +17,6 @@ func (s *Server) CreateBudget(ctx context.Context, req *proto.CreateBudgetReques
 	}
 
 	if err := req.ValidateAll(); err != nil {
-
 		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
 
