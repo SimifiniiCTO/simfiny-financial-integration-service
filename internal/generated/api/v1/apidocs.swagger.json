@@ -3302,6 +3302,13 @@
           "type": "string",
           "title": "the user plaid access token"
         },
+        "decryptionAccessTokenKey": {
+          "type": "string",
+          "title": "key used to encrypt the access token by the kms"
+        },
+        "decryptionAccessTokenVersion": {
+          "type": "string"
+        },
         "stripeCustomerId": {
           "type": "string",
           "title": "the customer id tied to the stripe account"

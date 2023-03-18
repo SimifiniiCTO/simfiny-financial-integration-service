@@ -8,8 +8,10 @@ require (
 	github.com/SimifiniiCTO/core/core-database v0.0.0-20230307040227-eeb14211b9ed
 	github.com/SimifiniiCTO/core/core-telemetry v0.0.0-20230307040227-eeb14211b9ed
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
+	github.com/aws/aws-sdk-go v1.27.0
 	github.com/chzyer/readline v1.5.1
 	github.com/dgrijalva/jwt-go/v4 v4.0.0-preview1
+	github.com/emirpasic/gods v1.18.1
 	github.com/fatih/color v1.15.0
 	github.com/fsnotify/fsnotify v1.6.0
 	github.com/gomodule/redigo v1.8.9
@@ -30,6 +32,7 @@ require (
 	github.com/rookie-ninja/rk-entry/v2 v2.2.18
 	github.com/rookie-ninja/rk-grpc v1.2.25
 	github.com/rookie-ninja/rk-grpc/v2 v2.2.18
+	github.com/sirupsen/logrus v1.8.1
 	github.com/spf13/cobra v1.6.1
 	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.15.0
@@ -56,7 +59,6 @@ require (
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/desertbit/timer v0.0.0-20180107155436-c41aec40b27f // indirect
-	github.com/emirpasic/gods v1.18.1 // indirect
 	github.com/giantswarm/retry-go v0.0.0-20151203102909-d78cea247d5e // indirect
 	github.com/go-git/go-billy/v5 v5.3.1 // indirect
 	github.com/go-logr/logr v1.2.3 // indirect
@@ -84,6 +86,7 @@ require (
 	github.com/jackc/pgx/v4 v4.17.2 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
+	github.com/jmespath/go-jmespath v0.0.0-20180206201540-c2b33e8439af // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/juju/errgo v0.0.0-20140925100237-08cceb5d0b53 // indirect
 	github.com/klauspost/compress v1.13.6 // indirect

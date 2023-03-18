@@ -37,6 +37,11 @@ database:
   max_connection_retry_timeout: 500ms
   max_connection_retry_sleep_interval: 100ms
 
+aws:
+  key_id: AKIA5HFOAJRN5472YQRB
+  secret_key: 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
+  region: us-east-2
+
 plaid:
   enabled: true
   client_id: 61eb5d49ea3b4700127560d1

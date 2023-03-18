@@ -722,6 +722,8 @@ such as the id, user_id tied to the profile, and many more
 | mortgage_accounts | [MortgageAccount](#api-v1-MortgageAccount) | repeated | mortgage accounts tied to a user |
 | student_loan_accounts | [StudentLoanAccount](#api-v1-StudentLoanAccount) | repeated | student loan accounts tied to a user |
 | plaid_access_token | [string](#string) |  | the user plaid access token |
+| decryption_access_token_key | [string](#string) |  | key used to encrypt the access token by the kms |
+| decryption_access_token_version | [string](#string) |  |  |
 | stripe_customer_id | [string](#string) |  | the customer id tied to the stripe account |
 
 

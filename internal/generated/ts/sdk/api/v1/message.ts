@@ -235,6 +235,9 @@ export interface UserProfile {
   studentLoanAccounts: StudentLoanAccount[];
   /** the user plaid access token */
   plaidAccessToken: string;
+  /** key used to encrypt the access token by the kms */
+  decryptionAccessTokenKey: string;
+  decryptionAccessTokenVersion: string;
   /** the customer id tied to the stripe account */
   stripeCustomerId: string;
 }
@@ -624,6 +627,8 @@ function createBaseUserProfile(): UserProfile {
     mortgageAccounts: [],
     studentLoanAccounts: [],
     plaidAccessToken: "",
+    decryptionAccessTokenKey: "",
+    decryptionAccessTokenVersion: "",
     stripeCustomerId: "",
   };
 }
@@ -654,8 +659,14 @@ export const UserProfile = {
     if (message.plaidAccessToken !== "") {
       writer.uint32(66).string(message.plaidAccessToken);
     }
+    if (message.decryptionAccessTokenKey !== "") {
+      writer.uint32(74).string(message.decryptionAccessTokenKey);
+    }
+    if (message.decryptionAccessTokenVersion !== "") {
+      writer.uint32(82).string(message.decryptionAccessTokenVersion);
+    }
     if (message.stripeCustomerId !== "") {
-      writer.uint32(74).string(message.stripeCustomerId);
+      writer.uint32(90).string(message.stripeCustomerId);
     }
     return writer;
   },
@@ -692,6 +703,12 @@ export const UserProfile = {
           message.plaidAccessToken = reader.string();
           break;
         case 9:
+          message.decryptionAccessTokenKey = reader.string();
+          break;
+        case 10:
+          message.decryptionAccessTokenVersion = reader.string();
+          break;
+        case 11:
           message.stripeCustomerId = reader.string();
           break;
         default:
@@ -722,6 +739,10 @@ export const UserProfile = {
         ? object.studentLoanAccounts.map((e: any) => StudentLoanAccount.fromJSON(e))
         : [],
       plaidAccessToken: isSet(object.plaidAccessToken) ? String(object.plaidAccessToken) : "",
+      decryptionAccessTokenKey: isSet(object.decryptionAccessTokenKey) ? String(object.decryptionAccessTokenKey) : "",
+      decryptionAccessTokenVersion: isSet(object.decryptionAccessTokenVersion)
+        ? String(object.decryptionAccessTokenVersion)
+        : "",
       stripeCustomerId: isSet(object.stripeCustomerId) ? String(object.stripeCustomerId) : "",
     };
   },
@@ -756,6 +777,9 @@ export const UserProfile = {
       obj.studentLoanAccounts = [];
     }
     message.plaidAccessToken !== undefined && (obj.plaidAccessToken = message.plaidAccessToken);
+    message.decryptionAccessTokenKey !== undefined && (obj.decryptionAccessTokenKey = message.decryptionAccessTokenKey);
+    message.decryptionAccessTokenVersion !== undefined &&
+      (obj.decryptionAccessTokenVersion = message.decryptionAccessTokenVersion);
     message.stripeCustomerId !== undefined && (obj.stripeCustomerId = message.stripeCustomerId);
     return obj;
   },
@@ -774,6 +798,8 @@ export const UserProfile = {
     message.mortgageAccounts = object.mortgageAccounts?.map((e) => MortgageAccount.fromPartial(e)) || [];
     message.studentLoanAccounts = object.studentLoanAccounts?.map((e) => StudentLoanAccount.fromPartial(e)) || [];
     message.plaidAccessToken = object.plaidAccessToken ?? "";
+    message.decryptionAccessTokenKey = object.decryptionAccessTokenKey ?? "";
+    message.decryptionAccessTokenVersion = object.decryptionAccessTokenVersion ?? "";
     message.stripeCustomerId = object.stripeCustomerId ?? "";
     return message;
   },

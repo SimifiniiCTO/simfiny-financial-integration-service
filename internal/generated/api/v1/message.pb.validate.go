@@ -242,6 +242,10 @@ func (m *UserProfile) validate(all bool) error {
 
 	// no validation rules for PlaidAccessToken
 
+	// no validation rules for DecryptionAccessTokenKey
+
+	// no validation rules for DecryptionAccessTokenVersion
+
 	// no validation rules for StripeCustomerId
 
 	if len(errors) > 0 {

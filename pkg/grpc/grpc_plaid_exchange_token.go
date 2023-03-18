@@ -9,6 +9,12 @@ import (
 	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 )
 
+type accessTokenMeta struct {
+	accessToken string
+	keyID       string
+	version     string
+}
+
 // PlaidExchangeToken implements apiv1.FinancialServiceServer
 func (s *Server) PlaidExchangeToken(ctx context.Context, req *proto.PlaidExchangeTokenRequest) (*proto.PlaidExchangeTokenResponse, error) {
 	// perform validations
@@ -46,8 +52,17 @@ func (s *Server) PlaidExchangeToken(ctx context.Context, req *proto.PlaidExchang
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	// TODO: cryptographically hash the access token before storing it
-	userProfile.PlaidAccessToken = token.AccessToken
+	// cryptographically hash the access token before storing it
+	meta, err := s.EncryptAccessToken(ctx, token.AccessToken)
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	// populate the user profile with the access token and necessary decryption keys
+	userProfile.PlaidAccessToken = meta.accessToken
+	userProfile.DecryptionAccessTokenKey = meta.keyID
+	userProfile.DecryptionAccessTokenVersion = meta.version
+
 	if err := s.conn.UpdateUserProfile(ctx, userProfile); err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}

@@ -29,6 +29,8 @@ func newUserProfileORM(db *gorm.DB, opts ...gen.DOOption) userProfileORM {
 
 	tableName := _userProfileORM.userProfileORMDo.TableName()
 	_userProfileORM.ALL = field.NewAsterisk(tableName)
+	_userProfileORM.DecryptionAccessTokenKey = field.NewString(tableName, "decryption_access_token_key")
+	_userProfileORM.DecryptionAccessTokenVersion = field.NewString(tableName, "decryption_access_token_version")
 	_userProfileORM.Id = field.NewUint64(tableName, "id")
 	_userProfileORM.PlaidAccessToken = field.NewString(tableName, "plaid_access_token")
 	_userProfileORM.StripeCustomerId = field.NewString(tableName, "stripe_customer_id")
@@ -152,12 +154,14 @@ func newUserProfileORM(db *gorm.DB, opts ...gen.DOOption) userProfileORM {
 type userProfileORM struct {
 	userProfileORMDo
 
-	ALL              field.Asterisk
-	Id               field.Uint64
-	PlaidAccessToken field.String
-	StripeCustomerId field.String
-	UserId           field.Uint64
-	BankAccounts     userProfileORMHasManyBankAccounts
+	ALL                          field.Asterisk
+	DecryptionAccessTokenKey     field.String
+	DecryptionAccessTokenVersion field.String
+	Id                           field.Uint64
+	PlaidAccessToken             field.String
+	StripeCustomerId             field.String
+	UserId                       field.Uint64
+	BankAccounts                 userProfileORMHasManyBankAccounts
 
 	CreditAccounts userProfileORMHasManyCreditAccounts
 
@@ -182,6 +186,8 @@ func (u userProfileORM) As(alias string) *userProfileORM {
 
 func (u *userProfileORM) updateTableName(table string) *userProfileORM {
 	u.ALL = field.NewAsterisk(table)
+	u.DecryptionAccessTokenKey = field.NewString(table, "decryption_access_token_key")
+	u.DecryptionAccessTokenVersion = field.NewString(table, "decryption_access_token_version")
 	u.Id = field.NewUint64(table, "id")
 	u.PlaidAccessToken = field.NewString(table, "plaid_access_token")
 	u.StripeCustomerId = field.NewString(table, "stripe_customer_id")
@@ -202,7 +208,9 @@ func (u *userProfileORM) GetFieldByName(fieldName string) (field.OrderExpr, bool
 }
 
 func (u *userProfileORM) fillFieldMap() {
-	u.fieldMap = make(map[string]field.Expr, 9)
+	u.fieldMap = make(map[string]field.Expr, 11)
+	u.fieldMap["decryption_access_token_key"] = u.DecryptionAccessTokenKey
+	u.fieldMap["decryption_access_token_version"] = u.DecryptionAccessTokenVersion
 	u.fieldMap["id"] = u.Id
 	u.fieldMap["plaid_access_token"] = u.PlaidAccessToken
 	u.fieldMap["stripe_customer_id"] = u.StripeCustomerId

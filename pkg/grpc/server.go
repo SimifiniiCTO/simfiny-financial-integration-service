@@ -14,6 +14,7 @@ import (
 	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/instrumentation"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/plaidhandler"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/secrets"
 )
 
 // Server is the grpc server object
@@ -28,6 +29,7 @@ type Server struct {
 	plaidClient     *plaidhandler.PlaidWrapper
 	MetricsEngine   *telemetry.MetricsEngine
 	stripeClient    *client.API
+	kms             secrets.KeyManagement
 }
 
 // Config is the config for the grpc server initialization
@@ -48,6 +50,9 @@ type Config struct {
 	PlaidOauthDomain        string           `mapstructure:"plaid-oauth-domain"`
 	PlaidWebhooksEnabled    bool             `mapstructure:"plaid-webhooks-enabled"`
 	PlaidWebhookOauthDomain string           `mapstructure:"plaid-webhook-oauth-domain"`
+	AwsKeyID                string           `mapstructure:"aws-key-id"`
+	AwsRegion               string           `mapstructure:"aws-region"`
+	AwsSecretKey            string           `mapstructure:"aws-secret-key"`
 }
 
 var _ proto.FinancialServiceServer = (*Server)(nil)
@@ -93,6 +98,16 @@ func NewServer(param *Params) (*Server, error) {
 		return nil, errors.New("invalid param")
 	}
 
+	// configure aws kms
+	keyManagement, err := secrets.NewAWSKMS(secrets.AWSKMSConfig{
+		Region:    param.Config.AwsRegion,
+		KeyID:     param.Config.AwsKeyID,
+		SecretKey: param.Config.AwsSecretKey,
+	})
+	if err != nil {
+		return nil, err
+	}
+
 	opts := []plaidhandler.Option{
 		plaidhandler.WithEnvironment(plaid.Environment(param.Config.PlaidEnv)),
 		plaidhandler.WithClientID(param.Config.PlaidClientID),
@@ -120,5 +135,6 @@ func NewServer(param *Params) (*Server, error) {
 		plaidClient:     handler,
 		instrumentation: param.Instrumentation,
 		stripeClient:    sc,
+		kms:             keyManagement,
 	}, nil
 }

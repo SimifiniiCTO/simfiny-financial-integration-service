@@ -86,6 +86,11 @@ func ReadEnvVars() {
 	fs.Bool("metrics-reporting-enabled", true, "enable metrics reporting")
 	fs.String("stripe-api-key", "sk_test_4eC39HqLyjWDarjtT1zdp7dc", "")
 
+	// aws configs
+	fs.String("aws-key-id", "AKIA5HFOAJRN5472YQRB", "aws kms key id")
+	fs.String("aws-region", "us-east-2", "aws kms region")
+	fs.String("aws-secret-key", "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", "aws kms secret key")
+
 	defaultLogger := zap.L()
 
 	// parse flags

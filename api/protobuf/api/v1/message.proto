@@ -70,8 +70,12 @@ message UserProfile {
   // the user plaid access token
   string plaid_access_token = 8 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
 
+  // key used to encrypt the access token by the kms
+  string decryption_access_token_key = 9 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  string decryption_access_token_version = 10 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+
   // the customer id tied to the stripe account
-  string stripe_customer_id = 9 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  string stripe_customer_id = 11 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
 }
 
 message StudentLoanAccount {

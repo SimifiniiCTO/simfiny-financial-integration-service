@@ -35,3 +35,23 @@ func TestServer_GetAllBudgets(t *testing.T) {
 		})
 	}
 }
+
+func Test_getPocketBudgets(t *testing.T) {
+	type args struct {
+		pocket *proto.Pocket
+	}
+	tests := []struct {
+		name string
+		args args
+		want []*proto.Budget
+	}{
+		// TODO: Add test cases.
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := getPocketBudgets(tt.args.pocket); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("getPocketBudgets() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
