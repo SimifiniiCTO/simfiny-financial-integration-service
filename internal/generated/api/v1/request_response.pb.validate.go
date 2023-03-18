@@ -6481,6 +6481,12 @@ func (m *PlaidInitiateTokenExchangeRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
+	// no validation rules for FullName
+
+	// no validation rules for Email
+
+	// no validation rules for PhoneNumber
+
 	if len(errors) > 0 {
 		return PlaidInitiateTokenExchangeRequestMultiError(errors)
 	}

@@ -1693,7 +1693,10 @@ the `get user profile` request
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| user_id | [uint64](#uint64) |  | The user id Validations: - user_id must be greater than 0 |
+| user_id | [uint64](#uint64) |  | A unique ID representing the end user. Typically this will be a user ID number from your application. Personally identifiable information, such as an email address or phone number, should not be used in the `client_user_id`. It is currently used as a means of searching logs for the given user in the Plaid Dashboard. Validations: - user_id must be greater than 0 |
+| full_name | [string](#string) |  | The user&#39;s full legal name. This is an optional field used in the [returning user experience](https://plaid.com/docs/link/returning-user) to associate Items to the user. |
+| email | [string](#string) |  | The user&#39;s email address. This field is optional, but required to enable the [pre-authenticated returning user flow](https://plaid.com/docs/link/returning-user/#enabling-the-returning-user-experience). |
+| phone_number | [string](#string) |  | The user&#39;s phone number in [E.164](https://en.wikipedia.org/wiki/E.164) format. This field is optional, but required to enable the [returning user experience](https://plaid.com/docs/link/returning-user). |
 
 
 

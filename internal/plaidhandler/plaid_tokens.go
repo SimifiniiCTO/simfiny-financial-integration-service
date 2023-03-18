@@ -37,7 +37,7 @@ type LinkToken interface {
 }
 
 var (
-	_ LinkToken = PlaidLinkToken{}
+	_ LinkToken = &PlaidLinkToken{}
 )
 
 type PlaidLinkToken struct {
@@ -45,10 +45,10 @@ type PlaidLinkToken struct {
 	Expires   time.Time
 }
 
-func (p PlaidLinkToken) Token() string {
+func (p *PlaidLinkToken) Token() string {
 	return p.LinkToken
 }
 
-func (p PlaidLinkToken) Expiration() time.Time {
+func (p *PlaidLinkToken) Expiration() time.Time {
 	return p.Expires
 }

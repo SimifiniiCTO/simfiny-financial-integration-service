@@ -40,7 +40,7 @@ database:
 plaid:
   enabled: true
   client_id: 61eb5d49ea3b4700127560d1
-  secret_key: 49ed22a2ee591f4e3f366c4474438d
+  secret_key: 6f127c086ba9c1d5dafe7e38541783
   env: production
   webhook_url: ""
   # Only required for OAuth:
@@ -58,6 +58,9 @@ plaid:
   # Important: When moving to Production, make sure to update this list with only the products
   # you plan to use. Otherwise, you may be billed for unneeded products.
   products: transactions,auth,balance,investments,liabilities
+  oauthDomain: simfiny
+  webhookOauthDomain: simfiny
+  webhookEnabled: true
 
 newRelic:
   enabled: true

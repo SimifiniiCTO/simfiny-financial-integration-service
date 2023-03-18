@@ -31,7 +31,7 @@ type PlaidWrapper struct {
 
 type PlaidWrapperImpl interface {
 	// CreateLinkToken creates a link token for the given options
-	CreateLinkToken(ctx context.Context, options LinkTokenOptions) (LinkToken, error)
+	CreateLinkToken(ctx context.Context, options *LinkTokenOptions) (LinkToken, error)
 	// ExchangePublicToken exchanges a public token for an access token
 	ExchangePublicToken(ctx context.Context, publicToken string) (*ItemToken, error)
 	// GetWebhookVerificationKey retrieves the webhook verification key from Plaid
@@ -50,10 +50,8 @@ type PlaidWrapperImpl interface {
 	GetWebhooksURL() string
 	// GetRedirectURI returns the redirect uri for the given webhook type
 	GetRedirectURI() string
-	
 	// GetInvestmentAccount returns the investment account for the given access token
 	GetInvestmentAccount(ctx context.Context, userID uint64, accessToken string) ([]*schema.InvestmentAccount, error)
-
 	// GetAccessTokenForSandboxAcct returns the access token for the sandbox account
 	getAccessTokenForSandboxAcct() (string, error)
 	// GetPlublicTokenForSandboxAcct returns the public token for the sandbox account
@@ -107,7 +105,7 @@ func (p *PlaidWrapper) GetInstitution(ctx context.Context, institutionId string)
 }
 
 func (p *PlaidWrapper) GetWebhooksURL() string {
-	return fmt.Sprintf("https://%s/api/plaid/webhook", p.WebhooksDomain)
+	return fmt.Sprintf("https://%s/plaid/webhook", p.WebhooksDomain)
 }
 
 func (p *PlaidWrapper) GetRedirectURI() string {

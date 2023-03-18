@@ -33,6 +33,7 @@ func (s *Server) CreateUserProfile(ctx context.Context, req *proto.CreateUserPro
 	}
 
 	// TODO: create the account in stripe
+	
 	// TODO: create the account as a distributed transaction with stripe
 
 	// save the user profile

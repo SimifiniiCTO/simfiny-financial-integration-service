@@ -10,7 +10,7 @@ import (
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/pointer"
 )
 
-func (p *PlaidWrapper) CreateLinkToken(ctx context.Context, options LinkTokenOptions) (LinkToken, error) {
+func (p *PlaidWrapper) CreateLinkToken(ctx context.Context, options *LinkTokenOptions) (LinkToken, error) {
 	var redirectUri *string
 	if p.OAuthDomain != "" {
 		redirectUri = pointer.StringP(fmt.Sprintf("https://%s/plaid/oauth-return", p.OAuthDomain))
@@ -25,6 +25,7 @@ func (p *PlaidWrapper) CreateLinkToken(ctx context.Context, options LinkTokenOpt
 		}
 	}
 
+	// based on the env config value ... we decipher wether to use the sandbox or production plaid client
 	request := p.client.PlaidApi.
 		LinkTokenCreate(ctx).
 		LinkTokenCreateRequest(plaid.LinkTokenCreateRequest{
@@ -41,27 +42,18 @@ func (p *PlaidWrapper) CreateLinkToken(ctx context.Context, options LinkTokenOpt
 				Ssn:                      nil,
 				DateOfBirth:              nil,
 			},
-			Products:              &PlaidProducts,
-			Webhook:               webhooksUrl,
-			AccessToken:           nil,
-			LinkCustomizationName: nil,
-			RedirectUri:           redirectUri,
-			AndroidPackageName:    nil,
-			AccountFilters:        nil,
-			EuConfig:              nil,
-			InstitutionId:         nil,
-			PaymentInitiation:     nil,
-			DepositSwitch:         nil,
-			IncomeVerification:    nil,
-			Auth:                  nil,
+			Products:    &PlaidProducts,
+			Webhook:     webhooksUrl,
+			RedirectUri: redirectUri,
 		})
 
 	result, _, err := request.Execute()
 	if err != nil {
 		p.Logger.Error("failed to create link token with Plaid", zap.Error(err))
+		return nil, err
 	}
 
-	return PlaidLinkToken{
+	return &PlaidLinkToken{
 		LinkToken: result.LinkToken,
 		Expires:   result.Expiration,
 	}, nil

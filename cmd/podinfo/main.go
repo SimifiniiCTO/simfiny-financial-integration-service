@@ -70,10 +70,11 @@ func main() {
 
 	// initialize gRPC server
 	grpcSrv, err := grpc.NewServer(&grpc.Params{
-		Config:      &grpcCfg,
-		Logger:      logger,
-		Db:          db,
-		PlaidClient: plaidClient,
+		Config:          &grpcCfg,
+		Logger:          logger,
+		Db:              db,
+		PlaidClient:     plaidClient,
+		Instrumentation: instrumentation,
 	})
 	if err != nil {
 		logger.Panic(err.Error())
@@ -85,6 +86,7 @@ func main() {
 
 	// TODO: add grpc interceptor middleware to emit metrics on various gRPC calls
 	// Bootstrap
+
 	boot.Bootstrap(context.Background())
 
 	// Wait for shutdown sig

@@ -21,28 +21,33 @@ type Server struct {
 	proto.UnimplementedFinancialServiceServer
 
 	// proto.UnimplementedFinancialServiceServer
-	logger               *zap.Logger
-	config               *Config
-	instrumentation      *instrumentation.ServiceTelemetry
-	conn                 *database.Db
-	plaidClient          *plaid.APIClient
-	plaidInternalHandler *plaidhandler.PlaidWrapper
-	MetricsEngine        *telemetry.MetricsEngine
-	stripeClient         *client.API
+	logger          *zap.Logger
+	config          *Config
+	instrumentation *instrumentation.ServiceTelemetry
+	conn            *database.Db
+	plaidClient     *plaidhandler.PlaidWrapper
+	MetricsEngine   *telemetry.MetricsEngine
+	stripeClient    *client.API
 }
 
 // Config is the config for the grpc server initialization
 type Config struct {
-	Port             int              `mapstructure:"grpc-port"`
-	GatewayPort      int              `mapstructure:"grpc-gateway-port"`
-	ServiceName      string           `mapstructure:"grpc-service-name"`
-	PlaidWebhookURI  string           `mapstructure:"plaid-webhook-url"`
-	PlaidRedirectURI string           `mapstructure:"plaid-redirect-url"`
-	NewRelicLicense  string           `mapstructure:"newrelic-key"`
-	Environment      string           `mapstructure:"env"`
-	PlaidProducts    []plaid.Products `mapstructure:"plaid-products"`
-	RpcTimeout       time.Duration    `mapstructure:"rpc-timeout"`
-	StripeApiKey     string           `mapstructure:"stripe-api-key"`
+	Port                    int              `mapstructure:"grpc-port"`
+	GatewayPort             int              `mapstructure:"grpc-gateway-port"`
+	ServiceName             string           `mapstructure:"grpc-service-name"`
+	PlaidWebhookURI         string           `mapstructure:"plaid-webhook-url"`
+	PlaidRedirectURI        string           `mapstructure:"plaid-redirect-url"`
+	NewRelicLicense         string           `mapstructure:"newrelic-key"`
+	Environment             string           `mapstructure:"env"`
+	PlaidProducts           []plaid.Products `mapstructure:"plaid-products"`
+	RpcTimeout              time.Duration    `mapstructure:"rpc-timeout"`
+	StripeApiKey            string           `mapstructure:"stripe-api-key"`
+	PlaidClientID           string           `mapstructure:"plaid-client-id"`
+	PlaidSecretKey          string           `mapstructure:"plaid-secret-key"`
+	PlaidEnv                string           `mapstructure:"plaid-env"`
+	PlaidOauthDomain        string           `mapstructure:"plaid-oauth-domain"`
+	PlaidWebhooksEnabled    bool             `mapstructure:"plaid-webhooks-enabled"`
+	PlaidWebhookOauthDomain string           `mapstructure:"plaid-webhook-oauth-domain"`
 }
 
 var _ proto.FinancialServiceServer = (*Server)(nil)
@@ -89,10 +94,14 @@ func NewServer(param *Params) (*Server, error) {
 	}
 
 	opts := []plaidhandler.Option{
-		plaidhandler.WithPlaidClient(param.PlaidClient),
+		plaidhandler.WithEnvironment(plaid.Environment(param.Config.PlaidEnv)),
+		plaidhandler.WithClientID(param.Config.PlaidClientID),
+		plaidhandler.WithSecretKey(param.Config.PlaidSecretKey),
 		plaidhandler.WithInstrumentation(param.Instrumentation),
 		plaidhandler.WithLogger(param.Logger),
-		plaidhandler.WithEnvironment(plaid.Sandbox),
+		plaidhandler.WithOauthDomain(param.Config.PlaidOauthDomain),
+		plaidhandler.WithWebhooksDomain(param.Config.PlaidWebhookOauthDomain),
+		plaidhandler.WithWebhooksEnabled(param.Config.PlaidWebhooksEnabled),
 	}
 
 	// declare plaid wrapper
@@ -105,12 +114,11 @@ func NewServer(param *Params) (*Server, error) {
 	sc.Init(param.Config.StripeApiKey, nil)
 
 	return &Server{
-		logger:               param.Logger,
-		config:               param.Config,
-		conn:                 param.Db,
-		plaidClient:          param.PlaidClient,
-		plaidInternalHandler: handler,
-		instrumentation:      param.Instrumentation,
-		stripeClient:         sc,
+		logger:          param.Logger,
+		config:          param.Config,
+		conn:            param.Db,
+		plaidClient:     handler,
+		instrumentation: param.Instrumentation,
+		stripeClient:    sc,
 	}, nil
 }

@@ -52,6 +52,27 @@ func WithSecretKey(secretKey string) Option {
 	}
 }
 
+// WithOAuthDomain is a functional option to set the oauth domain
+func WithOauthDomain(domain string) Option {
+	return func(p *PlaidWrapper) {
+		p.OAuthDomain = domain
+	}
+}
+
+// WithWebhooksDomain is a functional option to set the webhooks domain
+func WithWebhooksDomain(domain string) Option {
+	return func(p *PlaidWrapper) {
+		p.WebhooksDomain = domain
+	}
+}
+
+// WithWebhooksEnabled is a functional option to set the webhooks enabled
+func WithWebhooksEnabled(enabled bool) Option {
+	return func(p *PlaidWrapper) {
+		p.WebhooksEnabled = enabled
+	}
+}
+
 // New creates a new PlaidWrapper instance
 func New(opts ...Option) (*PlaidWrapper, error) {
 	plaidWrapper := &PlaidWrapper{}

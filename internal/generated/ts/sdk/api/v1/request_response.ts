@@ -460,11 +460,29 @@ export interface ReadynessCheckResponse {
 
 export interface PlaidInitiateTokenExchangeRequest {
   /**
-   * The user id
+   * A unique ID representing the end user. Typically this will be a user ID number from your application.
+   * Personally identifiable information, such as an email address or phone number,
+   * should not be used in the `client_user_id`. It is currently used as a means of searching logs
+   * for the given user in the Plaid Dashboard.
    * Validations:
    * - user_id must be greater than 0
    */
   userId: number;
+  /**
+   * The user's full legal name. This is an optional field used in
+   * the [returning user experience](https://plaid.com/docs/link/returning-user) to associate Items to the user.
+   */
+  fullName: string;
+  /**
+   * The user's email address. This field is optional, but required to enable the
+   * [pre-authenticated returning user flow](https://plaid.com/docs/link/returning-user/#enabling-the-returning-user-experience).
+   */
+  email: string;
+  /**
+   * The user's phone number in [E.164](https://en.wikipedia.org/wiki/E.164) format.
+   * This field is optional, but required to enable the [returning user experience](https://plaid.com/docs/link/returning-user).
+   */
+  phoneNumber: string;
 }
 
 export interface PlaidInitiateTokenExchangeResponse {
@@ -3396,13 +3414,22 @@ export const ReadynessCheckResponse = {
 };
 
 function createBasePlaidInitiateTokenExchangeRequest(): PlaidInitiateTokenExchangeRequest {
-  return { userId: 0 };
+  return { userId: 0, fullName: "", email: "", phoneNumber: "" };
 }
 
 export const PlaidInitiateTokenExchangeRequest = {
   encode(message: PlaidInitiateTokenExchangeRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.userId !== 0) {
       writer.uint32(8).uint64(message.userId);
+    }
+    if (message.fullName !== "") {
+      writer.uint32(18).string(message.fullName);
+    }
+    if (message.email !== "") {
+      writer.uint32(26).string(message.email);
+    }
+    if (message.phoneNumber !== "") {
+      writer.uint32(34).string(message.phoneNumber);
     }
     return writer;
   },
@@ -3417,6 +3444,15 @@ export const PlaidInitiateTokenExchangeRequest = {
         case 1:
           message.userId = longToNumber(reader.uint64() as Long);
           break;
+        case 2:
+          message.fullName = reader.string();
+          break;
+        case 3:
+          message.email = reader.string();
+          break;
+        case 4:
+          message.phoneNumber = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -3426,12 +3462,20 @@ export const PlaidInitiateTokenExchangeRequest = {
   },
 
   fromJSON(object: any): PlaidInitiateTokenExchangeRequest {
-    return { userId: isSet(object.userId) ? Number(object.userId) : 0 };
+    return {
+      userId: isSet(object.userId) ? Number(object.userId) : 0,
+      fullName: isSet(object.fullName) ? String(object.fullName) : "",
+      email: isSet(object.email) ? String(object.email) : "",
+      phoneNumber: isSet(object.phoneNumber) ? String(object.phoneNumber) : "",
+    };
   },
 
   toJSON(message: PlaidInitiateTokenExchangeRequest): unknown {
     const obj: any = {};
     message.userId !== undefined && (obj.userId = Math.round(message.userId));
+    message.fullName !== undefined && (obj.fullName = message.fullName);
+    message.email !== undefined && (obj.email = message.email);
+    message.phoneNumber !== undefined && (obj.phoneNumber = message.phoneNumber);
     return obj;
   },
 
@@ -3446,6 +3490,9 @@ export const PlaidInitiateTokenExchangeRequest = {
   ): PlaidInitiateTokenExchangeRequest {
     const message = createBasePlaidInitiateTokenExchangeRequest();
     message.userId = object.userId ?? 0;
+    message.fullName = object.fullName ?? "";
+    message.email = object.email ?? "";
+    message.phoneNumber = object.phoneNumber ?? "";
     return message;
   },
 };

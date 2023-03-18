@@ -2840,11 +2840,26 @@
         "userId": {
           "type": "string",
           "format": "uint64",
-          "title": "The user id\nValidations:\n- user_id must be greater than 0"
+          "title": "A unique ID representing the end user. Typically this will be a user ID number from your application.\nPersonally identifiable information, such as an email address or phone number, \nshould not be used in the `client_user_id`. It is currently used as a means of searching logs \nfor the given user in the Plaid Dashboard.\nValidations:\n- user_id must be greater than 0"
+        },
+        "fullName": {
+          "type": "string",
+          "description": "The user's full legal name. This is an optional field used in \nthe [returning user experience](https://plaid.com/docs/link/returning-user) to associate Items to the user."
+        },
+        "email": {
+          "type": "string",
+          "description": "The user's email address. This field is optional, but required to enable the \n[pre-authenticated returning user flow](https://plaid.com/docs/link/returning-user/#enabling-the-returning-user-experience)."
+        },
+        "phoneNumber": {
+          "type": "string",
+          "description": "The user's phone number in [E.164](https://en.wikipedia.org/wiki/E.164) format.\nThis field is optional, but required to enable the [returning user experience](https://plaid.com/docs/link/returning-user)."
         }
       },
       "required": [
-        "userId"
+        "userId",
+        "fullName",
+        "email",
+        "phoneNumber"
       ]
     },
     "PlaidInitiateTokenExchangeResponse": {

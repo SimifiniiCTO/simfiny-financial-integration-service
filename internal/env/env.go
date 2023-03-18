@@ -72,6 +72,10 @@ func ReadEnvVars() {
 	fs.String("plaid-webhook-url", "http://localhost:3000/webhook", "plaid webhook url")
 	fs.String("plaid-redirect-url", "http://localhost:3000/", "plaid redirect url")
 	fs.StringSlice("plaid-products", []string{"transactions", "auth", "balance", "investments", "liabilities"}, "plaid products to enable")
+	fs.String("plaid-oauth-domain", "simfiny", "plaid oauth domain")
+	fs.String("plaid-webhook-oauth-domain", "simfiny", "plaid webhook oauth domain")
+	fs.Bool("plaid-webhook-enabled", false, "enable plaid webhook")
+
 	fs.String("env", "dev", "current environment")
 	fs.String("grpc-service-endpoint", "http://localhost:9896", "grpc api endpoint for service")
 	fs.Int("grpc-gateway-port", 8090, "grpc gateway port")

@@ -58,6 +58,9 @@ plaid:
   # Important: When moving to Production, make sure to update this list with only the products
   # you plan to use. Otherwise, you may be billed for unneeded products.
   products: transactions,auth,balance,investments,liabilities
+  oauthDomain: simfiny
+  webhookOauthDomain: simfiny
+  webhookEnabled: true
 
 newRelic:
   enabled: true
