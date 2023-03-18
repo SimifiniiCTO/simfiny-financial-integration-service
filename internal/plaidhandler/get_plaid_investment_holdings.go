@@ -22,7 +22,7 @@ func (p *PlaidWrapper) getPlaidInvestmentHoldings(ctx context.Context, accessTok
 	options := plaid.NewInvestmentHoldingsGetRequestOptions()
 	request.SetOptions(*options)
 
-	resp, _, err := p.Client.PlaidApi.InvestmentsHoldingsGet(ctx).InvestmentsHoldingsGetRequest(*request).Execute()
+	resp, _, err := p.client.PlaidApi.InvestmentsHoldingsGet(ctx).InvestmentsHoldingsGetRequest(*request).Execute()
 	if err != nil {
 		return nil, err
 	}

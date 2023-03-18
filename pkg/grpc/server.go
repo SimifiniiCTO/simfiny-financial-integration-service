@@ -88,11 +88,15 @@ func NewServer(param *Params) (*Server, error) {
 		return nil, errors.New("invalid param")
 	}
 
+	opts := []plaidhandler.Option{
+		plaidhandler.WithPlaidClient(param.PlaidClient),
+		plaidhandler.WithInstrumentation(param.Instrumentation),
+		plaidhandler.WithLogger(param.Logger),
+		plaidhandler.WithEnvironment(plaid.Sandbox),
+	}
+
 	// declare plaid wrapper
-	pHandler, err := plaidhandler.NewPlaidWrapper(
-		param.PlaidClient,
-		param.Instrumentation,
-		param.Logger)
+	handler, err := plaidhandler.New(opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -105,7 +109,7 @@ func NewServer(param *Params) (*Server, error) {
 		config:               param.Config,
 		conn:                 param.Db,
 		plaidClient:          param.PlaidClient,
-		plaidInternalHandler: pHandler,
+		plaidInternalHandler: handler,
 		instrumentation:      param.Instrumentation,
 		stripeClient:         sc,
 	}, nil

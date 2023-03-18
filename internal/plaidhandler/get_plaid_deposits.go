@@ -17,7 +17,7 @@ func (p *PlaidWrapper) getPlaidDeposit(ctx context.Context, accessToken *string)
 	}
 
 	request := plaid.NewAccountsBalanceGetRequest(*accessToken)
-	resp, _, err := p.Client.PlaidApi.AccountsBalanceGet(ctx).AccountsBalanceGetRequest(*request).Execute()
+	resp, _, err := p.client.PlaidApi.AccountsBalanceGet(ctx).AccountsBalanceGetRequest(*request).Execute()
 	if err != nil {
 		return nil, err
 	}

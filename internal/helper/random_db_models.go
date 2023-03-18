@@ -69,7 +69,7 @@ func GenerateSingleForecast() *schema.Forecast {
 func GenerateSingleGoal(numMilestones int) *schema.SmartGoal {
 	return &schema.SmartGoal{
 		Id:           0,
-		UserId:       GenerateRandomString(10),
+		UserId:       uint64(GenerateRandomId(10000, 30000)),
 		Name:         GenerateRandomString(10),
 		Description:  GenerateRandomString(10),
 		IsCompleted:  false,
@@ -144,7 +144,7 @@ func GenerateBankAccounts(bankAccountCount int) []*schema.BankAccount {
 
 func GenerateSingleCreditAccount() *schema.CreditAccount {
 	return &schema.CreditAccount{
-		UserId:                 GenerateRandomString(10),
+		UserId:                 uint64(GenerateRandomId(10000, 30000)),
 		Name:                   GenerateRandomString(10),
 		Number:                 GenerateRandomString(10),
 		Type:                   GenerateRandomString(10),
@@ -282,7 +282,7 @@ func GenereateRandomUserProfileForTest() *schema.UserProfile {
 		InvestmentAccounts: []*schema.InvestmentAccount{
 			{
 				Id:             0,
-				UserId:         GenerateRandomString(10),
+				UserId:         uint64(GenerateRandomId(10000, 30000)),
 				Name:           GenerateRandomString(10),
 				Number:         GenerateRandomString(10),
 				Type:           GenerateRandomString(10),

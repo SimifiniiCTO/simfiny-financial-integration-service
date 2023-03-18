@@ -606,80 +606,12 @@
         },
         "parameters": [
           {
-            "name": "milestroneId",
-            "description": "The milestone to associate this budget with",
-            "in": "query",
+            "name": "body",
+            "in": "body",
             "required": true,
-            "type": "string",
-            "format": "uint64"
-          },
-          {
-            "name": "budget.id",
-            "description": "id",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "uint64"
-          },
-          {
-            "name": "budget.name",
-            "description": "The name of the budget",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "budget.description",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "budget.startDate",
-            "description": "the time the goal was created",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "budget.endDate",
-            "description": "the time the goal was updated",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "budget.category.id",
-            "description": "id",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "uint64"
-          },
-          {
-            "name": "budget.category.name",
-            "description": "The name of the category",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "budget.category.description",
-            "description": "The description of the category",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "budget.category.subcategories",
-            "description": "the sub categories of the category",
-            "in": "query",
-            "required": false,
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "collectionFormat": "multi"
+            "schema": {
+              "$ref": "#/definitions/CreateBudgetRequest"
+            }
           }
         ],
         "tags": [
@@ -972,123 +904,12 @@
         },
         "parameters": [
           {
-            "name": "smartGoalId",
-            "description": "The smart goal id\nValidations:\n- smart_goal_id must be greater than 0",
-            "in": "query",
+            "name": "body",
+            "in": "body",
             "required": true,
-            "type": "string",
-            "format": "uint64"
-          },
-          {
-            "name": "milestone.id",
-            "description": "id",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "uint64"
-          },
-          {
-            "name": "milestone.name",
-            "description": "The name of the milestone\nValidations:\n- must be at least 3 characters long",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "milestone.description",
-            "description": "The description of the miletone\nValidations:\n- must be at least 3 characters long",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "milestone.targetDate",
-            "description": "the target date of the milestone\nValidations:\n- must be at least 3 characters long",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "milestone.targetAmount",
-            "description": "the target amount of the milestone",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "milestone.isCompleted",
-            "description": "wethe milestone is completed or not",
-            "in": "query",
-            "required": false,
-            "type": "boolean"
-          },
-          {
-            "name": "milestone.budget.id",
-            "description": "id",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "uint64"
-          },
-          {
-            "name": "milestone.budget.name",
-            "description": "The name of the budget",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "milestone.budget.description",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "milestone.budget.startDate",
-            "description": "the time the goal was created",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "milestone.budget.endDate",
-            "description": "the time the goal was updated",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "milestone.budget.category.id",
-            "description": "id",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "uint64"
-          },
-          {
-            "name": "milestone.budget.category.name",
-            "description": "The name of the category",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "milestone.budget.category.description",
-            "description": "The description of the category",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "milestone.budget.category.subcategories",
-            "description": "the sub categories of the category",
-            "in": "query",
-            "required": false,
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "collectionFormat": "multi"
+            "schema": {
+              "$ref": "#/definitions/CreateMilestoneRequest"
+            }
           }
         ],
         "tags": [
@@ -1741,127 +1562,12 @@
         },
         "parameters": [
           {
-            "name": "pocketId",
-            "description": "The pocket account id\nValidations:\n- pocket_account_id must be greater than 0",
-            "in": "query",
+            "name": "body",
+            "in": "body",
             "required": true,
-            "type": "string",
-            "format": "uint64"
-          },
-          {
-            "name": "smartGoal.id",
-            "description": "id",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "uint64"
-          },
-          {
-            "name": "smartGoal.userId",
-            "description": "the user id to which this goal is tied to",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "smartGoal.name",
-            "description": "The name of the goal\nValidations:\n- must be at least 3 characters long",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "smartGoal.description",
-            "description": "The description of the goal\nValidations:\n- must be at least 3 characters long",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "smartGoal.isCompleted",
-            "description": "wether the goal has been achieved or not",
-            "in": "query",
-            "required": false,
-            "type": "boolean"
-          },
-          {
-            "name": "smartGoal.goalType",
-            "description": "The type of the goal",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "enum": [
-              "GOAL_TYPE_UNSPECIFIED",
-              "GOAL_TYPE_SAVINGS",
-              "GOAL_TYPE_INVESTMENT",
-              "GOAL_TYPE_DEBT",
-              "GOAL_TYPE_EXPENSE"
-            ],
-            "default": "GOAL_TYPE_UNSPECIFIED"
-          },
-          {
-            "name": "smartGoal.duration",
-            "description": "The duration of the goal",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "smartGoal.startDate",
-            "description": "the start date of the goal",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "smartGoal.endDate",
-            "description": "the end date of the goal",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "smartGoal.targetAmount",
-            "description": "the target amount of the goal\namount of money the user wants to save or invest",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "smartGoal.currentAmount",
-            "description": "the current amount of the goal\ncurrent amount of money saved or invested towards the goal",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "smartGoal.forecasts.id",
-            "description": "id",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "uint64"
-          },
-          {
-            "name": "smartGoal.forecasts.forecastedAmount",
-            "description": "the forecasted amount of the goal",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "smartGoal.forecasts.forecastedCompletionDate",
-            "description": "the forecasted completion date of the goal",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "smartGoal.forecasts.varianceAmount",
-            "description": "the forecasted variance of the goal between the forecasted and target amounts",
-            "in": "query",
-            "required": false,
-            "type": "string"
+            "schema": {
+              "$ref": "#/definitions/CreateSmartGoalRequest"
+            }
           }
         ],
         "tags": [
@@ -2207,6 +1913,24 @@
       },
       "title": "CreateBankAccountResponse: Represents the response object returned as a response to\nthe `create bank account` request"
     },
+    "CreateBudgetRequest": {
+      "type": "object",
+      "properties": {
+        "milestroneId": {
+          "type": "string",
+          "format": "uint64",
+          "title": "The milestone to associate this budget with"
+        },
+        "budget": {
+          "$ref": "#/definitions/Budget",
+          "title": "The budget to create\nValidations:\n- cannot be nil hence required"
+        }
+      },
+      "required": [
+        "milestroneId",
+        "budget"
+      ]
+    },
     "CreateBudgetResponse": {
       "type": "object",
       "properties": {
@@ -2217,6 +1941,24 @@
         }
       }
     },
+    "CreateMilestoneRequest": {
+      "type": "object",
+      "properties": {
+        "smartGoalId": {
+          "type": "string",
+          "format": "uint64",
+          "title": "The smart goal id\nValidations:\n- smart_goal_id must be greater than 0"
+        },
+        "milestone": {
+          "$ref": "#/definitions/Milestone",
+          "title": "The milestone to create\nValidations:\n- cannot be nil hence required"
+        }
+      },
+      "required": [
+        "smartGoalId",
+        "milestone"
+      ]
+    },
     "CreateMilestoneResponse": {
       "type": "object",
       "properties": {
@@ -2226,6 +1968,24 @@
           "title": "The milestone id"
         }
       }
+    },
+    "CreateSmartGoalRequest": {
+      "type": "object",
+      "properties": {
+        "pocketId": {
+          "type": "string",
+          "format": "uint64",
+          "title": "The pocket account id\nValidations:\n- pocket_account_id must be greater than 0"
+        },
+        "smartGoal": {
+          "$ref": "#/definitions/SmartGoal",
+          "title": "The smart goal to create\nValidations:\n- cannot be nil hence required"
+        }
+      },
+      "required": [
+        "pocketId",
+        "smartGoal"
+      ]
     },
     "CreateSmartGoalResponse": {
       "type": "object",
@@ -2275,6 +2035,7 @@
         },
         "userId": {
           "type": "string",
+          "format": "uint64",
           "title": "the user id to which this bank account is tied to"
         },
         "name": {
@@ -2736,6 +2497,7 @@
         },
         "userId": {
           "type": "string",
+          "format": "uint64",
           "title": "the user id to which this bank account is tied to"
         },
         "name": {
@@ -3153,6 +2915,7 @@
         },
         "userId": {
           "type": "string",
+          "format": "uint64",
           "title": "the user id to which this goal is tied to"
         },
         "name": {
@@ -3349,6 +3112,7 @@
         },
         "userId": {
           "type": "string",
+          "format": "uint64",
           "title": "the user id to which this bank account is tied to"
         },
         "name": {

@@ -280,7 +280,10 @@ service FinancialService {
   }
 
   rpc CreateSmartGoal(CreateSmartGoalRequest) returns (CreateSmartGoalResponse) {
-    option (google.api.http) = {post: "/api/v1/smart-goal"};
+    option (google.api.http) = {
+      post: "/api/v1/smart-goal"
+      body: "*"
+    };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "create a smart goal"
       tags: ["smart goals"]
@@ -340,7 +343,10 @@ service FinancialService {
   }
 
   rpc CreateMilestone(CreateMilestoneRequest) returns (CreateMilestoneResponse) {
-    option (google.api.http) = {post: "/api/v1/milestone"};
+    option (google.api.http) = {
+      post: "/api/v1/milestone"
+      body: "*"
+    };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "create a milestone"
       tags: ["milestone"]
@@ -457,7 +463,10 @@ service FinancialService {
   }
 
   rpc CreateBudget(CreateBudgetRequest) returns (CreateBudgetResponse) {
-    option (google.api.http) = {post: "/api/v1/budget"};
+    option (google.api.http) = {
+      post: "/api/v1/budget"
+      body: "*"
+    };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "create a budget"
       tags: ["budget"]

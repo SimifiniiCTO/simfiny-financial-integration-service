@@ -4,7 +4,7 @@ import (
 	"context"
 	"net/http"
 
-	newrelic "github.com/newrelic/go-agent"
+	"github.com/newrelic/go-agent/v3/newrelic"
 )
 
 type ServiceTelemetry struct {
@@ -19,7 +19,7 @@ type ServiceTelemetry struct {
 	// wether metrics are enabled
 	MetricsEnabled bool `json:"metrics_enabled"`
 	// The New Relic Sdk Object
-	NewrelicSdk newrelic.Application
+	NewrelicSdk *newrelic.Application
 }
 
 type IServiceTelemetry interface {
@@ -28,16 +28,16 @@ type IServiceTelemetry interface {
 	GetServiceEnvironment() string
 	GetTracingEnabled() bool
 	GetMetricsEnabled() bool
-	GetTraceFromContext(ctx context.Context) newrelic.Transaction
-	GetTraceFromRequest(r *http.Request) newrelic.Transaction
+	GetTraceFromContext(ctx context.Context) *newrelic.Transaction
+	GetTraceFromRequest(r *http.Request) *newrelic.Transaction
 	WithContext(ctx context.Context, trace newrelic.Transaction) context.Context
 	WithRequest(r *http.Request, trace newrelic.Transaction) *http.Request
-	StartTransaction(name string) newrelic.Transaction
+	StartTransaction(name string) *newrelic.Transaction
 	NewChildSpan(name string, parent newrelic.Transaction) *newrelic.Segment
-	StartExternalSegment(txn newrelic.Transaction, req *http.Request) *newrelic.ExternalSegment
-	StartDatastoreSegment(txn newrelic.Transaction, operation string) *newrelic.DatastoreSegment
-	StartMessageQueueSegment(txn newrelic.Transaction, queueName string) *newrelic.MessageProducerSegment
-	NewRoundtripper(txn newrelic.Transaction) *http.RoundTripper
+	StartExternalSegment(txn *newrelic.Transaction, req *http.Request) *newrelic.ExternalSegment
+	StartDatastoreSegment(txn *newrelic.Transaction, operation string) *newrelic.DatastoreSegment
+	StartMessageQueueSegment(txn *newrelic.Transaction, queueName string) *newrelic.MessageProducerSegment
+	NewRoundtripper(txn *newrelic.Transaction) *http.RoundTripper
 }
 
 var _ IServiceTelemetry = &ServiceTelemetry{}
@@ -74,7 +74,7 @@ func (s *ServiceTelemetry) GetServiceVersion() string {
 }
 
 // GetTraceFromContext implements IServiceTelemetry
-func (s *ServiceTelemetry) GetTraceFromContext(ctx context.Context) newrelic.Transaction {
+func (s *ServiceTelemetry) GetTraceFromContext(ctx context.Context) *newrelic.Transaction {
 	if s.TracingEnabled {
 		return newrelic.FromContext(ctx)
 	}
@@ -83,7 +83,7 @@ func (s *ServiceTelemetry) GetTraceFromContext(ctx context.Context) newrelic.Tra
 }
 
 // GetTraceFromRequest implements IServiceTelemetry
-func (s *ServiceTelemetry) GetTraceFromRequest(r *http.Request) newrelic.Transaction {
+func (s *ServiceTelemetry) GetTraceFromRequest(r *http.Request) *newrelic.Transaction {
 	if s.TracingEnabled {
 		return newrelic.FromContext(r.Context())
 	}
@@ -99,16 +99,16 @@ func (s *ServiceTelemetry) GetTracingEnabled() bool {
 // NewChildSpan implements IServiceTelemetry
 func (s *ServiceTelemetry) NewChildSpan(name string, parent newrelic.Transaction) *newrelic.Segment {
 	if s.TracingEnabled {
-		return newrelic.StartSegment(parent, name)
+		return parent.StartSegment(name)
 	}
 
 	return nil
 }
 
 // StartTransaction implements IServiceTelemetry
-func (s *ServiceTelemetry) StartTransaction(name string) newrelic.Transaction {
+func (s *ServiceTelemetry) StartTransaction(name string) *newrelic.Transaction {
 	if s.TracingEnabled {
-		return s.NewrelicSdk.StartTransaction(name, nil, nil)
+		return s.NewrelicSdk.StartTransaction(name)
 	}
 
 	return nil
@@ -117,7 +117,7 @@ func (s *ServiceTelemetry) StartTransaction(name string) newrelic.Transaction {
 // WithContext implements IServiceTelemetry
 func (s *ServiceTelemetry) WithContext(ctx context.Context, trace newrelic.Transaction) context.Context {
 	if s.TracingEnabled {
-		return newrelic.NewContext(ctx, trace)
+		return newrelic.NewContext(ctx, &trace)
 	}
 
 	return ctx
@@ -133,7 +133,7 @@ func (s *ServiceTelemetry) WithRequest(r *http.Request, trace newrelic.Transacti
 }
 
 // StartExternalSegment implements IServiceTelemetry
-func (s *ServiceTelemetry) StartExternalSegment(txn newrelic.Transaction, req *http.Request) *newrelic.ExternalSegment {
+func (s *ServiceTelemetry) StartExternalSegment(txn *newrelic.Transaction, req *http.Request) *newrelic.ExternalSegment {
 	if s.TracingEnabled {
 		return newrelic.StartExternalSegment(txn, req)
 	}
@@ -147,10 +147,10 @@ func (s *ServiceTelemetry) StartExternalSegment(txn newrelic.Transaction, req *h
 // returned will look for a Transaction in the request's context (using
 // FromContext). This is recommended because it allows you to reuse the
 // same client for multiple transactions.
-func (s *ServiceTelemetry) NewRoundtripper(txn newrelic.Transaction) *http.RoundTripper {
+func (s *ServiceTelemetry) NewRoundtripper(txn *newrelic.Transaction) *http.RoundTripper {
 	client := &http.Client{}
 	if s.TracingEnabled {
-		h := newrelic.NewRoundTripper(txn, client.Transport)
+		h := newrelic.NewRoundTripper(client.Transport)
 		return &h
 	}
 
@@ -158,10 +158,10 @@ func (s *ServiceTelemetry) NewRoundtripper(txn newrelic.Transaction) *http.Round
 }
 
 // StartDatastoreSegment implements IServiceTelemetry
-func (s *ServiceTelemetry) StartDatastoreSegment(txn newrelic.Transaction, operation string) *newrelic.DatastoreSegment {
+func (s *ServiceTelemetry) StartDatastoreSegment(txn *newrelic.Transaction, operation string) *newrelic.DatastoreSegment {
 	if s.TracingEnabled {
 		segment := newrelic.DatastoreSegment{
-			StartTime: newrelic.StartSegmentNow(txn),
+			StartTime: txn.StartSegmentNow(),
 			// Product, Collection, and Operation are the most important
 			// fields to populate because they are used in the breakdown
 			// metrics.
@@ -176,10 +176,10 @@ func (s *ServiceTelemetry) StartDatastoreSegment(txn newrelic.Transaction, opera
 }
 
 // StartMessageQueueSegment implements IServiceTelemetry
-func (s *ServiceTelemetry) StartMessageQueueSegment(txn newrelic.Transaction, queueName string) *newrelic.MessageProducerSegment {
+func (s *ServiceTelemetry) StartMessageQueueSegment(txn *newrelic.Transaction, queueName string) *newrelic.MessageProducerSegment {
 	if s.TracingEnabled {
 		segment := newrelic.MessageProducerSegment{
-			StartTime:       newrelic.StartSegmentNow(txn),
+			StartTime:       txn.StartSegmentNow(),
 			Library:         "aws-sqs",
 			DestinationType: newrelic.MessageQueue,
 			DestinationName: queueName,

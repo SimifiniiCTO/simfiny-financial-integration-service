@@ -76,7 +76,7 @@ func generateBankAccount() *schema.BankAccount {
 			{
 				Goals: []*schema.SmartGoal{
 					{
-						UserId:        helper.GenerateRandomString(10),
+						UserId:        uint64(helper.GenerateRandomId(100000, 3000000)),
 						Name:          helper.GenerateRandomString(10),
 						Description:   helper.GenerateRandomString(10),
 						IsCompleted:   false,
@@ -94,7 +94,7 @@ func generateBankAccount() *schema.BankAccount {
 				Goals: []*schema.SmartGoal{
 					{
 
-						UserId:        helper.GenerateRandomString(10),
+						UserId:        uint64(helper.GenerateRandomId(10000, 3000000)),
 						Name:          helper.GenerateRandomString(10),
 						Description:   helper.GenerateRandomString(10),
 						IsCompleted:   false,
@@ -106,7 +106,7 @@ func generateBankAccount() *schema.BankAccount {
 						CurrentAmount: helper.GenerateRandomString(10),
 					},
 					{
-						UserId:        helper.GenerateRandomString(10),
+						UserId:        uint64(helper.GenerateRandomId(10000, 300000)),
 						Name:          helper.GenerateRandomString(10),
 						Description:   helper.GenerateRandomString(10),
 						IsCompleted:   false,
@@ -118,7 +118,7 @@ func generateBankAccount() *schema.BankAccount {
 						CurrentAmount: helper.GenerateRandomString(10),
 					},
 					{
-						UserId:        helper.GenerateRandomString(10),
+						UserId:        uint64(helper.GenerateRandomId(10000, 300000)),
 						Name:          helper.GenerateRandomString(10),
 						Description:   helper.GenerateRandomString(10),
 						IsCompleted:   false,
@@ -135,7 +135,7 @@ func generateBankAccount() *schema.BankAccount {
 			{
 				Goals: []*schema.SmartGoal{
 					{
-						UserId:        helper.GenerateRandomString(10),
+						UserId:        uint64(helper.GenerateRandomId(10000, 300000)),
 						Name:          helper.GenerateRandomString(10),
 						Description:   helper.GenerateRandomString(10),
 						IsCompleted:   false,
@@ -147,7 +147,7 @@ func generateBankAccount() *schema.BankAccount {
 						CurrentAmount: helper.GenerateRandomString(10),
 					},
 					{
-						UserId:        helper.GenerateRandomString(10),
+						UserId:        uint64(helper.GenerateRandomId(10000, 300000)),
 						Name:          helper.GenerateRandomString(10),
 						Description:   helper.GenerateRandomString(10),
 						IsCompleted:   false,
@@ -159,7 +159,7 @@ func generateBankAccount() *schema.BankAccount {
 						CurrentAmount: helper.GenerateRandomString(10),
 					},
 					{
-						UserId:        helper.GenerateRandomString(10),
+						UserId:        uint64(helper.GenerateRandomId(10000, 300000)),
 						Name:          helper.GenerateRandomString(10),
 						Description:   helper.GenerateRandomString(10),
 						IsCompleted:   false,
@@ -176,7 +176,7 @@ func generateBankAccount() *schema.BankAccount {
 			{
 				Goals: []*schema.SmartGoal{
 					{
-						UserId:        helper.GenerateRandomString(10),
+						UserId:        uint64(helper.GenerateRandomId(10000, 300000)),
 						Name:          helper.GenerateRandomString(10),
 						Description:   helper.GenerateRandomString(10),
 						IsCompleted:   false,
@@ -188,7 +188,7 @@ func generateBankAccount() *schema.BankAccount {
 						CurrentAmount: helper.GenerateRandomString(10),
 					},
 					{
-						UserId:        helper.GenerateRandomString(10),
+						UserId:        uint64(helper.GenerateRandomId(10000, 300000)),
 						Name:          helper.GenerateRandomString(10),
 						Description:   helper.GenerateRandomString(10),
 						IsCompleted:   false,
@@ -200,7 +200,7 @@ func generateBankAccount() *schema.BankAccount {
 						CurrentAmount: helper.GenerateRandomString(10),
 					},
 					{
-						UserId:        helper.GenerateRandomString(10),
+						UserId:        uint64(helper.GenerateRandomId(10000, 300000)),
 						Name:          helper.GenerateRandomString(10),
 						Description:   helper.GenerateRandomString(10),
 						IsCompleted:   false,
@@ -237,7 +237,7 @@ func genereateRandomUserProfileForTest() *schema.UserProfile {
 					{
 						Goals: []*schema.SmartGoal{
 							{
-								UserId:        helper.GenerateRandomString(10),
+								UserId:        uint64(helper.GenerateRandomId(10000, 300000)),
 								Name:          helper.GenerateRandomString(10),
 								Description:   helper.GenerateRandomString(10),
 								IsCompleted:   false,
@@ -255,7 +255,7 @@ func genereateRandomUserProfileForTest() *schema.UserProfile {
 						Goals: []*schema.SmartGoal{
 							{
 
-								UserId:        helper.GenerateRandomString(10),
+								UserId:        uint64(helper.GenerateRandomId(10000, 300000)),
 								Name:          helper.GenerateRandomString(10),
 								Description:   helper.GenerateRandomString(10),
 								IsCompleted:   false,
@@ -267,7 +267,7 @@ func genereateRandomUserProfileForTest() *schema.UserProfile {
 								CurrentAmount: helper.GenerateRandomString(10),
 							},
 							{
-								UserId:        helper.GenerateRandomString(10),
+								UserId:        uint64(helper.GenerateRandomId(10000, 300000)),
 								Name:          helper.GenerateRandomString(10),
 								Description:   helper.GenerateRandomString(10),
 								IsCompleted:   false,
@@ -279,7 +279,7 @@ func genereateRandomUserProfileForTest() *schema.UserProfile {
 								CurrentAmount: helper.GenerateRandomString(10),
 							},
 							{
-								UserId:        helper.GenerateRandomString(10),
+								UserId:        uint64(helper.GenerateRandomId(10000, 300000)),
 								Name:          helper.GenerateRandomString(10),
 								Description:   helper.GenerateRandomString(10),
 								IsCompleted:   false,
@@ -296,7 +296,7 @@ func genereateRandomUserProfileForTest() *schema.UserProfile {
 					{
 						Goals: []*schema.SmartGoal{
 							{
-								UserId:        helper.GenerateRandomString(10),
+								UserId:        uint64(helper.GenerateRandomId(10000, 300000)),
 								Name:          helper.GenerateRandomString(10),
 								Description:   helper.GenerateRandomString(10),
 								IsCompleted:   false,
@@ -308,7 +308,7 @@ func genereateRandomUserProfileForTest() *schema.UserProfile {
 								CurrentAmount: helper.GenerateRandomString(10),
 							},
 							{
-								UserId:        helper.GenerateRandomString(10),
+								UserId:        uint64(helper.GenerateRandomId(10000, 300000)),
 								Name:          helper.GenerateRandomString(10),
 								Description:   helper.GenerateRandomString(10),
 								IsCompleted:   false,
@@ -320,7 +320,7 @@ func genereateRandomUserProfileForTest() *schema.UserProfile {
 								CurrentAmount: helper.GenerateRandomString(10),
 							},
 							{
-								UserId:        helper.GenerateRandomString(10),
+								UserId:        uint64(helper.GenerateRandomId(10000, 300000)),
 								Name:          helper.GenerateRandomString(10),
 								Description:   helper.GenerateRandomString(10),
 								IsCompleted:   false,
@@ -337,7 +337,7 @@ func genereateRandomUserProfileForTest() *schema.UserProfile {
 					{
 						Goals: []*schema.SmartGoal{
 							{
-								UserId:        helper.GenerateRandomString(10),
+								UserId:        uint64(helper.GenerateRandomId(10000, 300000)),
 								Name:          helper.GenerateRandomString(10),
 								Description:   helper.GenerateRandomString(10),
 								IsCompleted:   false,
@@ -349,7 +349,7 @@ func genereateRandomUserProfileForTest() *schema.UserProfile {
 								CurrentAmount: helper.GenerateRandomString(10),
 							},
 							{
-								UserId:        helper.GenerateRandomString(10),
+								UserId:        uint64(helper.GenerateRandomId(10000, 300000)),
 								Name:          helper.GenerateRandomString(10),
 								Description:   helper.GenerateRandomString(10),
 								IsCompleted:   false,
@@ -361,7 +361,7 @@ func genereateRandomUserProfileForTest() *schema.UserProfile {
 								CurrentAmount: helper.GenerateRandomString(10),
 							},
 							{
-								UserId:        helper.GenerateRandomString(10),
+								UserId:        uint64(helper.GenerateRandomId(10000, 300000)),
 								Name:          helper.GenerateRandomString(10),
 								Description:   helper.GenerateRandomString(10),
 								IsCompleted:   false,
@@ -383,7 +383,7 @@ func genereateRandomUserProfileForTest() *schema.UserProfile {
 		InvestmentAccounts: []*schema.InvestmentAccount{
 			{
 				Id:             0,
-				UserId:         helper.GenerateRandomString(10),
+				UserId:         uint64(helper.GenerateRandomId(10000, 300000)),
 				Name:           helper.GenerateRandomString(10),
 				Number:         helper.GenerateRandomString(10),
 				Type:           helper.GenerateRandomString(10),
@@ -480,7 +480,7 @@ func genereateRandomUserProfileForTest() *schema.UserProfile {
 		},
 		CreditAccounts: []*schema.CreditAccount{
 			{
-				UserId:                 helper.GenerateRandomString(10),
+				UserId:                 uint64(helper.GenerateRandomId(1000, 100000)),
 				Name:                   helper.GenerateRandomString(10),
 				Number:                 helper.GenerateRandomString(10),
 				Type:                   helper.GenerateRandomString(10),
@@ -501,7 +501,7 @@ func genereateRandomUserProfileForTest() *schema.UserProfile {
 				NextPaymentDueDate:     helper.GenerateRandomString(10),
 			},
 			{
-				UserId:                 helper.GenerateRandomString(10),
+				UserId:                 uint64(helper.GenerateRandomId(1000, 100000)),
 				Name:                   helper.GenerateRandomString(10),
 				Number:                 helper.GenerateRandomString(10),
 				Type:                   helper.GenerateRandomString(10),

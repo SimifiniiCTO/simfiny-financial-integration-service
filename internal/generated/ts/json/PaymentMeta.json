@@ -1,0 +1,37 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/PaymentMeta",
+    "definitions": {
+        "PaymentMeta": {
+            "properties": {
+                "by_order_of": {
+                    "type": "string"
+                },
+                "payee": {
+                    "type": "string"
+                },
+                "payer": {
+                    "type": "string"
+                },
+                "payment_method": {
+                    "type": "string"
+                },
+                "payment_processor": {
+                    "type": "string"
+                },
+                "ppd_id": {
+                    "type": "string"
+                },
+                "reason": {
+                    "type": "string"
+                },
+                "reference_number": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Payment Meta"
+        }
+    }
+}

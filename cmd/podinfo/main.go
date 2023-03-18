@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	newrelic "github.com/newrelic/go-agent"
 	"github.com/newrelic/go-agent/v3/integrations/nrzap"
+	"github.com/newrelic/go-agent/v3/newrelic"
 	"github.com/plaid/plaid-go/plaid"
 	rkboot "github.com/rookie-ninja/rk-boot/v2"
 	rkentry "github.com/rookie-ninja/rk-entry/v2/entry"
@@ -51,21 +51,16 @@ func main() {
 		logger.Panic(err.Error())
 	}
 
-	logger.Info("initializing database ....")
 	db, err := configureDatabaseConn(ctx, logger, instrumentation)
 	if err != nil {
 		logger.Panic(err.Error())
 	}
-
-	logger.Info("successfully initialized database ....")
 
 	conn, err := db.Conn.Engine.DB()
 	if err != nil {
 		logger.Panic(err.Error())
 	}
 	defer conn.Close()
-
-	logger.Info("successfully initialized database ....")
 
 	// load gRPC server config
 	var grpcCfg grpc.Config
@@ -115,39 +110,41 @@ func main() {
 }
 
 // configurNewrelicSDK configures the new relic sdk with metadata specific to this service
-func configureNewrelicSDK(logger *zap.Logger) (newrelic.Application, error) {
+func configureNewrelicSDK(logger *zap.Logger) (*newrelic.Application, error) {
 	var newrelicLicenseKey = viper.GetString("newrelic-key")
 	var serviceName = viper.GetString("grpc-service-name")
 
 	if newrelicLicenseKey != "" {
-		cfg := newrelic.NewConfig(serviceName, newrelicLicenseKey)
-		cfg.ErrorCollector.CaptureEvents = true
-		cfg.ErrorCollector.Enabled = true
-		cfg.TransactionEvents.Enabled = true
-		cfg.Enabled = true
-		cfg.TransactionEvents.Enabled = true
-		cfg.Attributes.Enabled = true
-		cfg.BrowserMonitoring.Enabled = true
-		cfg.TransactionTracer.Enabled = true
-		cfg.SpanEvents.Enabled = true
-		cfg.RuntimeSampler.Enabled = true
-		cfg.DistributedTracer.Enabled = true
-		cfg.AppName = serviceName
-		cfg.BrowserMonitoring.Enabled = true
-		cfg.CustomInsightsEvents.Enabled = true
-		cfg.DatastoreTracer.InstanceReporting.Enabled = true
-		cfg.DatastoreTracer.QueryParameters.Enabled = true
-		cfg.DatastoreTracer.DatabaseNameReporting.Enabled = true
-		cfg.Logger = nrzap.Transform(logger.Named("newrelic"))
-		cfg.DistributedTracer.Enabled = true
-		cfg.Enabled = true
+		return newrelic.NewApplication(
+			newrelic.ConfigAppName(serviceName),
+			newrelic.ConfigLicense(newrelicLicenseKey),
+			newrelic.ConfigAppLogForwardingEnabled(true),
+			func(cfg *newrelic.Config) {
+				cfg.ErrorCollector.RecordPanics = true
+				cfg.ErrorCollector.Enabled = true
+				cfg.TransactionEvents.Enabled = true
+				cfg.Enabled = true
+				cfg.TransactionEvents.Enabled = true
+				cfg.Attributes.Enabled = true
+				cfg.BrowserMonitoring.Enabled = true
+				cfg.TransactionTracer.Enabled = true
+				cfg.SpanEvents.Enabled = true
+				cfg.RuntimeSampler.Enabled = true
+				cfg.DistributedTracer.Enabled = true
+				cfg.AppName = serviceName
+				cfg.BrowserMonitoring.Enabled = true
+				cfg.CustomInsightsEvents.Enabled = true
+				cfg.DatastoreTracer.InstanceReporting.Enabled = true
+				cfg.DatastoreTracer.QueryParameters.Enabled = true
+				cfg.DatastoreTracer.DatabaseNameReporting.Enabled = true
+				cfg.Logger = nrzap.Transform(logger)
+			},
+			// Use nrzap to register the logger with the agent:
+			nrzap.ConfigLogger(logger.Named("newrelic")),
+			newrelic.ConfigDistributedTracerEnabled(true),
+			newrelic.ConfigEnabled(true),
+		)
 
-		app, err := newrelic.NewApplication(cfg)
-		if err != nil {
-			return nil, err
-		}
-
-		return app, nil
 	}
 
 	return nil, fmt.Errorf("invalid input parameter. param: newrelicLicenseKey = %s", newrelicLicenseKey)
@@ -190,9 +187,6 @@ func configureDatabaseConn(ctx context.Context, logger *zap.Logger, instrumentat
 	dbQueryTimeout := viper.GetDuration("db-query-timeout")
 
 	connectionString := database.ConfigureConnectionString(host, user, password, dbname, sslMode, port)
-	logger.Info(fmt.Sprintf("%s", connectionString))
-
-	logger.Info("establishing database connection")
 
 	// establish db connections
 	conn := core_database.NewDatabaseConn(
@@ -203,8 +197,6 @@ func configureDatabaseConn(ctx context.Context, logger *zap.Logger, instrumentat
 			RetrySleep:                &maxDBSleepInterval,
 			ConnectionString:          &connectionString,
 		})
-
-	logger.Info("establishing database connection")
 
 	queryOperator := dal.Use(conn.Engine)
 	opts := []database.Option{

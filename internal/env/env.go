@@ -53,7 +53,7 @@ func ReadEnvVars() {
 	fs.String("cache-server", "", "Redis address in the format <host>:<port>")
 	fs.String("newrelic-key", "62fd721c712d5863a4e75b8f547b7c1ea884NRAL", "new relic license key")
 	// database connection environment variables
-	fs.String("dbhost", "127.0.0.1", "database host string")
+	fs.String("dbhost", "db", "database host string")
 	fs.Int("dbport", 5432, "database port")
 	fs.String("dbuser", "postgres", "database user string")
 	fs.String("dbpassword", "postgres", "database password string")

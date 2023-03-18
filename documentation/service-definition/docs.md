@@ -36,6 +36,11 @@
     - [GoalType](#api-v1-GoalType)
     - [PocketType](#api-v1-PocketType)
   
+- [api/v1/mongo.proto](#api_v1_mongo-proto)
+    - [PaymentMeta](#api-v1-PaymentMeta)
+    - [Transaction](#api-v1-Transaction)
+    - [TransactionLocation](#api-v1-TransactionLocation)
+  
 - [api/v1/openapi.proto](#api_v1_openapi-proto)
 - [api/v1/request_response.proto](#api_v1_request_response-proto)
     - [CreateBankAccountRequest](#api-v1-CreateBankAccountRequest)
@@ -399,7 +404,7 @@ For example, the &#34;Housing&#34; category might have subcategories for &#34;Re
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | id | [uint64](#uint64) |  | id |
-| user_id | [string](#string) |  | the user id to which this bank account is tied to |
+| user_id | [uint64](#uint64) |  | the user id to which this bank account is tied to |
 | name | [string](#string) |  | the account name |
 | number | [string](#string) |  | the bank account number |
 | type | [string](#string) |  | the bank account type |
@@ -480,7 +485,7 @@ This allows the user to track how well they are progressing towards their goal a
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | id | [uint64](#uint64) |  | id |
-| user_id | [string](#string) |  | the user id to which this bank account is tied to |
+| user_id | [uint64](#uint64) |  | the user id to which this bank account is tied to |
 | name | [string](#string) |  | the account name |
 | number | [string](#string) |  | the bank account number |
 | type | [string](#string) |  | the bank account type |
@@ -633,7 +638,7 @@ more they need to save or invest to reach their target amount.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | id | [uint64](#uint64) |  | id |
-| user_id | [string](#string) |  | the user id to which this goal is tied to |
+| user_id | [uint64](#uint64) |  | the user id to which this goal is tied to |
 | name | [string](#string) |  | The name of the goal Validations: - must be at least 3 characters long |
 | description | [string](#string) |  | The description of the goal Validations: - must be at least 3 characters long |
 | is_completed | [bool](#bool) |  | wether the goal has been achieved or not |
@@ -692,7 +697,7 @@ more they need to save or invest to reach their target amount.
 | servicer_address_street | [string](#string) |  |  |
 | servicer_address_region | [string](#string) |  |  |
 | servicer_address_country | [string](#string) |  |  |
-| user_id | [string](#string) |  | the user id to which this bank account is tied to |
+| user_id | [uint64](#uint64) |  | the user id to which this bank account is tied to |
 | name | [string](#string) |  | the account name |
 
 
@@ -785,6 +790,101 @@ such as the id, user_id tied to the profile, and many more
 | POCKET_TYPE_SHORT_TERM_SAVINGS | 6 |  |
 | POCKET_TYPE_LONG_TERM_SAVINGS | 7 |  |
 
+
+ 
+
+ 
+
+ 
+
+
+
+<a name="api_v1_mongo-proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## api/v1/mongo.proto
+
+
+
+<a name="api-v1-PaymentMeta"></a>
+
+### PaymentMeta
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| by_order_of | [string](#string) |  |  |
+| payee | [string](#string) |  |  |
+| payer | [string](#string) |  |  |
+| payment_method | [string](#string) |  |  |
+| payment_processor | [string](#string) |  |  |
+| ppd_id | [string](#string) |  |  |
+| reason | [string](#string) |  |  |
+| reference_number | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="api-v1-Transaction"></a>
+
+### Transaction
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| account_id | [string](#string) |  |  |
+| amount | [double](#double) |  |  |
+| iso_currency_code | [string](#string) |  |  |
+| unofficial_currency_code | [string](#string) |  |  |
+| category | [string](#string) | repeated |  |
+| category_id | [string](#string) |  |  |
+| check_number | [string](#string) |  |  |
+| date | [string](#string) |  |  |
+| datetime | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+| authorized_date | [string](#string) |  |  |
+| authorized_datetime | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+| location | [TransactionLocation](#api-v1-TransactionLocation) |  |  |
+| name | [string](#string) |  |  |
+| merchant_name | [string](#string) |  |  |
+| payment_meta | [PaymentMeta](#api-v1-PaymentMeta) |  |  |
+| payment_channel | [string](#string) |  |  |
+| pending | [bool](#bool) |  |  |
+| pending_transaction_id | [string](#string) |  |  |
+| account_owner | [string](#string) |  |  |
+| transaction_id | [string](#string) |  |  |
+| transaction_code | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="api-v1-TransactionLocation"></a>
+
+### TransactionLocation
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| address | [string](#string) |  |  |
+| city | [string](#string) |  |  |
+| region | [string](#string) |  |  |
+| postal_code | [string](#string) |  |  |
+| country | [string](#string) |  |  |
+| lat | [double](#double) |  |  |
+| lon | [double](#double) |  |  |
+| store_number | [string](#string) |  |  |
+
+
+
+
+
+ 
 
  
 

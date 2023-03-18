@@ -1,6 +1,6 @@
 package instrumentation
 
-import newrelic "github.com/newrelic/go-agent"
+import "github.com/newrelic/go-agent/v3/newrelic"
 
 // ServiceTelemetryOption is a function that configures a ServiceTelemetry
 type ServiceTelemetryOption func(*ServiceTelemetry)
@@ -41,7 +41,7 @@ func WithMetricsEnabled(enabled bool) ServiceTelemetryOption {
 }
 
 // WithNewrelicSdk configures the service newrelic sdk
-func WithNewrelicSdk(newrelicSdk newrelic.Application) ServiceTelemetryOption {
+func WithNewrelicSdk(newrelicSdk *newrelic.Application) ServiceTelemetryOption {
 	return func(t *ServiceTelemetry) {
 		t.NewrelicSdk = newrelicSdk
 	}

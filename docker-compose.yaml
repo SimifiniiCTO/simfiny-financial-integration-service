@@ -1,26 +1,26 @@
-version: '3.8'
+version: '3.7'
 
 services:
   service:
     tty: true # Makes color output work nicely.
-    build:
-      context: ./
-      dockerfile: Dockerfile.dev
+    image: golang:1.19
+    user: "${UID:-0}:${GID:-0}"
+    restart: always # If something goes wrong just restart the container, this is for development only.
     working_dir: /build
     container_name: service
     ports:
       - "9896:9896" # grpc port
-    restart: always
     environment:
       - air_wd=/build
     volumes:
       - './:/go/src/github.com/SimifiniiCTO/simfiny-financial-integration-service'
       - goData:/go/pkg/mod
       - ./:/build
-    depends_on:
-      - db
     links:
       - db
+    depends_on:
+      db:
+        condition: service_started
     env_file:
       - ./service.env
     command:

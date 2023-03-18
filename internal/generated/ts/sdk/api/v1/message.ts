@@ -275,7 +275,7 @@ export interface StudentLoanAccount {
   servicerAddressRegion: string;
   servicerAddressCountry: string;
   /** the user id to which this bank account is tied to */
-  userId: string;
+  userId: number;
   /** the account name */
   name: string;
 }
@@ -284,7 +284,7 @@ export interface CreditAccount {
   /** id */
   id: number;
   /** the user id to which this bank account is tied to */
-  userId: string;
+  userId: number;
   /** the account name */
   name: string;
   /** the bank account number */
@@ -362,7 +362,7 @@ export interface InvestmentAccount {
   /** id */
   id: number;
   /** the user id to which this bank account is tied to */
-  userId: string;
+  userId: number;
   /** the account name */
   name: string;
   /** the bank account number */
@@ -442,7 +442,7 @@ export interface SmartGoal {
   /** id */
   id: number;
   /** the user id to which this goal is tied to */
-  userId: string;
+  userId: number;
   /**
    * The name of the goal
    * Validations:
@@ -814,7 +814,7 @@ function createBaseStudentLoanAccount(): StudentLoanAccount {
     servicerAddressStreet: "",
     servicerAddressRegion: "",
     servicerAddressCountry: "",
-    userId: "",
+    userId: 0,
     name: "",
   };
 }
@@ -920,8 +920,8 @@ export const StudentLoanAccount = {
     if (message.servicerAddressCountry !== "") {
       writer.uint32(290).string(message.servicerAddressCountry);
     }
-    if (message.userId !== "") {
-      writer.uint32(298).string(message.userId);
+    if (message.userId !== 0) {
+      writer.uint32(296).uint64(message.userId);
     }
     if (message.name !== "") {
       writer.uint32(306).string(message.name);
@@ -1036,7 +1036,7 @@ export const StudentLoanAccount = {
           message.servicerAddressCountry = reader.string();
           break;
         case 37:
-          message.userId = reader.string();
+          message.userId = longToNumber(reader.uint64() as Long);
           break;
         case 38:
           message.name = reader.string();
@@ -1094,7 +1094,7 @@ export const StudentLoanAccount = {
       servicerAddressStreet: isSet(object.servicerAddressStreet) ? String(object.servicerAddressStreet) : "",
       servicerAddressRegion: isSet(object.servicerAddressRegion) ? String(object.servicerAddressRegion) : "",
       servicerAddressCountry: isSet(object.servicerAddressCountry) ? String(object.servicerAddressCountry) : "",
-      userId: isSet(object.userId) ? String(object.userId) : "",
+      userId: isSet(object.userId) ? Number(object.userId) : 0,
       name: isSet(object.name) ? String(object.name) : "",
     };
   },
@@ -1144,7 +1144,7 @@ export const StudentLoanAccount = {
     message.servicerAddressStreet !== undefined && (obj.servicerAddressStreet = message.servicerAddressStreet);
     message.servicerAddressRegion !== undefined && (obj.servicerAddressRegion = message.servicerAddressRegion);
     message.servicerAddressCountry !== undefined && (obj.servicerAddressCountry = message.servicerAddressCountry);
-    message.userId !== undefined && (obj.userId = message.userId);
+    message.userId !== undefined && (obj.userId = Math.round(message.userId));
     message.name !== undefined && (obj.name = message.name);
     return obj;
   },
@@ -1188,7 +1188,7 @@ export const StudentLoanAccount = {
     message.servicerAddressStreet = object.servicerAddressStreet ?? "";
     message.servicerAddressRegion = object.servicerAddressRegion ?? "";
     message.servicerAddressCountry = object.servicerAddressCountry ?? "";
-    message.userId = object.userId ?? "";
+    message.userId = object.userId ?? 0;
     message.name = object.name ?? "";
     return message;
   },
@@ -1197,7 +1197,7 @@ export const StudentLoanAccount = {
 function createBaseCreditAccount(): CreditAccount {
   return {
     id: 0,
-    userId: "",
+    userId: 0,
     name: "",
     number: "",
     type: "",
@@ -1224,8 +1224,8 @@ export const CreditAccount = {
     if (message.id !== 0) {
       writer.uint32(8).uint64(message.id);
     }
-    if (message.userId !== "") {
-      writer.uint32(18).string(message.userId);
+    if (message.userId !== 0) {
+      writer.uint32(16).uint64(message.userId);
     }
     if (message.name !== "") {
       writer.uint32(26).string(message.name);
@@ -1295,7 +1295,7 @@ export const CreditAccount = {
           message.id = longToNumber(reader.uint64() as Long);
           break;
         case 2:
-          message.userId = reader.string();
+          message.userId = longToNumber(reader.uint64() as Long);
           break;
         case 3:
           message.name = reader.string();
@@ -1362,7 +1362,7 @@ export const CreditAccount = {
   fromJSON(object: any): CreditAccount {
     return {
       id: isSet(object.id) ? Number(object.id) : 0,
-      userId: isSet(object.userId) ? String(object.userId) : "",
+      userId: isSet(object.userId) ? Number(object.userId) : 0,
       name: isSet(object.name) ? String(object.name) : "",
       number: isSet(object.number) ? String(object.number) : "",
       type: isSet(object.type) ? String(object.type) : "",
@@ -1387,7 +1387,7 @@ export const CreditAccount = {
   toJSON(message: CreditAccount): unknown {
     const obj: any = {};
     message.id !== undefined && (obj.id = Math.round(message.id));
-    message.userId !== undefined && (obj.userId = message.userId);
+    message.userId !== undefined && (obj.userId = Math.round(message.userId));
     message.name !== undefined && (obj.name = message.name);
     message.number !== undefined && (obj.number = message.number);
     message.type !== undefined && (obj.type = message.type);
@@ -1420,7 +1420,7 @@ export const CreditAccount = {
   fromPartial<I extends Exact<DeepPartial<CreditAccount>, I>>(object: I): CreditAccount {
     const message = createBaseCreditAccount();
     message.id = object.id ?? 0;
-    message.userId = object.userId ?? "";
+    message.userId = object.userId ?? 0;
     message.name = object.name ?? "";
     message.number = object.number ?? "";
     message.type = object.type ?? "";
@@ -1820,7 +1820,7 @@ export const MortgageAccount = {
 function createBaseInvestmentAccount(): InvestmentAccount {
   return {
     id: 0,
-    userId: "",
+    userId: 0,
     name: "",
     number: "",
     type: "",
@@ -1839,8 +1839,8 @@ export const InvestmentAccount = {
     if (message.id !== 0) {
       writer.uint32(8).uint64(message.id);
     }
-    if (message.userId !== "") {
-      writer.uint32(18).string(message.userId);
+    if (message.userId !== 0) {
+      writer.uint32(16).uint64(message.userId);
     }
     if (message.name !== "") {
       writer.uint32(26).string(message.name);
@@ -1886,7 +1886,7 @@ export const InvestmentAccount = {
           message.id = longToNumber(reader.uint64() as Long);
           break;
         case 2:
-          message.userId = reader.string();
+          message.userId = longToNumber(reader.uint64() as Long);
           break;
         case 3:
           message.name = reader.string();
@@ -1929,7 +1929,7 @@ export const InvestmentAccount = {
   fromJSON(object: any): InvestmentAccount {
     return {
       id: isSet(object.id) ? Number(object.id) : 0,
-      userId: isSet(object.userId) ? String(object.userId) : "",
+      userId: isSet(object.userId) ? Number(object.userId) : 0,
       name: isSet(object.name) ? String(object.name) : "",
       number: isSet(object.number) ? String(object.number) : "",
       type: isSet(object.type) ? String(object.type) : "",
@@ -1948,7 +1948,7 @@ export const InvestmentAccount = {
   toJSON(message: InvestmentAccount): unknown {
     const obj: any = {};
     message.id !== undefined && (obj.id = Math.round(message.id));
-    message.userId !== undefined && (obj.userId = message.userId);
+    message.userId !== undefined && (obj.userId = Math.round(message.userId));
     message.name !== undefined && (obj.name = message.name);
     message.number !== undefined && (obj.number = message.number);
     message.type !== undefined && (obj.type = message.type);
@@ -1977,7 +1977,7 @@ export const InvestmentAccount = {
   fromPartial<I extends Exact<DeepPartial<InvestmentAccount>, I>>(object: I): InvestmentAccount {
     const message = createBaseInvestmentAccount();
     message.id = object.id ?? 0;
-    message.userId = object.userId ?? "";
+    message.userId = object.userId ?? 0;
     message.name = object.name ?? "";
     message.number = object.number ?? "";
     message.type = object.type ?? "";
@@ -2239,7 +2239,7 @@ export const Pocket = {
 function createBaseSmartGoal(): SmartGoal {
   return {
     id: 0,
-    userId: "",
+    userId: 0,
     name: "",
     description: "",
     isCompleted: false,
@@ -2259,8 +2259,8 @@ export const SmartGoal = {
     if (message.id !== 0) {
       writer.uint32(8).uint64(message.id);
     }
-    if (message.userId !== "") {
-      writer.uint32(18).string(message.userId);
+    if (message.userId !== 0) {
+      writer.uint32(16).uint64(message.userId);
     }
     if (message.name !== "") {
       writer.uint32(26).string(message.name);
@@ -2309,7 +2309,7 @@ export const SmartGoal = {
           message.id = longToNumber(reader.uint64() as Long);
           break;
         case 2:
-          message.userId = reader.string();
+          message.userId = longToNumber(reader.uint64() as Long);
           break;
         case 3:
           message.name = reader.string();
@@ -2355,7 +2355,7 @@ export const SmartGoal = {
   fromJSON(object: any): SmartGoal {
     return {
       id: isSet(object.id) ? Number(object.id) : 0,
-      userId: isSet(object.userId) ? String(object.userId) : "",
+      userId: isSet(object.userId) ? Number(object.userId) : 0,
       name: isSet(object.name) ? String(object.name) : "",
       description: isSet(object.description) ? String(object.description) : "",
       isCompleted: isSet(object.isCompleted) ? Boolean(object.isCompleted) : false,
@@ -2373,7 +2373,7 @@ export const SmartGoal = {
   toJSON(message: SmartGoal): unknown {
     const obj: any = {};
     message.id !== undefined && (obj.id = Math.round(message.id));
-    message.userId !== undefined && (obj.userId = message.userId);
+    message.userId !== undefined && (obj.userId = Math.round(message.userId));
     message.name !== undefined && (obj.name = message.name);
     message.description !== undefined && (obj.description = message.description);
     message.isCompleted !== undefined && (obj.isCompleted = message.isCompleted);
@@ -2400,7 +2400,7 @@ export const SmartGoal = {
   fromPartial<I extends Exact<DeepPartial<SmartGoal>, I>>(object: I): SmartGoal {
     const message = createBaseSmartGoal();
     message.id = object.id ?? 0;
-    message.userId = object.userId ?? "";
+    message.userId = object.userId ?? 0;
     message.name = object.name ?? "";
     message.description = object.description ?? "";
     message.isCompleted = object.isCompleted ?? false;

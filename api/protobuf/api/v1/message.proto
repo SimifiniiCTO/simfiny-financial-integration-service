@@ -112,7 +112,7 @@ message StudentLoanAccount {
   string servicer_address_region = 35 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
   string servicer_address_country = 36 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
   // the user id to which this bank account is tied to
-  string user_id = 37 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  uint64 user_id = 37 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
   // the account name
   string name = 38 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
 }
@@ -124,7 +124,7 @@ message CreditAccount {
   uint64 id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
 
   // the user id to which this bank account is tied to
-  string user_id = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  uint64 user_id = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
 
   // the account name
   string name = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
@@ -212,7 +212,7 @@ message InvestmentAccount {
   uint64 id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
 
   // the user id to which this bank account is tied to
-  string user_id = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  uint64 user_id = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
 
   // the account name
   string name = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
@@ -342,7 +342,7 @@ message SmartGoal {
   // id
   uint64 id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
   // the user id to which this goal is tied to
-  string user_id = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  uint64 user_id = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
 
   // The name of the goal
   // Validations:

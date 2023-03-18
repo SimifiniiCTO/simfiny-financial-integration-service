@@ -37,7 +37,7 @@ func newInvestmentAccountORM(db *gorm.DB, opts ...gen.DOOption) investmentAccoun
 	_investmentAccountORM.PlaidAccountId = field.NewString(tableName, "plaid_account_id")
 	_investmentAccountORM.Subtype = field.NewString(tableName, "subtype")
 	_investmentAccountORM.Type = field.NewString(tableName, "type")
-	_investmentAccountORM.UserId = field.NewString(tableName, "user_id")
+	_investmentAccountORM.UserId = field.NewUint64(tableName, "user_id")
 	_investmentAccountORM.UserProfileId = field.NewUint64(tableName, "user_profile_id")
 	_investmentAccountORM.Holdings = investmentAccountORMHasManyHoldings{
 		db: db.Session(&gorm.Session{}),
@@ -69,7 +69,7 @@ type investmentAccountORM struct {
 	PlaidAccountId field.String
 	Subtype        field.String
 	Type           field.String
-	UserId         field.String
+	UserId         field.Uint64
 	UserProfileId  field.Uint64
 	Holdings       investmentAccountORMHasManyHoldings
 
@@ -99,7 +99,7 @@ func (i *investmentAccountORM) updateTableName(table string) *investmentAccountO
 	i.PlaidAccountId = field.NewString(table, "plaid_account_id")
 	i.Subtype = field.NewString(table, "subtype")
 	i.Type = field.NewString(table, "type")
-	i.UserId = field.NewString(table, "user_id")
+	i.UserId = field.NewUint64(table, "user_id")
 	i.UserProfileId = field.NewUint64(table, "user_profile_id")
 
 	i.fillFieldMap()

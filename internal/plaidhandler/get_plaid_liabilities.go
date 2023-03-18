@@ -18,7 +18,7 @@ func (p *PlaidWrapper) getPlaidLiabilities(ctx context.Context, accessToken *str
 	}
 
 	request := plaid.NewLiabilitiesGetRequest(*accessToken)
-	resp, _, err := p.Client.PlaidApi.LiabilitiesGet(ctx).LiabilitiesGetRequest(*request).Execute()
+	resp, _, err := p.client.PlaidApi.LiabilitiesGet(ctx).LiabilitiesGetRequest(*request).Execute()
 	if err != nil {
 		return nil, err
 	}

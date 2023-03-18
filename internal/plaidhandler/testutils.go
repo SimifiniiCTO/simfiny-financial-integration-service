@@ -1,7 +1,7 @@
 package plaidhandler
 
 import (
-	newrelic "github.com/newrelic/go-agent"
+	"github.com/newrelic/go-agent/v3/newrelic"
 	"github.com/plaid/plaid-go/plaid"
 	"go.uber.org/zap"
 
@@ -26,9 +26,8 @@ func NewMockPlaidClient() *plaid.APIClient {
 }
 
 // NewNewRelicClient configures the new relic sdk with metadata specific to this service
-func newNewRelicClient(logger *zap.Logger) (newrelic.Application, error) {
-	cfg := newrelic.NewConfig(SERVICE_TEST_UTILS, NEW_RELIC_KEY_TEST_UTILS)
-	return newrelic.NewApplication(cfg)
+func newNewRelicClient(logger *zap.Logger) (*newrelic.Application, error) {
+	return newrelic.NewApplication()
 }
 
 func newLogger() *zap.Logger {
@@ -50,7 +49,7 @@ func GetPlaidWrapperForTest() (*PlaidWrapper, error) {
 	}
 
 	return &PlaidWrapper{
-		Client:             NewMockPlaidClient(),
+		client:             NewMockPlaidClient(),
 		InstrumentationSdk: instr,
 		Logger:             l,
 	}, nil
