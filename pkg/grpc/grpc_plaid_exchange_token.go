@@ -41,18 +41,20 @@ func (s *Server) PlaidExchangeToken(ctx context.Context, req *proto.PlaidExchang
 		return nil, status.Error(codes.NotFound, "user not found")
 	}
 
+	// exchange public token for access token
 	token, err := s.plaidClient.ExchangePublicToken(ctx, req.PublicToken)
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	// ensure the user profile has the access token
+	// ensure the user profile making the request actually exists
 	userProfile, err := s.conn.GetUserProfileByUserID(ctx, req.UserId)
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
 	// cryptographically hash the access token before storing it
+	// TODO: refactor this - may not nott to store decryption key
 	meta, err := s.EncryptAccessToken(ctx, token.AccessToken)
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())

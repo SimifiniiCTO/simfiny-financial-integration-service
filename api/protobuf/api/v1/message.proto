@@ -43,6 +43,26 @@ enum BankAccountType {
   BANK_ACCOUNT_TYPE_MANUAL = 2;
 }
 
+enum StripeSubscriptionStatus {
+  STRIPE_SUBSCRIPTION_STATUS_UNSPECIFIED = 0;
+  STRIPE_SUBSCRIPTION_STATUS_TRIALING = 1;
+  STRIPE_SUBSCRIPTION_STATUS_ACTIVE = 2;
+  STRIPE_SUBSCRIPTION_STATUS_PAST_DUE = 3;
+  STRIPE_SUBSCRIPTION_STATUS_CANCELED = 4;
+  STRIPE_SUBSCRIPTION_STATUS_UNPAID = 5;
+  STRIPE_SUBSCRIPTION_STATUS_COMPLETE = 6;
+}
+
+enum LinkType {
+  LINK_TYPE_UNSPECIFIED = 0;
+  LINK_TYPE_SETUP = 1;
+  LINK_TYPE_PENDING = 2;
+  LINK_TYPE_ERROR = 3;
+  LINK_TYPE_SUCCESS = 4;
+  LINK_TYPE_PENDING_EXPIRATION = 5;
+  LINK_TYPE_REVOKED = 6;
+}
+
 // UserProfile stores high level user profile details
 // such as the id, user_id tied to the profile, and many more
 message UserProfile {
@@ -57,25 +77,88 @@ message UserProfile {
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""},
     (validate.rules).uint64.gt = 0
   ];
-  // many bank accounts (connected) can be tied to a user
-  repeated BankAccount bank_accounts = 3 [(gorm.field).has_many.preload = true];
-  // investment accounts tied to a user 
-  repeated InvestmentAccount investment_accounts = 4 [(gorm.field).has_many.preload = true];
+  // the stripe subscriptions the user profile actively maintains
+  repeated StripeSubscription stripe_subscriptions = 4 [(gorm.field).has_many.preload = true];
+  // a link event - or client login event can have many connected bank accounts
+  // for example a log in link against one instition like chase can have many account (checking and savings)
+  // it is important though to ensure that if a link against an instition already exists, we dont fascilitate duplicated
+  repeated BankAccount bank_account = 12 [(gorm.field).has_one.preload = true];
+  // a link event - or client login event can have many connected investment accounts
+  // for example a log in link against one instition like fidelity can have many accounts (401k and investment account)
+  // it is important though to ensure that if a link against an instition already exists, we dont fascilitate duplicated
+  repeated InvestmentAccount investment_accounts = 13 [(gorm.field).has_many.preload = true];
   // credit accounts tied to a user
-  repeated CreditAccount credit_accounts = 5 [(gorm.field).has_many.preload = true];
+  repeated CreditAccount credit_accounts = 14 [(gorm.field).has_many.preload = true];
   // mortgage accounts tied to a user
-  repeated MortgageAccount mortgage_accounts = 6 [(gorm.field).has_many.preload = true];
-  // student loan accounts tied to a user
-  repeated StudentLoanAccount student_loan_accounts = 7 [(gorm.field).has_many.preload = true];
-  // the user plaid access token
-  string plaid_access_token = 8 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  repeated MortgageAccount mortgage_accounts = 15 [(gorm.field).has_many.preload = true];
+  // student loan accounts tied to a link
+  repeated StudentLoanAccount student_loan_accounts = 16 [(gorm.field).has_many.preload = true];
+}
 
-  // key used to encrypt the access token by the kms
-  string decryption_access_token_key = 9 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
-  string decryption_access_token_version = 10 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+message StripeSubscription {
+  option (gorm.opts) = {ormable: true};
+  uint64 id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  // stripe subscription id tied to the customer
+  string stripe_subscription_id = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  // stripe subscription status
+  StripeSubscriptionStatus stripe_subscription_status = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  // stripe subscription active until 
+  string stripe_subscription_active_until = 4 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  // stripe webhook latest timestamp 
+  string stripe_webhook_latest_timestamp = 5 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+}
 
-  // the customer id tied to the stripe account
-  string stripe_customer_id = 11 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+// A Link represents a login at a financial institution. A single end-user of your application might have accounts at different financial
+// institutions, which means they would have multiple different Items. An Item is not the same as a financial institution account,
+// although every account will be associated with an Item. For example, if a user has one login at their bank that allows them to access
+// both their checking account and their savings account, a single Item would be associated with both of those accounts. Each Item 
+// linked within your application will have a corresponding access_token, which is a token that you can use to make API requests related
+// to that specific Item.
+// Two Items created for the same set of credentials at the same institution will be considered different and not share the same item_id.
+message Link {
+  option (gorm.opts) = {ormable: true};
+
+  uint64 id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  LinkType link_type = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  PlaidLink plaid_link = 4 [(gorm.field).has_one.preload = true];
+  bool plaid_new_accounts_available = 5 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  string expiration_date = 6 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  string institution_name = 7 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  string custom_institution_name = 8 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  string description = 9 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  string last_manual_sync = 10 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  string last_successful_update = 11 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  // token object witholds an access token which is a token used to make API requests related to a specific Item. You will typically obtain an access_token
+  // by calling /item/public_token/exchange. For more details, see the Token exchange flow. An access_token does not expire,
+  // although it may require updating, such as when a user changes their password, or when working with European institutions
+  // that comply with PSD2's 90-day consent window. For more information, see When to use update mode. 
+  // Access tokens should always be stored securely, and associated with the user whose data they represent. 
+  // If compromised, an access_token can be rotated via /item/access_token/invalidate. If no longer needed, 
+  // it can be revoked via /item/remove.(gorm.field).has_one.preload = true];
+  Token token = 12 [(gorm.field).has_one.preload = true];
+}
+
+message Token {
+  option (gorm.opts) = {ormable: true};
+  // id
+  uint64 id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  // the id of the item the token is tied to 
+  string item_id = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  // the account the token is tied to
+  UserProfile user_profile = 3 [(gorm.field).has_one.preload = true];
+  string key_id = 4 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  string access_token = 5 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  string version = 6 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+}
+
+message PlaidLink {
+  option (gorm.opts) = {ormable: true};
+  string item_id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  repeated string products = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  repeated string webhook = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  string institution_id = 4 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  string institution_name = 5 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  bool use_plaid_sync = 6 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
 }
 
 message StudentLoanAccount {
@@ -119,6 +202,8 @@ message StudentLoanAccount {
   uint64 user_id = 37 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
   // the account name
   string name = 38 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  // an account is always associated with at least one login event (via plaid)
+  Link link = 39 [(gorm.field).has_one.preload = true];
 }
 
 message CreditAccount {
@@ -171,6 +256,8 @@ message CreditAccount {
   double minimum_payment_amount = 22;
   // the next payment due date
   string next_payment_due_date = 23;
+  // an account is always associated with at least one login event (via plaid)
+  Link link = 25 [(gorm.field).has_one.preload = true];
 }
 
 message MortgageAccount {
@@ -207,6 +294,8 @@ message MortgageAccount {
   string property_country = 36 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
   double interest_rate_percentage = 37 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
   string interest_rate_type = 38 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  // an account is always associated with at least one login event (via plaid)
+  Link link = 39 [(gorm.field).has_one.preload = true];
 }
 
 message InvestmentAccount {
@@ -241,6 +330,8 @@ message InvestmentAccount {
   repeated InvesmentHolding holdings = 7 [ (gorm.field).has_many.preload = true ];  
   // the set of securities this account witholds
   repeated InvestmentSecurity securities = 8 [ (gorm.field).has_many.preload = true ];
+  // an account is always associated with at least one login event (via plaid)
+  Link link = 39 [(gorm.field).has_one.preload = true];
 }
 
 message BankAccount {
@@ -307,6 +398,8 @@ message BankAccount {
   string plaid_account_id = 12;
   // account subtype
   string subtype = 13;
+  // an account is always associated with at least one login event (via plaid)
+  Link link = 39 [(gorm.field).has_one.preload = true];
 }
 
 // Pocket is an abstraction of a over a bank account. A user can has at most 4 pockets per connected account
