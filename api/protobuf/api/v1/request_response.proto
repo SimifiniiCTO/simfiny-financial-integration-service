@@ -514,6 +514,18 @@ message PlaidExchangeTokenRequest {
   // Validations:
   // - cannot be nil hence required
   string public_token = 2 [
+    (validate.rules).string.min_len = 1,
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  // The institution id
+  string institution_id = 3 [
+    (validate.rules).string.min_len = 1,
+    (google.api.field_behavior) = REQUIRED
+  ];
+  // The institution name
+  string institution_name = 4 [
+    (validate.rules).string.min_len = 1,
     (google.api.field_behavior) = REQUIRED
   ];
 }

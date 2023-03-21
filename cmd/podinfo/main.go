@@ -19,6 +19,7 @@ import (
 	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/dal"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/instrumentation"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/secrets"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/api"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/grpc"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/signals"
@@ -188,6 +189,10 @@ func configureDatabaseConn(ctx context.Context, logger *zap.Logger, instrumentat
 	maxDBSleepInterval := viper.GetDuration("max-db-retry-sleep-interval")
 	dbQueryTimeout := viper.GetDuration("db-query-timeout")
 
+	awsRegion := viper.GetString("aws-region")
+	awsKeyID := viper.GetString("aws-key-id")
+	awsSecretKey := viper.GetString("aws-secret-key")
+
 	connectionString := database.ConfigureConnectionString(host, user, password, dbname, sslMode, port)
 
 	// establish db connections
@@ -200,6 +205,15 @@ func configureDatabaseConn(ctx context.Context, logger *zap.Logger, instrumentat
 			ConnectionString:          &connectionString,
 		})
 
+	keyManagement, err := secrets.NewAWSKMS(secrets.AWSKMSConfig{
+		Region:    awsRegion,
+		KeyID:     awsKeyID,
+		SecretKey: awsSecretKey,
+	})
+	if err != nil {
+		return nil, err
+	}
+
 	queryOperator := dal.Use(conn.Engine)
 	opts := []database.Option{
 		database.WithConnection(conn),
@@ -210,6 +224,7 @@ func configureDatabaseConn(ctx context.Context, logger *zap.Logger, instrumentat
 		database.WithDatabaseLogger(logger),
 		database.WithDatabaseInstrumentation(instrumentation),
 		database.WithDatabaseQueryOperator(queryOperator),
+		database.WithKms(keyManagement),
 	}
 
 	db, err := database.New(ctx, opts...)

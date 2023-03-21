@@ -38,6 +38,7 @@ func newMortgageAccountORM(db *gorm.DB, opts ...gen.DOOption) mortgageAccountORM
 	_mortgageAccountORM.InterestRateType = field.NewString(tableName, "interest_rate_type")
 	_mortgageAccountORM.LastPaymentAmount = field.NewFloat64(tableName, "last_payment_amount")
 	_mortgageAccountORM.LastPaymentDate = field.NewString(tableName, "last_payment_date")
+	_mortgageAccountORM.LinkId = field.NewUint64(tableName, "link_id")
 	_mortgageAccountORM.LoanTerm = field.NewString(tableName, "loan_term")
 	_mortgageAccountORM.LoanTypeDescription = field.NewString(tableName, "loan_type_description")
 	_mortgageAccountORM.MaturityDate = field.NewString(tableName, "maturity_date")
@@ -58,7 +59,6 @@ func newMortgageAccountORM(db *gorm.DB, opts ...gen.DOOption) mortgageAccountORM
 	_mortgageAccountORM.PropertyAddressStreet = field.NewString(tableName, "property_address_street")
 	_mortgageAccountORM.PropertyCountry = field.NewString(tableName, "property_country")
 	_mortgageAccountORM.PropertyRegion = field.NewString(tableName, "property_region")
-	_mortgageAccountORM.UserProfileId = field.NewUint64(tableName, "user_profile_id")
 	_mortgageAccountORM.YtdInterestPaid = field.NewFloat64(tableName, "ytd_interest_paid")
 	_mortgageAccountORM.YtdPrincipalPaid = field.NewFloat64(tableName, "ytd_principal_paid")
 
@@ -81,6 +81,7 @@ type mortgageAccountORM struct {
 	InterestRateType            field.String
 	LastPaymentAmount           field.Float64
 	LastPaymentDate             field.String
+	LinkId                      field.Uint64
 	LoanTerm                    field.String
 	LoanTypeDescription         field.String
 	MaturityDate                field.String
@@ -101,7 +102,6 @@ type mortgageAccountORM struct {
 	PropertyAddressStreet       field.String
 	PropertyCountry             field.String
 	PropertyRegion              field.String
-	UserProfileId               field.Uint64
 	YtdInterestPaid             field.Float64
 	YtdPrincipalPaid            field.Float64
 
@@ -130,6 +130,7 @@ func (m *mortgageAccountORM) updateTableName(table string) *mortgageAccountORM {
 	m.InterestRateType = field.NewString(table, "interest_rate_type")
 	m.LastPaymentAmount = field.NewFloat64(table, "last_payment_amount")
 	m.LastPaymentDate = field.NewString(table, "last_payment_date")
+	m.LinkId = field.NewUint64(table, "link_id")
 	m.LoanTerm = field.NewString(table, "loan_term")
 	m.LoanTypeDescription = field.NewString(table, "loan_type_description")
 	m.MaturityDate = field.NewString(table, "maturity_date")
@@ -150,7 +151,6 @@ func (m *mortgageAccountORM) updateTableName(table string) *mortgageAccountORM {
 	m.PropertyAddressStreet = field.NewString(table, "property_address_street")
 	m.PropertyCountry = field.NewString(table, "property_country")
 	m.PropertyRegion = field.NewString(table, "property_region")
-	m.UserProfileId = field.NewUint64(table, "user_profile_id")
 	m.YtdInterestPaid = field.NewFloat64(table, "ytd_interest_paid")
 	m.YtdPrincipalPaid = field.NewFloat64(table, "ytd_principal_paid")
 
@@ -180,6 +180,7 @@ func (m *mortgageAccountORM) fillFieldMap() {
 	m.fieldMap["interest_rate_type"] = m.InterestRateType
 	m.fieldMap["last_payment_amount"] = m.LastPaymentAmount
 	m.fieldMap["last_payment_date"] = m.LastPaymentDate
+	m.fieldMap["link_id"] = m.LinkId
 	m.fieldMap["loan_term"] = m.LoanTerm
 	m.fieldMap["loan_type_description"] = m.LoanTypeDescription
 	m.fieldMap["maturity_date"] = m.MaturityDate
@@ -200,7 +201,6 @@ func (m *mortgageAccountORM) fillFieldMap() {
 	m.fieldMap["property_address_street"] = m.PropertyAddressStreet
 	m.fieldMap["property_country"] = m.PropertyCountry
 	m.fieldMap["property_region"] = m.PropertyRegion
-	m.fieldMap["user_profile_id"] = m.UserProfileId
 	m.fieldMap["ytd_interest_paid"] = m.YtdInterestPaid
 	m.fieldMap["ytd_principal_paid"] = m.YtdPrincipalPaid
 }

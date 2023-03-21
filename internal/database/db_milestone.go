@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
+	"gorm.io/gen/field"
 )
 
 // UpdateMilestone implements DatabaseOperations
@@ -126,7 +127,7 @@ func (db *Db) DeleteMilestone(ctx context.Context, milestoneID uint64) error {
 	}
 
 	// perform the delete operation
-	result, err := m.WithContext(ctx).Where(m.Id.Eq(milestoneID)).Delete()
+	result, err := m.WithContext(ctx).Where(m.Id.Eq(milestoneID)).Select(field.AssociationFields).Delete()
 	if err != nil {
 		return err
 	}

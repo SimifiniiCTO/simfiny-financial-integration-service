@@ -32,13 +32,13 @@ func newInvestmentAccountORM(db *gorm.DB, opts ...gen.DOOption) investmentAccoun
 	_investmentAccountORM.BalanceLimit = field.NewUint64(tableName, "balance_limit")
 	_investmentAccountORM.CurrentFunds = field.NewFloat64(tableName, "current_funds")
 	_investmentAccountORM.Id = field.NewUint64(tableName, "id")
+	_investmentAccountORM.LinkId = field.NewUint64(tableName, "link_id")
 	_investmentAccountORM.Name = field.NewString(tableName, "name")
 	_investmentAccountORM.Number = field.NewString(tableName, "number")
 	_investmentAccountORM.PlaidAccountId = field.NewString(tableName, "plaid_account_id")
 	_investmentAccountORM.Subtype = field.NewString(tableName, "subtype")
 	_investmentAccountORM.Type = field.NewString(tableName, "type")
 	_investmentAccountORM.UserId = field.NewUint64(tableName, "user_id")
-	_investmentAccountORM.UserProfileId = field.NewUint64(tableName, "user_profile_id")
 	_investmentAccountORM.Holdings = investmentAccountORMHasManyHoldings{
 		db: db.Session(&gorm.Session{}),
 
@@ -64,13 +64,13 @@ type investmentAccountORM struct {
 	BalanceLimit   field.Uint64
 	CurrentFunds   field.Float64
 	Id             field.Uint64
+	LinkId         field.Uint64
 	Name           field.String
 	Number         field.String
 	PlaidAccountId field.String
 	Subtype        field.String
 	Type           field.String
 	UserId         field.Uint64
-	UserProfileId  field.Uint64
 	Holdings       investmentAccountORMHasManyHoldings
 
 	Securities investmentAccountORMHasManySecurities
@@ -94,13 +94,13 @@ func (i *investmentAccountORM) updateTableName(table string) *investmentAccountO
 	i.BalanceLimit = field.NewUint64(table, "balance_limit")
 	i.CurrentFunds = field.NewFloat64(table, "current_funds")
 	i.Id = field.NewUint64(table, "id")
+	i.LinkId = field.NewUint64(table, "link_id")
 	i.Name = field.NewString(table, "name")
 	i.Number = field.NewString(table, "number")
 	i.PlaidAccountId = field.NewString(table, "plaid_account_id")
 	i.Subtype = field.NewString(table, "subtype")
 	i.Type = field.NewString(table, "type")
 	i.UserId = field.NewUint64(table, "user_id")
-	i.UserProfileId = field.NewUint64(table, "user_profile_id")
 
 	i.fillFieldMap()
 
@@ -122,13 +122,13 @@ func (i *investmentAccountORM) fillFieldMap() {
 	i.fieldMap["balance_limit"] = i.BalanceLimit
 	i.fieldMap["current_funds"] = i.CurrentFunds
 	i.fieldMap["id"] = i.Id
+	i.fieldMap["link_id"] = i.LinkId
 	i.fieldMap["name"] = i.Name
 	i.fieldMap["number"] = i.Number
 	i.fieldMap["plaid_account_id"] = i.PlaidAccountId
 	i.fieldMap["subtype"] = i.Subtype
 	i.fieldMap["type"] = i.Type
 	i.fieldMap["user_id"] = i.UserId
-	i.fieldMap["user_profile_id"] = i.UserProfileId
 
 }
 

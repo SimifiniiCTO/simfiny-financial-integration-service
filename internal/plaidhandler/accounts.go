@@ -11,16 +11,12 @@ import (
 )
 
 // GetAccounts implements PlaidWrapperImpl
-func (p *PlaidWrapper) GetAccounts(ctx context.Context, accessToken string, userId uint64, accountIds ...string) ([]*schema.BankAccount, error) {
+func (p *PlaidWrapper) GetAccounts(ctx context.Context, accessToken string, userId uint64) ([]*schema.BankAccount, error) {
 	// Build the get accounts request.
 	request := p.client.PlaidApi.
 		AccountsGet(ctx).
 		AccountsGetRequest(plaid.AccountsGetRequest{
 			AccessToken: accessToken,
-			Options: &plaid.AccountsGetRequestOptions{
-				// This might not work, if it does not we should just add a nil check somehow here.
-				AccountIds: &accountIds,
-			},
 		})
 
 	// Send the request.

@@ -2624,6 +2624,113 @@
         }
       }
     },
+    "Link": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uint64",
+          "title": "id"
+        },
+        "linkStatus": {
+          "$ref": "#/definitions/LinkStatus"
+        },
+        "plaidLink": {
+          "$ref": "#/definitions/PlaidLink"
+        },
+        "plaidNewAccountsAvailable": {
+          "type": "boolean"
+        },
+        "expirationDate": {
+          "type": "string"
+        },
+        "institutionName": {
+          "type": "string"
+        },
+        "customInstitutionName": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "lastManualSync": {
+          "type": "string"
+        },
+        "lastSuccessfulUpdate": {
+          "type": "string"
+        },
+        "token": {
+          "$ref": "#/definitions/Token",
+          "title": "token object witholds an access token which is a token used to make API requests related to a specific Item. You will typically obtain an access_token\nby calling /item/public_token/exchange. For more details, see the Token exchange flow. An access_token does not expire,\nalthough it may require updating, such as when a user changes their password, or when working with European institutions\nthat comply with PSD2's 90-day consent window. For more information, see When to use update mode. \nAccess tokens should always be stored securely, and associated with the user whose data they represent. \nIf compromised, an access_token can be rotated via /item/access_token/invalidate. If no longer needed, \nit can be revoked via /item/remove.(gorm.field).has_one = {disable_association_autocreate: false disable_association_autoupdate: false preload: true}];"
+        },
+        "bankAccounts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BankAccount"
+          },
+          "title": "a link event - or client login event can have many connected bank accounts\nfor example a log in link against one instition like chase can have many account (checking and savings)\nit is important though to ensure that if a link against an instition already exists, we dont fascilitate duplicated"
+        },
+        "investmentAccounts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/InvestmentAccount"
+          },
+          "title": "a link event - or client login event can have many connected investment accounts\nfor example a log in link against one instition like fidelity can have many accounts (401k and investment account)\nit is important though to ensure that if a link against an instition already exists, we dont fascilitate duplicated"
+        },
+        "creditAccounts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CreditAccount"
+          },
+          "title": "credit accounts tied to a user"
+        },
+        "mortgageAccounts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/MortgageAccount"
+          },
+          "title": "mortgage accounts tied to a user"
+        },
+        "studentLoanAccounts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/StudentLoanAccount"
+          },
+          "title": "student loan accounts tied to a link"
+        },
+        "plaidInstitutionId": {
+          "type": "string",
+          "title": "the id of the institution this link is tied to and against"
+        },
+        "linkType": {
+          "$ref": "#/definitions/LinkType",
+          "title": "the type of link this is ... can be either a manual or plaid link type"
+        }
+      },
+      "description": "A Link represents a login at a financial institution. A single end-user of your application might have accounts at different financial\ninstitutions, which means they would have multiple different Items. An Item is not the same as a financial institution account,\nalthough every account will be associated with an Item. For example, if a user has one login at their bank that allows them to access\nboth their checking account and their savings account, a single Item would be associated with both of those accounts. Each Item \nlinked within your application will have a corresponding access_token, which is a token that you can use to make API requests related\nto that specific Item.\nTwo Items created for the same set of credentials at the same institution will be considered different and not share the same item_id."
+    },
+    "LinkStatus": {
+      "type": "string",
+      "enum": [
+        "LINK_STATUS_UNSPECIFIED",
+        "LINK_STATUS_SETUP",
+        "LINK_STATUS_PENDING",
+        "LINK_STATUS_ERROR",
+        "LINK_STATUS_SUCCESS",
+        "LINK_STATUS_PENDING_EXPIRATION",
+        "LINK_STATUS_REVOKED"
+      ],
+      "default": "LINK_STATUS_UNSPECIFIED"
+    },
+    "LinkType": {
+      "type": "string",
+      "enum": [
+        "LINK_TYPE_UNSPECIFIED",
+        "LINK_TYPE_PLAID",
+        "LINK_TYPE_MANUAL"
+      ],
+      "default": "LINK_TYPE_UNSPECIFIED"
+    },
     "Milestone": {
       "type": "object",
       "properties": {
@@ -2815,11 +2922,21 @@
         "publicToken": {
           "type": "string",
           "title": "The public token\nValidations:\n- cannot be nil hence required"
+        },
+        "institutionId": {
+          "type": "string",
+          "title": "The institution id"
+        },
+        "institutionName": {
+          "type": "string",
+          "title": "The institution name"
         }
       },
       "required": [
         "userId",
-        "publicToken"
+        "publicToken",
+        "institutionId",
+        "institutionName"
       ]
     },
     "PlaidExchangeTokenResponse": {
@@ -2872,6 +2989,37 @@
           "type": "string"
         },
         "plaidRequestId": {
+          "type": "string"
+        }
+      }
+    },
+    "PlaidLink": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uint64",
+          "title": "id"
+        },
+        "products": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "webhookUrl": {
+          "type": "string"
+        },
+        "institutionId": {
+          "type": "string"
+        },
+        "institutionName": {
+          "type": "string"
+        },
+        "usePlaidSync": {
+          "type": "boolean"
+        },
+        "itemId": {
           "type": "string"
         }
       }
@@ -3009,6 +3157,45 @@
         }
       }
     },
+    "StripeSubscription": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "stripeSubscriptionId": {
+          "type": "string",
+          "title": "stripe subscription id tied to the customer"
+        },
+        "stripeSubscriptionStatus": {
+          "$ref": "#/definitions/StripeSubscriptionStatus",
+          "title": "stripe subscription status"
+        },
+        "stripeSubscriptionActiveUntil": {
+          "type": "string",
+          "title": "stripe subscription active until"
+        },
+        "stripeWebhookLatestTimestamp": {
+          "type": "string",
+          "title": "stripe webhook latest timestamp"
+        }
+      },
+      "title": "StripeSubscription stores high level stripe subscription details of which the user profile has"
+    },
+    "StripeSubscriptionStatus": {
+      "type": "string",
+      "enum": [
+        "STRIPE_SUBSCRIPTION_STATUS_UNSPECIFIED",
+        "STRIPE_SUBSCRIPTION_STATUS_TRIALING",
+        "STRIPE_SUBSCRIPTION_STATUS_ACTIVE",
+        "STRIPE_SUBSCRIPTION_STATUS_PAST_DUE",
+        "STRIPE_SUBSCRIPTION_STATUS_CANCELED",
+        "STRIPE_SUBSCRIPTION_STATUS_UNPAID",
+        "STRIPE_SUBSCRIPTION_STATUS_COMPLETE"
+      ],
+      "default": "STRIPE_SUBSCRIPTION_STATUS_UNSPECIFIED"
+    },
     "StudentLoanAccount": {
       "type": "object",
       "properties": {
@@ -3133,6 +3320,29 @@
         "name": {
           "type": "string",
           "title": "the account name"
+        }
+      }
+    },
+    "Token": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uint64",
+          "title": "id"
+        },
+        "itemId": {
+          "type": "string",
+          "title": "the id of the item the token is tied to"
+        },
+        "keyId": {
+          "type": "string"
+        },
+        "accessToken": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
         }
       }
     },
@@ -3263,55 +3473,19 @@
           "format": "uint64",
           "title": "the user id tied to the profile"
         },
-        "bankAccounts": {
+        "stripeSubscriptions": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/BankAccount"
+            "$ref": "#/definitions/StripeSubscription"
           },
-          "title": "many bank accounts (connected) can be tied to a user"
+          "title": "the stripe subscriptions the user profile actively maintains"
         },
-        "investmentAccounts": {
+        "link": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/InvestmentAccount"
+            "$ref": "#/definitions/Link"
           },
-          "title": "investment accounts tied to a user"
-        },
-        "creditAccounts": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/CreditAccount"
-          },
-          "title": "credit accounts tied to a user"
-        },
-        "mortgageAccounts": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/MortgageAccount"
-          },
-          "title": "mortgage accounts tied to a user"
-        },
-        "studentLoanAccounts": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/StudentLoanAccount"
-          },
-          "title": "student loan accounts tied to a user"
-        },
-        "plaidAccessToken": {
-          "type": "string",
-          "title": "the user plaid access token"
-        },
-        "decryptionAccessTokenKey": {
-          "type": "string",
-          "title": "key used to encrypt the access token by the kms"
-        },
-        "decryptionAccessTokenVersion": {
-          "type": "string"
-        },
-        "stripeCustomerId": {
-          "type": "string",
-          "title": "the customer id tied to the stripe account"
+          "title": "a user profile can have many links (connected institutions) of which finanical accounts are tied to (checking, savings, etc)"
         }
       },
       "title": "UserProfile stores high level user profile details\nsuch as the id, user_id tied to the profile, and many more"

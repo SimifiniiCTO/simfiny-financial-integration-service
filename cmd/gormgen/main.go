@@ -37,7 +37,7 @@ func generateQueryFiles() {
 		FieldSignable:     false,
 		FieldWithIndexTag: true,
 		FieldWithTypeTag:  true,
-		Mode:              gen.WithoutContext | gen.WithDefaultQuery | gen.WithQueryInterface,
+		Mode:              gen.WithoutContext | gen.WithDefaultQuery | gen.WithQueryInterface, // generate mode
 	})
 
 	var models = proto.GetDatabaseSchemas()

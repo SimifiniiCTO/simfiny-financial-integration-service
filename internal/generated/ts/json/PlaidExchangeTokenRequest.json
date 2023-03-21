@@ -11,6 +11,14 @@
                 "public_token": {
                     "type": "string",
                     "description": "The public token Validations: - cannot be nil hence required"
+                },
+                "institution_id": {
+                    "type": "string",
+                    "description": "The institution id"
+                },
+                "institution_name": {
+                    "type": "string",
+                    "description": "The institution name"
                 }
             },
             "additionalProperties": true,

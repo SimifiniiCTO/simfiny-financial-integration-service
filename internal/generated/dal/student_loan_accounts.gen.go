@@ -37,6 +37,7 @@ func newStudentLoanAccountORM(db *gorm.DB, opts ...gen.DOOption) studentLoanAcco
 	_studentLoanAccountORM.LastPaymentAmount = field.NewFloat64(tableName, "last_payment_amount")
 	_studentLoanAccountORM.LastPaymentDate = field.NewString(tableName, "last_payment_date")
 	_studentLoanAccountORM.LastStatementIssueDate = field.NewString(tableName, "last_statement_issue_date")
+	_studentLoanAccountORM.LinkId = field.NewUint64(tableName, "link_id")
 	_studentLoanAccountORM.LoanEndDate = field.NewString(tableName, "loan_end_date")
 	_studentLoanAccountORM.LoanName = field.NewString(tableName, "loan_name")
 	_studentLoanAccountORM.LoanType = field.NewString(tableName, "loan_type")
@@ -61,7 +62,6 @@ func newStudentLoanAccountORM(db *gorm.DB, opts ...gen.DOOption) studentLoanAcco
 	_studentLoanAccountORM.ServicerAddressState = field.NewString(tableName, "servicer_address_state")
 	_studentLoanAccountORM.ServicerAddressStreet = field.NewString(tableName, "servicer_address_street")
 	_studentLoanAccountORM.UserId = field.NewUint64(tableName, "user_id")
-	_studentLoanAccountORM.UserProfileId = field.NewUint64(tableName, "user_profile_id")
 	_studentLoanAccountORM.YtdInterestPaid = field.NewFloat64(tableName, "ytd_interest_paid")
 	_studentLoanAccountORM.YtdPrincipalPaid = field.NewFloat64(tableName, "ytd_principal_paid")
 
@@ -83,6 +83,7 @@ type studentLoanAccountORM struct {
 	LastPaymentAmount                  field.Float64
 	LastPaymentDate                    field.String
 	LastStatementIssueDate             field.String
+	LinkId                             field.Uint64
 	LoanEndDate                        field.String
 	LoanName                           field.String
 	LoanType                           field.String
@@ -107,7 +108,6 @@ type studentLoanAccountORM struct {
 	ServicerAddressState               field.String
 	ServicerAddressStreet              field.String
 	UserId                             field.Uint64
-	UserProfileId                      field.Uint64
 	YtdInterestPaid                    field.Float64
 	YtdPrincipalPaid                   field.Float64
 
@@ -135,6 +135,7 @@ func (s *studentLoanAccountORM) updateTableName(table string) *studentLoanAccoun
 	s.LastPaymentAmount = field.NewFloat64(table, "last_payment_amount")
 	s.LastPaymentDate = field.NewString(table, "last_payment_date")
 	s.LastStatementIssueDate = field.NewString(table, "last_statement_issue_date")
+	s.LinkId = field.NewUint64(table, "link_id")
 	s.LoanEndDate = field.NewString(table, "loan_end_date")
 	s.LoanName = field.NewString(table, "loan_name")
 	s.LoanType = field.NewString(table, "loan_type")
@@ -159,7 +160,6 @@ func (s *studentLoanAccountORM) updateTableName(table string) *studentLoanAccoun
 	s.ServicerAddressState = field.NewString(table, "servicer_address_state")
 	s.ServicerAddressStreet = field.NewString(table, "servicer_address_street")
 	s.UserId = field.NewUint64(table, "user_id")
-	s.UserProfileId = field.NewUint64(table, "user_profile_id")
 	s.YtdInterestPaid = field.NewFloat64(table, "ytd_interest_paid")
 	s.YtdPrincipalPaid = field.NewFloat64(table, "ytd_principal_paid")
 
@@ -188,6 +188,7 @@ func (s *studentLoanAccountORM) fillFieldMap() {
 	s.fieldMap["last_payment_amount"] = s.LastPaymentAmount
 	s.fieldMap["last_payment_date"] = s.LastPaymentDate
 	s.fieldMap["last_statement_issue_date"] = s.LastStatementIssueDate
+	s.fieldMap["link_id"] = s.LinkId
 	s.fieldMap["loan_end_date"] = s.LoanEndDate
 	s.fieldMap["loan_name"] = s.LoanName
 	s.fieldMap["loan_type"] = s.LoanType
@@ -212,7 +213,6 @@ func (s *studentLoanAccountORM) fillFieldMap() {
 	s.fieldMap["servicer_address_state"] = s.ServicerAddressState
 	s.fieldMap["servicer_address_street"] = s.ServicerAddressStreet
 	s.fieldMap["user_id"] = s.UserId
-	s.fieldMap["user_profile_id"] = s.UserProfileId
 	s.fieldMap["ytd_interest_paid"] = s.YtdInterestPaid
 	s.fieldMap["ytd_principal_paid"] = s.YtdPrincipalPaid
 }

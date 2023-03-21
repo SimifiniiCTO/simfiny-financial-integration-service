@@ -111,17 +111,21 @@ func (db *Db) GetUserProfileByUserID(ctx context.Context, userID uint64) (*schem
 	}
 
 	// preload all dependencies
+	// meaning for all connected accounts, obtain all accounts and subaccounts
 	u := db.QueryOperator.UserProfileORM
 	record, err := u.
 		WithContext(ctx).
 		Where(u.UserId.Eq(userID)).
-		Preload(u.MortgageAccounts).
-		Preload(u.StudentLoanAccounts).
-		Preload(u.CreditAccounts.Aprs).
-		Preload(u.InvestmentAccounts.Holdings).
-		Preload(u.InvestmentAccounts.Securities).
-		Preload(u.BankAccounts.Pockets.Goals.Forecasts).
-		Preload(u.BankAccounts.Pockets.Goals.Milestones.Budget.Category).
+		Preload(u.Link.BankAccounts.Pockets.Goals.Forecasts).
+		Preload(u.Link.BankAccounts.Pockets.Goals.Milestones.Budget).
+		Preload(u.Link.CreditAccounts.Aprs).
+		Preload(u.Link.MortgageAccounts).	
+		Preload(u.Link.StudentLoanAccounts).	
+		Preload(u.Link.InvestmentAccounts.Holdings).	
+		Preload(u.Link.InvestmentAccounts.Securities).	
+		Preload(u.Link.Token).	
+		Preload(u.Link.PlaidLink).
+		Preload(u.StripeSubscriptions).
 		First()
 	if err != nil {
 		return nil, err

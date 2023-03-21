@@ -444,6 +444,133 @@
             "type": "object",
             "title": "Investment Security"
         },
+        "api.v1.Link": {
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "id"
+                },
+                "link_status": {
+                    "enum": [
+                        "LINK_STATUS_UNSPECIFIED",
+                        0,
+                        "LINK_STATUS_SETUP",
+                        1,
+                        "LINK_STATUS_PENDING",
+                        2,
+                        "LINK_STATUS_ERROR",
+                        3,
+                        "LINK_STATUS_SUCCESS",
+                        4,
+                        "LINK_STATUS_PENDING_EXPIRATION",
+                        5,
+                        "LINK_STATUS_REVOKED",
+                        6
+                    ],
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "integer"
+                        }
+                    ],
+                    "title": "Link Status"
+                },
+                "plaid_link": {
+                    "$ref": "#/definitions/api.v1.PlaidLink",
+                    "additionalProperties": true
+                },
+                "plaid_new_accounts_available": {
+                    "type": "boolean"
+                },
+                "expiration_date": {
+                    "type": "string"
+                },
+                "institution_name": {
+                    "type": "string"
+                },
+                "custom_institution_name": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "last_manual_sync": {
+                    "type": "string"
+                },
+                "last_successful_update": {
+                    "type": "string"
+                },
+                "token": {
+                    "$ref": "#/definitions/api.v1.Token",
+                    "additionalProperties": true,
+                    "description": "token object witholds an access token which is a token used to make API requests related to a specific Item. You will typically obtain an access_token by calling /item/public_token/exchange. For more details, see the Token exchange flow. An access_token does not expire, although it may require updating, such as when a user changes their password, or when working with European institutions that comply with PSD2's 90-day consent window. For more information, see When to use update mode.  Access tokens should always be stored securely, and associated with the user whose data they represent.  If compromised, an access_token can be rotated via /item/access_token/invalidate. If no longer needed,  it can be revoked via /item/remove.(gorm.field).has_one = {disable_association_autocreate: false disable_association_autoupdate: false preload: true}];"
+                },
+                "bank_accounts": {
+                    "items": {
+                        "$ref": "#/definitions/api.v1.BankAccount"
+                    },
+                    "type": "array",
+                    "description": "a link event - or client login event can have many connected bank accounts for example a log in link against one instition like chase can have many account (checking and savings) it is important though to ensure that if a link against an instition already exists, we dont fascilitate duplicated"
+                },
+                "investment_accounts": {
+                    "items": {
+                        "$ref": "#/definitions/api.v1.InvestmentAccount"
+                    },
+                    "type": "array",
+                    "description": "a link event - or client login event can have many connected investment accounts for example a log in link against one instition like fidelity can have many accounts (401k and investment account) it is important though to ensure that if a link against an instition already exists, we dont fascilitate duplicated"
+                },
+                "credit_accounts": {
+                    "items": {
+                        "$ref": "#/definitions/api.v1.CreditAccount"
+                    },
+                    "type": "array",
+                    "description": "credit accounts tied to a user"
+                },
+                "mortgage_accounts": {
+                    "items": {
+                        "$ref": "#/definitions/api.v1.MortgageAccount"
+                    },
+                    "type": "array",
+                    "description": "mortgage accounts tied to a user"
+                },
+                "student_loan_accounts": {
+                    "items": {
+                        "$ref": "#/definitions/api.v1.StudentLoanAccount"
+                    },
+                    "type": "array",
+                    "description": "student loan accounts tied to a link"
+                },
+                "plaid_institution_id": {
+                    "type": "string",
+                    "description": "the id of the institution this link is tied to and against"
+                },
+                "link_type": {
+                    "enum": [
+                        "LINK_TYPE_UNSPECIFIED",
+                        0,
+                        "LINK_TYPE_PLAID",
+                        1,
+                        "LINK_TYPE_MANUAL",
+                        2
+                    ],
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "integer"
+                        }
+                    ],
+                    "title": "Link Type"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Link",
+            "description": "A Link represents a login at a financial institution. A single end-user of your application might have accounts at different financial institutions, which means they would have multiple different Items. An Item is not the same as a financial institution account, although every account will be associated with an Item. For example, if a user has one login at their bank that allows them to access both their checking account and their savings account, a single Item would be associated with both of those accounts. Each Item  linked within your application will have a corresponding access_token, which is a token that you can use to make API requests related to that specific Item. Two Items created for the same set of credentials at the same institution will be considered different and not share the same item_id."
+        },
         "api.v1.Milestone": {
             "properties": {
                 "id": {
@@ -584,6 +711,38 @@
             "type": "object",
             "title": "Mortgage Account"
         },
+        "api.v1.PlaidLink": {
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "id"
+                },
+                "products": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "webhook_url": {
+                    "type": "string"
+                },
+                "institution_id": {
+                    "type": "string"
+                },
+                "institution_name": {
+                    "type": "string"
+                },
+                "use_plaid_sync": {
+                    "type": "boolean"
+                },
+                "item_id": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Plaid Link"
+        },
         "api.v1.Pocket": {
             "properties": {
                 "id": {
@@ -715,6 +874,56 @@
             "title": "Smart Goal",
             "description": "SmartGoal: The Goals table stores information about each financial goal, including the name of the goal, its description, the target amount of money the user wants to save or invest, and the expected date of completion. The Goals table also includes columns for the start date of the goal, the current amount of money saved or invested towards the goal, and a boolean flag indicating whether the goal has been achieved. These additional columns allow the user to track their progress towards the goal and see how much more they need to save or invest to reach their target amount."
         },
+        "api.v1.StripeSubscription": {
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "stripe_subscription_id": {
+                    "type": "string",
+                    "description": "stripe subscription id tied to the customer"
+                },
+                "stripe_subscription_status": {
+                    "enum": [
+                        "STRIPE_SUBSCRIPTION_STATUS_UNSPECIFIED",
+                        0,
+                        "STRIPE_SUBSCRIPTION_STATUS_TRIALING",
+                        1,
+                        "STRIPE_SUBSCRIPTION_STATUS_ACTIVE",
+                        2,
+                        "STRIPE_SUBSCRIPTION_STATUS_PAST_DUE",
+                        3,
+                        "STRIPE_SUBSCRIPTION_STATUS_CANCELED",
+                        4,
+                        "STRIPE_SUBSCRIPTION_STATUS_UNPAID",
+                        5,
+                        "STRIPE_SUBSCRIPTION_STATUS_COMPLETE",
+                        6
+                    ],
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "integer"
+                        }
+                    ],
+                    "title": "Stripe Subscription Status"
+                },
+                "stripe_subscription_active_until": {
+                    "type": "string",
+                    "description": "stripe subscription active until"
+                },
+                "stripe_webhook_latest_timestamp": {
+                    "type": "string",
+                    "description": "stripe webhook latest timestamp"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Stripe Subscription",
+            "description": "StripeSubscription stores high level stripe subscription details of which the user profile has"
+        },
         "api.v1.StudentLoanAccount": {
             "properties": {
                 "id": {
@@ -833,6 +1042,30 @@
             "type": "object",
             "title": "Student Loan Account"
         },
+        "api.v1.Token": {
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "id"
+                },
+                "item_id": {
+                    "type": "string",
+                    "description": "the id of the item the token is tied to"
+                },
+                "key_id": {
+                    "type": "string"
+                },
+                "access_token": {
+                    "type": "string"
+                },
+                "version": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Token"
+        },
         "api.v1.UserProfile": {
             "properties": {
                 "id": {
@@ -843,55 +1076,19 @@
                     "type": "string",
                     "description": "the user id tied to the profile"
                 },
-                "bank_accounts": {
+                "stripe_subscriptions": {
                     "items": {
-                        "$ref": "#/definitions/api.v1.BankAccount"
+                        "$ref": "#/definitions/api.v1.StripeSubscription"
                     },
                     "type": "array",
-                    "description": "many bank accounts (connected) can be tied to a user"
+                    "description": "the stripe subscriptions the user profile actively maintains"
                 },
-                "investment_accounts": {
+                "link": {
                     "items": {
-                        "$ref": "#/definitions/api.v1.InvestmentAccount"
+                        "$ref": "#/definitions/api.v1.Link"
                     },
                     "type": "array",
-                    "description": "investment accounts tied to a user"
-                },
-                "credit_accounts": {
-                    "items": {
-                        "$ref": "#/definitions/api.v1.CreditAccount"
-                    },
-                    "type": "array",
-                    "description": "credit accounts tied to a user"
-                },
-                "mortgage_accounts": {
-                    "items": {
-                        "$ref": "#/definitions/api.v1.MortgageAccount"
-                    },
-                    "type": "array",
-                    "description": "mortgage accounts tied to a user"
-                },
-                "student_loan_accounts": {
-                    "items": {
-                        "$ref": "#/definitions/api.v1.StudentLoanAccount"
-                    },
-                    "type": "array",
-                    "description": "student loan accounts tied to a user"
-                },
-                "plaid_access_token": {
-                    "type": "string",
-                    "description": "the user plaid access token"
-                },
-                "decryption_access_token_key": {
-                    "type": "string",
-                    "description": "key used to encrypt the access token by the kms"
-                },
-                "decryption_access_token_version": {
-                    "type": "string"
-                },
-                "stripe_customer_id": {
-                    "type": "string",
-                    "description": "the customer id tied to the stripe account"
+                    "description": "a user profile can have many links (connected institutions) of which finanical accounts are tied to (checking, savings, etc)"
                 }
             },
             "additionalProperties": true,

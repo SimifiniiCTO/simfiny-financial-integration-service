@@ -4,6 +4,8 @@ import (
 	"context"
 	"fmt"
 
+	"gorm.io/gen/field"
+
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 )
 
@@ -24,9 +26,12 @@ func (db *Db) DeleteBankAccount(ctx context.Context, bankAccountID uint64) error
 		return fmt.Errorf("bank account with id %d does not exist", bankAccountID)
 	}
 
-	// perform the delete operation
-	// TODO: ensure all records are deleted especiallly ones with foreign key relationships
-	result, err := b.WithContext(ctx).Where(b.Id.Eq(bankAccountID)).Delete()
+	// perform the deletion operation
+	result, err := b.
+		WithContext(ctx).
+		Where(b.Id.Eq(bankAccountID)).
+		Select(field.AssociationFields).
+		Delete()
 	if err != nil {
 		return err
 	}
@@ -39,6 +44,7 @@ func (db *Db) DeleteBankAccount(ctx context.Context, bankAccountID uint64) error
 }
 
 // GetBankAccount implements DatabaseOperations
+// It attempts the bank account associated to a user by id as well as all associations
 func (db *Db) GetBankAccount(ctx context.Context, bankAccountID uint64) (*schema.BankAccount, error) {
 	// instrument operation
 	if span := db.startDatastoreSpan(ctx, "dbtxn-get-bank-account"); span != nil {
@@ -54,8 +60,8 @@ func (db *Db) GetBankAccount(ctx context.Context, bankAccountID uint64) (*schema
 	bankAccountOrm, err := b.
 		WithContext(ctx).
 		Where(b.Id.Eq(bankAccountID)).
+		Preload(b.Pockets.Goals.Milestones.Budget).
 		Preload(b.Pockets.Goals.Forecasts).
-		Preload(b.Pockets.Goals.Milestones.Budget.Category).
 		First()
 	if err != nil {
 		return nil, fmt.Errorf("bank account with id %d does not exist", bankAccountID)
@@ -70,7 +76,11 @@ func (db *Db) GetBankAccount(ctx context.Context, bankAccountID uint64) (*schema
 	return &bankAccount, nil
 }
 
-// UpdateBankAccount implements DatabaseOperations
+// UpdateBankAccount implements DatabaseOperations and updates a bank account
+// A bank account can be updated if the following conditions are met:
+//   - the bank account exists
+//   - the bank account is valid
+//   - the bank account is tied to a link
 func (db *Db) UpdateBankAccount(ctx context.Context, bankAccount *schema.BankAccount) error {
 	// instrument operation
 	if span := db.startDatastoreSpan(ctx, "dbtxn-update-bank-account"); span != nil {
@@ -83,16 +93,21 @@ func (db *Db) UpdateBankAccount(ctx context.Context, bankAccount *schema.BankAcc
 
 	// ensure the bank account exists
 	b := db.QueryOperator.BankAccountORM
-	if _, err := b.WithContext(ctx).Where(b.Id.Eq(bankAccount.Id)).First(); err != nil {
+	acct, err := b.WithContext(ctx).Where(b.Id.Eq(bankAccount.Id)).First()
+	if err != nil {
 		return fmt.Errorf("bank account with id %d does not exist", bankAccount.Id)
 	}
 
-	// update the bank account
+	if acct == nil {
+		return fmt.Errorf("bank account with id %d does not exist", bankAccount.Id)
+	}
+
+	// convert the bank account object to orm type
 	bankAccountOrm, err := bankAccount.ToORM(ctx)
 	if err != nil {
 		return err
 	}
-
+	
 	// perform the update operation
 	result, err := b.WithContext(ctx).Updates(bankAccountOrm)
 	if err != nil {
@@ -106,15 +121,22 @@ func (db *Db) UpdateBankAccount(ctx context.Context, bankAccount *schema.BankAcc
 	return nil
 }
 
-// CreateBankAccount implements DatabaseOperations
-func (db *Db) CreateBankAccount(ctx context.Context, userID uint64, bankAccount *schema.BankAccount) (*schema.BankAccount, error) {
+// CreateBankAccount creates a new bank account for a given link
+// A link can have a multitude of bank accounts so as part of the creation process
+// we need to ensure the following conditions are met:
+//   - the link exists
+//   - the bank account does not already exist for the given link
+//   - the bank account is valid
+//
+// on the conditions that the are above met, we append the new bank account to the link
+func (db *Db) CreateBankAccount(ctx context.Context, linkID uint64, bankAccount *schema.BankAccount) (*schema.BankAccount, error) {
 	// instrument operation
 	if span := db.startDatastoreSpan(ctx, "dbtxn-create-profile"); span != nil {
 		defer span.End()
 	}
 
-	if bankAccount == nil || userID == 0 {
-		return nil, fmt.Errorf("bank account and user id must be provided. got: %v, %d", bankAccount, userID)
+	if bankAccount == nil || linkID == 0 {
+		return nil, fmt.Errorf("bank account and link id must be provided. got: %v, %d", bankAccount, linkID)
 	}
 
 	// validate the bankAccount
@@ -122,26 +144,43 @@ func (db *Db) CreateBankAccount(ctx context.Context, userID uint64, bankAccount 
 		return nil, err
 	}
 
-	// ensure the user profile exists
-	u := db.QueryOperator.UserProfileORM
-	userProfile, err := u.WithContext(ctx).Where(u.UserId.Eq(userID)).First()
+	// ensure the link exists
+	l := db.QueryOperator.LinkORM
+	b := db.QueryOperator.BankAccountORM
+	link, err := l.WithContext(ctx).Where(l.Id.Eq(linkID)).First()
 	if err != nil {
-		return nil, fmt.Errorf("user profile with user_id %d does not exist", userID)
+		return nil, fmt.Errorf("link with id %d does not exist", linkID)
 	}
 
-	// convert bank account to orm
-	bankAcctOrm, err := bankAccount.ToORM(ctx)
+	// given a bank account can be either tied to a plaid link or a manual link, we
+	// need to ensure the bank account does not already exist for both types. Hence
+	// we need to check the link type prior to deciphering which execution flow to take
+	if link.LinkType == schema.LinkType_LINK_TYPE_MANUAL.String() {
+		// for manually linked accounts, the account number must be unique hence that is what we use to condition upon
+		if _, err = b.WithContext(ctx).Where(b.Number.Eq(bankAccount.Number), b.LinkId.Eq(linkID)).First(); err == nil {
+			// account with the same number already mapped to the link already exists
+			return nil, fmt.Errorf("bank account with number %s already exists for link with id %d", bankAccount.Number, linkID)
+		}
+	} else if link.LinkType == schema.LinkType_LINK_TYPE_PLAID.String() {
+		// here we condition on the bank account plaid account id ... since this should be unique across all connected account
+		if _, err = b.WithContext(ctx).Where(b.PlaidAccountId.Eq(bankAccount.PlaidAccountId), b.LinkId.Eq(linkID)).First(); err == nil {
+			// account with the same plaid account id already mapped to the link already exists
+			return nil, fmt.Errorf("bank account with plaid account id %s already exists for link with id %d", bankAccount.PlaidAccountId, linkID)
+		}
+	}
+
+	bankAcctORM, err := bankAccount.ToORM(ctx)
 	if err != nil {
 		return nil, err
 	}
 
-	// append the new bank account to the user profile
-	if err := u.BankAccounts.Model(userProfile).Append(&bankAcctOrm); err != nil {
+	// append the new bank account to the link
+	if err := l.BankAccounts.Model(link).Append(&bankAcctORM); err != nil {
 		return nil, err
 	}
 
-	// perform the update operation
-	result, err := u.WithContext(ctx).Updates(userProfile)
+	// perform the update operation of the link token
+	result, err := l.WithContext(ctx).Updates(link)
 	if err != nil {
 		return nil, err
 	}
@@ -152,7 +191,7 @@ func (db *Db) CreateBankAccount(ctx context.Context, userID uint64, bankAccount 
 
 	// bankAcctOrm reference at this point is auto updated with the db record id
 	// as a byproduct of the update operation
-	res, err := bankAcctOrm.ToPB(ctx)
+	res, err := bankAcctORM.ToPB(ctx)
 	if err != nil {
 		return nil, err
 	}

@@ -147,193 +147,193 @@ export class FinancialServiceClientImpl implements FinancialService {
   PlaidInitiateTokenExchange(request: PlaidInitiateTokenExchangeRequest): Promise<PlaidInitiateTokenExchangeResponse> {
     const data = PlaidInitiateTokenExchangeRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "PlaidInitiateTokenExchange", data);
-    return promise.then((data) => PlaidInitiateTokenExchangeResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => PlaidInitiateTokenExchangeResponse.decode(_m0.Reader.create(data)));
   }
 
   PlaidExchangeToken(request: PlaidExchangeTokenRequest): Promise<PlaidExchangeTokenResponse> {
     const data = PlaidExchangeTokenRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "PlaidExchangeToken", data);
-    return promise.then((data) => PlaidExchangeTokenResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => PlaidExchangeTokenResponse.decode(_m0.Reader.create(data)));
   }
 
   CreateUserProfile(request: CreateUserProfileRequest): Promise<CreateUserProfileResponse> {
     const data = CreateUserProfileRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "CreateUserProfile", data);
-    return promise.then((data) => CreateUserProfileResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => CreateUserProfileResponse.decode(_m0.Reader.create(data)));
   }
 
   GetUserProfile(request: GetUserProfileRequest): Promise<GetUserProfileResponse> {
     const data = GetUserProfileRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "GetUserProfile", data);
-    return promise.then((data) => GetUserProfileResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => GetUserProfileResponse.decode(_m0.Reader.create(data)));
   }
 
   DeleteUserProfile(request: DeleteUserProfileRequest): Promise<DeleteUserProfileResponse> {
     const data = DeleteUserProfileRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "DeleteUserProfile", data);
-    return promise.then((data) => DeleteUserProfileResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => DeleteUserProfileResponse.decode(_m0.Reader.create(data)));
   }
 
   UpdateUserProfile(request: UpdateUserProfileRequest): Promise<UpdateUserProfileResponse> {
     const data = UpdateUserProfileRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "UpdateUserProfile", data);
-    return promise.then((data) => UpdateUserProfileResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => UpdateUserProfileResponse.decode(_m0.Reader.create(data)));
   }
 
   CreateBankAccount(request: CreateBankAccountRequest): Promise<CreateBankAccountResponse> {
     const data = CreateBankAccountRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "CreateBankAccount", data);
-    return promise.then((data) => CreateBankAccountResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => CreateBankAccountResponse.decode(_m0.Reader.create(data)));
   }
 
   GetBankAccount(request: GetBankAccountRequest): Promise<GetBankAccountResponse> {
     const data = GetBankAccountRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "GetBankAccount", data);
-    return promise.then((data) => GetBankAccountResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => GetBankAccountResponse.decode(_m0.Reader.create(data)));
   }
 
   UpdateBankAccount(request: UpdateBankAccountRequest): Promise<UpdateBankAccountResponse> {
     const data = UpdateBankAccountRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "UpdateBankAccount", data);
-    return promise.then((data) => UpdateBankAccountResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => UpdateBankAccountResponse.decode(_m0.Reader.create(data)));
   }
 
   DeleteBankAccount(request: DeleteBankAccountRequest): Promise<DeleteBankAccountResponse> {
     const data = DeleteBankAccountRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "DeleteBankAccount", data);
-    return promise.then((data) => DeleteBankAccountResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => DeleteBankAccountResponse.decode(_m0.Reader.create(data)));
   }
 
   GetPocket(request: GetPocketRequest): Promise<GetPocketResponse> {
     const data = GetPocketRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "GetPocket", data);
-    return promise.then((data) => GetPocketResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => GetPocketResponse.decode(_m0.Reader.create(data)));
   }
 
   GetSmartGoalsByPocketId(request: GetSmartGoalsByPocketIdRequest): Promise<GetSmartGoalsByPocketIdResponse> {
     const data = GetSmartGoalsByPocketIdRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "GetSmartGoalsByPocketId", data);
-    return promise.then((data) => GetSmartGoalsByPocketIdResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => GetSmartGoalsByPocketIdResponse.decode(_m0.Reader.create(data)));
   }
 
   CreateSmartGoal(request: CreateSmartGoalRequest): Promise<CreateSmartGoalResponse> {
     const data = CreateSmartGoalRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "CreateSmartGoal", data);
-    return promise.then((data) => CreateSmartGoalResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => CreateSmartGoalResponse.decode(_m0.Reader.create(data)));
   }
 
   UpdateSmartGoal(request: UpdateSmartGoalRequest): Promise<UpdateSmartGoalResponse> {
     const data = UpdateSmartGoalRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "UpdateSmartGoal", data);
-    return promise.then((data) => UpdateSmartGoalResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => UpdateSmartGoalResponse.decode(_m0.Reader.create(data)));
   }
 
   DeleteSmartGoal(request: DeleteSmartGoalRequest): Promise<DeleteSmartGoalResponse> {
     const data = DeleteSmartGoalRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "DeleteSmartGoal", data);
-    return promise.then((data) => DeleteSmartGoalResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => DeleteSmartGoalResponse.decode(_m0.Reader.create(data)));
   }
 
   CreateMilestone(request: CreateMilestoneRequest): Promise<CreateMilestoneResponse> {
     const data = CreateMilestoneRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "CreateMilestone", data);
-    return promise.then((data) => CreateMilestoneResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => CreateMilestoneResponse.decode(_m0.Reader.create(data)));
   }
 
   DeleteMilestone(request: DeleteMilestoneRequest): Promise<DeleteMilestoneResponse> {
     const data = DeleteMilestoneRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "DeleteMilestone", data);
-    return promise.then((data) => DeleteMilestoneResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => DeleteMilestoneResponse.decode(_m0.Reader.create(data)));
   }
 
   UpdateMilestone(request: UpdateMilestoneRequest): Promise<UpdateMilestoneResponse> {
     const data = UpdateMilestoneRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "UpdateMilestone", data);
-    return promise.then((data) => UpdateMilestoneResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => UpdateMilestoneResponse.decode(_m0.Reader.create(data)));
   }
 
   GetMilestone(request: GetMilestoneRequest): Promise<GetMilestoneResponse> {
     const data = GetMilestoneRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "GetMilestone", data);
-    return promise.then((data) => GetMilestoneResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => GetMilestoneResponse.decode(_m0.Reader.create(data)));
   }
 
   GetMilestonesBySmartGoalId(request: GetMilestonesBySmartGoalIdRequest): Promise<GetMilestonesBySmartGoalIdResponse> {
     const data = GetMilestonesBySmartGoalIdRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "GetMilestonesBySmartGoalId", data);
-    return promise.then((data) => GetMilestonesBySmartGoalIdResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => GetMilestonesBySmartGoalIdResponse.decode(_m0.Reader.create(data)));
   }
 
   GetForecast(request: GetForecastRequest): Promise<GetForecastResponse> {
     const data = GetForecastRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "GetForecast", data);
-    return promise.then((data) => GetForecastResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => GetForecastResponse.decode(_m0.Reader.create(data)));
   }
 
   CreateBudget(request: CreateBudgetRequest): Promise<CreateBudgetResponse> {
     const data = CreateBudgetRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "CreateBudget", data);
-    return promise.then((data) => CreateBudgetResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => CreateBudgetResponse.decode(_m0.Reader.create(data)));
   }
 
   UpdateBudget(request: UpdateBudgetRequest): Promise<UpdateBudgetResponse> {
     const data = UpdateBudgetRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "UpdateBudget", data);
-    return promise.then((data) => UpdateBudgetResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => UpdateBudgetResponse.decode(_m0.Reader.create(data)));
   }
 
   DeleteBudget(request: DeleteBudgetRequest): Promise<DeleteBudgetResponse> {
     const data = DeleteBudgetRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "DeleteBudget", data);
-    return promise.then((data) => DeleteBudgetResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => DeleteBudgetResponse.decode(_m0.Reader.create(data)));
   }
 
   GetBudget(request: GetBudgetRequest): Promise<GetBudgetResponse> {
     const data = GetBudgetRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "GetBudget", data);
-    return promise.then((data) => GetBudgetResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => GetBudgetResponse.decode(_m0.Reader.create(data)));
   }
 
   GetAllBudgets(request: GetAllBudgetsRequest): Promise<GetAllBudgetsResponse> {
     const data = GetAllBudgetsRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "GetAllBudgets", data);
-    return promise.then((data) => GetAllBudgetsResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => GetAllBudgetsResponse.decode(_m0.Reader.create(data)));
   }
 
   HealthCheck(request: HealthCheckRequest): Promise<HealthCheckResponse> {
     const data = HealthCheckRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "HealthCheck", data);
-    return promise.then((data) => HealthCheckResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => HealthCheckResponse.decode(_m0.Reader.create(data)));
   }
 
   ReadynessCheck(request: ReadynessCheckRequest): Promise<ReadynessCheckResponse> {
     const data = ReadynessCheckRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "ReadynessCheck", data);
-    return promise.then((data) => ReadynessCheckResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => ReadynessCheckResponse.decode(_m0.Reader.create(data)));
   }
 
   GetInvestmentAcccount(request: GetInvestmentAcccountRequest): Promise<GetInvestmentAcccountResponse> {
     const data = GetInvestmentAcccountRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "GetInvestmentAcccount", data);
-    return promise.then((data) => GetInvestmentAcccountResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => GetInvestmentAcccountResponse.decode(_m0.Reader.create(data)));
   }
 
   GetMortageAccount(request: GetMortageAccountRequest): Promise<GetMortageAccountResponse> {
     const data = GetMortageAccountRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "GetMortageAccount", data);
-    return promise.then((data) => GetMortageAccountResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => GetMortageAccountResponse.decode(_m0.Reader.create(data)));
   }
 
   GetLiabilityAccount(request: GetLiabilityAccountRequest): Promise<GetLiabilityAccountResponse> {
     const data = GetLiabilityAccountRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "GetLiabilityAccount", data);
-    return promise.then((data) => GetLiabilityAccountResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => GetLiabilityAccountResponse.decode(_m0.Reader.create(data)));
   }
 
   GetStudentLoanAccount(request: GetStudentLoanAccountRequest): Promise<GetStudentLoanAccountResponse> {
     const data = GetStudentLoanAccountRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "GetStudentLoanAccount", data);
-    return promise.then((data) => GetStudentLoanAccountResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => GetStudentLoanAccountResponse.decode(_m0.Reader.create(data)));
   }
 }
 

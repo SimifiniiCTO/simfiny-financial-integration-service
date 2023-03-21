@@ -6713,7 +6713,38 @@ func (m *PlaidExchangeTokenRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	// no validation rules for PublicToken
+	if utf8.RuneCountInString(m.GetPublicToken()) < 1 {
+		err := PlaidExchangeTokenRequestValidationError{
+			field:  "PublicToken",
+			reason: "value length must be at least 1 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if utf8.RuneCountInString(m.GetInstitutionId()) < 1 {
+		err := PlaidExchangeTokenRequestValidationError{
+			field:  "InstitutionId",
+			reason: "value length must be at least 1 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if utf8.RuneCountInString(m.GetInstitutionName()) < 1 {
+		err := PlaidExchangeTokenRequestValidationError{
+			field:  "InstitutionName",
+			reason: "value length must be at least 1 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
 	if len(errors) > 0 {
 		return PlaidExchangeTokenRequestMultiError(errors)

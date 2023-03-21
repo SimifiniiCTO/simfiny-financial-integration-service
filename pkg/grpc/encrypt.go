@@ -24,11 +24,11 @@ func (s *Server) EncryptAccessToken(ctx context.Context, accessToken string) (*a
 }
 
 // DecryptUserAccessToken decrypts the access token using the KMS
-func (s *Server) DecryptUserAccessToken(ctx context.Context, userProfile *proto.UserProfile) (*string, error) {
-	decryptionKey := userProfile.DecryptionAccessTokenKey
-	decryptionVersion := userProfile.DecryptionAccessTokenVersion
+func (s *Server) DecryptUserAccessToken(ctx context.Context, token *proto.Token) (*string, error) {
+	decryptionKey := token.KeyId
+	decryptionVersion := token.Version
 	// decrypt the access token
-	encrypted, err := hex.DecodeString(userProfile.PlaidAccessToken)
+	encrypted, err := hex.DecodeString(token.AccessToken)
 	if err != nil {
 		return nil, err
 	}

@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
+	"gorm.io/gen/field"
 )
 
 // CreatePocket implements DatabaseOperations
@@ -78,7 +79,7 @@ func (db *Db) DeletePocket(ctx context.Context, pocketID uint64) error {
 
 	// perform the delete operation
 	// TODO: ensure all associations are deleted
-	result, err := p.WithContext(ctx).Where(p.Id.Eq(pocketID)).Delete()
+	result, err := p.WithContext(ctx).Where(p.Id.Eq(pocketID)).Select(field.AssociationFields).Delete()
 	if err != nil {
 		return err
 	}

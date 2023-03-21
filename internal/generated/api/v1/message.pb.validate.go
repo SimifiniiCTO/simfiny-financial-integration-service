@@ -35,6 +35,118 @@ var (
 	_ = sort.Sort
 )
 
+// Validate checks the field values on StripeSubscription with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *StripeSubscription) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on StripeSubscription with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// StripeSubscriptionMultiError, or nil if none found.
+func (m *StripeSubscription) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *StripeSubscription) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Id
+
+	// no validation rules for StripeSubscriptionId
+
+	// no validation rules for StripeSubscriptionStatus
+
+	// no validation rules for StripeSubscriptionActiveUntil
+
+	// no validation rules for StripeWebhookLatestTimestamp
+
+	if len(errors) > 0 {
+		return StripeSubscriptionMultiError(errors)
+	}
+
+	return nil
+}
+
+// StripeSubscriptionMultiError is an error wrapping multiple validation errors
+// returned by StripeSubscription.ValidateAll() if the designated constraints
+// aren't met.
+type StripeSubscriptionMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m StripeSubscriptionMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m StripeSubscriptionMultiError) AllErrors() []error { return m }
+
+// StripeSubscriptionValidationError is the validation error returned by
+// StripeSubscription.Validate if the designated constraints aren't met.
+type StripeSubscriptionValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e StripeSubscriptionValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e StripeSubscriptionValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e StripeSubscriptionValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e StripeSubscriptionValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e StripeSubscriptionValidationError) ErrorName() string {
+	return "StripeSubscriptionValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e StripeSubscriptionValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sStripeSubscription.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = StripeSubscriptionValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = StripeSubscriptionValidationError{}
+
 // Validate checks the field values on UserProfile with the rules defined in
 // the proto definition for this message. If any rules are violated, the first
 // error encountered is returned, or nil if there are no violations.
@@ -70,7 +182,7 @@ func (m *UserProfile) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	for idx, item := range m.GetBankAccounts() {
+	for idx, item := range m.GetStripeSubscriptions() {
 		_, _ = idx, item
 
 		if all {
@@ -78,7 +190,7 @@ func (m *UserProfile) validate(all bool) error {
 			case interface{ ValidateAll() error }:
 				if err := v.ValidateAll(); err != nil {
 					errors = append(errors, UserProfileValidationError{
-						field:  fmt.Sprintf("BankAccounts[%v]", idx),
+						field:  fmt.Sprintf("StripeSubscriptions[%v]", idx),
 						reason: "embedded message failed validation",
 						cause:  err,
 					})
@@ -86,7 +198,7 @@ func (m *UserProfile) validate(all bool) error {
 			case interface{ Validate() error }:
 				if err := v.Validate(); err != nil {
 					errors = append(errors, UserProfileValidationError{
-						field:  fmt.Sprintf("BankAccounts[%v]", idx),
+						field:  fmt.Sprintf("StripeSubscriptions[%v]", idx),
 						reason: "embedded message failed validation",
 						cause:  err,
 					})
@@ -95,7 +207,7 @@ func (m *UserProfile) validate(all bool) error {
 		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
 				return UserProfileValidationError{
-					field:  fmt.Sprintf("BankAccounts[%v]", idx),
+					field:  fmt.Sprintf("StripeSubscriptions[%v]", idx),
 					reason: "embedded message failed validation",
 					cause:  err,
 				}
@@ -104,7 +216,7 @@ func (m *UserProfile) validate(all bool) error {
 
 	}
 
-	for idx, item := range m.GetInvestmentAccounts() {
+	for idx, item := range m.GetLink() {
 		_, _ = idx, item
 
 		if all {
@@ -112,7 +224,7 @@ func (m *UserProfile) validate(all bool) error {
 			case interface{ ValidateAll() error }:
 				if err := v.ValidateAll(); err != nil {
 					errors = append(errors, UserProfileValidationError{
-						field:  fmt.Sprintf("InvestmentAccounts[%v]", idx),
+						field:  fmt.Sprintf("Link[%v]", idx),
 						reason: "embedded message failed validation",
 						cause:  err,
 					})
@@ -120,7 +232,7 @@ func (m *UserProfile) validate(all bool) error {
 			case interface{ Validate() error }:
 				if err := v.Validate(); err != nil {
 					errors = append(errors, UserProfileValidationError{
-						field:  fmt.Sprintf("InvestmentAccounts[%v]", idx),
+						field:  fmt.Sprintf("Link[%v]", idx),
 						reason: "embedded message failed validation",
 						cause:  err,
 					})
@@ -129,7 +241,7 @@ func (m *UserProfile) validate(all bool) error {
 		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
 				return UserProfileValidationError{
-					field:  fmt.Sprintf("InvestmentAccounts[%v]", idx),
+					field:  fmt.Sprintf("Link[%v]", idx),
 					reason: "embedded message failed validation",
 					cause:  err,
 				}
@@ -137,116 +249,6 @@ func (m *UserProfile) validate(all bool) error {
 		}
 
 	}
-
-	for idx, item := range m.GetCreditAccounts() {
-		_, _ = idx, item
-
-		if all {
-			switch v := interface{}(item).(type) {
-			case interface{ ValidateAll() error }:
-				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, UserProfileValidationError{
-						field:  fmt.Sprintf("CreditAccounts[%v]", idx),
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			case interface{ Validate() error }:
-				if err := v.Validate(); err != nil {
-					errors = append(errors, UserProfileValidationError{
-						field:  fmt.Sprintf("CreditAccounts[%v]", idx),
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			}
-		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
-			if err := v.Validate(); err != nil {
-				return UserProfileValidationError{
-					field:  fmt.Sprintf("CreditAccounts[%v]", idx),
-					reason: "embedded message failed validation",
-					cause:  err,
-				}
-			}
-		}
-
-	}
-
-	for idx, item := range m.GetMortgageAccounts() {
-		_, _ = idx, item
-
-		if all {
-			switch v := interface{}(item).(type) {
-			case interface{ ValidateAll() error }:
-				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, UserProfileValidationError{
-						field:  fmt.Sprintf("MortgageAccounts[%v]", idx),
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			case interface{ Validate() error }:
-				if err := v.Validate(); err != nil {
-					errors = append(errors, UserProfileValidationError{
-						field:  fmt.Sprintf("MortgageAccounts[%v]", idx),
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			}
-		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
-			if err := v.Validate(); err != nil {
-				return UserProfileValidationError{
-					field:  fmt.Sprintf("MortgageAccounts[%v]", idx),
-					reason: "embedded message failed validation",
-					cause:  err,
-				}
-			}
-		}
-
-	}
-
-	for idx, item := range m.GetStudentLoanAccounts() {
-		_, _ = idx, item
-
-		if all {
-			switch v := interface{}(item).(type) {
-			case interface{ ValidateAll() error }:
-				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, UserProfileValidationError{
-						field:  fmt.Sprintf("StudentLoanAccounts[%v]", idx),
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			case interface{ Validate() error }:
-				if err := v.Validate(); err != nil {
-					errors = append(errors, UserProfileValidationError{
-						field:  fmt.Sprintf("StudentLoanAccounts[%v]", idx),
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			}
-		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
-			if err := v.Validate(); err != nil {
-				return UserProfileValidationError{
-					field:  fmt.Sprintf("StudentLoanAccounts[%v]", idx),
-					reason: "embedded message failed validation",
-					cause:  err,
-				}
-			}
-		}
-
-	}
-
-	// no validation rules for PlaidAccessToken
-
-	// no validation rules for DecryptionAccessTokenKey
-
-	// no validation rules for DecryptionAccessTokenVersion
-
-	// no validation rules for StripeCustomerId
 
 	if len(errors) > 0 {
 		return UserProfileMultiError(errors)
@@ -324,6 +326,573 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = UserProfileValidationError{}
+
+// Validate checks the field values on Link with the rules defined in the proto
+// definition for this message. If any rules are violated, the first error
+// encountered is returned, or nil if there are no violations.
+func (m *Link) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on Link with the rules defined in the
+// proto definition for this message. If any rules are violated, the result is
+// a list of violation errors wrapped in LinkMultiError, or nil if none found.
+func (m *Link) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *Link) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Id
+
+	// no validation rules for LinkStatus
+
+	if all {
+		switch v := interface{}(m.GetPlaidLink()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, LinkValidationError{
+					field:  "PlaidLink",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, LinkValidationError{
+					field:  "PlaidLink",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetPlaidLink()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return LinkValidationError{
+				field:  "PlaidLink",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	// no validation rules for PlaidNewAccountsAvailable
+
+	// no validation rules for ExpirationDate
+
+	// no validation rules for InstitutionName
+
+	// no validation rules for CustomInstitutionName
+
+	// no validation rules for Description
+
+	// no validation rules for LastManualSync
+
+	// no validation rules for LastSuccessfulUpdate
+
+	if all {
+		switch v := interface{}(m.GetToken()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, LinkValidationError{
+					field:  "Token",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, LinkValidationError{
+					field:  "Token",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetToken()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return LinkValidationError{
+				field:  "Token",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	for idx, item := range m.GetBankAccounts() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, LinkValidationError{
+						field:  fmt.Sprintf("BankAccounts[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, LinkValidationError{
+						field:  fmt.Sprintf("BankAccounts[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return LinkValidationError{
+					field:  fmt.Sprintf("BankAccounts[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	for idx, item := range m.GetInvestmentAccounts() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, LinkValidationError{
+						field:  fmt.Sprintf("InvestmentAccounts[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, LinkValidationError{
+						field:  fmt.Sprintf("InvestmentAccounts[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return LinkValidationError{
+					field:  fmt.Sprintf("InvestmentAccounts[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	for idx, item := range m.GetCreditAccounts() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, LinkValidationError{
+						field:  fmt.Sprintf("CreditAccounts[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, LinkValidationError{
+						field:  fmt.Sprintf("CreditAccounts[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return LinkValidationError{
+					field:  fmt.Sprintf("CreditAccounts[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	for idx, item := range m.GetMortgageAccounts() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, LinkValidationError{
+						field:  fmt.Sprintf("MortgageAccounts[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, LinkValidationError{
+						field:  fmt.Sprintf("MortgageAccounts[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return LinkValidationError{
+					field:  fmt.Sprintf("MortgageAccounts[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	for idx, item := range m.GetStudentLoanAccounts() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, LinkValidationError{
+						field:  fmt.Sprintf("StudentLoanAccounts[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, LinkValidationError{
+						field:  fmt.Sprintf("StudentLoanAccounts[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return LinkValidationError{
+					field:  fmt.Sprintf("StudentLoanAccounts[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	// no validation rules for PlaidInstitutionId
+
+	// no validation rules for LinkType
+
+	if len(errors) > 0 {
+		return LinkMultiError(errors)
+	}
+
+	return nil
+}
+
+// LinkMultiError is an error wrapping multiple validation errors returned by
+// Link.ValidateAll() if the designated constraints aren't met.
+type LinkMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m LinkMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m LinkMultiError) AllErrors() []error { return m }
+
+// LinkValidationError is the validation error returned by Link.Validate if the
+// designated constraints aren't met.
+type LinkValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e LinkValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e LinkValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e LinkValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e LinkValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e LinkValidationError) ErrorName() string { return "LinkValidationError" }
+
+// Error satisfies the builtin error interface
+func (e LinkValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sLink.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = LinkValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = LinkValidationError{}
+
+// Validate checks the field values on Token with the rules defined in the
+// proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *Token) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on Token with the rules defined in the
+// proto definition for this message. If any rules are violated, the result is
+// a list of violation errors wrapped in TokenMultiError, or nil if none found.
+func (m *Token) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *Token) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Id
+
+	// no validation rules for ItemId
+
+	// no validation rules for KeyId
+
+	// no validation rules for AccessToken
+
+	// no validation rules for Version
+
+	if len(errors) > 0 {
+		return TokenMultiError(errors)
+	}
+
+	return nil
+}
+
+// TokenMultiError is an error wrapping multiple validation errors returned by
+// Token.ValidateAll() if the designated constraints aren't met.
+type TokenMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m TokenMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m TokenMultiError) AllErrors() []error { return m }
+
+// TokenValidationError is the validation error returned by Token.Validate if
+// the designated constraints aren't met.
+type TokenValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e TokenValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e TokenValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e TokenValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e TokenValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e TokenValidationError) ErrorName() string { return "TokenValidationError" }
+
+// Error satisfies the builtin error interface
+func (e TokenValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sToken.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = TokenValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = TokenValidationError{}
+
+// Validate checks the field values on PlaidLink with the rules defined in the
+// proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *PlaidLink) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on PlaidLink with the rules defined in
+// the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in PlaidLinkMultiError, or nil
+// if none found.
+func (m *PlaidLink) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *PlaidLink) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Id
+
+	// no validation rules for WebhookUrl
+
+	// no validation rules for InstitutionId
+
+	// no validation rules for InstitutionName
+
+	// no validation rules for UsePlaidSync
+
+	// no validation rules for ItemId
+
+	if len(errors) > 0 {
+		return PlaidLinkMultiError(errors)
+	}
+
+	return nil
+}
+
+// PlaidLinkMultiError is an error wrapping multiple validation errors returned
+// by PlaidLink.ValidateAll() if the designated constraints aren't met.
+type PlaidLinkMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m PlaidLinkMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m PlaidLinkMultiError) AllErrors() []error { return m }
+
+// PlaidLinkValidationError is the validation error returned by
+// PlaidLink.Validate if the designated constraints aren't met.
+type PlaidLinkValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e PlaidLinkValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e PlaidLinkValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e PlaidLinkValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e PlaidLinkValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e PlaidLinkValidationError) ErrorName() string { return "PlaidLinkValidationError" }
+
+// Error satisfies the builtin error interface
+func (e PlaidLinkValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sPlaidLink.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = PlaidLinkValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = PlaidLinkValidationError{}
 
 // Validate checks the field values on StudentLoanAccount with the rules
 // defined in the proto definition for this message. If any rules are

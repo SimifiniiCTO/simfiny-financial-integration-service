@@ -214,6 +214,184 @@ export function bankAccountTypeToJSON(object: BankAccountType): string {
   }
 }
 
+export enum StripeSubscriptionStatus {
+  STRIPE_SUBSCRIPTION_STATUS_UNSPECIFIED = 0,
+  STRIPE_SUBSCRIPTION_STATUS_TRIALING = 1,
+  STRIPE_SUBSCRIPTION_STATUS_ACTIVE = 2,
+  STRIPE_SUBSCRIPTION_STATUS_PAST_DUE = 3,
+  STRIPE_SUBSCRIPTION_STATUS_CANCELED = 4,
+  STRIPE_SUBSCRIPTION_STATUS_UNPAID = 5,
+  STRIPE_SUBSCRIPTION_STATUS_COMPLETE = 6,
+  UNRECOGNIZED = -1,
+}
+
+export function stripeSubscriptionStatusFromJSON(object: any): StripeSubscriptionStatus {
+  switch (object) {
+    case 0:
+    case "STRIPE_SUBSCRIPTION_STATUS_UNSPECIFIED":
+      return StripeSubscriptionStatus.STRIPE_SUBSCRIPTION_STATUS_UNSPECIFIED;
+    case 1:
+    case "STRIPE_SUBSCRIPTION_STATUS_TRIALING":
+      return StripeSubscriptionStatus.STRIPE_SUBSCRIPTION_STATUS_TRIALING;
+    case 2:
+    case "STRIPE_SUBSCRIPTION_STATUS_ACTIVE":
+      return StripeSubscriptionStatus.STRIPE_SUBSCRIPTION_STATUS_ACTIVE;
+    case 3:
+    case "STRIPE_SUBSCRIPTION_STATUS_PAST_DUE":
+      return StripeSubscriptionStatus.STRIPE_SUBSCRIPTION_STATUS_PAST_DUE;
+    case 4:
+    case "STRIPE_SUBSCRIPTION_STATUS_CANCELED":
+      return StripeSubscriptionStatus.STRIPE_SUBSCRIPTION_STATUS_CANCELED;
+    case 5:
+    case "STRIPE_SUBSCRIPTION_STATUS_UNPAID":
+      return StripeSubscriptionStatus.STRIPE_SUBSCRIPTION_STATUS_UNPAID;
+    case 6:
+    case "STRIPE_SUBSCRIPTION_STATUS_COMPLETE":
+      return StripeSubscriptionStatus.STRIPE_SUBSCRIPTION_STATUS_COMPLETE;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return StripeSubscriptionStatus.UNRECOGNIZED;
+  }
+}
+
+export function stripeSubscriptionStatusToJSON(object: StripeSubscriptionStatus): string {
+  switch (object) {
+    case StripeSubscriptionStatus.STRIPE_SUBSCRIPTION_STATUS_UNSPECIFIED:
+      return "STRIPE_SUBSCRIPTION_STATUS_UNSPECIFIED";
+    case StripeSubscriptionStatus.STRIPE_SUBSCRIPTION_STATUS_TRIALING:
+      return "STRIPE_SUBSCRIPTION_STATUS_TRIALING";
+    case StripeSubscriptionStatus.STRIPE_SUBSCRIPTION_STATUS_ACTIVE:
+      return "STRIPE_SUBSCRIPTION_STATUS_ACTIVE";
+    case StripeSubscriptionStatus.STRIPE_SUBSCRIPTION_STATUS_PAST_DUE:
+      return "STRIPE_SUBSCRIPTION_STATUS_PAST_DUE";
+    case StripeSubscriptionStatus.STRIPE_SUBSCRIPTION_STATUS_CANCELED:
+      return "STRIPE_SUBSCRIPTION_STATUS_CANCELED";
+    case StripeSubscriptionStatus.STRIPE_SUBSCRIPTION_STATUS_UNPAID:
+      return "STRIPE_SUBSCRIPTION_STATUS_UNPAID";
+    case StripeSubscriptionStatus.STRIPE_SUBSCRIPTION_STATUS_COMPLETE:
+      return "STRIPE_SUBSCRIPTION_STATUS_COMPLETE";
+    case StripeSubscriptionStatus.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export enum LinkStatus {
+  LINK_STATUS_UNSPECIFIED = 0,
+  LINK_STATUS_SETUP = 1,
+  LINK_STATUS_PENDING = 2,
+  LINK_STATUS_ERROR = 3,
+  LINK_STATUS_SUCCESS = 4,
+  LINK_STATUS_PENDING_EXPIRATION = 5,
+  LINK_STATUS_REVOKED = 6,
+  UNRECOGNIZED = -1,
+}
+
+export function linkStatusFromJSON(object: any): LinkStatus {
+  switch (object) {
+    case 0:
+    case "LINK_STATUS_UNSPECIFIED":
+      return LinkStatus.LINK_STATUS_UNSPECIFIED;
+    case 1:
+    case "LINK_STATUS_SETUP":
+      return LinkStatus.LINK_STATUS_SETUP;
+    case 2:
+    case "LINK_STATUS_PENDING":
+      return LinkStatus.LINK_STATUS_PENDING;
+    case 3:
+    case "LINK_STATUS_ERROR":
+      return LinkStatus.LINK_STATUS_ERROR;
+    case 4:
+    case "LINK_STATUS_SUCCESS":
+      return LinkStatus.LINK_STATUS_SUCCESS;
+    case 5:
+    case "LINK_STATUS_PENDING_EXPIRATION":
+      return LinkStatus.LINK_STATUS_PENDING_EXPIRATION;
+    case 6:
+    case "LINK_STATUS_REVOKED":
+      return LinkStatus.LINK_STATUS_REVOKED;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return LinkStatus.UNRECOGNIZED;
+  }
+}
+
+export function linkStatusToJSON(object: LinkStatus): string {
+  switch (object) {
+    case LinkStatus.LINK_STATUS_UNSPECIFIED:
+      return "LINK_STATUS_UNSPECIFIED";
+    case LinkStatus.LINK_STATUS_SETUP:
+      return "LINK_STATUS_SETUP";
+    case LinkStatus.LINK_STATUS_PENDING:
+      return "LINK_STATUS_PENDING";
+    case LinkStatus.LINK_STATUS_ERROR:
+      return "LINK_STATUS_ERROR";
+    case LinkStatus.LINK_STATUS_SUCCESS:
+      return "LINK_STATUS_SUCCESS";
+    case LinkStatus.LINK_STATUS_PENDING_EXPIRATION:
+      return "LINK_STATUS_PENDING_EXPIRATION";
+    case LinkStatus.LINK_STATUS_REVOKED:
+      return "LINK_STATUS_REVOKED";
+    case LinkStatus.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export enum LinkType {
+  LINK_TYPE_UNSPECIFIED = 0,
+  LINK_TYPE_PLAID = 1,
+  LINK_TYPE_MANUAL = 2,
+  UNRECOGNIZED = -1,
+}
+
+export function linkTypeFromJSON(object: any): LinkType {
+  switch (object) {
+    case 0:
+    case "LINK_TYPE_UNSPECIFIED":
+      return LinkType.LINK_TYPE_UNSPECIFIED;
+    case 1:
+    case "LINK_TYPE_PLAID":
+      return LinkType.LINK_TYPE_PLAID;
+    case 2:
+    case "LINK_TYPE_MANUAL":
+      return LinkType.LINK_TYPE_MANUAL;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return LinkType.UNRECOGNIZED;
+  }
+}
+
+export function linkTypeToJSON(object: LinkType): string {
+  switch (object) {
+    case LinkType.LINK_TYPE_UNSPECIFIED:
+      return "LINK_TYPE_UNSPECIFIED";
+    case LinkType.LINK_TYPE_PLAID:
+      return "LINK_TYPE_PLAID";
+    case LinkType.LINK_TYPE_MANUAL:
+      return "LINK_TYPE_MANUAL";
+    case LinkType.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+/** StripeSubscription stores high level stripe subscription details of which the user profile has */
+export interface StripeSubscription {
+  id: number;
+  /** stripe subscription id tied to the customer */
+  stripeSubscriptionId: string;
+  /** stripe subscription status */
+  stripeSubscriptionStatus: StripeSubscriptionStatus;
+  /** stripe subscription active until */
+  stripeSubscriptionActiveUntil: string;
+  /** stripe webhook latest timestamp */
+  stripeWebhookLatestTimestamp: string;
+}
+
 /**
  * UserProfile stores high level user profile details
  * such as the id, user_id tied to the profile, and many more
@@ -223,23 +401,88 @@ export interface UserProfile {
   id: number;
   /** the user id tied to the profile */
   userId: number;
-  /** many bank accounts (connected) can be tied to a user */
+  /** the stripe subscriptions the user profile actively maintains */
+  stripeSubscriptions: StripeSubscription[];
+  /** a user profile can have many links (connected institutions) of which finanical accounts are tied to (checking, savings, etc) */
+  link: Link[];
+}
+
+/**
+ * A Link represents a login at a financial institution. A single end-user of your application might have accounts at different financial
+ * institutions, which means they would have multiple different Items. An Item is not the same as a financial institution account,
+ * although every account will be associated with an Item. For example, if a user has one login at their bank that allows them to access
+ * both their checking account and their savings account, a single Item would be associated with both of those accounts. Each Item
+ * linked within your application will have a corresponding access_token, which is a token that you can use to make API requests related
+ * to that specific Item.
+ * Two Items created for the same set of credentials at the same institution will be considered different and not share the same item_id.
+ */
+export interface Link {
+  /** id */
+  id: number;
+  linkStatus: LinkStatus;
+  plaidLink: PlaidLink | undefined;
+  plaidNewAccountsAvailable: boolean;
+  expirationDate: string;
+  institutionName: string;
+  customInstitutionName: string;
+  description: string;
+  lastManualSync: string;
+  lastSuccessfulUpdate: string;
+  /**
+   * token object witholds an access token which is a token used to make API requests related to a specific Item. You will typically obtain an access_token
+   * by calling /item/public_token/exchange. For more details, see the Token exchange flow. An access_token does not expire,
+   * although it may require updating, such as when a user changes their password, or when working with European institutions
+   * that comply with PSD2's 90-day consent window. For more information, see When to use update mode.
+   * Access tokens should always be stored securely, and associated with the user whose data they represent.
+   * If compromised, an access_token can be rotated via /item/access_token/invalidate. If no longer needed,
+   * it can be revoked via /item/remove.(gorm.field).has_one = {disable_association_autocreate: false disable_association_autoupdate: false preload: true}];
+   */
+  token:
+    | Token
+    | undefined;
+  /**
+   * a link event - or client login event can have many connected bank accounts
+   * for example a log in link against one instition like chase can have many account (checking and savings)
+   * it is important though to ensure that if a link against an instition already exists, we dont fascilitate duplicated
+   */
   bankAccounts: BankAccount[];
-  /** investment accounts tied to a user */
+  /**
+   * a link event - or client login event can have many connected investment accounts
+   * for example a log in link against one instition like fidelity can have many accounts (401k and investment account)
+   * it is important though to ensure that if a link against an instition already exists, we dont fascilitate duplicated
+   */
   investmentAccounts: InvestmentAccount[];
   /** credit accounts tied to a user */
   creditAccounts: CreditAccount[];
   /** mortgage accounts tied to a user */
   mortgageAccounts: MortgageAccount[];
-  /** student loan accounts tied to a user */
+  /** student loan accounts tied to a link */
   studentLoanAccounts: StudentLoanAccount[];
-  /** the user plaid access token */
-  plaidAccessToken: string;
-  /** key used to encrypt the access token by the kms */
-  decryptionAccessTokenKey: string;
-  decryptionAccessTokenVersion: string;
-  /** the customer id tied to the stripe account */
-  stripeCustomerId: string;
+  /** the id of the institution this link is tied to and against */
+  plaidInstitutionId: string;
+  /** the type of link this is ... can be either a manual or plaid link type */
+  linkType: LinkType;
+}
+
+export interface Token {
+  /** id */
+  id: number;
+  /** the id of the item the token is tied to */
+  itemId: string;
+  keyId: string;
+  accessToken: string;
+  version: string;
+}
+
+export interface PlaidLink {
+  /** id */
+  id: number;
+  products: string[];
+  webhookUrl: string;
+  institutionId: string;
+  institutionName: string;
+  usePlaidSync: boolean;
+  itemId: string;
 }
 
 export interface StudentLoanAccount {
@@ -617,20 +860,133 @@ export interface Apr {
   interestChargeAmount: number;
 }
 
-function createBaseUserProfile(): UserProfile {
+function createBaseStripeSubscription(): StripeSubscription {
   return {
     id: 0,
-    userId: 0,
-    bankAccounts: [],
-    investmentAccounts: [],
-    creditAccounts: [],
-    mortgageAccounts: [],
-    studentLoanAccounts: [],
-    plaidAccessToken: "",
-    decryptionAccessTokenKey: "",
-    decryptionAccessTokenVersion: "",
-    stripeCustomerId: "",
+    stripeSubscriptionId: "",
+    stripeSubscriptionStatus: 0,
+    stripeSubscriptionActiveUntil: "",
+    stripeWebhookLatestTimestamp: "",
   };
+}
+
+export const StripeSubscription = {
+  encode(message: StripeSubscription, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).uint64(message.id);
+    }
+    if (message.stripeSubscriptionId !== "") {
+      writer.uint32(18).string(message.stripeSubscriptionId);
+    }
+    if (message.stripeSubscriptionStatus !== 0) {
+      writer.uint32(24).int32(message.stripeSubscriptionStatus);
+    }
+    if (message.stripeSubscriptionActiveUntil !== "") {
+      writer.uint32(34).string(message.stripeSubscriptionActiveUntil);
+    }
+    if (message.stripeWebhookLatestTimestamp !== "") {
+      writer.uint32(42).string(message.stripeWebhookLatestTimestamp);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): StripeSubscription {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseStripeSubscription();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag != 8) {
+            break;
+          }
+
+          message.id = longToNumber(reader.uint64() as Long);
+          continue;
+        case 2:
+          if (tag != 18) {
+            break;
+          }
+
+          message.stripeSubscriptionId = reader.string();
+          continue;
+        case 3:
+          if (tag != 24) {
+            break;
+          }
+
+          message.stripeSubscriptionStatus = reader.int32() as any;
+          continue;
+        case 4:
+          if (tag != 34) {
+            break;
+          }
+
+          message.stripeSubscriptionActiveUntil = reader.string();
+          continue;
+        case 5:
+          if (tag != 42) {
+            break;
+          }
+
+          message.stripeWebhookLatestTimestamp = reader.string();
+          continue;
+      }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): StripeSubscription {
+    return {
+      id: isSet(object.id) ? Number(object.id) : 0,
+      stripeSubscriptionId: isSet(object.stripeSubscriptionId) ? String(object.stripeSubscriptionId) : "",
+      stripeSubscriptionStatus: isSet(object.stripeSubscriptionStatus)
+        ? stripeSubscriptionStatusFromJSON(object.stripeSubscriptionStatus)
+        : 0,
+      stripeSubscriptionActiveUntil: isSet(object.stripeSubscriptionActiveUntil)
+        ? String(object.stripeSubscriptionActiveUntil)
+        : "",
+      stripeWebhookLatestTimestamp: isSet(object.stripeWebhookLatestTimestamp)
+        ? String(object.stripeWebhookLatestTimestamp)
+        : "",
+    };
+  },
+
+  toJSON(message: StripeSubscription): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = Math.round(message.id));
+    message.stripeSubscriptionId !== undefined && (obj.stripeSubscriptionId = message.stripeSubscriptionId);
+    message.stripeSubscriptionStatus !== undefined &&
+      (obj.stripeSubscriptionStatus = stripeSubscriptionStatusToJSON(message.stripeSubscriptionStatus));
+    message.stripeSubscriptionActiveUntil !== undefined &&
+      (obj.stripeSubscriptionActiveUntil = message.stripeSubscriptionActiveUntil);
+    message.stripeWebhookLatestTimestamp !== undefined &&
+      (obj.stripeWebhookLatestTimestamp = message.stripeWebhookLatestTimestamp);
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<StripeSubscription>, I>>(base?: I): StripeSubscription {
+    return StripeSubscription.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<StripeSubscription>, I>>(object: I): StripeSubscription {
+    const message = createBaseStripeSubscription();
+    message.id = object.id ?? 0;
+    message.stripeSubscriptionId = object.stripeSubscriptionId ?? "";
+    message.stripeSubscriptionStatus = object.stripeSubscriptionStatus ?? 0;
+    message.stripeSubscriptionActiveUntil = object.stripeSubscriptionActiveUntil ?? "";
+    message.stripeWebhookLatestTimestamp = object.stripeWebhookLatestTimestamp ?? "";
+    return message;
+  },
+};
+
+function createBaseUserProfile(): UserProfile {
+  return { id: 0, userId: 0, stripeSubscriptions: [], link: [] };
 }
 
 export const UserProfile = {
@@ -641,80 +997,55 @@ export const UserProfile = {
     if (message.userId !== 0) {
       writer.uint32(16).uint64(message.userId);
     }
-    for (const v of message.bankAccounts) {
-      BankAccount.encode(v!, writer.uint32(26).fork()).ldelim();
+    for (const v of message.stripeSubscriptions) {
+      StripeSubscription.encode(v!, writer.uint32(34).fork()).ldelim();
     }
-    for (const v of message.investmentAccounts) {
-      InvestmentAccount.encode(v!, writer.uint32(34).fork()).ldelim();
-    }
-    for (const v of message.creditAccounts) {
-      CreditAccount.encode(v!, writer.uint32(42).fork()).ldelim();
-    }
-    for (const v of message.mortgageAccounts) {
-      MortgageAccount.encode(v!, writer.uint32(50).fork()).ldelim();
-    }
-    for (const v of message.studentLoanAccounts) {
-      StudentLoanAccount.encode(v!, writer.uint32(58).fork()).ldelim();
-    }
-    if (message.plaidAccessToken !== "") {
-      writer.uint32(66).string(message.plaidAccessToken);
-    }
-    if (message.decryptionAccessTokenKey !== "") {
-      writer.uint32(74).string(message.decryptionAccessTokenKey);
-    }
-    if (message.decryptionAccessTokenVersion !== "") {
-      writer.uint32(82).string(message.decryptionAccessTokenVersion);
-    }
-    if (message.stripeCustomerId !== "") {
-      writer.uint32(90).string(message.stripeCustomerId);
+    for (const v of message.link) {
+      Link.encode(v!, writer.uint32(50).fork()).ldelim();
     }
     return writer;
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): UserProfile {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseUserProfile();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 8) {
+            break;
+          }
+
           message.id = longToNumber(reader.uint64() as Long);
-          break;
+          continue;
         case 2:
+          if (tag != 16) {
+            break;
+          }
+
           message.userId = longToNumber(reader.uint64() as Long);
-          break;
-        case 3:
-          message.bankAccounts.push(BankAccount.decode(reader, reader.uint32()));
-          break;
+          continue;
         case 4:
-          message.investmentAccounts.push(InvestmentAccount.decode(reader, reader.uint32()));
-          break;
-        case 5:
-          message.creditAccounts.push(CreditAccount.decode(reader, reader.uint32()));
-          break;
+          if (tag != 34) {
+            break;
+          }
+
+          message.stripeSubscriptions.push(StripeSubscription.decode(reader, reader.uint32()));
+          continue;
         case 6:
-          message.mortgageAccounts.push(MortgageAccount.decode(reader, reader.uint32()));
-          break;
-        case 7:
-          message.studentLoanAccounts.push(StudentLoanAccount.decode(reader, reader.uint32()));
-          break;
-        case 8:
-          message.plaidAccessToken = reader.string();
-          break;
-        case 9:
-          message.decryptionAccessTokenKey = reader.string();
-          break;
-        case 10:
-          message.decryptionAccessTokenVersion = reader.string();
-          break;
-        case 11:
-          message.stripeCustomerId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          if (tag != 50) {
+            break;
+          }
+
+          message.link.push(Link.decode(reader, reader.uint32()));
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -723,6 +1054,283 @@ export const UserProfile = {
     return {
       id: isSet(object.id) ? Number(object.id) : 0,
       userId: isSet(object.userId) ? Number(object.userId) : 0,
+      stripeSubscriptions: Array.isArray(object?.stripeSubscriptions)
+        ? object.stripeSubscriptions.map((e: any) => StripeSubscription.fromJSON(e))
+        : [],
+      link: Array.isArray(object?.link) ? object.link.map((e: any) => Link.fromJSON(e)) : [],
+    };
+  },
+
+  toJSON(message: UserProfile): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = Math.round(message.id));
+    message.userId !== undefined && (obj.userId = Math.round(message.userId));
+    if (message.stripeSubscriptions) {
+      obj.stripeSubscriptions = message.stripeSubscriptions.map((e) => e ? StripeSubscription.toJSON(e) : undefined);
+    } else {
+      obj.stripeSubscriptions = [];
+    }
+    if (message.link) {
+      obj.link = message.link.map((e) => e ? Link.toJSON(e) : undefined);
+    } else {
+      obj.link = [];
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<UserProfile>, I>>(base?: I): UserProfile {
+    return UserProfile.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<UserProfile>, I>>(object: I): UserProfile {
+    const message = createBaseUserProfile();
+    message.id = object.id ?? 0;
+    message.userId = object.userId ?? 0;
+    message.stripeSubscriptions = object.stripeSubscriptions?.map((e) => StripeSubscription.fromPartial(e)) || [];
+    message.link = object.link?.map((e) => Link.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseLink(): Link {
+  return {
+    id: 0,
+    linkStatus: 0,
+    plaidLink: undefined,
+    plaidNewAccountsAvailable: false,
+    expirationDate: "",
+    institutionName: "",
+    customInstitutionName: "",
+    description: "",
+    lastManualSync: "",
+    lastSuccessfulUpdate: "",
+    token: undefined,
+    bankAccounts: [],
+    investmentAccounts: [],
+    creditAccounts: [],
+    mortgageAccounts: [],
+    studentLoanAccounts: [],
+    plaidInstitutionId: "",
+    linkType: 0,
+  };
+}
+
+export const Link = {
+  encode(message: Link, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).uint64(message.id);
+    }
+    if (message.linkStatus !== 0) {
+      writer.uint32(24).int32(message.linkStatus);
+    }
+    if (message.plaidLink !== undefined) {
+      PlaidLink.encode(message.plaidLink, writer.uint32(34).fork()).ldelim();
+    }
+    if (message.plaidNewAccountsAvailable === true) {
+      writer.uint32(40).bool(message.plaidNewAccountsAvailable);
+    }
+    if (message.expirationDate !== "") {
+      writer.uint32(50).string(message.expirationDate);
+    }
+    if (message.institutionName !== "") {
+      writer.uint32(58).string(message.institutionName);
+    }
+    if (message.customInstitutionName !== "") {
+      writer.uint32(66).string(message.customInstitutionName);
+    }
+    if (message.description !== "") {
+      writer.uint32(74).string(message.description);
+    }
+    if (message.lastManualSync !== "") {
+      writer.uint32(82).string(message.lastManualSync);
+    }
+    if (message.lastSuccessfulUpdate !== "") {
+      writer.uint32(90).string(message.lastSuccessfulUpdate);
+    }
+    if (message.token !== undefined) {
+      Token.encode(message.token, writer.uint32(98).fork()).ldelim();
+    }
+    for (const v of message.bankAccounts) {
+      BankAccount.encode(v!, writer.uint32(106).fork()).ldelim();
+    }
+    for (const v of message.investmentAccounts) {
+      InvestmentAccount.encode(v!, writer.uint32(114).fork()).ldelim();
+    }
+    for (const v of message.creditAccounts) {
+      CreditAccount.encode(v!, writer.uint32(122).fork()).ldelim();
+    }
+    for (const v of message.mortgageAccounts) {
+      MortgageAccount.encode(v!, writer.uint32(130).fork()).ldelim();
+    }
+    for (const v of message.studentLoanAccounts) {
+      StudentLoanAccount.encode(v!, writer.uint32(138).fork()).ldelim();
+    }
+    if (message.plaidInstitutionId !== "") {
+      writer.uint32(146).string(message.plaidInstitutionId);
+    }
+    if (message.linkType !== 0) {
+      writer.uint32(152).int32(message.linkType);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): Link {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseLink();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag != 8) {
+            break;
+          }
+
+          message.id = longToNumber(reader.uint64() as Long);
+          continue;
+        case 3:
+          if (tag != 24) {
+            break;
+          }
+
+          message.linkStatus = reader.int32() as any;
+          continue;
+        case 4:
+          if (tag != 34) {
+            break;
+          }
+
+          message.plaidLink = PlaidLink.decode(reader, reader.uint32());
+          continue;
+        case 5:
+          if (tag != 40) {
+            break;
+          }
+
+          message.plaidNewAccountsAvailable = reader.bool();
+          continue;
+        case 6:
+          if (tag != 50) {
+            break;
+          }
+
+          message.expirationDate = reader.string();
+          continue;
+        case 7:
+          if (tag != 58) {
+            break;
+          }
+
+          message.institutionName = reader.string();
+          continue;
+        case 8:
+          if (tag != 66) {
+            break;
+          }
+
+          message.customInstitutionName = reader.string();
+          continue;
+        case 9:
+          if (tag != 74) {
+            break;
+          }
+
+          message.description = reader.string();
+          continue;
+        case 10:
+          if (tag != 82) {
+            break;
+          }
+
+          message.lastManualSync = reader.string();
+          continue;
+        case 11:
+          if (tag != 90) {
+            break;
+          }
+
+          message.lastSuccessfulUpdate = reader.string();
+          continue;
+        case 12:
+          if (tag != 98) {
+            break;
+          }
+
+          message.token = Token.decode(reader, reader.uint32());
+          continue;
+        case 13:
+          if (tag != 106) {
+            break;
+          }
+
+          message.bankAccounts.push(BankAccount.decode(reader, reader.uint32()));
+          continue;
+        case 14:
+          if (tag != 114) {
+            break;
+          }
+
+          message.investmentAccounts.push(InvestmentAccount.decode(reader, reader.uint32()));
+          continue;
+        case 15:
+          if (tag != 122) {
+            break;
+          }
+
+          message.creditAccounts.push(CreditAccount.decode(reader, reader.uint32()));
+          continue;
+        case 16:
+          if (tag != 130) {
+            break;
+          }
+
+          message.mortgageAccounts.push(MortgageAccount.decode(reader, reader.uint32()));
+          continue;
+        case 17:
+          if (tag != 138) {
+            break;
+          }
+
+          message.studentLoanAccounts.push(StudentLoanAccount.decode(reader, reader.uint32()));
+          continue;
+        case 18:
+          if (tag != 146) {
+            break;
+          }
+
+          message.plaidInstitutionId = reader.string();
+          continue;
+        case 19:
+          if (tag != 152) {
+            break;
+          }
+
+          message.linkType = reader.int32() as any;
+          continue;
+      }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Link {
+    return {
+      id: isSet(object.id) ? Number(object.id) : 0,
+      linkStatus: isSet(object.linkStatus) ? linkStatusFromJSON(object.linkStatus) : 0,
+      plaidLink: isSet(object.plaidLink) ? PlaidLink.fromJSON(object.plaidLink) : undefined,
+      plaidNewAccountsAvailable: isSet(object.plaidNewAccountsAvailable)
+        ? Boolean(object.plaidNewAccountsAvailable)
+        : false,
+      expirationDate: isSet(object.expirationDate) ? String(object.expirationDate) : "",
+      institutionName: isSet(object.institutionName) ? String(object.institutionName) : "",
+      customInstitutionName: isSet(object.customInstitutionName) ? String(object.customInstitutionName) : "",
+      description: isSet(object.description) ? String(object.description) : "",
+      lastManualSync: isSet(object.lastManualSync) ? String(object.lastManualSync) : "",
+      lastSuccessfulUpdate: isSet(object.lastSuccessfulUpdate) ? String(object.lastSuccessfulUpdate) : "",
+      token: isSet(object.token) ? Token.fromJSON(object.token) : undefined,
       bankAccounts: Array.isArray(object?.bankAccounts)
         ? object.bankAccounts.map((e: any) => BankAccount.fromJSON(e))
         : [],
@@ -738,19 +1346,26 @@ export const UserProfile = {
       studentLoanAccounts: Array.isArray(object?.studentLoanAccounts)
         ? object.studentLoanAccounts.map((e: any) => StudentLoanAccount.fromJSON(e))
         : [],
-      plaidAccessToken: isSet(object.plaidAccessToken) ? String(object.plaidAccessToken) : "",
-      decryptionAccessTokenKey: isSet(object.decryptionAccessTokenKey) ? String(object.decryptionAccessTokenKey) : "",
-      decryptionAccessTokenVersion: isSet(object.decryptionAccessTokenVersion)
-        ? String(object.decryptionAccessTokenVersion)
-        : "",
-      stripeCustomerId: isSet(object.stripeCustomerId) ? String(object.stripeCustomerId) : "",
+      plaidInstitutionId: isSet(object.plaidInstitutionId) ? String(object.plaidInstitutionId) : "",
+      linkType: isSet(object.linkType) ? linkTypeFromJSON(object.linkType) : 0,
     };
   },
 
-  toJSON(message: UserProfile): unknown {
+  toJSON(message: Link): unknown {
     const obj: any = {};
     message.id !== undefined && (obj.id = Math.round(message.id));
-    message.userId !== undefined && (obj.userId = Math.round(message.userId));
+    message.linkStatus !== undefined && (obj.linkStatus = linkStatusToJSON(message.linkStatus));
+    message.plaidLink !== undefined &&
+      (obj.plaidLink = message.plaidLink ? PlaidLink.toJSON(message.plaidLink) : undefined);
+    message.plaidNewAccountsAvailable !== undefined &&
+      (obj.plaidNewAccountsAvailable = message.plaidNewAccountsAvailable);
+    message.expirationDate !== undefined && (obj.expirationDate = message.expirationDate);
+    message.institutionName !== undefined && (obj.institutionName = message.institutionName);
+    message.customInstitutionName !== undefined && (obj.customInstitutionName = message.customInstitutionName);
+    message.description !== undefined && (obj.description = message.description);
+    message.lastManualSync !== undefined && (obj.lastManualSync = message.lastManualSync);
+    message.lastSuccessfulUpdate !== undefined && (obj.lastSuccessfulUpdate = message.lastSuccessfulUpdate);
+    message.token !== undefined && (obj.token = message.token ? Token.toJSON(message.token) : undefined);
     if (message.bankAccounts) {
       obj.bankAccounts = message.bankAccounts.map((e) => e ? BankAccount.toJSON(e) : undefined);
     } else {
@@ -776,31 +1391,295 @@ export const UserProfile = {
     } else {
       obj.studentLoanAccounts = [];
     }
-    message.plaidAccessToken !== undefined && (obj.plaidAccessToken = message.plaidAccessToken);
-    message.decryptionAccessTokenKey !== undefined && (obj.decryptionAccessTokenKey = message.decryptionAccessTokenKey);
-    message.decryptionAccessTokenVersion !== undefined &&
-      (obj.decryptionAccessTokenVersion = message.decryptionAccessTokenVersion);
-    message.stripeCustomerId !== undefined && (obj.stripeCustomerId = message.stripeCustomerId);
+    message.plaidInstitutionId !== undefined && (obj.plaidInstitutionId = message.plaidInstitutionId);
+    message.linkType !== undefined && (obj.linkType = linkTypeToJSON(message.linkType));
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<UserProfile>, I>>(base?: I): UserProfile {
-    return UserProfile.fromPartial(base ?? {});
+  create<I extends Exact<DeepPartial<Link>, I>>(base?: I): Link {
+    return Link.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<UserProfile>, I>>(object: I): UserProfile {
-    const message = createBaseUserProfile();
+  fromPartial<I extends Exact<DeepPartial<Link>, I>>(object: I): Link {
+    const message = createBaseLink();
     message.id = object.id ?? 0;
-    message.userId = object.userId ?? 0;
+    message.linkStatus = object.linkStatus ?? 0;
+    message.plaidLink = (object.plaidLink !== undefined && object.plaidLink !== null)
+      ? PlaidLink.fromPartial(object.plaidLink)
+      : undefined;
+    message.plaidNewAccountsAvailable = object.plaidNewAccountsAvailable ?? false;
+    message.expirationDate = object.expirationDate ?? "";
+    message.institutionName = object.institutionName ?? "";
+    message.customInstitutionName = object.customInstitutionName ?? "";
+    message.description = object.description ?? "";
+    message.lastManualSync = object.lastManualSync ?? "";
+    message.lastSuccessfulUpdate = object.lastSuccessfulUpdate ?? "";
+    message.token = (object.token !== undefined && object.token !== null) ? Token.fromPartial(object.token) : undefined;
     message.bankAccounts = object.bankAccounts?.map((e) => BankAccount.fromPartial(e)) || [];
     message.investmentAccounts = object.investmentAccounts?.map((e) => InvestmentAccount.fromPartial(e)) || [];
     message.creditAccounts = object.creditAccounts?.map((e) => CreditAccount.fromPartial(e)) || [];
     message.mortgageAccounts = object.mortgageAccounts?.map((e) => MortgageAccount.fromPartial(e)) || [];
     message.studentLoanAccounts = object.studentLoanAccounts?.map((e) => StudentLoanAccount.fromPartial(e)) || [];
-    message.plaidAccessToken = object.plaidAccessToken ?? "";
-    message.decryptionAccessTokenKey = object.decryptionAccessTokenKey ?? "";
-    message.decryptionAccessTokenVersion = object.decryptionAccessTokenVersion ?? "";
-    message.stripeCustomerId = object.stripeCustomerId ?? "";
+    message.plaidInstitutionId = object.plaidInstitutionId ?? "";
+    message.linkType = object.linkType ?? 0;
+    return message;
+  },
+};
+
+function createBaseToken(): Token {
+  return { id: 0, itemId: "", keyId: "", accessToken: "", version: "" };
+}
+
+export const Token = {
+  encode(message: Token, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).uint64(message.id);
+    }
+    if (message.itemId !== "") {
+      writer.uint32(18).string(message.itemId);
+    }
+    if (message.keyId !== "") {
+      writer.uint32(26).string(message.keyId);
+    }
+    if (message.accessToken !== "") {
+      writer.uint32(34).string(message.accessToken);
+    }
+    if (message.version !== "") {
+      writer.uint32(42).string(message.version);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): Token {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseToken();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag != 8) {
+            break;
+          }
+
+          message.id = longToNumber(reader.uint64() as Long);
+          continue;
+        case 2:
+          if (tag != 18) {
+            break;
+          }
+
+          message.itemId = reader.string();
+          continue;
+        case 3:
+          if (tag != 26) {
+            break;
+          }
+
+          message.keyId = reader.string();
+          continue;
+        case 4:
+          if (tag != 34) {
+            break;
+          }
+
+          message.accessToken = reader.string();
+          continue;
+        case 5:
+          if (tag != 42) {
+            break;
+          }
+
+          message.version = reader.string();
+          continue;
+      }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Token {
+    return {
+      id: isSet(object.id) ? Number(object.id) : 0,
+      itemId: isSet(object.itemId) ? String(object.itemId) : "",
+      keyId: isSet(object.keyId) ? String(object.keyId) : "",
+      accessToken: isSet(object.accessToken) ? String(object.accessToken) : "",
+      version: isSet(object.version) ? String(object.version) : "",
+    };
+  },
+
+  toJSON(message: Token): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = Math.round(message.id));
+    message.itemId !== undefined && (obj.itemId = message.itemId);
+    message.keyId !== undefined && (obj.keyId = message.keyId);
+    message.accessToken !== undefined && (obj.accessToken = message.accessToken);
+    message.version !== undefined && (obj.version = message.version);
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<Token>, I>>(base?: I): Token {
+    return Token.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Token>, I>>(object: I): Token {
+    const message = createBaseToken();
+    message.id = object.id ?? 0;
+    message.itemId = object.itemId ?? "";
+    message.keyId = object.keyId ?? "";
+    message.accessToken = object.accessToken ?? "";
+    message.version = object.version ?? "";
+    return message;
+  },
+};
+
+function createBasePlaidLink(): PlaidLink {
+  return {
+    id: 0,
+    products: [],
+    webhookUrl: "",
+    institutionId: "",
+    institutionName: "",
+    usePlaidSync: false,
+    itemId: "",
+  };
+}
+
+export const PlaidLink = {
+  encode(message: PlaidLink, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).uint64(message.id);
+    }
+    for (const v of message.products) {
+      writer.uint32(18).string(v!);
+    }
+    if (message.webhookUrl !== "") {
+      writer.uint32(26).string(message.webhookUrl);
+    }
+    if (message.institutionId !== "") {
+      writer.uint32(34).string(message.institutionId);
+    }
+    if (message.institutionName !== "") {
+      writer.uint32(42).string(message.institutionName);
+    }
+    if (message.usePlaidSync === true) {
+      writer.uint32(48).bool(message.usePlaidSync);
+    }
+    if (message.itemId !== "") {
+      writer.uint32(58).string(message.itemId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): PlaidLink {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePlaidLink();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag != 8) {
+            break;
+          }
+
+          message.id = longToNumber(reader.uint64() as Long);
+          continue;
+        case 2:
+          if (tag != 18) {
+            break;
+          }
+
+          message.products.push(reader.string());
+          continue;
+        case 3:
+          if (tag != 26) {
+            break;
+          }
+
+          message.webhookUrl = reader.string();
+          continue;
+        case 4:
+          if (tag != 34) {
+            break;
+          }
+
+          message.institutionId = reader.string();
+          continue;
+        case 5:
+          if (tag != 42) {
+            break;
+          }
+
+          message.institutionName = reader.string();
+          continue;
+        case 6:
+          if (tag != 48) {
+            break;
+          }
+
+          message.usePlaidSync = reader.bool();
+          continue;
+        case 7:
+          if (tag != 58) {
+            break;
+          }
+
+          message.itemId = reader.string();
+          continue;
+      }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PlaidLink {
+    return {
+      id: isSet(object.id) ? Number(object.id) : 0,
+      products: Array.isArray(object?.products) ? object.products.map((e: any) => String(e)) : [],
+      webhookUrl: isSet(object.webhookUrl) ? String(object.webhookUrl) : "",
+      institutionId: isSet(object.institutionId) ? String(object.institutionId) : "",
+      institutionName: isSet(object.institutionName) ? String(object.institutionName) : "",
+      usePlaidSync: isSet(object.usePlaidSync) ? Boolean(object.usePlaidSync) : false,
+      itemId: isSet(object.itemId) ? String(object.itemId) : "",
+    };
+  },
+
+  toJSON(message: PlaidLink): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = Math.round(message.id));
+    if (message.products) {
+      obj.products = message.products.map((e) => e);
+    } else {
+      obj.products = [];
+    }
+    message.webhookUrl !== undefined && (obj.webhookUrl = message.webhookUrl);
+    message.institutionId !== undefined && (obj.institutionId = message.institutionId);
+    message.institutionName !== undefined && (obj.institutionName = message.institutionName);
+    message.usePlaidSync !== undefined && (obj.usePlaidSync = message.usePlaidSync);
+    message.itemId !== undefined && (obj.itemId = message.itemId);
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<PlaidLink>, I>>(base?: I): PlaidLink {
+    return PlaidLink.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<PlaidLink>, I>>(object: I): PlaidLink {
+    const message = createBasePlaidLink();
+    message.id = object.id ?? 0;
+    message.products = object.products?.map((e) => e) || [];
+    message.webhookUrl = object.webhookUrl ?? "";
+    message.institutionId = object.institutionId ?? "";
+    message.institutionName = object.institutionName ?? "";
+    message.usePlaidSync = object.usePlaidSync ?? false;
+    message.itemId = object.itemId ?? "";
     return message;
   },
 };
@@ -956,121 +1835,262 @@ export const StudentLoanAccount = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): StudentLoanAccount {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseStudentLoanAccount();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 8) {
+            break;
+          }
+
           message.id = longToNumber(reader.uint64() as Long);
-          break;
+          continue;
         case 2:
+          if (tag != 18) {
+            break;
+          }
+
           message.plaidAccountId = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag != 26) {
+            break;
+          }
+
           message.disbursementDates.push(reader.string());
-          break;
+          continue;
         case 4:
+          if (tag != 34) {
+            break;
+          }
+
           message.expectedPayoffDate = reader.string();
-          break;
+          continue;
         case 5:
+          if (tag != 42) {
+            break;
+          }
+
           message.guarantor = reader.string();
-          break;
+          continue;
         case 6:
+          if (tag != 49) {
+            break;
+          }
+
           message.interestRatePercentage = reader.double();
-          break;
+          continue;
         case 7:
+          if (tag != 56) {
+            break;
+          }
+
           message.isOverdue = reader.bool();
-          break;
+          continue;
         case 8:
+          if (tag != 65) {
+            break;
+          }
+
           message.lastPaymentAmount = reader.double();
-          break;
+          continue;
         case 9:
+          if (tag != 74) {
+            break;
+          }
+
           message.lastPaymentDate = reader.string();
-          break;
+          continue;
         case 10:
+          if (tag != 82) {
+            break;
+          }
+
           message.lastStatementIssueDate = reader.string();
-          break;
+          continue;
         case 11:
+          if (tag != 90) {
+            break;
+          }
+
           message.loanName = reader.string();
-          break;
+          continue;
         case 12:
+          if (tag != 98) {
+            break;
+          }
+
           message.loanEndDate = reader.string();
-          break;
+          continue;
         case 13:
+          if (tag != 105) {
+            break;
+          }
+
           message.minimumPaymentAmount = reader.double();
-          break;
+          continue;
         case 14:
+          if (tag != 114) {
+            break;
+          }
+
           message.nextPaymentDueDate = reader.string();
-          break;
+          continue;
         case 15:
+          if (tag != 122) {
+            break;
+          }
+
           message.originationDate = reader.string();
-          break;
+          continue;
         case 16:
+          if (tag != 129) {
+            break;
+          }
+
           message.originationPrincipalAmount = reader.double();
-          break;
+          continue;
         case 17:
+          if (tag != 137) {
+            break;
+          }
+
           message.outstandingInterestAmount = reader.double();
-          break;
+          continue;
         case 18:
+          if (tag != 146) {
+            break;
+          }
+
           message.paymentReferenceNumber = reader.string();
-          break;
+          continue;
         case 21:
+          if (tag != 170) {
+            break;
+          }
+
           message.sequenceNumber = reader.string();
-          break;
+          continue;
         case 23:
+          if (tag != 185) {
+            break;
+          }
+
           message.ytdInterestPaid = reader.double();
-          break;
+          continue;
         case 24:
+          if (tag != 193) {
+            break;
+          }
+
           message.ytdPrincipalPaid = reader.double();
-          break;
+          continue;
         case 25:
+          if (tag != 202) {
+            break;
+          }
+
           message.loanType = reader.string();
-          break;
+          continue;
         case 26:
+          if (tag != 210) {
+            break;
+          }
+
           message.pslfStatusEstimatedEligibilityDate = reader.string();
-          break;
+          continue;
         case 27:
+          if (tag != 216) {
+            break;
+          }
+
           message.pslfStatusPaymentsMade = reader.int32();
-          break;
+          continue;
         case 28:
+          if (tag != 224) {
+            break;
+          }
+
           message.pslfStatusPaymentsRemaining = reader.int32();
-          break;
+          continue;
         case 29:
+          if (tag != 234) {
+            break;
+          }
+
           message.repaymentPlanType = reader.string();
-          break;
+          continue;
         case 30:
+          if (tag != 242) {
+            break;
+          }
+
           message.repaymentPlanDescription = reader.string();
-          break;
+          continue;
         case 31:
+          if (tag != 250) {
+            break;
+          }
+
           message.servicerAddressCity = reader.string();
-          break;
+          continue;
         case 32:
+          if (tag != 258) {
+            break;
+          }
+
           message.servicerAddressPostalCode = reader.string();
-          break;
+          continue;
         case 33:
+          if (tag != 266) {
+            break;
+          }
+
           message.servicerAddressState = reader.string();
-          break;
+          continue;
         case 34:
+          if (tag != 274) {
+            break;
+          }
+
           message.servicerAddressStreet = reader.string();
-          break;
+          continue;
         case 35:
+          if (tag != 282) {
+            break;
+          }
+
           message.servicerAddressRegion = reader.string();
-          break;
+          continue;
         case 36:
+          if (tag != 290) {
+            break;
+          }
+
           message.servicerAddressCountry = reader.string();
-          break;
+          continue;
         case 37:
+          if (tag != 296) {
+            break;
+          }
+
           message.userId = longToNumber(reader.uint64() as Long);
-          break;
+          continue;
         case 38:
+          if (tag != 306) {
+            break;
+          }
+
           message.name = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1311,76 +2331,157 @@ export const CreditAccount = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): CreditAccount {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCreditAccount();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 8) {
+            break;
+          }
+
           message.id = longToNumber(reader.uint64() as Long);
-          break;
+          continue;
         case 2:
+          if (tag != 16) {
+            break;
+          }
+
           message.userId = longToNumber(reader.uint64() as Long);
-          break;
+          continue;
         case 3:
+          if (tag != 26) {
+            break;
+          }
+
           message.name = reader.string();
-          break;
+          continue;
         case 4:
+          if (tag != 34) {
+            break;
+          }
+
           message.number = reader.string();
-          break;
+          continue;
         case 5:
+          if (tag != 42) {
+            break;
+          }
+
           message.type = reader.string();
-          break;
+          continue;
         case 6:
+          if (tag != 53) {
+            break;
+          }
+
           message.balance = reader.float();
-          break;
+          continue;
         case 9:
+          if (tag != 73) {
+            break;
+          }
+
           message.currentFunds = reader.double();
-          break;
+          continue;
         case 10:
+          if (tag != 80) {
+            break;
+          }
+
           message.balanceLimit = longToNumber(reader.uint64() as Long);
-          break;
+          continue;
         case 12:
+          if (tag != 98) {
+            break;
+          }
+
           message.plaidAccountId = reader.string();
-          break;
+          continue;
         case 13:
+          if (tag != 106) {
+            break;
+          }
+
           message.subtype = reader.string();
-          break;
+          continue;
         case 14:
+          if (tag != 112) {
+            break;
+          }
+
           message.isOverdue = reader.bool();
-          break;
+          continue;
         case 15:
+          if (tag != 121) {
+            break;
+          }
+
           message.lastPaymentAmount = reader.double();
-          break;
+          continue;
         case 16:
+          if (tag != 130) {
+            break;
+          }
+
           message.lastPaymentDate = reader.string();
-          break;
+          continue;
         case 17:
+          if (tag != 138) {
+            break;
+          }
+
           message.lastStatementIssueDate = reader.string();
-          break;
+          continue;
         case 18:
+          if (tag != 145) {
+            break;
+          }
+
           message.minimumAmountDueDate = reader.double();
-          break;
+          continue;
         case 19:
+          if (tag != 154) {
+            break;
+          }
+
           message.nextPaymentDate = reader.string();
-          break;
+          continue;
         case 20:
+          if (tag != 162) {
+            break;
+          }
+
           message.aprs.push(Apr.decode(reader, reader.uint32()));
-          break;
+          continue;
         case 21:
+          if (tag != 169) {
+            break;
+          }
+
           message.lastStatementBalance = reader.double();
-          break;
+          continue;
         case 22:
+          if (tag != 177) {
+            break;
+          }
+
           message.minimumPaymentAmount = reader.double();
-          break;
+          continue;
         case 23:
+          if (tag != 186) {
+            break;
+          }
+
           message.nextPaymentDueDate = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1608,112 +2709,241 @@ export const MortgageAccount = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): MortgageAccount {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMortgageAccount();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 8) {
+            break;
+          }
+
           message.id = longToNumber(reader.uint64() as Long);
-          break;
+          continue;
         case 2:
+          if (tag != 18) {
+            break;
+          }
+
           message.plaidAccountId = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag != 26) {
+            break;
+          }
+
           message.accountNumber = reader.string();
-          break;
+          continue;
         case 4:
+          if (tag != 33) {
+            break;
+          }
+
           message.currentLateFee = reader.double();
-          break;
+          continue;
         case 5:
+          if (tag != 41) {
+            break;
+          }
+
           message.escrowBalance = reader.double();
-          break;
+          continue;
         case 6:
+          if (tag != 48) {
+            break;
+          }
+
           message.hasPmi = reader.bool();
-          break;
+          continue;
         case 7:
+          if (tag != 56) {
+            break;
+          }
+
           message.hasPrepaymentPenalty = reader.bool();
-          break;
+          continue;
         case 9:
+          if (tag != 73) {
+            break;
+          }
+
           message.lastPaymentAmount = reader.double();
-          break;
+          continue;
         case 10:
+          if (tag != 82) {
+            break;
+          }
+
           message.lastPaymentDate = reader.string();
-          break;
+          continue;
         case 11:
+          if (tag != 90) {
+            break;
+          }
+
           message.loanTerm = reader.string();
-          break;
+          continue;
         case 12:
+          if (tag != 98) {
+            break;
+          }
+
           message.loanTypeDescription = reader.string();
-          break;
+          continue;
         case 13:
+          if (tag != 106) {
+            break;
+          }
+
           message.maturityDate = reader.string();
-          break;
+          continue;
         case 14:
+          if (tag != 113) {
+            break;
+          }
+
           message.nextMonthlyPayment = reader.double();
-          break;
+          continue;
         case 15:
+          if (tag != 122) {
+            break;
+          }
+
           message.nextPaymentDueDate = reader.string();
-          break;
+          continue;
         case 16:
+          if (tag != 129) {
+            break;
+          }
+
           message.originalPrincipalBalance = reader.double();
-          break;
+          continue;
         case 17:
+          if (tag != 137) {
+            break;
+          }
+
           message.originalPropertyValue = reader.double();
-          break;
+          continue;
         case 18:
+          if (tag != 145) {
+            break;
+          }
+
           message.outstandingPrincipalBalance = reader.double();
-          break;
+          continue;
         case 19:
+          if (tag != 153) {
+            break;
+          }
+
           message.paymentAmount = reader.double();
-          break;
+          continue;
         case 20:
+          if (tag != 162) {
+            break;
+          }
+
           message.paymentDate = reader.string();
-          break;
+          continue;
         case 25:
+          if (tag != 202) {
+            break;
+          }
+
           message.originationDate = reader.string();
-          break;
+          continue;
         case 26:
+          if (tag != 209) {
+            break;
+          }
+
           message.originationPrincipalAmount = reader.double();
-          break;
+          continue;
         case 28:
+          if (tag != 225) {
+            break;
+          }
+
           message.pastDueAmount = reader.double();
-          break;
+          continue;
         case 29:
+          if (tag != 233) {
+            break;
+          }
+
           message.ytdInterestPaid = reader.double();
-          break;
+          continue;
         case 30:
+          if (tag != 241) {
+            break;
+          }
+
           message.ytdPrincipalPaid = reader.double();
-          break;
+          continue;
         case 31:
+          if (tag != 250) {
+            break;
+          }
+
           message.propertyAddressCity = reader.string();
-          break;
+          continue;
         case 32:
+          if (tag != 258) {
+            break;
+          }
+
           message.propertyAddressState = reader.string();
-          break;
+          continue;
         case 33:
+          if (tag != 266) {
+            break;
+          }
+
           message.propertyAddressStreet = reader.string();
-          break;
+          continue;
         case 34:
+          if (tag != 274) {
+            break;
+          }
+
           message.propertyAddressPostalCode = reader.string();
-          break;
+          continue;
         case 35:
+          if (tag != 282) {
+            break;
+          }
+
           message.propertyRegion = reader.string();
-          break;
+          continue;
         case 36:
+          if (tag != 290) {
+            break;
+          }
+
           message.propertyCountry = reader.string();
-          break;
+          continue;
         case 37:
+          if (tag != 297) {
+            break;
+          }
+
           message.interestRatePercentage = reader.double();
-          break;
+          continue;
         case 38:
+          if (tag != 306) {
+            break;
+          }
+
           message.interestRateType = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1902,52 +3132,101 @@ export const InvestmentAccount = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): InvestmentAccount {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseInvestmentAccount();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 8) {
+            break;
+          }
+
           message.id = longToNumber(reader.uint64() as Long);
-          break;
+          continue;
         case 2:
+          if (tag != 16) {
+            break;
+          }
+
           message.userId = longToNumber(reader.uint64() as Long);
-          break;
+          continue;
         case 3:
+          if (tag != 26) {
+            break;
+          }
+
           message.name = reader.string();
-          break;
+          continue;
         case 4:
+          if (tag != 34) {
+            break;
+          }
+
           message.number = reader.string();
-          break;
+          continue;
         case 5:
+          if (tag != 42) {
+            break;
+          }
+
           message.type = reader.string();
-          break;
+          continue;
         case 6:
+          if (tag != 53) {
+            break;
+          }
+
           message.balance = reader.float();
-          break;
+          continue;
         case 9:
+          if (tag != 73) {
+            break;
+          }
+
           message.currentFunds = reader.double();
-          break;
+          continue;
         case 10:
+          if (tag != 80) {
+            break;
+          }
+
           message.balanceLimit = longToNumber(reader.uint64() as Long);
-          break;
+          continue;
         case 12:
+          if (tag != 98) {
+            break;
+          }
+
           message.plaidAccountId = reader.string();
-          break;
+          continue;
         case 13:
+          if (tag != 106) {
+            break;
+          }
+
           message.subtype = reader.string();
-          break;
+          continue;
         case 7:
+          if (tag != 58) {
+            break;
+          }
+
           message.holdings.push(InvesmentHolding.decode(reader, reader.uint32()));
-          break;
+          continue;
         case 8:
+          if (tag != 66) {
+            break;
+          }
+
           message.securities.push(InvestmentSecurity.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -2068,61 +3347,110 @@ export const BankAccount = {
       Pocket.encode(v!, writer.uint32(90).fork()).ldelim();
     }
     if (message.plaidAccountId !== "") {
-      writer.uint32(98).string(message.plaidAccountId);
+      writer.uint32(106).string(message.plaidAccountId);
     }
     if (message.subtype !== "") {
-      writer.uint32(106).string(message.subtype);
+      writer.uint32(114).string(message.subtype);
     }
     return writer;
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): BankAccount {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseBankAccount();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 8) {
+            break;
+          }
+
           message.id = longToNumber(reader.uint64() as Long);
-          break;
+          continue;
         case 2:
+          if (tag != 16) {
+            break;
+          }
+
           message.userId = longToNumber(reader.uint64() as Long);
-          break;
+          continue;
         case 3:
+          if (tag != 26) {
+            break;
+          }
+
           message.name = reader.string();
-          break;
+          continue;
         case 4:
+          if (tag != 34) {
+            break;
+          }
+
           message.number = reader.string();
-          break;
+          continue;
         case 5:
+          if (tag != 40) {
+            break;
+          }
+
           message.type = reader.int32() as any;
-          break;
+          continue;
         case 6:
+          if (tag != 53) {
+            break;
+          }
+
           message.balance = reader.float();
-          break;
+          continue;
         case 7:
+          if (tag != 58) {
+            break;
+          }
+
           message.currency = reader.string();
-          break;
+          continue;
         case 9:
+          if (tag != 73) {
+            break;
+          }
+
           message.currentFunds = reader.double();
-          break;
+          continue;
         case 10:
+          if (tag != 80) {
+            break;
+          }
+
           message.balanceLimit = longToNumber(reader.uint64() as Long);
-          break;
+          continue;
         case 11:
+          if (tag != 90) {
+            break;
+          }
+
           message.pockets.push(Pocket.decode(reader, reader.uint32()));
-          break;
-        case 12:
-          message.plaidAccountId = reader.string();
-          break;
+          continue;
         case 13:
+          if (tag != 106) {
+            break;
+          }
+
+          message.plaidAccountId = reader.string();
+          continue;
+        case 14:
+          if (tag != 114) {
+            break;
+          }
+
           message.subtype = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -2206,25 +3534,38 @@ export const Pocket = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): Pocket {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBasePocket();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 8) {
+            break;
+          }
+
           message.id = longToNumber(reader.uint64() as Long);
-          break;
+          continue;
         case 3:
+          if (tag != 26) {
+            break;
+          }
+
           message.goals.push(SmartGoal.decode(reader, reader.uint32()));
-          break;
+          continue;
         case 4:
+          if (tag != 32) {
+            break;
+          }
+
           message.type = reader.int32() as any;
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -2325,55 +3666,108 @@ export const SmartGoal = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): SmartGoal {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSmartGoal();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 8) {
+            break;
+          }
+
           message.id = longToNumber(reader.uint64() as Long);
-          break;
+          continue;
         case 2:
+          if (tag != 16) {
+            break;
+          }
+
           message.userId = longToNumber(reader.uint64() as Long);
-          break;
+          continue;
         case 3:
+          if (tag != 26) {
+            break;
+          }
+
           message.name = reader.string();
-          break;
+          continue;
         case 4:
+          if (tag != 34) {
+            break;
+          }
+
           message.description = reader.string();
-          break;
+          continue;
         case 5:
+          if (tag != 40) {
+            break;
+          }
+
           message.isCompleted = reader.bool();
-          break;
+          continue;
         case 9:
+          if (tag != 72) {
+            break;
+          }
+
           message.goalType = reader.int32() as any;
-          break;
+          continue;
         case 10:
+          if (tag != 82) {
+            break;
+          }
+
           message.duration = reader.string();
-          break;
+          continue;
         case 11:
+          if (tag != 90) {
+            break;
+          }
+
           message.startDate = reader.string();
-          break;
+          continue;
         case 12:
+          if (tag != 98) {
+            break;
+          }
+
           message.endDate = reader.string();
-          break;
+          continue;
         case 13:
+          if (tag != 106) {
+            break;
+          }
+
           message.targetAmount = reader.string();
-          break;
+          continue;
         case 14:
+          if (tag != 114) {
+            break;
+          }
+
           message.currentAmount = reader.string();
-          break;
+          continue;
         case 15:
+          if (tag != 122) {
+            break;
+          }
+
           message.milestones.push(Milestone.decode(reader, reader.uint32()));
-          break;
+          continue;
         case 16:
+          if (tag != 130) {
+            break;
+          }
+
           message.forecasts = Forecast.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -2466,28 +3860,45 @@ export const Forecast = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): Forecast {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseForecast();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 8) {
+            break;
+          }
+
           message.id = longToNumber(reader.uint64() as Long);
-          break;
+          continue;
         case 2:
+          if (tag != 18) {
+            break;
+          }
+
           message.forecastedAmount = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag != 26) {
+            break;
+          }
+
           message.forecastedCompletionDate = reader.string();
-          break;
+          continue;
         case 4:
+          if (tag != 34) {
+            break;
+          }
+
           message.varianceAmount = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -2555,37 +3966,66 @@ export const Milestone = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): Milestone {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMilestone();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 8) {
+            break;
+          }
+
           message.id = longToNumber(reader.uint64() as Long);
-          break;
+          continue;
         case 2:
+          if (tag != 18) {
+            break;
+          }
+
           message.name = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag != 26) {
+            break;
+          }
+
           message.description = reader.string();
-          break;
+          continue;
         case 4:
+          if (tag != 34) {
+            break;
+          }
+
           message.targetDate = reader.string();
-          break;
+          continue;
         case 5:
+          if (tag != 42) {
+            break;
+          }
+
           message.targetAmount = reader.string();
-          break;
+          continue;
         case 6:
+          if (tag != 48) {
+            break;
+          }
+
           message.isCompleted = reader.bool();
-          break;
+          continue;
         case 13:
+          if (tag != 106) {
+            break;
+          }
+
           message.budget = Budget.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -2661,34 +4101,59 @@ export const Budget = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): Budget {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseBudget();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 8) {
+            break;
+          }
+
           message.id = longToNumber(reader.uint64() as Long);
-          break;
+          continue;
         case 2:
+          if (tag != 18) {
+            break;
+          }
+
           message.name = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag != 26) {
+            break;
+          }
+
           message.description = reader.string();
-          break;
+          continue;
         case 4:
+          if (tag != 34) {
+            break;
+          }
+
           message.startDate = reader.string();
-          break;
+          continue;
         case 5:
+          if (tag != 42) {
+            break;
+          }
+
           message.endDate = reader.string();
-          break;
+          continue;
         case 6:
+          if (tag != 50) {
+            break;
+          }
+
           message.category = Category.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -2755,28 +4220,45 @@ export const Category = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): Category {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCategory();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 8) {
+            break;
+          }
+
           message.id = longToNumber(reader.uint64() as Long);
-          break;
+          continue;
         case 2:
+          if (tag != 18) {
+            break;
+          }
+
           message.name = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag != 26) {
+            break;
+          }
+
           message.description = reader.string();
-          break;
+          continue;
         case 4:
+          if (tag != 34) {
+            break;
+          }
+
           message.subcategories.push(reader.string());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -2876,52 +4358,101 @@ export const InvesmentHolding = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): InvesmentHolding {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseInvesmentHolding();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 8) {
+            break;
+          }
+
           message.id = longToNumber(reader.uint64() as Long);
-          break;
+          continue;
         case 2:
+          if (tag != 18) {
+            break;
+          }
+
           message.name = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag != 26) {
+            break;
+          }
+
           message.plaidAccountId = reader.string();
-          break;
+          continue;
         case 4:
+          if (tag != 33) {
+            break;
+          }
+
           message.costBasis = reader.double();
-          break;
+          continue;
         case 5:
+          if (tag != 41) {
+            break;
+          }
+
           message.institutionPrice = reader.double();
-          break;
+          continue;
         case 6:
+          if (tag != 50) {
+            break;
+          }
+
           message.institutionPriceAsOf = reader.string();
-          break;
+          continue;
         case 7:
+          if (tag != 58) {
+            break;
+          }
+
           message.institutionPriceDatetime = reader.string();
-          break;
+          continue;
         case 8:
+          if (tag != 65) {
+            break;
+          }
+
           message.institutionValue = reader.double();
-          break;
+          continue;
         case 9:
+          if (tag != 74) {
+            break;
+          }
+
           message.isoCurrencyCode = reader.string();
-          break;
+          continue;
         case 10:
+          if (tag != 81) {
+            break;
+          }
+
           message.quantity = reader.double();
-          break;
+          continue;
         case 11:
+          if (tag != 90) {
+            break;
+          }
+
           message.securityId = reader.string();
-          break;
+          continue;
         case 12:
+          if (tag != 98) {
+            break;
+          }
+
           message.unofficialCurrencyCode = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -3061,67 +4592,136 @@ export const InvestmentSecurity = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): InvestmentSecurity {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseInvestmentSecurity();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 8) {
+            break;
+          }
+
           message.id = longToNumber(reader.uint64() as Long);
-          break;
+          continue;
         case 2:
+          if (tag != 17) {
+            break;
+          }
+
           message.closePrice = reader.double();
-          break;
+          continue;
         case 3:
+          if (tag != 26) {
+            break;
+          }
+
           message.closePriceAsOf = reader.string();
-          break;
+          continue;
         case 4:
+          if (tag != 34) {
+            break;
+          }
+
           message.cusip = reader.string();
-          break;
+          continue;
         case 5:
+          if (tag != 42) {
+            break;
+          }
+
           message.institutionId = reader.string();
-          break;
+          continue;
         case 6:
+          if (tag != 50) {
+            break;
+          }
+
           message.institutionSecurityId = reader.string();
-          break;
+          continue;
         case 7:
+          if (tag != 56) {
+            break;
+          }
+
           message.isCashEquivalent = reader.bool();
-          break;
+          continue;
         case 8:
+          if (tag != 66) {
+            break;
+          }
+
           message.isin = reader.string();
-          break;
+          continue;
         case 9:
+          if (tag != 74) {
+            break;
+          }
+
           message.isoCurrencyCode = reader.string();
-          break;
+          continue;
         case 10:
+          if (tag != 82) {
+            break;
+          }
+
           message.name = reader.string();
-          break;
+          continue;
         case 11:
+          if (tag != 90) {
+            break;
+          }
+
           message.proxySecurityId = reader.string();
-          break;
+          continue;
         case 12:
+          if (tag != 98) {
+            break;
+          }
+
           message.securityId = reader.string();
-          break;
+          continue;
         case 13:
+          if (tag != 106) {
+            break;
+          }
+
           message.sedol = reader.string();
-          break;
+          continue;
         case 14:
+          if (tag != 114) {
+            break;
+          }
+
           message.tickerSymbol = reader.string();
-          break;
+          continue;
         case 15:
+          if (tag != 122) {
+            break;
+          }
+
           message.type = reader.string();
-          break;
+          continue;
         case 16:
+          if (tag != 130) {
+            break;
+          }
+
           message.unofficialCurrencyCode = reader.string();
-          break;
+          continue;
         case 17:
+          if (tag != 138) {
+            break;
+          }
+
           message.updateDatetime = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -3222,31 +4822,52 @@ export const Apr = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): Apr {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseApr();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 8) {
+            break;
+          }
+
           message.id = longToNumber(reader.uint64() as Long);
-          break;
+          continue;
         case 2:
+          if (tag != 17) {
+            break;
+          }
+
           message.percentage = reader.double();
-          break;
+          continue;
         case 3:
+          if (tag != 26) {
+            break;
+          }
+
           message.type = reader.string();
-          break;
+          continue;
         case 4:
+          if (tag != 33) {
+            break;
+          }
+
           message.balanceSubjectToApr = reader.double();
-          break;
+          continue;
         case 5:
+          if (tag != 41) {
+            break;
+          }
+
           message.interestChargeAmount = reader.double();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },

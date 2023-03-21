@@ -41,7 +41,7 @@ type PlaidWrapperImpl interface {
 	// Sync Plaid synchronizes the given item with Plaid
 	Sync(ctx context.Context, cursor, accessToken *string) (*SyncResult, error)
 	// GetAccounts returns all accounts for the given access token
-	GetAccounts(ctx context.Context, accessToken string, userId uint64, accountIds ...string) ([]*schema.BankAccount, error)
+	GetAccounts(ctx context.Context, accessToken string, userId uint64) ([]*schema.BankAccount, error)
 	// GetAllTransactions returns all transactions for the given access token
 	GetAllTransactions(ctx context.Context, accessToken string, start time.Time, end time.Time, accountIds []string) ([]*schema.Transaction, error)
 	// GetTransactions returns transactions for the given access token

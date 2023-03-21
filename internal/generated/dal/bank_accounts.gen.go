@@ -33,13 +33,13 @@ func newBankAccountORM(db *gorm.DB, opts ...gen.DOOption) bankAccountORM {
 	_bankAccountORM.Currency = field.NewString(tableName, "currency")
 	_bankAccountORM.CurrentFunds = field.NewFloat64(tableName, "current_funds")
 	_bankAccountORM.Id = field.NewUint64(tableName, "id")
+	_bankAccountORM.LinkId = field.NewUint64(tableName, "link_id")
 	_bankAccountORM.Name = field.NewString(tableName, "name")
 	_bankAccountORM.Number = field.NewString(tableName, "number")
 	_bankAccountORM.PlaidAccountId = field.NewString(tableName, "plaid_account_id")
 	_bankAccountORM.Subtype = field.NewString(tableName, "subtype")
 	_bankAccountORM.Type = field.NewString(tableName, "type")
 	_bankAccountORM.UserId = field.NewUint64(tableName, "user_id")
-	_bankAccountORM.UserProfileId = field.NewUint64(tableName, "user_profile_id")
 	_bankAccountORM.Pockets = bankAccountORMHasManyPockets{
 		db: db.Session(&gorm.Session{}),
 
@@ -106,13 +106,13 @@ type bankAccountORM struct {
 	Currency       field.String
 	CurrentFunds   field.Float64
 	Id             field.Uint64
+	LinkId         field.Uint64
 	Name           field.String
 	Number         field.String
 	PlaidAccountId field.String
 	Subtype        field.String
 	Type           field.String
 	UserId         field.Uint64
-	UserProfileId  field.Uint64
 	Pockets        bankAccountORMHasManyPockets
 
 	fieldMap map[string]field.Expr
@@ -135,13 +135,13 @@ func (b *bankAccountORM) updateTableName(table string) *bankAccountORM {
 	b.Currency = field.NewString(table, "currency")
 	b.CurrentFunds = field.NewFloat64(table, "current_funds")
 	b.Id = field.NewUint64(table, "id")
+	b.LinkId = field.NewUint64(table, "link_id")
 	b.Name = field.NewString(table, "name")
 	b.Number = field.NewString(table, "number")
 	b.PlaidAccountId = field.NewString(table, "plaid_account_id")
 	b.Subtype = field.NewString(table, "subtype")
 	b.Type = field.NewString(table, "type")
 	b.UserId = field.NewUint64(table, "user_id")
-	b.UserProfileId = field.NewUint64(table, "user_profile_id")
 
 	b.fillFieldMap()
 
@@ -164,13 +164,13 @@ func (b *bankAccountORM) fillFieldMap() {
 	b.fieldMap["currency"] = b.Currency
 	b.fieldMap["current_funds"] = b.CurrentFunds
 	b.fieldMap["id"] = b.Id
+	b.fieldMap["link_id"] = b.LinkId
 	b.fieldMap["name"] = b.Name
 	b.fieldMap["number"] = b.Number
 	b.fieldMap["plaid_account_id"] = b.PlaidAccountId
 	b.fieldMap["subtype"] = b.Subtype
 	b.fieldMap["type"] = b.Type
 	b.fieldMap["user_id"] = b.UserId
-	b.fieldMap["user_profile_id"] = b.UserProfileId
 
 }
 

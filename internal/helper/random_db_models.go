@@ -275,29 +275,104 @@ func GenerateInvestmentSecurities(securityCount int) []*schema.InvestmentSecurit
 	return securities
 }
 
+func GenerateSingleInvestmentAccount() *schema.InvestmentAccount {
+	return &schema.InvestmentAccount{
+		UserId:         0,
+		Name:           GenerateRandomString(10),
+		Number:         GenerateRandomString(10),
+		Type:           GenerateRandomString(10),
+		Balance:        float32(GenerateRandomId(1000, 10000)),
+		CurrentFunds:   float64(GenerateRandomId(1000, 10000)),
+		BalanceLimit:   uint64(GenerateRandomId(1000, 10000)),
+		PlaidAccountId: GenerateRandomString(10),
+		Subtype:        GenerateRandomString(10),
+		Holdings:       GenerateInvestmentHoldings(10),
+		Securities:     GenerateInvestmentSecurities(10),
+	}
+}
+
+func GenerateInvestmentAccounts(numInvestmentAcct int) []*schema.InvestmentAccount {
+	investmentAccounts := make([]*schema.InvestmentAccount, 0, numInvestmentAcct)
+	for i := 0; i < numInvestmentAcct; i++ {
+		investmentAccounts = append(investmentAccounts, GenerateSingleInvestmentAccount())
+	}
+
+	return investmentAccounts
+}
+
+func GenerateToken() *schema.Token {
+	return &schema.Token{
+		AccessToken: GenerateRandomString(10),
+		ItemId:      GenerateRandomString(10),
+		KeyId:       GenerateRandomString(10),
+		Version:     GenerateRandomString(10),
+	}
+}
+
+func GeneratePlaidLink() *schema.PlaidLink {
+	return &schema.PlaidLink{
+		Products: []string{
+			"transactions",
+			"auth",
+			"identity",
+			"balance",
+			"assets",
+		},
+		WebhookUrl:      "https://webhook.site/4f3b1b1b-1b1b-4f3b-1b1b-4f3b1b1b4f3b",
+		InstitutionId:   GenerateRandomString(10),
+		InstitutionName: GenerateRandomString(10),
+		UsePlaidSync:    false,
+		ItemId:          GenerateRandomString(10),
+	}
+}
+
+func GenerateLink(linkType schema.LinkType) *schema.Link {
+	return &schema.Link{
+		Id:                        0,
+		LinkStatus:                schema.LinkStatus_LINK_STATUS_SUCCESS,
+		PlaidLink:                 GeneratePlaidLink(),
+		PlaidNewAccountsAvailable: false,
+		ExpirationDate:            GenerateRandomString(10),
+		InstitutionName:           GenerateRandomString(10),
+		CustomInstitutionName:     GenerateRandomString(10),
+		Description:               GenerateRandomString(10),
+		LastManualSync:            GenerateRandomString(10),
+		LastSuccessfulUpdate:      GenerateRandomString(10),
+		Token:                     GenerateToken(),
+		BankAccounts:              GenerateBankAccounts(4),
+		InvestmentAccounts:        GenerateInvestmentAccounts(4),
+		CreditAccounts:            GenerateCreditAccounts(10),
+		MortgageAccounts:          GenerateMortgageAccounts(10),
+		PlaidInstitutionId:        GenerateRandomString(10),
+		LinkType:                  linkType,
+	}
+}
+
+func GenerateSingleSubscription() *schema.StripeSubscription {
+	return &schema.StripeSubscription{
+		StripeSubscriptionId:          GenerateRandomString(20),
+		StripeSubscriptionStatus:      schema.StripeSubscriptionStatus_STRIPE_SUBSCRIPTION_STATUS_PAST_DUE,
+		StripeSubscriptionActiveUntil: GenerateRandomString(20),
+		StripeWebhookLatestTimestamp:  GenerateRandomString(20),
+	}
+}
+
+func GenerateStripeSubscriptions(subscriptionCount int) []*schema.StripeSubscription {
+	subscriptions := make([]*schema.StripeSubscription, 0, subscriptionCount)
+	for i := 0; i < subscriptionCount; i++ {
+		subscriptions = append(subscriptions, GenerateSingleSubscription())
+	}
+
+	return subscriptions
+}
+
 func GenereateRandomUserProfileForTest() *schema.UserProfile {
 	return &schema.UserProfile{
-		UserId:       uint64(GenerateRandomId(100000, 3000000)),
-		BankAccounts: GenerateBankAccounts(3),
-		InvestmentAccounts: []*schema.InvestmentAccount{
-			{
-				Id:             0,
-				UserId:         uint64(GenerateRandomId(10000, 30000)),
-				Name:           GenerateRandomString(10),
-				Number:         GenerateRandomString(10),
-				Type:           GenerateRandomString(10),
-				Balance:        float32(GenerateRandomId(1000, 100000)),
-				CurrentFunds:   float64(GenerateRandomId(1000, 100000)),
-				BalanceLimit:   uint64(GenerateRandomId(1000, 100000)),
-				PlaidAccountId: GenerateRandomString(10),
-				Subtype:        GenerateRandomString(10),
-				Holdings:       GenerateInvestmentHoldings(10),
-				Securities:     GenerateInvestmentSecurities(10),
-			},
+		UserId:              uint64(GenerateRandomId(100000, 3000000)),
+		StripeSubscriptions: GenerateStripeSubscriptions(10),
+		Link: []*schema.Link{
+			GenerateLink(schema.LinkType_LINK_TYPE_MANUAL),
+			GenerateLink(schema.LinkType_LINK_TYPE_PLAID),
 		},
-		CreditAccounts:   GenerateCreditAccounts(3),
-		MortgageAccounts: GenerateMortgageAccounts(3),
-		PlaidAccessToken: GenerateRandomString(10),
-		StripeCustomerId: GenerateRandomString(10),
 	}
 }

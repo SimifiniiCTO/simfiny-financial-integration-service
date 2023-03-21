@@ -3,7 +3,11 @@ package apiv1
 // GetDatabaseSchemas returns a suite of database schemas
 func GetDatabaseSchemas() []interface{} {
 	var models = []interface{}{
+		LinkORM{},
+		TokenORM{},
+		PlaidLinkORM{},
 		UserProfileORM{},
+		StripeSubscriptionORM{},
 		StudentLoanAccountORM{},
 		CreditAccountORM{},
 		MortgageAccountORM{},

@@ -39,7 +39,7 @@ func TestServer_EncryptAccessToken(t *testing.T) {
 func TestServer_DecryptUserAccessToken(t *testing.T) {
 	type args struct {
 		ctx         context.Context
-		userProfile *proto.UserProfile
+		token *proto.Token
 	}
 	tests := []struct {
 		name    string
@@ -52,7 +52,7 @@ func TestServer_DecryptUserAccessToken(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := tt.s.DecryptUserAccessToken(tt.args.ctx, tt.args.userProfile)
+			got, err := tt.s.DecryptUserAccessToken(tt.args.ctx, tt.args.token)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("Server.DecryptUserAccessToken() error = %v, wantErr %v", err, tt.wantErr)
 				return

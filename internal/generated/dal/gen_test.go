@@ -86,11 +86,15 @@ func Test_WithContext(t *testing.T) {
 		qCtx.InvesmentHoldingORM.UnderlyingDB().Statement.Context,
 		qCtx.InvestmentAccountORM.UnderlyingDB().Statement.Context,
 		qCtx.InvestmentSecurityORM.UnderlyingDB().Statement.Context,
+		qCtx.LinkORM.UnderlyingDB().Statement.Context,
 		qCtx.MilestoneORM.UnderlyingDB().Statement.Context,
 		qCtx.MortgageAccountORM.UnderlyingDB().Statement.Context,
+		qCtx.PlaidLinkORM.UnderlyingDB().Statement.Context,
 		qCtx.PocketORM.UnderlyingDB().Statement.Context,
 		qCtx.SmartGoalORM.UnderlyingDB().Statement.Context,
+		qCtx.StripeSubscriptionORM.UnderlyingDB().Statement.Context,
 		qCtx.StudentLoanAccountORM.UnderlyingDB().Statement.Context,
+		qCtx.TokenORM.UnderlyingDB().Statement.Context,
 		qCtx.UserProfileORM.UnderlyingDB().Statement.Context,
 	} {
 		if v := ctx.Value(key); v != value {

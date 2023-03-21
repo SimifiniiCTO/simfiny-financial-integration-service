@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
+	"gorm.io/gen/field"
 )
 
 // CreateForecast implements DatabaseOperations
@@ -144,7 +145,7 @@ func (db *Db) DeleteForecast(ctx context.Context, forecastID uint64) error {
 		return fmt.Errorf("forecast with id %d does not exist", forecastID)
 	}
 
-	result, err := f.WithContext(ctx).Where(f.Id.Eq(forecastID)).Delete()
+	result, err := f.WithContext(ctx).Where(f.Id.Eq(forecastID)).Select(field.AssociationFields).Delete()
 	if err != nil {
 		return err
 	}

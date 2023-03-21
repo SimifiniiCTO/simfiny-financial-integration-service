@@ -8,6 +8,7 @@ import (
 	core_database "github.com/SimifiniiCTO/core/core-database"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/dal"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/instrumentation"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/secrets"
 )
 
 // Option is a function that configures a Db
@@ -66,5 +67,12 @@ func WithDatabaseQueryOperator(queryOperator *dal.Query) Option {
 func WithConnection(params *core_database.DatabaseConn) Option {
 	return func(d *Db) {
 		d.Conn = params
+	}
+}
+
+// WithKms configures the database kms
+func WithKms(kms secrets.KeyManagement) Option {
+	return func(d *Db) {
+		d.Kms = kms
 	}
 }

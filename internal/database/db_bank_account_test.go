@@ -14,6 +14,7 @@ func TestDb_CreateBankAccount(t *testing.T) {
 	type args struct {
 		ctx         context.Context
 		userID      uint64
+		linkID      uint64
 		bankAccount *schema.BankAccount
 	}
 	tests := []struct {
@@ -27,24 +28,29 @@ func TestDb_CreateBankAccount(t *testing.T) {
 			args: args{
 				ctx:         context.Background(),
 				userID:      uint64(helper.GenerateRandomId(10000, 3000000)),
+				linkID:      uint64(helper.GenerateRandomId(10000, 3000000)),
 				bankAccount: generateBankAccount(),
 			},
 			shouldCreateProfile: true,
+			wantErr:             false,
 		},
 		{
 			name: "[failure] - create bank account with invalid user id",
 			args: args{
 				ctx:         context.Background(),
 				userID:      0,
+				linkID:      uint64(helper.GenerateRandomId(10000, 3000000)),
 				bankAccount: generateBankAccount(),
 			},
-			wantErr: true,
+			wantErr:             true,
+			shouldCreateProfile: false,
 		},
 		{
 			name: "[failure] - create bank account with invalid bank account",
 			args: args{
 				ctx:         context.Background(),
 				userID:      uint64(helper.GenerateRandomId(10000, 3000000)),
+				linkID:      uint64(helper.GenerateRandomId(10000, 3000000)),
 				bankAccount: nil,
 			},
 			wantErr:             true,
@@ -59,9 +65,15 @@ func TestDb_CreateBankAccount(t *testing.T) {
 					UserId: tt.args.userID,
 				})
 				assert.Nil(t, err)
+
+				// create a link for the given user
+				link, err := conn.CreateLink(tt.args.ctx, tt.args.userID, helper.GenerateLink(schema.LinkType_LINK_TYPE_PLAID))
+				assert.Nil(t, err)
+
+				tt.args.linkID = link.Id
 			}
 
-			got, err := conn.CreateBankAccount(tt.args.ctx, tt.args.userID, tt.args.bankAccount)
+			got, err := conn.CreateBankAccount(tt.args.ctx, tt.args.linkID, tt.args.bankAccount)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("Db.CreateBankAccount() error = %v, wantErr %v", err, tt.wantErr)
 				return
@@ -119,7 +131,11 @@ func TestDb_DeleteBankAccount(t *testing.T) {
 				})
 				assert.Nil(t, err)
 
-				newAcct, err := conn.CreateBankAccount(tt.args.ctx, tt.args.userID, tt.args.bankAccount)
+				// create a link for the given user
+				link, err := conn.CreateLink(tt.args.ctx, tt.args.userID, helper.GenerateLink(schema.LinkType_LINK_TYPE_PLAID))
+				assert.Nil(t, err)
+
+				newAcct, err := conn.CreateBankAccount(tt.args.ctx, link.Id, tt.args.bankAccount)
 				assert.Nil(t, err)
 
 				tt.args.bankAccountID = newAcct.Id
@@ -180,7 +196,11 @@ func TestDb_GetBankAccount(t *testing.T) {
 				})
 				assert.Nil(t, err)
 
-				acct, err := conn.CreateBankAccount(tt.args.ctx, tt.args.userID, tt.args.bankAccount)
+				// create a link for the given user
+				link, err := conn.CreateLink(tt.args.ctx, tt.args.userID, helper.GenerateLink(schema.LinkType_LINK_TYPE_PLAID))
+				assert.Nil(t, err)
+
+				acct, err := conn.CreateBankAccount(tt.args.ctx, link.Id, tt.args.bankAccount)
 				assert.Nil(t, err)
 
 				tt.args.bankAccountID = acct.Id
@@ -244,8 +264,13 @@ func TestDb_UpdateBankAccount(t *testing.T) {
 				})
 				assert.Nil(t, err)
 
-				acct, err := conn.CreateBankAccount(tt.args.ctx, tt.args.userID, tt.args.bankAccount)
+				// create a link for the given user
+				link, err := conn.CreateLink(tt.args.ctx, tt.args.userID, helper.GenerateLink(schema.LinkType_LINK_TYPE_PLAID))
 				assert.Nil(t, err)
+
+				acct, err := conn.CreateBankAccount(tt.args.ctx, link.Id, tt.args.bankAccount)
+				assert.Nil(t, err)
+
 
 				// change the name
 				acct.Name = updateBankAcctName

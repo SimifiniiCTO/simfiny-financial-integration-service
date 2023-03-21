@@ -84,40 +84,73 @@ export const TransactionLocation = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): TransactionLocation {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseTransactionLocation();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.address = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag != 18) {
+            break;
+          }
+
           message.city = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag != 26) {
+            break;
+          }
+
           message.region = reader.string();
-          break;
+          continue;
         case 4:
+          if (tag != 34) {
+            break;
+          }
+
           message.postalCode = reader.string();
-          break;
+          continue;
         case 5:
+          if (tag != 42) {
+            break;
+          }
+
           message.country = reader.string();
-          break;
+          continue;
         case 6:
+          if (tag != 49) {
+            break;
+          }
+
           message.lat = reader.double();
-          break;
+          continue;
         case 7:
+          if (tag != 57) {
+            break;
+          }
+
           message.lon = reader.double();
-          break;
+          continue;
         case 8:
+          if (tag != 66) {
+            break;
+          }
+
           message.storeNumber = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -209,40 +242,73 @@ export const PaymentMeta = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): PaymentMeta {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBasePaymentMeta();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.byOrderOf = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag != 18) {
+            break;
+          }
+
           message.payee = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag != 26) {
+            break;
+          }
+
           message.payer = reader.string();
-          break;
+          continue;
         case 4:
+          if (tag != 34) {
+            break;
+          }
+
           message.paymentMethod = reader.string();
-          break;
+          continue;
         case 5:
+          if (tag != 42) {
+            break;
+          }
+
           message.paymentProcessor = reader.string();
-          break;
+          continue;
         case 6:
+          if (tag != 50) {
+            break;
+          }
+
           message.ppdId = reader.string();
-          break;
+          continue;
         case 7:
+          if (tag != 58) {
+            break;
+          }
+
           message.reason = reader.string();
-          break;
+          continue;
         case 8:
+          if (tag != 66) {
+            break;
+          }
+
           message.referenceNumber = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -386,79 +452,164 @@ export const Transaction = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): Transaction {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseTransaction();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.accountId = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag != 17) {
+            break;
+          }
+
           message.amount = reader.double();
-          break;
+          continue;
         case 3:
+          if (tag != 26) {
+            break;
+          }
+
           message.isoCurrencyCode = reader.string();
-          break;
+          continue;
         case 4:
+          if (tag != 34) {
+            break;
+          }
+
           message.unofficialCurrencyCode = reader.string();
-          break;
+          continue;
         case 5:
+          if (tag != 42) {
+            break;
+          }
+
           message.category.push(reader.string());
-          break;
+          continue;
         case 6:
+          if (tag != 50) {
+            break;
+          }
+
           message.categoryId = reader.string();
-          break;
+          continue;
         case 7:
+          if (tag != 58) {
+            break;
+          }
+
           message.checkNumber = reader.string();
-          break;
+          continue;
         case 8:
+          if (tag != 66) {
+            break;
+          }
+
           message.date = reader.string();
-          break;
+          continue;
         case 9:
+          if (tag != 74) {
+            break;
+          }
+
           message.datetime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
-          break;
+          continue;
         case 10:
+          if (tag != 82) {
+            break;
+          }
+
           message.authorizedDate = reader.string();
-          break;
+          continue;
         case 11:
+          if (tag != 90) {
+            break;
+          }
+
           message.authorizedDatetime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
-          break;
+          continue;
         case 12:
+          if (tag != 98) {
+            break;
+          }
+
           message.location = TransactionLocation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 13:
+          if (tag != 106) {
+            break;
+          }
+
           message.name = reader.string();
-          break;
+          continue;
         case 14:
+          if (tag != 114) {
+            break;
+          }
+
           message.merchantName = reader.string();
-          break;
+          continue;
         case 15:
+          if (tag != 122) {
+            break;
+          }
+
           message.paymentMeta = PaymentMeta.decode(reader, reader.uint32());
-          break;
+          continue;
         case 16:
+          if (tag != 130) {
+            break;
+          }
+
           message.paymentChannel = reader.string();
-          break;
+          continue;
         case 17:
+          if (tag != 136) {
+            break;
+          }
+
           message.pending = reader.bool();
-          break;
+          continue;
         case 18:
+          if (tag != 146) {
+            break;
+          }
+
           message.pendingTransactionId = reader.string();
-          break;
+          continue;
         case 19:
+          if (tag != 154) {
+            break;
+          }
+
           message.accountOwner = reader.string();
-          break;
+          continue;
         case 20:
+          if (tag != 162) {
+            break;
+          }
+
           message.transactionId = reader.string();
-          break;
+          continue;
         case 21:
+          if (tag != 170) {
+            break;
+          }
+
           message.transactionCode = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },

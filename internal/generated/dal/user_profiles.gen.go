@@ -29,121 +29,161 @@ func newUserProfileORM(db *gorm.DB, opts ...gen.DOOption) userProfileORM {
 
 	tableName := _userProfileORM.userProfileORMDo.TableName()
 	_userProfileORM.ALL = field.NewAsterisk(tableName)
-	_userProfileORM.DecryptionAccessTokenKey = field.NewString(tableName, "decryption_access_token_key")
-	_userProfileORM.DecryptionAccessTokenVersion = field.NewString(tableName, "decryption_access_token_version")
 	_userProfileORM.Id = field.NewUint64(tableName, "id")
-	_userProfileORM.PlaidAccessToken = field.NewString(tableName, "plaid_access_token")
-	_userProfileORM.StripeCustomerId = field.NewString(tableName, "stripe_customer_id")
 	_userProfileORM.UserId = field.NewUint64(tableName, "user_id")
-	_userProfileORM.BankAccounts = userProfileORMHasManyBankAccounts{
+	_userProfileORM.Link = userProfileORMHasManyLink{
 		db: db.Session(&gorm.Session{}),
 
-		RelationField: field.NewRelation("BankAccounts", "apiv1.BankAccountORM"),
-		Pockets: struct {
+		RelationField: field.NewRelation("Link", "apiv1.LinkORM"),
+		PlaidLink: struct {
 			field.RelationField
-			Goals struct {
+		}{
+			RelationField: field.NewRelation("Link.PlaidLink", "apiv1.PlaidLinkORM"),
+		},
+		Token: struct {
+			field.RelationField
+		}{
+			RelationField: field.NewRelation("Link.Token", "apiv1.TokenORM"),
+		},
+		BankAccounts: struct {
+			field.RelationField
+			Pockets struct {
 				field.RelationField
-				Forecasts struct {
+				Goals struct {
 					field.RelationField
-				}
-				Milestones struct {
-					field.RelationField
-					Budget struct {
+					Forecasts struct {
 						field.RelationField
-						Category struct {
+					}
+					Milestones struct {
+						field.RelationField
+						Budget struct {
 							field.RelationField
+							Category struct {
+								field.RelationField
+							}
 						}
 					}
 				}
 			}
 		}{
-			RelationField: field.NewRelation("BankAccounts.Pockets", "apiv1.PocketORM"),
-			Goals: struct {
+			RelationField: field.NewRelation("Link.BankAccounts", "apiv1.BankAccountORM"),
+			Pockets: struct {
 				field.RelationField
-				Forecasts struct {
+				Goals struct {
 					field.RelationField
-				}
-				Milestones struct {
-					field.RelationField
-					Budget struct {
+					Forecasts struct {
 						field.RelationField
-						Category struct {
+					}
+					Milestones struct {
+						field.RelationField
+						Budget struct {
 							field.RelationField
+							Category struct {
+								field.RelationField
+							}
 						}
 					}
 				}
 			}{
-				RelationField: field.NewRelation("BankAccounts.Pockets.Goals", "apiv1.SmartGoalORM"),
-				Forecasts: struct {
+				RelationField: field.NewRelation("Link.BankAccounts.Pockets", "apiv1.PocketORM"),
+				Goals: struct {
 					field.RelationField
-				}{
-					RelationField: field.NewRelation("BankAccounts.Pockets.Goals.Forecasts", "apiv1.ForecastORM"),
-				},
-				Milestones: struct {
-					field.RelationField
-					Budget struct {
+					Forecasts struct {
 						field.RelationField
-						Category struct {
+					}
+					Milestones struct {
+						field.RelationField
+						Budget struct {
 							field.RelationField
+							Category struct {
+								field.RelationField
+							}
 						}
 					}
 				}{
-					RelationField: field.NewRelation("BankAccounts.Pockets.Goals.Milestones", "apiv1.MilestoneORM"),
-					Budget: struct {
+					RelationField: field.NewRelation("Link.BankAccounts.Pockets.Goals", "apiv1.SmartGoalORM"),
+					Forecasts: struct {
 						field.RelationField
-						Category struct {
+					}{
+						RelationField: field.NewRelation("Link.BankAccounts.Pockets.Goals.Forecasts", "apiv1.ForecastORM"),
+					},
+					Milestones: struct {
+						field.RelationField
+						Budget struct {
 							field.RelationField
+							Category struct {
+								field.RelationField
+							}
 						}
 					}{
-						RelationField: field.NewRelation("BankAccounts.Pockets.Goals.Milestones.Budget", "apiv1.BudgetORM"),
-						Category: struct {
+						RelationField: field.NewRelation("Link.BankAccounts.Pockets.Goals.Milestones", "apiv1.MilestoneORM"),
+						Budget: struct {
 							field.RelationField
+							Category struct {
+								field.RelationField
+							}
 						}{
-							RelationField: field.NewRelation("BankAccounts.Pockets.Goals.Milestones.Budget.Category", "apiv1.CategoryORM"),
+							RelationField: field.NewRelation("Link.BankAccounts.Pockets.Goals.Milestones.Budget", "apiv1.BudgetORM"),
+							Category: struct {
+								field.RelationField
+							}{
+								RelationField: field.NewRelation("Link.BankAccounts.Pockets.Goals.Milestones.Budget.Category", "apiv1.CategoryORM"),
+							},
 						},
 					},
 				},
 			},
 		},
-	}
-
-	_userProfileORM.CreditAccounts = userProfileORMHasManyCreditAccounts{
-		db: db.Session(&gorm.Session{}),
-
-		RelationField: field.NewRelation("CreditAccounts", "apiv1.CreditAccountORM"),
-		Aprs: struct {
+		CreditAccounts: struct {
+			field.RelationField
+			Aprs struct {
+				field.RelationField
+			}
+		}{
+			RelationField: field.NewRelation("Link.CreditAccounts", "apiv1.CreditAccountORM"),
+			Aprs: struct {
+				field.RelationField
+			}{
+				RelationField: field.NewRelation("Link.CreditAccounts.Aprs", "apiv1.AprORM"),
+			},
+		},
+		InvestmentAccounts: struct {
+			field.RelationField
+			Holdings struct {
+				field.RelationField
+			}
+			Securities struct {
+				field.RelationField
+			}
+		}{
+			RelationField: field.NewRelation("Link.InvestmentAccounts", "apiv1.InvestmentAccountORM"),
+			Holdings: struct {
+				field.RelationField
+			}{
+				RelationField: field.NewRelation("Link.InvestmentAccounts.Holdings", "apiv1.InvesmentHoldingORM"),
+			},
+			Securities: struct {
+				field.RelationField
+			}{
+				RelationField: field.NewRelation("Link.InvestmentAccounts.Securities", "apiv1.InvestmentSecurityORM"),
+			},
+		},
+		MortgageAccounts: struct {
 			field.RelationField
 		}{
-			RelationField: field.NewRelation("CreditAccounts.Aprs", "apiv1.AprORM"),
+			RelationField: field.NewRelation("Link.MortgageAccounts", "apiv1.MortgageAccountORM"),
+		},
+		StudentLoanAccounts: struct {
+			field.RelationField
+		}{
+			RelationField: field.NewRelation("Link.StudentLoanAccounts", "apiv1.StudentLoanAccountORM"),
 		},
 	}
 
-	_userProfileORM.InvestmentAccounts = userProfileORMHasManyInvestmentAccounts{
+	_userProfileORM.StripeSubscriptions = userProfileORMHasManyStripeSubscriptions{
 		db: db.Session(&gorm.Session{}),
 
-		RelationField: field.NewRelation("InvestmentAccounts", "apiv1.InvestmentAccountORM"),
-		Holdings: struct {
-			field.RelationField
-		}{
-			RelationField: field.NewRelation("InvestmentAccounts.Holdings", "apiv1.InvesmentHoldingORM"),
-		},
-		Securities: struct {
-			field.RelationField
-		}{
-			RelationField: field.NewRelation("InvestmentAccounts.Securities", "apiv1.InvestmentSecurityORM"),
-		},
-	}
-
-	_userProfileORM.MortgageAccounts = userProfileORMHasManyMortgageAccounts{
-		db: db.Session(&gorm.Session{}),
-
-		RelationField: field.NewRelation("MortgageAccounts", "apiv1.MortgageAccountORM"),
-	}
-
-	_userProfileORM.StudentLoanAccounts = userProfileORMHasManyStudentLoanAccounts{
-		db: db.Session(&gorm.Session{}),
-
-		RelationField: field.NewRelation("StudentLoanAccounts", "apiv1.StudentLoanAccountORM"),
+		RelationField: field.NewRelation("StripeSubscriptions", "apiv1.StripeSubscriptionORM"),
 	}
 
 	_userProfileORM.fillFieldMap()
@@ -154,22 +194,12 @@ func newUserProfileORM(db *gorm.DB, opts ...gen.DOOption) userProfileORM {
 type userProfileORM struct {
 	userProfileORMDo
 
-	ALL                          field.Asterisk
-	DecryptionAccessTokenKey     field.String
-	DecryptionAccessTokenVersion field.String
-	Id                           field.Uint64
-	PlaidAccessToken             field.String
-	StripeCustomerId             field.String
-	UserId                       field.Uint64
-	BankAccounts                 userProfileORMHasManyBankAccounts
+	ALL    field.Asterisk
+	Id     field.Uint64
+	UserId field.Uint64
+	Link   userProfileORMHasManyLink
 
-	CreditAccounts userProfileORMHasManyCreditAccounts
-
-	InvestmentAccounts userProfileORMHasManyInvestmentAccounts
-
-	MortgageAccounts userProfileORMHasManyMortgageAccounts
-
-	StudentLoanAccounts userProfileORMHasManyStudentLoanAccounts
+	StripeSubscriptions userProfileORMHasManyStripeSubscriptions
 
 	fieldMap map[string]field.Expr
 }
@@ -186,11 +216,7 @@ func (u userProfileORM) As(alias string) *userProfileORM {
 
 func (u *userProfileORM) updateTableName(table string) *userProfileORM {
 	u.ALL = field.NewAsterisk(table)
-	u.DecryptionAccessTokenKey = field.NewString(table, "decryption_access_token_key")
-	u.DecryptionAccessTokenVersion = field.NewString(table, "decryption_access_token_version")
 	u.Id = field.NewUint64(table, "id")
-	u.PlaidAccessToken = field.NewString(table, "plaid_access_token")
-	u.StripeCustomerId = field.NewString(table, "stripe_customer_id")
 	u.UserId = field.NewUint64(table, "user_id")
 
 	u.fillFieldMap()
@@ -208,12 +234,8 @@ func (u *userProfileORM) GetFieldByName(fieldName string) (field.OrderExpr, bool
 }
 
 func (u *userProfileORM) fillFieldMap() {
-	u.fieldMap = make(map[string]field.Expr, 11)
-	u.fieldMap["decryption_access_token_key"] = u.DecryptionAccessTokenKey
-	u.fieldMap["decryption_access_token_version"] = u.DecryptionAccessTokenVersion
+	u.fieldMap = make(map[string]field.Expr, 4)
 	u.fieldMap["id"] = u.Id
-	u.fieldMap["plaid_access_token"] = u.PlaidAccessToken
-	u.fieldMap["stripe_customer_id"] = u.StripeCustomerId
 	u.fieldMap["user_id"] = u.UserId
 
 }
@@ -228,102 +250,62 @@ func (u userProfileORM) replaceDB(db *gorm.DB) userProfileORM {
 	return u
 }
 
-type userProfileORMHasManyBankAccounts struct {
+type userProfileORMHasManyLink struct {
 	db *gorm.DB
 
 	field.RelationField
 
-	Pockets struct {
+	PlaidLink struct {
 		field.RelationField
-		Goals struct {
+	}
+	Token struct {
+		field.RelationField
+	}
+	BankAccounts struct {
+		field.RelationField
+		Pockets struct {
 			field.RelationField
-			Forecasts struct {
+			Goals struct {
 				field.RelationField
-			}
-			Milestones struct {
-				field.RelationField
-				Budget struct {
+				Forecasts struct {
 					field.RelationField
-					Category struct {
+				}
+				Milestones struct {
+					field.RelationField
+					Budget struct {
 						field.RelationField
+						Category struct {
+							field.RelationField
+						}
 					}
 				}
 			}
 		}
 	}
-}
-
-func (a userProfileORMHasManyBankAccounts) Where(conds ...field.Expr) *userProfileORMHasManyBankAccounts {
-	if len(conds) == 0 {
-		return &a
+	CreditAccounts struct {
+		field.RelationField
+		Aprs struct {
+			field.RelationField
+		}
 	}
-
-	exprs := make([]clause.Expression, 0, len(conds))
-	for _, cond := range conds {
-		exprs = append(exprs, cond.BeCond().(clause.Expression))
+	InvestmentAccounts struct {
+		field.RelationField
+		Holdings struct {
+			field.RelationField
+		}
+		Securities struct {
+			field.RelationField
+		}
 	}
-	a.db = a.db.Clauses(clause.Where{Exprs: exprs})
-	return &a
-}
-
-func (a userProfileORMHasManyBankAccounts) WithContext(ctx context.Context) *userProfileORMHasManyBankAccounts {
-	a.db = a.db.WithContext(ctx)
-	return &a
-}
-
-func (a userProfileORMHasManyBankAccounts) Model(m *apiv1.UserProfileORM) *userProfileORMHasManyBankAccountsTx {
-	return &userProfileORMHasManyBankAccountsTx{a.db.Model(m).Association(a.Name())}
-}
-
-type userProfileORMHasManyBankAccountsTx struct{ tx *gorm.Association }
-
-func (a userProfileORMHasManyBankAccountsTx) Find() (result []*apiv1.BankAccountORM, err error) {
-	return result, a.tx.Find(&result)
-}
-
-func (a userProfileORMHasManyBankAccountsTx) Append(values ...*apiv1.BankAccountORM) (err error) {
-	targetValues := make([]interface{}, len(values))
-	for i, v := range values {
-		targetValues[i] = v
+	MortgageAccounts struct {
+		field.RelationField
 	}
-	return a.tx.Append(targetValues...)
-}
-
-func (a userProfileORMHasManyBankAccountsTx) Replace(values ...*apiv1.BankAccountORM) (err error) {
-	targetValues := make([]interface{}, len(values))
-	for i, v := range values {
-		targetValues[i] = v
-	}
-	return a.tx.Replace(targetValues...)
-}
-
-func (a userProfileORMHasManyBankAccountsTx) Delete(values ...*apiv1.BankAccountORM) (err error) {
-	targetValues := make([]interface{}, len(values))
-	for i, v := range values {
-		targetValues[i] = v
-	}
-	return a.tx.Delete(targetValues...)
-}
-
-func (a userProfileORMHasManyBankAccountsTx) Clear() error {
-	return a.tx.Clear()
-}
-
-func (a userProfileORMHasManyBankAccountsTx) Count() int64 {
-	return a.tx.Count()
-}
-
-type userProfileORMHasManyCreditAccounts struct {
-	db *gorm.DB
-
-	field.RelationField
-
-	Aprs struct {
+	StudentLoanAccounts struct {
 		field.RelationField
 	}
 }
 
-func (a userProfileORMHasManyCreditAccounts) Where(conds ...field.Expr) *userProfileORMHasManyCreditAccounts {
+func (a userProfileORMHasManyLink) Where(conds ...field.Expr) *userProfileORMHasManyLink {
 	if len(conds) == 0 {
 		return &a
 	}
@@ -336,22 +318,22 @@ func (a userProfileORMHasManyCreditAccounts) Where(conds ...field.Expr) *userPro
 	return &a
 }
 
-func (a userProfileORMHasManyCreditAccounts) WithContext(ctx context.Context) *userProfileORMHasManyCreditAccounts {
+func (a userProfileORMHasManyLink) WithContext(ctx context.Context) *userProfileORMHasManyLink {
 	a.db = a.db.WithContext(ctx)
 	return &a
 }
 
-func (a userProfileORMHasManyCreditAccounts) Model(m *apiv1.UserProfileORM) *userProfileORMHasManyCreditAccountsTx {
-	return &userProfileORMHasManyCreditAccountsTx{a.db.Model(m).Association(a.Name())}
+func (a userProfileORMHasManyLink) Model(m *apiv1.UserProfileORM) *userProfileORMHasManyLinkTx {
+	return &userProfileORMHasManyLinkTx{a.db.Model(m).Association(a.Name())}
 }
 
-type userProfileORMHasManyCreditAccountsTx struct{ tx *gorm.Association }
+type userProfileORMHasManyLinkTx struct{ tx *gorm.Association }
 
-func (a userProfileORMHasManyCreditAccountsTx) Find() (result []*apiv1.CreditAccountORM, err error) {
+func (a userProfileORMHasManyLinkTx) Find() (result []*apiv1.LinkORM, err error) {
 	return result, a.tx.Find(&result)
 }
 
-func (a userProfileORMHasManyCreditAccountsTx) Append(values ...*apiv1.CreditAccountORM) (err error) {
+func (a userProfileORMHasManyLinkTx) Append(values ...*apiv1.LinkORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -359,7 +341,7 @@ func (a userProfileORMHasManyCreditAccountsTx) Append(values ...*apiv1.CreditAcc
 	return a.tx.Append(targetValues...)
 }
 
-func (a userProfileORMHasManyCreditAccountsTx) Replace(values ...*apiv1.CreditAccountORM) (err error) {
+func (a userProfileORMHasManyLinkTx) Replace(values ...*apiv1.LinkORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -367,7 +349,7 @@ func (a userProfileORMHasManyCreditAccountsTx) Replace(values ...*apiv1.CreditAc
 	return a.tx.Replace(targetValues...)
 }
 
-func (a userProfileORMHasManyCreditAccountsTx) Delete(values ...*apiv1.CreditAccountORM) (err error) {
+func (a userProfileORMHasManyLinkTx) Delete(values ...*apiv1.LinkORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -375,94 +357,21 @@ func (a userProfileORMHasManyCreditAccountsTx) Delete(values ...*apiv1.CreditAcc
 	return a.tx.Delete(targetValues...)
 }
 
-func (a userProfileORMHasManyCreditAccountsTx) Clear() error {
+func (a userProfileORMHasManyLinkTx) Clear() error {
 	return a.tx.Clear()
 }
 
-func (a userProfileORMHasManyCreditAccountsTx) Count() int64 {
+func (a userProfileORMHasManyLinkTx) Count() int64 {
 	return a.tx.Count()
 }
 
-type userProfileORMHasManyInvestmentAccounts struct {
-	db *gorm.DB
-
-	field.RelationField
-
-	Holdings struct {
-		field.RelationField
-	}
-	Securities struct {
-		field.RelationField
-	}
-}
-
-func (a userProfileORMHasManyInvestmentAccounts) Where(conds ...field.Expr) *userProfileORMHasManyInvestmentAccounts {
-	if len(conds) == 0 {
-		return &a
-	}
-
-	exprs := make([]clause.Expression, 0, len(conds))
-	for _, cond := range conds {
-		exprs = append(exprs, cond.BeCond().(clause.Expression))
-	}
-	a.db = a.db.Clauses(clause.Where{Exprs: exprs})
-	return &a
-}
-
-func (a userProfileORMHasManyInvestmentAccounts) WithContext(ctx context.Context) *userProfileORMHasManyInvestmentAccounts {
-	a.db = a.db.WithContext(ctx)
-	return &a
-}
-
-func (a userProfileORMHasManyInvestmentAccounts) Model(m *apiv1.UserProfileORM) *userProfileORMHasManyInvestmentAccountsTx {
-	return &userProfileORMHasManyInvestmentAccountsTx{a.db.Model(m).Association(a.Name())}
-}
-
-type userProfileORMHasManyInvestmentAccountsTx struct{ tx *gorm.Association }
-
-func (a userProfileORMHasManyInvestmentAccountsTx) Find() (result []*apiv1.InvestmentAccountORM, err error) {
-	return result, a.tx.Find(&result)
-}
-
-func (a userProfileORMHasManyInvestmentAccountsTx) Append(values ...*apiv1.InvestmentAccountORM) (err error) {
-	targetValues := make([]interface{}, len(values))
-	for i, v := range values {
-		targetValues[i] = v
-	}
-	return a.tx.Append(targetValues...)
-}
-
-func (a userProfileORMHasManyInvestmentAccountsTx) Replace(values ...*apiv1.InvestmentAccountORM) (err error) {
-	targetValues := make([]interface{}, len(values))
-	for i, v := range values {
-		targetValues[i] = v
-	}
-	return a.tx.Replace(targetValues...)
-}
-
-func (a userProfileORMHasManyInvestmentAccountsTx) Delete(values ...*apiv1.InvestmentAccountORM) (err error) {
-	targetValues := make([]interface{}, len(values))
-	for i, v := range values {
-		targetValues[i] = v
-	}
-	return a.tx.Delete(targetValues...)
-}
-
-func (a userProfileORMHasManyInvestmentAccountsTx) Clear() error {
-	return a.tx.Clear()
-}
-
-func (a userProfileORMHasManyInvestmentAccountsTx) Count() int64 {
-	return a.tx.Count()
-}
-
-type userProfileORMHasManyMortgageAccounts struct {
+type userProfileORMHasManyStripeSubscriptions struct {
 	db *gorm.DB
 
 	field.RelationField
 }
 
-func (a userProfileORMHasManyMortgageAccounts) Where(conds ...field.Expr) *userProfileORMHasManyMortgageAccounts {
+func (a userProfileORMHasManyStripeSubscriptions) Where(conds ...field.Expr) *userProfileORMHasManyStripeSubscriptions {
 	if len(conds) == 0 {
 		return &a
 	}
@@ -475,22 +384,22 @@ func (a userProfileORMHasManyMortgageAccounts) Where(conds ...field.Expr) *userP
 	return &a
 }
 
-func (a userProfileORMHasManyMortgageAccounts) WithContext(ctx context.Context) *userProfileORMHasManyMortgageAccounts {
+func (a userProfileORMHasManyStripeSubscriptions) WithContext(ctx context.Context) *userProfileORMHasManyStripeSubscriptions {
 	a.db = a.db.WithContext(ctx)
 	return &a
 }
 
-func (a userProfileORMHasManyMortgageAccounts) Model(m *apiv1.UserProfileORM) *userProfileORMHasManyMortgageAccountsTx {
-	return &userProfileORMHasManyMortgageAccountsTx{a.db.Model(m).Association(a.Name())}
+func (a userProfileORMHasManyStripeSubscriptions) Model(m *apiv1.UserProfileORM) *userProfileORMHasManyStripeSubscriptionsTx {
+	return &userProfileORMHasManyStripeSubscriptionsTx{a.db.Model(m).Association(a.Name())}
 }
 
-type userProfileORMHasManyMortgageAccountsTx struct{ tx *gorm.Association }
+type userProfileORMHasManyStripeSubscriptionsTx struct{ tx *gorm.Association }
 
-func (a userProfileORMHasManyMortgageAccountsTx) Find() (result []*apiv1.MortgageAccountORM, err error) {
+func (a userProfileORMHasManyStripeSubscriptionsTx) Find() (result []*apiv1.StripeSubscriptionORM, err error) {
 	return result, a.tx.Find(&result)
 }
 
-func (a userProfileORMHasManyMortgageAccountsTx) Append(values ...*apiv1.MortgageAccountORM) (err error) {
+func (a userProfileORMHasManyStripeSubscriptionsTx) Append(values ...*apiv1.StripeSubscriptionORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -498,7 +407,7 @@ func (a userProfileORMHasManyMortgageAccountsTx) Append(values ...*apiv1.Mortgag
 	return a.tx.Append(targetValues...)
 }
 
-func (a userProfileORMHasManyMortgageAccountsTx) Replace(values ...*apiv1.MortgageAccountORM) (err error) {
+func (a userProfileORMHasManyStripeSubscriptionsTx) Replace(values ...*apiv1.StripeSubscriptionORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -506,7 +415,7 @@ func (a userProfileORMHasManyMortgageAccountsTx) Replace(values ...*apiv1.Mortga
 	return a.tx.Replace(targetValues...)
 }
 
-func (a userProfileORMHasManyMortgageAccountsTx) Delete(values ...*apiv1.MortgageAccountORM) (err error) {
+func (a userProfileORMHasManyStripeSubscriptionsTx) Delete(values ...*apiv1.StripeSubscriptionORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -514,77 +423,11 @@ func (a userProfileORMHasManyMortgageAccountsTx) Delete(values ...*apiv1.Mortgag
 	return a.tx.Delete(targetValues...)
 }
 
-func (a userProfileORMHasManyMortgageAccountsTx) Clear() error {
+func (a userProfileORMHasManyStripeSubscriptionsTx) Clear() error {
 	return a.tx.Clear()
 }
 
-func (a userProfileORMHasManyMortgageAccountsTx) Count() int64 {
-	return a.tx.Count()
-}
-
-type userProfileORMHasManyStudentLoanAccounts struct {
-	db *gorm.DB
-
-	field.RelationField
-}
-
-func (a userProfileORMHasManyStudentLoanAccounts) Where(conds ...field.Expr) *userProfileORMHasManyStudentLoanAccounts {
-	if len(conds) == 0 {
-		return &a
-	}
-
-	exprs := make([]clause.Expression, 0, len(conds))
-	for _, cond := range conds {
-		exprs = append(exprs, cond.BeCond().(clause.Expression))
-	}
-	a.db = a.db.Clauses(clause.Where{Exprs: exprs})
-	return &a
-}
-
-func (a userProfileORMHasManyStudentLoanAccounts) WithContext(ctx context.Context) *userProfileORMHasManyStudentLoanAccounts {
-	a.db = a.db.WithContext(ctx)
-	return &a
-}
-
-func (a userProfileORMHasManyStudentLoanAccounts) Model(m *apiv1.UserProfileORM) *userProfileORMHasManyStudentLoanAccountsTx {
-	return &userProfileORMHasManyStudentLoanAccountsTx{a.db.Model(m).Association(a.Name())}
-}
-
-type userProfileORMHasManyStudentLoanAccountsTx struct{ tx *gorm.Association }
-
-func (a userProfileORMHasManyStudentLoanAccountsTx) Find() (result []*apiv1.StudentLoanAccountORM, err error) {
-	return result, a.tx.Find(&result)
-}
-
-func (a userProfileORMHasManyStudentLoanAccountsTx) Append(values ...*apiv1.StudentLoanAccountORM) (err error) {
-	targetValues := make([]interface{}, len(values))
-	for i, v := range values {
-		targetValues[i] = v
-	}
-	return a.tx.Append(targetValues...)
-}
-
-func (a userProfileORMHasManyStudentLoanAccountsTx) Replace(values ...*apiv1.StudentLoanAccountORM) (err error) {
-	targetValues := make([]interface{}, len(values))
-	for i, v := range values {
-		targetValues[i] = v
-	}
-	return a.tx.Replace(targetValues...)
-}
-
-func (a userProfileORMHasManyStudentLoanAccountsTx) Delete(values ...*apiv1.StudentLoanAccountORM) (err error) {
-	targetValues := make([]interface{}, len(values))
-	for i, v := range values {
-		targetValues[i] = v
-	}
-	return a.tx.Delete(targetValues...)
-}
-
-func (a userProfileORMHasManyStudentLoanAccountsTx) Clear() error {
-	return a.tx.Clear()
-}
-
-func (a userProfileORMHasManyStudentLoanAccountsTx) Count() int64 {
+func (a userProfileORMHasManyStripeSubscriptionsTx) Count() int64 {
 	return a.tx.Count()
 }
 

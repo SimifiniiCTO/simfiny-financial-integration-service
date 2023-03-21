@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
+	"gorm.io/gen/field"
 )
 
 // DeleteGoal implements DatabaseOperations
@@ -24,7 +25,7 @@ func (db *Db) DeleteGoal(ctx context.Context, goalID uint64) error {
 		return fmt.Errorf("goal with id %d does not exist", goalID)
 	}
 
-	result, err := g.WithContext(ctx).Where(g.Id.Eq(goalID)).Delete()
+	result, err := g.WithContext(ctx).Where(g.Id.Eq(goalID)).Select(field.AssociationFields).Delete()
 	if err != nil {
 		return err
 	}

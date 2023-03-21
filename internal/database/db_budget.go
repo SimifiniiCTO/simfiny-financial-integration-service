@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
+	"gorm.io/gen/field"
 )
 
 // DeleteBudget implements DatabaseOperations
@@ -25,7 +26,7 @@ func (db *Db) DeleteBudget(ctx context.Context, budgetID uint64) error {
 	}
 
 	// perform the delete operation
-	result, err := b.WithContext(ctx).Where(b.Id.Eq(budgetID)).Delete()
+	result, err := b.WithContext(ctx).Where(b.Id.Eq(budgetID)).Select(field.AssociationFields).Delete()
 	if err != nil {
 		return err
 	}

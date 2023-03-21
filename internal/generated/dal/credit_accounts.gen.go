@@ -37,6 +37,7 @@ func newCreditAccountORM(db *gorm.DB, opts ...gen.DOOption) creditAccountORM {
 	_creditAccountORM.LastPaymentDate = field.NewString(tableName, "last_payment_date")
 	_creditAccountORM.LastStatementBalance = field.NewFloat64(tableName, "last_statement_balance")
 	_creditAccountORM.LastStatementIssueDate = field.NewString(tableName, "last_statement_issue_date")
+	_creditAccountORM.LinkId = field.NewUint64(tableName, "link_id")
 	_creditAccountORM.MinimumAmountDueDate = field.NewFloat64(tableName, "minimum_amount_due_date")
 	_creditAccountORM.MinimumPaymentAmount = field.NewFloat64(tableName, "minimum_payment_amount")
 	_creditAccountORM.Name = field.NewString(tableName, "name")
@@ -47,7 +48,6 @@ func newCreditAccountORM(db *gorm.DB, opts ...gen.DOOption) creditAccountORM {
 	_creditAccountORM.Subtype = field.NewString(tableName, "subtype")
 	_creditAccountORM.Type = field.NewString(tableName, "type")
 	_creditAccountORM.UserId = field.NewUint64(tableName, "user_id")
-	_creditAccountORM.UserProfileId = field.NewUint64(tableName, "user_profile_id")
 	_creditAccountORM.Aprs = creditAccountORMHasManyAprs{
 		db: db.Session(&gorm.Session{}),
 
@@ -72,6 +72,7 @@ type creditAccountORM struct {
 	LastPaymentDate        field.String
 	LastStatementBalance   field.Float64
 	LastStatementIssueDate field.String
+	LinkId                 field.Uint64
 	MinimumAmountDueDate   field.Float64
 	MinimumPaymentAmount   field.Float64
 	Name                   field.String
@@ -82,7 +83,6 @@ type creditAccountORM struct {
 	Subtype                field.String
 	Type                   field.String
 	UserId                 field.Uint64
-	UserProfileId          field.Uint64
 	Aprs                   creditAccountORMHasManyAprs
 
 	fieldMap map[string]field.Expr
@@ -109,6 +109,7 @@ func (c *creditAccountORM) updateTableName(table string) *creditAccountORM {
 	c.LastPaymentDate = field.NewString(table, "last_payment_date")
 	c.LastStatementBalance = field.NewFloat64(table, "last_statement_balance")
 	c.LastStatementIssueDate = field.NewString(table, "last_statement_issue_date")
+	c.LinkId = field.NewUint64(table, "link_id")
 	c.MinimumAmountDueDate = field.NewFloat64(table, "minimum_amount_due_date")
 	c.MinimumPaymentAmount = field.NewFloat64(table, "minimum_payment_amount")
 	c.Name = field.NewString(table, "name")
@@ -119,7 +120,6 @@ func (c *creditAccountORM) updateTableName(table string) *creditAccountORM {
 	c.Subtype = field.NewString(table, "subtype")
 	c.Type = field.NewString(table, "type")
 	c.UserId = field.NewUint64(table, "user_id")
-	c.UserProfileId = field.NewUint64(table, "user_profile_id")
 
 	c.fillFieldMap()
 
@@ -146,6 +146,7 @@ func (c *creditAccountORM) fillFieldMap() {
 	c.fieldMap["last_payment_date"] = c.LastPaymentDate
 	c.fieldMap["last_statement_balance"] = c.LastStatementBalance
 	c.fieldMap["last_statement_issue_date"] = c.LastStatementIssueDate
+	c.fieldMap["link_id"] = c.LinkId
 	c.fieldMap["minimum_amount_due_date"] = c.MinimumAmountDueDate
 	c.fieldMap["minimum_payment_amount"] = c.MinimumPaymentAmount
 	c.fieldMap["name"] = c.Name
@@ -156,7 +157,6 @@ func (c *creditAccountORM) fillFieldMap() {
 	c.fieldMap["subtype"] = c.Subtype
 	c.fieldMap["type"] = c.Type
 	c.fieldMap["user_id"] = c.UserId
-	c.fieldMap["user_profile_id"] = c.UserProfileId
 
 }
 

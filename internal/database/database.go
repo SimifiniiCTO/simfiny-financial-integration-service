@@ -12,6 +12,7 @@ import (
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/dal"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/instrumentation"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/secrets"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/service_errors"
 )
 
@@ -113,6 +114,8 @@ type Db struct {
 	Instrumentation *instrumentation.ServiceTelemetry
 	// QueryOperator is the object that will be used to execute database queries
 	QueryOperator *dal.Query
+	// Kms is the object that will be used to encrypt and decrypt sensitive data
+	Kms secrets.KeyManagement
 }
 
 var _ DatabaseOperations = (*Db)(nil)

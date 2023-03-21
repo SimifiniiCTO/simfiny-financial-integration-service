@@ -2,11 +2,13 @@ package grpc
 
 import (
 	"context"
+	"time"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
 	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/plaidhandler"
 )
 
 type accessTokenMeta struct {
@@ -47,29 +49,112 @@ func (s *Server) PlaidExchangeToken(ctx context.Context, req *proto.PlaidExchang
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	// ensure the user profile making the request actually exists
-	userProfile, err := s.conn.GetUserProfileByUserID(ctx, req.UserId)
-	if err != nil {
-		return nil, status.Error(codes.Internal, err.Error())
+	// ensure the itemID is not already in use by the user
+	// (meaning the user does not have duplicate login events with the same account registered on our backend)
+	if _, err := s.conn.LinkExistsForItem(ctx, req.UserId, token.ItemId); err == nil {
+		return nil, status.Error(codes.AlreadyExists, "item already exists for user")
 	}
 
-	// cryptographically hash the access token before storing it
-	// TODO: refactor this - may not nott to store decryption key
-	meta, err := s.EncryptAccessToken(ctx, token.AccessToken)
-	if err != nil {
-		return nil, status.Error(codes.Internal, err.Error())
-	}
-
-	// populate the user profile with the access token and necessary decryption keys
-	userProfile.PlaidAccessToken = meta.accessToken
-	userProfile.DecryptionAccessTokenKey = meta.keyID
-	userProfile.DecryptionAccessTokenVersion = meta.version
-
-	if err := s.conn.UpdateUserProfile(ctx, userProfile); err != nil {
+	// store a reference to the link in the database
+	if _, err := s.createAndStoreLink(ctx, req.UserId, &tokenExchCallbackMetadata{
+		item_token:       token,
+		item_id:          &token.ItemId,
+		institution_id:   &req.InstitutionId,
+		institution_name: &req.InstitutionName,
+	}); err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
 	return &proto.PlaidExchangeTokenResponse{
 		Success: true,
 	}, nil
+}
+
+type tokenExchCallbackMetadata struct {
+	item_token       *plaidhandler.ItemToken
+	item_id          *string
+	institution_id   *string
+	institution_name *string
+}
+
+func (t *tokenExchCallbackMetadata) validate() error {
+	if t.item_token == nil || t.item_id == nil || t.institution_id == nil || t.institution_name == nil {
+		return status.Error(codes.InvalidArgument, "missing itemToken or itemID or institution_id or institution_name")
+	}
+
+	return nil
+}
+
+// createAndStoreLink creates a new link and stores it in the database and pull connected accounts as well as trigger
+// background operations to sync the account's transactions
+func (s *Server) createAndStoreLink(ctx context.Context, userID uint64, meta *tokenExchCallbackMetadata) (*uint64, error) {
+	var (
+		handler = s.plaidClient
+	)
+
+	if userID == 0 {
+		return nil, status.Error(codes.InvalidArgument, "missing userID")
+	}
+
+	if err := meta.validate(); err != nil {
+		return nil, err
+	}
+
+	accessToken := meta.item_token.AccessToken
+	products := plaidhandler.PlaidProductStrings()
+	webhookUrl := handler.GetWebhooksURL()
+
+	// cryptographically hash the access token before storing it
+	res, err := s.EncryptAccessToken(ctx, accessToken)
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	token := &proto.Token{
+		ItemId:      *meta.item_id,
+		KeyId:       res.keyID,
+		AccessToken: res.accessToken,
+		Version:     res.version,
+	}
+
+	plaidLink := &proto.PlaidLink{
+		Products:        products,
+		WebhookUrl:      webhookUrl,
+		InstitutionId:   *meta.institution_id,
+		InstitutionName: *meta.institution_name,
+		UsePlaidSync:    true,
+		ItemId:          *meta.item_id,
+	}
+
+	// create a reference to a new link and store it in the database
+	link := &proto.Link{
+		LinkStatus:                proto.LinkStatus_LINK_STATUS_PENDING, // successfully exchanged public token for access token
+		PlaidLink:                 plaidLink,                            // plaid link object
+		PlaidNewAccountsAvailable: false,                                // identifier wether new accounts are available
+		InstitutionName:           *meta.institution_name,               // institution name
+		LastSuccessfulUpdate:      time.Now().String(),                  // last successful update
+		Token:                     token,                                // access token
+		PlaidInstitutionId:        *meta.institution_id,                 // plaid institution id
+		LinkType:                  proto.LinkType_LINK_TYPE_PLAID,       // link type
+	}
+
+	// retrieve links bank accounts
+	link.BankAccounts, err = handler.GetAccounts(ctx, accessToken, userID)
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	result, err := s.conn.CreateLink(ctx, userID, link)
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	// kick off a background job to fetch the account transactions
+	/*if plaidLink.UsePlaidSync {
+		// kick off a background job to pull transactions by use of plaid sync
+	} else {
+		// kick off background job to pull transactions
+	}*/
+
+	return &result.Id, nil
 }

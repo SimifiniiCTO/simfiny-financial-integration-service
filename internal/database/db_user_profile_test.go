@@ -116,8 +116,7 @@ func TestDb_DeleteUserProfileByUserID(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			if tt.shouldCreateRecord {
 				newprofile := &schema.UserProfile{
-					UserId:           tt.args.userID,
-					PlaidAccessToken: helper.GenerateRandomString(30),
+					UserId: tt.args.userID,
 				}
 
 				_, err := conn.CreateUserProfile(tt.args.ctx, newprofile)
@@ -157,7 +156,7 @@ func TestDb_UpdateUserProfile(t *testing.T) {
 			description: "update a valid user that is already existing",
 			args: args{
 				ctx:     context.Background(),
-				profile: genereateRandomUserProfileForTest(),
+				profile: helper.GenereateRandomUserProfileForTest(),
 			},
 			shouldCreateRecord: true,
 			wantErr:            false,
@@ -210,7 +209,7 @@ func TestDb_UpdateUserProfile(t *testing.T) {
 }
 
 func TestDb_GetUserProfileByUserID(t *testing.T) {
-	validUserProfile := genereateRandomUserProfileForTest()
+	validUserProfile := helper.GenereateRandomUserProfileForTest()
 
 	type args struct {
 		ctx         context.Context
@@ -278,8 +277,8 @@ func TestDb_GetUserProfileByUserID(t *testing.T) {
 
 			if !tt.wantErr {
 				assert.Equal(t, tt.args.userProfile.UserId, got.UserId)
-				assert.NotNil(t, got.BankAccounts)
-				assert.NotNil(t, got.CreditAccounts)
+				assert.NotNil(t, got.Link)
+				assert.NotNil(t, got.Id)
 			}
 		})
 	}

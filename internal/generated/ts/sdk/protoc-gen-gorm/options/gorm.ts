@@ -130,16 +130,17 @@ export const GormFileOptions = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): GormFileOptions {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGormFileOptions();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -185,28 +186,45 @@ export const GormMessageOptions = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): GormMessageOptions {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGormMessageOptions();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 8) {
+            break;
+          }
+
           message.ormable = reader.bool();
-          break;
+          continue;
         case 2:
+          if (tag != 18) {
+            break;
+          }
+
           message.include.push(ExtraField.decode(reader, reader.uint32()));
-          break;
+          continue;
         case 3:
+          if (tag != 26) {
+            break;
+          }
+
           message.table = reader.string();
-          break;
+          continue;
         case 4:
+          if (tag != 32) {
+            break;
+          }
+
           message.multiAccount = reader.bool();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -269,28 +287,45 @@ export const ExtraField = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ExtraField {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseExtraField();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.type = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag != 18) {
+            break;
+          }
+
           message.name = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag != 26) {
+            break;
+          }
+
           message.tag = GormTag.decode(reader, reader.uint32());
-          break;
+          continue;
         case 4:
+          if (tag != 34) {
+            break;
+          }
+
           message.package = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -366,37 +401,66 @@ export const GormFieldOptions = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): GormFieldOptions {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGormFieldOptions();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.tag = GormTag.decode(reader, reader.uint32());
-          break;
+          continue;
         case 2:
+          if (tag != 16) {
+            break;
+          }
+
           message.drop = reader.bool();
-          break;
+          continue;
         case 3:
+          if (tag != 26) {
+            break;
+          }
+
           message.hasOne = HasOneOptions.decode(reader, reader.uint32());
-          break;
+          continue;
         case 4:
+          if (tag != 34) {
+            break;
+          }
+
           message.belongsTo = BelongsToOptions.decode(reader, reader.uint32());
-          break;
+          continue;
         case 5:
+          if (tag != 42) {
+            break;
+          }
+
           message.hasMany = HasManyOptions.decode(reader, reader.uint32());
-          break;
+          continue;
         case 6:
+          if (tag != 50) {
+            break;
+          }
+
           message.manyToMany = ManyToManyOptions.decode(reader, reader.uint32());
-          break;
+          continue;
         case 7:
+          if (tag != 58) {
+            break;
+          }
+
           message.referenceOf = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -560,88 +624,185 @@ export const GormTag = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): GormTag {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGormTag();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.column = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag != 18) {
+            break;
+          }
+
           message.type = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag != 24) {
+            break;
+          }
+
           message.size = reader.int32();
-          break;
+          continue;
         case 4:
+          if (tag != 32) {
+            break;
+          }
+
           message.precision = reader.int32();
-          break;
+          continue;
         case 5:
+          if (tag != 40) {
+            break;
+          }
+
           message.primaryKey = reader.bool();
-          break;
+          continue;
         case 6:
+          if (tag != 48) {
+            break;
+          }
+
           message.unique = reader.bool();
-          break;
+          continue;
         case 7:
+          if (tag != 58) {
+            break;
+          }
+
           message.default = reader.string();
-          break;
+          continue;
         case 8:
+          if (tag != 64) {
+            break;
+          }
+
           message.notNull = reader.bool();
-          break;
+          continue;
         case 9:
+          if (tag != 72) {
+            break;
+          }
+
           message.autoIncrement = reader.bool();
-          break;
+          continue;
         case 10:
+          if (tag != 82) {
+            break;
+          }
+
           message.index = reader.string();
-          break;
+          continue;
         case 11:
+          if (tag != 90) {
+            break;
+          }
+
           message.uniqueIndex = reader.string();
-          break;
+          continue;
         case 12:
+          if (tag != 96) {
+            break;
+          }
+
           message.embedded = reader.bool();
-          break;
+          continue;
         case 13:
+          if (tag != 106) {
+            break;
+          }
+
           message.embeddedPrefix = reader.string();
-          break;
+          continue;
         case 14:
+          if (tag != 112) {
+            break;
+          }
+
           message.ignore = reader.bool();
-          break;
+          continue;
         case 15:
+          if (tag != 122) {
+            break;
+          }
+
           message.foreignkey = reader.string();
-          break;
+          continue;
         case 16:
+          if (tag != 130) {
+            break;
+          }
+
           message.associationForeignkey = reader.string();
-          break;
+          continue;
         case 17:
+          if (tag != 138) {
+            break;
+          }
+
           message.manyToMany = reader.string();
-          break;
+          continue;
         case 18:
+          if (tag != 146) {
+            break;
+          }
+
           message.jointableForeignkey = reader.string();
-          break;
+          continue;
         case 19:
+          if (tag != 154) {
+            break;
+          }
+
           message.associationJointableForeignkey = reader.string();
-          break;
+          continue;
         case 20:
+          if (tag != 160) {
+            break;
+          }
+
           message.disableAssociationAutoupdate = reader.bool();
-          break;
+          continue;
         case 21:
+          if (tag != 168) {
+            break;
+          }
+
           message.disableAssociationAutocreate = reader.bool();
-          break;
+          continue;
         case 22:
+          if (tag != 176) {
+            break;
+          }
+
           message.associationSaveReference = reader.bool();
-          break;
+          continue;
         case 23:
+          if (tag != 184) {
+            break;
+          }
+
           message.preload = reader.bool();
-          break;
+          continue;
         case 24:
+          if (tag != 194) {
+            break;
+          }
+
           message.serializer = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -800,46 +961,87 @@ export const HasOneOptions = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): HasOneOptions {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseHasOneOptions();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.foreignkey = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag != 18) {
+            break;
+          }
+
           message.foreignkeyTag = GormTag.decode(reader, reader.uint32());
-          break;
+          continue;
         case 3:
+          if (tag != 26) {
+            break;
+          }
+
           message.associationForeignkey = reader.string();
-          break;
+          continue;
         case 4:
+          if (tag != 32) {
+            break;
+          }
+
           message.disableAssociationAutoupdate = reader.bool();
-          break;
+          continue;
         case 5:
+          if (tag != 40) {
+            break;
+          }
+
           message.disableAssociationAutocreate = reader.bool();
-          break;
+          continue;
         case 6:
+          if (tag != 48) {
+            break;
+          }
+
           message.associationSaveReference = reader.bool();
-          break;
+          continue;
         case 7:
+          if (tag != 56) {
+            break;
+          }
+
           message.preload = reader.bool();
-          break;
+          continue;
         case 8:
+          if (tag != 64) {
+            break;
+          }
+
           message.replace = reader.bool();
-          break;
+          continue;
         case 9:
+          if (tag != 72) {
+            break;
+          }
+
           message.append = reader.bool();
-          break;
+          continue;
         case 10:
+          if (tag != 80) {
+            break;
+          }
+
           message.clear = reader.bool();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -944,37 +1146,66 @@ export const BelongsToOptions = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): BelongsToOptions {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseBelongsToOptions();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.foreignkey = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag != 18) {
+            break;
+          }
+
           message.foreignkeyTag = GormTag.decode(reader, reader.uint32());
-          break;
+          continue;
         case 3:
+          if (tag != 26) {
+            break;
+          }
+
           message.associationForeignkey = reader.string();
-          break;
+          continue;
         case 4:
+          if (tag != 32) {
+            break;
+          }
+
           message.disableAssociationAutoupdate = reader.bool();
-          break;
+          continue;
         case 5:
+          if (tag != 40) {
+            break;
+          }
+
           message.disableAssociationAutocreate = reader.bool();
-          break;
+          continue;
         case 6:
+          if (tag != 48) {
+            break;
+          }
+
           message.associationSaveReference = reader.bool();
-          break;
+          continue;
         case 7:
+          if (tag != 56) {
+            break;
+          }
+
           message.preload = reader.bool();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1090,52 +1321,101 @@ export const HasManyOptions = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): HasManyOptions {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseHasManyOptions();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.foreignkey = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag != 18) {
+            break;
+          }
+
           message.foreignkeyTag = GormTag.decode(reader, reader.uint32());
-          break;
+          continue;
         case 3:
+          if (tag != 26) {
+            break;
+          }
+
           message.associationForeignkey = reader.string();
-          break;
+          continue;
         case 4:
+          if (tag != 34) {
+            break;
+          }
+
           message.positionField = reader.string();
-          break;
+          continue;
         case 5:
+          if (tag != 42) {
+            break;
+          }
+
           message.positionFieldTag = GormTag.decode(reader, reader.uint32());
-          break;
+          continue;
         case 6:
+          if (tag != 48) {
+            break;
+          }
+
           message.disableAssociationAutoupdate = reader.bool();
-          break;
+          continue;
         case 7:
+          if (tag != 56) {
+            break;
+          }
+
           message.disableAssociationAutocreate = reader.bool();
-          break;
+          continue;
         case 8:
+          if (tag != 64) {
+            break;
+          }
+
           message.associationSaveReference = reader.bool();
-          break;
+          continue;
         case 9:
+          if (tag != 72) {
+            break;
+          }
+
           message.preload = reader.bool();
-          break;
+          continue;
         case 10:
+          if (tag != 80) {
+            break;
+          }
+
           message.replace = reader.bool();
-          break;
+          continue;
         case 11:
+          if (tag != 88) {
+            break;
+          }
+
           message.append = reader.bool();
-          break;
+          continue;
         case 12:
+          if (tag != 96) {
+            break;
+          }
+
           message.clear = reader.bool();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1269,52 +1549,101 @@ export const ManyToManyOptions = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ManyToManyOptions {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseManyToManyOptions();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.jointable = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag != 18) {
+            break;
+          }
+
           message.foreignkey = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag != 26) {
+            break;
+          }
+
           message.jointableForeignkey = reader.string();
-          break;
+          continue;
         case 4:
+          if (tag != 34) {
+            break;
+          }
+
           message.associationForeignkey = reader.string();
-          break;
+          continue;
         case 5:
+          if (tag != 42) {
+            break;
+          }
+
           message.associationJointableForeignkey = reader.string();
-          break;
+          continue;
         case 6:
+          if (tag != 48) {
+            break;
+          }
+
           message.disableAssociationAutoupdate = reader.bool();
-          break;
+          continue;
         case 7:
+          if (tag != 56) {
+            break;
+          }
+
           message.disableAssociationAutocreate = reader.bool();
-          break;
+          continue;
         case 8:
+          if (tag != 64) {
+            break;
+          }
+
           message.associationSaveReference = reader.bool();
-          break;
+          continue;
         case 9:
+          if (tag != 72) {
+            break;
+          }
+
           message.preload = reader.bool();
-          break;
+          continue;
         case 10:
+          if (tag != 80) {
+            break;
+          }
+
           message.replace = reader.bool();
-          break;
+          continue;
         case 11:
+          if (tag != 88) {
+            break;
+          }
+
           message.append = reader.bool();
-          break;
+          continue;
         case 13:
+          if (tag != 104) {
+            break;
+          }
+
           message.clear = reader.bool();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1405,25 +1734,38 @@ export const AutoServerOptions = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): AutoServerOptions {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseAutoServerOptions();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 8) {
+            break;
+          }
+
           message.autogen = reader.bool();
-          break;
+          continue;
         case 2:
+          if (tag != 16) {
+            break;
+          }
+
           message.txnMiddleware = reader.bool();
-          break;
+          continue;
         case 3:
+          if (tag != 24) {
+            break;
+          }
+
           message.withTracing = reader.bool();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1470,19 +1812,24 @@ export const MethodOptions = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): MethodOptions {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMethodOptions();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.objectType = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },

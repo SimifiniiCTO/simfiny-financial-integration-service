@@ -24,17 +24,24 @@
     - [InvesmentHolding](#api-v1-InvesmentHolding)
     - [InvestmentAccount](#api-v1-InvestmentAccount)
     - [InvestmentSecurity](#api-v1-InvestmentSecurity)
+    - [Link](#api-v1-Link)
     - [Milestone](#api-v1-Milestone)
     - [MortgageAccount](#api-v1-MortgageAccount)
+    - [PlaidLink](#api-v1-PlaidLink)
     - [Pocket](#api-v1-Pocket)
     - [SmartGoal](#api-v1-SmartGoal)
+    - [StripeSubscription](#api-v1-StripeSubscription)
     - [StudentLoanAccount](#api-v1-StudentLoanAccount)
+    - [Token](#api-v1-Token)
     - [UserProfile](#api-v1-UserProfile)
   
     - [BankAccountType](#api-v1-BankAccountType)
     - [GoalStatus](#api-v1-GoalStatus)
     - [GoalType](#api-v1-GoalType)
+    - [LinkStatus](#api-v1-LinkStatus)
+    - [LinkType](#api-v1-LinkType)
     - [PocketType](#api-v1-PocketType)
+    - [StripeSubscriptionStatus](#api-v1-StripeSubscriptionStatus)
   
 - [api/v1/mongo.proto](#api_v1_mongo-proto)
     - [PaymentMeta](#api-v1-PaymentMeta)
@@ -533,6 +540,44 @@ This allows the user to track how well they are progressing towards their goal a
 
 
 
+<a name="api-v1-Link"></a>
+
+### Link
+A Link represents a login at a financial institution. A single end-user of your application might have accounts at different financial
+institutions, which means they would have multiple different Items. An Item is not the same as a financial institution account,
+although every account will be associated with an Item. For example, if a user has one login at their bank that allows them to access
+both their checking account and their savings account, a single Item would be associated with both of those accounts. Each Item 
+linked within your application will have a corresponding access_token, which is a token that you can use to make API requests related
+to that specific Item.
+Two Items created for the same set of credentials at the same institution will be considered different and not share the same item_id.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [uint64](#uint64) |  | id |
+| link_status | [LinkStatus](#api-v1-LinkStatus) |  |  |
+| plaid_link | [PlaidLink](#api-v1-PlaidLink) |  |  |
+| plaid_new_accounts_available | [bool](#bool) |  |  |
+| expiration_date | [string](#string) |  |  |
+| institution_name | [string](#string) |  |  |
+| custom_institution_name | [string](#string) |  |  |
+| description | [string](#string) |  |  |
+| last_manual_sync | [string](#string) |  |  |
+| last_successful_update | [string](#string) |  |  |
+| token | [Token](#api-v1-Token) |  | token object witholds an access token which is a token used to make API requests related to a specific Item. You will typically obtain an access_token by calling /item/public_token/exchange. For more details, see the Token exchange flow. An access_token does not expire, although it may require updating, such as when a user changes their password, or when working with European institutions that comply with PSD2&#39;s 90-day consent window. For more information, see When to use update mode. Access tokens should always be stored securely, and associated with the user whose data they represent. If compromised, an access_token can be rotated via /item/access_token/invalidate. If no longer needed, it can be revoked via /item/remove.(gorm.field).has_one = {disable_association_autocreate: false disable_association_autoupdate: false preload: true}]; |
+| bank_accounts | [BankAccount](#api-v1-BankAccount) | repeated | a link event - or client login event can have many connected bank accounts for example a log in link against one instition like chase can have many account (checking and savings) it is important though to ensure that if a link against an instition already exists, we dont fascilitate duplicated |
+| investment_accounts | [InvestmentAccount](#api-v1-InvestmentAccount) | repeated | a link event - or client login event can have many connected investment accounts for example a log in link against one instition like fidelity can have many accounts (401k and investment account) it is important though to ensure that if a link against an instition already exists, we dont fascilitate duplicated |
+| credit_accounts | [CreditAccount](#api-v1-CreditAccount) | repeated | credit accounts tied to a user |
+| mortgage_accounts | [MortgageAccount](#api-v1-MortgageAccount) | repeated | mortgage accounts tied to a user |
+| student_loan_accounts | [StudentLoanAccount](#api-v1-StudentLoanAccount) | repeated | student loan accounts tied to a link |
+| plaid_institution_id | [string](#string) |  | the id of the institution this link is tied to and against |
+| link_type | [LinkType](#api-v1-LinkType) |  | the type of link this is ... can be either a manual or plaid link type |
+
+
+
+
+
+
 <a name="api-v1-Milestone"></a>
 
 ### Milestone
@@ -601,6 +646,27 @@ and achievable. A milestone is a sub goal of a goal and is tied to a goal by the
 
 
 
+<a name="api-v1-PlaidLink"></a>
+
+### PlaidLink
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [uint64](#uint64) |  | id |
+| products | [string](#string) | repeated |  |
+| webhook_url | [string](#string) |  |  |
+| institution_id | [string](#string) |  |  |
+| institution_name | [string](#string) |  |  |
+| use_plaid_sync | [bool](#bool) |  |  |
+| item_id | [string](#string) |  |  |
+
+
+
+
+
+
 <a name="api-v1-Pocket"></a>
 
 ### Pocket
@@ -656,6 +722,25 @@ more they need to save or invest to reach their target amount.
 
 
 
+<a name="api-v1-StripeSubscription"></a>
+
+### StripeSubscription
+StripeSubscription stores high level stripe subscription details of which the user profile has
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [uint64](#uint64) |  |  |
+| stripe_subscription_id | [string](#string) |  | stripe subscription id tied to the customer |
+| stripe_subscription_status | [StripeSubscriptionStatus](#api-v1-StripeSubscriptionStatus) |  | stripe subscription status |
+| stripe_subscription_active_until | [string](#string) |  | stripe subscription active until |
+| stripe_webhook_latest_timestamp | [string](#string) |  | stripe webhook latest timestamp |
+
+
+
+
+
+
 <a name="api-v1-StudentLoanAccount"></a>
 
 ### StudentLoanAccount
@@ -705,6 +790,25 @@ more they need to save or invest to reach their target amount.
 
 
 
+<a name="api-v1-Token"></a>
+
+### Token
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [uint64](#uint64) |  | id |
+| item_id | [string](#string) |  | the id of the item the token is tied to |
+| key_id | [string](#string) |  |  |
+| access_token | [string](#string) |  |  |
+| version | [string](#string) |  |  |
+
+
+
+
+
+
 <a name="api-v1-UserProfile"></a>
 
 ### UserProfile
@@ -716,15 +820,8 @@ such as the id, user_id tied to the profile, and many more
 | ----- | ---- | ----- | ----------- |
 | id | [uint64](#uint64) |  | id |
 | user_id | [uint64](#uint64) |  | the user id tied to the profile |
-| bank_accounts | [BankAccount](#api-v1-BankAccount) | repeated | many bank accounts (connected) can be tied to a user |
-| investment_accounts | [InvestmentAccount](#api-v1-InvestmentAccount) | repeated | investment accounts tied to a user |
-| credit_accounts | [CreditAccount](#api-v1-CreditAccount) | repeated | credit accounts tied to a user |
-| mortgage_accounts | [MortgageAccount](#api-v1-MortgageAccount) | repeated | mortgage accounts tied to a user |
-| student_loan_accounts | [StudentLoanAccount](#api-v1-StudentLoanAccount) | repeated | student loan accounts tied to a user |
-| plaid_access_token | [string](#string) |  | the user plaid access token |
-| decryption_access_token_key | [string](#string) |  | key used to encrypt the access token by the kms |
-| decryption_access_token_version | [string](#string) |  |  |
-| stripe_customer_id | [string](#string) |  | the customer id tied to the stripe account |
+| stripe_subscriptions | [StripeSubscription](#api-v1-StripeSubscription) | repeated | the stripe subscriptions the user profile actively maintains |
+| link | [Link](#api-v1-Link) | repeated | a user profile can have many links (connected institutions) of which finanical accounts are tied to (checking, savings, etc) |
 
 
 
@@ -776,6 +873,36 @@ such as the id, user_id tied to the profile, and many more
 
 
 
+<a name="api-v1-LinkStatus"></a>
+
+### LinkStatus
+
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| LINK_STATUS_UNSPECIFIED | 0 |  |
+| LINK_STATUS_SETUP | 1 |  |
+| LINK_STATUS_PENDING | 2 |  |
+| LINK_STATUS_ERROR | 3 |  |
+| LINK_STATUS_SUCCESS | 4 |  |
+| LINK_STATUS_PENDING_EXPIRATION | 5 |  |
+| LINK_STATUS_REVOKED | 6 |  |
+
+
+
+<a name="api-v1-LinkType"></a>
+
+### LinkType
+
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| LINK_TYPE_UNSPECIFIED | 0 |  |
+| LINK_TYPE_PLAID | 1 |  |
+| LINK_TYPE_MANUAL | 2 |  |
+
+
+
 <a name="api-v1-PocketType"></a>
 
 ### PocketType
@@ -791,6 +918,23 @@ such as the id, user_id tied to the profile, and many more
 | POCKET_TYPE_INVESTMENT | 5 |  |
 | POCKET_TYPE_SHORT_TERM_SAVINGS | 6 |  |
 | POCKET_TYPE_LONG_TERM_SAVINGS | 7 |  |
+
+
+
+<a name="api-v1-StripeSubscriptionStatus"></a>
+
+### StripeSubscriptionStatus
+
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| STRIPE_SUBSCRIPTION_STATUS_UNSPECIFIED | 0 |  |
+| STRIPE_SUBSCRIPTION_STATUS_TRIALING | 1 |  |
+| STRIPE_SUBSCRIPTION_STATUS_ACTIVE | 2 |  |
+| STRIPE_SUBSCRIPTION_STATUS_PAST_DUE | 3 |  |
+| STRIPE_SUBSCRIPTION_STATUS_CANCELED | 4 |  |
+| STRIPE_SUBSCRIPTION_STATUS_UNPAID | 5 |  |
+| STRIPE_SUBSCRIPTION_STATUS_COMPLETE | 6 |  |
 
 
  
@@ -1666,6 +1810,8 @@ the `get user profile` request
 | ----- | ---- | ----- | ----------- |
 | user_id | [uint64](#uint64) |  | The user id Validations: - user_id must be greater than 0 |
 | public_token | [string](#string) |  | The public token Validations: - cannot be nil hence required |
+| institution_id | [string](#string) |  | The institution id |
+| institution_name | [string](#string) |  | The institution name |
 
 
 

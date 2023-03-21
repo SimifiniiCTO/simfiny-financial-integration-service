@@ -43,7 +43,7 @@ func (s *Server) PlaidInitiateTokenExchange(ctx context.Context, req *proto.Plai
 		return nil, status.Error(codes.NotFound, "user not found")
 	}
 
-	// perform the plaid token exchange
+	// create a link token
 	token, err := s.plaidClient.CreateLinkToken(ctx, &plaidhandler.LinkTokenOptions{
 		ClientUserID:             fmt.Sprintf("%d", req.UserId),
 		LegalName:                req.FullName,
