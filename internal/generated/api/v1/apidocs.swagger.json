@@ -3474,10 +3474,7 @@
           "title": "the user id tied to the profile"
         },
         "stripeSubscriptions": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/StripeSubscription"
-          },
+          "$ref": "#/definitions/StripeSubscription",
           "title": "the stripe subscriptions the user profile actively maintains"
         },
         "link": {

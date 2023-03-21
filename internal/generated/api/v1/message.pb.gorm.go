@@ -92,8 +92,8 @@ type StripeSubscriptionWithAfterToPB interface {
 
 type UserProfileORM struct {
 	Id                  uint64
-	Link                []*LinkORM               `gorm:"foreignkey:UserProfileId;association_foreignkey:Id"`
-	StripeSubscriptions []*StripeSubscriptionORM `gorm:"foreignkey:UserProfileId;association_foreignkey:Id;preload:true"`
+	Link                []*LinkORM             `gorm:"foreignkey:UserProfileId;association_foreignkey:Id"`
+	StripeSubscriptions *StripeSubscriptionORM `gorm:"foreignkey:UserProfileId;association_foreignkey:Id"`
 	UserId              uint64
 }
 
@@ -114,16 +114,12 @@ func (m *UserProfile) ToORM(ctx context.Context) (UserProfileORM, error) {
 	}
 	to.Id = m.Id
 	to.UserId = m.UserId
-	for _, v := range m.StripeSubscriptions {
-		if v != nil {
-			if tempStripeSubscriptions, cErr := v.ToORM(ctx); cErr == nil {
-				to.StripeSubscriptions = append(to.StripeSubscriptions, &tempStripeSubscriptions)
-			} else {
-				return to, cErr
-			}
-		} else {
-			to.StripeSubscriptions = append(to.StripeSubscriptions, nil)
+	if m.StripeSubscriptions != nil {
+		tempStripeSubscriptions, err := m.StripeSubscriptions.ToORM(ctx)
+		if err != nil {
+			return to, err
 		}
+		to.StripeSubscriptions = &tempStripeSubscriptions
 	}
 	for _, v := range m.Link {
 		if v != nil {
@@ -154,16 +150,12 @@ func (m *UserProfileORM) ToPB(ctx context.Context) (UserProfile, error) {
 	}
 	to.Id = m.Id
 	to.UserId = m.UserId
-	for _, v := range m.StripeSubscriptions {
-		if v != nil {
-			if tempStripeSubscriptions, cErr := v.ToPB(ctx); cErr == nil {
-				to.StripeSubscriptions = append(to.StripeSubscriptions, &tempStripeSubscriptions)
-			} else {
-				return to, cErr
-			}
-		} else {
-			to.StripeSubscriptions = append(to.StripeSubscriptions, nil)
+	if m.StripeSubscriptions != nil {
+		tempStripeSubscriptions, err := m.StripeSubscriptions.ToPB(ctx)
+		if err != nil {
+			return to, err
 		}
+		to.StripeSubscriptions = &tempStripeSubscriptions
 	}
 	for _, v := range m.Link {
 		if v != nil {
@@ -2884,7 +2876,8 @@ func DefaultApplyFieldMaskUserProfile(ctx context.Context, patchee *UserProfile,
 		return nil, errors.NilArgumentError
 	}
 	var err error
-	for _, f := range updateMask.Paths {
+	var updatedStripeSubscriptions bool
+	for i, f := range updateMask.Paths {
 		if f == prefix+"Id" {
 			patchee.Id = patcher.Id
 			continue
@@ -2893,7 +2886,24 @@ func DefaultApplyFieldMaskUserProfile(ctx context.Context, patchee *UserProfile,
 			patchee.UserId = patcher.UserId
 			continue
 		}
+		if !updatedStripeSubscriptions && strings.HasPrefix(f, prefix+"StripeSubscriptions.") {
+			updatedStripeSubscriptions = true
+			if patcher.StripeSubscriptions == nil {
+				patchee.StripeSubscriptions = nil
+				continue
+			}
+			if patchee.StripeSubscriptions == nil {
+				patchee.StripeSubscriptions = &StripeSubscription{}
+			}
+			if o, err := DefaultApplyFieldMaskStripeSubscription(ctx, patchee.StripeSubscriptions, patcher.StripeSubscriptions, &field_mask.FieldMask{Paths: updateMask.Paths[i:]}, prefix+"StripeSubscriptions.", db); err != nil {
+				return nil, err
+			} else {
+				patchee.StripeSubscriptions = o
+			}
+			continue
+		}
 		if f == prefix+"StripeSubscriptions" {
+			updatedStripeSubscriptions = true
 			patchee.StripeSubscriptions = patcher.StripeSubscriptions
 			continue
 		}

@@ -1077,10 +1077,8 @@
                     "description": "the user id tied to the profile"
                 },
                 "stripe_subscriptions": {
-                    "items": {
-                        "$ref": "#/definitions/api.v1.StripeSubscription"
-                    },
-                    "type": "array",
+                    "$ref": "#/definitions/api.v1.StripeSubscription",
+                    "additionalProperties": true,
                     "description": "the stripe subscriptions the user profile actively maintains"
                 },
                 "link": {

@@ -820,7 +820,7 @@ such as the id, user_id tied to the profile, and many more
 | ----- | ---- | ----- | ----------- |
 | id | [uint64](#uint64) |  | id |
 | user_id | [uint64](#uint64) |  | the user id tied to the profile |
-| stripe_subscriptions | [StripeSubscription](#api-v1-StripeSubscription) | repeated | the stripe subscriptions the user profile actively maintains |
+| stripe_subscriptions | [StripeSubscription](#api-v1-StripeSubscription) |  | the stripe subscriptions the user profile actively maintains |
 | link | [Link](#api-v1-Link) | repeated | a user profile can have many links (connected institutions) of which finanical accounts are tied to (checking, savings, etc) |
 
 

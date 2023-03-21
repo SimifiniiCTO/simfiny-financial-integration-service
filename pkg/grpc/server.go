@@ -53,6 +53,8 @@ type Config struct {
 	AwsKeyID                string           `mapstructure:"aws-key-id"`
 	AwsRegion               string           `mapstructure:"aws-region"`
 	AwsSecretKey            string           `mapstructure:"aws-secret-key"`
+	MaxPlaidLinks           int              `mapstructure:"max-plaid-links"`
+	BillingEnabled          bool             `mapstructure:"billing-enabled"`
 }
 
 var _ proto.FinancialServiceServer = (*Server)(nil)

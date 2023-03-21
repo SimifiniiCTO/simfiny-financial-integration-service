@@ -369,7 +369,7 @@ func GenerateStripeSubscriptions(subscriptionCount int) []*schema.StripeSubscrip
 func GenereateRandomUserProfileForTest() *schema.UserProfile {
 	return &schema.UserProfile{
 		UserId:              uint64(GenerateRandomId(100000, 3000000)),
-		StripeSubscriptions: GenerateStripeSubscriptions(10),
+		StripeSubscriptions: GenerateSingleSubscription(),
 		Link: []*schema.Link{
 			GenerateLink(schema.LinkType_LINK_TYPE_MANUAL),
 			GenerateLink(schema.LinkType_LINK_TYPE_PLAID),

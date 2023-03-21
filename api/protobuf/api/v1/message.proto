@@ -98,7 +98,7 @@ message UserProfile {
     (validate.rules).uint64.gt = 0
   ];
   // the stripe subscriptions the user profile actively maintains
-  repeated StripeSubscription stripe_subscriptions = 4 [(gorm.field).has_many = {disable_association_autocreate: false disable_association_autoupdate: false preload: true}];
+  StripeSubscription stripe_subscriptions = 4 [(gorm.field).has_many = {disable_association_autocreate: false disable_association_autoupdate: false preload: true}];
   // a user profile can have many links (connected institutions) of which finanical accounts are tied to (checking, savings, etc)
   repeated Link link = 6 [(gorm.field).has_one = {disable_association_autocreate: false disable_association_autoupdate: false preload: true}];
 }

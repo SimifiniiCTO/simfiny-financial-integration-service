@@ -75,6 +75,7 @@ func ReadEnvVars() {
 	fs.String("plaid-oauth-domain", "simfiny", "plaid oauth domain")
 	fs.String("plaid-webhook-oauth-domain", "simfiny", "plaid webhook oauth domain")
 	fs.Bool("plaid-webhook-enabled", false, "enable plaid webhook")
+	fs.Uint64("max-plaid-links", 5, "plaid link limit")
 
 	fs.String("env", "dev", "current environment")
 	fs.String("grpc-service-endpoint", "http://localhost:9896", "grpc api endpoint for service")
@@ -90,6 +91,9 @@ func ReadEnvVars() {
 	fs.String("aws-key-id", "AKIA5HFOAJRN5472YQRB", "aws kms key id")
 	fs.String("aws-region", "us-east-2", "aws kms region")
 	fs.String("aws-secret-key", "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", "aws kms secret key")
+
+	// billing configs
+	fs.Bool("billing-enabled", false, "enable billing")
 
 	defaultLogger := zap.L()
 

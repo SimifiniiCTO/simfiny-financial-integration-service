@@ -182,38 +182,33 @@ func (m *UserProfile) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	for idx, item := range m.GetStripeSubscriptions() {
-		_, _ = idx, item
-
-		if all {
-			switch v := interface{}(item).(type) {
-			case interface{ ValidateAll() error }:
-				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, UserProfileValidationError{
-						field:  fmt.Sprintf("StripeSubscriptions[%v]", idx),
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			case interface{ Validate() error }:
-				if err := v.Validate(); err != nil {
-					errors = append(errors, UserProfileValidationError{
-						field:  fmt.Sprintf("StripeSubscriptions[%v]", idx),
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			}
-		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
-			if err := v.Validate(); err != nil {
-				return UserProfileValidationError{
-					field:  fmt.Sprintf("StripeSubscriptions[%v]", idx),
+	if all {
+		switch v := interface{}(m.GetStripeSubscriptions()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, UserProfileValidationError{
+					field:  "StripeSubscriptions",
 					reason: "embedded message failed validation",
 					cause:  err,
-				}
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, UserProfileValidationError{
+					field:  "StripeSubscriptions",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
 			}
 		}
-
+	} else if v, ok := interface{}(m.GetStripeSubscriptions()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return UserProfileValidationError{
+				field:  "StripeSubscriptions",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
 	}
 
 	for idx, item := range m.GetLink() {

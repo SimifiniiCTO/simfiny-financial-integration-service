@@ -402,7 +402,9 @@ export interface UserProfile {
   /** the user id tied to the profile */
   userId: number;
   /** the stripe subscriptions the user profile actively maintains */
-  stripeSubscriptions: StripeSubscription[];
+  stripeSubscriptions:
+    | StripeSubscription
+    | undefined;
   /** a user profile can have many links (connected institutions) of which finanical accounts are tied to (checking, savings, etc) */
   link: Link[];
 }
@@ -986,7 +988,7 @@ export const StripeSubscription = {
 };
 
 function createBaseUserProfile(): UserProfile {
-  return { id: 0, userId: 0, stripeSubscriptions: [], link: [] };
+  return { id: 0, userId: 0, stripeSubscriptions: undefined, link: [] };
 }
 
 export const UserProfile = {
@@ -997,8 +999,8 @@ export const UserProfile = {
     if (message.userId !== 0) {
       writer.uint32(16).uint64(message.userId);
     }
-    for (const v of message.stripeSubscriptions) {
-      StripeSubscription.encode(v!, writer.uint32(34).fork()).ldelim();
+    if (message.stripeSubscriptions !== undefined) {
+      StripeSubscription.encode(message.stripeSubscriptions, writer.uint32(34).fork()).ldelim();
     }
     for (const v of message.link) {
       Link.encode(v!, writer.uint32(50).fork()).ldelim();
@@ -1032,7 +1034,7 @@ export const UserProfile = {
             break;
           }
 
-          message.stripeSubscriptions.push(StripeSubscription.decode(reader, reader.uint32()));
+          message.stripeSubscriptions = StripeSubscription.decode(reader, reader.uint32());
           continue;
         case 6:
           if (tag != 50) {
@@ -1054,9 +1056,9 @@ export const UserProfile = {
     return {
       id: isSet(object.id) ? Number(object.id) : 0,
       userId: isSet(object.userId) ? Number(object.userId) : 0,
-      stripeSubscriptions: Array.isArray(object?.stripeSubscriptions)
-        ? object.stripeSubscriptions.map((e: any) => StripeSubscription.fromJSON(e))
-        : [],
+      stripeSubscriptions: isSet(object.stripeSubscriptions)
+        ? StripeSubscription.fromJSON(object.stripeSubscriptions)
+        : undefined,
       link: Array.isArray(object?.link) ? object.link.map((e: any) => Link.fromJSON(e)) : [],
     };
   },
@@ -1065,11 +1067,9 @@ export const UserProfile = {
     const obj: any = {};
     message.id !== undefined && (obj.id = Math.round(message.id));
     message.userId !== undefined && (obj.userId = Math.round(message.userId));
-    if (message.stripeSubscriptions) {
-      obj.stripeSubscriptions = message.stripeSubscriptions.map((e) => e ? StripeSubscription.toJSON(e) : undefined);
-    } else {
-      obj.stripeSubscriptions = [];
-    }
+    message.stripeSubscriptions !== undefined && (obj.stripeSubscriptions = message.stripeSubscriptions
+      ? StripeSubscription.toJSON(message.stripeSubscriptions)
+      : undefined);
     if (message.link) {
       obj.link = message.link.map((e) => e ? Link.toJSON(e) : undefined);
     } else {
@@ -1086,7 +1086,9 @@ export const UserProfile = {
     const message = createBaseUserProfile();
     message.id = object.id ?? 0;
     message.userId = object.userId ?? 0;
-    message.stripeSubscriptions = object.stripeSubscriptions?.map((e) => StripeSubscription.fromPartial(e)) || [];
+    message.stripeSubscriptions = (object.stripeSubscriptions !== undefined && object.stripeSubscriptions !== null)
+      ? StripeSubscription.fromPartial(object.stripeSubscriptions)
+      : undefined;
     message.link = object.link?.map((e) => Link.fromPartial(e)) || [];
     return message;
   },

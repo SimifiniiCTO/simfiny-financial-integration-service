@@ -39,8 +39,26 @@ func (s *Server) PlaidInitiateTokenExchange(ctx context.Context, req *proto.Plai
 	}
 
 	// ensure user exists
-	if _, err := s.conn.GetUserProfileByUserID(ctx, req.UserId); err != nil {
+	userProfile, err := s.conn.GetUserProfileByUserID(ctx, req.UserId)
+	if err != nil {
 		return nil, status.Error(codes.NotFound, "user not found")
+	}
+
+	// If there is a configured limit on Plaid links then enforce that limit.
+	if s.config.MaxPlaidLinks > len(userProfile.Link) {
+		return nil, status.Error(codes.ResourceExhausted, "maximum number of plaid links reached")
+	}
+
+	// If billing is enabled and the current account is trialing, then limit them to a single Plaid link until their
+	// trial has expired.
+	if s.config.BillingEnabled {
+		if userProfile.StripeSubscriptions != nil {
+			if userProfile.StripeSubscriptions.StripeSubscriptionStatus == proto.StripeSubscriptionStatus_STRIPE_SUBSCRIPTION_STATUS_TRIALING {
+				if len(userProfile.Link) > 0 {
+					return nil, status.Error(codes.ResourceExhausted, "cannot add more Plaid links during trial")
+				}
+			}
+		}
 	}
 
 	// create a link token

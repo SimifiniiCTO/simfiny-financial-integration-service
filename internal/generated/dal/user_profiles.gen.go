@@ -31,6 +31,12 @@ func newUserProfileORM(db *gorm.DB, opts ...gen.DOOption) userProfileORM {
 	_userProfileORM.ALL = field.NewAsterisk(tableName)
 	_userProfileORM.Id = field.NewUint64(tableName, "id")
 	_userProfileORM.UserId = field.NewUint64(tableName, "user_id")
+	_userProfileORM.StripeSubscriptions = userProfileORMHasOneStripeSubscriptions{
+		db: db.Session(&gorm.Session{}),
+
+		RelationField: field.NewRelation("StripeSubscriptions", "apiv1.StripeSubscriptionORM"),
+	}
+
 	_userProfileORM.Link = userProfileORMHasManyLink{
 		db: db.Session(&gorm.Session{}),
 
@@ -180,12 +186,6 @@ func newUserProfileORM(db *gorm.DB, opts ...gen.DOOption) userProfileORM {
 		},
 	}
 
-	_userProfileORM.StripeSubscriptions = userProfileORMHasManyStripeSubscriptions{
-		db: db.Session(&gorm.Session{}),
-
-		RelationField: field.NewRelation("StripeSubscriptions", "apiv1.StripeSubscriptionORM"),
-	}
-
 	_userProfileORM.fillFieldMap()
 
 	return _userProfileORM
@@ -194,12 +194,12 @@ func newUserProfileORM(db *gorm.DB, opts ...gen.DOOption) userProfileORM {
 type userProfileORM struct {
 	userProfileORMDo
 
-	ALL    field.Asterisk
-	Id     field.Uint64
-	UserId field.Uint64
-	Link   userProfileORMHasManyLink
+	ALL                 field.Asterisk
+	Id                  field.Uint64
+	UserId              field.Uint64
+	StripeSubscriptions userProfileORMHasOneStripeSubscriptions
 
-	StripeSubscriptions userProfileORMHasManyStripeSubscriptions
+	Link userProfileORMHasManyLink
 
 	fieldMap map[string]field.Expr
 }
@@ -248,6 +248,72 @@ func (u userProfileORM) clone(db *gorm.DB) userProfileORM {
 func (u userProfileORM) replaceDB(db *gorm.DB) userProfileORM {
 	u.userProfileORMDo.ReplaceDB(db)
 	return u
+}
+
+type userProfileORMHasOneStripeSubscriptions struct {
+	db *gorm.DB
+
+	field.RelationField
+}
+
+func (a userProfileORMHasOneStripeSubscriptions) Where(conds ...field.Expr) *userProfileORMHasOneStripeSubscriptions {
+	if len(conds) == 0 {
+		return &a
+	}
+
+	exprs := make([]clause.Expression, 0, len(conds))
+	for _, cond := range conds {
+		exprs = append(exprs, cond.BeCond().(clause.Expression))
+	}
+	a.db = a.db.Clauses(clause.Where{Exprs: exprs})
+	return &a
+}
+
+func (a userProfileORMHasOneStripeSubscriptions) WithContext(ctx context.Context) *userProfileORMHasOneStripeSubscriptions {
+	a.db = a.db.WithContext(ctx)
+	return &a
+}
+
+func (a userProfileORMHasOneStripeSubscriptions) Model(m *apiv1.UserProfileORM) *userProfileORMHasOneStripeSubscriptionsTx {
+	return &userProfileORMHasOneStripeSubscriptionsTx{a.db.Model(m).Association(a.Name())}
+}
+
+type userProfileORMHasOneStripeSubscriptionsTx struct{ tx *gorm.Association }
+
+func (a userProfileORMHasOneStripeSubscriptionsTx) Find() (result *apiv1.StripeSubscriptionORM, err error) {
+	return result, a.tx.Find(&result)
+}
+
+func (a userProfileORMHasOneStripeSubscriptionsTx) Append(values ...*apiv1.StripeSubscriptionORM) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Append(targetValues...)
+}
+
+func (a userProfileORMHasOneStripeSubscriptionsTx) Replace(values ...*apiv1.StripeSubscriptionORM) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Replace(targetValues...)
+}
+
+func (a userProfileORMHasOneStripeSubscriptionsTx) Delete(values ...*apiv1.StripeSubscriptionORM) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Delete(targetValues...)
+}
+
+func (a userProfileORMHasOneStripeSubscriptionsTx) Clear() error {
+	return a.tx.Clear()
+}
+
+func (a userProfileORMHasOneStripeSubscriptionsTx) Count() int64 {
+	return a.tx.Count()
 }
 
 type userProfileORMHasManyLink struct {
@@ -362,72 +428,6 @@ func (a userProfileORMHasManyLinkTx) Clear() error {
 }
 
 func (a userProfileORMHasManyLinkTx) Count() int64 {
-	return a.tx.Count()
-}
-
-type userProfileORMHasManyStripeSubscriptions struct {
-	db *gorm.DB
-
-	field.RelationField
-}
-
-func (a userProfileORMHasManyStripeSubscriptions) Where(conds ...field.Expr) *userProfileORMHasManyStripeSubscriptions {
-	if len(conds) == 0 {
-		return &a
-	}
-
-	exprs := make([]clause.Expression, 0, len(conds))
-	for _, cond := range conds {
-		exprs = append(exprs, cond.BeCond().(clause.Expression))
-	}
-	a.db = a.db.Clauses(clause.Where{Exprs: exprs})
-	return &a
-}
-
-func (a userProfileORMHasManyStripeSubscriptions) WithContext(ctx context.Context) *userProfileORMHasManyStripeSubscriptions {
-	a.db = a.db.WithContext(ctx)
-	return &a
-}
-
-func (a userProfileORMHasManyStripeSubscriptions) Model(m *apiv1.UserProfileORM) *userProfileORMHasManyStripeSubscriptionsTx {
-	return &userProfileORMHasManyStripeSubscriptionsTx{a.db.Model(m).Association(a.Name())}
-}
-
-type userProfileORMHasManyStripeSubscriptionsTx struct{ tx *gorm.Association }
-
-func (a userProfileORMHasManyStripeSubscriptionsTx) Find() (result []*apiv1.StripeSubscriptionORM, err error) {
-	return result, a.tx.Find(&result)
-}
-
-func (a userProfileORMHasManyStripeSubscriptionsTx) Append(values ...*apiv1.StripeSubscriptionORM) (err error) {
-	targetValues := make([]interface{}, len(values))
-	for i, v := range values {
-		targetValues[i] = v
-	}
-	return a.tx.Append(targetValues...)
-}
-
-func (a userProfileORMHasManyStripeSubscriptionsTx) Replace(values ...*apiv1.StripeSubscriptionORM) (err error) {
-	targetValues := make([]interface{}, len(values))
-	for i, v := range values {
-		targetValues[i] = v
-	}
-	return a.tx.Replace(targetValues...)
-}
-
-func (a userProfileORMHasManyStripeSubscriptionsTx) Delete(values ...*apiv1.StripeSubscriptionORM) (err error) {
-	targetValues := make([]interface{}, len(values))
-	for i, v := range values {
-		targetValues[i] = v
-	}
-	return a.tx.Delete(targetValues...)
-}
-
-func (a userProfileORMHasManyStripeSubscriptionsTx) Clear() error {
-	return a.tx.Clear()
-}
-
-func (a userProfileORMHasManyStripeSubscriptionsTx) Count() int64 {
 	return a.tx.Count()
 }
 
