@@ -6,9 +6,10 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
+
 	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/helper"
-	"github.com/stretchr/testify/assert"
 )
 
 func TestServer_CreateBankAccount(t *testing.T) {

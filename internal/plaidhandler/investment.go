@@ -9,8 +9,8 @@ import (
 	"github.com/plaid/plaid-go/plaid"
 
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
-	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/plaidhandler/transform"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/pointer"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/transformer"
 )
 
 // TODO: severely refactor this
@@ -18,6 +18,8 @@ func (p *PlaidWrapper) GetInvestmentAccount(ctx context.Context, userID uint64, 
 	request := plaid.NewInvestmentsHoldingsGetRequest(accessToken)
 	options := plaid.NewInvestmentHoldingsGetRequestOptions()
 	request.SetOptions(*options)
+	request.SetSecret(p.SecretKey)
+	request.SetClientId(p.ClientID)
 
 	resp, _, err := p.client.PlaidApi.InvestmentsHoldingsGet(ctx).InvestmentsHoldingsGetRequest(*request).Execute()
 	if err != nil {
@@ -30,7 +32,7 @@ func (p *PlaidWrapper) GetInvestmentAccount(ctx context.Context, userID uint64, 
 		for _, account := range resp.GetAccounts() {
 			// populate hashmap with key as the accountID (plaid acct id) and the value a hashset of investment holding structs
 			if _, ok := accountIDToAccountMap.Get(account.GetAccountId()); !ok {
-				accountIDToAccountMap.Put(account.GetAccountId(), transform.NewInvestmentAccount(userID, &account))
+				accountIDToAccountMap.Put(account.GetAccountId(), transformer.NewInvestmentAccount(userID, &account))
 			}
 			// NOTE: this should be duplicate free by this point
 		}
@@ -41,7 +43,7 @@ func (p *PlaidWrapper) GetInvestmentAccount(ctx context.Context, userID uint64, 
 	securityIDToInvestmentHoldingMap := hashmap.New()
 	if resp.GetHoldings() != nil {
 		for _, holding := range resp.GetHoldings() {
-			holdingRecord := transform.NewInvestmentHolding(&holding)
+			holdingRecord := transformer.NewInvestmentHolding(&holding)
 			// populate hashmap with key as the accountID (plaid acct id) and the value a hashset of investment holding structs
 			if _, ok := accountIDToInvesmentHoldingMap.Get(holding.AccountId); !ok {
 				v := hashset.New()

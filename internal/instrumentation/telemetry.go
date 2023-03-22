@@ -132,7 +132,7 @@ func (s *ServiceTelemetry) WithRequest(r *http.Request, trace newrelic.Transacti
 	return r
 }
 
-// StartExternalSegment implements IServiceTelemetry
+// StartExternalSegment starts an external segment
 func (s *ServiceTelemetry) StartExternalSegment(txn *newrelic.Transaction, req *http.Request) *newrelic.ExternalSegment {
 	if s.TracingEnabled {
 		return newrelic.StartExternalSegment(txn, req)
@@ -157,7 +157,7 @@ func (s *ServiceTelemetry) NewRoundtripper(txn *newrelic.Transaction) *http.Roun
 	return nil
 }
 
-// StartDatastoreSegment implements IServiceTelemetry
+// StartDatastoreSegment starts a datastore segment
 func (s *ServiceTelemetry) StartDatastoreSegment(txn *newrelic.Transaction, operation string) *newrelic.DatastoreSegment {
 	if s.TracingEnabled {
 		segment := newrelic.DatastoreSegment{
@@ -175,7 +175,7 @@ func (s *ServiceTelemetry) StartDatastoreSegment(txn *newrelic.Transaction, oper
 	return nil
 }
 
-// StartMessageQueueSegment implements IServiceTelemetry
+// StartMessageQueueSegment starts a message queue segment
 func (s *ServiceTelemetry) StartMessageQueueSegment(txn *newrelic.Transaction, queueName string) *newrelic.MessageProducerSegment {
 	if s.TracingEnabled {
 		segment := newrelic.MessageProducerSegment{

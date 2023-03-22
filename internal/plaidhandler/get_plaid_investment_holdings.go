@@ -19,8 +19,8 @@ func (p *PlaidWrapper) getPlaidInvestmentHoldings(ctx context.Context, accessTok
 	}
 
 	request := plaid.NewInvestmentsHoldingsGetRequest(*accessToken)
-	options := plaid.NewInvestmentHoldingsGetRequestOptions()
-	request.SetOptions(*options)
+	request.SetClientId(p.ClientID)
+	request.SetSecret(p.SecretKey)
 
 	resp, _, err := p.client.PlaidApi.InvestmentsHoldingsGet(ctx).InvestmentsHoldingsGetRequest(*request).Execute()
 	if err != nil {

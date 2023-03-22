@@ -8,7 +8,7 @@ import (
 	"go.uber.org/zap"
 
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
-	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/plaidhandler/transform"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/transformer"
 )
 
 // GetAllTransactions implements PlaidWrapperImpl
@@ -59,7 +59,7 @@ func (p *PlaidWrapper) GetTransactions(ctx context.Context, accessToken string, 
 
 	transactions := make([]*schema.Transaction, len(result.Transactions))
 	for i, transaction := range result.Transactions {
-		transactions[i], err = transform.NewTransactionFromPlaid(transaction)
+		transactions[i], err = transformer.NewTransactionFromPlaid(transaction)
 		if err != nil {
 			return nil, err
 		}

@@ -7,7 +7,7 @@ import (
 	"go.uber.org/zap"
 
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
-	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/plaidhandler/transform"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/transformer"
 )
 
 // GetAccounts implements PlaidWrapperImpl
@@ -16,6 +16,8 @@ func (p *PlaidWrapper) GetAccounts(ctx context.Context, accessToken string, user
 	request := p.client.PlaidApi.
 		AccountsGet(ctx).
 		AccountsGetRequest(plaid.AccountsGetRequest{
+			ClientId:    &p.ClientID,
+			Secret:      &p.SecretKey,
 			AccessToken: accessToken,
 		})
 
@@ -31,7 +33,7 @@ func (p *PlaidWrapper) GetAccounts(ctx context.Context, accessToken string, user
 
 	// Once we have our data, convert all of the results from our request to our own bank account interface.
 	for i, plaidAccount := range plaidAccounts {
-		accounts[i], err = transform.NewPlaidBankAccount(userId, plaidAccount)
+		accounts[i], err = transformer.NewPlaidBankAccount(userId, plaidAccount)
 		if err != nil {
 			p.Logger.Error("failed to convert bank account", zap.Error(err))
 			return nil, err

@@ -66,6 +66,8 @@ type Params struct {
 	Instrumentation *instrumentation.ServiceTelemetry
 	Db              *database.Db
 	PlaidClient     *plaid.APIClient
+	KeyManagement   secrets.KeyManagement
+	PlaidWrapper    *plaidhandler.PlaidWrapper
 }
 
 // RegisterGrpcServer registers the grpc server object
@@ -100,33 +102,6 @@ func NewServer(param *Params) (*Server, error) {
 		return nil, errors.New("invalid param")
 	}
 
-	// configure aws kms
-	keyManagement, err := secrets.NewAWSKMS(secrets.AWSKMSConfig{
-		Region:    param.Config.AwsRegion,
-		KeyID:     param.Config.AwsKeyID,
-		SecretKey: param.Config.AwsSecretKey,
-	})
-	if err != nil {
-		return nil, err
-	}
-
-	opts := []plaidhandler.Option{
-		plaidhandler.WithEnvironment(plaid.Environment(param.Config.PlaidEnv)),
-		plaidhandler.WithClientID(param.Config.PlaidClientID),
-		plaidhandler.WithSecretKey(param.Config.PlaidSecretKey),
-		plaidhandler.WithInstrumentation(param.Instrumentation),
-		plaidhandler.WithLogger(param.Logger),
-		plaidhandler.WithOauthDomain(param.Config.PlaidOauthDomain),
-		plaidhandler.WithWebhooksDomain(param.Config.PlaidWebhookOauthDomain),
-		plaidhandler.WithWebhooksEnabled(param.Config.PlaidWebhooksEnabled),
-	}
-
-	// declare plaid wrapper
-	handler, err := plaidhandler.New(opts...)
-	if err != nil {
-		return nil, err
-	}
-
 	sc := &client.API{}
 	sc.Init(param.Config.StripeApiKey, nil)
 
@@ -134,9 +109,9 @@ func NewServer(param *Params) (*Server, error) {
 		logger:          param.Logger,
 		config:          param.Config,
 		conn:            param.Db,
-		plaidClient:     handler,
+		plaidClient:     param.PlaidWrapper,
 		instrumentation: param.Instrumentation,
 		stripeClient:    sc,
-		kms:             keyManagement,
+		kms:             param.KeyManagement,
 	}, nil
 }

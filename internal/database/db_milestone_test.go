@@ -149,7 +149,7 @@ func TestDb_GetMilestonesByGoalID(t *testing.T) {
 			args: args{
 				ctx:        context.Background(),
 				goalID:     uint64(helper.GenerateRandomId(10000, 50000)),
-				milestones: helper.GenerateMilestone(3),
+				milestones: helper.GenerateMilestones(3),
 			},
 			wantErr:                 false,
 			shouldCreateBankAccount: true,
@@ -159,7 +159,7 @@ func TestDb_GetMilestonesByGoalID(t *testing.T) {
 			args: args{
 				ctx:        context.Background(),
 				goalID:     uint64(helper.GenerateRandomId(10000, 50000)),
-				milestones: helper.GenerateMilestone(3),
+				milestones: helper.GenerateMilestones(3),
 			},
 			wantErr:                 true,
 			shouldCreateBankAccount: false,

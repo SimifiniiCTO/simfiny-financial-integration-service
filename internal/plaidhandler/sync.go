@@ -7,8 +7,8 @@ import (
 	"go.uber.org/zap"
 
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
-	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/plaidhandler/transform"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/pointer"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/transformer"
 )
 
 type SyncResult struct {
@@ -36,7 +36,7 @@ func (p *PlaidWrapper) Sync(ctx context.Context, cursor, accessToken *string) (*
 
 	added := make([]*schema.Transaction, len(result.Added))
 	for i, transaction := range result.Added {
-		added[i], err = transform.NewTransactionFromPlaid(transaction)
+		added[i], err = transformer.NewTransactionFromPlaid(transaction)
 		if err != nil {
 			return nil, err
 		}
@@ -44,7 +44,7 @@ func (p *PlaidWrapper) Sync(ctx context.Context, cursor, accessToken *string) (*
 
 	modified := make([]*schema.Transaction, len(result.Modified))
 	for i, transaction := range result.Modified {
-		modified[i], err = transform.NewTransactionFromPlaid(transaction)
+		modified[i], err = transformer.NewTransactionFromPlaid(transaction)
 		if err != nil {
 			return nil, err
 		}

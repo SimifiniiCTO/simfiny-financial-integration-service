@@ -36,21 +36,16 @@ func newLogger() *zap.Logger {
 
 func GetPlaidWrapperForTest() (*PlaidWrapper, error) {
 	l := newLogger()
-	c, err := newNewRelicClient(l)
-
-	opt := []instrumentation.ServiceTelemetryOption{
-		instrumentation.WithNewrelicSdk(c),
-		instrumentation.WithMetricsEnabled(false),
-	}
-	instr := instrumentation.NewServiceTelemetry(opt...)
-
-	if err != nil {
-		return nil, err
-	}
 
 	return &PlaidWrapper{
 		client:             NewMockPlaidClient(),
-		InstrumentationSdk: instr,
+		InstrumentationSdk: &instrumentation.ServiceTelemetry{},
 		Logger:             l,
+		Environment:        plaid.Sandbox,
+		ClientID:           PLAID_CLIENT_ID_TEST_UTILS,
+		SecretKey:          PLAID_SECRET_KEY_TEST_UTILS,
+		OAuthDomain:        "",
+		WebhooksDomain:     "",
+		WebhooksEnabled:    false,
 	}, nil
 }

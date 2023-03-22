@@ -4,6 +4,7 @@ import (
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 )
 
+// GenerateBugetCategory generates a random budget category
 func GenerateBugetCategory() *schema.Category {
 	return &schema.Category{
 		Id:          0,
@@ -29,6 +30,7 @@ func GenerateSingleBudget() *schema.Budget {
 	}
 }
 
+// GenerateBudgets generates a slice of random budgets
 func GenerateBudgets(budgetCount int) []*schema.Budget {
 	budgets := make([]*schema.Budget, 0, budgetCount)
 	for i := 0; i < budgetCount; i++ {
@@ -37,6 +39,7 @@ func GenerateBudgets(budgetCount int) []*schema.Budget {
 	return budgets
 }
 
+// GenerateSingleMilestone generates a single milestone
 func GenerateSingleMilestone(numBudgets int) *schema.Milestone {
 	return &schema.Milestone{
 		Name:         GenerateRandomString(10),
@@ -48,7 +51,8 @@ func GenerateSingleMilestone(numBudgets int) *schema.Milestone {
 	}
 }
 
-func GenerateMilestone(milestoneCount int) []*schema.Milestone {
+// GenerateMilestone generates a slice of milestones
+func GenerateMilestones(milestoneCount int) []*schema.Milestone {
 	milestones := make([]*schema.Milestone, 0, milestoneCount)
 	for i := 0; i < milestoneCount; i++ {
 		milestones = append(milestones, GenerateSingleMilestone(3))
@@ -57,6 +61,7 @@ func GenerateMilestone(milestoneCount int) []*schema.Milestone {
 	return milestones
 }
 
+// GenerateSingleForecast generates a single forecast
 func GenerateSingleForecast() *schema.Forecast {
 	return &schema.Forecast{
 		Id:                       0,
@@ -66,6 +71,7 @@ func GenerateSingleForecast() *schema.Forecast {
 	}
 }
 
+// GenerateSingleGoal generates a single goal
 func GenerateSingleGoal(numMilestones int) *schema.SmartGoal {
 	return &schema.SmartGoal{
 		Id:           0,
@@ -78,11 +84,12 @@ func GenerateSingleGoal(numMilestones int) *schema.SmartGoal {
 		StartDate:    GenerateRandomString(10),
 		EndDate:      GenerateRandomString(10),
 		TargetAmount: GenerateRandomString(10),
-		Milestones:   GenerateMilestone(numMilestones),
+		Milestones:   GenerateMilestones(numMilestones),
 		Forecasts:    GenerateSingleForecast(),
 	}
 }
 
+// GenerateGoals generates a slice of goals
 func GenerateGoals(goalCount int) []*schema.SmartGoal {
 	goals := make([]*schema.SmartGoal, 0, goalCount)
 	for i := 0; i < goalCount; i++ {
@@ -92,6 +99,7 @@ func GenerateGoals(goalCount int) []*schema.SmartGoal {
 	return goals
 }
 
+// GenerateSinglePocket generates a single pocket
 func GenerateSinglePocket() *schema.Pocket {
 	return &schema.Pocket{
 		Id:    0,
@@ -100,6 +108,7 @@ func GenerateSinglePocket() *schema.Pocket {
 	}
 }
 
+// GenerateSinglePocketWithGoals generates a single pocket with a specified number of goals
 func GenerateSinglePocketWithGoals(goalCount int) *schema.Pocket {
 	return &schema.Pocket{
 		Id:    0,
@@ -108,6 +117,7 @@ func GenerateSinglePocketWithGoals(goalCount int) *schema.Pocket {
 	}
 }
 
+// GeneratePockets generates a slice of pockets
 func GeneratePockets(pocketCount int) []*schema.Pocket {
 	pockets := make([]*schema.Pocket, 0, pocketCount)
 	for i := 0; i < pocketCount; i++ {
@@ -117,6 +127,7 @@ func GeneratePockets(pocketCount int) []*schema.Pocket {
 	return pockets
 }
 
+// GenerateSingleBankAccount generates a single bank account
 func GenerateBankAccount() *schema.BankAccount {
 	return &schema.BankAccount{
 		UserId:         uint64(GenerateRandomId(100000, 3000000)),
@@ -133,6 +144,7 @@ func GenerateBankAccount() *schema.BankAccount {
 	}
 }
 
+// GenerateBankAccounts generates a slice of bank accounts
 func GenerateBankAccounts(bankAccountCount int) []*schema.BankAccount {
 	bankAccounts := make([]*schema.BankAccount, 0, bankAccountCount)
 	for i := 0; i < bankAccountCount; i++ {
@@ -142,6 +154,7 @@ func GenerateBankAccounts(bankAccountCount int) []*schema.BankAccount {
 	return bankAccounts
 }
 
+// GenerateSingleCreditAccount generates a single credit account
 func GenerateSingleCreditAccount() *schema.CreditAccount {
 	return &schema.CreditAccount{
 		UserId:                 uint64(GenerateRandomId(10000, 30000)),
@@ -166,6 +179,7 @@ func GenerateSingleCreditAccount() *schema.CreditAccount {
 	}
 }
 
+// GenerateCreditAccounts generates a slice of credit accounts
 func GenerateCreditAccounts(creditAccountCount int) []*schema.CreditAccount {
 	creditAccounts := make([]*schema.CreditAccount, 0, creditAccountCount)
 	for i := 0; i < creditAccountCount; i++ {
@@ -175,6 +189,7 @@ func GenerateCreditAccounts(creditAccountCount int) []*schema.CreditAccount {
 	return creditAccounts
 }
 
+// GenerateSingleMortgage generates a single mortgage
 func GenerateSingleMortgage() *schema.MortgageAccount {
 	return &schema.MortgageAccount{
 		PlaidAccountId:              GenerateRandomString(10),
@@ -211,6 +226,7 @@ func GenerateSingleMortgage() *schema.MortgageAccount {
 	}
 }
 
+// GenerateMortgageAccounts generates a slice of mortgage accounts
 func GenerateMortgageAccounts(mortgageAccountCount int) []*schema.MortgageAccount {
 	mortgageAccounts := make([]*schema.MortgageAccount, 0, mortgageAccountCount)
 	for i := 0; i < mortgageAccountCount; i++ {
@@ -220,6 +236,7 @@ func GenerateMortgageAccounts(mortgageAccountCount int) []*schema.MortgageAccoun
 	return mortgageAccounts
 }
 
+// GenerateSingleInvestmentAccount generates a single investment account
 func GenerateInvestmentHolding() *schema.InvesmentHolding {
 	return &schema.InvesmentHolding{
 		Name:                     GenerateRandomString(10),
@@ -236,6 +253,7 @@ func GenerateInvestmentHolding() *schema.InvesmentHolding {
 	}
 }
 
+// GenerateInvestmentHoldings generates a slice of investment holdings
 func GenerateInvestmentHoldings(holdingCount int) []*schema.InvesmentHolding {
 	holdings := make([]*schema.InvesmentHolding, 0, holdingCount)
 	for i := 0; i < holdingCount; i++ {
@@ -245,6 +263,7 @@ func GenerateInvestmentHoldings(holdingCount int) []*schema.InvesmentHolding {
 	return holdings
 }
 
+// GenerateSingleInvestmentAccount generates a single investment account
 func GenerateSingleInvestmentSecurity() *schema.InvestmentSecurity {
 	return &schema.InvestmentSecurity{
 		ClosePrice:             float64(GenerateRandomId(1000, 100000)),
@@ -266,6 +285,7 @@ func GenerateSingleInvestmentSecurity() *schema.InvestmentSecurity {
 	}
 }
 
+// GenerateInvestmentHoldings generates a slice of investment holdings
 func GenerateInvestmentSecurities(securityCount int) []*schema.InvestmentSecurity {
 	securities := make([]*schema.InvestmentSecurity, 0, securityCount)
 	for i := 0; i < securityCount; i++ {
@@ -275,6 +295,7 @@ func GenerateInvestmentSecurities(securityCount int) []*schema.InvestmentSecurit
 	return securities
 }
 
+// GenerateSingleInvestmentAccount generates a single investment account
 func GenerateSingleInvestmentAccount() *schema.InvestmentAccount {
 	return &schema.InvestmentAccount{
 		UserId:         0,
@@ -291,6 +312,7 @@ func GenerateSingleInvestmentAccount() *schema.InvestmentAccount {
 	}
 }
 
+// GenerateInvestmentAccounts generates a slice of investment accounts
 func GenerateInvestmentAccounts(numInvestmentAcct int) []*schema.InvestmentAccount {
 	investmentAccounts := make([]*schema.InvestmentAccount, 0, numInvestmentAcct)
 	for i := 0; i < numInvestmentAcct; i++ {
@@ -300,6 +322,7 @@ func GenerateInvestmentAccounts(numInvestmentAcct int) []*schema.InvestmentAccou
 	return investmentAccounts
 }
 
+// GenerateToken generates a token
 func GenerateToken() *schema.Token {
 	return &schema.Token{
 		AccessToken: GenerateRandomString(10),
@@ -309,6 +332,7 @@ func GenerateToken() *schema.Token {
 	}
 }
 
+// GeneratePlaidLink generates a plaid link
 func GeneratePlaidLink() *schema.PlaidLink {
 	return &schema.PlaidLink{
 		Products: []string{
@@ -326,6 +350,7 @@ func GeneratePlaidLink() *schema.PlaidLink {
 	}
 }
 
+// GenerateLink generates a link
 func GenerateLink(linkType schema.LinkType) *schema.Link {
 	return &schema.Link{
 		Id:                        0,
@@ -348,6 +373,7 @@ func GenerateLink(linkType schema.LinkType) *schema.Link {
 	}
 }
 
+// GenerateSingleSubscription generates a single subscription
 func GenerateSingleSubscription() *schema.StripeSubscription {
 	return &schema.StripeSubscription{
 		StripeSubscriptionId:          GenerateRandomString(20),
@@ -357,6 +383,7 @@ func GenerateSingleSubscription() *schema.StripeSubscription {
 	}
 }
 
+// GenerateStripeSubscriptions generates a slice of subscriptions
 func GenerateStripeSubscriptions(subscriptionCount int) []*schema.StripeSubscription {
 	subscriptions := make([]*schema.StripeSubscription, 0, subscriptionCount)
 	for i := 0; i < subscriptionCount; i++ {
@@ -366,6 +393,7 @@ func GenerateStripeSubscriptions(subscriptionCount int) []*schema.StripeSubscrip
 	return subscriptions
 }
 
+// GenereateRandomUserProfileForTest generates a random user profile for testing
 func GenereateRandomUserProfileForTest() *schema.UserProfile {
 	return &schema.UserProfile{
 		UserId:              uint64(GenerateRandomId(100000, 3000000)),

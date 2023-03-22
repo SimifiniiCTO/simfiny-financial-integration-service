@@ -16,8 +16,12 @@ func (p *PlaidWrapper) getPlaidDeposit(ctx context.Context, accessToken *string)
 		return nil, errors.New("invalid input argument. access token cannot be empty")
 	}
 
-	request := plaid.NewAccountsBalanceGetRequest(*accessToken)
-	resp, _, err := p.client.PlaidApi.AccountsBalanceGet(ctx).AccountsBalanceGetRequest(*request).Execute()
+	request := plaid.AccountsBalanceGetRequest{
+		AccessToken: *accessToken,
+		Secret:      &p.SecretKey,
+		ClientId:    &p.ClientID,
+	}
+	resp, _, err := p.client.PlaidApi.AccountsBalanceGet(ctx).AccountsBalanceGetRequest(request).Execute()
 	if err != nil {
 		return nil, err
 	}

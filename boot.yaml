@@ -95,6 +95,7 @@ grpc:
         loggerEncoding: "flatten"
         eventEncoding: "flatten"
       timeout:
+        timeoutMs: 60000
         enabled: true                                    # Optional, default: false
         ignore: [""]                                      # Optional, default: []
         paths:

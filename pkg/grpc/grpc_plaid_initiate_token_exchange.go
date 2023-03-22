@@ -45,7 +45,7 @@ func (s *Server) PlaidInitiateTokenExchange(ctx context.Context, req *proto.Plai
 	}
 
 	// If there is a configured limit on Plaid links then enforce that limit.
-	if s.config.MaxPlaidLinks > len(userProfile.Link) {
+	if s.config.MaxPlaidLinks < len(userProfile.Link) {
 		return nil, status.Error(codes.ResourceExhausted, "maximum number of plaid links reached")
 	}
 
@@ -61,7 +61,7 @@ func (s *Server) PlaidInitiateTokenExchange(ctx context.Context, req *proto.Plai
 		}
 	}
 
-	// create a link token
+	// create a link token via plaid
 	token, err := s.plaidClient.CreateLinkToken(ctx, &plaidhandler.LinkTokenOptions{
 		ClientUserID:             fmt.Sprintf("%d", req.UserId),
 		LegalName:                req.FullName,

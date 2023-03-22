@@ -19,6 +19,7 @@ import (
 	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/dal"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/instrumentation"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/plaidhandler"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/secrets"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/api"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/grpc"
@@ -69,6 +70,16 @@ func main() {
 		logger.Panic("config unmarshal failed", zap.Error(err))
 	}
 
+	keyManagement, err := configureKeyManagement()
+	if err != nil {
+		logger.Panic(err.Error())
+	}
+
+	plaidWrapper, err := configurePlaidWrapper(instrumentation, logger)
+	if err != nil {
+		logger.Panic(err.Error())
+	}
+
 	// initialize gRPC server
 	grpcSrv, err := grpc.NewServer(&grpc.Params{
 		Config:          &grpcCfg,
@@ -76,6 +87,8 @@ func main() {
 		Db:              db,
 		PlaidClient:     plaidClient,
 		Instrumentation: instrumentation,
+		KeyManagement:   keyManagement,
+		PlaidWrapper:    plaidWrapper,
 	})
 	if err != nil {
 		logger.Panic(err.Error())
@@ -110,6 +123,24 @@ func main() {
 	srv, _ := api.NewServer(&srvCfg, logger, instrumentation, db, plaidClient)
 	stopCh := signals.SetupSignalHandler()
 	srv.ListenAndServe(stopCh)
+}
+
+// configureKeyManagement configures the key management (aws) sdk to be used by the service
+func configureKeyManagement() (secrets.KeyManagement, error) {
+	region := viper.GetString("aws-region")
+	keyID := viper.GetString("aws-key-id")
+	secretKey := viper.GetString("aws-secret-key")
+
+	keyManagement, err := secrets.NewAWSKMS(secrets.AWSKMSConfig{
+		Region:    region,
+		KeyID:     keyID,
+		SecretKey: secretKey,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return keyManagement, nil
 }
 
 // configurNewrelicSDK configures the new relic sdk with metadata specific to this service
@@ -153,6 +184,68 @@ func configureNewrelicSDK(logger *zap.Logger) (*newrelic.Application, error) {
 	return nil, fmt.Errorf("invalid input parameter. param: newrelicLicenseKey = %s", newrelicLicenseKey)
 }
 
+// configurePlaidWrapper configures the plaid sdk wrapper to be userd by the service
+func configurePlaidWrapper(instrimentation *instrumentation.ServiceTelemetry, logger *zap.Logger) (*plaidhandler.PlaidWrapper, error) {
+	var (
+		plaidClientID       = viper.GetString("plaid-client-id")
+		plaidSecretKey      = viper.GetString("plaid-secret-key")
+		plaidEnv            = viper.GetString("plaid-env")
+		oauthDomain         = viper.GetString("plaid-oauth-domain")
+		webhooksEnabled     = viper.GetBool("plaid-webhooks-enabled")
+		webhooksOauthDomain = viper.GetString("plaid-webhooks-oauth-domain")
+	)
+
+	env, err := decipherPlaidEnvironment(plaidEnv)
+	if err != nil {
+		return nil, err
+	}
+
+	opts := []plaidhandler.Option{
+		plaidhandler.WithEnvironment(env),
+		plaidhandler.WithClientID(plaidClientID),
+		plaidhandler.WithSecretKey(plaidSecretKey),
+		plaidhandler.WithInstrumentation(instrimentation),
+		plaidhandler.WithLogger(logger),
+		plaidhandler.WithOauthDomain(oauthDomain),
+		plaidhandler.WithWebhooksDomain(webhooksOauthDomain),
+		plaidhandler.WithWebhooksEnabled(webhooksEnabled),
+	}
+
+	// declare plaid wrapper
+	handler, err := plaidhandler.New(opts...)
+	if err != nil {
+		return nil, err
+	}
+
+	return handler, nil
+
+}
+
+// decipherPlaidEnvironment deciphers the plaid environment from the config env
+func decipherPlaidEnvironment(environment string) (plaid.Environment, error) {
+	var (
+		env plaid.Environment
+	)
+
+	if environment == "" {
+		return "", fmt.Errorf("environment cannot be empty")
+	}
+
+	switch environment {
+	case "sandbox":
+		env = plaid.Sandbox
+	case "development":
+		env = plaid.Development
+	case "production":
+		env = plaid.Production
+	default:
+		return "", fmt.Errorf("invalid plaid environment: %s", environment)
+	}
+
+	return env, nil
+}
+
+// configurePlaidSDK configures the plaid sdk to be used by the service
 func configurePlaidSDK() (*plaid.APIClient, error) {
 	var (
 		plaidClientID  = viper.GetString("plaid-client-id")

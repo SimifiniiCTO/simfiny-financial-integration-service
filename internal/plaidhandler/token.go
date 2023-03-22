@@ -25,27 +25,43 @@ func (p *PlaidWrapper) CreateLinkToken(ctx context.Context, options *LinkTokenOp
 		}
 	}
 
+	// if we are in sandbox mode, we need to create a public token for the sandbox account
+	if p.Environment == plaid.Sandbox {
+		publicToken, err := p.getPlublicTokenForSandboxAcct(ctx)
+		if err != nil {
+			p.Logger.Error("failed to create link token with Plaid", zap.Error(err))
+			return nil, err
+		}
+
+		return &PlaidLinkToken{
+			LinkToken: publicToken.GetPublicToken(),
+		}, nil
+	}
+
 	// based on the env config value ... we decipher wether to use the sandbox or production plaid client
+	reqPayload := plaid.LinkTokenCreateRequest{
+		ClientId:     &p.ClientID,
+		Secret:       &p.SecretKey,
+		ClientName:   PlaidClientName,
+		Language:     PlaidLanguage,
+		CountryCodes: PlaidCountries,
+		User: plaid.LinkTokenCreateRequestUser{
+			ClientUserId:             options.ClientUserID,
+			LegalName:                &options.LegalName,
+			PhoneNumber:              options.PhoneNumber,
+			PhoneNumberVerifiedTime:  options.PhoneNumberVerifiedTime,
+			EmailAddress:             &options.EmailAddress,
+			EmailAddressVerifiedTime: options.EmailAddressVerifiedTime,
+			Ssn:                      nil,
+			DateOfBirth:              nil,
+		},
+		Products:    &PlaidProducts,
+		Webhook:     webhooksUrl,
+		RedirectUri: redirectUri,
+	}
 	request := p.client.PlaidApi.
 		LinkTokenCreate(ctx).
-		LinkTokenCreateRequest(plaid.LinkTokenCreateRequest{
-			ClientName:   PlaidClientName,
-			Language:     PlaidLanguage,
-			CountryCodes: PlaidCountries,
-			User: plaid.LinkTokenCreateRequestUser{
-				ClientUserId:             options.ClientUserID,
-				LegalName:                &options.LegalName,
-				PhoneNumber:              options.PhoneNumber,
-				PhoneNumberVerifiedTime:  options.PhoneNumberVerifiedTime,
-				EmailAddress:             &options.EmailAddress,
-				EmailAddressVerifiedTime: options.EmailAddressVerifiedTime,
-				Ssn:                      nil,
-				DateOfBirth:              nil,
-			},
-			Products:    &PlaidProducts,
-			Webhook:     webhooksUrl,
-			RedirectUri: redirectUri,
-		})
+		LinkTokenCreateRequest(reqPayload)
 
 	result, _, err := request.Execute()
 	if err != nil {
@@ -60,6 +76,19 @@ func (p *PlaidWrapper) CreateLinkToken(ctx context.Context, options *LinkTokenOp
 }
 
 func (p *PlaidWrapper) ExchangePublicToken(ctx context.Context, publicToken string) (*ItemToken, error) {
+	if p.Environment == plaid.Sandbox {
+		accessToken, err := p.getAccessTokenForSandboxAcct()
+		if err != nil {
+			p.Logger.Error("failed to create link token with Plaid", zap.Error(err))
+			return nil, err
+		}
+
+		return &ItemToken{
+			AccessToken: accessToken,
+			ItemId:      "",
+		}, nil
+	}
+
 	request := p.client.PlaidApi.
 		ItemPublicTokenExchange(ctx).
 		ItemPublicTokenExchangeRequest(plaid.ItemPublicTokenExchangeRequest{
@@ -113,7 +142,6 @@ func (p *PlaidWrapper) getPlublicTokenForSandboxAcct(ctx context.Context) (plaid
 
 	testProducts := []plaid.Products{
 		plaid.PRODUCTS_AUTH,
-		plaid.PRODUCTS_BALANCE,
 		plaid.PRODUCTS_INVESTMENTS,
 		plaid.PRODUCTS_LIABILITIES,
 		plaid.PRODUCTS_TRANSACTIONS,
@@ -138,6 +166,6 @@ func (p *PlaidWrapper) configureClient() {
 	configuration := plaid.NewConfiguration()
 	configuration.AddDefaultHeader("PLAID-CLIENT-ID", p.ClientID)
 	configuration.AddDefaultHeader("PLAID-SECRET", p.SecretKey)
-	configuration.UseEnvironment(environments[string(p.Environment)])
+	configuration.UseEnvironment(p.Environment)
 	p.client = plaid.NewAPIClient(configuration)
 }

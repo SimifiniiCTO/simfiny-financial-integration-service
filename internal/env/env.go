@@ -29,7 +29,7 @@ func ReadEnvVars() {
 	fs.String("level", "info", "log level debug, info, warn, error, flat or panic")
 	fs.StringSlice("backend-url", []string{}, "backend service URL")
 	fs.Duration("http-client-timeout", 2*time.Minute, "client timeout duration")
-	fs.Duration("rpc-timeout", 500*time.Millisecond, "client timeout duration")
+	fs.Duration("rpc-timeout", 30*time.Second, "client timeout duration")
 	fs.Duration("http-server-timeout", 30*time.Second, "server read and write timeout duration")
 	fs.Duration("http-server-shutdown-timeout", 5*time.Second, "server graceful shutdown timeout duration")
 	fs.String("data-path", "/data", "data local path")

@@ -12,16 +12,17 @@ import (
 	"testing"
 	"time"
 
-	core_database "github.com/SimifiniiCTO/core/core-database"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/test/bufconn"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 
+	core_database "github.com/SimifiniiCTO/core/core-database"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/database"
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/dal"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/instrumentation"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/plaidhandler"
 )
 
@@ -76,21 +77,19 @@ func NewMockServer(db *database.Db) {
 		RpcTimeout:      3 * time.Minute,
 	}
 
-	/*plaidHandler, err := plaidhandler.GetPlaidWrapperForTest()
+	handler, err := plaidhandler.GetPlaidWrapperForTest()
 	if err != nil {
 		log.Fatal(err)
-	}*/
+	}
 
-	client := plaidhandler.NewMockPlaidClient()
-	var err error
 	MockServer, err = NewServer(&Params{
 		Config:          config,
 		Logger:          zap.L(),
-		Instrumentation: nil,
+		Instrumentation: &instrumentation.ServiceTelemetry{},
 		Db:              DbConnHandler,
-		PlaidClient:     client,
+		PlaidClient:     plaidhandler.NewMockPlaidClient(),
+		PlaidWrapper:    handler,
 	})
-
 	if err != nil {
 		log.Fatal(err)
 	}
