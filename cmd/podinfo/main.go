@@ -128,13 +128,15 @@ func main() {
 // configureKeyManagement configures the key management (aws) sdk to be used by the service
 func configureKeyManagement() (secrets.KeyManagement, error) {
 	region := viper.GetString("aws-region")
-	keyID := viper.GetString("aws-key-id")
-	secretKey := viper.GetString("aws-secret-key")
+	accessKey := viper.GetString("aws-access-key-id")
+	secretAccessKey := viper.GetString("aws-secret-access-key")
+	kmsKeyID := viper.GetString("aws-kms-key-id")
 
 	keyManagement, err := secrets.NewAWSKMS(secrets.AWSKMSConfig{
 		Region:    region,
-		KeyID:     keyID,
-		SecretKey: secretKey,
+		AccessKey: accessKey,
+		SecretKey: secretAccessKey,
+		KmsKeyID:  kmsKeyID,
 	})
 	if err != nil {
 		return nil, err
@@ -283,8 +285,9 @@ func configureDatabaseConn(ctx context.Context, logger *zap.Logger, instrumentat
 	dbQueryTimeout := viper.GetDuration("db-query-timeout")
 
 	awsRegion := viper.GetString("aws-region")
-	awsKeyID := viper.GetString("aws-key-id")
-	awsSecretKey := viper.GetString("aws-secret-key")
+	AwsAccessKeyID := viper.GetString("aws-access-key-id")
+	AwsSecretAccessKey := viper.GetString("aws-secret-access-key")
+	AwsKmsKeyID := viper.GetString("aws-kms-key-id")
 
 	connectionString := database.ConfigureConnectionString(host, user, password, dbname, sslMode, port)
 
@@ -300,8 +303,9 @@ func configureDatabaseConn(ctx context.Context, logger *zap.Logger, instrumentat
 
 	keyManagement, err := secrets.NewAWSKMS(secrets.AWSKMSConfig{
 		Region:    awsRegion,
-		KeyID:     awsKeyID,
-		SecretKey: awsSecretKey,
+		AccessKey: AwsAccessKeyID,
+		SecretKey: AwsSecretAccessKey,
+		KmsKeyID:  AwsKmsKeyID,
 	})
 	if err != nil {
 		return nil, err

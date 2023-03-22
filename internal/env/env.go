@@ -88,9 +88,12 @@ func ReadEnvVars() {
 	fs.String("stripe-api-key", "sk_test_4eC39HqLyjWDarjtT1zdp7dc", "")
 
 	// aws configs
-	fs.String("aws-key-id", "AKIA5HFOAJRN5472YQRB", "aws kms key id")
+	// to access aws credentials, ref the following link
+	// ref: https://docs.aws.amazon.com/sdk-for-go/v1/developer-guide/setting-up.html
+	fs.String("aws-access-key-id", "AKIA5HFOAJRN7YDEYPST", "aws kms key id")
 	fs.String("aws-region", "us-east-2", "aws kms region")
-	fs.String("aws-secret-key", "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", "aws kms secret key")
+	fs.String("aws-secret-access-key", "c4XOO/7RLxjonKrmZIvdIOef8TiG4C/fnOgm3JsL", "aws kms secret key")
+	fs.String("aws-kms-id", "mrk-e44f269bc0034feb95ede34154c3cfe4", "aws s3 bucket")
 
 	// billing configs
 	fs.Bool("billing-enabled", false, "enable billing")

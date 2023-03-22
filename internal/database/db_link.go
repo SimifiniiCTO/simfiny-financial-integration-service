@@ -164,10 +164,11 @@ func (db *Db) CreateLink(ctx context.Context, userID uint64, link *schema.Link) 
 		return nil, fmt.Errorf("link with id %d already exists", link.Id)
 	}
 
+	// TODO: fascilitate token encryption
 	// encrypt the token prior to storage in the database
-	if err := db.encryptAccessToken(ctx, link.Token); err != nil {
-		return nil, err
-	}
+	// if err := db.encryptAccessToken(ctx, link.Token); err != nil {
+	//	return nil, err
+	// }
 
 	// convert the link to orm type
 	linkORM, err := link.ToORM(ctx)

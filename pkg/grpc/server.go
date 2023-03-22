@@ -50,9 +50,10 @@ type Config struct {
 	PlaidOauthDomain        string           `mapstructure:"plaid-oauth-domain"`
 	PlaidWebhooksEnabled    bool             `mapstructure:"plaid-webhooks-enabled"`
 	PlaidWebhookOauthDomain string           `mapstructure:"plaid-webhook-oauth-domain"`
-	AwsKeyID                string           `mapstructure:"aws-key-id"`
+	AwsAccessKeyID          string           `mapstructure:"aws-access-key-id"`
 	AwsRegion               string           `mapstructure:"aws-region"`
-	AwsSecretKey            string           `mapstructure:"aws-secret-key"`
+	AwsSecretAccessKey      string           `mapstructure:"aws-secret-access-key"`
+	AwsKmsKeyID             string           `mapstructure:"aws-kms-key-id"`
 	MaxPlaidLinks           int              `mapstructure:"max-plaid-links"`
 	BillingEnabled          bool             `mapstructure:"billing-enabled"`
 }

@@ -14,21 +14,23 @@ import (
 // AWSKMSConfig is the configuration for the AWS KMS implementation of the KeyManagement interface
 type AWSKMSConfig struct {
 	// Log is the logger to use for this implementation
-	Log       *zap.Logger
+	Log *zap.Logger
 	// KeyID is the ID of the key to use for encryption and decryption
-	KeyID     string
+	AccessKey string
 	// Region is the AWS region to use for the KMS client
-	Region    string
+	Region string
 	// SecretKey is the secret key to use for the KMS client
 	SecretKey string
 	// Endpoint is the endpoint to use for the KMS client
-	Endpoint  *string
+	Endpoint *string
+	// KmsKeyID is the ID of the key to use for encryption and decryption
+	KmsKeyID string
 }
 
 // AWSKMS is the implementation of the KeyManagement interface for AWS KMS
 type AWSKMS struct {
 	// log is the logger to use for this implementation
-	log    *zap.Logger
+	log *zap.Logger
 	// config is the configuration for this implementation
 	config AWSKMSConfig
 	// client is the AWS KMS client to use for this implementation
@@ -39,7 +41,7 @@ type AWSKMS struct {
 func NewAWSKMS(config AWSKMSConfig) (KeyManagement, error) {
 	options := session.Options{
 		Config: aws.Config{
-			Credentials: credentials.NewStaticCredentials(config.KeyID, config.SecretKey, ""),
+			Credentials: credentials.NewStaticCredentials(config.AccessKey, config.SecretKey, ""),
 			Region:      aws.String(config.Region),
 		},
 	}
@@ -65,9 +67,7 @@ func NewAWSKMS(config AWSKMSConfig) (KeyManagement, error) {
 func (a *AWSKMS) Encrypt(ctx context.Context, input []byte) (keyID string, version string, result []byte, _ error) {
 	request := &kms.EncryptInput{
 		EncryptionAlgorithm: aws.String("SYMMETRIC_DEFAULT"),
-		EncryptionContext:   nil,
-		GrantTokens:         []*string{},
-		KeyId:               aws.String(a.config.KeyID),
+		KeyId:               aws.String(a.config.KmsKeyID),
 		Plaintext:           input,
 	}
 
@@ -85,8 +85,6 @@ func (a *AWSKMS) Decrypt(ctx context.Context, keyID string, version string, inpu
 	request := &kms.DecryptInput{
 		CiphertextBlob:      input,
 		EncryptionAlgorithm: aws.String("SYMMETRIC_DEFAULT"), // TODO Maybe make this a config thing?
-		EncryptionContext:   nil,
-		GrantTokens:         []*string{},
 		KeyId:               aws.String(keyID),
 	}
 
