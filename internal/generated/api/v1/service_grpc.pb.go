@@ -51,6 +51,10 @@ const (
 	FinancialService_GetMortageAccount_FullMethodName          = "/api.v1.FinancialService/GetMortageAccount"
 	FinancialService_GetLiabilityAccount_FullMethodName        = "/api.v1.FinancialService/GetLiabilityAccount"
 	FinancialService_GetStudentLoanAccount_FullMethodName      = "/api.v1.FinancialService/GetStudentLoanAccount"
+	FinancialService_CreateManualLink_FullMethodName           = "/api.v1.FinancialService/CreateManualLink"
+	FinancialService_GetLink_FullMethodName                    = "/api.v1.FinancialService/GetLink"
+	FinancialService_GetLinks_FullMethodName                   = "/api.v1.FinancialService/GetLinks"
+	FinancialService_DeleteLink_FullMethodName                 = "/api.v1.FinancialService/DeleteLink"
 )
 
 // FinancialServiceClient is the client API for FinancialService service.
@@ -89,6 +93,10 @@ type FinancialServiceClient interface {
 	GetMortageAccount(ctx context.Context, in *GetMortageAccountRequest, opts ...grpc.CallOption) (*GetMortageAccountResponse, error)
 	GetLiabilityAccount(ctx context.Context, in *GetLiabilityAccountRequest, opts ...grpc.CallOption) (*GetLiabilityAccountResponse, error)
 	GetStudentLoanAccount(ctx context.Context, in *GetStudentLoanAccountRequest, opts ...grpc.CallOption) (*GetStudentLoanAccountResponse, error)
+	CreateManualLink(ctx context.Context, in *CreateManualLinkRequest, opts ...grpc.CallOption) (*CreateManualLinkResponse, error)
+	GetLink(ctx context.Context, in *GetLinkRequest, opts ...grpc.CallOption) (*GetLinkResponse, error)
+	GetLinks(ctx context.Context, in *GetLinksRequest, opts ...grpc.CallOption) (*GetLinksResponse, error)
+	DeleteLink(ctx context.Context, in *DeleteLinkRequest, opts ...grpc.CallOption) (*DeleteLinkResponse, error)
 }
 
 type financialServiceClient struct {
@@ -387,6 +395,42 @@ func (c *financialServiceClient) GetStudentLoanAccount(ctx context.Context, in *
 	return out, nil
 }
 
+func (c *financialServiceClient) CreateManualLink(ctx context.Context, in *CreateManualLinkRequest, opts ...grpc.CallOption) (*CreateManualLinkResponse, error) {
+	out := new(CreateManualLinkResponse)
+	err := c.cc.Invoke(ctx, FinancialService_CreateManualLink_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *financialServiceClient) GetLink(ctx context.Context, in *GetLinkRequest, opts ...grpc.CallOption) (*GetLinkResponse, error) {
+	out := new(GetLinkResponse)
+	err := c.cc.Invoke(ctx, FinancialService_GetLink_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *financialServiceClient) GetLinks(ctx context.Context, in *GetLinksRequest, opts ...grpc.CallOption) (*GetLinksResponse, error) {
+	out := new(GetLinksResponse)
+	err := c.cc.Invoke(ctx, FinancialService_GetLinks_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *financialServiceClient) DeleteLink(ctx context.Context, in *DeleteLinkRequest, opts ...grpc.CallOption) (*DeleteLinkResponse, error) {
+	out := new(DeleteLinkResponse)
+	err := c.cc.Invoke(ctx, FinancialService_DeleteLink_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // FinancialServiceServer is the server API for FinancialService service.
 // All implementations must embed UnimplementedFinancialServiceServer
 // for forward compatibility
@@ -423,6 +467,10 @@ type FinancialServiceServer interface {
 	GetMortageAccount(context.Context, *GetMortageAccountRequest) (*GetMortageAccountResponse, error)
 	GetLiabilityAccount(context.Context, *GetLiabilityAccountRequest) (*GetLiabilityAccountResponse, error)
 	GetStudentLoanAccount(context.Context, *GetStudentLoanAccountRequest) (*GetStudentLoanAccountResponse, error)
+	CreateManualLink(context.Context, *CreateManualLinkRequest) (*CreateManualLinkResponse, error)
+	GetLink(context.Context, *GetLinkRequest) (*GetLinkResponse, error)
+	GetLinks(context.Context, *GetLinksRequest) (*GetLinksResponse, error)
+	DeleteLink(context.Context, *DeleteLinkRequest) (*DeleteLinkResponse, error)
 	mustEmbedUnimplementedFinancialServiceServer()
 }
 
@@ -525,6 +573,18 @@ func (UnimplementedFinancialServiceServer) GetLiabilityAccount(context.Context, 
 }
 func (UnimplementedFinancialServiceServer) GetStudentLoanAccount(context.Context, *GetStudentLoanAccountRequest) (*GetStudentLoanAccountResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetStudentLoanAccount not implemented")
+}
+func (UnimplementedFinancialServiceServer) CreateManualLink(context.Context, *CreateManualLinkRequest) (*CreateManualLinkResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateManualLink not implemented")
+}
+func (UnimplementedFinancialServiceServer) GetLink(context.Context, *GetLinkRequest) (*GetLinkResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetLink not implemented")
+}
+func (UnimplementedFinancialServiceServer) GetLinks(context.Context, *GetLinksRequest) (*GetLinksResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetLinks not implemented")
+}
+func (UnimplementedFinancialServiceServer) DeleteLink(context.Context, *DeleteLinkRequest) (*DeleteLinkResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteLink not implemented")
 }
 func (UnimplementedFinancialServiceServer) mustEmbedUnimplementedFinancialServiceServer() {}
 
@@ -1115,6 +1175,78 @@ func _FinancialService_GetStudentLoanAccount_Handler(srv interface{}, ctx contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _FinancialService_CreateManualLink_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateManualLinkRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FinancialServiceServer).CreateManualLink(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FinancialService_CreateManualLink_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FinancialServiceServer).CreateManualLink(ctx, req.(*CreateManualLinkRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FinancialService_GetLink_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetLinkRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FinancialServiceServer).GetLink(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FinancialService_GetLink_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FinancialServiceServer).GetLink(ctx, req.(*GetLinkRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FinancialService_GetLinks_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetLinksRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FinancialServiceServer).GetLinks(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FinancialService_GetLinks_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FinancialServiceServer).GetLinks(ctx, req.(*GetLinksRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FinancialService_DeleteLink_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteLinkRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FinancialServiceServer).DeleteLink(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FinancialService_DeleteLink_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FinancialServiceServer).DeleteLink(ctx, req.(*DeleteLinkRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // FinancialService_ServiceDesc is the grpc.ServiceDesc for FinancialService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1249,6 +1381,22 @@ var FinancialService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetStudentLoanAccount",
 			Handler:    _FinancialService_GetStudentLoanAccount_Handler,
+		},
+		{
+			MethodName: "CreateManualLink",
+			Handler:    _FinancialService_CreateManualLink_Handler,
+		},
+		{
+			MethodName: "GetLink",
+			Handler:    _FinancialService_GetLink_Handler,
+		},
+		{
+			MethodName: "GetLinks",
+			Handler:    _FinancialService_GetLinks_Handler,
+		},
+		{
+			MethodName: "DeleteLink",
+			Handler:    _FinancialService_DeleteLink_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

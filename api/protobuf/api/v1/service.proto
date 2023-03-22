@@ -676,4 +676,83 @@ service FinancialService {
       }
     };
   }
+
+  rpc CreateManualLink(CreateManualLinkRequest) returns (CreateManualLinkResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/link"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "create link"
+      tags: ["link"]
+      operation_id: "CreateLink"
+      description: "This endpoint creates a link"
+      responses: {
+        key: "200"
+        value: {
+          description: "A successful response."
+          schema: {
+            json_schema: {ref: ".api.v1.CreateLinkResponse"}
+          }
+        }
+      }
+    };
+  }
+
+  rpc GetLink(GetLinkRequest) returns (GetLinkResponse) {
+    option (google.api.http) = {get: "/api/v1/link/{link_id}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "get link by id"
+      tags: ["link"]
+      operation_id: "GetLink"
+      description: "This endpoint returns the link if the link exists"
+      responses: {
+        key: "200"
+        value: {
+          description: "A successful response."
+          schema: {
+            json_schema: {ref: ".api.v1.GetLinkResponse"}
+          }
+        }
+      }
+    };
+  }
+
+  rpc GetLinks(GetLinksRequest) returns (GetLinksResponse) {
+    option (google.api.http) = {get: "/api/v1/links/{user_id}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "get links"
+      tags: ["link"]
+      operation_id: "GetLinks"
+      description: "This endpoint returns the links"
+      responses: {
+        key: "200"
+        value: {
+          description: "A successful response."
+          schema: {
+            json_schema: {ref: ".api.v1.GetLinksResponse"}
+          }
+        }
+      }
+    };
+  }
+
+  rpc DeleteLink(DeleteLinkRequest) returns (DeleteLinkResponse) {
+    option (google.api.http) = {delete: "/api/v1/link/{link_id}/user/{user_id}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "delete link by id"
+      tags: ["link"]
+      operation_id: "DeleteLink"
+      description: "This endpoint deletes the link if the link exists"
+      responses: {
+        key: "200"
+        value: {
+          description: "A successful response."
+          schema: {
+            json_schema: {ref: ".api.v1.DeleteLinkResponse"}
+          }
+        }
+      }
+    };
+  }
 }

@@ -4,6 +4,7 @@ import (
 	"context"
 	"time"
 
+	"go.uber.org/zap"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
@@ -100,9 +101,13 @@ func (s *Server) createAndStoreLink(ctx context.Context, userID uint64, meta *to
 		return nil, err
 	}
 
+	s.logger.Info("creating and storing link for user", zap.Any("user_id", userID))
+
 	accessToken := meta.item_token.AccessToken
 	products := plaidhandler.PlaidProductStrings()
 	webhookUrl := handler.GetWebhooksURL()
+
+	s.logger.Info("about to cryptographically encrypt token", zap.Any("user_id", userID))
 
 	// cryptographically hash the access token before storing it
 	res, err := s.EncryptAccessToken(ctx, accessToken)
@@ -149,7 +154,7 @@ func (s *Server) createAndStoreLink(ctx context.Context, userID uint64, meta *to
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	// kick off a background job to fetch the account transactions
+	// TODO: kick off a background job to fetch the account transactions
 	/*if plaidLink.UsePlaidSync {
 		// kick off a background job to pull transactions by use of plaid sync
 	} else {

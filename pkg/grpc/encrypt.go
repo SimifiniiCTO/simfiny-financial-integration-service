@@ -14,6 +14,8 @@ import (
 
 // EncryptAccessToken encrypts the access token using the KMS
 func (s *Server) EncryptAccessToken(ctx context.Context, accessToken string) (*accessTokenMeta, error) {
+	s.logger.Info("Encrypting access token")
+	
 	keyId, version, encrypted, err := s.kms.Encrypt(ctx, []byte(accessToken))
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to encrypt access token")

@@ -7,6 +7,7 @@ import {
   CreditAccount,
   Forecast,
   InvestmentAccount,
+  Link,
   Milestone,
   MortgageAccount,
   Pocket,
@@ -593,6 +594,76 @@ export interface GetStudentLoanAccountRequest {
 export interface GetStudentLoanAccountResponse {
   /** The student loan account */
   studentLoanAccount: StudentLoanAccount | undefined;
+}
+
+export interface CreateManualLinkRequest {
+  /**
+   * The user id
+   * Validations:
+   * - user_id must be greater than 0
+   */
+  userId: number;
+  /** The manual account link */
+  manualAccountLink: Link | undefined;
+}
+
+export interface CreateManualLinkResponse {
+  /** The link's id */
+  linkId: number;
+}
+
+export interface GetLinkRequest {
+  /**
+   * The user id
+   * Validations:
+   * - user_id must be greater than 0
+   */
+  userId: number;
+  /**
+   * The link id
+   * Validations:
+   * - link_id must be greater than 0
+   */
+  linkId: number;
+}
+
+export interface GetLinkResponse {
+  /** The link */
+  link: Link | undefined;
+}
+
+export interface GetLinksRequest {
+  /**
+   * The user id
+   * Validations:
+   * - user_id must be greater than 0
+   */
+  userId: number;
+}
+
+export interface GetLinksResponse {
+  /** The links */
+  links: Link[];
+}
+
+export interface DeleteLinkRequest {
+  /**
+   * The user id
+   * Validations:
+   * - user_id must be greater than 0
+   */
+  userId: number;
+  /**
+   * The link id
+   * Validations:
+   * - link_id must be greater than 0
+   */
+  linkId: number;
+}
+
+export interface DeleteLinkResponse {
+  /** The link's id */
+  linkId: number;
 }
 
 function createBaseCreateUserProfileRequest(): CreateUserProfileRequest {
@@ -4585,6 +4656,506 @@ export const GetStudentLoanAccountResponse = {
     message.studentLoanAccount = (object.studentLoanAccount !== undefined && object.studentLoanAccount !== null)
       ? StudentLoanAccount.fromPartial(object.studentLoanAccount)
       : undefined;
+    return message;
+  },
+};
+
+function createBaseCreateManualLinkRequest(): CreateManualLinkRequest {
+  return { userId: 0, manualAccountLink: undefined };
+}
+
+export const CreateManualLinkRequest = {
+  encode(message: CreateManualLinkRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.userId !== 0) {
+      writer.uint32(8).uint64(message.userId);
+    }
+    if (message.manualAccountLink !== undefined) {
+      Link.encode(message.manualAccountLink, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): CreateManualLinkRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCreateManualLinkRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag != 8) {
+            break;
+          }
+
+          message.userId = longToNumber(reader.uint64() as Long);
+          continue;
+        case 2:
+          if (tag != 18) {
+            break;
+          }
+
+          message.manualAccountLink = Link.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateManualLinkRequest {
+    return {
+      userId: isSet(object.userId) ? Number(object.userId) : 0,
+      manualAccountLink: isSet(object.manualAccountLink) ? Link.fromJSON(object.manualAccountLink) : undefined,
+    };
+  },
+
+  toJSON(message: CreateManualLinkRequest): unknown {
+    const obj: any = {};
+    message.userId !== undefined && (obj.userId = Math.round(message.userId));
+    message.manualAccountLink !== undefined &&
+      (obj.manualAccountLink = message.manualAccountLink ? Link.toJSON(message.manualAccountLink) : undefined);
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CreateManualLinkRequest>, I>>(base?: I): CreateManualLinkRequest {
+    return CreateManualLinkRequest.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<CreateManualLinkRequest>, I>>(object: I): CreateManualLinkRequest {
+    const message = createBaseCreateManualLinkRequest();
+    message.userId = object.userId ?? 0;
+    message.manualAccountLink = (object.manualAccountLink !== undefined && object.manualAccountLink !== null)
+      ? Link.fromPartial(object.manualAccountLink)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseCreateManualLinkResponse(): CreateManualLinkResponse {
+  return { linkId: 0 };
+}
+
+export const CreateManualLinkResponse = {
+  encode(message: CreateManualLinkResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.linkId !== 0) {
+      writer.uint32(8).uint64(message.linkId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): CreateManualLinkResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCreateManualLinkResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag != 8) {
+            break;
+          }
+
+          message.linkId = longToNumber(reader.uint64() as Long);
+          continue;
+      }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateManualLinkResponse {
+    return { linkId: isSet(object.linkId) ? Number(object.linkId) : 0 };
+  },
+
+  toJSON(message: CreateManualLinkResponse): unknown {
+    const obj: any = {};
+    message.linkId !== undefined && (obj.linkId = Math.round(message.linkId));
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CreateManualLinkResponse>, I>>(base?: I): CreateManualLinkResponse {
+    return CreateManualLinkResponse.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<CreateManualLinkResponse>, I>>(object: I): CreateManualLinkResponse {
+    const message = createBaseCreateManualLinkResponse();
+    message.linkId = object.linkId ?? 0;
+    return message;
+  },
+};
+
+function createBaseGetLinkRequest(): GetLinkRequest {
+  return { userId: 0, linkId: 0 };
+}
+
+export const GetLinkRequest = {
+  encode(message: GetLinkRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.userId !== 0) {
+      writer.uint32(8).uint64(message.userId);
+    }
+    if (message.linkId !== 0) {
+      writer.uint32(16).uint64(message.linkId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetLinkRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetLinkRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag != 8) {
+            break;
+          }
+
+          message.userId = longToNumber(reader.uint64() as Long);
+          continue;
+        case 2:
+          if (tag != 16) {
+            break;
+          }
+
+          message.linkId = longToNumber(reader.uint64() as Long);
+          continue;
+      }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetLinkRequest {
+    return {
+      userId: isSet(object.userId) ? Number(object.userId) : 0,
+      linkId: isSet(object.linkId) ? Number(object.linkId) : 0,
+    };
+  },
+
+  toJSON(message: GetLinkRequest): unknown {
+    const obj: any = {};
+    message.userId !== undefined && (obj.userId = Math.round(message.userId));
+    message.linkId !== undefined && (obj.linkId = Math.round(message.linkId));
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetLinkRequest>, I>>(base?: I): GetLinkRequest {
+    return GetLinkRequest.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<GetLinkRequest>, I>>(object: I): GetLinkRequest {
+    const message = createBaseGetLinkRequest();
+    message.userId = object.userId ?? 0;
+    message.linkId = object.linkId ?? 0;
+    return message;
+  },
+};
+
+function createBaseGetLinkResponse(): GetLinkResponse {
+  return { link: undefined };
+}
+
+export const GetLinkResponse = {
+  encode(message: GetLinkResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.link !== undefined) {
+      Link.encode(message.link, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetLinkResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetLinkResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag != 10) {
+            break;
+          }
+
+          message.link = Link.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetLinkResponse {
+    return { link: isSet(object.link) ? Link.fromJSON(object.link) : undefined };
+  },
+
+  toJSON(message: GetLinkResponse): unknown {
+    const obj: any = {};
+    message.link !== undefined && (obj.link = message.link ? Link.toJSON(message.link) : undefined);
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetLinkResponse>, I>>(base?: I): GetLinkResponse {
+    return GetLinkResponse.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<GetLinkResponse>, I>>(object: I): GetLinkResponse {
+    const message = createBaseGetLinkResponse();
+    message.link = (object.link !== undefined && object.link !== null) ? Link.fromPartial(object.link) : undefined;
+    return message;
+  },
+};
+
+function createBaseGetLinksRequest(): GetLinksRequest {
+  return { userId: 0 };
+}
+
+export const GetLinksRequest = {
+  encode(message: GetLinksRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.userId !== 0) {
+      writer.uint32(8).uint64(message.userId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetLinksRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetLinksRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag != 8) {
+            break;
+          }
+
+          message.userId = longToNumber(reader.uint64() as Long);
+          continue;
+      }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetLinksRequest {
+    return { userId: isSet(object.userId) ? Number(object.userId) : 0 };
+  },
+
+  toJSON(message: GetLinksRequest): unknown {
+    const obj: any = {};
+    message.userId !== undefined && (obj.userId = Math.round(message.userId));
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetLinksRequest>, I>>(base?: I): GetLinksRequest {
+    return GetLinksRequest.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<GetLinksRequest>, I>>(object: I): GetLinksRequest {
+    const message = createBaseGetLinksRequest();
+    message.userId = object.userId ?? 0;
+    return message;
+  },
+};
+
+function createBaseGetLinksResponse(): GetLinksResponse {
+  return { links: [] };
+}
+
+export const GetLinksResponse = {
+  encode(message: GetLinksResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.links) {
+      Link.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetLinksResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetLinksResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag != 10) {
+            break;
+          }
+
+          message.links.push(Link.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetLinksResponse {
+    return { links: Array.isArray(object?.links) ? object.links.map((e: any) => Link.fromJSON(e)) : [] };
+  },
+
+  toJSON(message: GetLinksResponse): unknown {
+    const obj: any = {};
+    if (message.links) {
+      obj.links = message.links.map((e) => e ? Link.toJSON(e) : undefined);
+    } else {
+      obj.links = [];
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetLinksResponse>, I>>(base?: I): GetLinksResponse {
+    return GetLinksResponse.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<GetLinksResponse>, I>>(object: I): GetLinksResponse {
+    const message = createBaseGetLinksResponse();
+    message.links = object.links?.map((e) => Link.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseDeleteLinkRequest(): DeleteLinkRequest {
+  return { userId: 0, linkId: 0 };
+}
+
+export const DeleteLinkRequest = {
+  encode(message: DeleteLinkRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.userId !== 0) {
+      writer.uint32(8).uint64(message.userId);
+    }
+    if (message.linkId !== 0) {
+      writer.uint32(16).uint64(message.linkId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): DeleteLinkRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDeleteLinkRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag != 8) {
+            break;
+          }
+
+          message.userId = longToNumber(reader.uint64() as Long);
+          continue;
+        case 2:
+          if (tag != 16) {
+            break;
+          }
+
+          message.linkId = longToNumber(reader.uint64() as Long);
+          continue;
+      }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DeleteLinkRequest {
+    return {
+      userId: isSet(object.userId) ? Number(object.userId) : 0,
+      linkId: isSet(object.linkId) ? Number(object.linkId) : 0,
+    };
+  },
+
+  toJSON(message: DeleteLinkRequest): unknown {
+    const obj: any = {};
+    message.userId !== undefined && (obj.userId = Math.round(message.userId));
+    message.linkId !== undefined && (obj.linkId = Math.round(message.linkId));
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<DeleteLinkRequest>, I>>(base?: I): DeleteLinkRequest {
+    return DeleteLinkRequest.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<DeleteLinkRequest>, I>>(object: I): DeleteLinkRequest {
+    const message = createBaseDeleteLinkRequest();
+    message.userId = object.userId ?? 0;
+    message.linkId = object.linkId ?? 0;
+    return message;
+  },
+};
+
+function createBaseDeleteLinkResponse(): DeleteLinkResponse {
+  return { linkId: 0 };
+}
+
+export const DeleteLinkResponse = {
+  encode(message: DeleteLinkResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.linkId !== 0) {
+      writer.uint32(8).uint64(message.linkId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): DeleteLinkResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDeleteLinkResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag != 8) {
+            break;
+          }
+
+          message.linkId = longToNumber(reader.uint64() as Long);
+          continue;
+      }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DeleteLinkResponse {
+    return { linkId: isSet(object.linkId) ? Number(object.linkId) : 0 };
+  },
+
+  toJSON(message: DeleteLinkResponse): unknown {
+    const obj: any = {};
+    message.linkId !== undefined && (obj.linkId = Math.round(message.linkId));
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<DeleteLinkResponse>, I>>(base?: I): DeleteLinkResponse {
+    return DeleteLinkResponse.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<DeleteLinkResponse>, I>>(object: I): DeleteLinkResponse {
+    const message = createBaseDeleteLinkResponse();
+    message.linkId = object.linkId ?? 0;
     return message;
   },
 };

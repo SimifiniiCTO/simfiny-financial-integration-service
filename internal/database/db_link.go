@@ -5,7 +5,6 @@ import (
 	"encoding/hex"
 	"fmt"
 
-	"github.com/pkg/errors"
 	"gorm.io/gen/field"
 
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
@@ -71,13 +70,6 @@ func (db *Db) GetLink(ctx context.Context, userID uint64, linkID uint64) (*schem
 		return nil, fmt.Errorf("link with id %d does not belong to user %d", linkID, userID)
 	}
 
-	// decrypt the access token
-	decrypted, err := db.decryptAccessToken(ctx, link.Token)
-	if err != nil {
-		return nil, errors.Wrap(err, "failed to decrypt access token")
-	}
-	link.Token.AccessToken = *decrypted
-
 	// convert to pb
 	res, err := link.ToPB(ctx)
 	if err != nil {
@@ -135,6 +127,7 @@ func (db *Db) DeleteLink(ctx context.Context, userID uint64, linkID uint64) erro
 }
 
 // CreateLink takes as input the userID and link of interest and creates the associated link
+// TODO: ensure pockets are created spanning the bank accounts for the given link
 func (db *Db) CreateLink(ctx context.Context, userID uint64, link *schema.Link) (*schema.Link, error) {
 	// instrument operation
 	if span := db.startDatastoreSpan(ctx, "dbtxn-create-link"); span != nil {
@@ -164,17 +157,14 @@ func (db *Db) CreateLink(ctx context.Context, userID uint64, link *schema.Link) 
 		return nil, fmt.Errorf("link with id %d already exists", link.Id)
 	}
 
-	// TODO: fascilitate token encryption
-	// encrypt the token prior to storage in the database
-	// if err := db.encryptAccessToken(ctx, link.Token); err != nil {
-	//	return nil, err
-	// }
-
 	// convert the link to orm type
 	linkORM, err := link.ToORM(ctx)
 	if err != nil {
 		return nil, err
 	}
+
+	// update link status
+	linkORM.LinkStatus = schema.LinkStatus_LINK_STATUS_SUCCESS.String()
 
 	// associate the link to the user profile
 	if err := u.Link.Model(userProfile).Append(&linkORM); err != nil {
@@ -198,19 +188,6 @@ func (db *Db) CreateLink(ctx context.Context, userID uint64, link *schema.Link) 
 	}
 
 	return &createdLink, nil
-}
-
-// encryptAccessToken encrypts the access token using the KMS
-func (db *Db) encryptAccessToken(ctx context.Context, token *schema.Token) error {
-	keyId, version, encrypted, err := db.Kms.Encrypt(ctx, []byte(token.AccessToken))
-	if err != nil {
-		return errors.Wrap(err, "failed to encrypt access token")
-	}
-
-	token.AccessToken = hex.EncodeToString(encrypted)
-	token.KeyId = keyId
-	token.Version = version
-	return nil
 }
 
 // decryptAccessToken decrypts the access token using the KMS

@@ -3377,6 +3377,429 @@ func (x *GetStudentLoanAccountResponse) GetStudentLoanAccount() *StudentLoanAcco
 	return nil
 }
 
+type CreateManualLinkRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// The user id
+	// Validations:
+	// - user_id must be greater than 0
+	UserId uint64 `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	// The manual account link
+	ManualAccountLink *Link `protobuf:"bytes,2,opt,name=manual_account_link,json=manualAccountLink,proto3" json:"manual_account_link,omitempty"`
+}
+
+func (x *CreateManualLinkRequest) Reset() {
+	*x = CreateManualLinkRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_v1_request_response_proto_msgTypes[64]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *CreateManualLinkRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateManualLinkRequest) ProtoMessage() {}
+
+func (x *CreateManualLinkRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_v1_request_response_proto_msgTypes[64]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateManualLinkRequest.ProtoReflect.Descriptor instead.
+func (*CreateManualLinkRequest) Descriptor() ([]byte, []int) {
+	return file_api_v1_request_response_proto_rawDescGZIP(), []int{64}
+}
+
+func (x *CreateManualLinkRequest) GetUserId() uint64 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+func (x *CreateManualLinkRequest) GetManualAccountLink() *Link {
+	if x != nil {
+		return x.ManualAccountLink
+	}
+	return nil
+}
+
+type CreateManualLinkResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// The link's id
+	LinkId uint64 `protobuf:"varint,1,opt,name=link_id,json=linkId,proto3" json:"link_id,omitempty"`
+}
+
+func (x *CreateManualLinkResponse) Reset() {
+	*x = CreateManualLinkResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_v1_request_response_proto_msgTypes[65]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *CreateManualLinkResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateManualLinkResponse) ProtoMessage() {}
+
+func (x *CreateManualLinkResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_v1_request_response_proto_msgTypes[65]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateManualLinkResponse.ProtoReflect.Descriptor instead.
+func (*CreateManualLinkResponse) Descriptor() ([]byte, []int) {
+	return file_api_v1_request_response_proto_rawDescGZIP(), []int{65}
+}
+
+func (x *CreateManualLinkResponse) GetLinkId() uint64 {
+	if x != nil {
+		return x.LinkId
+	}
+	return 0
+}
+
+type GetLinkRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// The user id
+	// Validations:
+	// - user_id must be greater than 0
+	UserId uint64 `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	// The link id
+	// Validations:
+	// - link_id must be greater than 0
+	LinkId uint64 `protobuf:"varint,2,opt,name=link_id,json=linkId,proto3" json:"link_id,omitempty"`
+}
+
+func (x *GetLinkRequest) Reset() {
+	*x = GetLinkRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_v1_request_response_proto_msgTypes[66]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetLinkRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetLinkRequest) ProtoMessage() {}
+
+func (x *GetLinkRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_v1_request_response_proto_msgTypes[66]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetLinkRequest.ProtoReflect.Descriptor instead.
+func (*GetLinkRequest) Descriptor() ([]byte, []int) {
+	return file_api_v1_request_response_proto_rawDescGZIP(), []int{66}
+}
+
+func (x *GetLinkRequest) GetUserId() uint64 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+func (x *GetLinkRequest) GetLinkId() uint64 {
+	if x != nil {
+		return x.LinkId
+	}
+	return 0
+}
+
+type GetLinkResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// The link
+	Link *Link `protobuf:"bytes,1,opt,name=link,proto3" json:"link,omitempty"`
+}
+
+func (x *GetLinkResponse) Reset() {
+	*x = GetLinkResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_v1_request_response_proto_msgTypes[67]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetLinkResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetLinkResponse) ProtoMessage() {}
+
+func (x *GetLinkResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_v1_request_response_proto_msgTypes[67]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetLinkResponse.ProtoReflect.Descriptor instead.
+func (*GetLinkResponse) Descriptor() ([]byte, []int) {
+	return file_api_v1_request_response_proto_rawDescGZIP(), []int{67}
+}
+
+func (x *GetLinkResponse) GetLink() *Link {
+	if x != nil {
+		return x.Link
+	}
+	return nil
+}
+
+type GetLinksRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// The user id
+	// Validations:
+	// - user_id must be greater than 0
+	UserId uint64 `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+}
+
+func (x *GetLinksRequest) Reset() {
+	*x = GetLinksRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_v1_request_response_proto_msgTypes[68]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetLinksRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetLinksRequest) ProtoMessage() {}
+
+func (x *GetLinksRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_v1_request_response_proto_msgTypes[68]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetLinksRequest.ProtoReflect.Descriptor instead.
+func (*GetLinksRequest) Descriptor() ([]byte, []int) {
+	return file_api_v1_request_response_proto_rawDescGZIP(), []int{68}
+}
+
+func (x *GetLinksRequest) GetUserId() uint64 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+type GetLinksResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// The links
+	Links []*Link `protobuf:"bytes,1,rep,name=links,proto3" json:"links,omitempty"`
+}
+
+func (x *GetLinksResponse) Reset() {
+	*x = GetLinksResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_v1_request_response_proto_msgTypes[69]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetLinksResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetLinksResponse) ProtoMessage() {}
+
+func (x *GetLinksResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_v1_request_response_proto_msgTypes[69]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetLinksResponse.ProtoReflect.Descriptor instead.
+func (*GetLinksResponse) Descriptor() ([]byte, []int) {
+	return file_api_v1_request_response_proto_rawDescGZIP(), []int{69}
+}
+
+func (x *GetLinksResponse) GetLinks() []*Link {
+	if x != nil {
+		return x.Links
+	}
+	return nil
+}
+
+type DeleteLinkRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// The user id
+	// Validations:
+	// - user_id must be greater than 0
+	UserId uint64 `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	// The link id
+	// Validations:
+	// - link_id must be greater than 0
+	LinkId uint64 `protobuf:"varint,2,opt,name=link_id,json=linkId,proto3" json:"link_id,omitempty"`
+}
+
+func (x *DeleteLinkRequest) Reset() {
+	*x = DeleteLinkRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_v1_request_response_proto_msgTypes[70]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *DeleteLinkRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteLinkRequest) ProtoMessage() {}
+
+func (x *DeleteLinkRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_v1_request_response_proto_msgTypes[70]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteLinkRequest.ProtoReflect.Descriptor instead.
+func (*DeleteLinkRequest) Descriptor() ([]byte, []int) {
+	return file_api_v1_request_response_proto_rawDescGZIP(), []int{70}
+}
+
+func (x *DeleteLinkRequest) GetUserId() uint64 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+func (x *DeleteLinkRequest) GetLinkId() uint64 {
+	if x != nil {
+		return x.LinkId
+	}
+	return 0
+}
+
+type DeleteLinkResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// The link's id
+	LinkId uint64 `protobuf:"varint,1,opt,name=link_id,json=linkId,proto3" json:"link_id,omitempty"`
+}
+
+func (x *DeleteLinkResponse) Reset() {
+	*x = DeleteLinkResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_v1_request_response_proto_msgTypes[71]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *DeleteLinkResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteLinkResponse) ProtoMessage() {}
+
+func (x *DeleteLinkResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_v1_request_response_proto_msgTypes[71]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteLinkResponse.ProtoReflect.Descriptor instead.
+func (*DeleteLinkResponse) Descriptor() ([]byte, []int) {
+	return file_api_v1_request_response_proto_rawDescGZIP(), []int{71}
+}
+
+func (x *DeleteLinkResponse) GetLinkId() uint64 {
+	if x != nil {
+		return x.LinkId
+	}
+	return 0
+}
+
 var File_api_v1_request_response_proto protoreflect.FileDescriptor
 
 var file_api_v1_request_response_proto_rawDesc = []byte{
@@ -3738,7 +4161,44 @@ var file_api_v1_request_response_proto_rawDesc = []byte{
 	0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e,
 	0x53, 0x74, 0x75, 0x64, 0x65, 0x6e, 0x74, 0x4c, 0x6f, 0x61, 0x6e, 0x41, 0x63, 0x63, 0x6f, 0x75,
 	0x6e, 0x74, 0x52, 0x12, 0x73, 0x74, 0x75, 0x64, 0x65, 0x6e, 0x74, 0x4c, 0x6f, 0x61, 0x6e, 0x41,
-	0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x42, 0xc1, 0x01, 0x0a, 0x0a, 0x63, 0x6f, 0x6d, 0x2e, 0x61,
+	0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x22, 0x89, 0x01, 0x0a, 0x17, 0x43, 0x72, 0x65, 0x61, 0x74,
+	0x65, 0x4d, 0x61, 0x6e, 0x75, 0x61, 0x6c, 0x4c, 0x69, 0x6e, 0x6b, 0x52, 0x65, 0x71, 0x75, 0x65,
+	0x73, 0x74, 0x12, 0x23, 0x0a, 0x07, 0x75, 0x73, 0x65, 0x72, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20,
+	0x01, 0x28, 0x04, 0x42, 0x0a, 0xe0, 0x41, 0x02, 0xfa, 0x42, 0x04, 0x32, 0x02, 0x20, 0x00, 0x52,
+	0x06, 0x75, 0x73, 0x65, 0x72, 0x49, 0x64, 0x12, 0x49, 0x0a, 0x13, 0x6d, 0x61, 0x6e, 0x75, 0x61,
+	0x6c, 0x5f, 0x61, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x5f, 0x6c, 0x69, 0x6e, 0x6b, 0x18, 0x02,
+	0x20, 0x01, 0x28, 0x0b, 0x32, 0x0c, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x4c, 0x69,
+	0x6e, 0x6b, 0x42, 0x0b, 0xe0, 0x41, 0x02, 0xfa, 0x42, 0x05, 0x8a, 0x01, 0x02, 0x10, 0x01, 0x52,
+	0x11, 0x6d, 0x61, 0x6e, 0x75, 0x61, 0x6c, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x4c, 0x69,
+	0x6e, 0x6b, 0x22, 0x33, 0x0a, 0x18, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x4d, 0x61, 0x6e, 0x75,
+	0x61, 0x6c, 0x4c, 0x69, 0x6e, 0x6b, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x17,
+	0x0a, 0x07, 0x6c, 0x69, 0x6e, 0x6b, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52,
+	0x06, 0x6c, 0x69, 0x6e, 0x6b, 0x49, 0x64, 0x22, 0x5a, 0x0a, 0x0e, 0x47, 0x65, 0x74, 0x4c, 0x69,
+	0x6e, 0x6b, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x23, 0x0a, 0x07, 0x75, 0x73, 0x65,
+	0x72, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x42, 0x0a, 0xe0, 0x41, 0x02, 0xfa,
+	0x42, 0x04, 0x32, 0x02, 0x20, 0x00, 0x52, 0x06, 0x75, 0x73, 0x65, 0x72, 0x49, 0x64, 0x12, 0x23,
+	0x0a, 0x07, 0x6c, 0x69, 0x6e, 0x6b, 0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x04, 0x42,
+	0x0a, 0xe0, 0x41, 0x02, 0xfa, 0x42, 0x04, 0x32, 0x02, 0x20, 0x00, 0x52, 0x06, 0x6c, 0x69, 0x6e,
+	0x6b, 0x49, 0x64, 0x22, 0x33, 0x0a, 0x0f, 0x47, 0x65, 0x74, 0x4c, 0x69, 0x6e, 0x6b, 0x52, 0x65,
+	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x20, 0x0a, 0x04, 0x6c, 0x69, 0x6e, 0x6b, 0x18, 0x01,
+	0x20, 0x01, 0x28, 0x0b, 0x32, 0x0c, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x4c, 0x69,
+	0x6e, 0x6b, 0x52, 0x04, 0x6c, 0x69, 0x6e, 0x6b, 0x22, 0x36, 0x0a, 0x0f, 0x47, 0x65, 0x74, 0x4c,
+	0x69, 0x6e, 0x6b, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x23, 0x0a, 0x07, 0x75,
+	0x73, 0x65, 0x72, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x42, 0x0a, 0xe0, 0x41,
+	0x02, 0xfa, 0x42, 0x04, 0x32, 0x02, 0x20, 0x00, 0x52, 0x06, 0x75, 0x73, 0x65, 0x72, 0x49, 0x64,
+	0x22, 0x36, 0x0a, 0x10, 0x47, 0x65, 0x74, 0x4c, 0x69, 0x6e, 0x6b, 0x73, 0x52, 0x65, 0x73, 0x70,
+	0x6f, 0x6e, 0x73, 0x65, 0x12, 0x22, 0x0a, 0x05, 0x6c, 0x69, 0x6e, 0x6b, 0x73, 0x18, 0x01, 0x20,
+	0x03, 0x28, 0x0b, 0x32, 0x0c, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x4c, 0x69, 0x6e,
+	0x6b, 0x52, 0x05, 0x6c, 0x69, 0x6e, 0x6b, 0x73, 0x22, 0x5d, 0x0a, 0x11, 0x44, 0x65, 0x6c, 0x65,
+	0x74, 0x65, 0x4c, 0x69, 0x6e, 0x6b, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x23, 0x0a,
+	0x07, 0x75, 0x73, 0x65, 0x72, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x42, 0x0a,
+	0xe0, 0x41, 0x02, 0xfa, 0x42, 0x04, 0x32, 0x02, 0x20, 0x00, 0x52, 0x06, 0x75, 0x73, 0x65, 0x72,
+	0x49, 0x64, 0x12, 0x23, 0x0a, 0x07, 0x6c, 0x69, 0x6e, 0x6b, 0x5f, 0x69, 0x64, 0x18, 0x02, 0x20,
+	0x01, 0x28, 0x04, 0x42, 0x0a, 0xe0, 0x41, 0x02, 0xfa, 0x42, 0x04, 0x32, 0x02, 0x20, 0x00, 0x52,
+	0x06, 0x6c, 0x69, 0x6e, 0x6b, 0x49, 0x64, 0x22, 0x2d, 0x0a, 0x12, 0x44, 0x65, 0x6c, 0x65, 0x74,
+	0x65, 0x4c, 0x69, 0x6e, 0x6b, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x17, 0x0a,
+	0x07, 0x6c, 0x69, 0x6e, 0x6b, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x06,
+	0x6c, 0x69, 0x6e, 0x6b, 0x49, 0x64, 0x42, 0xc1, 0x01, 0x0a, 0x0a, 0x63, 0x6f, 0x6d, 0x2e, 0x61,
 	0x70, 0x69, 0x2e, 0x76, 0x31, 0x42, 0x14, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x52, 0x65,
 	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x64, 0x67,
 	0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x53, 0x69, 0x6d, 0x69, 0x66, 0x69,
@@ -3766,7 +4226,7 @@ func file_api_v1_request_response_proto_rawDescGZIP() []byte {
 	return file_api_v1_request_response_proto_rawDescData
 }
 
-var file_api_v1_request_response_proto_msgTypes = make([]protoimpl.MessageInfo, 64)
+var file_api_v1_request_response_proto_msgTypes = make([]protoimpl.MessageInfo, 72)
 var file_api_v1_request_response_proto_goTypes = []interface{}{
 	(*CreateUserProfileRequest)(nil),           // 0: api.v1.CreateUserProfileRequest
 	(*CreateUserProfileResponse)(nil),          // 1: api.v1.CreateUserProfileResponse
@@ -3832,51 +4292,63 @@ var file_api_v1_request_response_proto_goTypes = []interface{}{
 	(*GetLiabilityAccountResponse)(nil),        // 61: api.v1.GetLiabilityAccountResponse
 	(*GetStudentLoanAccountRequest)(nil),       // 62: api.v1.GetStudentLoanAccountRequest
 	(*GetStudentLoanAccountResponse)(nil),      // 63: api.v1.GetStudentLoanAccountResponse
-	(*UserProfile)(nil),                        // 64: api.v1.UserProfile
-	(*BankAccount)(nil),                        // 65: api.v1.BankAccount
-	(*Pocket)(nil),                             // 66: api.v1.Pocket
-	(*SmartGoal)(nil),                          // 67: api.v1.SmartGoal
-	(*Milestone)(nil),                          // 68: api.v1.Milestone
-	(*Forecast)(nil),                           // 69: api.v1.Forecast
-	(*Budget)(nil),                             // 70: api.v1.Budget
-	(*InvestmentAccount)(nil),                  // 71: api.v1.InvestmentAccount
-	(*MortgageAccount)(nil),                    // 72: api.v1.MortgageAccount
-	(*CreditAccount)(nil),                      // 73: api.v1.CreditAccount
-	(*StudentLoanAccount)(nil),                 // 74: api.v1.StudentLoanAccount
+	(*CreateManualLinkRequest)(nil),            // 64: api.v1.CreateManualLinkRequest
+	(*CreateManualLinkResponse)(nil),           // 65: api.v1.CreateManualLinkResponse
+	(*GetLinkRequest)(nil),                     // 66: api.v1.GetLinkRequest
+	(*GetLinkResponse)(nil),                    // 67: api.v1.GetLinkResponse
+	(*GetLinksRequest)(nil),                    // 68: api.v1.GetLinksRequest
+	(*GetLinksResponse)(nil),                   // 69: api.v1.GetLinksResponse
+	(*DeleteLinkRequest)(nil),                  // 70: api.v1.DeleteLinkRequest
+	(*DeleteLinkResponse)(nil),                 // 71: api.v1.DeleteLinkResponse
+	(*UserProfile)(nil),                        // 72: api.v1.UserProfile
+	(*BankAccount)(nil),                        // 73: api.v1.BankAccount
+	(*Pocket)(nil),                             // 74: api.v1.Pocket
+	(*SmartGoal)(nil),                          // 75: api.v1.SmartGoal
+	(*Milestone)(nil),                          // 76: api.v1.Milestone
+	(*Forecast)(nil),                           // 77: api.v1.Forecast
+	(*Budget)(nil),                             // 78: api.v1.Budget
+	(*InvestmentAccount)(nil),                  // 79: api.v1.InvestmentAccount
+	(*MortgageAccount)(nil),                    // 80: api.v1.MortgageAccount
+	(*CreditAccount)(nil),                      // 81: api.v1.CreditAccount
+	(*StudentLoanAccount)(nil),                 // 82: api.v1.StudentLoanAccount
+	(*Link)(nil),                               // 83: api.v1.Link
 }
 var file_api_v1_request_response_proto_depIdxs = []int32{
-	64, // 0: api.v1.CreateUserProfileRequest.profile:type_name -> api.v1.UserProfile
-	64, // 1: api.v1.GetUserProfileResponse.profile:type_name -> api.v1.UserProfile
-	64, // 2: api.v1.UpdateUserProfileRequest.profile:type_name -> api.v1.UserProfile
-	64, // 3: api.v1.UpdateUserProfileResponse.profile:type_name -> api.v1.UserProfile
-	65, // 4: api.v1.CreateBankAccountRequest.bank_account:type_name -> api.v1.BankAccount
-	65, // 5: api.v1.GetBankAccountResponse.bank_account:type_name -> api.v1.BankAccount
-	65, // 6: api.v1.UpdateBankAccountRequest.bank_account:type_name -> api.v1.BankAccount
-	65, // 7: api.v1.UpdateBankAccountResponse.bank_account:type_name -> api.v1.BankAccount
-	66, // 8: api.v1.GetPocketResponse.pocket:type_name -> api.v1.Pocket
-	67, // 9: api.v1.GetSmartGoalsByPocketIdResponse.smart_goals:type_name -> api.v1.SmartGoal
-	67, // 10: api.v1.CreateSmartGoalRequest.smart_goal:type_name -> api.v1.SmartGoal
-	67, // 11: api.v1.UpdateSmartGoalRequest.smart_goal:type_name -> api.v1.SmartGoal
-	68, // 12: api.v1.CreateMilestoneRequest.milestone:type_name -> api.v1.Milestone
-	68, // 13: api.v1.UpdateMilestoneRequest.milestone:type_name -> api.v1.Milestone
-	68, // 14: api.v1.UpdateMilestoneResponse.milestone:type_name -> api.v1.Milestone
-	68, // 15: api.v1.GetMilestonesBySmartGoalIdResponse.milestones:type_name -> api.v1.Milestone
-	68, // 16: api.v1.GetMilestoneResponse.milestone:type_name -> api.v1.Milestone
-	69, // 17: api.v1.GetForecastResponse.forecast:type_name -> api.v1.Forecast
-	70, // 18: api.v1.CreateBudgetRequest.budget:type_name -> api.v1.Budget
-	70, // 19: api.v1.UpdateBudgetRequest.budget:type_name -> api.v1.Budget
-	70, // 20: api.v1.UpdateBudgetResponse.budget:type_name -> api.v1.Budget
-	70, // 21: api.v1.GetBudgetResponse.budget:type_name -> api.v1.Budget
-	70, // 22: api.v1.GetAllBudgetsResponse.budgets:type_name -> api.v1.Budget
-	71, // 23: api.v1.GetInvestmentAcccountResponse.investment_account:type_name -> api.v1.InvestmentAccount
-	72, // 24: api.v1.GetMortageAccountResponse.mortage_account:type_name -> api.v1.MortgageAccount
-	73, // 25: api.v1.GetLiabilityAccountResponse.liability_account:type_name -> api.v1.CreditAccount
-	74, // 26: api.v1.GetStudentLoanAccountResponse.student_loan_account:type_name -> api.v1.StudentLoanAccount
-	27, // [27:27] is the sub-list for method output_type
-	27, // [27:27] is the sub-list for method input_type
-	27, // [27:27] is the sub-list for extension type_name
-	27, // [27:27] is the sub-list for extension extendee
-	0,  // [0:27] is the sub-list for field type_name
+	72, // 0: api.v1.CreateUserProfileRequest.profile:type_name -> api.v1.UserProfile
+	72, // 1: api.v1.GetUserProfileResponse.profile:type_name -> api.v1.UserProfile
+	72, // 2: api.v1.UpdateUserProfileRequest.profile:type_name -> api.v1.UserProfile
+	72, // 3: api.v1.UpdateUserProfileResponse.profile:type_name -> api.v1.UserProfile
+	73, // 4: api.v1.CreateBankAccountRequest.bank_account:type_name -> api.v1.BankAccount
+	73, // 5: api.v1.GetBankAccountResponse.bank_account:type_name -> api.v1.BankAccount
+	73, // 6: api.v1.UpdateBankAccountRequest.bank_account:type_name -> api.v1.BankAccount
+	73, // 7: api.v1.UpdateBankAccountResponse.bank_account:type_name -> api.v1.BankAccount
+	74, // 8: api.v1.GetPocketResponse.pocket:type_name -> api.v1.Pocket
+	75, // 9: api.v1.GetSmartGoalsByPocketIdResponse.smart_goals:type_name -> api.v1.SmartGoal
+	75, // 10: api.v1.CreateSmartGoalRequest.smart_goal:type_name -> api.v1.SmartGoal
+	75, // 11: api.v1.UpdateSmartGoalRequest.smart_goal:type_name -> api.v1.SmartGoal
+	76, // 12: api.v1.CreateMilestoneRequest.milestone:type_name -> api.v1.Milestone
+	76, // 13: api.v1.UpdateMilestoneRequest.milestone:type_name -> api.v1.Milestone
+	76, // 14: api.v1.UpdateMilestoneResponse.milestone:type_name -> api.v1.Milestone
+	76, // 15: api.v1.GetMilestonesBySmartGoalIdResponse.milestones:type_name -> api.v1.Milestone
+	76, // 16: api.v1.GetMilestoneResponse.milestone:type_name -> api.v1.Milestone
+	77, // 17: api.v1.GetForecastResponse.forecast:type_name -> api.v1.Forecast
+	78, // 18: api.v1.CreateBudgetRequest.budget:type_name -> api.v1.Budget
+	78, // 19: api.v1.UpdateBudgetRequest.budget:type_name -> api.v1.Budget
+	78, // 20: api.v1.UpdateBudgetResponse.budget:type_name -> api.v1.Budget
+	78, // 21: api.v1.GetBudgetResponse.budget:type_name -> api.v1.Budget
+	78, // 22: api.v1.GetAllBudgetsResponse.budgets:type_name -> api.v1.Budget
+	79, // 23: api.v1.GetInvestmentAcccountResponse.investment_account:type_name -> api.v1.InvestmentAccount
+	80, // 24: api.v1.GetMortageAccountResponse.mortage_account:type_name -> api.v1.MortgageAccount
+	81, // 25: api.v1.GetLiabilityAccountResponse.liability_account:type_name -> api.v1.CreditAccount
+	82, // 26: api.v1.GetStudentLoanAccountResponse.student_loan_account:type_name -> api.v1.StudentLoanAccount
+	83, // 27: api.v1.CreateManualLinkRequest.manual_account_link:type_name -> api.v1.Link
+	83, // 28: api.v1.GetLinkResponse.link:type_name -> api.v1.Link
+	83, // 29: api.v1.GetLinksResponse.links:type_name -> api.v1.Link
+	30, // [30:30] is the sub-list for method output_type
+	30, // [30:30] is the sub-list for method input_type
+	30, // [30:30] is the sub-list for extension type_name
+	30, // [30:30] is the sub-list for extension extendee
+	0,  // [0:30] is the sub-list for field type_name
 }
 
 func init() { file_api_v1_request_response_proto_init() }
@@ -4654,6 +5126,102 @@ func file_api_v1_request_response_proto_init() {
 				return nil
 			}
 		}
+		file_api_v1_request_response_proto_msgTypes[64].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*CreateManualLinkRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_api_v1_request_response_proto_msgTypes[65].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*CreateManualLinkResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_api_v1_request_response_proto_msgTypes[66].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetLinkRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_api_v1_request_response_proto_msgTypes[67].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetLinkResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_api_v1_request_response_proto_msgTypes[68].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetLinksRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_api_v1_request_response_proto_msgTypes[69].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetLinksResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_api_v1_request_response_proto_msgTypes[70].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*DeleteLinkRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_api_v1_request_response_proto_msgTypes[71].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*DeleteLinkResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -4661,7 +5229,7 @@ func file_api_v1_request_response_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_api_v1_request_response_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   64,
+			NumMessages:   72,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

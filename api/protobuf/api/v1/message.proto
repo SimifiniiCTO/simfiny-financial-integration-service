@@ -362,14 +362,12 @@ message BankAccount {
   // the bank account name
   string name = 3 [
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""},
-    (validate.rules).string = {min_bytes: 3},
     (google.api.field_behavior) = REQUIRED
   ];
 
   // the bank account number
   string number = 4 [
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""},
-    (validate.rules).string = {min_bytes: 8},
     (google.api.field_behavior) = REQUIRED
   ];
 
@@ -382,7 +380,6 @@ message BankAccount {
   // the bank account balance
   float balance = 6 [
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""},
-    (validate.rules).float.gt = 0,
     (google.api.field_behavior) = REQUIRED  
   ];
 

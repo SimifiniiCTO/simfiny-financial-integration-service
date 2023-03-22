@@ -53,7 +53,18 @@ func main() {
 		logger.Panic(err.Error())
 	}
 
-	db, err := configureDatabaseConn(ctx, logger, instrumentation)
+	// load gRPC server config
+	var grpcCfg grpc.Config
+	if err := viper.Unmarshal(&grpcCfg); err != nil {
+		logger.Panic("config unmarshal failed", zap.Error(err))
+	}
+
+	keyManagement, err := configureKeyManagement(logger)
+	if err != nil {
+		logger.Panic(err.Error())
+	}
+
+	db, err := configureDatabaseConn(ctx, logger, instrumentation, keyManagement)
 	if err != nil {
 		logger.Panic(err.Error())
 	}
@@ -63,17 +74,6 @@ func main() {
 		logger.Panic(err.Error())
 	}
 	defer conn.Close()
-
-	// load gRPC server config
-	var grpcCfg grpc.Config
-	if err := viper.Unmarshal(&grpcCfg); err != nil {
-		logger.Panic("config unmarshal failed", zap.Error(err))
-	}
-
-	keyManagement, err := configureKeyManagement()
-	if err != nil {
-		logger.Panic(err.Error())
-	}
 
 	plaidWrapper, err := configurePlaidWrapper(instrumentation, logger)
 	if err != nil {
@@ -126,17 +126,18 @@ func main() {
 }
 
 // configureKeyManagement configures the key management (aws) sdk to be used by the service
-func configureKeyManagement() (secrets.KeyManagement, error) {
+func configureKeyManagement(logger *zap.Logger) (secrets.KeyManagement, error) {
 	region := viper.GetString("aws-region")
 	accessKey := viper.GetString("aws-access-key-id")
 	secretAccessKey := viper.GetString("aws-secret-access-key")
-	kmsKeyID := viper.GetString("aws-kms-key-id")
+	kmsKeyID := viper.GetString("aws-kms-id")
 
 	keyManagement, err := secrets.NewAWSKMS(secrets.AWSKMSConfig{
 		Region:    region,
 		AccessKey: accessKey,
 		SecretKey: secretAccessKey,
 		KmsKeyID:  kmsKeyID,
+		Log:       logger,
 	})
 	if err != nil {
 		return nil, err
@@ -270,7 +271,7 @@ func configurePlaidSDK() (*plaid.APIClient, error) {
 }
 
 // configureDatabaseConn configures the database connection
-func configureDatabaseConn(ctx context.Context, logger *zap.Logger, instrumentation *instrumentation.ServiceTelemetry) (*database.Db, error) {
+func configureDatabaseConn(ctx context.Context, logger *zap.Logger, instrumentation *instrumentation.ServiceTelemetry, keyManagment secrets.KeyManagement) (*database.Db, error) {
 	host := viper.GetString("dbhost")
 	port := viper.GetInt("dbport")
 	user := viper.GetString("dbuser")
@@ -284,11 +285,6 @@ func configureDatabaseConn(ctx context.Context, logger *zap.Logger, instrumentat
 	maxDBSleepInterval := viper.GetDuration("max-db-retry-sleep-interval")
 	dbQueryTimeout := viper.GetDuration("db-query-timeout")
 
-	awsRegion := viper.GetString("aws-region")
-	AwsAccessKeyID := viper.GetString("aws-access-key-id")
-	AwsSecretAccessKey := viper.GetString("aws-secret-access-key")
-	AwsKmsKeyID := viper.GetString("aws-kms-key-id")
-
 	connectionString := database.ConfigureConnectionString(host, user, password, dbname, sslMode, port)
 
 	// establish db connections
@@ -301,16 +297,6 @@ func configureDatabaseConn(ctx context.Context, logger *zap.Logger, instrumentat
 			ConnectionString:          &connectionString,
 		})
 
-	keyManagement, err := secrets.NewAWSKMS(secrets.AWSKMSConfig{
-		Region:    awsRegion,
-		AccessKey: AwsAccessKeyID,
-		SecretKey: AwsSecretAccessKey,
-		KmsKeyID:  AwsKmsKeyID,
-	})
-	if err != nil {
-		return nil, err
-	}
-
 	queryOperator := dal.Use(conn.Engine)
 	opts := []database.Option{
 		database.WithConnection(conn),
@@ -321,7 +307,7 @@ func configureDatabaseConn(ctx context.Context, logger *zap.Logger, instrumentat
 		database.WithDatabaseLogger(logger),
 		database.WithDatabaseInstrumentation(instrumentation),
 		database.WithDatabaseQueryOperator(queryOperator),
-		database.WithKms(keyManagement),
+		database.WithKms(keyManagment),
 	}
 
 	db, err := database.New(ctx, opts...)

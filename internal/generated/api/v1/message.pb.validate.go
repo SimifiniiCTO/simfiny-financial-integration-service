@@ -1620,40 +1620,13 @@ func (m *BankAccount) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	if len(m.GetName()) < 3 {
-		err := BankAccountValidationError{
-			field:  "Name",
-			reason: "value length must be at least 3 bytes",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
-	}
+	// no validation rules for Name
 
-	if len(m.GetNumber()) < 8 {
-		err := BankAccountValidationError{
-			field:  "Number",
-			reason: "value length must be at least 8 bytes",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
-	}
+	// no validation rules for Number
 
 	// no validation rules for Type
 
-	if m.GetBalance() <= 0 {
-		err := BankAccountValidationError{
-			field:  "Balance",
-			reason: "value must be greater than 0",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
-	}
+	// no validation rules for Balance
 
 	// no validation rules for Currency
 

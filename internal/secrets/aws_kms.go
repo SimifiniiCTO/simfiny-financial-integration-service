@@ -27,6 +27,30 @@ type AWSKMSConfig struct {
 	KmsKeyID string
 }
 
+func (c *AWSKMSConfig) Validate() error {
+	if c.Log == nil {
+		return errors.New("log is required")
+	}
+
+	if c.AccessKey == "" {
+		return errors.New("access key is required")
+	}
+
+	if c.Region == "" {
+		return errors.New("region is required")
+	}
+
+	if c.SecretKey == "" {
+		return errors.New("secret key is required")
+	}
+
+	if c.KmsKeyID == "" {
+		return errors.New("kms key id is required")
+	}
+
+	return nil
+}
+
 // AWSKMS is the implementation of the KeyManagement interface for AWS KMS
 type AWSKMS struct {
 	// log is the logger to use for this implementation
@@ -39,6 +63,10 @@ type AWSKMS struct {
 
 // NewAWSKMS creates a new AWS KMS implementation of the KeyManagement interface
 func NewAWSKMS(config AWSKMSConfig) (KeyManagement, error) {
+	if err := config.Validate(); err != nil {
+		return nil, errors.Wrap(err, "invalid configuration")
+	}
+
 	options := session.Options{
 		Config: aws.Config{
 			Credentials: credentials.NewStaticCredentials(config.AccessKey, config.SecretKey, ""),
@@ -66,7 +94,7 @@ func NewAWSKMS(config AWSKMSConfig) (KeyManagement, error) {
 // Encrypt encrypts the input using the AWS KMS client
 func (a *AWSKMS) Encrypt(ctx context.Context, input []byte) (keyID string, version string, result []byte, _ error) {
 	request := &kms.EncryptInput{
-		EncryptionAlgorithm: aws.String("SYMMETRIC_DEFAULT"),
+		EncryptionAlgorithm: aws.String("RSAES_OAEP_SHA_256"),
 		KeyId:               aws.String(a.config.KmsKeyID),
 		Plaintext:           input,
 	}
@@ -84,7 +112,7 @@ func (a *AWSKMS) Decrypt(ctx context.Context, keyID string, version string, inpu
 
 	request := &kms.DecryptInput{
 		CiphertextBlob:      input,
-		EncryptionAlgorithm: aws.String("SYMMETRIC_DEFAULT"), // TODO Maybe make this a config thing?
+		EncryptionAlgorithm: aws.String("RSAES_OAEP_SHA_256"), // TODO Maybe make this a config thing?
 		KeyId:               aws.String(keyID),
 	}
 

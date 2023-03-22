@@ -865,6 +865,230 @@
         ]
       }
     },
+    "/api/v1/link": {
+      "post": {
+        "summary": "create link",
+        "description": "This endpoint creates a link",
+        "operationId": "CreateLink",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": ".api.v1.CreateLinkResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateManualLinkRequest"
+            }
+          }
+        ],
+        "tags": [
+          "link"
+        ]
+      }
+    },
+    "/api/v1/link/{linkId}": {
+      "get": {
+        "summary": "get link by id",
+        "description": "This endpoint returns the link if the link exists",
+        "operationId": "GetLink",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/GetLinkResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "linkId",
+            "description": "The link id\nValidations:\n- link_id must be greater than 0",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "userId",
+            "description": "The user id\nValidations:\n- user_id must be greater than 0",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "link"
+        ]
+      }
+    },
+    "/api/v1/link/{linkId}/user/{userId}": {
+      "delete": {
+        "summary": "delete link by id",
+        "description": "This endpoint deletes the link if the link exists",
+        "operationId": "DeleteLink",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/DeleteLinkResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "linkId",
+            "description": "The link id\nValidations:\n- link_id must be greater than 0",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "userId",
+            "description": "The user id\nValidations:\n- user_id must be greater than 0",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "link"
+        ]
+      }
+    },
+    "/api/v1/links/{userId}": {
+      "get": {
+        "summary": "get links",
+        "description": "This endpoint returns the links",
+        "operationId": "GetLinks",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/GetLinksResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "description": "The user id\nValidations:\n- user_id must be greater than 0",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "link"
+        ]
+      }
+    },
     "/api/v1/milestone": {
       "post": {
         "summary": "create a milestone",
@@ -1941,6 +2165,34 @@
         }
       }
     },
+    "CreateManualLinkRequest": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "format": "uint64",
+          "title": "The user id\nValidations:\n- user_id must be greater than 0"
+        },
+        "manualAccountLink": {
+          "$ref": "#/definitions/Link",
+          "title": "The manual account link"
+        }
+      },
+      "required": [
+        "userId",
+        "manualAccountLink"
+      ]
+    },
+    "CreateManualLinkResponse": {
+      "type": "object",
+      "properties": {
+        "linkId": {
+          "type": "string",
+          "format": "uint64",
+          "title": "The link's id"
+        }
+      }
+    },
     "CreateMilestoneRequest": {
       "type": "object",
       "properties": {
@@ -2141,6 +2393,16 @@
         }
       }
     },
+    "DeleteLinkResponse": {
+      "type": "object",
+      "properties": {
+        "linkId": {
+          "type": "string",
+          "format": "uint64",
+          "title": "The link's id"
+        }
+      }
+    },
     "DeleteMilestoneResponse": {
       "type": "object",
       "properties": {
@@ -2303,6 +2565,27 @@
         "liabilityAccount": {
           "$ref": "#/definitions/CreditAccount",
           "title": "The liability account"
+        }
+      }
+    },
+    "GetLinkResponse": {
+      "type": "object",
+      "properties": {
+        "link": {
+          "$ref": "#/definitions/Link",
+          "title": "The link"
+        }
+      }
+    },
+    "GetLinksResponse": {
+      "type": "object",
+      "properties": {
+        "links": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Link"
+          },
+          "title": "The links"
         }
       }
     },

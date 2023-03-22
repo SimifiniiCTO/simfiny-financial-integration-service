@@ -1,0 +1,17 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/GetLinksRequest",
+    "definitions": {
+        "GetLinksRequest": {
+            "properties": {
+                "user_id": {
+                    "type": "string",
+                    "description": "The user id Validations: - user_id must be greater than 0"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Get Links Request"
+        }
+    }
+}

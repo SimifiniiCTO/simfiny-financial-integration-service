@@ -5,6 +5,8 @@ import {
   CreateBankAccountResponse,
   CreateBudgetRequest,
   CreateBudgetResponse,
+  CreateManualLinkRequest,
+  CreateManualLinkResponse,
   CreateMilestoneRequest,
   CreateMilestoneResponse,
   CreateSmartGoalRequest,
@@ -15,6 +17,8 @@ import {
   DeleteBankAccountResponse,
   DeleteBudgetRequest,
   DeleteBudgetResponse,
+  DeleteLinkRequest,
+  DeleteLinkResponse,
   DeleteMilestoneRequest,
   DeleteMilestoneResponse,
   DeleteSmartGoalRequest,
@@ -33,6 +37,10 @@ import {
   GetInvestmentAcccountResponse,
   GetLiabilityAccountRequest,
   GetLiabilityAccountResponse,
+  GetLinkRequest,
+  GetLinkResponse,
+  GetLinksRequest,
+  GetLinksResponse,
   GetMilestoneRequest,
   GetMilestoneResponse,
   GetMilestonesBySmartGoalIdRequest,
@@ -103,6 +111,10 @@ export interface FinancialService {
   GetMortageAccount(request: GetMortageAccountRequest): Promise<GetMortageAccountResponse>;
   GetLiabilityAccount(request: GetLiabilityAccountRequest): Promise<GetLiabilityAccountResponse>;
   GetStudentLoanAccount(request: GetStudentLoanAccountRequest): Promise<GetStudentLoanAccountResponse>;
+  CreateManualLink(request: CreateManualLinkRequest): Promise<CreateManualLinkResponse>;
+  GetLink(request: GetLinkRequest): Promise<GetLinkResponse>;
+  GetLinks(request: GetLinksRequest): Promise<GetLinksResponse>;
+  DeleteLink(request: DeleteLinkRequest): Promise<DeleteLinkResponse>;
 }
 
 export class FinancialServiceClientImpl implements FinancialService {
@@ -143,6 +155,10 @@ export class FinancialServiceClientImpl implements FinancialService {
     this.GetMortageAccount = this.GetMortageAccount.bind(this);
     this.GetLiabilityAccount = this.GetLiabilityAccount.bind(this);
     this.GetStudentLoanAccount = this.GetStudentLoanAccount.bind(this);
+    this.CreateManualLink = this.CreateManualLink.bind(this);
+    this.GetLink = this.GetLink.bind(this);
+    this.GetLinks = this.GetLinks.bind(this);
+    this.DeleteLink = this.DeleteLink.bind(this);
   }
   PlaidInitiateTokenExchange(request: PlaidInitiateTokenExchangeRequest): Promise<PlaidInitiateTokenExchangeResponse> {
     const data = PlaidInitiateTokenExchangeRequest.encode(request).finish();
@@ -334,6 +350,30 @@ export class FinancialServiceClientImpl implements FinancialService {
     const data = GetStudentLoanAccountRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "GetStudentLoanAccount", data);
     return promise.then((data) => GetStudentLoanAccountResponse.decode(_m0.Reader.create(data)));
+  }
+
+  CreateManualLink(request: CreateManualLinkRequest): Promise<CreateManualLinkResponse> {
+    const data = CreateManualLinkRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "CreateManualLink", data);
+    return promise.then((data) => CreateManualLinkResponse.decode(_m0.Reader.create(data)));
+  }
+
+  GetLink(request: GetLinkRequest): Promise<GetLinkResponse> {
+    const data = GetLinkRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "GetLink", data);
+    return promise.then((data) => GetLinkResponse.decode(_m0.Reader.create(data)));
+  }
+
+  GetLinks(request: GetLinksRequest): Promise<GetLinksResponse> {
+    const data = GetLinksRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "GetLinks", data);
+    return promise.then((data) => GetLinksResponse.decode(_m0.Reader.create(data)));
+  }
+
+  DeleteLink(request: DeleteLinkRequest): Promise<DeleteLinkResponse> {
+    const data = DeleteLinkRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "DeleteLink", data);
+    return promise.then((data) => DeleteLinkResponse.decode(_m0.Reader.create(data)));
   }
 }
 

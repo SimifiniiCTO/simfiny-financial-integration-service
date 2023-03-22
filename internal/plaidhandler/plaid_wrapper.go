@@ -52,6 +52,8 @@ type PlaidWrapperImpl interface {
 	GetRedirectURI() string
 	// GetInvestmentAccount returns the investment account for the given access token
 	GetInvestmentAccount(ctx context.Context, userID uint64, accessToken string) ([]*schema.InvestmentAccount, error)
+	// DeleteItem deletes the item for the given access token
+	DeleteItem(ctx context.Context, accessToken *string) error
 	// GetAccessTokenForSandboxAcct returns the access token for the sandbox account
 	getAccessTokenForSandboxAcct() (string, error)
 	// GetPlublicTokenForSandboxAcct returns the public token for the sandbox account

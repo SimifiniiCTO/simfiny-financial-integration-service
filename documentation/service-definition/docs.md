@@ -54,6 +54,8 @@
     - [CreateBankAccountResponse](#api-v1-CreateBankAccountResponse)
     - [CreateBudgetRequest](#api-v1-CreateBudgetRequest)
     - [CreateBudgetResponse](#api-v1-CreateBudgetResponse)
+    - [CreateManualLinkRequest](#api-v1-CreateManualLinkRequest)
+    - [CreateManualLinkResponse](#api-v1-CreateManualLinkResponse)
     - [CreateMilestoneRequest](#api-v1-CreateMilestoneRequest)
     - [CreateMilestoneResponse](#api-v1-CreateMilestoneResponse)
     - [CreateSmartGoalRequest](#api-v1-CreateSmartGoalRequest)
@@ -64,6 +66,8 @@
     - [DeleteBankAccountResponse](#api-v1-DeleteBankAccountResponse)
     - [DeleteBudgetRequest](#api-v1-DeleteBudgetRequest)
     - [DeleteBudgetResponse](#api-v1-DeleteBudgetResponse)
+    - [DeleteLinkRequest](#api-v1-DeleteLinkRequest)
+    - [DeleteLinkResponse](#api-v1-DeleteLinkResponse)
     - [DeleteMilestoneRequest](#api-v1-DeleteMilestoneRequest)
     - [DeleteMilestoneResponse](#api-v1-DeleteMilestoneResponse)
     - [DeleteSmartGoalRequest](#api-v1-DeleteSmartGoalRequest)
@@ -82,6 +86,10 @@
     - [GetInvestmentAcccountResponse](#api-v1-GetInvestmentAcccountResponse)
     - [GetLiabilityAccountRequest](#api-v1-GetLiabilityAccountRequest)
     - [GetLiabilityAccountResponse](#api-v1-GetLiabilityAccountResponse)
+    - [GetLinkRequest](#api-v1-GetLinkRequest)
+    - [GetLinkResponse](#api-v1-GetLinkResponse)
+    - [GetLinksRequest](#api-v1-GetLinksRequest)
+    - [GetLinksResponse](#api-v1-GetLinksResponse)
     - [GetMilestoneRequest](#api-v1-GetMilestoneRequest)
     - [GetMilestoneResponse](#api-v1-GetMilestoneResponse)
     - [GetMilestonesBySmartGoalIdRequest](#api-v1-GetMilestonesBySmartGoalIdRequest)
@@ -1127,6 +1135,37 @@ the `create bank account` request
 
 
 
+<a name="api-v1-CreateManualLinkRequest"></a>
+
+### CreateManualLinkRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| user_id | [uint64](#uint64) |  | The user id Validations: - user_id must be greater than 0 |
+| manual_account_link | [Link](#api-v1-Link) |  | The manual account link |
+
+
+
+
+
+
+<a name="api-v1-CreateManualLinkResponse"></a>
+
+### CreateManualLinkResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| link_id | [uint64](#uint64) |  | The link&#39;s id |
+
+
+
+
+
+
 <a name="api-v1-CreateMilestoneRequest"></a>
 
 ### CreateMilestoneRequest
@@ -1277,6 +1316,37 @@ the `create user profile` request
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | deleted | [bool](#bool) |  | The budget id |
+
+
+
+
+
+
+<a name="api-v1-DeleteLinkRequest"></a>
+
+### DeleteLinkRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| user_id | [uint64](#uint64) |  | The user id Validations: - user_id must be greater than 0 |
+| link_id | [uint64](#uint64) |  | The link id Validations: - link_id must be greater than 0 |
+
+
+
+
+
+
+<a name="api-v1-DeleteLinkResponse"></a>
+
+### DeleteLinkResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| link_id | [uint64](#uint64) |  | The link&#39;s id |
 
 
 
@@ -1555,6 +1625,67 @@ the `get bank account` request
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | liability_account | [CreditAccount](#api-v1-CreditAccount) |  | The liability account |
+
+
+
+
+
+
+<a name="api-v1-GetLinkRequest"></a>
+
+### GetLinkRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| user_id | [uint64](#uint64) |  | The user id Validations: - user_id must be greater than 0 |
+| link_id | [uint64](#uint64) |  | The link id Validations: - link_id must be greater than 0 |
+
+
+
+
+
+
+<a name="api-v1-GetLinkResponse"></a>
+
+### GetLinkResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| link | [Link](#api-v1-Link) |  | The link |
+
+
+
+
+
+
+<a name="api-v1-GetLinksRequest"></a>
+
+### GetLinksRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| user_id | [uint64](#uint64) |  | The user id Validations: - user_id must be greater than 0 |
+
+
+
+
+
+
+<a name="api-v1-GetLinksResponse"></a>
+
+### GetLinksResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| links | [Link](#api-v1-Link) | repeated | The links |
 
 
 
@@ -2108,6 +2239,10 @@ FinancialService API.
 | GetMortageAccount | [GetMortageAccountRequest](#api-v1-GetMortageAccountRequest) | [GetMortageAccountResponse](#api-v1-GetMortageAccountResponse) |  |
 | GetLiabilityAccount | [GetLiabilityAccountRequest](#api-v1-GetLiabilityAccountRequest) | [GetLiabilityAccountResponse](#api-v1-GetLiabilityAccountResponse) |  |
 | GetStudentLoanAccount | [GetStudentLoanAccountRequest](#api-v1-GetStudentLoanAccountRequest) | [GetStudentLoanAccountResponse](#api-v1-GetStudentLoanAccountResponse) |  |
+| CreateManualLink | [CreateManualLinkRequest](#api-v1-CreateManualLinkRequest) | [CreateManualLinkResponse](#api-v1-CreateManualLinkResponse) |  |
+| GetLink | [GetLinkRequest](#api-v1-GetLinkRequest) | [GetLinkResponse](#api-v1-GetLinkResponse) |  |
+| GetLinks | [GetLinksRequest](#api-v1-GetLinksRequest) | [GetLinksResponse](#api-v1-GetLinksResponse) |  |
+| DeleteLink | [DeleteLinkRequest](#api-v1-DeleteLinkRequest) | [DeleteLinkResponse](#api-v1-DeleteLinkResponse) |  |
 
  
 

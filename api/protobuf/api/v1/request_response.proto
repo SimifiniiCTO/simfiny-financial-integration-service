@@ -624,3 +624,86 @@ message GetStudentLoanAccountResponse {
   // The student loan account
   StudentLoanAccount student_loan_account = 1;
 }
+
+message CreateManualLinkRequest {
+  // The user id
+  // Validations:
+  // - user_id must be greater than 0
+  uint64 user_id = 1 [
+    (validate.rules).uint64.gt = 0,
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  // The manual account link
+  Link manual_account_link = 2 [
+    (validate.rules).message.required = true,
+    (google.api.field_behavior) = REQUIRED
+  ];
+}
+
+message CreateManualLinkResponse {
+  // The link's id
+  uint64 link_id = 1;
+}
+
+message GetLinkRequest {
+  // The user id
+  // Validations:
+  // - user_id must be greater than 0
+  uint64 user_id = 1 [
+    (validate.rules).uint64.gt = 0,
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  // The link id
+  // Validations:
+  // - link_id must be greater than 0
+  uint64 link_id = 2 [
+    (validate.rules).uint64.gt = 0,
+    (google.api.field_behavior) = REQUIRED
+  ];
+}
+
+message GetLinkResponse {
+  // The link
+  Link link = 1;
+}
+
+
+message GetLinksRequest {
+  // The user id
+  // Validations:
+  // - user_id must be greater than 0
+  uint64 user_id = 1 [
+    (validate.rules).uint64.gt = 0,
+    (google.api.field_behavior) = REQUIRED
+  ];
+}
+
+message GetLinksResponse {
+  // The links
+  repeated Link links = 1;
+}
+
+message DeleteLinkRequest {
+  // The user id
+  // Validations:
+  // - user_id must be greater than 0
+  uint64 user_id = 1 [
+    (validate.rules).uint64.gt = 0,
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  // The link id
+  // Validations:
+  // - link_id must be greater than 0
+  uint64 link_id = 2 [
+    (validate.rules).uint64.gt = 0,
+    (google.api.field_behavior) = REQUIRED
+  ];
+}
+
+message DeleteLinkResponse {
+  // The link's id
+  uint64 link_id = 1;
+}
