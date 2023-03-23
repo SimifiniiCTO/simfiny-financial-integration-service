@@ -3756,6 +3756,9 @@
           "format": "uint64",
           "title": "the user id tied to the profile"
         },
+        "stripeCustomerId": {
+          "type": "string"
+        },
         "stripeSubscriptions": {
           "$ref": "#/definitions/StripeSubscription",
           "title": "the stripe subscriptions the user profile actively maintains"

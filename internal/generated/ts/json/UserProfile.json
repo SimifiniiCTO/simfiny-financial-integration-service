@@ -12,6 +12,9 @@
                     "type": "string",
                     "description": "the user id tied to the profile"
                 },
+                "stripe_customer_id": {
+                    "type": "string"
+                },
                 "stripe_subscriptions": {
                     "$ref": "#/definitions/api.v1.StripeSubscription",
                     "additionalProperties": true,

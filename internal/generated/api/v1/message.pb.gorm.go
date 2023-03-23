@@ -92,7 +92,8 @@ type StripeSubscriptionWithAfterToPB interface {
 
 type UserProfileORM struct {
 	Id                  uint64
-	Link                []*LinkORM             `gorm:"foreignkey:UserProfileId;association_foreignkey:Id"`
+	Link                []*LinkORM `gorm:"foreignkey:UserProfileId;association_foreignkey:Id"`
+	StripeCustomerId    string
 	StripeSubscriptions *StripeSubscriptionORM `gorm:"foreignkey:UserProfileId;association_foreignkey:Id"`
 	UserId              uint64
 }
@@ -114,6 +115,7 @@ func (m *UserProfile) ToORM(ctx context.Context) (UserProfileORM, error) {
 	}
 	to.Id = m.Id
 	to.UserId = m.UserId
+	to.StripeCustomerId = m.StripeCustomerId
 	if m.StripeSubscriptions != nil {
 		tempStripeSubscriptions, err := m.StripeSubscriptions.ToORM(ctx)
 		if err != nil {
@@ -150,6 +152,7 @@ func (m *UserProfileORM) ToPB(ctx context.Context) (UserProfile, error) {
 	}
 	to.Id = m.Id
 	to.UserId = m.UserId
+	to.StripeCustomerId = m.StripeCustomerId
 	if m.StripeSubscriptions != nil {
 		tempStripeSubscriptions, err := m.StripeSubscriptions.ToPB(ctx)
 		if err != nil {
@@ -2884,6 +2887,10 @@ func DefaultApplyFieldMaskUserProfile(ctx context.Context, patchee *UserProfile,
 		}
 		if f == prefix+"UserId" {
 			patchee.UserId = patcher.UserId
+			continue
+		}
+		if f == prefix+"StripeCustomerId" {
+			patchee.StripeCustomerId = patcher.StripeCustomerId
 			continue
 		}
 		if !updatedStripeSubscriptions && strings.HasPrefix(f, prefix+"StripeSubscriptions.") {

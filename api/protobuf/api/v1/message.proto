@@ -97,6 +97,7 @@ message UserProfile {
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""},
     (validate.rules).uint64.gt = 0
   ];
+  string stripe_customer_id = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
   // the stripe subscriptions the user profile actively maintains
   StripeSubscription stripe_subscriptions = 4 [(gorm.field).has_many = {disable_association_autocreate: false disable_association_autoupdate: false preload: true}];
   // a user profile can have many links (connected institutions) of which finanical accounts are tied to (checking, savings, etc)

@@ -9,7 +9,8 @@ import (
 	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 )
 
-// CreateBankAccount implements apiv1.FinancialServiceServer
+// CreateBankAccount creates a new bank account for the given user
+// The bank account must be of type manual as this is the only type that can be created via the API
 func (s *Server) CreateBankAccount(ctx context.Context, req *proto.CreateBankAccountRequest) (*proto.CreateBankAccountResponse, error) {
 	// perform validations
 	if req == nil {
@@ -39,7 +40,7 @@ func (s *Server) CreateBankAccount(ctx context.Context, req *proto.CreateBankAcc
 	// if a set of pockets are not already present for the given account, we must create them
 	// pockets are crucial given they fascilitate the abstraction of sub-bank accounts better enabling proper goal management
 	if len(req.BankAccount.Pockets) == 0 {
-		req.BankAccount.Pockets = append(req.BankAccount.Pockets, s.defaultPockets()...)
+		req.BankAccount.Pockets = append(req.BankAccount.Pockets, s.DefaultPockets()...)
 	}
 
 	createdBankAcct, err := s.conn.CreateBankAccount(ctx, req.UserId, req.BankAccount)
@@ -52,7 +53,11 @@ func (s *Server) CreateBankAccount(ctx context.Context, req *proto.CreateBankAcc
 	}, nil
 }
 
-func (s *Server) defaultPockets() []*proto.Pocket {
+// DefaultPockets returns the default pockets for a bank accout.
+// These pockets are used to fascilitate the abstraction of sub-bank accounts better enabling proper goal management
+// IDEALLY pockets should partition ONLY all BANK ACCOUNTS a given user utilizes.
+// TODO: fascilitate this later
+func (s *Server) DefaultPockets() []*proto.Pocket {
 	return []*proto.Pocket{
 		{
 			Type: proto.PocketType_POCKET_TYPE_DEBT_REDUCTION,

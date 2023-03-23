@@ -41,15 +41,20 @@ func (s *Server) DeleteLink(ctx context.Context, req *proto.DeleteLinkRequest) (
 		return nil, status.Error(codes.NotFound, "link token not found")
 	}
 
-	// TODO: decrypt the access token
-	token := link.Token
-	accesToken := token.AccessToken
-
 	// TODO: implement this as a workflow
-	// delete the link from plaids vantage point and any stripe
-	// subscriptions associated with the linked accounts
-	if err := s.plaidClient.DeleteItem(ctx, &accesToken); err != nil {
+	// decrypt the link token
+	accessToken, err := s.DecryptUserAccessToken(ctx, link.Token)
+	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	// only delete from plaid's vantage point if the link type is plaid
+	if link.LinkType == proto.LinkType_LINK_TYPE_PLAID {
+		// delete the link from plaids vantage point and any stripe
+		// subscriptions associated with the linked accounts
+		if err := s.plaidClient.DeleteItem(ctx, accessToken); err != nil {
+			return nil, status.Error(codes.Internal, err.Error())
+		}
 	}
 
 	// delete the required link

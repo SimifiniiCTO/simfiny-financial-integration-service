@@ -4,6 +4,7 @@ import (
 	"github.com/plaid/plaid-go/plaid"
 )
 
+// TODO: below should be read from env vars
 var (
 	PlaidClientName = "simfiny"
 	PlaidLanguage   = "en"

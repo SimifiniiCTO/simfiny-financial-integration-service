@@ -90,6 +90,19 @@ type DatabaseOperations interface {
 	UpdateBudget(ctx context.Context, budget *schema.Budget) error
 	// DeleteBudget deletes a budget by id
 	DeleteBudget(ctx context.Context, budgetID uint64) error
+
+	// Link Operations
+	// CreateLink creates a link against a user profile. Note all links are either "manual"
+	// or plaid authentication events against an account. For example, a user can connect their
+	// chase account via a link and authorize simfiny access to their checking and deposit accounts
+	// all of which will be linked to link object
+	CreateLink(ctx context.Context, userID uint64, link *schema.Link) (*schema.Link, error)
+	// DeleteLink deletes a link by id as well as all associations
+	DeleteLink(ctx context.Context, userID uint64, linkID uint64) error
+	// GetLink retrieves a link by id
+	GetLink(ctx context.Context, userID uint64, linkID uint64) (*schema.Link, error)
+	// LinkExistsForItem checks if a link exists for a given item id (plaid itemID)
+	LinkExistsForItem(ctx context.Context, userID uint64, itemID string) (bool, error)
 }
 
 // Db withholds connection to a postgres database as well as a logging handler
@@ -143,6 +156,7 @@ type ConnectionInitializationParams struct {
 	QueryTimeout    *time.Duration
 }
 
+// New returns a new database object
 func New(ctx context.Context, opts ...Option) (*Db, error) {
 	database := &Db{}
 
@@ -173,6 +187,7 @@ func New(ctx context.Context, opts ...Option) (*Db, error) {
 	return database, nil
 }
 
+// Validate validates the database object
 func (db *Db) Validate() error {
 	if db.Conn == nil {
 		return service_errors.ErrInvalidDbObject

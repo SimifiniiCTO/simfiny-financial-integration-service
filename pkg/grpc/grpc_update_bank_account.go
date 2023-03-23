@@ -30,6 +30,17 @@ func (s *Server) UpdateBankAccount(ctx context.Context, req *proto.UpdateBankAcc
 		defer span.End()
 	}
 
+	// get the bank account by id
+	bankAccount, err := s.conn.GetBankAccount(ctx, req.BankAccount.Id)
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	// ensure the bank account is only updateable if it is a manual
+	if bankAccount.Type != proto.BankAccountType_BANK_ACCOUNT_TYPE_MANUAL {
+		return nil, status.Error(codes.InvalidArgument, "bank account is not updateable")
+	}
+
 	if err := s.conn.UpdateBankAccount(ctx, req.BankAccount); err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}

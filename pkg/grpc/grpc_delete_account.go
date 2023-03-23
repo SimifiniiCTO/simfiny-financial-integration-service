@@ -32,13 +32,12 @@ func (s *Server) DeleteBankAccount(ctx context.Context, req *proto.DeleteBankAcc
 		defer span.End()
 	}
 
-	// perform deletion operation
-	// TODO: given there will be a lot of data to delete, we should probably
-	// do this in a background job. We should also perform this entire transaction as a
-	// distributed transaction that is atomic and consistent.
-	// ref: https://github.com/hibiken/asynq (redis based task queue)
-	// ref: https://github.com/temporalio/temporal-ecommerce (temporal deletion workflow)
-	if err := s.conn.DeleteUserProfileByUserID(ctx, req.UserId); err != nil {
+	// ensure the user exists
+	if _, err := s.conn.GetUserProfileByUserID(ctx, req.UserId); err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	if err := s.conn.DeleteBankAccount(ctx, req.BankAccountId); err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 

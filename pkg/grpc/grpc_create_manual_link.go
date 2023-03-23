@@ -2,7 +2,10 @@ package grpc
 
 import (
 	"context"
+	"fmt"
 
+	"github.com/google/uuid"
+	"github.com/pkg/errors"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
@@ -39,6 +42,15 @@ func (s *Server) CreateManualLink(ctx context.Context, req *proto.CreateManualLi
 	manualLink.LinkType = proto.LinkType_LINK_TYPE_MANUAL
 	manualLink.LinkStatus = proto.LinkStatus_LINK_STATUS_SUCCESS
 
+	// create a default bank account object for the user creating a manual link
+	manualAcct, err := s.autoGenerateManualBankAccount(&req.UserId)
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	// create a manual bank account for the user with a default set of associated pockets
+	manualLink.BankAccounts = []*proto.BankAccount{manualAcct}
+
 	// create the required manual link
 	link, err := s.conn.CreateLink(ctx, req.UserId, req.ManualAccountLink)
 	if err != nil {
@@ -47,5 +59,28 @@ func (s *Server) CreateManualLink(ctx context.Context, req *proto.CreateManualLi
 
 	return &proto.CreateManualLinkResponse{
 		LinkId: link.GetId(),
+	}, nil
+}
+
+// autoGenerateManualBankAccount is used to generate a manual bank account for a user
+func (s *Server) autoGenerateManualBankAccount(userID *uint64) (*proto.BankAccount, error) {
+	if userID == nil {
+		return nil, errors.New("invalid user id")
+	}
+
+	bankAccountName := fmt.Sprintf("manual-account-%d-%s", *userID, uuid.New().String())
+
+	return &proto.BankAccount{
+		UserId:         *userID,
+		Name:           bankAccountName,
+		Number:         uuid.New().String(),
+		Type:           proto.BankAccountType_BANK_ACCOUNT_TYPE_MANUAL,
+		Balance:        0,
+		Currency:       "USD",
+		CurrentFunds:   0,
+		BalanceLimit:   10000,
+		Pockets:        s.DefaultPockets(),
+		PlaidAccountId: "",
+		Subtype:        "deposit",
 	}, nil
 }

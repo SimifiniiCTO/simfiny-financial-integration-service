@@ -106,7 +106,7 @@ func TestServer_defaultPockets(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := tt.s.defaultPockets(); !reflect.DeepEqual(got, tt.want) {
+			if got := tt.s.DefaultPockets(); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("Server.defaultPockets() = %v, want %v", got, tt.want)
 			}
 		})

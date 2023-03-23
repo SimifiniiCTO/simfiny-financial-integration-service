@@ -2,7 +2,6 @@ package database
 
 import (
 	"context"
-	"encoding/hex"
 	"fmt"
 
 	"gorm.io/gen/field"
@@ -127,7 +126,6 @@ func (db *Db) DeleteLink(ctx context.Context, userID uint64, linkID uint64) erro
 }
 
 // CreateLink takes as input the userID and link of interest and creates the associated link
-// TODO: ensure pockets are created spanning the bank accounts for the given link
 func (db *Db) CreateLink(ctx context.Context, userID uint64, link *schema.Link) (*schema.Link, error) {
 	// instrument operation
 	if span := db.startDatastoreSpan(ctx, "dbtxn-create-link"); span != nil {
@@ -188,24 +186,4 @@ func (db *Db) CreateLink(ctx context.Context, userID uint64, link *schema.Link) 
 	}
 
 	return &createdLink, nil
-}
-
-// decryptAccessToken decrypts the access token using the KMS
-func (db *Db) decryptAccessToken(ctx context.Context, token *schema.TokenORM) (*string, error) {
-	decryptionKey := token.KeyId
-	decryptionVersion := token.Version
-
-	// decrypt the access token
-	encrypted, err := hex.DecodeString(token.AccessToken)
-	if err != nil {
-		return nil, err
-	}
-
-	decrypted, err := db.Kms.Decrypt(ctx, decryptionKey, decryptionVersion, encrypted)
-	if err != nil {
-		return nil, err
-	}
-
-	accessToken := string(decrypted)
-	return &accessToken, nil
 }

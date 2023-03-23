@@ -37,9 +37,6 @@ func (s *Server) CreateBudget(ctx context.Context, req *proto.CreateBudgetReques
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	// prior to creating a budget, we must ensure that the user whom is trying to create the budget
-	// exists. Additionally, we must ensure that the user has an associated bank account, pocket, and goal
-
 	return &proto.CreateBudgetResponse{
 		BudgetId: budget.Id,
 	}, nil

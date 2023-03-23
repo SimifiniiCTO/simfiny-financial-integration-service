@@ -401,6 +401,7 @@ export interface UserProfile {
   id: number;
   /** the user id tied to the profile */
   userId: number;
+  stripeCustomerId: string;
   /** the stripe subscriptions the user profile actively maintains */
   stripeSubscriptions:
     | StripeSubscription
@@ -988,7 +989,7 @@ export const StripeSubscription = {
 };
 
 function createBaseUserProfile(): UserProfile {
-  return { id: 0, userId: 0, stripeSubscriptions: undefined, link: [] };
+  return { id: 0, userId: 0, stripeCustomerId: "", stripeSubscriptions: undefined, link: [] };
 }
 
 export const UserProfile = {
@@ -998,6 +999,9 @@ export const UserProfile = {
     }
     if (message.userId !== 0) {
       writer.uint32(16).uint64(message.userId);
+    }
+    if (message.stripeCustomerId !== "") {
+      writer.uint32(26).string(message.stripeCustomerId);
     }
     if (message.stripeSubscriptions !== undefined) {
       StripeSubscription.encode(message.stripeSubscriptions, writer.uint32(34).fork()).ldelim();
@@ -1029,6 +1033,13 @@ export const UserProfile = {
 
           message.userId = longToNumber(reader.uint64() as Long);
           continue;
+        case 3:
+          if (tag != 26) {
+            break;
+          }
+
+          message.stripeCustomerId = reader.string();
+          continue;
         case 4:
           if (tag != 34) {
             break;
@@ -1056,6 +1067,7 @@ export const UserProfile = {
     return {
       id: isSet(object.id) ? Number(object.id) : 0,
       userId: isSet(object.userId) ? Number(object.userId) : 0,
+      stripeCustomerId: isSet(object.stripeCustomerId) ? String(object.stripeCustomerId) : "",
       stripeSubscriptions: isSet(object.stripeSubscriptions)
         ? StripeSubscription.fromJSON(object.stripeSubscriptions)
         : undefined,
@@ -1067,6 +1079,7 @@ export const UserProfile = {
     const obj: any = {};
     message.id !== undefined && (obj.id = Math.round(message.id));
     message.userId !== undefined && (obj.userId = Math.round(message.userId));
+    message.stripeCustomerId !== undefined && (obj.stripeCustomerId = message.stripeCustomerId);
     message.stripeSubscriptions !== undefined && (obj.stripeSubscriptions = message.stripeSubscriptions
       ? StripeSubscription.toJSON(message.stripeSubscriptions)
       : undefined);
@@ -1086,6 +1099,7 @@ export const UserProfile = {
     const message = createBaseUserProfile();
     message.id = object.id ?? 0;
     message.userId = object.userId ?? 0;
+    message.stripeCustomerId = object.stripeCustomerId ?? "";
     message.stripeSubscriptions = (object.stripeSubscriptions !== undefined && object.stripeSubscriptions !== null)
       ? StripeSubscription.fromPartial(object.stripeSubscriptions)
       : undefined;

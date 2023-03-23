@@ -18,7 +18,6 @@ func (s *Server) ReadynessCheck(ctx context.Context, req *proto.ReadynessCheckRe
 
 	if err := req.ValidateAll(); err != nil {
 		return nil, status.Error(codes.InvalidArgument, err.Error())
-
 	}
 
 	// ensure operation finished in time
