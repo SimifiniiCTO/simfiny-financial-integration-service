@@ -10,7 +10,7 @@ services:
       - "9896:9896" # grpc port
     restart: always
     environment:
-      - newrelic-key=3000
+      - newrelic-api-key=3000
     networks:
       - service-network
     volumes:

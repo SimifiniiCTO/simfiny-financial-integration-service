@@ -22,8 +22,8 @@ faults:
   error: false
   unhealthy: false
   unready: false
-  testFail: false
-  testTimeout: false
+  test_fail: false
+  test_timeout: false
 
 database:
   host: financial-integration-service-db

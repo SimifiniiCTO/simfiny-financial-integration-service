@@ -127,7 +127,7 @@ spec:
             - --plaid-redirect-url={{ .Values.plaid.redirect_url }}
             {{- end }}
             {{- if .Values.newRelic.enabled}}
-            - --newrelic-key={{ .Values.newRelic.key }}
+            - --newrelic-api-key={{ .Values.newRelic.key }}
             {{- end }}
             - --env={{ .Values.service.env }}
           env:

@@ -51,7 +51,7 @@ func ReadEnvVars() {
 	fs.Int("stress-cpu", 0, "number of CPU cores with 100 load")
 	fs.Int("stress-memory", 0, "MB of data to load into memory")
 	fs.String("cache-server", "", "Redis address in the format <host>:<port>")
-	fs.String("newrelic-key", "62fd721c712d5863a4e75b8f547b7c1ea884NRAL", "new relic license key")
+	fs.String("newrelic-api-key", "62fd721c712d5863a4e75b8f547b7c1ea884NRAL", "new relic license key")
 	// database connection environment variables
 	fs.String("dbhost", "db", "database host string")
 	fs.Int("dbport", 5432, "database port")
@@ -63,7 +63,7 @@ func ReadEnvVars() {
 	fs.Int("max-db-conn-retries", 1, "max database connection attempts")
 	fs.Duration("max-db-retry-timeout", 500*time.Millisecond, "max time until a db connection request is seen as timing out")
 	fs.Duration("max-db-retry-sleep-interval", 100*time.Millisecond, "max time to sleep in between db connection attempts")
-	fs.Duration("db-query-timeout", 500*time.Millisecond, "max time until a db query is seen as timing out")
+	fs.Duration("max-query-timeout", 500*time.Millisecond, "max time until a db query is seen as timing out")
 
 	// plaid specific keys
 	fs.String("plaid-client-id", "61eb5d49ea3b4700127560d1", "plaid client id")
@@ -74,7 +74,7 @@ func ReadEnvVars() {
 	fs.StringSlice("plaid-products", []string{"transactions", "auth", "balance", "investments", "liabilities"}, "plaid products to enable")
 	fs.String("plaid-oauth-domain", "simfiny", "plaid oauth domain")
 	fs.String("plaid-webhook-oauth-domain", "simfiny", "plaid webhook oauth domain")
-	fs.Bool("plaid-webhook-enabled", false, "enable plaid webhook")
+	fs.Bool("plaid-webhook-enabled", true, "enable plaid webhook")
 	fs.Uint64("max-plaid-links", 5, "plaid link limit")
 
 	fs.String("env", "dev", "current environment")
@@ -85,7 +85,6 @@ func ReadEnvVars() {
 	fs.String("service-documentation", "https://github.com/SimifiniiCTO/simfinii/blob/main/src/backend/services/simfiny-financial-integration-service/documentation/setup.md", "location of service docs")
 	fs.String("point-of-contact", "yoanyomba", "service point of contact")
 	fs.Bool("metrics-reporting-enabled", true, "enable metrics reporting")
-	fs.String("stripe-api-key", "sk_test_4eC39HqLyjWDarjtT1zdp7dc", "")
 
 	// aws configs
 	// to access aws credentials, ref the following link
@@ -96,7 +95,8 @@ func ReadEnvVars() {
 	fs.String("aws-kms-id", "mrk-e44f269bc0034feb95ede34154c3cfe4", "aws s3 bucket")
 
 	// billing configs
-	fs.Bool("billing-enabled", false, "enable billing")
+	fs.Bool("stripe-enabled", false, "enable billing")
+	fs.String("stripe-api-key", "sk_test_4eC39HqLyjWDarjtT1zdp7dc", "")
 
 	defaultLogger := zap.L()
 

@@ -39,7 +39,7 @@ type Config struct {
 	ServiceName             string           `mapstructure:"grpc-service-name"`
 	PlaidWebhookURI         string           `mapstructure:"plaid-webhook-url"`
 	PlaidRedirectURI        string           `mapstructure:"plaid-redirect-url"`
-	NewRelicLicense         string           `mapstructure:"newrelic-key"`
+	NewRelicLicense         string           `mapstructure:"newrelic-api-key"`
 	Environment             string           `mapstructure:"env"`
 	PlaidProducts           []plaid.Products `mapstructure:"plaid-products"`
 	RpcTimeout              time.Duration    `mapstructure:"rpc-timeout"`
@@ -55,7 +55,7 @@ type Config struct {
 	AwsSecretAccessKey      string           `mapstructure:"aws-secret-access-key"`
 	AwsKmsKeyID             string           `mapstructure:"aws-kms-key-id"`
 	MaxPlaidLinks           int              `mapstructure:"max-plaid-links"`
-	BillingEnabled          bool             `mapstructure:"billing-enabled"`
+	BillingEnabled          bool             `mapstructure:"stripe-enabled"`
 }
 
 var _ proto.FinancialServiceServer = (*Server)(nil)

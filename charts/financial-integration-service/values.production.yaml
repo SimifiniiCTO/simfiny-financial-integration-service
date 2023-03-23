@@ -22,8 +22,8 @@ faults:
   error: false
   unhealthy: false
   unready: false
-  testFail: false
-  testTimeout: false
+  test_fail: false
+  test_timeout: false
 
 database:
   host: simfiny-db-cluster-do-user-11446161-0.b.db.ondigitalocean.com
@@ -38,16 +38,35 @@ database:
   max_connection_retry_sleep_interval: 100ms
 
 aws:
-  key_id: AKIA5HFOAJRN5472YQRB
-  secret_key: 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
+  # access key id for credentials provisioning
+  access_key_id: AKIA5HFOAJRN7YDEYPST
+  # aws secret key for credentials provisioning
+  secret_access_key: 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
+  # aws region 
   region: us-east-2
-
+  # aws key management id
+  kms_id: mrk-e44f269bc0034feb95ede34154c3cfe4
+  
 plaid:
+  # wether or not to enable plaid api level interactions
   enabled: true
+  # plaid client id
   client_id: 61eb5d49ea3b4700127560d1
+  # plaid secret key
   secret_key: 6f127c086ba9c1d5dafe7e38541783
-  env: production
-  webhook_url: ""
+  # plaid environment 
+  env: development
+  # A webhook is an HTTP request used to provide push notifications. Plaid sends webhooks to programmatically
+  # inform you about changes to Plaid Items or the status of asynchronous processes. For example, Plaid will send
+  # a webhook when an Item is in an error state or has additional data available, or when a non-blocking process 
+  # (like gathering transaction data or verifying a bank account via micro-deposits) is com plete.
+  #
+  # To receive Plaid webhooks, set up a dedicated endpoint on your server as a webhook listener that can receive
+  # POST requests, then provide this endpoint URL to Plaid as described in the next section. You can also test
+  # webhooks without setting up your own endpoint following the instructions in Testing webhooks in Sandbox. 
+  #
+  # ref: https://plaid.com/docs/api/webhooks/#introduction-to-webhooks
+  webhook_url:  "https://simfiny.dev/v1/gateway/plaid/webhook"
   # Only required for OAuth:
   # For sandbox, set PLAID_REDIRECT_URI to 'http://localhost:3000/'
   # The OAuth redirect flow requires an endpoint on the developer's website
@@ -57,19 +76,32 @@ plaid:
   # For development or production, you will need to use an https:// url
   # If you are not set up to use localhost with https:// on your system, you will be unable to test OAuth in development or production.
   # In this case you can leave the PLAID_REDIRECT_URI blank.
-  redirect_url: "https://simfiny.app/oauth"
+  redirect_url: "https://simfiny.dev/v1/gateway/plaid/oauth-return"
   # Only institutions that support ALL listed products will be displayed in Link.
   # If you don't see the institution you want in Link, remove any products you aren't using.
   # Important: When moving to Production, make sure to update this list with only the products
   # you plan to use. Otherwise, you may be billed for unneeded products.
   products: transactions,auth,balance,investments,liabilities
-  oauthDomain: simfiny
-  webhookOauthDomain: simfiny
-  webhookEnabled: true
+  # oauth domain
+  oauth_domain: simfiny
+  # webhook oauth domain
+  webhook_oauth_domain: simfiny
+  # wether or not a webhook is enabled
+  webhook_enabled: true
+  # max plaid links is the maximal amount of authorized institution a user can have
+  max_plaid_links: 5
+
+stripe:
+  # wether or not stripe api level interactions are available 
+  enabled: true
+  # api key
+  api_key: sk_test_4eC39HqLyjWDarjtT1zdp7dc
 
 newRelic:
+  # wether or not to enable metrics and traces
   enabled: true
-  key: 62fd721c712d5863a4e75b8f547b7c1ea884NRAL
+  # new-relic api key
+  api_key: 62fd721c712d5863a4e75b8f547b7c1ea884NRAL
 
 # Kubernetes Service settings
 service:

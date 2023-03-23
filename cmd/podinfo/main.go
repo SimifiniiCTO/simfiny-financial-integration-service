@@ -148,7 +148,7 @@ func configureKeyManagement(logger *zap.Logger) (secrets.KeyManagement, error) {
 
 // configurNewrelicSDK configures the new relic sdk with metadata specific to this service
 func configureNewrelicSDK(logger *zap.Logger) (*newrelic.Application, error) {
-	var newrelicLicenseKey = viper.GetString("newrelic-key")
+	var newrelicLicenseKey = viper.GetString("newrelic-api-key")
 	var serviceName = viper.GetString("grpc-service-name")
 
 	if newrelicLicenseKey != "" {
@@ -283,7 +283,7 @@ func configureDatabaseConn(ctx context.Context, logger *zap.Logger, instrumentat
 	maxRetriesPerDBConnectionAttempt := viper.GetInt("max-db-conn-retries")
 	maxDBRetryTimeout := viper.GetDuration("max-db-retry-timeout")
 	maxDBSleepInterval := viper.GetDuration("max-db-retry-sleep-interval")
-	dbQueryTimeout := viper.GetDuration("db-query-timeout")
+	dbQueryTimeout := viper.GetDuration("max-query-timeout")
 
 	connectionString := database.ConfigureConnectionString(host, user, password, dbname, sslMode, port)
 
