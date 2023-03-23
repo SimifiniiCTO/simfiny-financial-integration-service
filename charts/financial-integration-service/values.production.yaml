@@ -32,28 +32,28 @@ database:
   password: AVNS_QIibiEIbI5JVODo
   name: fis-service-pool
   sslMode: require
-  max_connection_attempts: 4
-  max_connection_retries: 4
-  max_connection_retry_timeout: 500ms
-  max_connection_retry_sleep_interval: 100ms
+  maxConnectionAttempts: 4
+  maxConnectionRetries: 4
+  maxConnectionRetryTimeout: 500ms
+  maxConnectionRetrySleepInterval: 100ms
 
 aws:
   # access key id for credentials provisioning
-  access_key_id: AKIA5HFOAJRN7YDEYPST
+  accessKeyID: AKIA5HFOAJRN7YDEYPST
   # aws secret key for credentials provisioning
-  secret_access_key: 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
-  # aws region 
+  secretAccessKey: c4XOO/7RLxjonKrmZIvdIOef8TiG4C/fnOgm3JsL
+  # aws r/egion 
   region: us-east-2
   # aws key management id
-  kms_id: mrk-e44f269bc0034feb95ede34154c3cfe4
+  kmsID: mrk-e44f269bc0034feb95ede34154c3cfe4
   
 plaid:
   # wether or not to enable plaid api level interactions
   enabled: true
   # plaid client id
-  client_id: 61eb5d49ea3b4700127560d1
+  clientID: 61eb5d49ea3b4700127560d1
   # plaid secret key
-  secret_key: 6f127c086ba9c1d5dafe7e38541783
+  secretKey: 6f127c086ba9c1d5dafe7e38541783
   # plaid environment 
   env: development
   # A webhook is an HTTP request used to provide push notifications. Plaid sends webhooks to programmatically
@@ -66,7 +66,7 @@ plaid:
   # webhooks without setting up your own endpoint following the instructions in Testing webhooks in Sandbox. 
   #
   # ref: https://plaid.com/docs/api/webhooks/#introduction-to-webhooks
-  webhook_url:  "https://simfiny.dev/v1/gateway/plaid/webhook"
+  webhookUrl:  "https://simfiny.dev/v1/gateway/plaid/webhook"
   # Only required for OAuth:
   # For sandbox, set PLAID_REDIRECT_URI to 'http://localhost:3000/'
   # The OAuth redirect flow requires an endpoint on the developer's website
@@ -76,32 +76,32 @@ plaid:
   # For development or production, you will need to use an https:// url
   # If you are not set up to use localhost with https:// on your system, you will be unable to test OAuth in development or production.
   # In this case you can leave the PLAID_REDIRECT_URI blank.
-  redirect_url: "https://simfiny.dev/v1/gateway/plaid/oauth-return"
+  redirectUrl: "https://simfiny.dev/v1/gateway/plaid/oauth-return"
   # Only institutions that support ALL listed products will be displayed in Link.
   # If you don't see the institution you want in Link, remove any products you aren't using.
   # Important: When moving to Production, make sure to update this list with only the products
   # you plan to use. Otherwise, you may be billed for unneeded products.
   products: transactions,auth,balance,investments,liabilities
   # oauth domain
-  oauth_domain: simfiny
+  oauthDomain: simfiny
   # webhook oauth domain
-  webhook_oauth_domain: simfiny
+  webhookOauthDomain: simfiny
   # wether or not a webhook is enabled
-  webhook_enabled: true
+  webhookEnabled: true
   # max plaid links is the maximal amount of authorized institution a user can have
-  max_plaid_links: 5
+  maxPlaidLinks: 5
 
 stripe:
   # wether or not stripe api level interactions are available 
   enabled: true
   # api key
-  api_key: sk_test_4eC39HqLyjWDarjtT1zdp7dc
+  apiKey: sk_test_4eC39HqLyjWDarjtT1zdp7dc
 
 newRelic:
   # wether or not to enable metrics and traces
   enabled: true
   # new-relic api key
-  api_key: 62fd721c712d5863a4e75b8f547b7c1ea884NRAL
+  apiKey: 62fd721c712d5863a4e75b8f547b7c1ea884NRAL
 
 # Kubernetes Service settings
 service:

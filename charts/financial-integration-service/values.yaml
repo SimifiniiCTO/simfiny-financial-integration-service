@@ -32,22 +32,28 @@ database:
   password: financial_integration_service
   name: financial_integration_service
   sslMode: disable
-  max_connection_attempts: 2
-  max_connection_retries: 2
-  max_connection_retry_timeout: 500ms
-  max_connection_retry_sleep_interval: 100ms
+  maxConnectionAttempts: 4
+  maxConnectionRetries: 4
+  maxConnectionRetryTimeout: 500ms
+  maxConnectionRetrySleepInterval: 100ms
+  maxQueryTimeout: 200ms
 
 aws:
-  key_id: AKIA5HFOAJRN5472YQRB
-  secret_key: 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
+  # access key id for credentials provisioning
+  accessKeyID: AKIA5HFOAJRN7YDEYPST
+  # aws secret key for credentials provisioning
+  secretAccessKey: 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
+  # aws region 
   region: us-east-2
+  # aws key management id
+  kmsID: mrk-e44f269bc0034feb95ede34154c3cfe4
   
 plaid:
   enabled: true
-  client_id: 61eb5d49ea3b4700127560d1
-  secret_key: 465686056e8fd1b87db3d993d096d8
+  clientID: 61eb5d49ea3b4700127560d1
+  secretKey: 465686056e8fd1b87db3d993d096d8
   env: sandbox
-  webhook_url: ""
+  webhookUrl: ""
   # Only required for OAuth:
   # For sandbox, set PLAID_REDIRECT_URI to 'http://localhost:3000/'
   # The OAuth redirect flow requires an endpoint on the developer's website
@@ -57,7 +63,7 @@ plaid:
   # For development or production, you will need to use an https:// url
   # If you are not set up to use localhost with https:// on your system, you will be unable to test OAuth in development or production.
   # In this case you can leave the PLAID_REDIRECT_URI blank.
-  redirect_url: ""
+  redirectUrl: ""
   # Only institutions that support ALL listed products will be displayed in Link.
   # If you don't see the institution you want in Link, remove any products you aren't using.
   # Important: When moving to Production, make sure to update this list with only the products
@@ -67,9 +73,17 @@ plaid:
   webhookOauthDomain: simfiny
   webhookEnabled: true
 
-newRelic:
+stripe:
+  # wether or not stripe api level interactions are available 
   enabled: true
-  key: 62fd721c712d5863a4e75b8f547b7c1ea884NRAL
+  # api key
+  apiKey: sk_test_4eC39HqLyjWDarjtT1zdp7dc
+
+newRelic:
+  # wether or not to enable metrics and traces
+  enabled: true
+  # new-relic api key
+  apiKey: 62fd721c712d5863a4e75b8f547b7c1ea884NRAL
 
 # Kubernetes Service settings
 service:
