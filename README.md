@@ -1,28 +1,40 @@
-# financial-integration-service
-financial-integration-service for the simfinii platform
+<p align="center">
+  <a href="" rel="noopener">
+ <img src="https://i.imgur.com/AZ2iWek.png" alt="Project logo"></a>
+</p>
+
+
+# Financial Integration Service
+
+[![e2e](https://github.com/stefanprodan/podinfo/workflows/e2e/badge.svg)](https://github.com/stefanprodan/podinfo/blob/master/.github/workflows/e2e.yml)
+[![test](https://github.com/stefanprodan/podinfo/workflows/test/badge.svg)](https://github.com/stefanprodan/podinfo/blob/master/.github/workflows/test.yml)
+[![cve-scan](https://github.com/stefanprodan/podinfo/workflows/cve-scan/badge.svg)](https://github.com/stefanprodan/podinfo/blob/master/.github/workflows/cve-scan.yml)
+[![Go Report Card](https://goreportcard.com/badge/github.com/stefanprodan/podinfo)](https://goreportcard.com/report/github.com/stefanprodan/podinfo)
+[![Docker Pulls](https://img.shields.io/docker/pulls/stefanprodan/podinfo)](https://hub.docker.com/r/stefanprodan/podinfo)
+
+Financial Integration Service is a single source of truth for all things financial on the simfiny platform. 
 
 Specifications:
 
 * Health checks (readiness and liveness)
 * Graceful shutdown on interrupt signals
 * File watcher for secrets and configmaps
-* Instrumented with Prometheus
-* Tracing with Istio and Jaeger
-* Linkerd service profile
-* Structured logging with zap 
+* Instrumented with Prometheus and Open Telemetry
+* Structured logging with zap
 * 12-factor app with viper
 * Fault injection (random errors and latency)
 * Swagger docs
-* Helm and Kustomize installers
+* CUE, Helm and Kustomize installers
 * End-to-End testing with Kubernetes Kind and Helm
-* Kustomize testing with GitHub Actions and Open Policy Agent
 * Multi-arch container image with Docker buildx and Github Actions
-* CVE scanning with trivy
+* Container image signing with Sigstore cosign
+* SBOMs and SLSA Provenance embedded in the container image
+* CVE scanning with Trivy
 
 Web API:
 
 * `GET /` prints runtime information
-* `GET /version` prints financial-integration-service version and git commit hash 
+* `GET /version` prints podinfo version and git commit hash
 * `GET /metrics` return HTTP requests duration and Go runtime metrics
 * `GET /healthz` used by Kubernetes liveness probe
 * `GET /readyz` used by Kubernetes readiness probe
@@ -30,12 +42,12 @@ Web API:
 * `POST /readyz/disable` signals the Kubernetes LB to stop sending requests to this instance
 * `GET /status/{code}` returns the status code
 * `GET /panic` crashes the process with exit code 255
-* `POST /echo` forwards the call to the backend service and echos the posted content 
+* `POST /echo` forwards the call to the backend service and echos the posted content
 * `GET /env` returns the environment variables as a JSON array
 * `GET /headers` returns a JSON with the request HTTP headers
 * `GET /delay/{seconds}` waits for the specified period
-* `POST /token` issues a JWT token valid for one minute `JWT=$(curl -sd 'anon' financial-integration-service:9898/token | jq -r .token)`
-* `GET /token/validate` validates the JWT token `curl -H "Authorization: Bearer $JWT" financial-integration-service:9898/token/validate`
+* `POST /token` issues a JWT token valid for one minute `JWT=$(curl -sd 'anon' podinfo:9898/token | jq -r .token)`
+* `GET /token/validate` validates the JWT token `curl -H "Authorization: Bearer $JWT" podinfo:9898/token/validate`
 * `GET /configs` returns a JSON with configmaps and/or secrets mounted in the `config` volume
 * `POST/PUT /cache/{key}` saves the posted content to Redis
 * `GET /cache/{key}` returns the content from Redis if the key exists
@@ -52,7 +64,7 @@ gRPC API:
 
 Web UI:
 
-![financial-integration-service-ui](https://raw.githubusercontent.com/simfiniicto/podinfo/gh-pages/screens/podinfo-ui-v3.png)
+![podinfo-ui](https://raw.githubusercontent.com/stefanprodan/podinfo/gh-pages/screens/podinfo-ui-v3.png)
 
 To access the Swagger UI open `<podinfo-host>/swagger/index.html` in a browser.
 
@@ -68,40 +80,51 @@ To access the Swagger UI open `<podinfo-host>/swagger/index.html` in a browser.
 
 ### Install
 
-Helm:
+To install Podinfo on Kubernetes the minimum required version is **Kubernetes v1.23**.
+
+#### Helm
+
+Install from github.io:
 
 ```bash
-helm repo add financial-integration-service https://simfiniicto.github.io/financial-integration-service
+helm repo add podinfo https://stefanprodan.github.io/podinfo
 
 helm upgrade --install --wait frontend \
 --namespace test \
 --set replicaCount=2 \
---set backend=http://backend-financial-integration-service:9898/echo \
-financial-integration-service/financial-integration-service
+--set backend=http://backend-podinfo:9898/echo \
+podinfo/podinfo
 
-helm test frontend
+helm test frontend --namespace test
 
 helm upgrade --install --wait backend \
 --namespace test \
 --set redis.enabled=true \
-financial-integration-service/financial-integration-service
+podinfo/podinfo
 ```
 
-Kustomize:
+Install from ghcr.io:
 
 ```bash
-kubectl apply -k github.com/SimifiniiCTO/simfiny-financial-integration-service//kustomize
+helm upgrade --install --wait podinfo --namespace default \
+oci://ghcr.io/stefanprodan/charts/podinfo
 ```
 
-Docker:
+#### Kustomize
 
 ```bash
-docker run -dp 9898:9898 simfiniicto/financial-integration-service
+kubectl apply -k github.com/stefanprodan/podinfo//kustomize
+```
+
+#### Docker
+
+```bash
+docker run -dp 9898:9898 stefanprodan/podinfo
 ```
 
 ### Continuous Delivery
 
-In order to install financial-integration-service on a Kubernetes cluster and keep it up to date with the latest
+In order to install podinfo on a Kubernetes cluster and keep it up to date with the latest
 release in an automated manner, you can use [Flux](https://fluxcd.io).
 
 Install the Flux CLI on MacOS and Linux using Homebrew:
@@ -119,20 +142,20 @@ flux install \
 --components=source-controller,helm-controller
 ```
 
-Add financial-integration-service's Helm repository to your cluster and
+Add podinfo's Helm repository to your cluster and
 configure Flux to check for new chart releases every ten minutes:
 
 ```sh
-flux create source helm financial-integration-service \
+flux create source helm podinfo \
 --namespace=default \
---url=https://simfiniicto.github.io/financial-integration-service \
+--url=https://stefanprodan.github.io/podinfo \
 --interval=10m
 ```
 
-Create a `financial-integration-service-values.yaml` file locally:
+Create a `podinfo-values.yaml` file locally:
 
 ```sh
-cat > financial-integration-service-values.yaml <<EOL
+cat > podinfo-values.yaml <<EOL
 replicaCount: 2
 resources:
   limits:
@@ -143,20 +166,20 @@ resources:
 EOL
 ```
 
-Create a Helm release for deploying financial-integration-service in the default namespace:
+Create a Helm release for deploying podinfo in the default namespace:
 
 ```sh
-flux create helmrelease financial-integration-service \
+flux create helmrelease podinfo \
 --namespace=default \
---source=HelmRepository/financial-integration-service \
---release-name=financial-integration-service \
---chart=financial-integration-service \
+--source=HelmRepository/podinfo \
+--release-name=podinfo \
+--chart=podinfo \
 --chart-version=">5.0.0" \
---values=financial-integration-service-values.yaml
+--values=podinfo-values.yaml
 ```
 
 Based on the above definition, Flux will upgrade the release automatically
-when a new version of financial-integration-service is released. If the upgrade fails, Flux
+when a new version of podinfo is released. If the upgrade fails, Flux
 can [rollback](https://toolkit.fluxcd.io/components/helm/helmreleases/#configuring-failure-remediation)
 to the previous working version.
 
@@ -166,108 +189,13 @@ You can check what version is currently deployed with:
 flux get helmreleases -n default
 ```
 
-To delete financial-integration-service's Helm repository and release from your cluster run:
+To delete podinfo's Helm repository and release from your cluster run:
 
 ```sh
-flux -n default delete source helm financial-integration-service
-flux -n default delete helmrelease financial-integration-service
+flux -n default delete source helm podinfo
+flux -n default delete helmrelease podinfo
 ```
 
 If you wish to manage the lifecycle of your applications in a **GitOps** manner, check out
 this [workflow example](https://github.com/fluxcd/flux2-kustomize-helm-example)
 for multi-env deployments with Flux, Kustomize and Helm.
-
-## Running Locally
----
-To start service via docker-compose, run the below command and reference the below three urls.
-
-```bash
-# to start services and dependencies locally
-make compose-up-d
-
-# to bring down services and dependencies
-make compose-down
-```
-
-To run service on local kubernetes cluster, run the below command
-
-```bash
-# to start services and dependencies in minikube
-make kube-deploy
-
-# to bring down cluster
-minikube delete
-```
-
-__For more detailed setup instructions, please reference the docs folder__
-
----
-To start service, run the below command and reference the below three urls.
-
-```bash
-# to start services and dependencies locally
-make compose-up-d
-
-# to bring down services and dependencies
-make compose-down
-```
-
-RK TV: http://localhost:9196/rk/v1/tv
-
-Swagger UI: http://localhost:9196/sw
-
-Prometheus client: http://localhost:9196/metrics
-
-To run service on local kubernetes cluster, run the below command
-
-```bash
-# to start services and dependencies in minikube
-make kube-deploy
-
-# to bring down cluster
-minikube delete
-```
-
-ref: https://github.com/duyquang6/wager-management-be
-
-### Postman Collection
-To access the public postman collection refernce [postman public uri](https://documenter.getpostman.com/view/4045899/2s83fADrhH)
-
-#### Adding New API & Postman Collection
-To add a new api, follow the below steps
-1) Edit the fis_service.proto file present in the rpc `/proto` folder
-2) Open a terminal instance and run `make gen`
-3) Add the file with the api name in `/pkg/grpc` adhering to the following convention `rpc_{api_name}.go`
-4) Add the necessary support code to as your business logic and associated unit tests
-5) In your terminal run `make start`
-6) Open a browser and hit `http://localhost:9096/sw` to access the service's swagger definition and find your newly added api endpoint
-7) Test it via the swagger definition and then open the postman application
-8) Import the contents of the `/collection` folder in postman and add your new api endpoint in postman then export and update the contents of the `/collection` folder
-9) Create a Pull Request
-
-### Local Development
-#### Install devspace
-install tilt via Homebrew
-```bash
-brew install tilt 
-```
-
-install kubectl-buildkit, ngrok and coreutils via Homebrew
-```bash
-brew tap vmware-tanzu/buildkit-cli-for-kubectl https://github.com/vmware-tanzu/buildkit-cli-for-kubectl
-brew install kubectl-buildkit
-brew install coreutils
-brew install --cask ngrok
-```
-
-install awslocal and awscli
-```bash
-pip install awscli-local
-brew install awscli
-```
-
-## Security
-- [] encrypt all plaid data written in our datastore
-  * ref: <https://medium.com/swlh/securing-information-in-database-using-data-encryption-written-in-go-4b2754214050>
-  * <https://github.com/purnaresa/secureme/blob/master/db-encryption/main.go>
-  * [1] ref: <https://github.com/wultra/powerauth-server/blob/develop/docs/Encrypting-Records-in-Database.md>
