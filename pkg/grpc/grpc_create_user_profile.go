@@ -29,7 +29,7 @@ func (s *Server) CreateUserProfile(ctx context.Context, req *proto.CreateUserPro
 	// instrument operation
 	if s.instrumentation != nil {
 		txn := s.instrumentation.GetTraceFromContext(ctx)
-		span := s.instrumentation.StartDatastoreSegment(txn, "grpc-create-profile")
+		span := s.instrumentation.StartSegment(txn, "grpc-create-profile")
 		defer span.End()
 	}
 

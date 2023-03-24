@@ -26,7 +26,7 @@ func (s *Server) UpdateBankAccount(ctx context.Context, req *proto.UpdateBankAcc
 
 	if s.instrumentation != nil {
 		txn := s.instrumentation.GetTraceFromContext(ctx)
-		span := s.instrumentation.StartDatastoreSegment(txn, "grpc-update-bank-account")
+		span := s.instrumentation.StartSegment(txn, "grpc-update-bank-account")
 		defer span.End()
 	}
 
@@ -38,7 +38,7 @@ func (s *Server) UpdateBankAccount(ctx context.Context, req *proto.UpdateBankAcc
 
 	// ensure the bank account is only updateable if it is a manual
 	if bankAccount.Type != proto.BankAccountType_BANK_ACCOUNT_TYPE_MANUAL {
-		return nil, status.Error(codes.InvalidArgument, "bank account is not updateable")
+		return nil, status.Error(codes.InvalidArgument, "plaid linked bank account is not updateable")
 	}
 
 	if err := s.conn.UpdateBankAccount(ctx, req.BankAccount); err != nil {

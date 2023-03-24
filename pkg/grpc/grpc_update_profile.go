@@ -28,7 +28,7 @@ func (s *Server) UpdateUserProfile(ctx context.Context, req *proto.UpdateUserPro
 	// instrument operation
 	if s.instrumentation != nil {
 		txn := s.instrumentation.GetTraceFromContext(ctx)
-		span := s.instrumentation.StartDatastoreSegment(txn, "grpc-update-profile")
+		span := s.instrumentation.StartSegment(txn, "grpc-update-profile")
 		defer span.End()
 	}
 

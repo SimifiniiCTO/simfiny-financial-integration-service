@@ -37,6 +37,7 @@ type IServiceTelemetry interface {
 	StartExternalSegment(txn *newrelic.Transaction, req *http.Request) *newrelic.ExternalSegment
 	StartDatastoreSegment(txn *newrelic.Transaction, operation string) *newrelic.DatastoreSegment
 	StartMessageQueueSegment(txn *newrelic.Transaction, queueName string) *newrelic.MessageProducerSegment
+	StartSegment(txn *newrelic.Transaction, name string) *newrelic.Segment
 	NewRoundtripper(txn *newrelic.Transaction) *http.RoundTripper
 }
 
@@ -186,6 +187,15 @@ func (s *ServiceTelemetry) StartMessageQueueSegment(txn *newrelic.Transaction, q
 		}
 
 		return &segment
+	}
+
+	return nil
+}
+
+// StartSegment implements IServiceTelemetry
+func (s *ServiceTelemetry) StartSegment(txn *newrelic.Transaction, name string) *newrelic.Segment {
+	if s.TracingEnabled {
+		return txn.StartSegment(name)
 	}
 
 	return nil

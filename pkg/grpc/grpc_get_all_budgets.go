@@ -28,7 +28,7 @@ func (s *Server) GetAllBudgets(ctx context.Context, req *proto.GetAllBudgetsRequ
 	// instrument operation
 	if s.instrumentation != nil {
 		txn := s.instrumentation.GetTraceFromContext(ctx)
-		span := s.instrumentation.StartDatastoreSegment(txn, "grpc-get-all-budgets")
+		span := s.instrumentation.StartSegment(txn, "grpc-get-all-budgets")
 		defer span.End()
 	}
 
@@ -39,13 +39,19 @@ func (s *Server) GetAllBudgets(ctx context.Context, req *proto.GetAllBudgetsRequ
 	}
 
 	// get all the goals and milestones for a given pocket
-	budgets := getPocketBudgets(pocket)
+	budgets := s.getPocketBudgets(pocket)
 	return &proto.GetAllBudgetsResponse{
 		Budgets: budgets,
 	}, nil
 }
 
-func getPocketBudgets(pocket *proto.Pocket) []*proto.Budget {
+func (s *Server) getPocketBudgets(pocket *proto.Pocket) []*proto.Budget {
+	if s.instrumentation != nil {
+		txn := s.instrumentation.GetTraceFromContext(context.Background())
+		span := s.instrumentation.StartSegment(txn, "get-pocket-budgets")
+		defer span.End()
+	}
+
 	goals := pocket.Goals
 	milestones := make([]*proto.Milestone, 0)
 	budgets := make([]*proto.Budget, 0)

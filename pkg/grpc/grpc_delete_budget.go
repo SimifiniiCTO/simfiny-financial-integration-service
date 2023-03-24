@@ -27,7 +27,7 @@ func (s *Server) DeleteBudget(ctx context.Context, req *proto.DeleteBudgetReques
 	// instrument operation
 	if s.instrumentation != nil {
 		txn := s.instrumentation.GetTraceFromContext(ctx)
-		span := s.instrumentation.StartDatastoreSegment(txn, "grpc-delete-budget")
+		span := s.instrumentation.StartSegment(txn, "grpc-delete-budget")
 		defer span.End()
 	}
 

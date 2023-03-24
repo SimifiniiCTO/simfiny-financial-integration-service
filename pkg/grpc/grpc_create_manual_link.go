@@ -32,7 +32,7 @@ func (s *Server) CreateManualLink(ctx context.Context, req *proto.CreateManualLi
 	// instrument operation
 	if s.instrumentation != nil {
 		txn := s.instrumentation.GetTraceFromContext(ctx)
-		span := s.instrumentation.StartDatastoreSegment(txn, "grpc-create-manual-link")
+		span := s.instrumentation.StartSegment(txn, "grpc-create-manual-link")
 		defer span.End()
 	}
 
@@ -43,7 +43,7 @@ func (s *Server) CreateManualLink(ctx context.Context, req *proto.CreateManualLi
 	manualLink.LinkStatus = proto.LinkStatus_LINK_STATUS_SUCCESS
 
 	// create a default bank account object for the user creating a manual link
-	manualAcct, err := s.autoGenerateManualBankAccount(&req.UserId)
+	manualAcct, err := s.autoGenerateManualBankAccount(ctx, &req.UserId)
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
@@ -63,7 +63,13 @@ func (s *Server) CreateManualLink(ctx context.Context, req *proto.CreateManualLi
 }
 
 // autoGenerateManualBankAccount is used to generate a manual bank account for a user
-func (s *Server) autoGenerateManualBankAccount(userID *uint64) (*proto.BankAccount, error) {
+func (s *Server) autoGenerateManualBankAccount(ctx context.Context, userID *uint64) (*proto.BankAccount, error) {
+	if s.instrumentation != nil {
+		txn := s.instrumentation.GetTraceFromContext(context.Background())
+		span := s.instrumentation.StartSegment(txn, "auto-generate-manual-bank-account")
+		defer span.End()
+	}
+
 	if userID == nil {
 		return nil, errors.New("invalid user id")
 	}

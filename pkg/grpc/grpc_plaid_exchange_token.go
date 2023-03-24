@@ -35,7 +35,7 @@ func (s *Server) PlaidExchangeToken(ctx context.Context, req *proto.PlaidExchang
 
 	if s.instrumentation != nil {
 		txn := s.instrumentation.GetTraceFromContext(ctx)
-		span := s.instrumentation.StartDatastoreSegment(txn, "grpc-plaid-exchange-token")
+		span := s.instrumentation.StartSegment(txn, "grpc-plaid-exchange-token")
 		defer span.End()
 	}
 
@@ -92,6 +92,12 @@ func (s *Server) createAndStoreLink(ctx context.Context, userID uint64, meta *to
 	var (
 		handler = s.plaidClient
 	)
+
+	if s.instrumentation != nil {
+		txn := s.instrumentation.GetTraceFromContext(ctx)
+		span := s.instrumentation.StartSegment(txn, "create-and-store-link")
+		defer span.End()
+	}
 
 	if userID == 0 {
 		return nil, status.Error(codes.InvalidArgument, "missing userID")

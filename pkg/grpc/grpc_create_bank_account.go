@@ -29,7 +29,7 @@ func (s *Server) CreateBankAccount(ctx context.Context, req *proto.CreateBankAcc
 	// instrument operation
 	if s.instrumentation != nil {
 		txn := s.instrumentation.GetTraceFromContext(ctx)
-		span := s.instrumentation.StartDatastoreSegment(txn, "grpc-create-bank-acct")
+		span := s.instrumentation.StartSegment(txn, "grpc-create-bank-acct")
 		defer span.End()
 	}
 
@@ -40,7 +40,7 @@ func (s *Server) CreateBankAccount(ctx context.Context, req *proto.CreateBankAcc
 	// if a set of pockets are not already present for the given account, we must create them
 	// pockets are crucial given they fascilitate the abstraction of sub-bank accounts better enabling proper goal management
 	if len(req.BankAccount.Pockets) == 0 {
-		req.BankAccount.Pockets = append(req.BankAccount.Pockets, s.DefaultPockets()...)
+		req.BankAccount.Pockets = s.DefaultPockets()
 	}
 
 	createdBankAcct, err := s.conn.CreateBankAccount(ctx, req.UserId, req.BankAccount)

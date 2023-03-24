@@ -3,9 +3,10 @@ package grpc
 import (
 	"context"
 
-	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+
+	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 )
 
 // DeleteMilestone implements apiv1.FinancialServiceServer
@@ -26,7 +27,7 @@ func (s *Server) DeleteMilestone(ctx context.Context, req *proto.DeleteMilestone
 	// instrument operation
 	if s.instrumentation != nil {
 		txn := s.instrumentation.GetTraceFromContext(ctx)
-		span := s.instrumentation.StartDatastoreSegment(txn, "grpc-delete-milestone")
+		span := s.instrumentation.StartSegment(txn, "grpc-delete-milestone")
 		defer span.End()
 	}
 

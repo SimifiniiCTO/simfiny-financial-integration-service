@@ -28,7 +28,7 @@ func (s *Server) DeleteBankAccount(ctx context.Context, req *proto.DeleteBankAcc
 	// instrument operation
 	if s.instrumentation != nil {
 		txn := s.instrumentation.GetTraceFromContext(ctx)
-		span := s.instrumentation.StartDatastoreSegment(txn, "grpc-delete-profile")
+		span := s.instrumentation.StartSegment(txn, "grpc-delete-profile")
 		defer span.End()
 	}
 
@@ -37,8 +37,24 @@ func (s *Server) DeleteBankAccount(ctx context.Context, req *proto.DeleteBankAcc
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	if err := s.conn.DeleteBankAccount(ctx, req.BankAccountId); err != nil {
+	// ensure the bank account exists
+	bankAcct, err := s.conn.GetBankAccount(ctx, req.BankAccountId)
+	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	if bankAcct.Type == proto.BankAccountType_BANK_ACCOUNT_TYPE_MANUAL {
+		// Given people will have a ton of data in their accounts, we
+		// do a soft delete here, and then have a background job that will clean up all resources
+		//
+		// Deletion should only be allowed in the main branch of execution if the bank account being deleted
+		// is a manual one
+		if err := s.conn.DeleteBankAccount(ctx, req.BankAccountId); err != nil {
+			return nil, status.Error(codes.Internal, err.Error())
+		}
+	} else {
+		// TODO: perfrom async soft deletion as a background task
+		s.logger.Warn("bank account is not a manual one, performing deletion in the background")
 	}
 
 	return &proto.DeleteBankAccountResponse{

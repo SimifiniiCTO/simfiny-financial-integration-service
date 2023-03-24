@@ -105,6 +105,10 @@ spec:
             {{- if .Values.h2c.enabled }}
             - --h2c
             {{- end }}
+            - --http-client-timeout={{ .Values.service.http.client.timeout }}
+            - --rpc-timeout={{ .Values.service.rpc.timeout }}
+            - --http-server-timeout={{ .Values.service.http.server.timeout }}
+            - --http-server-shutdown-timeout={{ .Values.service.http.server.shutdownTimeout }}
             {{- if eq .Values.service.environment "local" }}
             - --dbhost={{ .Values.database.host }}.{{ $namespace }}.{{ $svctag }}
             {{- else }}
@@ -114,22 +118,37 @@ spec:
             - --dbuser={{ .Values.database.user }}
             - --dbpassword={{ .Values.database.password }}
             - --dbname={{ .Values.database.name }}
+            - --dbsslmode={{ .Values.database.sslMode }}
             - --max-db-conn-attempts={{ .Values.database.max_connection_attempts }}
             - --max-db-conn-retries={{ .Values.database.max_connection_retries }}
             - --max-db-retry-timeout={{ .Values.database.max_connection_retry_timeout }}
             - --max-db-retry-sleep-interval={{ .Values.database.max_connection_retry_sleep_interval }}
-            - --dbsslmode={{ .Values.database.sslMode }}
+            - --max-query-timeout={{ .Values.database.maxQueryTimeout }}
             {{- if .Values.plaid.enabled }}
             - --plaid-client-id={{ .Values.plaid.client_id }}
             - --plaid-secret-key={{ .Values.plaid.secret_key }}
             - --plaid-env={{ .Values.plaid.env }}
             - --plaid-webhook-url={{ .Values.plaid.webhook_url }}
             - --plaid-redirect-url={{ .Values.plaid.redirect_url }}
+            - --plaid-products={{ .Values.plaid.products }}
+            - --plaid-oauth-domain={{ .Values.plaid.oauthDomain }}
+            - --plaid-webhook-oauth-domain={{ .Values.plaid.webhookOauthDomain }}
+            - --plaid-webhook-enabled={{ .Values.plaid.webhookEnabled }}
+            - --max-plaid-links={{ .Values.plaid.maxPlaidLinks }}
+            {{- end }}
+            {{- if .Values.stripe.enabled }}
+            - --stripe-api-key={{ .Values.stripe.apiKey }}
+            - --stripe-enabled={{ .Values.stripe.enabled }}
             {{- end }}
             {{- if .Values.newRelic.enabled}}
             - --newrelic-api-key={{ .Values.newRelic.key }}
+            - --metrics-reporting-enabled={{ .Values.newRelic.enabled }}
             {{- end }}
-            - --env={{ .Values.service.env }}
+            - --service-environment={{ .Values.service.env }}
+            - --aws-access-key-id={{ .Values.aws.accessKeyID }}
+            - --aws-secret-access-key={{ .Values.aws.secretAccessKey }}
+            - --aws-region={{ .Values.aws.region }}
+            - --aws-kms-id={{ .Values.aws.kmsID }}
           env:
           {{- if .Values.ui.message }}
           - name: fis_UI_MESSAGE

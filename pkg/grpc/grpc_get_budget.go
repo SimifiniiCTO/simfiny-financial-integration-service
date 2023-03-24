@@ -27,7 +27,7 @@ func (s *Server) GetBudget(ctx context.Context, req *proto.GetBudgetRequest) (*p
 	// instrument operation
 	if s.instrumentation != nil {
 		txn := s.instrumentation.GetTraceFromContext(ctx)
-		span := s.instrumentation.StartDatastoreSegment(txn, "grpc-get-budget")
+		span := s.instrumentation.StartSegment(txn, "grpc-get-budget")
 		defer span.End()
 	}
 

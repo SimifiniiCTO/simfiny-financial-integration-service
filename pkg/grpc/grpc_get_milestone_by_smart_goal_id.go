@@ -27,7 +27,7 @@ func (s *Server) GetMilestonesBySmartGoalId(ctx context.Context, req *proto.GetM
 	// instrument operation
 	if s.instrumentation != nil {
 		txn := s.instrumentation.GetTraceFromContext(ctx)
-		span := s.instrumentation.StartDatastoreSegment(txn, "grpc-get-milestones-by-smart-goal-id")
+		span := s.instrumentation.StartSegment(txn, "grpc-get-milestones-by-smart-goal-id")
 		defer span.End()
 	}
 

@@ -27,7 +27,7 @@ func (s *Server) DeleteSmartGoal(ctx context.Context, req *proto.DeleteSmartGoal
 	// instrument operation
 	if s.instrumentation != nil {
 		txn := s.instrumentation.GetTraceFromContext(ctx)
-		span := s.instrumentation.StartDatastoreSegment(txn, "grpc-delete-smart-goal")
+		span := s.instrumentation.StartSegment(txn, "grpc-delete-smart-goal")
 		defer span.End()
 	}
 

@@ -26,7 +26,7 @@ func (s *Server) DeleteLink(ctx context.Context, req *proto.DeleteLinkRequest) (
 	// instrument operation
 	if s.instrumentation != nil {
 		txn := s.instrumentation.GetTraceFromContext(ctx)
-		span := s.instrumentation.StartDatastoreSegment(txn, "grpc-delete-link")
+		span := s.instrumentation.StartSegment(txn, "grpc-delete-link")
 		defer span.End()
 	}
 

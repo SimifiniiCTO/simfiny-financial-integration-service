@@ -77,7 +77,6 @@ func ReadEnvVars() {
 	fs.Bool("plaid-webhook-enabled", true, "enable plaid webhook")
 	fs.Uint64("max-plaid-links", 5, "plaid link limit")
 
-	fs.String("env", "dev", "current environment")
 	fs.String("grpc-service-endpoint", "http://localhost:9896", "grpc api endpoint for service")
 	fs.Int("grpc-gateway-port", 8090, "grpc gateway port")
 

@@ -28,7 +28,7 @@ func (s *Server) HealthCheck(ctx context.Context, req *proto.HealthCheckRequest)
 
 	if s.instrumentation != nil {
 		txn := s.instrumentation.GetTraceFromContext(ctx)
-		span := s.instrumentation.StartDatastoreSegment(txn, "grpc-health-check")
+		span := s.instrumentation.StartSegment(txn, "grpc-health-check")
 		defer span.End()
 	}
 

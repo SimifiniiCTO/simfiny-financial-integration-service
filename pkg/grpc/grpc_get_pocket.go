@@ -27,7 +27,7 @@ func (s *Server) GetPocket(ctx context.Context, req *proto.GetPocketRequest) (*p
 	// instrument operation
 	if s.instrumentation != nil {
 		txn := s.instrumentation.GetTraceFromContext(ctx)
-		span := s.instrumentation.StartDatastoreSegment(txn, "grpc-get-pocket")
+		span := s.instrumentation.StartSegment(txn, "grpc-get-pocket")
 		defer span.End()
 	}
 

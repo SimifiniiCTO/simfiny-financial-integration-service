@@ -36,7 +36,7 @@ database:
   maxConnectionRetries: 4
   maxConnectionRetryTimeout: 500ms
   maxConnectionRetrySleepInterval: 100ms
-  maxQueryTimeout: 200ms
+  maxQueryTimeout: 500ms
 
 aws:
   # access key id for credentials provisioning
@@ -103,7 +103,14 @@ service:
   # in local clusters such as kind without port forwarding
   hostPort:
   env: "dev"
-
+  http:
+    client:
+      timeout: 1s
+    server:
+      timeout: 1s
+      shutdownTimeout: 5s
+  rpc:
+    timeout: 1s
 # enable h2c protocol (non-TLS version of HTTP/2)
 h2c:
   enabled: false

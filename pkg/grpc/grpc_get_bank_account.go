@@ -3,9 +3,10 @@ package grpc
 import (
 	"context"
 
-	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+
+	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 )
 
 // GetBankAccount implements apiv1.FinancialServiceServer
@@ -27,7 +28,7 @@ func (s *Server) GetBankAccount(ctx context.Context, req *proto.GetBankAccountRe
 	// instrument operation
 	if s.instrumentation != nil {
 		txn := s.instrumentation.GetTraceFromContext(ctx)
-		span := s.instrumentation.StartDatastoreSegment(txn, "grpc-get-bank-account")
+		span := s.instrumentation.StartSegment(txn, "grpc-get-bank-account")
 		defer span.End()
 	}
 

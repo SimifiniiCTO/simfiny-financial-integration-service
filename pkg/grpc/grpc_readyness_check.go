@@ -26,7 +26,7 @@ func (s *Server) ReadynessCheck(ctx context.Context, req *proto.ReadynessCheckRe
 
 	if s.instrumentation != nil {
 		txn := s.instrumentation.GetTraceFromContext(ctx)
-		span := s.instrumentation.StartDatastoreSegment(txn, "grpc-readiness-check")
+		span := s.instrumentation.StartSegment(txn, "grpc-readiness-check")
 		defer span.End()
 	}
 

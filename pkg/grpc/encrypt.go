@@ -14,8 +14,12 @@ import (
 
 // EncryptAccessToken encrypts the access token using the KMS
 func (s *Server) EncryptAccessToken(ctx context.Context, accessToken string) (*accessTokenMeta, error) {
-	s.logger.Info("Encrypting access token")
-	
+	if s.instrumentation != nil {
+		txn := s.instrumentation.GetTraceFromContext(ctx)
+		span := s.instrumentation.StartSegment(txn, "grpc-encrypt-access-token")
+		defer span.End()
+	}
+
 	keyId, version, encrypted, err := s.kms.Encrypt(ctx, []byte(accessToken))
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to encrypt access token")
@@ -60,8 +64,15 @@ func (s *Server) EncryptAccessToken(ctx context.Context, accessToken string) (*a
 
 // DecryptUserAccessToken decrypts the access token using the KMS
 func (s *Server) DecryptUserAccessToken(ctx context.Context, token *proto.Token) (*string, error) {
+	if s.instrumentation != nil {
+		txn := s.instrumentation.GetTraceFromContext(ctx)
+		span := s.instrumentation.StartSegment(txn, "grpc-decrypt-access-token")
+		defer span.End()
+	}
+
 	decryptionKey := token.KeyId
 	decryptionVersion := token.Version
+
 	// decrypt the access token
 	encrypted, err := hex.DecodeString(token.AccessToken)
 	if err != nil {

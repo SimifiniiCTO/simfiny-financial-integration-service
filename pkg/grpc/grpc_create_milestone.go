@@ -27,7 +27,7 @@ func (s *Server) CreateMilestone(ctx context.Context, req *proto.CreateMilestone
 	// instrument operation
 	if s.instrumentation != nil {
 		txn := s.instrumentation.GetTraceFromContext(ctx)
-		span := s.instrumentation.StartDatastoreSegment(txn, "grpc-create-milestone")
+		span := s.instrumentation.StartSegment(txn, "grpc-create-milestone")
 		defer span.End()
 	}
 

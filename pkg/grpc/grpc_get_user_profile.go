@@ -28,7 +28,7 @@ func (s *Server) GetUserProfile(ctx context.Context, req *proto.GetUserProfileRe
 	// instrument operation
 	if s.instrumentation != nil {
 		txn := s.instrumentation.GetTraceFromContext(ctx)
-		span := s.instrumentation.StartDatastoreSegment(txn, "grpc-get-profile")
+		span := s.instrumentation.StartSegment(txn, "grpc-get-profile")
 		defer span.End()
 	}
 

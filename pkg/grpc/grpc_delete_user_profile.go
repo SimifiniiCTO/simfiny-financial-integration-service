@@ -28,7 +28,7 @@ func (s *Server) DeleteUserProfile(ctx context.Context, req *proto.DeleteUserPro
 	// instrument operation
 	if s.instrumentation != nil {
 		txn := s.instrumentation.GetTraceFromContext(ctx)
-		span := s.instrumentation.StartDatastoreSegment(txn, "grpc-delete-profile")
+		span := s.instrumentation.StartSegment(txn, "grpc-delete-profile")
 		defer span.End()
 	}
 

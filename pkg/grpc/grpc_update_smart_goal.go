@@ -26,7 +26,7 @@ func (s *Server) UpdateSmartGoal(ctx context.Context, req *proto.UpdateSmartGoal
 
 	if s.instrumentation != nil {
 		txn := s.instrumentation.GetTraceFromContext(ctx)
-		span := s.instrumentation.StartDatastoreSegment(txn, "grpc-update-smart-goal")
+		span := s.instrumentation.StartSegment(txn, "grpc-update-smart-goal")
 		defer span.End()
 	}
 
