@@ -160,6 +160,12 @@ spec:
             - --temporal-max-retry-attempts={{ .Values.dependencies.temporal.retry.maxRetryAttempts }}
             - --temporal-max-retry-interval={{ .Values.dependencies.temporal.retry.maxRetryInterval }}
             - --temporal-rpc-timeout={{ .Values.dependencies.temporal.rpc.timeout }}
+            - --temporal-task-queue={{ .Values.dependencies.temporal.config.taskQueue }}
+            - --temporal-concurrent-activity-execution-size"={{ .Values.dependencies.temporal.config.concurrentActivityExecutionSize }}
+            - --temporal-concurrent-workflow-task-pollers={{ .Values.dependencies.temporal.config.concurrentWorkflowTaskPollers }}
+            - --workflow-execution-timeout={{ .Values.dependencies.temporal.config.workflowExecutionTimeout }}
+            - --workflow-task-timeout={{ .Values.dependencies.temporal.config.workflowTaskTimeout }}
+            - --workflow-run-timeout={{ .Values.dependencies.temporal.config.workflowRunTimeout }}
             {{- end }}
           env:
           {{- if .Values.ui.message }}
