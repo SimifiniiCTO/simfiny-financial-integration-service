@@ -144,7 +144,7 @@ spec:
             - --stripe-enabled={{ .Values.stripe.enabled }}
             {{- end }}
             {{- if .Values.newRelic.enabled}}
-            - --newrelic-api-key={{ .Values.newRelic.key }}
+            - --newrelic-api-key={{ .Values.newRelic.apiKey }}
             - --metrics-reporting-enabled={{ .Values.newRelic.enabled }}
             {{- end }}
             - --service-environment={{ .Values.service.env }}
