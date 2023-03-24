@@ -271,7 +271,6 @@ func TestDb_UpdateBankAccount(t *testing.T) {
 				acct, err := conn.CreateBankAccount(tt.args.ctx, link.Id, tt.args.bankAccount)
 				assert.Nil(t, err)
 
-
 				// change the name
 				acct.Name = updateBankAcctName
 				tt.args.bankAccount = acct

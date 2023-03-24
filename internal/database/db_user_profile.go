@@ -119,11 +119,11 @@ func (db *Db) GetUserProfileByUserID(ctx context.Context, userID uint64) (*schem
 		Preload(u.Link.BankAccounts.Pockets.Goals.Forecasts).
 		Preload(u.Link.BankAccounts.Pockets.Goals.Milestones.Budget).
 		Preload(u.Link.CreditAccounts.Aprs).
-		Preload(u.Link.MortgageAccounts).	
-		Preload(u.Link.StudentLoanAccounts).	
-		Preload(u.Link.InvestmentAccounts.Holdings).	
-		Preload(u.Link.InvestmentAccounts.Securities).	
-		Preload(u.Link.Token).	
+		Preload(u.Link.MortgageAccounts).
+		Preload(u.Link.StudentLoanAccounts).
+		Preload(u.Link.InvestmentAccounts.Holdings).
+		Preload(u.Link.InvestmentAccounts.Securities).
+		Preload(u.Link.Token).
 		Preload(u.Link.PlaidLink).
 		Preload(u.StripeSubscriptions).
 		First()

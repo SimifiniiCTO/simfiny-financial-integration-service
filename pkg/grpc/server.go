@@ -15,6 +15,7 @@ import (
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/instrumentation"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/plaidhandler"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/secrets"
+	transactionmanager "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/transaction_manager"
 )
 
 // Server is the grpc server object
@@ -22,14 +23,15 @@ type Server struct {
 	proto.UnimplementedFinancialServiceServer
 
 	// proto.UnimplementedFinancialServiceServer
-	logger          *zap.Logger
-	config          *Config
-	instrumentation *instrumentation.ServiceTelemetry
-	conn            *database.Db
-	plaidClient     *plaidhandler.PlaidWrapper
-	MetricsEngine   *telemetry.MetricsEngine
-	stripeClient    *client.API
-	kms             secrets.KeyManagement
+	logger             *zap.Logger
+	config             *Config
+	instrumentation    *instrumentation.ServiceTelemetry
+	conn               *database.Db
+	plaidClient        *plaidhandler.PlaidWrapper
+	MetricsEngine      *telemetry.MetricsEngine
+	stripeClient       *client.API
+	kms                secrets.KeyManagement
+	TransactionManager *transactionmanager.TransactionManager
 }
 
 // Config is the config for the grpc server initialization
@@ -62,13 +64,14 @@ var _ proto.FinancialServiceServer = (*Server)(nil)
 
 // Params is the params for the grpc server initialization
 type Params struct {
-	Config          *Config
-	Logger          *zap.Logger
-	Instrumentation *instrumentation.ServiceTelemetry
-	Db              *database.Db
-	PlaidClient     *plaid.APIClient
-	KeyManagement   secrets.KeyManagement
-	PlaidWrapper    *plaidhandler.PlaidWrapper
+	Config             *Config
+	Logger             *zap.Logger
+	Instrumentation    *instrumentation.ServiceTelemetry
+	Db                 *database.Db
+	PlaidClient        *plaid.APIClient
+	KeyManagement      secrets.KeyManagement
+	PlaidWrapper       *plaidhandler.PlaidWrapper
+	TransactionManager *transactionmanager.TransactionManager
 }
 
 // RegisterGrpcServer registers the grpc server object
@@ -107,12 +110,13 @@ func NewServer(param *Params) (*Server, error) {
 	sc.Init(param.Config.StripeApiKey, nil)
 
 	return &Server{
-		logger:          param.Logger,
-		config:          param.Config,
-		conn:            param.Db,
-		plaidClient:     param.PlaidWrapper,
-		instrumentation: param.Instrumentation,
-		stripeClient:    sc,
-		kms:             param.KeyManagement,
+		logger:             param.Logger,
+		config:             param.Config,
+		conn:               param.Db,
+		plaidClient:        param.PlaidWrapper,
+		instrumentation:    param.Instrumentation,
+		stripeClient:       sc,
+		kms:                param.KeyManagement,
+		TransactionManager: param.TransactionManager,
 	}, nil
 }

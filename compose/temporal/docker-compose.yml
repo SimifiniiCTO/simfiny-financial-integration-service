@@ -14,7 +14,7 @@ services:
     env_file:
       - ./compose/temporal/.env
     networks:
-      - user-network
+      - service-network
     expose:
       - 9200
     volumes:
@@ -28,7 +28,7 @@ services:
     env_file:
       - ./compose/temporal/.env
     networks:
-      - user-network
+      - service-network
     expose:
       - 5432
     volumes:
@@ -52,7 +52,7 @@ services:
     env_file:
       - ./compose/temporal/.env
     networks:
-      - user-network
+      - service-network
     ports:
       - 7233:7233
     labels:
@@ -69,7 +69,7 @@ services:
     env_file:
       - ./compose/temporal/.env
     networks:
-      - user-network
+      - service-network
     stdin_open: true
     tty: true
   temporal-ui:
@@ -83,10 +83,10 @@ services:
     env_file:
       - ./compose/temporal/.env
     networks:
-      - user-network
+      - service-network
     ports:
       - 8080:8080
 networks:
-  user-network:
+  service-network:
     driver: bridge
-    name: user-network
+    name: service-network

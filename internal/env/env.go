@@ -105,7 +105,9 @@ func ReadEnvVars() {
 	fs.Int("temporal-max-retry-attempts", 5, "maximum number of retry attempts")
 	fs.Duration("temporal-max-retry-interval", 5*time.Second, "max retry interval")
 	fs.Duration("temporal-rpc-timeout", 2*time.Second, "end to end rpc timeout interval")
-
+	fs.String("temporal-task-queue", "simfiny", "temporal task queue")
+	fs.Int64("temporal-concurrent-activity-execution-size", 5000, "temporal concurrent activity execution size")
+	fs.Int64("temporal-concurrent-workflow-task-pollers", 100, "temporal concurrent workflow task pollers")
 	defaultLogger := zap.L()
 
 	// parse flags

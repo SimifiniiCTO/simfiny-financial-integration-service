@@ -107,7 +107,7 @@ func (db *Db) UpdateBankAccount(ctx context.Context, bankAccount *schema.BankAcc
 	if err != nil {
 		return err
 	}
-	
+
 	// perform the update operation
 	result, err := b.WithContext(ctx).Updates(bankAccountOrm)
 	if err != nil {
