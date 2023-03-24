@@ -108,6 +108,9 @@ func ReadEnvVars() {
 	fs.String("temporal-task-queue", "simfiny", "temporal task queue")
 	fs.Int64("temporal-concurrent-activity-execution-size", 5000, "temporal concurrent activity execution size")
 	fs.Int64("temporal-concurrent-workflow-task-pollers", 100, "temporal concurrent workflow task pollers")
+	fs.Duration("workflow-execution-timeout", 1*time.Second, "e timeout for duration of workflow execution. It includes retries and continue as new. Use WorkflowRunTimeout to limit execution time of a single workflow run.")
+	fs.Duration("workflow-task-timeout", 1*time.Second, "The timeout for processing workflow task from the time the worker pulled this task. If a workflow task is lost, it is retried after this timeout. The resolution is seconds.")
+	fs.Duration("workflow-run-timeout", 1*time.Second, "The timeout for duration of a single workflow run. The resolution is seconds. Optional: defaulted to WorkflowExecutionTimeout.")
 	defaultLogger := zap.L()
 
 	// parse flags

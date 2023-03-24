@@ -36,28 +36,31 @@ type Server struct {
 
 // Config is the config for the grpc server initialization
 type Config struct {
-	Port                    int              `mapstructure:"grpc-port"`
-	GatewayPort             int              `mapstructure:"grpc-gateway-port"`
-	ServiceName             string           `mapstructure:"grpc-service-name"`
-	PlaidWebhookURI         string           `mapstructure:"plaid-webhook-url"`
-	PlaidRedirectURI        string           `mapstructure:"plaid-redirect-url"`
-	NewRelicLicense         string           `mapstructure:"newrelic-api-key"`
-	Environment             string           `mapstructure:"env"`
-	PlaidProducts           []plaid.Products `mapstructure:"plaid-products"`
-	RpcTimeout              time.Duration    `mapstructure:"rpc-timeout"`
-	StripeApiKey            string           `mapstructure:"stripe-api-key"`
-	PlaidClientID           string           `mapstructure:"plaid-client-id"`
-	PlaidSecretKey          string           `mapstructure:"plaid-secret-key"`
-	PlaidEnv                string           `mapstructure:"plaid-env"`
-	PlaidOauthDomain        string           `mapstructure:"plaid-oauth-domain"`
-	PlaidWebhooksEnabled    bool             `mapstructure:"plaid-webhooks-enabled"`
-	PlaidWebhookOauthDomain string           `mapstructure:"plaid-webhook-oauth-domain"`
-	AwsAccessKeyID          string           `mapstructure:"aws-access-key-id"`
-	AwsRegion               string           `mapstructure:"aws-region"`
-	AwsSecretAccessKey      string           `mapstructure:"aws-secret-access-key"`
-	AwsKmsKeyID             string           `mapstructure:"aws-kms-key-id"`
-	MaxPlaidLinks           int              `mapstructure:"max-plaid-links"`
-	BillingEnabled          bool             `mapstructure:"stripe-enabled"`
+	Port                     int              `mapstructure:"grpc-port"`
+	GatewayPort              int              `mapstructure:"grpc-gateway-port"`
+	ServiceName              string           `mapstructure:"grpc-service-name"`
+	PlaidWebhookURI          string           `mapstructure:"plaid-webhook-url"`
+	PlaidRedirectURI         string           `mapstructure:"plaid-redirect-url"`
+	NewRelicLicense          string           `mapstructure:"newrelic-api-key"`
+	Environment              string           `mapstructure:"env"`
+	PlaidProducts            []plaid.Products `mapstructure:"plaid-products"`
+	RpcTimeout               time.Duration    `mapstructure:"rpc-timeout"`
+	StripeApiKey             string           `mapstructure:"stripe-api-key"`
+	PlaidClientID            string           `mapstructure:"plaid-client-id"`
+	PlaidSecretKey           string           `mapstructure:"plaid-secret-key"`
+	PlaidEnv                 string           `mapstructure:"plaid-env"`
+	PlaidOauthDomain         string           `mapstructure:"plaid-oauth-domain"`
+	PlaidWebhooksEnabled     bool             `mapstructure:"plaid-webhooks-enabled"`
+	PlaidWebhookOauthDomain  string           `mapstructure:"plaid-webhook-oauth-domain"`
+	AwsAccessKeyID           string           `mapstructure:"aws-access-key-id"`
+	AwsRegion                string           `mapstructure:"aws-region"`
+	AwsSecretAccessKey       string           `mapstructure:"aws-secret-access-key"`
+	AwsKmsKeyID              string           `mapstructure:"aws-kms-key-id"`
+	MaxPlaidLinks            int              `mapstructure:"max-plaid-links"`
+	BillingEnabled           bool             `mapstructure:"stripe-enabled"`
+	WorkflowExecutionTimeout time.Duration    `mapstructure:"workflow-execution-timeout"`
+	WorkflowTaskTimeout      time.Duration    `mapstructure:"workflow-task-timeout"`
+	WorkflowRunTimeout       time.Duration    `mapstructure:"workflow-run-timeout"`
 }
 
 var _ proto.FinancialServiceServer = (*Server)(nil)
