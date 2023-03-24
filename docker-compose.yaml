@@ -18,8 +18,13 @@ services:
       - ./:/build
     links:
       - db
+      - temporal
+    networks:
+      - service-network
     depends_on:
       db:
+        condition: service_started
+      temporal:
         condition: service_started
     env_file:
       - ./service.env
@@ -37,6 +42,8 @@ services:
       - POSTGRES_DB=postgres
     ports:
       - '5432:5432'
+    networks:
+      - service-network
     volumes: 
       - db:/var/lib/postgresql/data
 volumes:

@@ -53,8 +53,20 @@ func (s *Server) DeleteBankAccount(ctx context.Context, req *proto.DeleteBankAcc
 			return nil, status.Error(codes.Internal, err.Error())
 		}
 	} else {
-		// TODO: perfrom async soft deletion as a background task
-		s.logger.Warn("bank account is not a manual one, performing deletion in the background")
+		// perfrom async soft deletion as a background task
+		wf, err := s.ExecuteWorkflow(ctx, s.TransactionManager.DeleteBankAccountWorkflow, req.BankAccountId)
+		if err != nil {
+			return nil, status.Errorf(codes.Internal, err.Error())
+		}
+
+		// execute the workflow and wait for completion
+		if err := wf.Get(ctx, nil); err != nil {
+			return nil, status.Errorf(codes.Internal, err.Error())
+		}
+
+		return &proto.DeleteBankAccountResponse{
+			Deleted: true,
+		}, nil
 	}
 
 	return &proto.DeleteBankAccountResponse{

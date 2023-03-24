@@ -43,20 +43,16 @@ func (s *Server) DeleteUserProfile(ctx context.Context, req *proto.DeleteUserPro
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	// perform deletion operation as a DTX (distributed transaction)
-	//
-	// TODO: given there will be a lot of data to delete, we should probably
-	// do this in a background job. We should also perform this entire transaction as a
-	// distributed transaction that is atomic and consistent.
-	//
-	// DTX:
-	// 1. delete the user profile record and all account associations
-	// 2. delete the user profile from the context of stripe (background job)
-	// 3. delete the user profile from the context of plaid (background job)
-	// 4. delete the tx records (background job)
-	//
-	// ref: https://github.com/hibiken/asynq (redis based task queue)
-	// ref: https://github.com/temporalio/temporal-ecommerce (temporal deletion workflow)
+	// perform deletion as a distributed transaction
+	wf, err := s.ExecuteWorkflow(ctx, s.TransactionManager.DeleteProfileWorkflow, req.UserId)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, err.Error())
+	}
+
+	// execute the workflow and wait for completion
+	if err := wf.Get(ctx, nil); err != nil {
+		return nil, status.Errorf(codes.Internal, err.Error())
+	}
 	if err := s.conn.DeleteUserProfileByUserID(ctx, req.UserId); err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}

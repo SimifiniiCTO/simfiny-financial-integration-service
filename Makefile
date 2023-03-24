@@ -16,7 +16,8 @@ GOCMD=go
 GOTEST=$(GOCMD) test
 GOVET=$(GOCMD) vet
 EXPORT_RESULT ?= false
-DC=docker-compose -f docker-compose.yaml
+TEMPORAL_DC=./compose/temporal/docker-compose.yml
+DC=docker-compose -f docker-compose.yaml -f $(TEMPORAL_DC)
 
 .PHONY: help
 .DEFAULT_GOAL := help

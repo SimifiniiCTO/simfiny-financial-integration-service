@@ -97,6 +97,20 @@ func ReadEnvVars() {
 	fs.Bool("stripe-enabled", false, "enable billing")
 	fs.String("stripe-api-key", "sk_test_4eC39HqLyjWDarjtT1zdp7dc", "")
 
+	// temporal configurations
+	fs.String("temporal-cluster-endpoint", "temporal:7233", "base endpoint of the temporal cluster")
+	fs.String("temporal-namespace", "simfiny", "temporal namespace to operate on")
+	fs.Duration("temporal-retry-initial-interval", 100*time.Millisecond, "retry initial interval")
+	fs.Float64("temporal-backoff-coefficient", 2.5, "backoff coefficient")
+	fs.Int("temporal-max-retry-attempts", 5, "maximum number of retry attempts")
+	fs.Duration("temporal-max-retry-interval", 5*time.Second, "max retry interval")
+	fs.Duration("temporal-rpc-timeout", 2*time.Second, "end to end rpc timeout interval")
+	fs.String("temporal-task-queue", "financial-integration-service", "temporal task queue")
+	fs.Int64("temporal-concurrent-activity-execution-size", 5000, "temporal concurrent activity execution size")
+	fs.Int64("temporal-concurrent-workflow-task-pollers", 100, "temporal concurrent workflow task pollers")
+	fs.Duration("workflow-execution-timeout", 1*time.Second, "e timeout for duration of workflow execution. It includes retries and continue as new. Use WorkflowRunTimeout to limit execution time of a single workflow run.")
+	fs.Duration("workflow-task-timeout", 1*time.Second, "The timeout for processing workflow task from the time the worker pulled this task. If a workflow task is lost, it is retried after this timeout. The resolution is seconds.")
+	fs.Duration("workflow-run-timeout", 1*time.Second, "The timeout for duration of a single workflow run. The resolution is seconds. Optional: defaulted to WorkflowExecutionTimeout.")
 	defaultLogger := zap.L()
 
 	// parse flags

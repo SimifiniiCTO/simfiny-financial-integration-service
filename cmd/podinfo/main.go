@@ -11,6 +11,7 @@ import (
 	rkentry "github.com/rookie-ninja/rk-entry/v2/entry"
 	rkgrpc "github.com/rookie-ninja/rk-grpc/v2/boot"
 	"github.com/spf13/viper"
+	"go.temporal.io/sdk/client"
 	"go.uber.org/zap"
 
 	core_database "github.com/SimifiniiCTO/core/core-database"
@@ -21,6 +22,7 @@ import (
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/instrumentation"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/plaidhandler"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/secrets"
+	transactionmanager "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/transaction_manager"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/api"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/grpc"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/signals"
@@ -80,15 +82,21 @@ func main() {
 		logger.Panic(err.Error())
 	}
 
+	transactionManager, err := configureTransactionManager(logger, db, instrumentation)
+	if err != nil {
+		logger.Panic(err.Error())
+	}
+
 	// initialize gRPC server
 	grpcSrv, err := grpc.NewServer(&grpc.Params{
-		Config:          &grpcCfg,
-		Logger:          logger,
-		Db:              db,
-		PlaidClient:     plaidClient,
-		Instrumentation: instrumentation,
-		KeyManagement:   keyManagement,
-		PlaidWrapper:    plaidWrapper,
+		Config:             &grpcCfg,
+		Logger:             logger,
+		Db:                 db,
+		PlaidClient:        plaidClient,
+		Instrumentation:    instrumentation,
+		KeyManagement:      keyManagement,
+		PlaidWrapper:       plaidWrapper,
+		TransactionManager: transactionManager,
 	})
 	if err != nil {
 		logger.Panic(err.Error())
@@ -101,6 +109,13 @@ func main() {
 	// TODO: add grpc interceptor middleware to emit metrics on various gRPC calls
 	// Bootstrap
 
+	// ensure we can optimatelly close the transaction manager and all associated resources
+	defer grpcSrv.TransactionManager.Close()
+
+	// start the worker asynchronously
+	go grpcSrv.TransactionManager.StartWorker()
+
+	//
 	boot.Bootstrap(context.Background())
 
 	// Wait for shutdown sig
@@ -123,6 +138,55 @@ func main() {
 	srv, _ := api.NewServer(&srvCfg, logger, instrumentation, db, plaidClient)
 	stopCh := signals.SetupSignalHandler()
 	srv.ListenAndServe(stopCh)
+}
+
+func configureTransactionManager(log *zap.Logger, db *database.Db, telemetrySdk *instrumentation.ServiceTelemetry) (*transactionmanager.TransactionManager, error) {
+	rpcTimeout := viper.GetDuration("temporal-rpc-timeout")
+	metricsEnabled := viper.GetBool("metrics-reporting-enabled")
+	concurrentActivityExecutionSize := viper.GetUint64("temporal-max-concurrent-activity-execution-size")
+	concurrentWorkflowTaskPollers := viper.GetUint64("temporal-max-concurrent-workflow-task-pollers")
+
+	initialRetryInterval := viper.GetDuration("temporal-retry-initial-interval")
+	retryBackoffCoefficient := viper.GetFloat64("temporal-retry-backoff-coefficient")
+	maximumInterval := viper.GetDuration("temporal-max-retry-interval")
+	maxRetryAttempts := viper.GetInt("temporal-max-retry-attempts")
+
+	clusterEndpoint := viper.GetString("temporal-cluster-endpoint")
+	namespace := viper.GetString("temporal-namespace")
+
+	taskQueue := viper.GetString("temporal-task-queue")
+
+	policy := &transactionmanager.Policy{
+		RetryInitialInterval:    &initialRetryInterval,
+		RetryBackoffCoefficient: retryBackoffCoefficient,
+		MaximumInterval:         maximumInterval,
+		MaximumAttempts:         maxRetryAttempts,
+	}
+	//
+	clientOpts := &client.Options{
+		HostPort:  clusterEndpoint,
+		Namespace: namespace,
+	}
+
+	opts := []transactionmanager.Option{
+		transactionmanager.WithClientOptions(clientOpts),
+		transactionmanager.WithLogger(log),
+		transactionmanager.WithTelemetrySDK(telemetrySdk),
+		transactionmanager.WithDatabaseConn(db),
+		transactionmanager.WithRetryPolicy(policy),
+		transactionmanager.WithRpcTimeout(&rpcTimeout),
+		transactionmanager.WithMetricsEnabled(metricsEnabled),
+		transactionmanager.WithMaxConcurrentActivityExecutionSize(concurrentActivityExecutionSize),
+		transactionmanager.WithMaxConcurrentWorkflowTaskPollers(concurrentWorkflowTaskPollers),
+		transactionmanager.WithServiceTaskQueue(taskQueue),
+	}
+
+	transactionManager, err := transactionmanager.NewTransactionManager(opts...)
+	if err != nil {
+		return nil, err
+	}
+
+	return transactionManager, nil
 }
 
 // configureKeyManagement configures the key management (aws) sdk to be used by the service

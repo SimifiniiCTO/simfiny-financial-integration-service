@@ -38,7 +38,7 @@ func TestServer_EncryptAccessToken(t *testing.T) {
 
 func TestServer_DecryptUserAccessToken(t *testing.T) {
 	type args struct {
-		ctx         context.Context
+		ctx   context.Context
 		token *proto.Token
 	}
 	tests := []struct {

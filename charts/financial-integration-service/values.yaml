@@ -111,6 +111,29 @@ service:
       shutdownTimeout: 5s
   rpc:
     timeout: 1s
+  
+dependencies:
+  temporal:
+    enabled: true
+    name: temporal-cluster-frontend
+    port: 7233
+    clusterNamespace: temporal
+    config:
+      namespace: financial-service-namespace
+      taskQueue: financial-integration-service-task-queue
+      concurrentActivityExecutionSize: 5000
+      concurrentWorkflowTaskPollers: 100
+      workflowExecutionTimeout: 1s
+      workflowTaskTimeout: 1s
+      workflowRunTimeout: 1s
+    retry:
+      retryInterval: 100ms
+      backoffCoefficient: 1.5
+      maxRetryAttempts: 1
+      maxRetryInterval: 1s
+    rpc:
+      timeout: 700ms
+
 # enable h2c protocol (non-TLS version of HTTP/2)
 h2c:
   enabled: false
