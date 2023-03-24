@@ -97,6 +97,15 @@ func ReadEnvVars() {
 	fs.Bool("stripe-enabled", false, "enable billing")
 	fs.String("stripe-api-key", "sk_test_4eC39HqLyjWDarjtT1zdp7dc", "")
 
+	// temporal configurations
+	fs.String("temporal-cluster-endpoint", "temporal:7233", "base endpoint of the temporal cluster")
+	fs.String("temporal-namespace", "simfiny", "temporal namespace to operate on")
+	fs.Duration("temporal-retry-initial-interval", 100*time.Millisecond, "retry initial interval")
+	fs.Float64("temporal-backoff-coefficient", 2.5, "backoff coefficient")
+	fs.Int("temporal-max-retry-attempts", 5, "maximum number of retry attempts")
+	fs.Duration("temporal-max-retry-interval", 5*time.Second, "max retry interval")
+	fs.Duration("temporal-rpc-timeout", 2*time.Second, "end to end rpc timeout interval")
+
 	defaultLogger := zap.L()
 
 	// parse flags

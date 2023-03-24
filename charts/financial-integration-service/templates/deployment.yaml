@@ -1,5 +1,8 @@
 {{- $namespace := .Release.Namespace -}}
 {{- $svctag := "svc.cluster.local" -}}
+{{- $temporalName := .Values.dependencies.temporal.name -}}
+{{- $temporalPort := .Values.dependencies.temporal.port -}}
+{{- $temporalNamespace := .Values.dependencies.temporal.clusterNamespace -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -149,6 +152,15 @@ spec:
             - --aws-secret-access-key={{ .Values.aws.secretAccessKey }}
             - --aws-region={{ .Values.aws.region }}
             - --aws-kms-id={{ .Values.aws.kmsID }}
+            {{- if .Values.dependencies.temporal.enabled}}
+            - --temporal-cluster-endpoint={{ $temporalName }}.{{ $temporalNamespace }}.{{ $svctag }}:{{ $temporalPort }}
+            - --temporal-namespace={{ .Values.dependencies.temporal.config.namespace }}
+            - --temporal-retry-initial-interval={{ .Values.dependencies.temporal.retry.retryInterval }}
+            - --temporal-backoff-coefficient={{ .Values.dependencies.temporal.retry.backoffCoefficient }}
+            - --temporal-max-retry-attempts={{ .Values.dependencies.temporal.retry.maxRetryAttempts }}
+            - --temporal-max-retry-interval={{ .Values.dependencies.temporal.retry.maxRetryInterval }}
+            - --temporal-rpc-timeout={{ .Values.dependencies.temporal.rpc.timeout }}
+            {{- end }}
           env:
           {{- if .Values.ui.message }}
           - name: fis_UI_MESSAGE
