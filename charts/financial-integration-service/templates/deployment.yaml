@@ -122,17 +122,17 @@ spec:
             - --dbpassword={{ .Values.database.password }}
             - --dbname={{ .Values.database.name }}
             - --dbsslmode={{ .Values.database.sslMode }}
-            - --max-db-conn-attempts={{ .Values.database.max_connection_attempts }}
-            - --max-db-conn-retries={{ .Values.database.max_connection_retries }}
-            - --max-db-retry-timeout={{ .Values.database.max_connection_retry_timeout }}
-            - --max-db-retry-sleep-interval={{ .Values.database.max_connection_retry_sleep_interval }}
+            - --max-db-conn-attempts={{ .Values.database.maxConnectionAttempts }}
+            - --max-db-conn-retries={{ .Values.database.maxConnectionRetries }}
+            - --max-db-retry-timeout={{ .Values.database.maxConnectionRetryTimeout }}
+            - --max-db-retry-sleep-interval={{ .Values.database.maxConnectionRetrySleepInterval }}
             - --max-query-timeout={{ .Values.database.maxQueryTimeout }}
             {{- if .Values.plaid.enabled }}
-            - --plaid-client-id={{ .Values.plaid.client_id }}
-            - --plaid-secret-key={{ .Values.plaid.secret_key }}
+            - --plaid-client-id={{ .Values.plaid.clientID }}
+            - --plaid-secret-key={{ .Values.plaid.secretKey }}
             - --plaid-env={{ .Values.plaid.env }}
-            - --plaid-webhook-url={{ .Values.plaid.webhook_url }}
-            - --plaid-redirect-url={{ .Values.plaid.redirect_url }}
+            - --plaid-webhook-url={{ .Values.plaid.webhookUrl }}
+            - --plaid-redirect-url={{ .Values.plaid.redirectUrl }}
             - --plaid-products={{ .Values.plaid.products }}
             - --plaid-oauth-domain={{ .Values.plaid.oauthDomain }}
             - --plaid-webhook-oauth-domain={{ .Values.plaid.webhookOauthDomain }}
