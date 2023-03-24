@@ -1,4 +1,4 @@
-{{- if and .Values.faults.testTimeout .Values.integrationTests.enabled }}
+{{- if and .Values.faults.test_timeout .Values.integrationTests.enabled }}
 apiVersion: v1
 kind: Pod
 metadata:

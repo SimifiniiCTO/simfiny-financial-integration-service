@@ -1,0 +1,243 @@
+# Default values for fis.
+
+replicaCount: 1
+logLevel: info
+host: #0.0.0.0
+backend: #http://backend-fis:9898/echo
+backends: []
+
+image:
+  repository: feelguuds/financial-integration-service
+  tag: staging
+  pullPolicy: Always
+
+ui:
+  color: "#34577c"
+  message: ""
+  logo: ""
+
+# failure conditions
+faults:
+  delay: false
+  error: false
+  unhealthy: false
+  unready: false
+  test_fail: false
+  test_timeout: false
+
+database:
+  host: db-postgresql-staging-environment-do-user-11446161-0.b.db.ondigitalocean.com
+  port: 25061
+  user: simfiny
+  password: AVNS_rnEc3tN527aerj_IXOU
+  name: fis-service-pool
+  sslMode: require
+  maxConnectionAttempts: 4
+  maxConnectionRetries: 4
+  maxConnectionRetryTimeout: 500ms
+  maxConnectionRetrySleepInterval: 100ms
+  maxQueryTimeout: 500ms
+
+aws:
+  # access key id for credentials provisioning
+  accessKeyID: AKIA5HFOAJRN7YDEYPST
+  # aws secret key for credentials provisioning
+  secretAccessKey: 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
+  # aws region 
+  region: us-east-2
+  # aws key management id
+  kmsID: mrk-e44f269bc0034feb95ede34154c3cfe4
+  
+plaid:
+  # wether or not to enable plaid api level interactions
+  enabled: true
+  # plaid client id
+  clientID: 61eb5d49ea3b4700127560d1
+  # plaid secret key
+  secretKey: 49ed22a2ee591f4e3f366c4474438d
+  # plaid environment 
+  env: development
+  # A webhook is an HTTP request used to provide push notifications. Plaid sends webhooks to programmatically
+  # inform you about changes to Plaid Items or the status of asynchronous processes. For example, Plaid will send
+  # a webhook when an Item is in an error state or has additional data available, or when a non-blocking process 
+  # (like gathering transaction data or verifying a bank account via micro-deposits) is com plete.
+  #
+  # To receive Plaid webhooks, set up a dedicated endpoint on your server as a webhook listener that can receive
+  # POST requests, then provide this endpoint URL to Plaid as described in the next section. You can also test
+  # webhooks without setting up your own endpoint following the instructions in Testing webhooks in Sandbox. 
+  #
+  # ref: https://plaid.com/docs/api/webhooks/#introduction-to-webhooks
+  webhookUrl:  "https://simfiny.dev/v1/gateway/plaid/webhook"
+  # Only required for OAuth:
+  # For sandbox, set PLAID_REDIRECT_URI to 'http://localhost:3000/'
+  # The OAuth redirect flow requires an endpoint on the developer's website
+  # that the bank website should redirect to. You will need to configure
+  # this redirect URI for your client ID through the Plaid developer dashboard
+  # at https://dashboard.plaid.com/team/api.
+  # For development or production, you will need to use an https:// url
+  # If you are not set up to use localhost with https:// on your system, you will be unable to test OAuth in development or production.
+  # In this case you can leave the PLAID_REDIRECT_URI blank.
+  redirectUrl: "https://simfiny.dev/v1/gateway/plaid/oauth-return"
+  # Only institutions that support ALL listed products will be displayed in Link.
+  # If you don't see the institution you want in Link, remove any products you aren't using.
+  # Important: When moving to Production, make sure to update this list with only the products
+  # you plan to use. Otherwise, you may be billed for unneeded products.
+  products: transactions,auth,balance,investments,liabilities
+  # oauth domain
+  oauthDomain: simfiny
+  # webhook oauth domain
+  webhookOauthDomain: simfiny
+  # wether or not a webhook is enabled
+  webhookEnabled: true
+  # max plaid links is the maximal amount of authorized institution a user can have
+  maxPlaidLinks: 5
+
+stripe:
+  # wether or not stripe api level interactions are available 
+  enabled: true
+  # api key
+  apiKey: sk_test_4eC39HqLyjWDarjtT1zdp7dc
+
+newRelic:
+  # wether or not to enable metrics and traces
+  enabled: true
+  # new-relic api key
+  apiKey: 62fd721c712d5863a4e75b8f547b7c1ea884NRAL
+
+# Kubernetes Service settings
+service:
+  enabled: true
+  # environment can either take values: local, dev, staging, prod
+  environment: prod
+  annotations: {}
+  type: ClusterIP
+  metricsPort: 9797
+  httpPort: 9898
+  externalPort: 9898
+  grpcPort: 9896
+  grpcService: financial-integration-service
+  nodePort: 31198
+  # the port used to bind the http port to the host
+  # NOTE: requires privileged container with NET_BIND_SERVICE capability -- this is useful for testing
+  # in local clusters such as kind without port forwarding
+  hostPort:
+  env: "staging"
+  http:
+    client:
+      timeout: 1s
+    server:
+      timeout: 1s
+      shutdownTimeout: 5s
+  rpc:
+    timeout: 1s
+# enable h2c protocol (non-TLS version of HTTP/2)
+h2c:
+  enabled: false
+
+# enable tls on the fis service
+tls:
+  enabled: false
+  # the name of the secret used to mount the certificate key pair
+  secretName:
+  # the path where the certificate key pair will be mounted
+  certPath: /data/cert
+  # the port used to host the tls endpoint on the service
+  port: 9899
+  # the port used to bind the tls port to the host
+  # NOTE: requires privileged container with NET_BIND_SERVICE capability -- this is useful for testing
+  # in local clusters such as kind without port forwarding
+  hostPort:
+
+# create a certificate manager certificate (cert-manager required)
+certificate:
+  create: false
+  # the issuer used to issue the certificate
+  issuerRef:
+    kind: ClusterIssuer
+    name: self-signed
+  # the hostname / subject alternative names for the certificate
+  dnsNames:
+    - financial-integration-service
+
+# metrics-server add-on required
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 2
+  # average total CPU usage per pod (1-100)
+  cpu: 99
+  # average memory usage per pod (1-100)
+  memory: 99
+  # average http requests per second per pod (k8s-prometheus-adapter)
+  requests: 10000
+
+# Redis address in the format <host>:<port>
+cache: ""
+# Redis deployment
+redis:
+  enabled: false
+  repository: redis
+  tag: 6.0.8
+
+postgresLocalDB:
+  enabled: false
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  enabled: true
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name:
+
+# set container security context
+securityContext: {}
+
+ingress:
+  enabled: false
+  className: ""
+  annotations:
+    {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: financial-integration-service.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+# create Prometheus Operator monitor
+serviceMonitor:
+  enabled: false
+  interval: 15s
+  additionalLabels: {}
+
+resources:
+  limits:
+    memory: "256Mi"
+  requests:
+    cpu: "100m"
+    memory: "64Mi"
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+podAnnotations: {}
+
+integrationTests:
+  enabled: false
+
+linkerd:
+  profile:
+    enabled: false
+  annotations:
+    linkerd.io/inject: enabled # Controls whether or not a pod should be injected; accepted values are enabled, disabled and ingress
+    prometheus.io/scrape: "true"
+    prometheus.io/port: 4191"
+    prometheus.io/path: "/metrics"

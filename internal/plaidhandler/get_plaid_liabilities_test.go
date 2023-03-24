@@ -17,7 +17,7 @@ type plaidLiabilityScenarios struct {
 }
 
 func getplaidLiabilityScenarios() ([]plaidLiabilityScenarios, *PlaidWrapper, error) {
-	accessToken, err := plaidTestClient.GetAccessTokenForSandboxAcct()
+	accessToken, err := plaidTestClient.getAccessTokenForSandboxAcct()
 	if err != nil {
 		return nil, nil, err
 	}

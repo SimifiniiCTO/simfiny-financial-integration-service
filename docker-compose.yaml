@@ -1,0 +1,49 @@
+version: '3.7'
+
+services:
+  service:
+    tty: true # Makes color output work nicely.
+    image: golang:1.19
+    user: "${UID:-0}:${GID:-0}"
+    restart: always # If something goes wrong just restart the container, this is for development only.
+    working_dir: /build
+    container_name: service
+    ports:
+      - "9896:9896" # grpc port
+    environment:
+      - air_wd=/build
+    volumes:
+      - './:/go/src/github.com/SimifiniiCTO/simfiny-financial-integration-service'
+      - goData:/go/pkg/mod
+      - ./:/build
+    links:
+      - db
+    depends_on:
+      db:
+        condition: service_started
+    env_file:
+      - ./service.env
+    command:
+      - bash
+      - -c
+      - /build/compose/api-entrypoint.sh
+
+  db:
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+    ports:
+      - '5432:5432'
+    volumes: 
+      - db:/var/lib/postgresql/data
+volumes:
+  db:
+    driver: local
+  tmpData:
+  goData:
+networks:
+  service-network:
+    driver: bridge

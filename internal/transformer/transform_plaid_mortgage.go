@@ -3,8 +3,9 @@ package transformer
 import (
 	"errors"
 
-	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/proto"
 	"github.com/plaid/plaid-go/plaid"
+
+	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/proto"
 )
 
 // transformMortgageObject transforms a plaid mortgage loan liabilities object to the internal mortgage account object

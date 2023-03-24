@@ -94,8 +94,8 @@ The command removes all the Kubernetes components associated with the chart and 
 | database.user | string | `"financial_integration_service"` |  |
 | faults.delay | bool | `false` |  |
 | faults.error | bool | `false` |  |
-| faults.testFail | bool | `false` |  |
-| faults.testTimeout | bool | `false` |  |
+| faults.test_fail | bool | `false` |  |
+| faults.test_timeout | bool | `false` |  |
 | faults.unhealthy | bool | `false` |  |
 | faults.unready | bool | `false` |  |
 | h2c.enabled | bool | `false` |  |

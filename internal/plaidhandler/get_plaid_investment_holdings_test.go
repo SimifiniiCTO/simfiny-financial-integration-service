@@ -18,7 +18,7 @@ type plaidInvestmentScenarios struct {
 
 // getPlaidInvesmentScenarios returns a set of scenarios to test plaid integration
 func getPlaidInvesmentScenarios() ([]plaidInvestmentScenarios, *PlaidWrapper, error) {
-	accessToken, err := plaidTestClient.GetAccessTokenForSandboxAcct()
+	accessToken, err := plaidTestClient.getAccessTokenForSandboxAcct()
 	if err != nil {
 		return nil, nil, err
 	}

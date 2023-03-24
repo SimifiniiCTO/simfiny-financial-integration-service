@@ -65,7 +65,7 @@ grpc:
       enabled: true # Optional, Enable RK TV
     sw:
       enabled: true # Optional, Enable Swagger UI
-      jsonPath: "proto/swagger" # Boot will look for swagger config files from this folder
+      jsonPath: "internal/generated/api/v1" # Boot will look for swagger config files from this folder
     gwMappingFilePaths:
       - "proto/gw_mapping.yaml" # Boot will look for gateway mapping files and load information into memory
     docs:
@@ -95,12 +95,11 @@ grpc:
         loggerEncoding: "flatten"
         eventEncoding: "flatten"
       timeout:
+        timeoutMs: 60000
         enabled: true                                    # Optional, default: false
         ignore: [""]                                      # Optional, default: []
-        timeoutMs: 20000                                   # Optional, default: 5000
         paths:
           - path: "/rk/v1/healthy"                        # Optional, default: ""
-            timeoutMs: 1000                               # Optional, default: 5000
       rateLimit:
         enabled: false                                    # Optional, default: false
         ignore: [""]                                      # Optional, default: []

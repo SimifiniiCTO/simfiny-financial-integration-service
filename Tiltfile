@@ -92,7 +92,7 @@ local_resource('create-local-namespace',
 kubectl_build('feelguuds/financial-integration-service:latest',
               context='.',
               # (Optional) Use a custom Dockerfile path
-              dockerfile='./Dockerfile.dev',
+              dockerfile='./Dockerfile',
               # (Recommended) Updating a running container in-place
               # https://docs.tilt.dev/live_update_reference.html
               live_update=[

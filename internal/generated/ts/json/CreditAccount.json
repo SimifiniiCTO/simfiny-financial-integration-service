@@ -1,0 +1,118 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/CreditAccount",
+    "definitions": {
+        "CreditAccount": {
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "id"
+                },
+                "user_id": {
+                    "type": "string",
+                    "description": "the user id to which this bank account is tied to"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "the account name"
+                },
+                "number": {
+                    "type": "string",
+                    "description": "the bank account number"
+                },
+                "type": {
+                    "type": "string",
+                    "description": "the bank account type"
+                },
+                "balance": {
+                    "type": "number",
+                    "description": "the bank account balance"
+                },
+                "current_funds": {
+                    "type": "number",
+                    "description": "current funds on the account"
+                },
+                "balance_limit": {
+                    "type": "string",
+                    "description": "balance limit"
+                },
+                "plaid_account_id": {
+                    "type": "string",
+                    "description": "plaid account id mapped to this bank account"
+                },
+                "subtype": {
+                    "type": "string",
+                    "description": "accoint subtype"
+                },
+                "is_overdue": {
+                    "type": "boolean",
+                    "description": "wether the account is overdue"
+                },
+                "last_payment_amount": {
+                    "type": "number",
+                    "description": "the last payment amount"
+                },
+                "last_payment_date": {
+                    "type": "string",
+                    "description": "the last payment date"
+                },
+                "last_statement_issue_date": {
+                    "type": "string",
+                    "description": "the last statement issue date"
+                },
+                "minimum_amount_due_date": {
+                    "type": "number",
+                    "description": "the minimum amount due date"
+                },
+                "next_payment_date": {
+                    "type": "string",
+                    "description": "the next payment date"
+                },
+                "aprs": {
+                    "items": {
+                        "$ref": "#/definitions/api.v1.Apr"
+                    },
+                    "type": "array",
+                    "description": "the aprs"
+                },
+                "last_statement_balance": {
+                    "type": "number",
+                    "description": "the last statement balance"
+                },
+                "minimum_payment_amount": {
+                    "type": "number",
+                    "description": "the minimum payment amount"
+                },
+                "next_payment_due_date": {
+                    "type": "string",
+                    "description": "the next payment due date"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Credit Account"
+        },
+        "api.v1.Apr": {
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "percentage": {
+                    "type": "number"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "balance_subject_to_apr": {
+                    "type": "number"
+                },
+                "interest_charge_amount": {
+                    "type": "number"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Apr"
+        }
+    }
+}

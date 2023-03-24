@@ -1,8 +1,6 @@
 package grpc
 
 import (
-	"context"
-
 	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/proto"
 )
 
@@ -89,6 +87,7 @@ func (s *Server) getAccountBalances(balanceObjects []*proto.AccountBalance, acco
 	return balanceObjects
 }
 
+/*
 func (s *Server) getVirtualAcct(ctx context.Context, vAcctID uint64) (*proto.AccountsResponseMetadata, error) {
 	vAcct, err := s.getVirtualAcctFromDatastore(ctx, vAcctID)
 	if err != nil {
@@ -105,6 +104,8 @@ func (s *Server) getVirtualAcct(ctx context.Context, vAcctID uint64) (*proto.Acc
 	return account, nil
 }
 
+
 func (s *Server) getVirtualAcctFromDatastore(ctx context.Context, vAcctID uint64) (*proto.VirtualAccount, error) {
 	return s.conn.FindVirtualAcctID(ctx, vAcctID)
 }
+*/

@@ -1,10 +1,11 @@
 package plaidhandler
 
 import (
-	"github.com/newrelic/go-agent/v3/integrations/nrzap"
 	"github.com/newrelic/go-agent/v3/newrelic"
 	"github.com/plaid/plaid-go/plaid"
 	"go.uber.org/zap"
+
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/instrumentation"
 )
 
 var (
@@ -26,17 +27,7 @@ func NewMockPlaidClient() *plaid.APIClient {
 
 // NewNewRelicClient configures the new relic sdk with metadata specific to this service
 func newNewRelicClient(logger *zap.Logger) (*newrelic.Application, error) {
-	return newrelic.NewApplication(
-		newrelic.ConfigAppName(SERVICE_TEST_UTILS),
-		newrelic.ConfigLicense(NEW_RELIC_KEY_TEST_UTILS),
-		func(cfg *newrelic.Config) {
-			cfg.ErrorCollector.RecordPanics = true
-		},
-		// Use nrzap to register the logger with the agent:
-		nrzap.ConfigLogger(logger.Named("newrelic")),
-		newrelic.ConfigDistributedTracerEnabled(true),
-		newrelic.ConfigEnabled(true),
-	)
+	return newrelic.NewApplication()
 }
 
 func newLogger() *zap.Logger {
@@ -45,14 +36,16 @@ func newLogger() *zap.Logger {
 
 func GetPlaidWrapperForTest() (*PlaidWrapper, error) {
 	l := newLogger()
-	c, err := newNewRelicClient(l)
-	if err != nil {
-		return nil, err
-	}
 
 	return &PlaidWrapper{
-		Client:         NewMockPlaidClient(),
-		NewRelicClient: c,
-		Logger:         l,
+		client:             NewMockPlaidClient(),
+		InstrumentationSdk: &instrumentation.ServiceTelemetry{},
+		Logger:             l,
+		Environment:        plaid.Sandbox,
+		ClientID:           PLAID_CLIENT_ID_TEST_UTILS,
+		SecretKey:          PLAID_SECRET_KEY_TEST_UTILS,
+		OAuthDomain:        "",
+		WebhooksDomain:     "",
+		WebhooksEnabled:    false,
 	}, nil
 }

@@ -1,4 +1,4 @@
-{{- if and .Values.faults.testFail .Values.integrationTests.enabled }}
+{{- if and .Values.faults.test_fail .Values.integrationTests.enabled }}
 apiVersion: v1
 kind: Pod
 metadata:

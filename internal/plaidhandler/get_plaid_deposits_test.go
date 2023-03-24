@@ -18,7 +18,7 @@ type plaidDepositScenarios struct {
 
 // findAccountByIdScenarios returns a set of scenarios to test the account's existence based on provided email
 func getPlaidDepositScenarios() ([]plaidDepositScenarios, *PlaidWrapper, error) {
-	accessToken, err := plaidTestClient.GetAccessTokenForSandboxAcct()
+	accessToken, err := plaidTestClient.getAccessTokenForSandboxAcct()
 	if err != nil {
 		return nil, nil, err
 	}
