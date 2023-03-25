@@ -536,7 +536,7 @@ export interface GetInvestmentAcccountResponse {
   investmentAccount: InvestmentAccount | undefined;
 }
 
-export interface GetMortageAccountRequest {
+export interface GetMortgageAccountRequest {
   /**
    * The user id
    * Validations:
@@ -548,10 +548,10 @@ export interface GetMortageAccountRequest {
    * Validations:
    * - mortage_account_id must be greater than 0
    */
-  mortageAccountId: number;
+  mortgageAccountId: number;
 }
 
-export interface GetMortageAccountResponse {
+export interface GetMortgageAccountResponse {
   /** The mortage account */
   mortageAccount: MortgageAccount | undefined;
 }
@@ -4259,25 +4259,25 @@ export const GetInvestmentAcccountResponse = {
   },
 };
 
-function createBaseGetMortageAccountRequest(): GetMortageAccountRequest {
-  return { userId: 0, mortageAccountId: 0 };
+function createBaseGetMortgageAccountRequest(): GetMortgageAccountRequest {
+  return { userId: 0, mortgageAccountId: 0 };
 }
 
-export const GetMortageAccountRequest = {
-  encode(message: GetMortageAccountRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const GetMortgageAccountRequest = {
+  encode(message: GetMortgageAccountRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.userId !== 0) {
       writer.uint32(8).uint64(message.userId);
     }
-    if (message.mortageAccountId !== 0) {
-      writer.uint32(16).uint64(message.mortageAccountId);
+    if (message.mortgageAccountId !== 0) {
+      writer.uint32(16).uint64(message.mortgageAccountId);
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): GetMortageAccountRequest {
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetMortgageAccountRequest {
     const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseGetMortageAccountRequest();
+    const message = createBaseGetMortgageAccountRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -4293,7 +4293,7 @@ export const GetMortageAccountRequest = {
             break;
           }
 
-          message.mortageAccountId = longToNumber(reader.uint64() as Long);
+          message.mortgageAccountId = longToNumber(reader.uint64() as Long);
           continue;
       }
       if ((tag & 7) == 4 || tag == 0) {
@@ -4304,48 +4304,48 @@ export const GetMortageAccountRequest = {
     return message;
   },
 
-  fromJSON(object: any): GetMortageAccountRequest {
+  fromJSON(object: any): GetMortgageAccountRequest {
     return {
       userId: isSet(object.userId) ? Number(object.userId) : 0,
-      mortageAccountId: isSet(object.mortageAccountId) ? Number(object.mortageAccountId) : 0,
+      mortgageAccountId: isSet(object.mortgageAccountId) ? Number(object.mortgageAccountId) : 0,
     };
   },
 
-  toJSON(message: GetMortageAccountRequest): unknown {
+  toJSON(message: GetMortgageAccountRequest): unknown {
     const obj: any = {};
     message.userId !== undefined && (obj.userId = Math.round(message.userId));
-    message.mortageAccountId !== undefined && (obj.mortageAccountId = Math.round(message.mortageAccountId));
+    message.mortgageAccountId !== undefined && (obj.mortgageAccountId = Math.round(message.mortgageAccountId));
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<GetMortageAccountRequest>, I>>(base?: I): GetMortageAccountRequest {
-    return GetMortageAccountRequest.fromPartial(base ?? {});
+  create<I extends Exact<DeepPartial<GetMortgageAccountRequest>, I>>(base?: I): GetMortgageAccountRequest {
+    return GetMortgageAccountRequest.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<GetMortageAccountRequest>, I>>(object: I): GetMortageAccountRequest {
-    const message = createBaseGetMortageAccountRequest();
+  fromPartial<I extends Exact<DeepPartial<GetMortgageAccountRequest>, I>>(object: I): GetMortgageAccountRequest {
+    const message = createBaseGetMortgageAccountRequest();
     message.userId = object.userId ?? 0;
-    message.mortageAccountId = object.mortageAccountId ?? 0;
+    message.mortgageAccountId = object.mortgageAccountId ?? 0;
     return message;
   },
 };
 
-function createBaseGetMortageAccountResponse(): GetMortageAccountResponse {
+function createBaseGetMortgageAccountResponse(): GetMortgageAccountResponse {
   return { mortageAccount: undefined };
 }
 
-export const GetMortageAccountResponse = {
-  encode(message: GetMortageAccountResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const GetMortgageAccountResponse = {
+  encode(message: GetMortgageAccountResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.mortageAccount !== undefined) {
       MortgageAccount.encode(message.mortageAccount, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): GetMortageAccountResponse {
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetMortgageAccountResponse {
     const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseGetMortageAccountResponse();
+    const message = createBaseGetMortgageAccountResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -4365,25 +4365,25 @@ export const GetMortageAccountResponse = {
     return message;
   },
 
-  fromJSON(object: any): GetMortageAccountResponse {
+  fromJSON(object: any): GetMortgageAccountResponse {
     return {
       mortageAccount: isSet(object.mortageAccount) ? MortgageAccount.fromJSON(object.mortageAccount) : undefined,
     };
   },
 
-  toJSON(message: GetMortageAccountResponse): unknown {
+  toJSON(message: GetMortgageAccountResponse): unknown {
     const obj: any = {};
     message.mortageAccount !== undefined &&
       (obj.mortageAccount = message.mortageAccount ? MortgageAccount.toJSON(message.mortageAccount) : undefined);
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<GetMortageAccountResponse>, I>>(base?: I): GetMortageAccountResponse {
-    return GetMortageAccountResponse.fromPartial(base ?? {});
+  create<I extends Exact<DeepPartial<GetMortgageAccountResponse>, I>>(base?: I): GetMortgageAccountResponse {
+    return GetMortgageAccountResponse.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<GetMortageAccountResponse>, I>>(object: I): GetMortageAccountResponse {
-    const message = createBaseGetMortageAccountResponse();
+  fromPartial<I extends Exact<DeepPartial<GetMortgageAccountResponse>, I>>(object: I): GetMortgageAccountResponse {
+    const message = createBaseGetMortgageAccountResponse();
     message.mortageAccount = (object.mortageAccount !== undefined && object.mortageAccount !== null)
       ? MortgageAccount.fromPartial(object.mortageAccount)
       : undefined;

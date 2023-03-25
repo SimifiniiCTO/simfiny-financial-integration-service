@@ -7187,22 +7187,22 @@ var _ interface {
 	ErrorName() string
 } = GetInvestmentAcccountResponseValidationError{}
 
-// Validate checks the field values on GetMortageAccountRequest with the rules
+// Validate checks the field values on GetMortgageAccountRequest with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
-func (m *GetMortageAccountRequest) Validate() error {
+func (m *GetMortgageAccountRequest) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on GetMortageAccountRequest with the
+// ValidateAll checks the field values on GetMortgageAccountRequest with the
 // rules defined in the proto definition for this message. If any rules are
 // violated, the result is a list of violation errors wrapped in
-// GetMortageAccountRequestMultiError, or nil if none found.
-func (m *GetMortageAccountRequest) ValidateAll() error {
+// GetMortgageAccountRequestMultiError, or nil if none found.
+func (m *GetMortgageAccountRequest) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *GetMortageAccountRequest) validate(all bool) error {
+func (m *GetMortgageAccountRequest) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -7210,7 +7210,7 @@ func (m *GetMortageAccountRequest) validate(all bool) error {
 	var errors []error
 
 	if m.GetUserId() <= 0 {
-		err := GetMortageAccountRequestValidationError{
+		err := GetMortgageAccountRequestValidationError{
 			field:  "UserId",
 			reason: "value must be greater than 0",
 		}
@@ -7220,9 +7220,9 @@ func (m *GetMortageAccountRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	if m.GetMortageAccountId() <= 0 {
-		err := GetMortageAccountRequestValidationError{
-			field:  "MortageAccountId",
+	if m.GetMortgageAccountId() <= 0 {
+		err := GetMortgageAccountRequestValidationError{
+			field:  "MortgageAccountId",
 			reason: "value must be greater than 0",
 		}
 		if !all {
@@ -7232,19 +7232,19 @@ func (m *GetMortageAccountRequest) validate(all bool) error {
 	}
 
 	if len(errors) > 0 {
-		return GetMortageAccountRequestMultiError(errors)
+		return GetMortgageAccountRequestMultiError(errors)
 	}
 
 	return nil
 }
 
-// GetMortageAccountRequestMultiError is an error wrapping multiple validation
-// errors returned by GetMortageAccountRequest.ValidateAll() if the designated
-// constraints aren't met.
-type GetMortageAccountRequestMultiError []error
+// GetMortgageAccountRequestMultiError is an error wrapping multiple validation
+// errors returned by GetMortgageAccountRequest.ValidateAll() if the
+// designated constraints aren't met.
+type GetMortgageAccountRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m GetMortageAccountRequestMultiError) Error() string {
+func (m GetMortgageAccountRequestMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -7253,11 +7253,11 @@ func (m GetMortageAccountRequestMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m GetMortageAccountRequestMultiError) AllErrors() []error { return m }
+func (m GetMortgageAccountRequestMultiError) AllErrors() []error { return m }
 
-// GetMortageAccountRequestValidationError is the validation error returned by
-// GetMortageAccountRequest.Validate if the designated constraints aren't met.
-type GetMortageAccountRequestValidationError struct {
+// GetMortgageAccountRequestValidationError is the validation error returned by
+// GetMortgageAccountRequest.Validate if the designated constraints aren't met.
+type GetMortgageAccountRequestValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -7265,24 +7265,24 @@ type GetMortageAccountRequestValidationError struct {
 }
 
 // Field function returns field value.
-func (e GetMortageAccountRequestValidationError) Field() string { return e.field }
+func (e GetMortgageAccountRequestValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e GetMortageAccountRequestValidationError) Reason() string { return e.reason }
+func (e GetMortgageAccountRequestValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e GetMortageAccountRequestValidationError) Cause() error { return e.cause }
+func (e GetMortgageAccountRequestValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e GetMortageAccountRequestValidationError) Key() bool { return e.key }
+func (e GetMortgageAccountRequestValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e GetMortageAccountRequestValidationError) ErrorName() string {
-	return "GetMortageAccountRequestValidationError"
+func (e GetMortgageAccountRequestValidationError) ErrorName() string {
+	return "GetMortgageAccountRequestValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e GetMortageAccountRequestValidationError) Error() string {
+func (e GetMortgageAccountRequestValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -7294,14 +7294,14 @@ func (e GetMortageAccountRequestValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sGetMortageAccountRequest.%s: %s%s",
+		"invalid %sGetMortgageAccountRequest.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = GetMortageAccountRequestValidationError{}
+var _ error = GetMortgageAccountRequestValidationError{}
 
 var _ interface {
 	Field() string
@@ -7309,24 +7309,24 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = GetMortageAccountRequestValidationError{}
+} = GetMortgageAccountRequestValidationError{}
 
-// Validate checks the field values on GetMortageAccountResponse with the rules
-// defined in the proto definition for this message. If any rules are
+// Validate checks the field values on GetMortgageAccountResponse with the
+// rules defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
-func (m *GetMortageAccountResponse) Validate() error {
+func (m *GetMortgageAccountResponse) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on GetMortageAccountResponse with the
+// ValidateAll checks the field values on GetMortgageAccountResponse with the
 // rules defined in the proto definition for this message. If any rules are
 // violated, the result is a list of violation errors wrapped in
-// GetMortageAccountResponseMultiError, or nil if none found.
-func (m *GetMortageAccountResponse) ValidateAll() error {
+// GetMortgageAccountResponseMultiError, or nil if none found.
+func (m *GetMortgageAccountResponse) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *GetMortageAccountResponse) validate(all bool) error {
+func (m *GetMortgageAccountResponse) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -7337,7 +7337,7 @@ func (m *GetMortageAccountResponse) validate(all bool) error {
 		switch v := interface{}(m.GetMortageAccount()).(type) {
 		case interface{ ValidateAll() error }:
 			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, GetMortageAccountResponseValidationError{
+				errors = append(errors, GetMortgageAccountResponseValidationError{
 					field:  "MortageAccount",
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -7345,7 +7345,7 @@ func (m *GetMortageAccountResponse) validate(all bool) error {
 			}
 		case interface{ Validate() error }:
 			if err := v.Validate(); err != nil {
-				errors = append(errors, GetMortageAccountResponseValidationError{
+				errors = append(errors, GetMortgageAccountResponseValidationError{
 					field:  "MortageAccount",
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -7354,7 +7354,7 @@ func (m *GetMortageAccountResponse) validate(all bool) error {
 		}
 	} else if v, ok := interface{}(m.GetMortageAccount()).(interface{ Validate() error }); ok {
 		if err := v.Validate(); err != nil {
-			return GetMortageAccountResponseValidationError{
+			return GetMortgageAccountResponseValidationError{
 				field:  "MortageAccount",
 				reason: "embedded message failed validation",
 				cause:  err,
@@ -7363,19 +7363,19 @@ func (m *GetMortageAccountResponse) validate(all bool) error {
 	}
 
 	if len(errors) > 0 {
-		return GetMortageAccountResponseMultiError(errors)
+		return GetMortgageAccountResponseMultiError(errors)
 	}
 
 	return nil
 }
 
-// GetMortageAccountResponseMultiError is an error wrapping multiple validation
-// errors returned by GetMortageAccountResponse.ValidateAll() if the
-// designated constraints aren't met.
-type GetMortageAccountResponseMultiError []error
+// GetMortgageAccountResponseMultiError is an error wrapping multiple
+// validation errors returned by GetMortgageAccountResponse.ValidateAll() if
+// the designated constraints aren't met.
+type GetMortgageAccountResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m GetMortageAccountResponseMultiError) Error() string {
+func (m GetMortgageAccountResponseMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -7384,11 +7384,11 @@ func (m GetMortageAccountResponseMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m GetMortageAccountResponseMultiError) AllErrors() []error { return m }
+func (m GetMortgageAccountResponseMultiError) AllErrors() []error { return m }
 
-// GetMortageAccountResponseValidationError is the validation error returned by
-// GetMortageAccountResponse.Validate if the designated constraints aren't met.
-type GetMortageAccountResponseValidationError struct {
+// GetMortgageAccountResponseValidationError is the validation error returned
+// by GetMortgageAccountResponse.Validate if the designated constraints aren't met.
+type GetMortgageAccountResponseValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -7396,24 +7396,24 @@ type GetMortageAccountResponseValidationError struct {
 }
 
 // Field function returns field value.
-func (e GetMortageAccountResponseValidationError) Field() string { return e.field }
+func (e GetMortgageAccountResponseValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e GetMortageAccountResponseValidationError) Reason() string { return e.reason }
+func (e GetMortgageAccountResponseValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e GetMortageAccountResponseValidationError) Cause() error { return e.cause }
+func (e GetMortgageAccountResponseValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e GetMortageAccountResponseValidationError) Key() bool { return e.key }
+func (e GetMortgageAccountResponseValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e GetMortageAccountResponseValidationError) ErrorName() string {
-	return "GetMortageAccountResponseValidationError"
+func (e GetMortgageAccountResponseValidationError) ErrorName() string {
+	return "GetMortgageAccountResponseValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e GetMortageAccountResponseValidationError) Error() string {
+func (e GetMortgageAccountResponseValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -7425,14 +7425,14 @@ func (e GetMortageAccountResponseValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sGetMortageAccountResponse.%s: %s%s",
+		"invalid %sGetMortgageAccountResponse.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = GetMortageAccountResponseValidationError{}
+var _ error = GetMortgageAccountResponseValidationError{}
 
 var _ interface {
 	Field() string
@@ -7440,7 +7440,7 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = GetMortageAccountResponseValidationError{}
+} = GetMortgageAccountResponseValidationError{}
 
 // Validate checks the field values on GetLiabilityAccountRequest with the
 // rules defined in the proto definition for this message. If any rules are

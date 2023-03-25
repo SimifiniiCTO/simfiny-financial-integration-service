@@ -620,13 +620,13 @@ service FinancialService {
     };
   }
 
-  rpc GetMortageAccount(GetMortageAccountRequest) returns (GetMortageAccountResponse) {
-    option (google.api.http) = {get: "/api/v1/account/{user_id}/mortage/{mortage_account_id}"};
+  rpc GetMortgageAccount(GetMortgageAccountRequest) returns (GetMortgageAccountResponse) {
+    option (google.api.http) = {get: "/api/v1/account/{user_id}/mortgage/{mortgage_account_id}"};
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      summary: "get mortage account by id"
-      tags: ["mortage account"]
+      summary: "get mortgage account by id"
+      tags: ["mortgage account"]
       operation_id: "GetMortageAccount"
-      description: "This endpoint returns the mortage account if the mortage account exists"
+      description: "This endpoint returns the mortgage account if the mortgage account exists"
       responses: {
         key: "200"
         value: {

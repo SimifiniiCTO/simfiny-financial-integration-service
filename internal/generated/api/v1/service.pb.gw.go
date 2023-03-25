@@ -1311,8 +1311,8 @@ func local_request_FinancialService_GetInvestmentAcccount_0(ctx context.Context,
 
 }
 
-func request_FinancialService_GetMortageAccount_0(ctx context.Context, marshaler runtime.Marshaler, client FinancialServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetMortageAccountRequest
+func request_FinancialService_GetMortgageAccount_0(ctx context.Context, marshaler runtime.Marshaler, client FinancialServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetMortgageAccountRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1332,23 +1332,23 @@ func request_FinancialService_GetMortageAccount_0(ctx context.Context, marshaler
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "user_id", err)
 	}
 
-	val, ok = pathParams["mortage_account_id"]
+	val, ok = pathParams["mortgage_account_id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "mortage_account_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "mortgage_account_id")
 	}
 
-	protoReq.MortageAccountId, err = runtime.Uint64(val)
+	protoReq.MortgageAccountId, err = runtime.Uint64(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "mortage_account_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "mortgage_account_id", err)
 	}
 
-	msg, err := client.GetMortageAccount(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.GetMortgageAccount(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func local_request_FinancialService_GetMortageAccount_0(ctx context.Context, marshaler runtime.Marshaler, server FinancialServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetMortageAccountRequest
+func local_request_FinancialService_GetMortgageAccount_0(ctx context.Context, marshaler runtime.Marshaler, server FinancialServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetMortgageAccountRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1368,17 +1368,17 @@ func local_request_FinancialService_GetMortageAccount_0(ctx context.Context, mar
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "user_id", err)
 	}
 
-	val, ok = pathParams["mortage_account_id"]
+	val, ok = pathParams["mortgage_account_id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "mortage_account_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "mortgage_account_id")
 	}
 
-	protoReq.MortageAccountId, err = runtime.Uint64(val)
+	protoReq.MortgageAccountId, err = runtime.Uint64(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "mortage_account_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "mortgage_account_id", err)
 	}
 
-	msg, err := server.GetMortageAccount(ctx, &protoReq)
+	msg, err := server.GetMortgageAccount(ctx, &protoReq)
 	return msg, metadata, err
 
 }
@@ -2486,7 +2486,7 @@ func RegisterFinancialServiceHandlerServer(ctx context.Context, mux *runtime.Ser
 
 	})
 
-	mux.Handle("GET", pattern_FinancialService_GetMortageAccount_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_FinancialService_GetMortgageAccount_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -2494,12 +2494,12 @@ func RegisterFinancialServiceHandlerServer(ctx context.Context, mux *runtime.Ser
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/api.v1.FinancialService/GetMortageAccount", runtime.WithHTTPPathPattern("/api/v1/account/{user_id}/mortage/{mortage_account_id}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/api.v1.FinancialService/GetMortgageAccount", runtime.WithHTTPPathPattern("/api/v1/account/{user_id}/mortgage/{mortgage_account_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_FinancialService_GetMortageAccount_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_FinancialService_GetMortgageAccount_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -2507,7 +2507,7 @@ func RegisterFinancialServiceHandlerServer(ctx context.Context, mux *runtime.Ser
 			return
 		}
 
-		forward_FinancialService_GetMortageAccount_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_FinancialService_GetMortgageAccount_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -3340,25 +3340,25 @@ func RegisterFinancialServiceHandlerClient(ctx context.Context, mux *runtime.Ser
 
 	})
 
-	mux.Handle("GET", pattern_FinancialService_GetMortageAccount_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_FinancialService_GetMortgageAccount_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/api.v1.FinancialService/GetMortageAccount", runtime.WithHTTPPathPattern("/api/v1/account/{user_id}/mortage/{mortage_account_id}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/api.v1.FinancialService/GetMortgageAccount", runtime.WithHTTPPathPattern("/api/v1/account/{user_id}/mortgage/{mortgage_account_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_FinancialService_GetMortageAccount_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_FinancialService_GetMortgageAccount_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_FinancialService_GetMortageAccount_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_FinancialService_GetMortgageAccount_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -3556,7 +3556,7 @@ var (
 
 	pattern_FinancialService_GetInvestmentAcccount_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5}, []string{"api", "v1", "account", "user_id", "investment", "investment_account_id"}, ""))
 
-	pattern_FinancialService_GetMortageAccount_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5}, []string{"api", "v1", "account", "user_id", "mortage", "mortage_account_id"}, ""))
+	pattern_FinancialService_GetMortgageAccount_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5}, []string{"api", "v1", "account", "user_id", "mortgage", "mortgage_account_id"}, ""))
 
 	pattern_FinancialService_GetLiabilityAccount_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5}, []string{"api", "v1", "account", "user_id", "liability", "liability_account_id"}, ""))
 
@@ -3630,7 +3630,7 @@ var (
 
 	forward_FinancialService_GetInvestmentAcccount_0 = runtime.ForwardResponseMessage
 
-	forward_FinancialService_GetMortageAccount_0 = runtime.ForwardResponseMessage
+	forward_FinancialService_GetMortgageAccount_0 = runtime.ForwardResponseMessage
 
 	forward_FinancialService_GetLiabilityAccount_0 = runtime.ForwardResponseMessage
 

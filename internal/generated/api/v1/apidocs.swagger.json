@@ -149,16 +149,16 @@
         ]
       }
     },
-    "/api/v1/account/{userId}/mortage/{mortageAccountId}": {
+    "/api/v1/account/{userId}/mortgage/{mortgageAccountId}": {
       "get": {
-        "summary": "get mortage account by id",
-        "description": "This endpoint returns the mortage account if the mortage account exists",
+        "summary": "get mortgage account by id",
+        "description": "This endpoint returns the mortgage account if the mortgage account exists",
         "operationId": "GetMortageAccount",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/GetMortageAccountResponse"
+              "$ref": ".api.v1.GetMortageAccountResponse"
             }
           },
           "400": {
@@ -196,7 +196,7 @@
             "format": "uint64"
           },
           {
-            "name": "mortageAccountId",
+            "name": "mortgageAccountId",
             "description": "The mortage account id\nValidations:\n- mortage_account_id must be greater than 0",
             "in": "path",
             "required": true,
@@ -205,7 +205,7 @@
           }
         ],
         "tags": [
-          "mortage account"
+          "mortgage account"
         ]
       }
     },
@@ -2610,7 +2610,7 @@
         }
       }
     },
-    "GetMortageAccountResponse": {
+    "GetMortgageAccountResponse": {
       "type": "object",
       "properties": {
         "mortageAccount": {
