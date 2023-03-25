@@ -45,8 +45,8 @@ import {
   GetMilestoneResponse,
   GetMilestonesBySmartGoalIdRequest,
   GetMilestonesBySmartGoalIdResponse,
-  GetMortageAccountRequest,
-  GetMortageAccountResponse,
+  GetMortgageAccountRequest,
+  GetMortgageAccountResponse,
   GetPocketRequest,
   GetPocketResponse,
   GetSmartGoalsByPocketIdRequest,
@@ -108,7 +108,7 @@ export interface FinancialService {
   HealthCheck(request: HealthCheckRequest): Promise<HealthCheckResponse>;
   ReadynessCheck(request: ReadynessCheckRequest): Promise<ReadynessCheckResponse>;
   GetInvestmentAcccount(request: GetInvestmentAcccountRequest): Promise<GetInvestmentAcccountResponse>;
-  GetMortageAccount(request: GetMortageAccountRequest): Promise<GetMortageAccountResponse>;
+  GetMortgageAccount(request: GetMortgageAccountRequest): Promise<GetMortgageAccountResponse>;
   GetLiabilityAccount(request: GetLiabilityAccountRequest): Promise<GetLiabilityAccountResponse>;
   GetStudentLoanAccount(request: GetStudentLoanAccountRequest): Promise<GetStudentLoanAccountResponse>;
   CreateManualLink(request: CreateManualLinkRequest): Promise<CreateManualLinkResponse>;
@@ -152,7 +152,7 @@ export class FinancialServiceClientImpl implements FinancialService {
     this.HealthCheck = this.HealthCheck.bind(this);
     this.ReadynessCheck = this.ReadynessCheck.bind(this);
     this.GetInvestmentAcccount = this.GetInvestmentAcccount.bind(this);
-    this.GetMortageAccount = this.GetMortageAccount.bind(this);
+    this.GetMortgageAccount = this.GetMortgageAccount.bind(this);
     this.GetLiabilityAccount = this.GetLiabilityAccount.bind(this);
     this.GetStudentLoanAccount = this.GetStudentLoanAccount.bind(this);
     this.CreateManualLink = this.CreateManualLink.bind(this);
@@ -334,10 +334,10 @@ export class FinancialServiceClientImpl implements FinancialService {
     return promise.then((data) => GetInvestmentAcccountResponse.decode(_m0.Reader.create(data)));
   }
 
-  GetMortageAccount(request: GetMortageAccountRequest): Promise<GetMortageAccountResponse> {
-    const data = GetMortageAccountRequest.encode(request).finish();
-    const promise = this.rpc.request(this.service, "GetMortageAccount", data);
-    return promise.then((data) => GetMortageAccountResponse.decode(_m0.Reader.create(data)));
+  GetMortgageAccount(request: GetMortgageAccountRequest): Promise<GetMortgageAccountResponse> {
+    const data = GetMortgageAccountRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "GetMortgageAccount", data);
+    return promise.then((data) => GetMortgageAccountResponse.decode(_m0.Reader.create(data)));
   }
 
   GetLiabilityAccount(request: GetLiabilityAccountRequest): Promise<GetLiabilityAccountResponse> {

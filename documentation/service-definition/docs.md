@@ -94,8 +94,8 @@
     - [GetMilestoneResponse](#api-v1-GetMilestoneResponse)
     - [GetMilestonesBySmartGoalIdRequest](#api-v1-GetMilestonesBySmartGoalIdRequest)
     - [GetMilestonesBySmartGoalIdResponse](#api-v1-GetMilestonesBySmartGoalIdResponse)
-    - [GetMortageAccountRequest](#api-v1-GetMortageAccountRequest)
-    - [GetMortageAccountResponse](#api-v1-GetMortageAccountResponse)
+    - [GetMortgageAccountRequest](#api-v1-GetMortgageAccountRequest)
+    - [GetMortgageAccountResponse](#api-v1-GetMortgageAccountResponse)
     - [GetPocketRequest](#api-v1-GetPocketRequest)
     - [GetPocketResponse](#api-v1-GetPocketResponse)
     - [GetSmartGoalsByPocketIdRequest](#api-v1-GetSmartGoalsByPocketIdRequest)
@@ -1753,25 +1753,25 @@ the `get bank account` request
 
 
 
-<a name="api-v1-GetMortageAccountRequest"></a>
+<a name="api-v1-GetMortgageAccountRequest"></a>
 
-### GetMortageAccountRequest
+### GetMortgageAccountRequest
 
 
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | user_id | [uint64](#uint64) |  | The user id Validations: - user_id must be greater than 0 |
-| mortage_account_id | [uint64](#uint64) |  | The mortage account id Validations: - mortage_account_id must be greater than 0 |
+| mortgage_account_id | [uint64](#uint64) |  | The mortage account id Validations: - mortage_account_id must be greater than 0 |
 
 
 
 
 
 
-<a name="api-v1-GetMortageAccountResponse"></a>
+<a name="api-v1-GetMortgageAccountResponse"></a>
 
-### GetMortageAccountResponse
+### GetMortgageAccountResponse
 
 
 
@@ -2237,7 +2237,7 @@ FinancialService API.
 | HealthCheck | [HealthCheckRequest](#api-v1-HealthCheckRequest) | [HealthCheckResponse](#api-v1-HealthCheckResponse) |  |
 | ReadynessCheck | [ReadynessCheckRequest](#api-v1-ReadynessCheckRequest) | [ReadynessCheckResponse](#api-v1-ReadynessCheckResponse) |  |
 | GetInvestmentAcccount | [GetInvestmentAcccountRequest](#api-v1-GetInvestmentAcccountRequest) | [GetInvestmentAcccountResponse](#api-v1-GetInvestmentAcccountResponse) |  |
-| GetMortageAccount | [GetMortageAccountRequest](#api-v1-GetMortageAccountRequest) | [GetMortageAccountResponse](#api-v1-GetMortageAccountResponse) |  |
+| GetMortgageAccount | [GetMortgageAccountRequest](#api-v1-GetMortgageAccountRequest) | [GetMortgageAccountResponse](#api-v1-GetMortgageAccountResponse) |  |
 | GetLiabilityAccount | [GetLiabilityAccountRequest](#api-v1-GetLiabilityAccountRequest) | [GetLiabilityAccountResponse](#api-v1-GetLiabilityAccountResponse) |  |
 | GetStudentLoanAccount | [GetStudentLoanAccountRequest](#api-v1-GetStudentLoanAccountRequest) | [GetStudentLoanAccountResponse](#api-v1-GetStudentLoanAccountResponse) |  |
 | CreateManualLink | [CreateManualLinkRequest](#api-v1-CreateManualLinkRequest) | [CreateManualLinkResponse](#api-v1-CreateManualLinkResponse) |  |

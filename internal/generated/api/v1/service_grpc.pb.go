@@ -8,7 +8,6 @@ package apiv1
 
 import (
 	context "context"
-
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -49,7 +48,7 @@ const (
 	FinancialService_HealthCheck_FullMethodName                = "/api.v1.FinancialService/HealthCheck"
 	FinancialService_ReadynessCheck_FullMethodName             = "/api.v1.FinancialService/ReadynessCheck"
 	FinancialService_GetInvestmentAcccount_FullMethodName      = "/api.v1.FinancialService/GetInvestmentAcccount"
-	FinancialService_GetMortageAccount_FullMethodName          = "/api.v1.FinancialService/GetMortageAccount"
+	FinancialService_GetMortgageAccount_FullMethodName         = "/api.v1.FinancialService/GetMortgageAccount"
 	FinancialService_GetLiabilityAccount_FullMethodName        = "/api.v1.FinancialService/GetLiabilityAccount"
 	FinancialService_GetStudentLoanAccount_FullMethodName      = "/api.v1.FinancialService/GetStudentLoanAccount"
 	FinancialService_CreateManualLink_FullMethodName           = "/api.v1.FinancialService/CreateManualLink"
@@ -91,7 +90,7 @@ type FinancialServiceClient interface {
 	HealthCheck(ctx context.Context, in *HealthCheckRequest, opts ...grpc.CallOption) (*HealthCheckResponse, error)
 	ReadynessCheck(ctx context.Context, in *ReadynessCheckRequest, opts ...grpc.CallOption) (*ReadynessCheckResponse, error)
 	GetInvestmentAcccount(ctx context.Context, in *GetInvestmentAcccountRequest, opts ...grpc.CallOption) (*GetInvestmentAcccountResponse, error)
-	GetMortageAccount(ctx context.Context, in *GetMortageAccountRequest, opts ...grpc.CallOption) (*GetMortageAccountResponse, error)
+	GetMortgageAccount(ctx context.Context, in *GetMortgageAccountRequest, opts ...grpc.CallOption) (*GetMortgageAccountResponse, error)
 	GetLiabilityAccount(ctx context.Context, in *GetLiabilityAccountRequest, opts ...grpc.CallOption) (*GetLiabilityAccountResponse, error)
 	GetStudentLoanAccount(ctx context.Context, in *GetStudentLoanAccountRequest, opts ...grpc.CallOption) (*GetStudentLoanAccountResponse, error)
 	CreateManualLink(ctx context.Context, in *CreateManualLinkRequest, opts ...grpc.CallOption) (*CreateManualLinkResponse, error)
@@ -369,9 +368,9 @@ func (c *financialServiceClient) GetInvestmentAcccount(ctx context.Context, in *
 	return out, nil
 }
 
-func (c *financialServiceClient) GetMortageAccount(ctx context.Context, in *GetMortageAccountRequest, opts ...grpc.CallOption) (*GetMortageAccountResponse, error) {
-	out := new(GetMortageAccountResponse)
-	err := c.cc.Invoke(ctx, FinancialService_GetMortageAccount_FullMethodName, in, out, opts...)
+func (c *financialServiceClient) GetMortgageAccount(ctx context.Context, in *GetMortgageAccountRequest, opts ...grpc.CallOption) (*GetMortgageAccountResponse, error) {
+	out := new(GetMortgageAccountResponse)
+	err := c.cc.Invoke(ctx, FinancialService_GetMortgageAccount_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -465,7 +464,7 @@ type FinancialServiceServer interface {
 	HealthCheck(context.Context, *HealthCheckRequest) (*HealthCheckResponse, error)
 	ReadynessCheck(context.Context, *ReadynessCheckRequest) (*ReadynessCheckResponse, error)
 	GetInvestmentAcccount(context.Context, *GetInvestmentAcccountRequest) (*GetInvestmentAcccountResponse, error)
-	GetMortageAccount(context.Context, *GetMortageAccountRequest) (*GetMortageAccountResponse, error)
+	GetMortgageAccount(context.Context, *GetMortgageAccountRequest) (*GetMortgageAccountResponse, error)
 	GetLiabilityAccount(context.Context, *GetLiabilityAccountRequest) (*GetLiabilityAccountResponse, error)
 	GetStudentLoanAccount(context.Context, *GetStudentLoanAccountRequest) (*GetStudentLoanAccountResponse, error)
 	CreateManualLink(context.Context, *CreateManualLinkRequest) (*CreateManualLinkResponse, error)
@@ -566,8 +565,8 @@ func (UnimplementedFinancialServiceServer) ReadynessCheck(context.Context, *Read
 func (UnimplementedFinancialServiceServer) GetInvestmentAcccount(context.Context, *GetInvestmentAcccountRequest) (*GetInvestmentAcccountResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetInvestmentAcccount not implemented")
 }
-func (UnimplementedFinancialServiceServer) GetMortageAccount(context.Context, *GetMortageAccountRequest) (*GetMortageAccountResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetMortageAccount not implemented")
+func (UnimplementedFinancialServiceServer) GetMortgageAccount(context.Context, *GetMortgageAccountRequest) (*GetMortgageAccountResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMortgageAccount not implemented")
 }
 func (UnimplementedFinancialServiceServer) GetLiabilityAccount(context.Context, *GetLiabilityAccountRequest) (*GetLiabilityAccountResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetLiabilityAccount not implemented")
@@ -1122,20 +1121,20 @@ func _FinancialService_GetInvestmentAcccount_Handler(srv interface{}, ctx contex
 	return interceptor(ctx, in, info, handler)
 }
 
-func _FinancialService_GetMortageAccount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetMortageAccountRequest)
+func _FinancialService_GetMortgageAccount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetMortgageAccountRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(FinancialServiceServer).GetMortageAccount(ctx, in)
+		return srv.(FinancialServiceServer).GetMortgageAccount(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: FinancialService_GetMortageAccount_FullMethodName,
+		FullMethod: FinancialService_GetMortgageAccount_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FinancialServiceServer).GetMortageAccount(ctx, req.(*GetMortageAccountRequest))
+		return srv.(FinancialServiceServer).GetMortgageAccount(ctx, req.(*GetMortgageAccountRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1372,8 +1371,8 @@ var FinancialService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _FinancialService_GetInvestmentAcccount_Handler,
 		},
 		{
-			MethodName: "GetMortageAccount",
-			Handler:    _FinancialService_GetMortageAccount_Handler,
+			MethodName: "GetMortgageAccount",
+			Handler:    _FinancialService_GetMortgageAccount_Handler,
 		},
 		{
 			MethodName: "GetLiabilityAccount",
