@@ -3,6 +3,7 @@
  <img src="https://i.imgur.com/AZ2iWek.png" alt="Project logo"></a>
 </p>
 
+
 # Financial Integration Service
 
 [![e2e](https://github.com/stefanprodan/podinfo/workflows/e2e/badge.svg)](https://github.com/stefanprodan/podinfo/blob/master/.github/workflows/e2e.yml)
@@ -11,7 +12,7 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/stefanprodan/podinfo)](https://goreportcard.com/report/github.com/stefanprodan/podinfo)
 [![Docker Pulls](https://img.shields.io/docker/pulls/stefanprodan/podinfo)](https://hub.docker.com/r/stefanprodan/podinfo)
 
-Financial Integration Service is a single source of truth for all things financial on the simfiny platform.
+Financial Integration Service is a single source of truth for all things financial on the simfiny platform. 
 
 Specifications:
 
@@ -54,8 +55,7 @@ Web API:
 * `POST /store` writes the posted content to disk at /data/hash and returns the SHA1 hash of the content
 * `GET /store/{hash}` returns the content of the file /data/hash if exists
 * `GET /ws/echo` echos content via websockets `podcli ws ws://localhost:9898/ws/echo`
-* `GET /chunked/{seconds}` uses `transfer-encoding` type `chunked` to give a partial response and then waits for the
-  specified period
+* `GET /chunked/{seconds}` uses `transfer-encoding` type `chunked` to give a partial response and then waits for the specified period
 * `GET /swagger.json` returns the API Swagger docs, used for Linkerd service profiling and Gloo routes discovery
 
 gRPC API:

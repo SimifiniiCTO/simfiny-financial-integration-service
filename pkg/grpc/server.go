@@ -71,6 +71,7 @@ type Params struct {
 	Logger             *zap.Logger
 	Instrumentation    *instrumentation.ServiceTelemetry
 	Db                 *database.Db
+	PlaidClient        *plaid.APIClient
 	KeyManagement      secrets.KeyManagement
 	PlaidWrapper       *plaidhandler.PlaidWrapper
 	TransactionManager *transactionmanager.TransactionManager
@@ -93,6 +94,10 @@ func (p *Params) Validate() error {
 
 	if p.Db == nil {
 		return errors.New("db is nil")
+	}
+
+	if p.PlaidClient == nil {
+		return errors.New("plaid client is nil")
 	}
 
 	return nil

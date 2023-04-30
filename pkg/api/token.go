@@ -2,19 +2,19 @@ package api
 
 import (
 	"fmt"
-	"github.com/golang-jwt/jwt/v4"
 	"net/http"
 	"strings"
 	"time"
 
 	"io/ioutil"
 
+	"github.com/dgrijalva/jwt-go/v4"
 	"go.uber.org/zap"
 )
 
 type jwtCustomClaims struct {
 	Name string `json:"name"`
-	jwt.RegisteredClaims
+	jwt.StandardClaims
 }
 
 // Token godoc
@@ -42,9 +42,9 @@ func (s *Server) tokenGenerateHandler(w http.ResponseWriter, r *http.Request) {
 	expiresAt := time.Now().Add(time.Minute * 1)
 	claims := &jwtCustomClaims{
 		user,
-		jwt.RegisteredClaims{
+		jwt.StandardClaims{
 			Issuer:    "fis-service",
-			ExpiresAt: jwt.NewNumericDate(expiresAt),
+			ExpiresAt: jwt.At(expiresAt),
 		},
 	}
 
@@ -57,7 +57,7 @@ func (s *Server) tokenGenerateHandler(w http.ResponseWriter, r *http.Request) {
 
 	var result = TokenResponse{
 		Token:     t,
-		ExpiresAt: time.Unix(claims.RegisteredClaims.ExpiresAt.Unix(), 0),
+		ExpiresAt: time.Unix(claims.StandardClaims.ExpiresAt.Unix(), 0),
 	}
 
 	s.JSONResponse(w, r, result)
@@ -99,12 +99,12 @@ func (s *Server) tokenValidateHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if token.Valid {
-		if claims.RegisteredClaims.Issuer != "fis-service" {
+		if claims.StandardClaims.Issuer != "fis-service" {
 			s.ErrorResponse(w, r, "invalid issuer", http.StatusUnauthorized)
 		} else {
 			var result = TokenValidationResponse{
 				TokenName: claims.Name,
-				ExpiresAt: time.Unix(claims.RegisteredClaims.ExpiresAt.Unix(), 0),
+				ExpiresAt: time.Unix(claims.StandardClaims.ExpiresAt.Unix(), 0),
 			}
 			s.JSONResponse(w, r, result)
 		}

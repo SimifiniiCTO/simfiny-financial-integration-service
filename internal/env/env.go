@@ -67,13 +67,13 @@ func ReadEnvVars() {
 
 	// plaid specific keys
 	fs.String("plaid-client-id", "61eb5d49ea3b4700127560d1", "plaid client id")
-	// development secret key: 49ed22a2ee591f4e3f366c4474438d
-	// sandbox secret key: 465686056e8fd1b87db3d993d096d8
 	fs.String("plaid-secret-key", "465686056e8fd1b87db3d993d096d8", "plaid secret key")
 	fs.String("plaid-env", "sandbox", "plaid environment")
-	fs.StringSlice("plaid-products", []string{"investments", "liabilities"}, "plaid products to enable")
-	fs.String("plaid-oauth-domain", "localhost:9896/v1", "plaid oauth domain")
-	fs.String("plaid-webhook-oauth-domain", "localhost:9896/v1", "plaid webhook oauth domain")
+	fs.String("plaid-webhook-url", "http://localhost:3000/webhook", "plaid webhook url")
+	fs.String("plaid-redirect-url", "http://localhost:3000/", "plaid redirect url")
+	fs.StringSlice("plaid-products", []string{"transactions", "auth", "balance", "investments", "liabilities"}, "plaid products to enable")
+	fs.String("plaid-oauth-domain", "simfiny", "plaid oauth domain")
+	fs.String("plaid-webhook-oauth-domain", "simfiny", "plaid webhook oauth domain")
 	fs.Bool("plaid-webhook-enabled", true, "enable plaid webhook")
 	fs.Uint64("max-plaid-links", 5, "plaid link limit")
 
@@ -94,8 +94,8 @@ func ReadEnvVars() {
 	fs.String("aws-kms-id", "mrk-e44f269bc0034feb95ede34154c3cfe4", "aws s3 bucket")
 
 	// billing configs
-	fs.Bool("stripe-enabled", true, "enable billing")
-	fs.String("stripe-api-key", "sk_test_51M1F1pBV97V9M33e3Ki1k5OqkdhfdDUBNTwDFzUtRmsSYbHf7qE3d1kkFCYRxfS70bJKBOKR5Zbv103sqvNd0gnm00lMyRDWEh", "")
+	fs.Bool("stripe-enabled", false, "enable billing")
+	fs.String("stripe-api-key", "sk_test_4eC39HqLyjWDarjtT1zdp7dc", "")
 
 	// temporal configurations
 	fs.String("temporal-cluster-endpoint", "temporal:7233", "base endpoint of the temporal cluster")

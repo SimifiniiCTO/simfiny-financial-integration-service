@@ -110,7 +110,7 @@ func (s *Server) createAndStoreLink(ctx context.Context, userID uint64, meta *to
 	s.logger.Info("creating and storing link for user", zap.Any("user_id", userID))
 
 	accessToken := meta.item_token.AccessToken
-	products := s.plaidClient.EnabledProductsToString()
+	products := plaidhandler.PlaidProductStrings()
 	webhookUrl := handler.GetWebhooksURL()
 
 	s.logger.Info("about to cryptographically encrypt token", zap.Any("user_id", userID))

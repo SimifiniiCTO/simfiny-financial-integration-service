@@ -1,4 +1,4 @@
-{ { - if .Values.postgresLocalDB.enabled - } }
+{{- if .Values.postgresLocalDB.enabled -}}
 apiVersion: v1
 kind: Service
 metadata:
@@ -11,11 +11,11 @@ metadata:
   name: financial-integration-service-db
 spec:
   ports:
-    - name: "5432"
-      port: 5432
-      targetPort: 5432
+  - name: "5432"
+    port: 5432
+    targetPort: 5432
   selector:
     io.kompose.service: financial-integration-service-db
 status:
-  loadBalancer: { }
-  { { - end } }
+  loadBalancer: {}
+{{- end }}

@@ -1,8 +1,8 @@
-{ { - if .Values.integrationTests.enabled } }
+{{- if .Values.integrationTests.enabled }}
 apiVersion: v1
 kind: Pod
 metadata:
-  name: { { template "fis.fullname" . } }-grpc-test-{{ randAlphaNum 5 | lower }}
+  name: {{ template "fis.fullname" . }}-grpc-test-{{ randAlphaNum 5 | lower }}
   labels:
     {{- include "fis.labels" . | nindent 4 }}
   annotations:
@@ -15,7 +15,7 @@ spec:
   containers:
     - name: grpc-health-probe
       image: stefanprodan/grpc_health_probe:v0.3.0
-      command: [ 'grpc_health_probe' ]
-      args: [ '-addr={{ template "fis.fullname" . }}.{{ .Release.Namespace }}:{{ .Values.service.grpcPort }}' ]
+      command: ['grpc_health_probe']
+      args:  ['-addr={{ template "fis.fullname" . }}.{{ .Release.Namespace }}:{{ .Values.service.grpcPort }}']
   restartPolicy: Never
-  { { - end } }
+{{- end }}

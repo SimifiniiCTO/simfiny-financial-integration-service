@@ -18,7 +18,7 @@ items:
       selector:
         io.kompose.service: mysql
     status:
-      loadBalancer: { }
+      loadBalancer: {}
   - apiVersion: v1
     kind: Service
     metadata:
@@ -38,7 +38,7 @@ items:
       selector:
         io.kompose.service: temporal
     status:
-      loadBalancer: { }
+      loadBalancer: {}
   - apiVersion: v1
     kind: Service
     metadata:
@@ -57,7 +57,7 @@ items:
       selector:
         io.kompose.service: temporal-web
     status:
-      loadBalancer: { }
+      loadBalancer: {}
   - apiVersion: apps/v1
     kind: Deployment
     metadata:
@@ -73,7 +73,7 @@ items:
       selector:
         matchLabels:
           io.kompose.service: mysql
-      strategy: { }
+      strategy: {}
       template:
         metadata:
           annotations:
@@ -92,10 +92,10 @@ items:
               name: temporal-mysql
               ports:
                 - containerPort: 3306
-              resources: { }
+              resources: {}
           restartPolicy: Always
           enableServiceLinks: false
-    status: { }
+    status: {}
   - apiVersion: networking.k8s.io/v1
     kind: NetworkPolicy
     metadata:
@@ -157,7 +157,7 @@ items:
               name: temporal
               ports:
                 - containerPort: 7233
-              resources: { }
+              resources: {}
               volumeMounts:
                 - mountPath: /etc/temporal/config/dynamicconfig
                   name: temporal-cm0
@@ -167,7 +167,7 @@ items:
                 name: temporal-cm0
               name: temporal-cm0
           enableServiceLinks: false
-    status: { }
+    status: {}
   - apiVersion: v1
     data:
       README.md: |
@@ -243,7 +243,7 @@ items:
       selector:
         matchLabels:
           io.kompose.service: temporal-admin-tools
-      strategy: { }
+      strategy: {}
       template:
         metadata:
           annotations:
@@ -260,12 +260,12 @@ items:
                   value: temporal:7233
               image: temporalio/admin-tools:1.17.1
               name: temporal-admin-tools
-              resources: { }
+              resources: {}
               stdin: true
               tty: true
           restartPolicy: Always
           enableServiceLinks: false
-    status: { }
+    status: {}
   - apiVersion: apps/v1
     kind: Deployment
     metadata:
@@ -281,7 +281,7 @@ items:
       selector:
         matchLabels:
           io.kompose.service: temporal-web
-      strategy: { }
+      strategy: {}
       template:
         metadata:
           annotations:
@@ -302,9 +302,9 @@ items:
               name: temporal-web
               ports:
                 - containerPort: 8088
-              resources: { }
+              resources: {}
           restartPolicy: Always
           enableServiceLinks: false
-    status: { }
+    status: {}
 kind: List
-metadata: { }
+metadata: {}

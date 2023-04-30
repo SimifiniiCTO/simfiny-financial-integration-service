@@ -145,7 +145,7 @@ jobs:
           kubectl logs -l app=financial-integration-service || true
 
   deploy:
-    needs: [ publish-artifacts ]
+    needs: [publish-artifacts]
     runs-on: ubuntu-latest
     env:
       working-directory: .
@@ -190,7 +190,7 @@ jobs:
 
   release-notes:
     if: github.ref == 'refs/heads/main'
-    needs: [ publish-artifacts, deploy ]
+    needs: [publish-artifacts, deploy]
     runs-on: ubuntu-latest
     env:
       working-directory: .
@@ -233,7 +233,7 @@ jobs:
 
   bump-tags:
     if: github.ref == 'refs/heads/main'
-    needs: [ publish-artifacts, deploy, release-notes ]
+    needs: [publish-artifacts, deploy, release-notes]
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3

@@ -1,26 +1,26 @@
-{ { - if .Values.redis.enabled - } }
+{{- if .Values.redis.enabled -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: { { template "fis.fullname" . } }-redis
+  name: {{ template "fis.fullname" . }}-redis
   labels:
-    app: { { template "fis.fullname" . } }-redis
+    app: {{ template "fis.fullname" . }}-redis
 spec:
   strategy:
     type: Recreate
   selector:
     matchLabels:
-      app: { { template "fis.fullname" . } }-redis
+      app: {{ template "fis.fullname" . }}-redis
   template:
     metadata:
       labels:
-        app: { { template "fis.fullname" . } }-redis
+        app: {{ template "fis.fullname" . }}-redis
       annotations:
-        checksum/config: { { include (print $.Template.BasePath "/redis/config.yaml") . | sha256sum | quote } }
+        checksum/config: {{ include (print $.Template.BasePath "/redis/config.yaml") . | sha256sum | quote }}
     spec:
-      { { - if .Values.serviceAccount.enabled } }
-      serviceAccountName: { { template "fis.serviceAccountName" . } }
-      { { - end } }
+      {{- if .Values.serviceAccount.enabled }}
+      serviceAccountName: {{ template "fis.serviceAccountName" . }}
+      {{- end }}
       containers:
         - name: redis
           image: "{{ .Values.redis.repository }}:{{ .Values.redis.tag }}"
@@ -58,11 +58,11 @@ spec:
               name: config
       volumes:
         - name: data
-          emptyDir: { }
+          emptyDir: {}
         - name: config
           configMap:
-            name: { { template "fis.fullname" . } }-redis
+            name: {{ template "fis.fullname" . }}-redis
             items:
-                - key: redis.conf
-                  path: redis.conf
-  { { - end } }
+              - key: redis.conf
+                path: redis.conf
+{{- end }}

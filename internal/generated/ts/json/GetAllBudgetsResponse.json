@@ -1,79 +1,79 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
-  "$ref": "#/definitions/GetAllBudgetsResponse",
-  "definitions": {
-    "GetAllBudgetsResponse": {
-      "properties": {
-        "budgets": {
-          "items": {
-            "$ref": "#/definitions/api.v1.Budget"
-          },
-          "type": "array",
-          "description": "The budgets"
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/GetAllBudgetsResponse",
+    "definitions": {
+        "GetAllBudgetsResponse": {
+            "properties": {
+                "budgets": {
+                    "items": {
+                        "$ref": "#/definitions/api.v1.Budget"
+                    },
+                    "type": "array",
+                    "description": "The budgets"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Get All Budgets Response"
+        },
+        "api.v1.Budget": {
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "id"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "The name of the budget"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "start_date": {
+                    "type": "string",
+                    "description": "the time the goal was created"
+                },
+                "end_date": {
+                    "type": "string",
+                    "description": "the time the goal was updated"
+                },
+                "category": {
+                    "$ref": "#/definitions/api.v1.Category",
+                    "additionalProperties": true,
+                    "description": "category associated with the goal"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Budget",
+            "description": "The Budgets table stores information about each budget created by the user, including the name of the budget, the start and end dates, and the user ID."
+        },
+        "api.v1.Category": {
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "id"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "The name of the category"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "The description of the category"
+                },
+                "subcategories": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array",
+                    "description": "the sub categories of the category"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Category",
+            "description": "The Categories table stores information about the different categories of expenses or income, such as \"Housing\", \"Food\", \"Transportation\", and \"Entertainment\". Each category has one or more subcategories, which are stored in the Subcategories table. For example, the \"Housing\" category might have subcategories for \"Rent\", \"Utilities\", and \"Home Maintenance\"."
         }
-      },
-      "additionalProperties": true,
-      "type": "object",
-      "title": "Get All Budgets Response"
-    },
-    "api.v1.Budget": {
-      "properties": {
-        "id": {
-          "type": "string",
-          "description": "id"
-        },
-        "name": {
-          "type": "string",
-          "description": "The name of the budget"
-        },
-        "description": {
-          "type": "string"
-        },
-        "start_date": {
-          "type": "string",
-          "description": "the time the goal was created"
-        },
-        "end_date": {
-          "type": "string",
-          "description": "the time the goal was updated"
-        },
-        "category": {
-          "$ref": "#/definitions/api.v1.Category",
-          "additionalProperties": true,
-          "description": "category associated with the goal"
-        }
-      },
-      "additionalProperties": true,
-      "type": "object",
-      "title": "Budget",
-      "description": "The Budgets table stores information about each budget created by the user, including the name of the budget, the start and end dates, and the user ID."
-    },
-    "api.v1.Category": {
-      "properties": {
-        "id": {
-          "type": "string",
-          "description": "id"
-        },
-        "name": {
-          "type": "string",
-          "description": "The name of the category"
-        },
-        "description": {
-          "type": "string",
-          "description": "The description of the category"
-        },
-        "subcategories": {
-          "items": {
-            "type": "string"
-          },
-          "type": "array",
-          "description": "the sub categories of the category"
-        }
-      },
-      "additionalProperties": true,
-      "type": "object",
-      "title": "Category",
-      "description": "The Categories table stores information about the different categories of expenses or income, such as \"Housing\", \"Food\", \"Transportation\", and \"Entertainment\". Each category has one or more subcategories, which are stored in the Subcategories table. For example, the \"Housing\" category might have subcategories for \"Rent\", \"Utilities\", and \"Home Maintenance\"."
     }
-  }
 }
