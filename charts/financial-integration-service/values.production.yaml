@@ -56,7 +56,7 @@ plaid:
   # plaid secret key
   secretKey: 6f127c086ba9c1d5dafe7e38541783
   # plaid environment 
-  env: development
+  env: production
   # A webhook is an HTTP request used to provide push notifications. Plaid sends webhooks to programmatically
   # inform you about changes to Plaid Items or the status of asynchronous processes. For example, Plaid will send
   # a webhook when an Item is in an error state or has additional data available, or when a non-blocking process 
