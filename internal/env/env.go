@@ -69,6 +69,7 @@ func ReadEnvVars() {
 	fs.String("plaid-client-id", "61eb5d49ea3b4700127560d1", "plaid client id")
 	// development secret key: 49ed22a2ee591f4e3f366c4474438d
 	// sandbox secret key: 465686056e8fd1b87db3d993d096d8
+	// production: 6f127c086ba9c1d5dafe7e38541783
 	fs.String("plaid-secret-key", "465686056e8fd1b87db3d993d096d8", "plaid secret key")
 	fs.String("plaid-env", "sandbox", "plaid environment")
 	fs.StringSlice("plaid-products", []string{"investments", "liabilities"}, "plaid products to enable")

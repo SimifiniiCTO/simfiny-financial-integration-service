@@ -87,7 +87,6 @@ func NewMockServer(db *database.Db) {
 		Logger:          zap.L(),
 		Instrumentation: &instrumentation.ServiceTelemetry{},
 		Db:              DbConnHandler,
-		PlaidClient:     plaidhandler.NewMockPlaidClient(),
 		PlaidWrapper:    handler,
 	})
 	if err != nil {

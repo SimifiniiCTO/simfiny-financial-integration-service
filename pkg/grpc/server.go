@@ -21,7 +21,6 @@ import (
 // Server is the grpc server object
 type Server struct {
 	proto.UnimplementedFinancialServiceServer
-
 	// proto.UnimplementedFinancialServiceServer
 	logger             *zap.Logger
 	config             *Config
@@ -39,8 +38,6 @@ type Config struct {
 	Port                     int              `mapstructure:"grpc-port"`
 	GatewayPort              int              `mapstructure:"grpc-gateway-port"`
 	ServiceName              string           `mapstructure:"grpc-service-name"`
-	PlaidWebhookURI          string           `mapstructure:"plaid-webhook-url"`
-	PlaidRedirectURI         string           `mapstructure:"plaid-redirect-url"`
 	NewRelicLicense          string           `mapstructure:"newrelic-api-key"`
 	Environment              string           `mapstructure:"env"`
 	PlaidProducts            []plaid.Products `mapstructure:"plaid-products"`
