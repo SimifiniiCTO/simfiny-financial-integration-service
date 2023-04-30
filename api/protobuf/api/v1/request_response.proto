@@ -157,7 +157,7 @@ message DeleteBankAccountResponse {
   bool deleted = 1 [
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       example: "\"true\""
-    } 
+    }
   ];
 }
 

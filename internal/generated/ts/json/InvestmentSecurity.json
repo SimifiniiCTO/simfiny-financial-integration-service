@@ -1,65 +1,65 @@
 {
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "$ref": "#/definitions/InvestmentSecurity",
-    "definitions": {
-        "InvestmentSecurity": {
-            "properties": {
-                "id": {
-                    "type": "string",
-                    "description": "id"
-                },
-                "close_price": {
-                    "type": "number"
-                },
-                "close_price_as_of": {
-                    "type": "string"
-                },
-                "cusip": {
-                    "type": "string"
-                },
-                "institution_id": {
-                    "type": "string"
-                },
-                "institution_security_id": {
-                    "type": "string"
-                },
-                "is_cash_equivalent": {
-                    "type": "boolean"
-                },
-                "isin": {
-                    "type": "string"
-                },
-                "iso_currency_code": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "proxy_security_id": {
-                    "type": "string"
-                },
-                "security_id": {
-                    "type": "string"
-                },
-                "sedol": {
-                    "type": "string"
-                },
-                "ticker_symbol": {
-                    "type": "string"
-                },
-                "type": {
-                    "type": "string"
-                },
-                "unofficial_currency_code": {
-                    "type": "string"
-                },
-                "update_datetime": {
-                    "type": "string"
-                }
-            },
-            "additionalProperties": true,
-            "type": "object",
-            "title": "Investment Security"
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/InvestmentSecurity",
+  "definitions": {
+    "InvestmentSecurity": {
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "id"
+        },
+        "close_price": {
+          "type": "number"
+        },
+        "close_price_as_of": {
+          "type": "string"
+        },
+        "cusip": {
+          "type": "string"
+        },
+        "institution_id": {
+          "type": "string"
+        },
+        "institution_security_id": {
+          "type": "string"
+        },
+        "is_cash_equivalent": {
+          "type": "boolean"
+        },
+        "isin": {
+          "type": "string"
+        },
+        "iso_currency_code": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "proxy_security_id": {
+          "type": "string"
+        },
+        "security_id": {
+          "type": "string"
+        },
+        "sedol": {
+          "type": "string"
+        },
+        "ticker_symbol": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "unofficial_currency_code": {
+          "type": "string"
+        },
+        "update_datetime": {
+          "type": "string"
         }
+      },
+      "additionalProperties": true,
+      "type": "object",
+      "title": "Investment Security"
     }
+  }
 }

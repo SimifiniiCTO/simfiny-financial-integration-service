@@ -1,222 +1,220 @@
-{{- $namespace := .Release.Namespace -}}
-{{- $svctag := "svc.cluster.local" -}}
-{{- $temporalName := .Values.dependencies.temporal.name -}}
-{{- $temporalPort := .Values.dependencies.temporal.port -}}
-{{- $temporalNamespace := .Values.dependencies.temporal.clusterNamespace -}}
+{ { - $namespace := .Release.Namespace - } }
+  { { - $svctag := "svc.cluster.local" - } }
+  { { - $temporalName := .Values.dependencies.temporal.name - } }
+  { { - $temporalPort := .Values.dependencies.temporal.port - } }
+  { { - $temporalNamespace := .Values.dependencies.temporal.clusterNamespace - } }
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "fis.fullname" . }}
+  name: { { template "fis.fullname" . } }
   labels:
-    {{- include "fis.labels" . | nindent 4 }}
+    { { - include "fis.labels" . | nindent 4 } }
 spec:
-  {{- if not .Values.autoscaling.enabled }}
-  replicas: {{ .Values.replicaCount }}
-  {{- end }}
+  { { - if not .Values.autoscaling.enabled } }
+  replicas: { { .Values.replicaCount } }
+  { { - end } }
   strategy:
     type: RollingUpdate
     rollingUpdate:
-        maxSurge: 2
-        maxUnavailable: 0
+      maxSurge: 2
+      maxUnavailable: 0
   selector:
     matchLabels:
-      {{- include "fis.selectorLabels" . | nindent 6 }}
+      { { - include "fis.selectorLabels" . | nindent 6 } }
   template:
     metadata:
       labels:
-        {{- include "fis.selectorLabels" . | nindent 8 }}
+        { { - include "fis.selectorLabels" . | nindent 8 } }
       annotations:
         timestamp: "{{ now | date "20060102150405" }}"
-        {{- range $key, $value := .Values.podAnnotations }}
-        {{ $key }}: {{ $value | quote }}
-        {{- end }}
-        {{- if .Values.linkerd.profile.enabled }}
-        {{- range $key, $value := .Values.linkerd.annotations }}
-        {{ $key }}: {{ $value | quote }}
-        {{- end }}
-        {{- end }}
+        { { - range $key, $value := .Values.podAnnotations } }
+        { { $key } }: { { $value | quote } }
+        { { - end } }
+        { { - if .Values.linkerd.profile.enabled } }
+        { { - range $key, $value := .Values.linkerd.annotations } }
+        { { $key } }: { { $value | quote } }
+        { { - end } }
+        { { - end } }
     spec:
       terminationGracePeriodSeconds: 30
-      {{- if .Values.serviceAccount.enabled }}
-      serviceAccountName: {{ template "fis.serviceAccountName" . }}
-      {{- end }}
-      {{- if eq .Values.service.environment "local" }}
+      { { - if .Values.serviceAccount.enabled } }
+      serviceAccountName: { { template "fis.serviceAccountName" . } }
+      { { - end } }
+      { { - if eq .Values.service.environment "local" } }
       initContainers:
-      - name: init-postgres-service-dependency
-        image: busybox:1.28
-        command: ['sh', '-c', "until nslookup financial-integration-service-db.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for financial-integration-service-db.; sleep 20; done"]
-	 {{- if .Values.redis.enabled }}
-      - name: init-redis-service-dependency
-        image: busybox:1.28
-        command: ['sh', '-c', "until nslookup financial-integration-service-redis.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for financial-integration-service-redis.; sleep 20; done"]
-	  {{- end }}
-	  {{- end }}
-      containers:
-        - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          {{- if .Values.securityContext }}
-          securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
-          {{- else if (or .Values.service.hostPort .Values.tls.hostPort) }}
-          securityContext:
-            allowPrivilegeEscalation: true
-            capabilities:
-              drop:
-                - ALL
-              add:
-                - NET_BIND_SERVICE
-          {{- end }}
-          command:
-            - ./podinfo
-            - --port={{ .Values.service.httpPort | default 9898 }}
-            {{- if .Values.host }}
-            - --host={{ .Values.host }}
-            {{- end }}
-            {{- if .Values.tls.enabled }}
-            - --secure-port={{ .Values.tls.port }}
-            {{- end }}
-            {{- if .Values.tls.certPath }}
-            - --cert-path={{ .Values.tls.certPath }}
-            {{- end }}
-            {{- if .Values.service.metricsPort }}
-            - --port-metrics={{ .Values.service.metricsPort }}
-            {{- end }}
-            {{- if .Values.service.grpcPort }}
-            - --grpc-port={{ .Values.service.grpcPort }}
-            {{- end }}
-            {{- if .Values.service.grpcService }}
-            - --grpc-service-name={{ .Values.service.grpcService }}
-            {{- end }}
-            {{- range .Values.backends }}
-            - --backend-url={{ . }}
-            {{- end }}
-            {{- if .Values.cache }}
-            - --cache-server={{ .Values.cache }}
-            {{- else if .Values.redis.enabled }}
-            - --cache-server={{ template "fis.fullname" . }}-redis:6379
-            {{- end }}
-            - --level={{ .Values.logLevel }}
-            - --random-delay={{ .Values.faults.delay }}
-            - --random-error={{ .Values.faults.error }}
-            {{- if .Values.faults.unhealthy }}
-            - --unhealthy
-            {{- end }}
-            {{- if .Values.faults.unready }}
-            - --unready
-            {{- end }}
-            {{- if .Values.h2c.enabled }}
-            - --h2c
-            {{- end }}
-            - --http-client-timeout={{ .Values.service.http.client.timeout }}
-            - --rpc-timeout={{ .Values.service.rpc.timeout }}
-            - --http-server-timeout={{ .Values.service.http.server.timeout }}
-            - --http-server-shutdown-timeout={{ .Values.service.http.server.shutdownTimeout }}
-            {{- if eq .Values.service.environment "local" }}
-            - --dbhost={{ .Values.database.host }}.{{ $namespace }}.{{ $svctag }}
-            {{- else }}
-            - --dbhost={{ .Values.database.host }}
-            {{- end }}
-            - --dbport={{ .Values.database.port }}
-            - --dbuser={{ .Values.database.user }}
-            - --dbpassword={{ .Values.database.password }}
-            - --dbname={{ .Values.database.name }}
-            - --dbsslmode={{ .Values.database.sslMode }}
-            - --max-db-conn-attempts={{ .Values.database.maxConnectionAttempts }}
-            - --max-db-conn-retries={{ .Values.database.maxConnectionRetries }}
-            - --max-db-retry-timeout={{ .Values.database.maxConnectionRetryTimeout }}
-            - --max-db-retry-sleep-interval={{ .Values.database.maxConnectionRetrySleepInterval }}
-            - --max-query-timeout={{ .Values.database.maxQueryTimeout }}
-            {{- if .Values.plaid.enabled }}
-            - --plaid-client-id={{ .Values.plaid.clientID }}
-            - --plaid-secret-key={{ .Values.plaid.secretKey }}
-            - --plaid-env={{ .Values.plaid.env }}
-            - --plaid-webhook-url={{ .Values.plaid.webhookUrl }}
-            - --plaid-redirect-url={{ .Values.plaid.redirectUrl }}
-            - --plaid-products={{ .Values.plaid.products }}
-            - --plaid-oauth-domain={{ .Values.plaid.oauthDomain }}
-            - --plaid-webhook-oauth-domain={{ .Values.plaid.webhookOauthDomain }}
-            - --plaid-webhook-enabled={{ .Values.plaid.webhookEnabled }}
-            - --max-plaid-links={{ .Values.plaid.maxPlaidLinks }}
-            {{- end }}
-            {{- if .Values.stripe.enabled }}
-            - --stripe-api-key={{ .Values.stripe.apiKey }}
-            - --stripe-enabled={{ .Values.stripe.enabled }}
-            {{- end }}
-            {{- if .Values.newRelic.enabled}}
-            - --newrelic-api-key={{ .Values.newRelic.apiKey }}
-            - --metrics-reporting-enabled={{ .Values.newRelic.enabled }}
-            {{- end }}
-            - --service-environment={{ .Values.service.env }}
-            - --aws-access-key-id={{ .Values.aws.accessKeyID }}
-            - --aws-secret-access-key={{ .Values.aws.secretAccessKey }}
-            - --aws-region={{ .Values.aws.region }}
-            - --aws-kms-id={{ .Values.aws.kmsID }}
-            {{- if .Values.dependencies.temporal.enabled}}
-            - --temporal-cluster-endpoint={{ $temporalName }}.{{ $temporalNamespace }}.{{ $svctag }}:{{ $temporalPort }}
-            - --temporal-namespace={{ .Values.dependencies.temporal.config.namespace }}
-            - --temporal-retry-initial-interval={{ .Values.dependencies.temporal.retry.retryInterval }}
-            - --temporal-backoff-coefficient={{ .Values.dependencies.temporal.retry.backoffCoefficient }}
-            - --temporal-max-retry-attempts={{ .Values.dependencies.temporal.retry.maxRetryAttempts }}
-            - --temporal-max-retry-interval={{ .Values.dependencies.temporal.retry.maxRetryInterval }}
-            - --temporal-rpc-timeout={{ .Values.dependencies.temporal.rpc.timeout }}
-            - --temporal-task-queue={{ .Values.dependencies.temporal.config.taskQueue }}
-            - --temporal-concurrent-activity-execution-size={{ .Values.dependencies.temporal.config.concurrentActivityExecutionSize }}
-            - --temporal-concurrent-workflow-task-pollers={{ .Values.dependencies.temporal.config.concurrentWorkflowTaskPollers }}
-            - --workflow-execution-timeout={{ .Values.dependencies.temporal.config.workflowExecutionTimeout }}
-            - --workflow-task-timeout={{ .Values.dependencies.temporal.config.workflowTaskTimeout }}
-            - --workflow-run-timeout={{ .Values.dependencies.temporal.config.workflowRunTimeout }}
-            {{- end }}
-          env:
-          {{- if .Values.ui.message }}
-          - name: fis_UI_MESSAGE
-            value: {{ quote .Values.ui.message }}
-          {{- end }}
-          {{- if .Values.ui.logo }}
-          - name: fis_UI_LOGO
-            value: {{ .Values.ui.logo }}
-          {{- end }}
-          {{- if .Values.ui.color }}
-          - name: fis_UI_COLOR
-            value: {{ quote .Values.ui.color }}
-          {{- end }}
-          {{- if .Values.backend }}
-          - name: fis_BACKEND_URL
-            value: {{ .Values.backend }}
-          {{- end }}
-          ports:
-            {{- if .Values.service.grpcPort }}
-            - name: grpc
-              containerPort: {{ .Values.service.grpcPort }}
-              protocol: TCP
-            {{- end }}
-          volumeMounts:
-          - name: data
-            mountPath: /data
-          {{- if .Values.tls.enabled }}
-          - name: tls
-            mountPath: {{ .Values.tls.certPath | default "/data/cert" }}
-            readOnly: true
-          {{- end }}
-          resources:
-{{ toYaml .Values.resources | indent 12 }}
-    {{- with .Values.nodeSelector }}
-      nodeSelector:
-{{ toYaml . | indent 8 }}
-    {{- end }}
-    {{- with .Values.affinity }}
-      affinity:
-{{ toYaml . | indent 8 }}
-    {{- end }}
-    {{- with .Values.tolerations }}
-      tolerations:
-{{ toYaml . | indent 8 }}
-    {{- end }}
-      volumes:
-      - name: data
-        emptyDir: {}
-      {{- if .Values.tls.enabled }}
+        - name: init-postgres-service-dependency
+          image: busybox:1.28
+          command: [ 'sh', '-c', "until nslookup financial-integration-service-db.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for financial-integration-service-db.; sleep 20; done" ]
+  { { - if .Values.redis.enabled } }
+  - name: init-redis-service-dependency
+    image: busybox:1.28
+    command: [ 'sh', '-c', "until nslookup financial-integration-service-redis.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for financial-integration-service-redis.; sleep 20; done" ]
+  { { - end } }
+  { { - end } }
+  containers:
+    - name: { { .Chart.Name } }
+      image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+      imagePullPolicy: { { .Values.image.pullPolicy } }
+      { { - if .Values.securityContext } }
+      securityContext:
+        { { - toYaml .Values.securityContext | nindent 12 } }
+      { { - else if (or .Values.service.hostPort .Values.tls.hostPort) } }
+      securityContext:
+        allowPrivilegeEscalation: true
+        capabilities:
+          drop:
+            - ALL
+          add:
+            - NET_BIND_SERVICE
+      { { - end } }
+      command:
+        - ./podinfo
+        - --port={{ .Values.service.httpPort | default 9898 }}
+        { { - if .Values.host } }
+        - --host={{ .Values.host }}
+        { { - end } }
+        { { - if .Values.tls.enabled } }
+        - --secure-port={{ .Values.tls.port }}
+        { { - end } }
+        { { - if .Values.tls.certPath } }
+        - --cert-path={{ .Values.tls.certPath }}
+        { { - end } }
+        { { - if .Values.service.metricsPort } }
+        - --port-metrics={{ .Values.service.metricsPort }}
+        { { - end } }
+        { { - if .Values.service.grpcPort } }
+        - --grpc-port={{ .Values.service.grpcPort }}
+        { { - end } }
+        { { - if .Values.service.grpcService } }
+        - --grpc-service-name={{ .Values.service.grpcService }}
+        { { - end } }
+        { { - range .Values.backends } }
+        - --backend-url={{ . }}
+        { { - end } }
+        { { - if .Values.cache } }
+        - --cache-server={{ .Values.cache }}
+        { { - else if .Values.redis.enabled } }
+        - --cache-server={{ template "fis.fullname" . }}-redis:6379
+        { { - end } }
+        - --level={{ .Values.logLevel }}
+        - --random-delay={{ .Values.faults.delay }}
+        - --random-error={{ .Values.faults.error }}
+        { { - if .Values.faults.unhealthy } }
+        - --unhealthy
+        { { - end } }
+        { { - if .Values.faults.unready } }
+        - --unready
+        { { - end } }
+        { { - if .Values.h2c.enabled } }
+        - --h2c
+        { { - end } }
+        - --http-client-timeout={{ .Values.service.http.client.timeout }}
+        - --rpc-timeout={{ .Values.service.rpc.timeout }}
+        - --http-server-timeout={{ .Values.service.http.server.timeout }}
+        - --http-server-shutdown-timeout={{ .Values.service.http.server.shutdownTimeout }}
+        { { - if eq .Values.service.environment "local" } }
+        - --dbhost={{ .Values.database.host }}.{{ $namespace }}.{{ $svctag }}
+        { { - else } }
+        - --dbhost={{ .Values.database.host }}
+        { { - end } }
+        - --dbport={{ .Values.database.port }}
+        - --dbuser={{ .Values.database.user }}
+        - --dbpassword={{ .Values.database.password }}
+        - --dbname={{ .Values.database.name }}
+        - --dbsslmode={{ .Values.database.sslMode }}
+        - --max-db-conn-attempts={{ .Values.database.maxConnectionAttempts }}
+        - --max-db-conn-retries={{ .Values.database.maxConnectionRetries }}
+        - --max-db-retry-timeout={{ .Values.database.maxConnectionRetryTimeout }}
+        - --max-db-retry-sleep-interval={{ .Values.database.maxConnectionRetrySleepInterval }}
+        - --max-query-timeout={{ .Values.database.maxQueryTimeout }}
+        { { - if .Values.plaid.enabled } }
+        - --plaid-client-id={{ .Values.plaid.clientID }}
+        - --plaid-secret-key={{ .Values.plaid.secretKey }}
+        - --plaid-env={{ .Values.plaid.env }}
+        - --plaid-products={{ .Values.plaid.products }}
+        - --plaid-oauth-domain={{ .Values.plaid.oauthDomain }}
+        - --plaid-webhook-oauth-domain={{ .Values.plaid.webhookOauthDomain }}
+        - --plaid-webhook-enabled={{ .Values.plaid.webhookEnabled }}
+        - --max-plaid-links={{ .Values.plaid.maxPlaidLinks }}
+        { { - end } }
+        { { - if .Values.stripe.enabled } }
+        - --stripe-api-key={{ .Values.stripe.apiKey }}
+        - --stripe-enabled={{ .Values.stripe.enabled }}
+        { { - end } }
+        { { - if .Values.newRelic.enabled } }
+        - --newrelic-api-key={{ .Values.newRelic.apiKey }}
+        - --metrics-reporting-enabled={{ .Values.newRelic.enabled }}
+        { { - end } }
+        - --service-environment={{ .Values.service.env }}
+        - --aws-access-key-id={{ .Values.aws.accessKeyID }}
+        - --aws-secret-access-key={{ .Values.aws.secretAccessKey }}
+        - --aws-region={{ .Values.aws.region }}
+        - --aws-kms-id={{ .Values.aws.kmsID }}
+        { { - if .Values.dependencies.temporal.enabled } }
+        - --temporal-cluster-endpoint={{ $temporalName }}.{{ $temporalNamespace }}.{{ $svctag }}:{{ $temporalPort }}
+        - --temporal-namespace={{ .Values.dependencies.temporal.config.namespace }}
+        - --temporal-retry-initial-interval={{ .Values.dependencies.temporal.retry.retryInterval }}
+        - --temporal-backoff-coefficient={{ .Values.dependencies.temporal.retry.backoffCoefficient }}
+        - --temporal-max-retry-attempts={{ .Values.dependencies.temporal.retry.maxRetryAttempts }}
+        - --temporal-max-retry-interval={{ .Values.dependencies.temporal.retry.maxRetryInterval }}
+        - --temporal-rpc-timeout={{ .Values.dependencies.temporal.rpc.timeout }}
+        - --temporal-task-queue={{ .Values.dependencies.temporal.config.taskQueue }}
+        - --temporal-concurrent-activity-execution-size={{ .Values.dependencies.temporal.config.concurrentActivityExecutionSize }}
+        - --temporal-concurrent-workflow-task-pollers={{ .Values.dependencies.temporal.config.concurrentWorkflowTaskPollers }}
+        - --workflow-execution-timeout={{ .Values.dependencies.temporal.config.workflowExecutionTimeout }}
+        - --workflow-task-timeout={{ .Values.dependencies.temporal.config.workflowTaskTimeout }}
+        - --workflow-run-timeout={{ .Values.dependencies.temporal.config.workflowRunTimeout }}
+        { { - end } }
+      env:
+      { { - if .Values.ui.message } }
+      - name: fis_UI_MESSAGE
+        value: { { quote .Values.ui.message } }
+      { { - end } }
+      { { - if .Values.ui.logo } }
+      - name: fis_UI_LOGO
+        value: { { .Values.ui.logo } }
+      { { - end } }
+      { { - if .Values.ui.color } }
+      - name: fis_UI_COLOR
+        value: { { quote .Values.ui.color } }
+      { { - end } }
+      { { - if .Values.backend } }
+      - name: fis_BACKEND_URL
+        value: { { .Values.backend } }
+      { { - end } }
+      ports:
+        { { - if .Values.service.grpcPort } }
+        - name: grpc
+          containerPort: { { .Values.service.grpcPort } }
+          protocol: TCP
+        { { - end } }
+      volumeMounts:
+        - name: data
+          mountPath: /data
+      { { - if .Values.tls.enabled } }
       - name: tls
-        secret:
-          secretName: {{ template "fis.tlsSecretName" . }}
-      {{- end }}
+        mountPath: { { .Values.tls.certPath | default "/data/cert" } }
+        readOnly: true
+      { { - end } }
+      resources:
+  { { toYaml .Values.resources | indent 12 } }
+  { { - with .Values.nodeSelector } }
+nodeSelector:
+  { { toYaml . | indent 8 } }
+  { { - end } }
+  { { - with .Values.affinity } }
+affinity:
+  { { toYaml . | indent 8 } }
+  { { - end } }
+  { { - with .Values.tolerations } }
+tolerations:
+  { { toYaml . | indent 8 } }
+  { { - end } }
+volumes:
+  - name: data
+    emptyDir: { }
+  { { - if .Values.tls.enabled } }
+- name: tls
+  secret:
+    secretName: { { template "fis.tlsSecretName" . } }
+  { { - end } }

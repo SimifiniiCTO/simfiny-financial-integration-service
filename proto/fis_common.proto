@@ -32,4 +32,4 @@ message Liabilities {
   repeated fis_schema.StudentLoanAccount studentLoan = 3;
 }
 
-message Investments { repeated fis_schema.InvestmentAccount investments = 1; }
+message Investments {repeated fis_schema.InvestmentAccount investments = 1;}

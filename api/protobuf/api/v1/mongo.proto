@@ -6,47 +6,47 @@ import "google/protobuf/timestamp.proto";;
 option go_package = "github.com/SimifiniiCTO/simfiny-financial-integration-service/generate/api/v1";
 
 message TransactionLocation {
-    string address = 1;
-    string city = 2;
-    string region = 3;
-    string postal_code = 4;
-    string country = 5;
-    double lat = 6;
-    double lon = 7;
-    string store_number = 8;
+  string address = 1;
+  string city = 2;
+  string region = 3;
+  string postal_code = 4;
+  string country = 5;
+  double lat = 6;
+  double lon = 7;
+  string store_number = 8;
 }
 
 message PaymentMeta {
-    string by_order_of = 1;
-    string payee = 2;
-    string payer = 3;
-    string payment_method = 4;
-    string payment_processor = 5;
-    string ppd_id = 6;
-    string reason = 7;
-    string reference_number = 8;
+  string by_order_of = 1;
+  string payee = 2;
+  string payer = 3;
+  string payment_method = 4;
+  string payment_processor = 5;
+  string ppd_id = 6;
+  string reason = 7;
+  string reference_number = 8;
 }
 
 message Transaction {
-    string account_id = 1;
-    double amount = 2;
-    string iso_currency_code = 3;
-    string unofficial_currency_code = 4;
-    repeated string category = 5;
-    string category_id = 6;
-    string check_number = 7;
-    string date = 8;
-    google.protobuf.Timestamp datetime = 9;
-    string authorized_date = 10;
-    google.protobuf.Timestamp authorized_datetime = 11;
-    TransactionLocation location = 12;
-    string name = 13;
-    string merchant_name = 14;
-    PaymentMeta payment_meta = 15;
-    string payment_channel = 16;
-    bool pending = 17;
-    string pending_transaction_id = 18;
-    string account_owner = 19;
-    string transaction_id = 20;
-    string transaction_code = 21;
+  string account_id = 1;
+  double amount = 2;
+  string iso_currency_code = 3;
+  string unofficial_currency_code = 4;
+  repeated string category = 5;
+  string category_id = 6;
+  string check_number = 7;
+  string date = 8;
+  google.protobuf.Timestamp datetime = 9;
+  string authorized_date = 10;
+  google.protobuf.Timestamp authorized_datetime = 11;
+  TransactionLocation location = 12;
+  string name = 13;
+  string merchant_name = 14;
+  PaymentMeta payment_meta = 15;
+  string payment_channel = 16;
+  bool pending = 17;
+  string pending_transaction_id = 18;
+  string account_owner = 19;
+  string transaction_id = 20;
+  string transaction_code = 21;
 }

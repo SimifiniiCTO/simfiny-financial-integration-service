@@ -1,4 +1,4 @@
-{{- if .Values.postgresLocalDB.enabled -}}
+{ { - if .Values.postgresLocalDB.enabled - } }
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -8,9 +8,9 @@ metadata:
   name: financial-integration-service-db
 spec:
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteOnce
   resources:
     requests:
       storage: 100Mi
-status: {}
-{{- end }}
+status: { }
+  { { - end } }

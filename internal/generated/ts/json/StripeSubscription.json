@@ -1,56 +1,56 @@
 {
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "$ref": "#/definitions/StripeSubscription",
-    "definitions": {
-        "StripeSubscription": {
-            "properties": {
-                "id": {
-                    "type": "string"
-                },
-                "stripe_subscription_id": {
-                    "type": "string",
-                    "description": "stripe subscription id tied to the customer"
-                },
-                "stripe_subscription_status": {
-                    "enum": [
-                        "STRIPE_SUBSCRIPTION_STATUS_UNSPECIFIED",
-                        0,
-                        "STRIPE_SUBSCRIPTION_STATUS_TRIALING",
-                        1,
-                        "STRIPE_SUBSCRIPTION_STATUS_ACTIVE",
-                        2,
-                        "STRIPE_SUBSCRIPTION_STATUS_PAST_DUE",
-                        3,
-                        "STRIPE_SUBSCRIPTION_STATUS_CANCELED",
-                        4,
-                        "STRIPE_SUBSCRIPTION_STATUS_UNPAID",
-                        5,
-                        "STRIPE_SUBSCRIPTION_STATUS_COMPLETE",
-                        6
-                    ],
-                    "oneOf": [
-                        {
-                            "type": "string"
-                        },
-                        {
-                            "type": "integer"
-                        }
-                    ],
-                    "title": "Stripe Subscription Status"
-                },
-                "stripe_subscription_active_until": {
-                    "type": "string",
-                    "description": "stripe subscription active until"
-                },
-                "stripe_webhook_latest_timestamp": {
-                    "type": "string",
-                    "description": "stripe webhook latest timestamp"
-                }
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/StripeSubscription",
+  "definitions": {
+    "StripeSubscription": {
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "stripe_subscription_id": {
+          "type": "string",
+          "description": "stripe subscription id tied to the customer"
+        },
+        "stripe_subscription_status": {
+          "enum": [
+            "STRIPE_SUBSCRIPTION_STATUS_UNSPECIFIED",
+            0,
+            "STRIPE_SUBSCRIPTION_STATUS_TRIALING",
+            1,
+            "STRIPE_SUBSCRIPTION_STATUS_ACTIVE",
+            2,
+            "STRIPE_SUBSCRIPTION_STATUS_PAST_DUE",
+            3,
+            "STRIPE_SUBSCRIPTION_STATUS_CANCELED",
+            4,
+            "STRIPE_SUBSCRIPTION_STATUS_UNPAID",
+            5,
+            "STRIPE_SUBSCRIPTION_STATUS_COMPLETE",
+            6
+          ],
+          "oneOf": [
+            {
+              "type": "string"
             },
-            "additionalProperties": true,
-            "type": "object",
-            "title": "Stripe Subscription",
-            "description": "StripeSubscription stores high level stripe subscription details of which the user profile has"
+            {
+              "type": "integer"
+            }
+          ],
+          "title": "Stripe Subscription Status"
+        },
+        "stripe_subscription_active_until": {
+          "type": "string",
+          "description": "stripe subscription active until"
+        },
+        "stripe_webhook_latest_timestamp": {
+          "type": "string",
+          "description": "stripe webhook latest timestamp"
         }
+      },
+      "additionalProperties": true,
+      "type": "object",
+      "title": "Stripe Subscription",
+      "description": "StripeSubscription stores high level stripe subscription details of which the user profile has"
     }
+  }
 }

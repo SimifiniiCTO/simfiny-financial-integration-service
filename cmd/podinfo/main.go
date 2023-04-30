@@ -49,12 +49,6 @@ func main() {
 	logger.Info("successfully initialized newrelic sdk ....")
 	instrumentation := configureServiceTelemetryInstance(logger)
 
-	// configure plaid client
-	plaidClient, err := configurePlaidSDK()
-	if err != nil {
-		logger.Panic(err.Error())
-	}
-
 	// load gRPC server config
 	var grpcCfg grpc.Config
 	if err := viper.Unmarshal(&grpcCfg); err != nil {
@@ -92,7 +86,6 @@ func main() {
 		Config:             &grpcCfg,
 		Logger:             logger,
 		Db:                 db,
-		PlaidClient:        plaidClient,
 		Instrumentation:    instrumentation,
 		KeyManagement:      keyManagement,
 		PlaidWrapper:       plaidWrapper,
@@ -135,7 +128,7 @@ func main() {
 	)
 
 	// start HTTP server
-	srv, _ := api.NewServer(&srvCfg, logger, instrumentation, db, plaidClient)
+	srv, _ := api.NewServer(&srvCfg, logger, instrumentation, db)
 	stopCh := signals.SetupSignalHandler()
 	srv.ListenAndServe(stopCh)
 }
@@ -252,14 +245,15 @@ func configureNewrelicSDK(logger *zap.Logger) (*newrelic.Application, error) {
 }
 
 // configurePlaidWrapper configures the plaid sdk wrapper to be userd by the service
-func configurePlaidWrapper(instrimentation *instrumentation.ServiceTelemetry, logger *zap.Logger) (*plaidhandler.PlaidWrapper, error) {
+func configurePlaidWrapper(instrumentation *instrumentation.ServiceTelemetry, logger *zap.Logger) (*plaidhandler.PlaidWrapper, error) {
 	var (
 		plaidClientID       = viper.GetString("plaid-client-id")
 		plaidSecretKey      = viper.GetString("plaid-secret-key")
 		plaidEnv            = viper.GetString("plaid-env")
 		oauthDomain         = viper.GetString("plaid-oauth-domain")
-		webhooksEnabled     = viper.GetBool("plaid-webhooks-enabled")
-		webhooksOauthDomain = viper.GetString("plaid-webhooks-oauth-domain")
+		webhooksEnabled     = viper.GetBool("plaid-webhook-enabled")
+		webhooksOauthDomain = viper.GetString("plaid-webhook-oauth-domain")
+		products            = viper.GetStringSlice("plaid-products")
 	)
 
 	env, err := decipherPlaidEnvironment(plaidEnv)
@@ -271,11 +265,12 @@ func configurePlaidWrapper(instrimentation *instrumentation.ServiceTelemetry, lo
 		plaidhandler.WithEnvironment(env),
 		plaidhandler.WithClientID(plaidClientID),
 		plaidhandler.WithSecretKey(plaidSecretKey),
-		plaidhandler.WithInstrumentation(instrimentation),
+		plaidhandler.WithInstrumentation(instrumentation),
 		plaidhandler.WithLogger(logger),
 		plaidhandler.WithOauthDomain(oauthDomain),
 		plaidhandler.WithWebhooksDomain(webhooksOauthDomain),
 		plaidhandler.WithWebhooksEnabled(webhooksEnabled),
+		plaidhandler.WithProducts(products),
 	}
 
 	// declare plaid wrapper

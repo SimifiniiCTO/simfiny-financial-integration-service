@@ -11,8 +11,8 @@ message Security {
     ormable : true,
   };
   uint64 Id = 1
-      [ (gorm.field).tag =
-            {type : "serial" primary_key : true, auto_increment : true} ];
+  [(gorm.field).tag =
+  {type : "serial" primary_key : true, auto_increment : true}];
   bool IsCashEquivalent = 2;
   uint64 ClosePrice = 3;
   string CurrencyCode = 4;
@@ -29,8 +29,8 @@ message Balance {
     ormable : true,
   };
   uint64 Id = 1
-      [ (gorm.field).tag =
-            {type : "serial" primary_key : true, auto_increment : true} ];
+  [(gorm.field).tag =
+  {type : "serial" primary_key : true, auto_increment : true}];
   double AvailableFunds = 2;
   double CurrentFunds = 3;
   string CurrencyCode = 4;
@@ -47,17 +47,17 @@ message VirtualAccount {
   string AccessToken = 2;
   uint64 UserID = 3;
   repeated DepositAccount DepositAccountID = 4
-      [ (gorm.field).has_many.preload = true ];
+  [(gorm.field).has_many.preload = true];
   repeated CreditAccount CreditAccountID = 5
-      [ (gorm.field).has_many.preload = true ];
+  [(gorm.field).has_many.preload = true];
   repeated MortgageLoanAccount MortgageLoanAccountID = 6
-      [ (gorm.field).has_many.preload = true ];
+  [(gorm.field).has_many.preload = true];
   repeated StudentLoanAccount StudentLoanAccountID = 7
-      [ (gorm.field).has_many.preload = true ];
-	repeated InvestmentAccount InvestmentAccountID = 8
-	[ (gorm.field).has_many.preload = true ];
-	bool Active = 9;
-	string PlaidItemID = 10;
+  [(gorm.field).has_many.preload = true];
+  repeated InvestmentAccount InvestmentAccountID = 8
+  [(gorm.field).has_many.preload = true];
+  bool Active = 9;
+  string PlaidItemID = 10;
 };
 
 message DepositAccount {
@@ -69,7 +69,7 @@ message DepositAccount {
   string AccountSubtype = 3;
   string AccountType = 4;
   string AccountName = 5;
-  Balance BalanceID = 6 [ (gorm.field).has_one.preload = true ];
+  Balance BalanceID = 6 [(gorm.field).has_one.preload = true];
 };
 
 message CreditAccount {
@@ -86,9 +86,9 @@ message CreditAccount {
   string LastStatementIssueDate = 8;
   double MinimumPaymentAmount = 9;
   string NextPaymentDueDate = 10;
-  repeated APR Aprs = 11 [ (gorm.field).has_many.preload = true ];
-	Balance BalanceID = 12 [ (gorm.field).has_one.preload = true ];
-	string AccountName = 13;
+  repeated APR Aprs = 11 [(gorm.field).has_many.preload = true];
+  Balance BalanceID = 12 [(gorm.field).has_one.preload = true];
+  string AccountName = 13;
 };
 
 message APR {
@@ -125,12 +125,12 @@ message MortgageLoanAccount {
   string OriginationDate = 17;
   double OriginationPrincipalAmount = 18;
   double PastDueAmount = 19;
-  Interest InterestID = 20 [ (gorm.field).has_one.preload = true ];
-  Address AddressID = 21 [ (gorm.field).has_one.preload = true ];
+  Interest InterestID = 20 [(gorm.field).has_one.preload = true];
+  Address AddressID = 21 [(gorm.field).has_one.preload = true];
   double InterestPaidYTD = 22;
   double PrincipalPaidYTD = 23;
-	Balance BalanceID = 24 [ (gorm.field).has_one.preload = true ];
-	string AccountName = 25;
+  Balance BalanceID = 24 [(gorm.field).has_one.preload = true];
+  string AccountName = 25;
 };
 
 message Interest {
@@ -180,13 +180,13 @@ message StudentLoanAccount {
   double OutstandingInterestAmount = 21;
   string PaymentReferenceNumber = 22;
   string SequenceNumber = 23;
-  Pslf PslfID = 24 [ (gorm.field).has_one.preload = true ];
+  Pslf PslfID = 24 [(gorm.field).has_one.preload = true];
   string RepaymentPlan = 25;
-  Address ServisorAddressID = 26 [ (gorm.field).has_one.preload = true ];
+  Address ServisorAddressID = 26 [(gorm.field).has_one.preload = true];
   double InterestPaidYTD = 27;
   double PrincipalPaidYTD = 28;
-	Balance BalanceID = 29 [ (gorm.field).has_one.preload = true ];
-	string AccountName = 30;
+  Balance BalanceID = 29 [(gorm.field).has_one.preload = true];
+  string AccountName = 30;
 };
 
 message Pslf {
@@ -209,7 +209,7 @@ message InvestmentAccount {
   string AccountType = 4;
   string AccountName = 5;
 
-  Balance BalanceID = 6 [ (gorm.field).has_one.preload = true ];
-  repeated Security SecurityID = 7 [ (gorm.field).has_many.preload = true ];
+  Balance BalanceID = 6 [(gorm.field).has_one.preload = true];
+  repeated Security SecurityID = 7 [(gorm.field).has_many.preload = true];
 };
 

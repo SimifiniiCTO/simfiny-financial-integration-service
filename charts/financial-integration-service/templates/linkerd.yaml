@@ -1,10 +1,10 @@
-{{- if .Values.linkerd.profile.enabled -}}
+{ { - if .Values.linkerd.profile.enabled - } }
 apiVersion: linkerd.io/v1alpha2
 kind: ServiceProfile
 metadata:
-  name: {{ template "fis.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local
+  name: { { template "fis.fullname" . } }.{{ .Release.Namespace }}.svc.cluster.local
   labels:
-    {{- include "fis.labels" . | nindent 4 }}  
+    {{- include "fis.labels" . | nindent 4 }}
 spec:
   routes:
     - condition:
@@ -95,4 +95,4 @@ spec:
         method: POST
         pathRegex: /ws/echo
       name: POST /ws/echo
-{{- end }}
+  { { - end } }

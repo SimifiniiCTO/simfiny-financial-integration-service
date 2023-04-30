@@ -14,7 +14,7 @@ build:
     envTemplate:
       template: "latest"
 
-    
+
 deploy:
   helm:
     releases:
