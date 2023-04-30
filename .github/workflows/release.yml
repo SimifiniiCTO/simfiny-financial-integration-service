@@ -81,10 +81,9 @@ jobs:
             helmv3 template ./charts/financial-integration-service --set linkerd.profile.enabled=false --set hpa.enabled=false | kubeval --strict --kubernetes-version 1.19.11 --schema-location https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master
       - name: Publish Helm chart to GHCR
         run: |
-          HELM_EXPERIMENTAL_OCI=1
-          helm package charts/financial-integration-service --version ${{ steps.prep.outputs.HELM_VERSION }}
+          helm package charts/financial-integration-service
           helm push financial-integration-service-${{ steps.prep.outputs.HELM_VERSION }}.tgz oci://ghcr.io/simifiniicto/charts
-          # rm financial-integration-service-${{ steps.prep.outputs.HELM_VERSION }}.tgz
+          rm financial-integration-service-${{ steps.prep.outputs.HELM_VERSION }}.tgz
       - name: Publish Flux OCI artifact to GHCR
         run: |
           flux push artifact oci://ghcr.io/simifiniicto/manifests/financial-integration-service:${{ steps.prep.outputs.HELM_VERSION }} \
