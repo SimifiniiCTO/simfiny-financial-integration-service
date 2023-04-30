@@ -57,17 +57,11 @@ plaid:
   secretKey: 49ed22a2ee591f4e3f366c4474438d
   # plaid environment 
   env: development
-  # A webhook is an HTTP request used to provide push notifications. Plaid sends webhooks to programmatically
-  # inform you about changes to Plaid Items or the status of asynchronous processes. For example, Plaid will send
-  # a webhook when an Item is in an error state or has additional data available, or when a non-blocking process 
-  # (like gathering transaction data or verifying a bank account via micro-deposits) is com plete.
-  #
-  # To receive Plaid webhooks, set up a dedicated endpoint on your server as a webhook listener that can receive
-  # POST requests, then provide this endpoint URL to Plaid as described in the next section. You can also test
-  # webhooks without setting up your own endpoint following the instructions in Testing webhooks in Sandbox. 
-  #
-  # ref: https://plaid.com/docs/api/webhooks/#introduction-to-webhooks
-  webhookUrl: "https://simfiny.dev/v1/gateway/plaid/webhook"
+  # Only institutions that support ALL listed products will be displayed in Link.
+  # If you don't see the institution you want in Link, remove any products you aren't using.
+  # Important: When moving to Production, make sure to update this list with only the products
+  # you plan to use. Otherwise, you may be billed for unneeded products.
+  products: transactions,auth,balance,investments,liabilities
   # Only required for OAuth:
   # For sandbox, set PLAID_REDIRECT_URI to 'http://localhost:3000/'
   # The OAuth redirect flow requires an endpoint on the developer's website
@@ -77,15 +71,17 @@ plaid:
   # For development or production, you will need to use an https:// url
   # If you are not set up to use localhost with https:// on your system, you will be unable to test OAuth in development or production.
   # In this case you can leave the PLAID_REDIRECT_URI blank.
-  redirectUrl: "https://simfiny.dev/v1/gateway/plaid/oauth-return"
-  # Only institutions that support ALL listed products will be displayed in Link.
-  # If you don't see the institution you want in Link, remove any products you aren't using.
-  # Important: When moving to Production, make sure to update this list with only the products
-  # you plan to use. Otherwise, you may be billed for unneeded products.
-  products: transactions,auth,balance,investments,liabilities
-  # oauth domain
   oauthDomain: simfiny
-  # webhook oauth domain
+  # A webhook is an HTTP request used to provide push notifications. Plaid sends webhooks to programmatically
+  # inform you about changes to Plaid Items or the status of asynchronous processes. For example, Plaid will send
+  # a webhook when an Item is in an error state or has additional data available, or when a non-blocking process
+  # (like gathering transaction data or verifying a bank account via micro-deposits) is com plete.
+  #
+  # To receive Plaid webhooks, set up a dedicated endpoint on your server as a webhook listener that can receive
+  # POST requests, then provide this endpoint URL to Plaid as described in the next section. You can also test
+  # webhooks without setting up your own endpoint following the instructions in Testing webhooks in Sandbox.
+  #
+  # ref: https://plaid.com/docs/api/webhooks/#introduction-to-webhooks
   webhookOauthDomain: simfiny
   # wether or not a webhook is enabled
   webhookEnabled: true

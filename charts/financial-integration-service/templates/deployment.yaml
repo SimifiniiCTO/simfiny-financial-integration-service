@@ -131,8 +131,6 @@ spec:
         - --plaid-client-id={{ .Values.plaid.clientID }}
         - --plaid-secret-key={{ .Values.plaid.secretKey }}
         - --plaid-env={{ .Values.plaid.env }}
-        - --plaid-webhook-url={{ .Values.plaid.webhookUrl }}
-        - --plaid-redirect-url={{ .Values.plaid.redirectUrl }}
         - --plaid-products={{ .Values.plaid.products }}
         - --plaid-oauth-domain={{ .Values.plaid.oauthDomain }}
         - --plaid-webhook-oauth-domain={{ .Values.plaid.webhookOauthDomain }}
