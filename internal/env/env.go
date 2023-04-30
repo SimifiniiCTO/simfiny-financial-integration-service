@@ -67,11 +67,13 @@ func ReadEnvVars() {
 
 	// plaid specific keys
 	fs.String("plaid-client-id", "61eb5d49ea3b4700127560d1", "plaid client id")
+	// development secret key: 49ed22a2ee591f4e3f366c4474438d
+	// sandbox secret key: 465686056e8fd1b87db3d993d096d8
 	fs.String("plaid-secret-key", "465686056e8fd1b87db3d993d096d8", "plaid secret key")
 	fs.String("plaid-env", "sandbox", "plaid environment")
-	fs.StringSlice("plaid-products", []string{"transactions", "auth", "balance", "investments", "liabilities"}, "plaid products to enable")
-	fs.String("plaid-oauth-domain", "simfiny", "plaid oauth domain")
-	fs.String("plaid-webhook-oauth-domain", "simfiny", "plaid webhook oauth domain")
+	fs.StringSlice("plaid-products", []string{"investments", "liabilities"}, "plaid products to enable")
+	fs.String("plaid-oauth-domain", "localhost:9896/v1", "plaid oauth domain")
+	fs.String("plaid-webhook-oauth-domain", "localhost:9896/v1", "plaid webhook oauth domain")
 	fs.Bool("plaid-webhook-enabled", true, "enable plaid webhook")
 	fs.Uint64("max-plaid-links", 5, "plaid link limit")
 

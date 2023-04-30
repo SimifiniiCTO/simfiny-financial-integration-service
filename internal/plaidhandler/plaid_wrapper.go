@@ -125,3 +125,12 @@ func (p *PlaidWrapper) ToJSON() string {
 
 	return string(b)
 }
+
+func (p *PlaidWrapper) EnabledProductsToString() []string {
+	results := make([]string, 0, len(p.EnabledProducts))
+	for _, element := range p.EnabledProducts {
+		results = append(results, string(element))
+	}
+
+	return results
+}
