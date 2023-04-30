@@ -84,20 +84,20 @@ jobs:
           #helm package charts/financial-integration-service
           #helm push financial-integration-service-${{ steps.prep.outputs.HELM_VERSION }}.tgz oci://ghcr.io/simifiniicto/charts
           #rm financial-integration-service-${{ steps.prep.outputs.HELM_VERSION }}.tgz
-      - name: Publish Flux OCI artifact to GHCR
-        run: |
-          flux push artifact oci://ghcr.io/simifiniicto/manifests/financial-integration-service:${{ steps.prep.outputs.HELM_VERSION }} \
-            --path="./kustomize" \
-            --source="${{ github.event.repository.html_url }}" \
-            --revision="${GITHUB_REF_NAME}/${GITHUB_SHA}"
-          flux tag artifact oci://ghcr.io/simifiniicto/manifests/financial-integration-service:${{ steps.prep.outputs.HELM_VERSION }} --tag latest
-      - name: Publish config artifact
-        run: |
-          flux push artifact oci://ghcr.io/simifiniicto/financial-integration-service-deploy:${{ steps.prep.outputs.HELM_VERSION }} \
-            --path="./kustomize" \
-            --source="${{ github.event.repository.html_url }}" \
-            --revision="${GITHUB_REF_NAME}/${GITHUB_SHA}"
-          flux tag artifact oci://ghcr.io/simifiniicto/financial-integration-service-deploy:${{ steps.prep.outputs.HELM_VERSION }} --tag latest
+      #- name: Publish Flux OCI artifact to GHCR
+      #  run: |
+      #    flux push artifact oci://ghcr.io/simifiniicto/manifests/financial-integration-service:${{ steps.prep.outputs.HELM_VERSION }} \
+      #      --path="./kustomize" \
+      #      --source="${{ github.event.repository.html_url }}" \
+      #      --revision="${GITHUB_REF_NAME}/${GITHUB_SHA}"
+      #    flux tag artifact oci://ghcr.io/simifiniicto/manifests/financial-integration-service:${{ steps.prep.outputs.HELM_VERSION }} --tag latest
+      #- name: Publish config artifact
+      #  run: |
+      #    flux push artifact oci://ghcr.io/simifiniicto/financial-integration-service-deploy:${{ steps.prep.outputs.HELM_VERSION }} \
+      #      --path="./kustomize" \
+      #      --source="${{ github.event.repository.html_url }}" \
+      #      --revision="${GITHUB_REF_NAME}/${GITHUB_SHA}"
+      #    flux tag artifact oci://ghcr.io/simifiniicto/financial-integration-service-deploy:${{ steps.prep.outputs.HELM_VERSION }} --tag latest
       - name: Publish Service Helm Chart
         uses: stefanprodan/helm-gh-pages@master
         with:
