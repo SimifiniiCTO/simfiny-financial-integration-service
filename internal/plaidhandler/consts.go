@@ -12,10 +12,8 @@ var (
 		plaid.COUNTRYCODE_US,
 	}
 	PlaidProducts = []plaid.Products{
-		plaid.PRODUCTS_BALANCE,
 		plaid.PRODUCTS_INVESTMENTS,
 		plaid.PRODUCTS_LIABILITIES,
-		plaid.PRODUCTS_TRANSACTIONS,
 	}
 )
 
