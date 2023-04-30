@@ -67,7 +67,7 @@ plaid:
   # webhooks without setting up your own endpoint following the instructions in Testing webhooks in Sandbox. 
   #
   # ref: https://plaid.com/docs/api/webhooks/#introduction-to-webhooks
-  webhookUrl:  "https://simfiny.dev/v1/gateway/plaid/webhook"
+  webhookUrl:  "simfiny.dev/v1/gateway"
   # Only required for OAuth:
   # For sandbox, set PLAID_REDIRECT_URI to 'http://localhost:3000/'
   # The OAuth redirect flow requires an endpoint on the developer's website
@@ -77,7 +77,7 @@ plaid:
   # For development or production, you will need to use an https:// url
   # If you are not set up to use localhost with https:// on your system, you will be unable to test OAuth in development or production.
   # In this case you can leave the PLAID_REDIRECT_URI blank.
-  redirectUrl: "https://simfiny.dev/v1/gateway/plaid/oauth-return"
+  redirectUrl: "simfiny.dev/v1/gateway"
   # Only institutions that support ALL listed products will be displayed in Link.
   # If you don't see the institution you want in Link, remove any products you aren't using.
   # Important: When moving to Production, make sure to update this list with only the products
