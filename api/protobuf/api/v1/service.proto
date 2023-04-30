@@ -68,8 +68,8 @@ service FinancialService {
       tags: ["user profile"]
       operation_id: "CreateUserProfile"
       description:
-          "This endpoint performs an a creation operation of a user profile based on the provided parameters"
-              "This operation is implemented as a distributed transactions as this operation can span multiple services"
+        "This endpoint performs an a creation operation of a user profile based on the provided parameters"
+        "This operation is implemented as a distributed transactions as this operation can span multiple services"
       responses: {
         key: "200"
         value: {
@@ -108,10 +108,10 @@ service FinancialService {
       tags: ["user profile"]
       operation_id: "DeleteUserProfile"
       description:
-          "This endpoint performs a delete operation on a user profile based on the provided parameters"
-              "This deletion operation spans multiple services (plaid) as user details are stored across a suite of our backend services"
-              "The operation itself is an atomic one of nature. Either all services successfully delete the recod or we fail the request"
-              "Divergent state is not expected to be encountered with this endpoint."
+        "This endpoint performs a delete operation on a user profile based on the provided parameters"
+        "This deletion operation spans multiple services (plaid) as user details are stored across a suite of our backend services"
+        "The operation itself is an atomic one of nature. Either all services successfully delete the recod or we fail the request"
+        "Divergent state is not expected to be encountered with this endpoint."
       responses: {
         key: "200"
         value: {
@@ -133,9 +133,9 @@ service FinancialService {
       tags: ["user profile"]
       operation_id: "UpdateUserProfile"
       description:
-          "This endpoint performs an updates operation on a user profile based on the provided parameters"
-              "This update operation can span multiple services on specific cases (such as when the client is explicitly attempting to update the email of the user)"
-              "All update operations are atomic by nature hence we should not expect any form of divergent state"
+        "This endpoint performs an updates operation on a user profile based on the provided parameters"
+        "This update operation can span multiple services on specific cases (such as when the client is explicitly attempting to update the email of the user)"
+        "All update operations are atomic by nature hence we should not expect any form of divergent state"
       responses: {
         key: "200"
         value: {
@@ -177,9 +177,9 @@ service FinancialService {
       tags: ["bank account"]
       operation_id: "GetBankAccount"
       description:
-          "This endpoint returns the bank account if the user record id and bank account id exists"
-              "\n"
-              "example: /api/v1/bank-account?user_id=xxxxxx&&bank_account_id=xxxxxxx"
+        "This endpoint returns the bank account if the user record id and bank account id exists"
+        "\n"
+        "example: /api/v1/bank-account?user_id=xxxxxx&&bank_account_id=xxxxxxx"
       responses: {
         key: "200"
         value: {
@@ -222,10 +222,10 @@ service FinancialService {
       tags: ["bank account"]
       operation_id: "DeleteUserProfile"
       description:
-          "This endpoint performs a delete operation on a user profile based on the provided parameters"
-              "This deletion operation spans multiple services (plaid) as user details are stored across a suite of our backend services"
-              "The operation itself is an atomic one of nature. Either all services successfully delete the recod or we fail the request"
-              "Divergent state is not expected to be encountered with this endpoint."
+        "This endpoint performs a delete operation on a user profile based on the provided parameters"
+        "This deletion operation spans multiple services (plaid) as user details are stored across a suite of our backend services"
+        "The operation itself is an atomic one of nature. Either all services successfully delete the recod or we fail the request"
+        "Divergent state is not expected to be encountered with this endpoint."
       responses: {
         key: "200"
         value: {
@@ -245,9 +245,9 @@ service FinancialService {
       tags: ["pocket"]
       operation_id: "GetPocket"
       description:
-          "This endpoint returns the pocket if the pocket exists"
-              "\n"
-              "example: /api/v1/pocket/xxxxxxx"
+        "This endpoint returns the pocket if the pocket exists"
+        "\n"
+        "example: /api/v1/pocket/xxxxxxx"
       responses: {
         key: "200"
         value: {

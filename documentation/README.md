@@ -8,67 +8,49 @@
 
 ## Introduction
 
-The primary goal of the Financial Integration Service is to provide an interface by which api consumers can access and
-modify financial records owned by users on our platform. This service (leveraging the Plaid API) will serve as a single
-source of truth for all financial records on Simfinii.
+The primary goal of the Financial Integration Service is to provide an interface by which api consumers can access and modify financial records owned by users on our platform. This service (leveraging the Plaid API) will serve as a single source of truth for all financial records on Simfinii.
 
 ## Motivation
 
-Simfinii provides a medium by which numerous stakeholders can not only track the health of their finances, but leverage
-their peers and our various offerings to achieve all conceivable financial goals they may withhold. Given the nature of
-the platform we are building, properly architecting the flow of financial data across the Simfinii ecosystem is a
-component critical to providing the value we believe our users need. The financial integration service plays an
-instrumental role in this realm from the context of the backend.
+Simfinii provides a medium by which numerous stakeholders can not only track the health of their finances, but leverage their peers and our various offerings to achieve all conceivable financial goals they may withhold. Given the nature of the platform we are building, properly architecting the flow of financial data across the Simfinii ecosystem is a component critical to providing the value we believe our users need. The financial integration service plays an instrumental role in this realm from the context of the backend.
 
-Through the financial integration service, users are able to obtain a holistic view of their financial health spanning
-investments, liabilities, and past transactions. This will serve as the core service driving all features requiring user
-financial data.
+Through the financial integration service, users are able to obtain a holistic view of their financial health spanning investments, liabilities, and past transactions. This will serve as the core service driving all features requiring user financial data.
 
-This technical design document provides granular details specific to service level interactions, dependencies,
-monitoring, …etc. The aim here is to provide as much detail as possible in hopes of easing the onboarding process of any
-future developer and effectively providing a reference to be utilized throughout development.
+This technical design document provides granular details specific to service level interactions, dependencies, monitoring, …etc. The aim here is to provide as much detail as possible in hopes of easing the onboarding process of any future developer and effectively providing a reference to be utilized throughout development.
 
 ## Potential/Proposed Solutions
 
 The financial integration functionality is made up of the following set of dependencies:
 
 1. Singular service
-    1. Features encompass transaction management (credit, debit, & investment accounts), and account balance + liability
-       inquiries.
+    1. Features encompass transaction management (credit, debit, & investment accounts), and account balance + liability inquiries.
     2. Could potentially support expense reporting, cash flow modeling, risk analysis,
 2. PostgreSQL Database
 
-This service exposes a set of gRPC endpoints through which API consumers can interact with the data it presides over.
-gRPC was picked as the communication protocol of choice for many reasons defined below.
+This service exposes a set of gRPC endpoints through which API consumers can interact with the data it presides over. gRPC was picked as the communication protocol of choice for many reasons defined below.
 
 1. gRPC uses HTTP/2 which allows support for highly performant and scalable APIs making use of binary data
 2. More compact and efficient communication scheme through binary payload
 3. Easier to generate client side gRPC libraries
 4. Low latencies, especially beneficial to us as we ensure the service meets strict SLA requirements.
 
-PostgreSQL is the database of choice for this service. We decided to use this database due in part to its extensibility.
-Postgres allows us to define our own types, build custom function aligned with our business needs, and abide by many of
-the features required by the SQL standard. Below are further reasons we chose to select this database as our main
-storage component.
+PostgreSQL is the database of choice for this service. We decided to use this database due in part to its extensibility. Postgres allows us to define our own types, build custom function aligned with our business needs, and abide by many of the features required by the SQL standard. Below are further reasons we chose to select this database as our main storage component.
 
 1. Common & Custom Data Types (Primitive, Structured, Document, Geometry, & Customizable types)
 2. Data Integrity through exclusion constraints and explicit + advisory locks
 3. Concurrency & Performance
-    1. Sophisticated query planner and optimizer, multi version concurrency control, read query parallelization, table
-       partitioning, JIT compilation of expressions, sophisticated and isolated transactions
+    1. Sophisticated query planner and optimizer, multi version concurrency control, read query parallelization, table partitioning, JIT compilation of expressions, sophisticated and isolated transactions
 4. Reliability & Disaster Recovery
     1. Asynchronous and Synchronous replication, Write ahead logging, tablespaces,...etc
 5. Robust access control system, Column + Row Level security
 6. Extensibility
     1. Stored functions & procedures, customizable storage interfaces, foreign data wrappers
 
-In summary, we believe that PostgreSQL as our storage unit and grpc as our api allow us to have the most performant
-service inherently elevating the quality of our end customers experience.
+In summary, we believe that PostgreSQL as our storage unit and grpc as our api allow us to have the most performant service inherently elevating the quality of our end customers experience.
 
 ## Assumptions/Estimations
 
-No assumptions are currently present outside of those defined in the below set of estimations. However, this section is
-prone to change especially as the service level requirements change.
+No assumptions are currently present outside of those defined in the below set of estimations. However, this section is prone to change especially as the service level requirements change.
 
 ### Capacity Estimation
 
@@ -88,29 +70,17 @@ prone to change especially as the service level requirements change.
 
 ## Constraints/Limitations
 
-According to the CAP theorem it is not possible for a distributed system to provide more than two of the following
-guarantees simultaneously.
+According to the CAP theorem it is not possible for a distributed system to provide more than two of the following guarantees simultaneously.
 
 - Consistency: Consistency implies that every read receives the most recent write or errors out
-- Availability: Availability implies that every request receives a response. It is not guaranteed that the response
-  contains the most recent write or data.
-- Partition tolerance: Partition tolerance refers to the tolerance of a storage system to failure of a network
-  partition. Even if some of the messages are dropped or delayed the system continues to operate.
+- Availability: Availability implies that every request receives a response. It is not guaranteed that the response contains the most recent write or data.
+- Partition tolerance: Partition tolerance refers to the tolerance of a storage system to failure of a network partition. Even if some of the messages are dropped or delayed the system continues to operate.
 
-CAP theorem implies that when using a network partition, with the inherent risk of partition failure, one has to choose
-between consistency and availability and both cannot be guaranteed at the same time.
+CAP theorem implies that when using a network partition, with the inherent risk of partition failure, one has to choose between consistency and availability and both cannot be guaranteed at the same time.
 
-High availability is a priority for social financial applications and to this objective, the financial integration
-service chooses availability and partition tolerance from the CAP guarantees compromising on data consistency to some
-extent. We are comfortable with eventual consistency and these ideals are defined in our architecture and service level
-interactions.
+High availability is a priority for social financial applications and to this objective, the financial integration service chooses availability and partition tolerance from the CAP guarantees compromising on data consistency to some extent. We are comfortable with eventual consistency and these ideals are defined in our architecture and service level interactions.
 
-To enforce this notion of eventual consistency, all write requests should be performed with the proper set of retries
-upon encountered failures. Additionally, a granular set of metrics should be emitted for all operations on the write
-path. Sensitive alerting should be present on all critical API paths or paths involved in any distributed transaction
-comprised of numerous stage changes across more than 1 service. **** All reads/writes on the contrary are performed via
-the gRPC api invocation. Lastly, this service's load patterns will primarily be on the READs side hence, any mechanism
-introduced to elevate scale should take this into account.
+To enforce this notion of eventual consistency, all write requests should be performed with the proper set of retries upon encountered failures. Additionally, a granular set of metrics should be emitted for all operations on the write path. Sensitive alerting should be present on all critical API paths or paths involved in any distributed transaction comprised of numerous stage changes across more than 1 service. **** All reads/writes on the contrary are performed via the gRPC api invocation. Lastly, this service's load patterns will primarily be on the READs side hence, any mechanism introduced to elevate scale should take this into account. 
 
 ## System Design/Architecture
 
@@ -126,48 +96,34 @@ CAP: Consistency, Availability, Partition Tolerance
 
 PostgreSQL: Database which stores records in tabular form
 
-gRPC: Open source remote procedure call system which uses HTTP/2 for transport and protocol buffers as the interface
-description language
+gRPC: Open source remote procedure call system which uses HTTP/2 for transport and protocol buffers as the interface description language
 
 ### Hard & Soft Requirements
 
-This is a very crucial part of the system. Hence, if there is an outage across all instances, users will no longer have
-access to financial records. Not to mention the various consuming services that leverage the financial data provided by
-this service to provide value to our end users.. Additionally, API consumers will experience enormous latencies as
-queues fill up while trying to service write operations. This potentially exposes us to dropped messages and a backend
-composed of many divergent states. An outage with this service would substantially affect our business offerings. Thus,
-it is crucial we provision the proper mitigations in place to limit this from occurring.
+This is a very crucial part of the system. Hence, if there is an outage across all instances, users will no longer have access to financial records. Not to mention the various consuming services that leverage the financial data provided by this service to provide value to our end users.. Additionally, API consumers will experience enormous latencies as queues fill up while trying to service write operations. This potentially exposes us to dropped messages and a backend composed of many divergent states. An outage with this service would substantially affect our business offerings. Thus, it is crucial we provision the proper mitigations in place to limit this from occurring.
 
 Some potential mitigations to set in place are the following:
 
-1. Ensure at least 5 stateless instances of the service are always running behind a load balancer allowing for automatic
-   failover to other instances
+1. Ensure at least 5 stateless instances of the service are always running behind a load balancer allowing for automatic failover to other instances
 2. Ensure LinkerD sidecar deployed alongside every service
     1. Metrics, load balancing, retries, timeouts, traffic split
 3. Provide extensive telemetry
-    1. Custom Metrics (Infra., Operational, Business Logic, Requests, Failure Rates, Database Performance Metrics,
-       ...etc)
+    1. Custom Metrics (Infra., Operational, Business Logic, Requests, Failure Rates, Database Performance Metrics, ...etc)
     2. Sensitive Alerting Logic
 4. Service level dependency isolation
 5. Set Request Timeouts & Leverage Circuit Breaker
 6. Allow service to report health metrics and diagnostics.
 7. Leverage a redis cluster and cache responses of frequently invoked APIs (compress payloads)
 
-Reference the
-following [resource](https://docs.microsoft.com/en-us/dotnet/architecture/microservices/architect-microservice-container-applications/resilient-high-availability-microservices)
-for further elaborations on resiliency techniques in distributed systems.
+Reference the following [resource](https://docs.microsoft.com/en-us/dotnet/architecture/microservices/architect-microservice-container-applications/resilient-high-availability-microservices) for further elaborations on resiliency techniques in distributed systems.
 
 ### Algorithm & Pseudocode For Main Components
 
 ### Update Operations
 
-Any operation which updates/deletes the state of a financial record must eventually occur regardless of whether the
-service is available or not. With this constraint, all update operations are read from a message queue by the financial
-integration service. This is done via a go-routine which subscribes to a channel and processes said events. Operations
-depending on the use case are performed against our Cassandra instance as well as the Plaid API if required.
+Any operation which updates/deletes the state of a financial record must eventually occur regardless of whether the service is available or not. With this constraint, all update operations are read from a message queue by the financial integration service. This is done via a go-routine which subscribes to a channel and processes said events. Operations depending on the use case are performed against our Cassandra instance as well as the Plaid API if required.
 
-Events must withhold granular details as well as metadata associated with the operation. **The event schema definition
-will be further elaborated upon in the future.**
+Events must withhold granular details as well as metadata associated with the operation. **The event schema definition will be further elaborated upon in the future.**
 
 ### Query Operations
 
@@ -185,8 +141,7 @@ These are defined in the constraints and limitation sections. Further elaboratio
 
 The securities scheme provides a view of all the security holdings a given account has.
 
-**Note:** It is not meant to provide the current monetary value of an account as that would force us to somehow track
-security prices which adds another level of complexity to our backend
+**Note:** It is not meant to provide the current monetary value of an account as that would force us to somehow track security prices which adds another level of complexity to our backend
 
 ```json
 Security
@@ -204,9 +159,7 @@ Fields:
 
 **Balances (Schema)**
 
-The balance table is the single source of truth for account balances in our backend. Each balance object withholds a
-primary key to the account (not virtual account ... plaid account in this case) which is its owner (record created in
-our own backend).
+The balance table is the single source of truth for account balances in our backend. Each balance object withholds a primary key to the account (not virtual account ... plaid account in this case) which is its owner (record created in our own backend). 
 
 ```json
 Balance
@@ -223,13 +176,9 @@ Fields:
 
 **Virtual Account (Schema)**
 
-Every user record has a virtual account id associated with it. A virtual account abstracts a grouping of separate plaid
-accounts a user can have. All child account types withhold a mapping to a parent virtual account and in the relational
-world this is enforced through primary keys.
+Every user record has a virtual account id associated with it. A virtual account abstracts a grouping of separate plaid accounts a user can have. All child account types withhold a mapping to a parent virtual account and in the relational world this is enforced through primary keys. 
 
-Example: A user may have numerous plaid accounts comprised of loans, credit, savings, debt acct.... etc. A virtual
-account encompasses all such accts and associates such to user records. Meaning for each user record created there is
-one virtual account which can have N actual accounts (all obtained from PLAID API)
+Example: A user may have numerous plaid accounts comprised of loans, credit, savings, debt acct.... etc. A virtual account encompasses all such accts and associates such to user records. Meaning for each user record created there is one virtual account which can have N actual accounts (all obtained from PLAID API)
 
 ```json
 Virtual Account
@@ -318,7 +267,7 @@ Fields:
 	PrincipalPaidYTD
 ```
 
-**Interest Table**
+**Interest Table** 
 
 ```json
 Interest
@@ -412,8 +361,7 @@ Fields:
 
 Returns the set of accounts a given integrationAccountID witholds (this data originates from PLAID)
 
-**NOTE:**Must find a sensible technical way to poll PLAID API every n days for new user accounts after a user has
-initially decided to create an account in order to capture any new accounts a user created
+**NOTE:**Must find a sensible technical way to poll PLAID API every n days for new user accounts after a user has initially decided to create an account in order to capture any new accounts a user created
 
 **RESPONSE**
 
@@ -445,7 +393,7 @@ Possible values of `type`
 investment, credit, depository, loan, brokerage, other 
 ```
 
-**RESPONSE**
+**RESPONSE** 
 
 ```json
 "accounts": [
@@ -467,14 +415,9 @@ investment, credit, depository, loan, brokerage, other
 
 /accounts/balances?integrationAccountID=xxxxx??
 
-Returns all available account balance information for all accounts the present integrationAccountID witholds
+Returns all available account balance information for all accounts the present integrationAccountID witholds 
 
-**NOTE:** Since there are no webhooks provided for the balance item, must find a sensible technical way to poll PLAID
-API every n days for and update balance information across all account types for a given user. It may be ideal to do so
-asynchronously upon login by each user. We know, some users will use the platform more frequently then others. In order
-to not abuse the PLAID API for infrequent users and save on API costs, it may make sense to trigger the balance update
-event on every login by a user.
-ref: [https://github.com/plaid/pattern-account-funding/blob/master/server/routes/items.js#L211-L234](https://github.com/plaid/pattern-account-funding/blob/master/server/routes/items.js#L211-L234)
+**NOTE:** Since there are no webhooks provided for the balance item, must find a sensible technical way to poll PLAID API every n days for and update balance information across all account types for a given user. It may be ideal to do so asynchronously upon login by each user. We know, some users will use the platform more frequently then others. In order to not abuse the PLAID API for infrequent users and save on API costs, it may make sense to trigger the balance update event on every login by a user. ref: [https://github.com/plaid/pattern-account-funding/blob/master/server/routes/items.js#L211-L234](https://github.com/plaid/pattern-account-funding/blob/master/server/routes/items.js#L211-L234)
 
 ```json
 "balances": [
@@ -499,14 +442,11 @@ ref: [https://github.com/plaid/pattern-account-funding/blob/master/server/routes
 
 /financial_integration_service/v1/accounts/liabilities?integrationAccountID=xxxxx??
 
-Returns various details about a user's loan or credit accounts.
+Returns various details about a user's loan or credit accounts. 
 
-**NOTE: PLAID API** provides us with webhooks to register and listen to for liability changes in order to maintain a
-consistent state between data in PLAID and our platform. Webhooks alerts the app for specific updated fields per account
-type. It is up to the application to actually perform said updates in our datastore.
-Ref: [https://plaid.com/docs/api/webhooks/#liabilities-webhooks](https://plaid.com/docs/api/webhooks/#liabilities-webhooks)
+**NOTE: PLAID API** provides us with webhooks to register and listen to for liability changes in order to maintain a consistent state between data in PLAID and our platform. Webhooks alerts the app for specific updated fields per account type. It is up to the application to actually perform said updates in our datastore. Ref: [https://plaid.com/docs/api/webhooks/#liabilities-webhooks](https://plaid.com/docs/api/webhooks/#liabilities-webhooks)
 
-**RESPONSE**
+**RESPONSE** 
 
 ```json
 {
@@ -640,11 +580,9 @@ Ref: [https://plaid.com/docs/api/webhooks/#liabilities-webhooks](https://plaid.c
 
 /financial_integration_service/v1/accounts/investments?integrationAccountID=xxxxx
 
-Returns the set of investments tied to a given user id.
+Returns the set of investments tied to a given user id. 
 
-**NOTE:** A webhook is provided in order perform state updates and maintain a consistent state across both our platform
-and PLAID. The webhook of interest to us is the `DEFAULT_UPDATE` of type `HOLDINGS`  . This will be used to update
-account holdings present within our backend.
+**NOTE:** A webhook is provided in order perform state updates and maintain a consistent state across both our platform and PLAID. The webhook of interest to us is the `DEFAULT_UPDATE` of type `HOLDINGS`  . This will be used to update account holdings present within our backend. 
 
 ```json
 {
@@ -729,7 +667,7 @@ Deletes all accounts associated with the given integrationAccountID
 
 ***CREATE*** /financial_integration_service/v1/accounts?userId=xxxx?phase=y
 
-Meant to initiate the creation of a login at a financial institution.
+Meant to initiate the creation of a login at a financial institution. 
 
 **NOTE:** For the MVP, we should only allow login at one financial institution. Not multiple
 
@@ -739,57 +677,51 @@ Meant to initiate the creation of a login at a financial institution.
 
 1. OPEN LINK (STEP 1) - ref: [https://plaid.com/docs/quickstart/](https://plaid.com/docs/quickstart/)  (**Phase 1)**
     1. Call the /link/token/create API to create a `link_token` which will be passed to the client
-
-   **RESPONSE - From Financial Integration Service**
-
+    
+    **RESPONSE - From Financial Integration Service**
+    
     ```json
     {
     	"link_token": "dhgjdashjkghjsdjkghjdshgjkdashjhjk"
     }
     ```
-
-    1. Link token opened by client with onSuccess callback which will provide our platform with a
-       temporary `public_token`
-
-   **REQUEST BODY TO Financial Integration Service - From Frontend**
-
+    
+    1. Link token opened by client with onSuccess callback which will provide our platform with a temporary `public_token` 
+    
+    **REQUEST BODY TO Financial Integration Service - From Frontend** 
+    
     ```json
     {
     	"public_token": "danghdjkhgjsjkhjkfjdhfhsdk"
     	"userid": 23232
     }
     ```
-
+    
 2. TOKEN EXCHANGE (STEP 2) - ref: [https://plaid.com/docs/quickstart/](https://plaid.com/docs/quickstart/) **(Phase 2)**
-    1. We obtain the `public_token` from the client. We invoke the /item/public_token/exchange PLAID API to exchange the
-       public token for the permanent `access_token`. Access token is then stored as part of the user's table
-
-   **RESPONSE - From Financial Integration Service**
-
+    1. We obtain the `public_token` from the client. We invoke the /item/public_token/exchange PLAID API to exchange the public token for the permanent `access_token`. Access token is then stored as part of the user's table
+    
+    **RESPONSE - From Financial Integration Service**
+    
     ```json
     {
     	"integration_account_id": kjhauhdfo2108y283
     }
     ```
+    
 
 ### Caching Requirements
 
-As of now we will cache requests spanning account balances as well as investment withholdings adhering to some filtering
-clause/condition.
+As of now we will cache requests spanning account balances as well as investment withholdings adhering to some filtering clause/condition.
 
-As far as cache size, it is difficult to properly estimate the necessary size prematurely. However, we know that we will
-store the compressed binary payload cached entries in hopes of limiting the space used.
+As far as cache size, it is difficult to properly estimate the necessary size prematurely. However, we know that we will store the compressed binary payload cached entries in hopes of limiting the space used.
 
 In terms of eviction time, we will cache entries for 10 minutes prior to refresh.
 
-We will heavily utilize a cache with this service to reduce the number of fetch operations to disk on our Cassandra
-instance. This will greatly reduce CPU usage and network consumption and provide us with fast response times, and
-potentially increase service uptime.
+We will heavily utilize a cache with this service to reduce the number of fetch operations to disk on our Cassandra instance. This will greatly reduce CPU usage and network consumption and provide  us with fast response times, and potentially increase service uptime.
 
 ### Capacity Planning
 
-The service is expected to generate a decent amount of logs, metrics, and traces. NewRelic will be the service through
-which we aggregate all data generated by the service. The proposed retention policy is 1 month.
+The service is expected to generate a decent amount of logs, metrics, and traces. NewRelic will be the service through which we aggregate all data generated by the service. The proposed retention policy is 1 month.
 
 ### Performance Requirements
 
@@ -798,9 +730,7 @@ Financial Integration Service
 1. Expected throughput: 50K QPS
 2. Expected Latencies: < 9ms
 
-Please
-reference [grpc performance best practices](https://docs.microsoft.com/en-us/aspnet/core/grpc/performance?view=aspnetcore-5.0)
-throughout development to optimize performance.
+Please reference [grpc performance best practices](https://docs.microsoft.com/en-us/aspnet/core/grpc/performance?view=aspnetcore-5.0) throughout development to optimize performance.
 
 ### Security
 
@@ -808,13 +738,11 @@ The service does not handle any PII/PCI data as of yet.
 
 ### Multi Region Story
 
-The service does not have any multi-region requirements as of yet. This service will be deployed in a cloud environment
-hence, we hope to not have to account multi-region availability or zone outages throughout development.
+The service does not have any multi-region requirements as of yet. This service will be deployed in a cloud environment hence, we hope to not have to account multi-region availability or zone outages throughout development.
 
 ## API/gRPC Endpoints
 
-Please reference the [grpc endpoint documentation](https://github.com/pseudomuto/protoc-gen-doc#writing-documentation)
-throughout development.
+Please reference the [grpc endpoint documentation](https://github.com/pseudomuto/protoc-gen-doc#writing-documentation) throughout development.
 
 ## Rollout Plan
 
@@ -832,27 +760,21 @@ Data Migration plans will be determined later.
 
 ## Test Plan
 
-Testing is crucial and will be prioritized throughout development. Unit tests will be of high importance. We mandate
-that each service has at least 85% unit test coverage. As for testing dependencies through integration and load tests,
-we will perform this in four phases.
+Testing is crucial and will be prioritized throughout development. Unit tests will be of high importance. We mandate that each service has at least 85% unit test coverage. As for testing dependencies through integration and load tests, we will perform this in four phases.
 
 1. Phase 1: Mock dependency response & test logic (unit tests)
 2. Phase 2: Spin up dependencies in docker containers
     1. Run local integration test suite against grpc endpoints & ensure expected response is obtained
 3. Phase 3: Spin up service dependencies in local & sandboxed kubernetes cluster
     1. Run `Helm Test` ensuring proper expected response is obtained for each integration test
-4. Phase 4: Through use of [vegeta load testing tool](https://github.com/tsenart/vegeta) we will perform load tests
-   against services running in kubernetes sandbox environment
-5. Phase 5: The final stage of testing will apply chaos testing. We will enable certain environment variables which will
-   fail some requests based on some preset probability. With this, we will perform load tests once again and ensure the
-   proper set of metrics are emitted and the service is behaving as expected.
+4. Phase 4: Through use of [vegeta load testing tool](https://github.com/tsenart/vegeta) we will perform load tests against services running in kubernetes sandbox environment
+5. Phase 5: The final stage of testing will apply chaos testing. We will enable certain environment variables which will fail some requests based on some preset probability. With this, we will perform load tests once again and ensure the proper set of metrics are emitted and the service is behaving as expected.
 
 **NOTE**: it is important all these can be performed both locally and within our CI/CD workflow.
 
 ## Appendix
 
-- References, links to additional documentation (E.g. Data specification or Business requirements with acceptance
-  criteria )
+- References, links to additional documentation (E.g. Data specification or Business requirements with acceptance criteria )
 
 ## Review Sign-Off
 

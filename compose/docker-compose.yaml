@@ -40,6 +40,6 @@ networks:
     driver: bridge
 
 volumes:
-  service-db: { }
+  service-db: {}
   tmpData:
   goData:

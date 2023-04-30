@@ -4,7 +4,7 @@ replicaCount: 1
 logLevel: info
 host: #0.0.0.0
 backend: #http://backend-fis:9898/echo
-backends: [ ]
+backends: []
 
 image:
   repository: feelguuds/financial-integration-service
@@ -47,7 +47,7 @@ aws:
   region: us-east-2
   # aws key management id
   kmsID: mrk-e44f269bc0034feb95ede34154c3cfe4
-
+  
 plaid:
   # wether or not to enable plaid api level interactions
   enabled: true
@@ -57,11 +57,17 @@ plaid:
   secretKey: 49ed22a2ee591f4e3f366c4474438d
   # plaid environment 
   env: development
-  # Only institutions that support ALL listed products will be displayed in Link.
-  # If you don't see the institution you want in Link, remove any products you aren't using.
-  # Important: When moving to Production, make sure to update this list with only the products
-  # you plan to use. Otherwise, you may be billed for unneeded products.
-  products: transactions,auth,balance,investments,liabilities
+  # A webhook is an HTTP request used to provide push notifications. Plaid sends webhooks to programmatically
+  # inform you about changes to Plaid Items or the status of asynchronous processes. For example, Plaid will send
+  # a webhook when an Item is in an error state or has additional data available, or when a non-blocking process 
+  # (like gathering transaction data or verifying a bank account via micro-deposits) is com plete.
+  #
+  # To receive Plaid webhooks, set up a dedicated endpoint on your server as a webhook listener that can receive
+  # POST requests, then provide this endpoint URL to Plaid as described in the next section. You can also test
+  # webhooks without setting up your own endpoint following the instructions in Testing webhooks in Sandbox. 
+  #
+  # ref: https://plaid.com/docs/api/webhooks/#introduction-to-webhooks
+  webhookUrl:  "https://simfiny.dev/v1/gateway/plaid/webhook"
   # Only required for OAuth:
   # For sandbox, set PLAID_REDIRECT_URI to 'http://localhost:3000/'
   # The OAuth redirect flow requires an endpoint on the developer's website
@@ -71,17 +77,15 @@ plaid:
   # For development or production, you will need to use an https:// url
   # If you are not set up to use localhost with https:// on your system, you will be unable to test OAuth in development or production.
   # In this case you can leave the PLAID_REDIRECT_URI blank.
+  redirectUrl: "https://simfiny.dev/v1/gateway/plaid/oauth-return"
+  # Only institutions that support ALL listed products will be displayed in Link.
+  # If you don't see the institution you want in Link, remove any products you aren't using.
+  # Important: When moving to Production, make sure to update this list with only the products
+  # you plan to use. Otherwise, you may be billed for unneeded products.
+  products: transactions,auth,balance,investments,liabilities
+  # oauth domain
   oauthDomain: simfiny
-  # A webhook is an HTTP request used to provide push notifications. Plaid sends webhooks to programmatically
-  # inform you about changes to Plaid Items or the status of asynchronous processes. For example, Plaid will send
-  # a webhook when an Item is in an error state or has additional data available, or when a non-blocking process
-  # (like gathering transaction data or verifying a bank account via micro-deposits) is com plete.
-  #
-  # To receive Plaid webhooks, set up a dedicated endpoint on your server as a webhook listener that can receive
-  # POST requests, then provide this endpoint URL to Plaid as described in the next section. You can also test
-  # webhooks without setting up your own endpoint following the instructions in Testing webhooks in Sandbox.
-  #
-  # ref: https://plaid.com/docs/api/webhooks/#introduction-to-webhooks
+  # webhook oauth domain
   webhookOauthDomain: simfiny
   # wether or not a webhook is enabled
   webhookEnabled: true
@@ -105,7 +109,7 @@ service:
   enabled: true
   # environment can either take values: local, dev, staging, prod
   environment: prod
-  annotations: { }
+  annotations: {}
   type: ClusterIP
   metricsPort: 9797
   httpPort: 9898
@@ -209,21 +213,21 @@ serviceAccount:
   name:
 
 # set container security context
-securityContext: { }
+securityContext: {}
 
 ingress:
   enabled: false
   className: ""
   annotations:
-    { }
+    {}
     # kubernetes.io/ingress.class: nginx
-  # kubernetes.io/tls-acme: "true"
+    # kubernetes.io/tls-acme: "true"
   hosts:
     - host: financial-integration-service.local
       paths:
         - path: /
           pathType: ImplementationSpecific
-  tls: [ ]
+  tls: []
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
@@ -232,7 +236,7 @@ ingress:
 serviceMonitor:
   enabled: false
   interval: 15s
-  additionalLabels: { }
+  additionalLabels: {}
 
 resources:
   limits:
@@ -241,13 +245,13 @@ resources:
     cpu: "100m"
     memory: "64Mi"
 
-nodeSelector: { }
+nodeSelector: {}
 
-tolerations: [ ]
+tolerations: []
 
-affinity: { }
+affinity: {}
 
-podAnnotations: { }
+podAnnotations: {}
 
 integrationTests:
   enabled: false

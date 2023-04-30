@@ -6,7 +6,7 @@ metadata:
     helm.sh/chart: podinfo-6.1.8
     app.kubernetes.io/name: service
     app.kubernetes.io/version: "6.1.8"
-    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/managed-by: Helm  
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
@@ -15,9 +15,9 @@ spec:
   minReplicas: 1
   maxReplicas: 5
   metrics:
-    - type: Resource
-      resource:
-        name: cpu
-        target:
-          type: Utilization
-          averageUtilization: 99
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 99

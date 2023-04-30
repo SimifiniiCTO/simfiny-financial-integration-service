@@ -19,7 +19,7 @@ service FinancialIntegrationService {
   rpc GetVirtualAccountId(GetVirtualAccountIdRequest) returns (GetVirtualAccountIdResponse) {}
 }
 
-message InitiateAccountSetupRequest {uint64 userID = 1;}
+message InitiateAccountSetupRequest { uint64 userID = 1; }
 
 message InitiateAccountSetupResponse {
   string linkToken = 1;
@@ -32,7 +32,7 @@ message CreateAccountTokenExchangeRequest {
   uint64 userID = 2;
 }
 
-message CreateAccountTokenExchangeResponse {uint64 virtualAccountID = 1;}
+message CreateAccountTokenExchangeResponse { uint64 virtualAccountID = 1; }
 
 message DeleteAccountRequest {
   uint64 virtualAccountID = 1;
@@ -49,7 +49,7 @@ message GetAccountsRequest {
   uint64 userID = 2;
 }
 
-message GetAccountsResponse {fis_common.AccountsResponseMetadata accounts = 1;};
+message GetAccountsResponse { fis_common.AccountsResponseMetadata accounts = 1; };
 
 message GetAccountsByTypeRequest {
   uint64 virtualAccountID = 1;
@@ -75,23 +75,23 @@ message GetLiabilitiesRequest {
   uint64 userID = 2;
 }
 
-message GetLiabilitiesResponse {fis_common.Liabilities liabilities = 1;}
+message GetLiabilitiesResponse { fis_common.Liabilities liabilities = 1; }
 
 message GetInvestmentsRequest {
   uint64 virtualAccountID = 1;
   uint64 userID = 2;
 }
 
-message GetInvestmentsResponse {fis_common.Investments investments = 1;}
+message GetInvestmentsResponse { fis_common.Investments investments = 1; }
 
-message GetAccountRequest {uint64 virtualAccountID = 1;}
+message GetAccountRequest { uint64 virtualAccountID = 1; }
 
-message GetAccountResponse {fis_schema.VirtualAccount virtualAccount = 1;}
+message GetAccountResponse { fis_schema.VirtualAccount virtualAccount = 1; }
 
 message GetVirtualAccountIdRequest {
-  uint64 userID = 1;
+    uint64 userID = 1;
 }
 
 message GetVirtualAccountIdResponse {
-  uint64 virtualAccountID = 1;
+    uint64 virtualAccountID = 1;
 }

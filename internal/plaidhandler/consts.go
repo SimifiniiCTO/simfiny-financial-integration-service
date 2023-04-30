@@ -11,4 +11,17 @@ var (
 	PlaidCountries  = []plaid.CountryCode{
 		plaid.COUNTRYCODE_US,
 	}
+	PlaidProducts = []plaid.Products{
+		plaid.PRODUCTS_INVESTMENTS,
+		plaid.PRODUCTS_LIABILITIES,
+	}
 )
+
+func PlaidProductStrings() []string {
+	items := make([]string, len(PlaidProducts))
+	for i, product := range PlaidProducts {
+		items[i] = string(product)
+	}
+
+	return items
+}

@@ -30,9 +30,9 @@ services:
     restart: on-failure
   postgresql:
     container_name: temporal-postgresql
-    command:
+    command: 
       - "-c"
-      - "ssl=on"
+      - "ssl=on" 
       - "-c"
       - "ssl_cert_file=/pki/postgresql.pem"
       - "-c"
@@ -118,4 +118,4 @@ networks:
     name: temporal-network
 volumes:
   temporal_tls_pki:
-    external: true
+   external: true

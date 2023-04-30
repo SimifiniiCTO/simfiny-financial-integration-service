@@ -1,16 +1,16 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
-  "$ref": "#/definitions/ReadynessCheckResponse",
-  "definitions": {
-    "ReadynessCheckResponse": {
-      "properties": {
-        "healthy": {
-          "type": "boolean"
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/ReadynessCheckResponse",
+    "definitions": {
+        "ReadynessCheckResponse": {
+            "properties": {
+                "healthy": {
+                    "type": "boolean"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Readyness Check Response"
         }
-      },
-      "additionalProperties": true,
-      "type": "object",
-      "title": "Readyness Check Response"
     }
-  }
 }

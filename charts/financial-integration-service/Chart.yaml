@@ -7,7 +7,7 @@ description: Financial Integration Service Helm chart for Kubernetes
 home: https://github.com/SimifiniiCTO/simfiny-financial-integration-service
 maintainers:
   - email: yoan@simfinii.com
-    name: yoan yomba
+    name: yoan yomba 
 sources:
   - https://github.com/SimifiniiCTO/simfiny-financial-integration-service
 kubeVersion: ">=1.19.0-0"

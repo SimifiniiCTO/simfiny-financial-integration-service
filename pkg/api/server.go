@@ -94,7 +94,7 @@ type Server struct {
 	grpcGw          *runtime.ServeMux
 }
 
-func NewServer(config *Config, logger *zap.Logger, telemetry *instrumentation.ServiceTelemetry, db *database.Db) (*Server, error) {
+func NewServer(config *Config, logger *zap.Logger, telemetry *instrumentation.ServiceTelemetry, db *database.Db, plaidClient *plaid.APIClient) (*Server, error) {
 	opts := []grpc.DialOption{grpc.WithInsecure()}
 	gw := runtime.NewServeMux()
 	ctx := context.Background()
@@ -108,6 +108,7 @@ func NewServer(config *Config, logger *zap.Logger, telemetry *instrumentation.Se
 		config:          config,
 		instrumentation: telemetry,
 		conn:            db,
+		plaidClient:     plaidClient,
 		grpcGw:          gw,
 	}
 
