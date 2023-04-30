@@ -1,17 +1,17 @@
 {
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "$ref": "#/definitions/DeleteBankAccountResponse",
-    "definitions": {
-        "DeleteBankAccountResponse": {
-            "properties": {
-                "deleted": {
-                    "type": "boolean",
-                    "description": "The bank account id"
-                }
-            },
-            "additionalProperties": true,
-            "type": "object",
-            "title": "Delete Bank Account Response"
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/DeleteBankAccountResponse",
+  "definitions": {
+    "DeleteBankAccountResponse": {
+      "properties": {
+        "deleted": {
+          "type": "boolean",
+          "description": "The bank account id"
         }
+      },
+      "additionalProperties": true,
+      "type": "object",
+      "title": "Delete Bank Account Response"
     }
+  }
 }

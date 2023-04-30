@@ -4,7 +4,10 @@ This repository provides docker-compose files that enable you to run a local ins
 There are a variety of docker-compose files, each utilizing a different set of dependencies.
 Every major or minor release of the Temporal Server has a corresponding docker-compose release.
 
-Alongside the docker compose files you can find Kubernetes manifests suitable for setting up a development version of Temporal in a Kubernetes cluster. These files can be found in [k8s](./k8s) directory, each directory holds the manifests related to one of the docker compose files. Details of using these manifests can be found in [KUBERNETES](./KUBERNETES.md).
+Alongside the docker compose files you can find Kubernetes manifests suitable for setting up a development version of
+Temporal in a Kubernetes cluster. These files can be found in [k8s](./k8s) directory, each directory holds the manifests
+related to one of the docker compose files. Details of using these manifests can be found
+in [KUBERNETES](./KUBERNETES.md).
 
 ## Prerequisites
 
@@ -15,7 +18,8 @@ To use these files, you must first have the following installed:
 
 ## How to use
 
-The following steps will run a local instance of the Temporal Server using the default configuration file (`docker-compose.yml`):
+The following steps will run a local instance of the Temporal Server using the default configuration
+file (`docker-compose.yml`):
 
 1. Clone this repository.
 2. Change directory into the root of the project.
@@ -27,9 +31,11 @@ cd  docker-compose
 docker-compose up
 ```
 
-> ⚠️ If you are on an M1 Mac, note that Temporal v1.12 to v1.14 had fatal issues with ARM builds. v1.14.2 onwards should be fine for M1 Macs.
+> ⚠️ If you are on an M1 Mac, note that Temporal v1.12 to v1.14 had fatal issues with ARM builds. v1.14.2 onwards should
+> be fine for M1 Macs.
 
-After the Server has started, you can open the Temporal Web UI in your browser: [http://localhost:8080](http://localhost:8080).
+After the Server has started, you can open the Temporal Web UI in your
+browser: [http://localhost:8080](http://localhost:8080).
 
 You can also interact with the Server using a preconfigured CLI (tctl).
 First create an alias for `tctl`:
@@ -46,12 +52,16 @@ tctl --ns test-namespace namespace register -rd 1
 
 You can find our `tctl` docs on [docs.temporal.io](https://docs.temporal.io/docs/system-tools/tctl/).
 
-Get started building Workflows with a [Go sample](https://github.com/temporalio/samples-go), [Java sample](https://github.com/temporalio/samples-java), or write your own using one of the [SDKs](https://docs.temporal.io/docs/sdks-introduction).
+Get started building Workflows with
+a [Go sample](https://github.com/temporalio/samples-go), [Java sample](https://github.com/temporalio/samples-java), or
+write your own using one of the [SDKs](https://docs.temporal.io/docs/sdks-introduction).
 
 ### Other configuration files
 
-The default configuration file (`docker-compose.yml`) uses a PostgreSQL database, an Elasticsearch instance, and exposes the Temporal gRPC Frontend on port 7233.
-The other configuration files in the repo spin up instances of the Temporal Server using different databases and dependencies.
+The default configuration file (`docker-compose.yml`) uses a PostgreSQL database, an Elasticsearch instance, and exposes
+the Temporal gRPC Frontend on port 7233.
+The other configuration files in the repo spin up instances of the Temporal Server using different databases and
+dependencies.
 For example you can run the Temporal Server with MySQL and Elastic Search with this command:
 
 ```bash
@@ -60,17 +70,17 @@ docker-compose -f docker-compose-mysql-es.yml up
 
 Here is a list of available files and the dependencies they use.
 
-| File                               | Description                            |
-|------------------------------------| -------------------------------------- |
-| docker-compose.yml                 | PostgreSQL and Elasticsearch (default) |
-| docker-compose-tls.yml             | PostgreSQL and Elasticsearch with TLS  |
-| docker-compose-postgres.yml        | PostgreSQL                             |
-| docker-compose-cass.yml            | Cassandra                              |
-| docker-compose-cass-es.yml         | Cassandra and Elasticsearch            |
-| docker-compose-mysql.yml           | MySQL                                  |
-| docker-compose-mysql-es.yml        | MySQL and Elasticsearch                |
-| docker-compose-cockroach.yml       | CockroachDB                            |
-| docker-compose-cockroach-es.yml    | CockroachDB and Elasticsearch          |
+| File                            | Description                            |
+|---------------------------------|----------------------------------------|
+| docker-compose.yml              | PostgreSQL and Elasticsearch (default) |
+| docker-compose-tls.yml          | PostgreSQL and Elasticsearch with TLS  |
+| docker-compose-postgres.yml     | PostgreSQL                             |
+| docker-compose-cass.yml         | Cassandra                              |
+| docker-compose-cass-es.yml      | Cassandra and Elasticsearch            |
+| docker-compose-mysql.yml        | MySQL                                  |
+| docker-compose-mysql-es.yml     | MySQL and Elasticsearch                |
+| docker-compose-cockroach.yml    | CockroachDB                            |
+| docker-compose-cockroach-es.yml | CockroachDB and Elasticsearch          |
 
 ### Using the web interface
 
@@ -86,7 +96,8 @@ You access the Temporal Web UI at `http://localhost:8080`.
 
 ### Enabling metrics (with Grafana and Prometheus)
 
-We maintain two example docker-compose setups with server metrics enabled, and Prometheus and Grafana with [our Server and SDK dashboards](https://github.com/temporalio/dashboards):
+We maintain two example docker-compose setups with server metrics enabled, and Prometheus and Grafana
+with [our Server and SDK dashboards](https://github.com/temporalio/dashboards):
 
 - https://github.com/tsurdilo/my-temporal-dockercompose
 - https://github.com/temporalio/background-checks
@@ -118,9 +129,12 @@ docker-compose up
 
 ## Using Temporal docker images in production
 
-These docker-compose setups listed here do not use Temporal Server directly - they utilize [an `auto-setup` script you can read about here](https://docs.temporal.io/blog/auto-setup). You will want to familiarize yourself with this before you deploy to production.
+These docker-compose setups listed here do not use Temporal Server directly - they
+utilize [an `auto-setup` script you can read about here](https://docs.temporal.io/blog/auto-setup). You will want to
+familiarize yourself with this before you deploy to production.
 
-In a typical production setting, dependencies such as `cassandra` or `elasticsearch` are managed/started independently of the Temporal server. **You should use the `temporalio/server` image instead of `temporalio/auto-setup`.**
+In a typical production setting, dependencies such as `cassandra` or `elasticsearch` are managed/started independently
+of the Temporal server. **You should use the `temporalio/server` image instead of `temporalio/auto-setup`.**
 
 To use the `temporalio/server` container in a production setting, use the following command:
 

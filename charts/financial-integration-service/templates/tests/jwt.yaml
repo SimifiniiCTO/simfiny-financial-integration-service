@@ -1,8 +1,8 @@
-{{- if .Values.integrationTests.enabled }}
+{ { - if .Values.integrationTests.enabled } }
 apiVersion: v1
 kind: Pod
 metadata:
-  name: {{ template "fis.fullname" . }}-jwt-test-{{ randAlphaNum 5 | lower }}
+  name: { { template "fis.fullname" . } }-jwt-test-{{ randAlphaNum 5 | lower }}
   labels:
     {{- include "fis.labels" . | nindent 4 }}
   annotations:
@@ -22,7 +22,7 @@ spec:
           TOKEN=$(curl -sd 'test' ${fis_SVC}/token | jq -r .token) &&
           curl -sH "Authorization: Bearer ${TOKEN}" ${fis_SVC}/token/validate | grep test
       env:
-      - name: fis_SVC
-        value: "{{ template "fis.fullname" . }}.{{ .Release.Namespace }}:{{ .Values.service.externalPort }}"
+        - name: fis_SVC
+          value: "{{ template "fis.fullname" . }}.{{ .Release.Namespace }}:{{ .Values.service.externalPort }}"
   restartPolicy: Never
-{{- end }}
+  { { - end } }

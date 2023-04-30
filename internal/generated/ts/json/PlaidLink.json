@@ -1,38 +1,38 @@
 {
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "$ref": "#/definitions/PlaidLink",
-    "definitions": {
-        "PlaidLink": {
-            "properties": {
-                "id": {
-                    "type": "string",
-                    "description": "id"
-                },
-                "products": {
-                    "items": {
-                        "type": "string"
-                    },
-                    "type": "array"
-                },
-                "webhook_url": {
-                    "type": "string"
-                },
-                "institution_id": {
-                    "type": "string"
-                },
-                "institution_name": {
-                    "type": "string"
-                },
-                "use_plaid_sync": {
-                    "type": "boolean"
-                },
-                "item_id": {
-                    "type": "string"
-                }
-            },
-            "additionalProperties": true,
-            "type": "object",
-            "title": "Plaid Link"
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/PlaidLink",
+  "definitions": {
+    "PlaidLink": {
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "id"
+        },
+        "products": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "webhook_url": {
+          "type": "string"
+        },
+        "institution_id": {
+          "type": "string"
+        },
+        "institution_name": {
+          "type": "string"
+        },
+        "use_plaid_sync": {
+          "type": "boolean"
+        },
+        "item_id": {
+          "type": "string"
         }
+      },
+      "additionalProperties": true,
+      "type": "object",
+      "title": "Plaid Link"
     }
+  }
 }

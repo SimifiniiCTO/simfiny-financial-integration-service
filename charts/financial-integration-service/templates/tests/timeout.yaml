@@ -1,8 +1,8 @@
-{{- if and .Values.faults.test_timeout .Values.integrationTests.enabled }}
+{ { - if and .Values.faults.test_timeout .Values.integrationTests.enabled } }
 apiVersion: v1
 kind: Pod
 metadata:
-  name: {{ template "fis.fullname" . }}-fault-test-{{ randAlphaNum 5 | lower }}
+  name: { { template "fis.fullname" . } }-fault-test-{{ randAlphaNum 5 | lower }}
   labels:
     {{- include "fis.labels" . | nindent 4 }}
   annotations:
@@ -15,7 +15,7 @@ spec:
   containers:
     - name: fault
       image: alpine:3.11
-      command: ['/bin/sh']
-      args:  ['-c', 'while sleep 3600; do :; done']
+      command: [ '/bin/sh' ]
+      args: [ '-c', 'while sleep 3600; do :; done' ]
   restartPolicy: Never
-{{- end }}
+  { { - end } }

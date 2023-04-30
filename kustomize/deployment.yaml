@@ -18,8 +18,8 @@ spec:
   strategy:
     type: RollingUpdate
     rollingUpdate:
-        maxSurge: 2
-        maxUnavailable: 1
+      maxSurge: 2
+      maxUnavailable: 1
   selector:
     matchLabels:
       app: service
@@ -45,9 +45,9 @@ spec:
     spec:
       terminationGracePeriodSeconds: 30
       initContainers:
-      - name: init-user-svc-db-dependency
-        image: busybox:1.28
-        command: ['sh', '-c', "until nslookup service-db.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for service-db.; sleep 10; done"]
+        - name: init-user-svc-db-dependency
+          image: busybox:1.28
+          command: [ 'sh', '-c', "until nslookup service-db.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for service-db.; sleep 10; done" ]
       containers:
         - name: service
           image: "feelguuds/service:v0.0.1"
@@ -55,7 +55,7 @@ spec:
           securityContext:
             capabilities:
               drop:
-              - ALL
+                - ALL
             readOnlyRootFilesystem: true
             runAsNonRoot: true
             runAsUser: 1000
@@ -66,15 +66,15 @@ spec:
           livenessProbe:
             exec:
               command:
-              - curl
-              - localhost:9896/healthz
+                - curl
+                - localhost:9896/healthz
             initialDelaySeconds: 1
             timeoutSeconds: 5
           readinessProbe:
             exec:
               command:
-              - curl
-              - localhost:9896/readyz
+                - curl
+                - localhost:9896/readyz
             initialDelaySeconds: 1
             timeoutSeconds: 5
           resources:

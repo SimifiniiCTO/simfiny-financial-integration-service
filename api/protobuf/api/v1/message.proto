@@ -91,7 +91,7 @@ message UserProfile {
   // id
   uint64 id = 1 [
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}
-    ];
+  ];
   // the user id tied to the profile
   uint64 user_id = 2 [
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""},
@@ -117,7 +117,7 @@ message Link {
   // id
   uint64 id = 1 [
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}
-    ];
+  ];
   LinkStatus link_status = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
   PlaidLink plaid_link = 4 [(gorm.field).has_one = {disable_association_autocreate: false disable_association_autoupdate: false preload: true}];
   bool plaid_new_accounts_available = 5 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
@@ -152,7 +152,7 @@ message Link {
   // the id of the institution this link is tied to and against
   string plaid_institution_id = 18 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
   // the type of link this is ... can be either a manual or plaid link type
-  LinkType link_type = 19 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}]; 
+  LinkType link_type = 19 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
 }
 
 message Token {
@@ -172,7 +172,7 @@ message PlaidLink {
   // id
   uint64 id = 1 [
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}
-    ];
+  ];
   repeated string products = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
   string webhook_url = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
   string institution_id = 4 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
@@ -187,7 +187,7 @@ message StudentLoanAccount {
   // id
   uint64 id = 1 [
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}
-    ];
+  ];
   string plaid_account_id = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
   repeated string disbursement_dates = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
   string expected_payoff_date = 4 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
@@ -267,9 +267,9 @@ message CreditAccount {
   // the minimum amount due date
   double minimum_amount_due_date = 18;
   // the next payment date
-  string next_payment_date = 19; 
+  string next_payment_date = 19;
   // the aprs
-  repeated Apr aprs = 20 [ (gorm.field).has_many = {disable_association_autocreate: false disable_association_autoupdate: false preload: true}];
+  repeated Apr aprs = 20 [(gorm.field).has_many = {disable_association_autocreate: false disable_association_autoupdate: false preload: true}];
   // the last statement balance
   double last_statement_balance = 21;
   // the minimum payment amount
@@ -343,9 +343,9 @@ message InvestmentAccount {
   // accoint subtype
   string subtype = 13;
   // invesment holding is the set of securities this account witholds
-  repeated InvesmentHolding holdings = 7 [ (gorm.field).has_many = {disable_association_autocreate: false disable_association_autoupdate: false preload: true}];  
+  repeated InvesmentHolding holdings = 7 [(gorm.field).has_many = {disable_association_autocreate: false disable_association_autoupdate: false preload: true}];
   // the set of securities this account witholds
-  repeated InvestmentSecurity securities = 8 [ (gorm.field).has_many = {disable_association_autocreate: false disable_association_autoupdate: false preload: true}];
+  repeated InvestmentSecurity securities = 8 [(gorm.field).has_many = {disable_association_autocreate: false disable_association_autoupdate: false preload: true}];
 }
 
 message BankAccount {
@@ -381,7 +381,7 @@ message BankAccount {
   // the bank account balance
   float balance = 6 [
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""},
-    (google.api.field_behavior) = REQUIRED  
+    (google.api.field_behavior) = REQUIRED
   ];
 
   // the bank account currency
@@ -627,7 +627,7 @@ message Milestone {
   bool is_completed = 6 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: "true"}];
 
   // the budget associated with the milestone
-   Budget budget = 13 [(gorm.field).has_many = {disable_association_autocreate: false disable_association_autoupdate: false preload: true}];
+  Budget budget = 13 [(gorm.field).has_many = {disable_association_autocreate: false disable_association_autoupdate: false preload: true}];
 }
 
 // The Budgets table stores information about each budget created by the user,

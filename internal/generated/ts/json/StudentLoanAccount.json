@@ -1,124 +1,124 @@
 {
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "$ref": "#/definitions/StudentLoanAccount",
-    "definitions": {
-        "StudentLoanAccount": {
-            "properties": {
-                "id": {
-                    "type": "string",
-                    "description": "id"
-                },
-                "plaid_account_id": {
-                    "type": "string"
-                },
-                "disbursement_dates": {
-                    "items": {
-                        "type": "string"
-                    },
-                    "type": "array"
-                },
-                "expected_payoff_date": {
-                    "type": "string"
-                },
-                "guarantor": {
-                    "type": "string"
-                },
-                "interest_rate_percentage": {
-                    "type": "number"
-                },
-                "is_overdue": {
-                    "type": "boolean"
-                },
-                "last_payment_amount": {
-                    "type": "number"
-                },
-                "last_payment_date": {
-                    "type": "string"
-                },
-                "last_statement_issue_date": {
-                    "type": "string"
-                },
-                "loan_name": {
-                    "type": "string"
-                },
-                "loan_end_date": {
-                    "type": "string"
-                },
-                "minimum_payment_amount": {
-                    "type": "number"
-                },
-                "next_payment_due_date": {
-                    "type": "string"
-                },
-                "origination_date": {
-                    "type": "string"
-                },
-                "origination_principal_amount": {
-                    "type": "number"
-                },
-                "outstanding_interest_amount": {
-                    "type": "number"
-                },
-                "payment_reference_number": {
-                    "type": "string"
-                },
-                "sequence_number": {
-                    "type": "string"
-                },
-                "ytd_interest_paid": {
-                    "type": "number"
-                },
-                "ytd_principal_paid": {
-                    "type": "number"
-                },
-                "loan_type": {
-                    "type": "string"
-                },
-                "pslf_status_estimated_eligibility_date": {
-                    "type": "string"
-                },
-                "pslf_status_payments_made": {
-                    "type": "integer"
-                },
-                "pslf_status_payments_remaining": {
-                    "type": "integer"
-                },
-                "repayment_plan_type": {
-                    "type": "string"
-                },
-                "repayment_plan_description": {
-                    "type": "string"
-                },
-                "servicer_address_city": {
-                    "type": "string"
-                },
-                "servicer_address_postal_code": {
-                    "type": "string"
-                },
-                "servicer_address_state": {
-                    "type": "string"
-                },
-                "servicer_address_street": {
-                    "type": "string"
-                },
-                "servicer_address_region": {
-                    "type": "string"
-                },
-                "servicer_address_country": {
-                    "type": "string"
-                },
-                "user_id": {
-                    "type": "string",
-                    "description": "the user id to which this bank account is tied to"
-                },
-                "name": {
-                    "type": "string",
-                    "description": "the account name"
-                }
-            },
-            "additionalProperties": true,
-            "type": "object",
-            "title": "Student Loan Account"
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/StudentLoanAccount",
+  "definitions": {
+    "StudentLoanAccount": {
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "id"
+        },
+        "plaid_account_id": {
+          "type": "string"
+        },
+        "disbursement_dates": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "expected_payoff_date": {
+          "type": "string"
+        },
+        "guarantor": {
+          "type": "string"
+        },
+        "interest_rate_percentage": {
+          "type": "number"
+        },
+        "is_overdue": {
+          "type": "boolean"
+        },
+        "last_payment_amount": {
+          "type": "number"
+        },
+        "last_payment_date": {
+          "type": "string"
+        },
+        "last_statement_issue_date": {
+          "type": "string"
+        },
+        "loan_name": {
+          "type": "string"
+        },
+        "loan_end_date": {
+          "type": "string"
+        },
+        "minimum_payment_amount": {
+          "type": "number"
+        },
+        "next_payment_due_date": {
+          "type": "string"
+        },
+        "origination_date": {
+          "type": "string"
+        },
+        "origination_principal_amount": {
+          "type": "number"
+        },
+        "outstanding_interest_amount": {
+          "type": "number"
+        },
+        "payment_reference_number": {
+          "type": "string"
+        },
+        "sequence_number": {
+          "type": "string"
+        },
+        "ytd_interest_paid": {
+          "type": "number"
+        },
+        "ytd_principal_paid": {
+          "type": "number"
+        },
+        "loan_type": {
+          "type": "string"
+        },
+        "pslf_status_estimated_eligibility_date": {
+          "type": "string"
+        },
+        "pslf_status_payments_made": {
+          "type": "integer"
+        },
+        "pslf_status_payments_remaining": {
+          "type": "integer"
+        },
+        "repayment_plan_type": {
+          "type": "string"
+        },
+        "repayment_plan_description": {
+          "type": "string"
+        },
+        "servicer_address_city": {
+          "type": "string"
+        },
+        "servicer_address_postal_code": {
+          "type": "string"
+        },
+        "servicer_address_state": {
+          "type": "string"
+        },
+        "servicer_address_street": {
+          "type": "string"
+        },
+        "servicer_address_region": {
+          "type": "string"
+        },
+        "servicer_address_country": {
+          "type": "string"
+        },
+        "user_id": {
+          "type": "string",
+          "description": "the user id to which this bank account is tied to"
+        },
+        "name": {
+          "type": "string",
+          "description": "the account name"
         }
+      },
+      "additionalProperties": true,
+      "type": "object",
+      "title": "Student Loan Account"
     }
+  }
 }

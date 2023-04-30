@@ -1,8 +1,8 @@
-{{- if and .Values.cache .Values.integrationTests.enabled }}
+{ { - if and .Values.cache .Values.integrationTests.enabled } }
 apiVersion: v1
 kind: Pod
 metadata:
-  name: {{ template "fis.fullname" . }}-cache-test-{{ randAlphaNum 5 | lower }}
+  name: { { template "fis.fullname" . } }-cache-test-{{ randAlphaNum 5 | lower }}
   labels:
     {{- include "fis.labels" . | nindent 4 }}
   annotations:
@@ -23,7 +23,7 @@ spec:
           curl -s ${fis_SVC}/cache/test | grep data &&
           curl -s -XDELETE ${fis_SVC}/cache/test
       env:
-      - name: fis_SVC
-        value: "{{ template "fis.fullname" . }}.{{ .Release.Namespace }}:{{ .Values.service.externalPort }}"
+        - name: fis_SVC
+          value: "{{ template "fis.fullname" . }}.{{ .Release.Namespace }}:{{ .Values.service.externalPort }}"
   restartPolicy: Never
-{{- end }}
+  { { - end } }

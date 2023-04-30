@@ -1,17 +1,17 @@
 {
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "$ref": "#/definitions/UpdateSmartGoalResponse",
-    "definitions": {
-        "UpdateSmartGoalResponse": {
-            "properties": {
-                "smart_goal_id": {
-                    "type": "string",
-                    "description": "The smart goal id"
-                }
-            },
-            "additionalProperties": true,
-            "type": "object",
-            "title": "Update Smart Goal Response"
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/UpdateSmartGoalResponse",
+  "definitions": {
+    "UpdateSmartGoalResponse": {
+      "properties": {
+        "smart_goal_id": {
+          "type": "string",
+          "description": "The smart goal id"
         }
+      },
+      "additionalProperties": true,
+      "type": "object",
+      "title": "Update Smart Goal Response"
     }
+  }
 }
