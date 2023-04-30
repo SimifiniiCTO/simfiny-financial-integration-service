@@ -82,7 +82,7 @@ plaid:
   # If you don't see the institution you want in Link, remove any products you aren't using.
   # Important: When moving to Production, make sure to update this list with only the products
   # you plan to use. Otherwise, you may be billed for unneeded products.
-  products: transactions,auth,balance,investments,liabilities
+  products: balance,investments,liabilities # transactions,auth,
   # oauth domain
   oauthDomain: simfiny
   # webhook oauth domain
