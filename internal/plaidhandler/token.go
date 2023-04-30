@@ -3,10 +3,10 @@ package plaidhandler
 import (
 	"context"
 	"fmt"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/pointer"
 	"github.com/plaid/plaid-go/plaid"
 	"go.uber.org/zap"
-
-	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/pointer"
+	"io/ioutil"
 )
 
 func (p *PlaidWrapper) CreateLinkToken(ctx context.Context, options *LinkTokenOptions) (LinkToken, error) {
@@ -91,9 +91,18 @@ func (p *PlaidWrapper) ExchangePublicToken(ctx context.Context, publicToken stri
 			PublicToken: publicToken,
 		})
 
-	result, _, err := request.Execute()
+	result, resp, err := request.Execute()
 	if err != nil {
-		p.Logger.Error("failed to exchange public token with Plaid", zap.Error(err))
+		// ensure we close the response body handle
+		defer resp.Body.Close()
+
+		// Read response body
+		bodyBytes, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			return nil, err
+		}
+
+		p.Logger.Error("failed to exchange public token with Plaid", zap.Error(err), zap.Any("details", string(bodyBytes)))
 		return nil, err
 	}
 
@@ -154,6 +163,7 @@ func (p *PlaidWrapper) getPlublicTokenForSandboxAcct(ctx context.Context) (plaid
 		SandboxPublicTokenCreate(ctx).
 		SandboxPublicTokenCreateRequest(*req).
 		Execute()
+
 	return resp, err
 }
 
