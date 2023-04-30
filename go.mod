@@ -15,6 +15,7 @@ require (
 	github.com/fatih/color v1.15.0
 	github.com/fsnotify/fsnotify v1.6.0
 	github.com/gomodule/redigo v1.8.9
+	github.com/google/uuid v1.3.0
 	github.com/gorilla/mux v1.8.0
 	github.com/gorilla/websocket v1.5.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.15.2
@@ -25,6 +26,7 @@ require (
 	github.com/lib/pq v1.10.7
 	github.com/newrelic/go-agent/v3 v3.20.0
 	github.com/newrelic/go-agent/v3/integrations/nrzap v1.0.1
+	github.com/pborman/uuid v1.2.1
 	github.com/pkg/errors v0.9.1
 	github.com/plaid/plaid-go v1.10.0
 	github.com/prometheus/client_golang v1.14.0
@@ -39,6 +41,8 @@ require (
 	github.com/stripe/stripe-go/v74 v74.12.0
 	github.com/swaggo/http-swagger v1.3.3
 	github.com/swaggo/swag v1.8.10
+	go.temporal.io/api v1.19.0
+	go.temporal.io/sdk v1.21.1
 	go.uber.org/zap v1.24.0
 	golang.org/x/net v0.8.0
 	google.golang.org/genproto v0.0.0-20230323212658-478b75c54725
@@ -75,7 +79,6 @@ require (
 	github.com/golang-jwt/jwt/v4 v4.4.2 // indirect
 	github.com/golang/mock v1.6.0 // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
-	github.com/google/uuid v1.3.0 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware v1.4.0 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/improbable-eng/grpc-web v0.15.0 // indirect
@@ -104,7 +107,6 @@ require (
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/newrelic/newrelic-telemetry-sdk-go v0.8.1 // indirect
 	github.com/openzipkin/zipkin-go v0.4.0 // indirect
-	github.com/pborman/uuid v1.2.1 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.6 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/prometheus/client_model v0.3.0 // indirect
@@ -136,8 +138,6 @@ require (
 	go.opentelemetry.io/otel/sdk v1.10.0 // indirect
 	go.opentelemetry.io/otel/trace v1.10.0 // indirect
 	go.opentelemetry.io/proto/otlp v0.19.0 // indirect
-	go.temporal.io/api v1.19.0 // indirect
-	go.temporal.io/sdk v1.21.1 // indirect
 	go.uber.org/atomic v1.10.0 // indirect
 	go.uber.org/multierr v1.8.0 // indirect
 	go.uber.org/ratelimit v0.2.0 // indirect
