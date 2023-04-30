@@ -3,7 +3,6 @@ package plaidhandler
 import (
 	"context"
 	"fmt"
-
 	"github.com/plaid/plaid-go/plaid"
 	"go.uber.org/zap"
 
@@ -26,6 +25,7 @@ func (p *PlaidWrapper) CreateLinkToken(ctx context.Context, options *LinkTokenOp
 	}
 
 	// if we are in sandbox mode, we need to create a public token for the sandbox account
+	// based on the env config value ... we decipher wether to use the sandbox or production plaid client
 	if p.Environment == plaid.Sandbox {
 		publicToken, err := p.getPlublicTokenForSandboxAcct(ctx)
 		if err != nil {
@@ -38,34 +38,30 @@ func (p *PlaidWrapper) CreateLinkToken(ctx context.Context, options *LinkTokenOp
 		}, nil
 	}
 
-	// based on the env config value ... we decipher wether to use the sandbox or production plaid client
-	reqPayload := plaid.LinkTokenCreateRequest{
-		ClientId:     &p.ClientID,
-		Secret:       &p.SecretKey,
-		ClientName:   PlaidClientName,
-		Language:     PlaidLanguage,
-		CountryCodes: PlaidCountries,
-		User: plaid.LinkTokenCreateRequestUser{
-			ClientUserId:             options.ClientUserID,
-			LegalName:                &options.LegalName,
-			PhoneNumber:              options.PhoneNumber,
-			PhoneNumberVerifiedTime:  options.PhoneNumberVerifiedTime,
-			EmailAddress:             &options.EmailAddress,
-			EmailAddressVerifiedTime: options.EmailAddressVerifiedTime,
-			Ssn:                      nil,
-			DateOfBirth:              nil,
-		},
-		Products:    &PlaidProducts,
-		Webhook:     webhooksUrl,
-		RedirectUri: redirectUri,
+	user := plaid.LinkTokenCreateRequestUser{
+		ClientUserId:             options.ClientUserID,
+		LegalName:                &options.LegalName,
+		PhoneNumber:              options.PhoneNumber,
+		PhoneNumberVerifiedTime:  options.PhoneNumberVerifiedTime,
+		EmailAddress:             &options.EmailAddress,
+		EmailAddressVerifiedTime: options.EmailAddressVerifiedTime,
 	}
-	request := p.client.PlaidApi.
-		LinkTokenCreate(ctx).
-		LinkTokenCreateRequest(reqPayload)
+	request := plaid.NewLinkTokenCreateRequest(
+		PlaidClientName,
+		PlaidLanguage,
+		PlaidCountries,
+		user,
+	)
 
-	result, _, err := request.Execute()
+	request.SetProducts(p.EnabledProducts)
+	request.SetLinkCustomizationName(PlaidClientName)
+	request.SetWebhook(*webhooksUrl)
+	request.SetRedirectUri(*redirectUri)
+
+	result, _, err := p.client.PlaidApi.
+		LinkTokenCreate(ctx).
+		LinkTokenCreateRequest(*request).Execute()
 	if err != nil {
-		p.Logger.Error("failed to create link token with Plaid", zap.Error(err))
 		return nil, err
 	}
 
