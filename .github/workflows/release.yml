@@ -112,7 +112,7 @@ jobs:
         with:
           images: |
             docker.io/feelguuds/financial-integration-service
-            ghcr.io/SimifiniiCTO/financial-integration-service
+            # ghcr.io/SimifiniiCTO/financial-integration-service
           tags: |
             type=raw,value=${{ steps.prep.outputs.VERSION }}
             type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
