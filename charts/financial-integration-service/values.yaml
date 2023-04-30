@@ -4,7 +4,7 @@ replicaCount: 3
 logLevel: info
 host: #0.0.0.0
 backend: #http://backend-fis:9898/echo
-backends: []
+backends: [ ]
 
 image:
   repository: feelguuds/financial-integration-service
@@ -43,17 +43,21 @@ aws:
   accessKeyID: AKIA5HFOAJRN7YDEYPST
   # aws secret key for credentials provisioning
   secretAccessKey: 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
-  # aws region 
+  # aws region
   region: us-east-2
   # aws key management id
   kmsID: mrk-e44f269bc0034feb95ede34154c3cfe4
-  
+
 plaid:
   enabled: true
   clientID: 61eb5d49ea3b4700127560d1
   secretKey: 465686056e8fd1b87db3d993d096d8
   env: sandbox
-  webhookUrl: ""
+  # Only institutions that support ALL listed products will be displayed in Link.
+  # If you don't see the institution you want in Link, remove any products you aren't using.
+  # Important: When moving to Production, make sure to update this list with only the products
+  # you plan to use. Otherwise, you may be billed for unneeded products.
+  products: transactions,auth,balance,investments,liabilities
   # Only required for OAuth:
   # For sandbox, set PLAID_REDIRECT_URI to 'http://localhost:3000/'
   # The OAuth redirect flow requires an endpoint on the developer's website
@@ -63,18 +67,12 @@ plaid:
   # For development or production, you will need to use an https:// url
   # If you are not set up to use localhost with https:// on your system, you will be unable to test OAuth in development or production.
   # In this case you can leave the PLAID_REDIRECT_URI blank.
-  redirectUrl: ""
-  # Only institutions that support ALL listed products will be displayed in Link.
-  # If you don't see the institution you want in Link, remove any products you aren't using.
-  # Important: When moving to Production, make sure to update this list with only the products
-  # you plan to use. Otherwise, you may be billed for unneeded products.
-  products: transactions,auth,balance,investments,liabilities
   oauthDomain: simfiny
   webhookOauthDomain: simfiny
   webhookEnabled: true
 
 stripe:
-  # wether or not stripe api level interactions are available 
+  # wether or not stripe api level interactions are available
   enabled: true
   # api key
   apiKey: sk_test_4eC39HqLyjWDarjtT1zdp7dc
@@ -90,7 +88,7 @@ service:
   enabled: true
   # environment can either take values: local, dev, staging, prod
   environment: local
-  annotations: {}
+  annotations: { }
   type: ClusterIP
   metricsPort: 9797
   httpPort: 9898
@@ -111,7 +109,7 @@ service:
       shutdownTimeout: 5s
   rpc:
     timeout: 1s
-  
+
 dependencies:
   temporal:
     enabled: true
@@ -194,21 +192,21 @@ serviceAccount:
   name:
 
 # set container security context
-securityContext: {}
+securityContext: { }
 
 ingress:
   enabled: false
   className: ""
   annotations:
-    {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
+    { }
+  # kubernetes.io/ingress.class: nginx
+  # kubernetes.io/tls-acme: "true"
   hosts:
     - host: financial-integration-service.local
       paths:
         - path: /
           pathType: ImplementationSpecific
-  tls: []
+  tls: [ ]
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
@@ -217,7 +215,7 @@ ingress:
 serviceMonitor:
   enabled: false
   interval: 15s
-  additionalLabels: {}
+  additionalLabels: { }
 
 resources:
   limits:
@@ -225,13 +223,13 @@ resources:
     cpu: 1m
     memory: 16Mi
 
-nodeSelector: {}
+nodeSelector: { }
 
-tolerations: []
+tolerations: [ ]
 
-affinity: {}
+affinity: { }
 
-podAnnotations: {}
+podAnnotations: { }
 
 integrationTests:
   enabled: false

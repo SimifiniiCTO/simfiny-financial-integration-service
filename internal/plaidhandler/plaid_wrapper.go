@@ -2,6 +2,7 @@ package plaidhandler
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"time"
 
@@ -27,6 +28,7 @@ type PlaidWrapper struct {
 	OAuthDomain     string
 	WebhooksDomain  string
 	WebhooksEnabled bool
+	EnabledProducts []plaid.Products
 }
 
 type PlaidWrapperImpl interface {
@@ -112,4 +114,23 @@ func (p *PlaidWrapper) GetWebhooksURL() string {
 
 func (p *PlaidWrapper) GetRedirectURI() string {
 	return fmt.Sprintf("https://%s/plaid/oauth-return", p.OAuthDomain)
+}
+
+func (p *PlaidWrapper) ToJSON() string {
+	b, err := json.Marshal(p)
+	if err != nil {
+		fmt.Println(err)
+		return ""
+	}
+
+	return string(b)
+}
+
+func (p *PlaidWrapper) EnabledProductsToString() []string {
+	results := make([]string, 0, len(p.EnabledProducts))
+	for _, element := range p.EnabledProducts {
+		results = append(results, string(element))
+	}
+
+	return results
 }
