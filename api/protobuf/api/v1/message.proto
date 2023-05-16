@@ -153,6 +153,9 @@ message Link {
   string plaid_institution_id = 18 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
   // the type of link this is ... can be either a manual or plaid link type
   LinkType link_type = 19 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}]; 
+  string error_code = 20 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  string updated_at = 21 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  bool new_accounts_available = 22 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
 }
 
 message Token {

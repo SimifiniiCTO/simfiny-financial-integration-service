@@ -103,6 +103,8 @@ type DatabaseOperations interface {
 	GetLink(ctx context.Context, userID uint64, linkID uint64) (*schema.Link, error)
 	// LinkExistsForItem checks if a link exists for a given item id (plaid itemID)
 	LinkExistsForItem(ctx context.Context, userID uint64, itemID string) (bool, error)
+	// GetLinkByItemId retrieves a link by item id
+	GetLinkByItemId(ctx context.Context, itemId string) (*schema.Link, error)
 }
 
 // Db withholds connection to a postgres database as well as a logging handler

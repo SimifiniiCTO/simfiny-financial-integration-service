@@ -8935,3 +8935,289 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = DeleteLinkResponseValidationError{}
+
+// Validate checks the field values on ProcessWebhookRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ProcessWebhookRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ProcessWebhookRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ProcessWebhookRequestMultiError, or nil if none found.
+func (m *ProcessWebhookRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ProcessWebhookRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if utf8.RuneCountInString(m.GetWebhookType()) < 1 {
+		err := ProcessWebhookRequestValidationError{
+			field:  "WebhookType",
+			reason: "value length must be at least 1 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if utf8.RuneCountInString(m.GetWebhookCode()) < 1 {
+		err := ProcessWebhookRequestValidationError{
+			field:  "WebhookCode",
+			reason: "value length must be at least 1 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	// no validation rules for ItemId
+
+	// no validation rules for InitialUpdateComplete
+
+	// no validation rules for HistoricalUpdateComplete
+
+	// no validation rules for Environment
+
+	{
+		sorted_keys := make([]string, len(m.GetError()))
+		i := 0
+		for key := range m.GetError() {
+			sorted_keys[i] = key
+			i++
+		}
+		sort.Slice(sorted_keys, func(i, j int) bool { return sorted_keys[i] < sorted_keys[j] })
+		for _, key := range sorted_keys {
+			val := m.GetError()[key]
+			_ = val
+
+			// no validation rules for Error[key]
+
+			if all {
+				switch v := interface{}(val).(type) {
+				case interface{ ValidateAll() error }:
+					if err := v.ValidateAll(); err != nil {
+						errors = append(errors, ProcessWebhookRequestValidationError{
+							field:  fmt.Sprintf("Error[%v]", key),
+							reason: "embedded message failed validation",
+							cause:  err,
+						})
+					}
+				case interface{ Validate() error }:
+					if err := v.Validate(); err != nil {
+						errors = append(errors, ProcessWebhookRequestValidationError{
+							field:  fmt.Sprintf("Error[%v]", key),
+							reason: "embedded message failed validation",
+							cause:  err,
+						})
+					}
+				}
+			} else if v, ok := interface{}(val).(interface{ Validate() error }); ok {
+				if err := v.Validate(); err != nil {
+					return ProcessWebhookRequestValidationError{
+						field:  fmt.Sprintf("Error[%v]", key),
+						reason: "embedded message failed validation",
+						cause:  err,
+					}
+				}
+			}
+
+		}
+	}
+
+	// no validation rules for ConsentExpirationTime
+
+	// no validation rules for NewHoldings
+
+	// no validation rules for UpdatedHoldings
+
+	if len(errors) > 0 {
+		return ProcessWebhookRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// ProcessWebhookRequestMultiError is an error wrapping multiple validation
+// errors returned by ProcessWebhookRequest.ValidateAll() if the designated
+// constraints aren't met.
+type ProcessWebhookRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ProcessWebhookRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ProcessWebhookRequestMultiError) AllErrors() []error { return m }
+
+// ProcessWebhookRequestValidationError is the validation error returned by
+// ProcessWebhookRequest.Validate if the designated constraints aren't met.
+type ProcessWebhookRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ProcessWebhookRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ProcessWebhookRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ProcessWebhookRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ProcessWebhookRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ProcessWebhookRequestValidationError) ErrorName() string {
+	return "ProcessWebhookRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ProcessWebhookRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sProcessWebhookRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ProcessWebhookRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ProcessWebhookRequestValidationError{}
+
+// Validate checks the field values on ProcessWebhookResponse with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ProcessWebhookResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ProcessWebhookResponse with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ProcessWebhookResponseMultiError, or nil if none found.
+func (m *ProcessWebhookResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ProcessWebhookResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(errors) > 0 {
+		return ProcessWebhookResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// ProcessWebhookResponseMultiError is an error wrapping multiple validation
+// errors returned by ProcessWebhookResponse.ValidateAll() if the designated
+// constraints aren't met.
+type ProcessWebhookResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ProcessWebhookResponseMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ProcessWebhookResponseMultiError) AllErrors() []error { return m }
+
+// ProcessWebhookResponseValidationError is the validation error returned by
+// ProcessWebhookResponse.Validate if the designated constraints aren't met.
+type ProcessWebhookResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ProcessWebhookResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ProcessWebhookResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ProcessWebhookResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ProcessWebhookResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ProcessWebhookResponseValidationError) ErrorName() string {
+	return "ProcessWebhookResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ProcessWebhookResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sProcessWebhookResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ProcessWebhookResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ProcessWebhookResponseValidationError{}

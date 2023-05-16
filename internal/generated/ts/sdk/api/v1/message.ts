@@ -465,6 +465,9 @@ export interface Link {
   plaidInstitutionId: string;
   /** the type of link this is ... can be either a manual or plaid link type */
   linkType: LinkType;
+  errorCode: string;
+  updatedAt: string;
+  newAccountsAvailable: boolean;
 }
 
 export interface Token {
@@ -901,42 +904,42 @@ export const StripeSubscription = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 8) {
+          if (tag !== 8) {
             break;
           }
 
           message.id = longToNumber(reader.uint64() as Long);
           continue;
         case 2:
-          if (tag != 18) {
+          if (tag !== 18) {
             break;
           }
 
           message.stripeSubscriptionId = reader.string();
           continue;
         case 3:
-          if (tag != 24) {
+          if (tag !== 24) {
             break;
           }
 
           message.stripeSubscriptionStatus = reader.int32() as any;
           continue;
         case 4:
-          if (tag != 34) {
+          if (tag !== 34) {
             break;
           }
 
           message.stripeSubscriptionActiveUntil = reader.string();
           continue;
         case 5:
-          if (tag != 42) {
+          if (tag !== 42) {
             break;
           }
 
           message.stripeWebhookLatestTimestamp = reader.string();
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -1020,42 +1023,42 @@ export const UserProfile = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 8) {
+          if (tag !== 8) {
             break;
           }
 
           message.id = longToNumber(reader.uint64() as Long);
           continue;
         case 2:
-          if (tag != 16) {
+          if (tag !== 16) {
             break;
           }
 
           message.userId = longToNumber(reader.uint64() as Long);
           continue;
         case 3:
-          if (tag != 26) {
+          if (tag !== 26) {
             break;
           }
 
           message.stripeCustomerId = reader.string();
           continue;
         case 4:
-          if (tag != 34) {
+          if (tag !== 34) {
             break;
           }
 
           message.stripeSubscriptions = StripeSubscription.decode(reader, reader.uint32());
           continue;
         case 6:
-          if (tag != 50) {
+          if (tag !== 50) {
             break;
           }
 
           message.link.push(Link.decode(reader, reader.uint32()));
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -1128,6 +1131,9 @@ function createBaseLink(): Link {
     studentLoanAccounts: [],
     plaidInstitutionId: "",
     linkType: 0,
+    errorCode: "",
+    updatedAt: "",
+    newAccountsAvailable: false,
   };
 }
 
@@ -1187,6 +1193,15 @@ export const Link = {
     if (message.linkType !== 0) {
       writer.uint32(152).int32(message.linkType);
     }
+    if (message.errorCode !== "") {
+      writer.uint32(162).string(message.errorCode);
+    }
+    if (message.updatedAt !== "") {
+      writer.uint32(170).string(message.updatedAt);
+    }
+    if (message.newAccountsAvailable === true) {
+      writer.uint32(176).bool(message.newAccountsAvailable);
+    }
     return writer;
   },
 
@@ -1198,133 +1213,154 @@ export const Link = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 8) {
+          if (tag !== 8) {
             break;
           }
 
           message.id = longToNumber(reader.uint64() as Long);
           continue;
         case 3:
-          if (tag != 24) {
+          if (tag !== 24) {
             break;
           }
 
           message.linkStatus = reader.int32() as any;
           continue;
         case 4:
-          if (tag != 34) {
+          if (tag !== 34) {
             break;
           }
 
           message.plaidLink = PlaidLink.decode(reader, reader.uint32());
           continue;
         case 5:
-          if (tag != 40) {
+          if (tag !== 40) {
             break;
           }
 
           message.plaidNewAccountsAvailable = reader.bool();
           continue;
         case 6:
-          if (tag != 50) {
+          if (tag !== 50) {
             break;
           }
 
           message.expirationDate = reader.string();
           continue;
         case 7:
-          if (tag != 58) {
+          if (tag !== 58) {
             break;
           }
 
           message.institutionName = reader.string();
           continue;
         case 8:
-          if (tag != 66) {
+          if (tag !== 66) {
             break;
           }
 
           message.customInstitutionName = reader.string();
           continue;
         case 9:
-          if (tag != 74) {
+          if (tag !== 74) {
             break;
           }
 
           message.description = reader.string();
           continue;
         case 10:
-          if (tag != 82) {
+          if (tag !== 82) {
             break;
           }
 
           message.lastManualSync = reader.string();
           continue;
         case 11:
-          if (tag != 90) {
+          if (tag !== 90) {
             break;
           }
 
           message.lastSuccessfulUpdate = reader.string();
           continue;
         case 12:
-          if (tag != 98) {
+          if (tag !== 98) {
             break;
           }
 
           message.token = Token.decode(reader, reader.uint32());
           continue;
         case 13:
-          if (tag != 106) {
+          if (tag !== 106) {
             break;
           }
 
           message.bankAccounts.push(BankAccount.decode(reader, reader.uint32()));
           continue;
         case 14:
-          if (tag != 114) {
+          if (tag !== 114) {
             break;
           }
 
           message.investmentAccounts.push(InvestmentAccount.decode(reader, reader.uint32()));
           continue;
         case 15:
-          if (tag != 122) {
+          if (tag !== 122) {
             break;
           }
 
           message.creditAccounts.push(CreditAccount.decode(reader, reader.uint32()));
           continue;
         case 16:
-          if (tag != 130) {
+          if (tag !== 130) {
             break;
           }
 
           message.mortgageAccounts.push(MortgageAccount.decode(reader, reader.uint32()));
           continue;
         case 17:
-          if (tag != 138) {
+          if (tag !== 138) {
             break;
           }
 
           message.studentLoanAccounts.push(StudentLoanAccount.decode(reader, reader.uint32()));
           continue;
         case 18:
-          if (tag != 146) {
+          if (tag !== 146) {
             break;
           }
 
           message.plaidInstitutionId = reader.string();
           continue;
         case 19:
-          if (tag != 152) {
+          if (tag !== 152) {
             break;
           }
 
           message.linkType = reader.int32() as any;
           continue;
+        case 20:
+          if (tag !== 162) {
+            break;
+          }
+
+          message.errorCode = reader.string();
+          continue;
+        case 21:
+          if (tag !== 170) {
+            break;
+          }
+
+          message.updatedAt = reader.string();
+          continue;
+        case 22:
+          if (tag !== 176) {
+            break;
+          }
+
+          message.newAccountsAvailable = reader.bool();
+          continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -1364,6 +1400,9 @@ export const Link = {
         : [],
       plaidInstitutionId: isSet(object.plaidInstitutionId) ? String(object.plaidInstitutionId) : "",
       linkType: isSet(object.linkType) ? linkTypeFromJSON(object.linkType) : 0,
+      errorCode: isSet(object.errorCode) ? String(object.errorCode) : "",
+      updatedAt: isSet(object.updatedAt) ? String(object.updatedAt) : "",
+      newAccountsAvailable: isSet(object.newAccountsAvailable) ? Boolean(object.newAccountsAvailable) : false,
     };
   },
 
@@ -1409,6 +1448,9 @@ export const Link = {
     }
     message.plaidInstitutionId !== undefined && (obj.plaidInstitutionId = message.plaidInstitutionId);
     message.linkType !== undefined && (obj.linkType = linkTypeToJSON(message.linkType));
+    message.errorCode !== undefined && (obj.errorCode = message.errorCode);
+    message.updatedAt !== undefined && (obj.updatedAt = message.updatedAt);
+    message.newAccountsAvailable !== undefined && (obj.newAccountsAvailable = message.newAccountsAvailable);
     return obj;
   },
 
@@ -1438,6 +1480,9 @@ export const Link = {
     message.studentLoanAccounts = object.studentLoanAccounts?.map((e) => StudentLoanAccount.fromPartial(e)) || [];
     message.plaidInstitutionId = object.plaidInstitutionId ?? "";
     message.linkType = object.linkType ?? 0;
+    message.errorCode = object.errorCode ?? "";
+    message.updatedAt = object.updatedAt ?? "";
+    message.newAccountsAvailable = object.newAccountsAvailable ?? false;
     return message;
   },
 };
@@ -1474,42 +1519,42 @@ export const Token = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 8) {
+          if (tag !== 8) {
             break;
           }
 
           message.id = longToNumber(reader.uint64() as Long);
           continue;
         case 2:
-          if (tag != 18) {
+          if (tag !== 18) {
             break;
           }
 
           message.itemId = reader.string();
           continue;
         case 3:
-          if (tag != 26) {
+          if (tag !== 26) {
             break;
           }
 
           message.keyId = reader.string();
           continue;
         case 4:
-          if (tag != 34) {
+          if (tag !== 34) {
             break;
           }
 
           message.accessToken = reader.string();
           continue;
         case 5:
-          if (tag != 42) {
+          if (tag !== 42) {
             break;
           }
 
           message.version = reader.string();
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -1598,56 +1643,56 @@ export const PlaidLink = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 8) {
+          if (tag !== 8) {
             break;
           }
 
           message.id = longToNumber(reader.uint64() as Long);
           continue;
         case 2:
-          if (tag != 18) {
+          if (tag !== 18) {
             break;
           }
 
           message.products.push(reader.string());
           continue;
         case 3:
-          if (tag != 26) {
+          if (tag !== 26) {
             break;
           }
 
           message.webhookUrl = reader.string();
           continue;
         case 4:
-          if (tag != 34) {
+          if (tag !== 34) {
             break;
           }
 
           message.institutionId = reader.string();
           continue;
         case 5:
-          if (tag != 42) {
+          if (tag !== 42) {
             break;
           }
 
           message.institutionName = reader.string();
           continue;
         case 6:
-          if (tag != 48) {
+          if (tag !== 48) {
             break;
           }
 
           message.usePlaidSync = reader.bool();
           continue;
         case 7:
-          if (tag != 58) {
+          if (tag !== 58) {
             break;
           }
 
           message.itemId = reader.string();
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -1858,252 +1903,252 @@ export const StudentLoanAccount = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 8) {
+          if (tag !== 8) {
             break;
           }
 
           message.id = longToNumber(reader.uint64() as Long);
           continue;
         case 2:
-          if (tag != 18) {
+          if (tag !== 18) {
             break;
           }
 
           message.plaidAccountId = reader.string();
           continue;
         case 3:
-          if (tag != 26) {
+          if (tag !== 26) {
             break;
           }
 
           message.disbursementDates.push(reader.string());
           continue;
         case 4:
-          if (tag != 34) {
+          if (tag !== 34) {
             break;
           }
 
           message.expectedPayoffDate = reader.string();
           continue;
         case 5:
-          if (tag != 42) {
+          if (tag !== 42) {
             break;
           }
 
           message.guarantor = reader.string();
           continue;
         case 6:
-          if (tag != 49) {
+          if (tag !== 49) {
             break;
           }
 
           message.interestRatePercentage = reader.double();
           continue;
         case 7:
-          if (tag != 56) {
+          if (tag !== 56) {
             break;
           }
 
           message.isOverdue = reader.bool();
           continue;
         case 8:
-          if (tag != 65) {
+          if (tag !== 65) {
             break;
           }
 
           message.lastPaymentAmount = reader.double();
           continue;
         case 9:
-          if (tag != 74) {
+          if (tag !== 74) {
             break;
           }
 
           message.lastPaymentDate = reader.string();
           continue;
         case 10:
-          if (tag != 82) {
+          if (tag !== 82) {
             break;
           }
 
           message.lastStatementIssueDate = reader.string();
           continue;
         case 11:
-          if (tag != 90) {
+          if (tag !== 90) {
             break;
           }
 
           message.loanName = reader.string();
           continue;
         case 12:
-          if (tag != 98) {
+          if (tag !== 98) {
             break;
           }
 
           message.loanEndDate = reader.string();
           continue;
         case 13:
-          if (tag != 105) {
+          if (tag !== 105) {
             break;
           }
 
           message.minimumPaymentAmount = reader.double();
           continue;
         case 14:
-          if (tag != 114) {
+          if (tag !== 114) {
             break;
           }
 
           message.nextPaymentDueDate = reader.string();
           continue;
         case 15:
-          if (tag != 122) {
+          if (tag !== 122) {
             break;
           }
 
           message.originationDate = reader.string();
           continue;
         case 16:
-          if (tag != 129) {
+          if (tag !== 129) {
             break;
           }
 
           message.originationPrincipalAmount = reader.double();
           continue;
         case 17:
-          if (tag != 137) {
+          if (tag !== 137) {
             break;
           }
 
           message.outstandingInterestAmount = reader.double();
           continue;
         case 18:
-          if (tag != 146) {
+          if (tag !== 146) {
             break;
           }
 
           message.paymentReferenceNumber = reader.string();
           continue;
         case 21:
-          if (tag != 170) {
+          if (tag !== 170) {
             break;
           }
 
           message.sequenceNumber = reader.string();
           continue;
         case 23:
-          if (tag != 185) {
+          if (tag !== 185) {
             break;
           }
 
           message.ytdInterestPaid = reader.double();
           continue;
         case 24:
-          if (tag != 193) {
+          if (tag !== 193) {
             break;
           }
 
           message.ytdPrincipalPaid = reader.double();
           continue;
         case 25:
-          if (tag != 202) {
+          if (tag !== 202) {
             break;
           }
 
           message.loanType = reader.string();
           continue;
         case 26:
-          if (tag != 210) {
+          if (tag !== 210) {
             break;
           }
 
           message.pslfStatusEstimatedEligibilityDate = reader.string();
           continue;
         case 27:
-          if (tag != 216) {
+          if (tag !== 216) {
             break;
           }
 
           message.pslfStatusPaymentsMade = reader.int32();
           continue;
         case 28:
-          if (tag != 224) {
+          if (tag !== 224) {
             break;
           }
 
           message.pslfStatusPaymentsRemaining = reader.int32();
           continue;
         case 29:
-          if (tag != 234) {
+          if (tag !== 234) {
             break;
           }
 
           message.repaymentPlanType = reader.string();
           continue;
         case 30:
-          if (tag != 242) {
+          if (tag !== 242) {
             break;
           }
 
           message.repaymentPlanDescription = reader.string();
           continue;
         case 31:
-          if (tag != 250) {
+          if (tag !== 250) {
             break;
           }
 
           message.servicerAddressCity = reader.string();
           continue;
         case 32:
-          if (tag != 258) {
+          if (tag !== 258) {
             break;
           }
 
           message.servicerAddressPostalCode = reader.string();
           continue;
         case 33:
-          if (tag != 266) {
+          if (tag !== 266) {
             break;
           }
 
           message.servicerAddressState = reader.string();
           continue;
         case 34:
-          if (tag != 274) {
+          if (tag !== 274) {
             break;
           }
 
           message.servicerAddressStreet = reader.string();
           continue;
         case 35:
-          if (tag != 282) {
+          if (tag !== 282) {
             break;
           }
 
           message.servicerAddressRegion = reader.string();
           continue;
         case 36:
-          if (tag != 290) {
+          if (tag !== 290) {
             break;
           }
 
           message.servicerAddressCountry = reader.string();
           continue;
         case 37:
-          if (tag != 296) {
+          if (tag !== 296) {
             break;
           }
 
           message.userId = longToNumber(reader.uint64() as Long);
           continue;
         case 38:
-          if (tag != 306) {
+          if (tag !== 306) {
             break;
           }
 
           message.name = reader.string();
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -2354,147 +2399,147 @@ export const CreditAccount = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 8) {
+          if (tag !== 8) {
             break;
           }
 
           message.id = longToNumber(reader.uint64() as Long);
           continue;
         case 2:
-          if (tag != 16) {
+          if (tag !== 16) {
             break;
           }
 
           message.userId = longToNumber(reader.uint64() as Long);
           continue;
         case 3:
-          if (tag != 26) {
+          if (tag !== 26) {
             break;
           }
 
           message.name = reader.string();
           continue;
         case 4:
-          if (tag != 34) {
+          if (tag !== 34) {
             break;
           }
 
           message.number = reader.string();
           continue;
         case 5:
-          if (tag != 42) {
+          if (tag !== 42) {
             break;
           }
 
           message.type = reader.string();
           continue;
         case 6:
-          if (tag != 53) {
+          if (tag !== 53) {
             break;
           }
 
           message.balance = reader.float();
           continue;
         case 9:
-          if (tag != 73) {
+          if (tag !== 73) {
             break;
           }
 
           message.currentFunds = reader.double();
           continue;
         case 10:
-          if (tag != 80) {
+          if (tag !== 80) {
             break;
           }
 
           message.balanceLimit = longToNumber(reader.uint64() as Long);
           continue;
         case 12:
-          if (tag != 98) {
+          if (tag !== 98) {
             break;
           }
 
           message.plaidAccountId = reader.string();
           continue;
         case 13:
-          if (tag != 106) {
+          if (tag !== 106) {
             break;
           }
 
           message.subtype = reader.string();
           continue;
         case 14:
-          if (tag != 112) {
+          if (tag !== 112) {
             break;
           }
 
           message.isOverdue = reader.bool();
           continue;
         case 15:
-          if (tag != 121) {
+          if (tag !== 121) {
             break;
           }
 
           message.lastPaymentAmount = reader.double();
           continue;
         case 16:
-          if (tag != 130) {
+          if (tag !== 130) {
             break;
           }
 
           message.lastPaymentDate = reader.string();
           continue;
         case 17:
-          if (tag != 138) {
+          if (tag !== 138) {
             break;
           }
 
           message.lastStatementIssueDate = reader.string();
           continue;
         case 18:
-          if (tag != 145) {
+          if (tag !== 145) {
             break;
           }
 
           message.minimumAmountDueDate = reader.double();
           continue;
         case 19:
-          if (tag != 154) {
+          if (tag !== 154) {
             break;
           }
 
           message.nextPaymentDate = reader.string();
           continue;
         case 20:
-          if (tag != 162) {
+          if (tag !== 162) {
             break;
           }
 
           message.aprs.push(Apr.decode(reader, reader.uint32()));
           continue;
         case 21:
-          if (tag != 169) {
+          if (tag !== 169) {
             break;
           }
 
           message.lastStatementBalance = reader.double();
           continue;
         case 22:
-          if (tag != 177) {
+          if (tag !== 177) {
             break;
           }
 
           message.minimumPaymentAmount = reader.double();
           continue;
         case 23:
-          if (tag != 186) {
+          if (tag !== 186) {
             break;
           }
 
           message.nextPaymentDueDate = reader.string();
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -2732,231 +2777,231 @@ export const MortgageAccount = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 8) {
+          if (tag !== 8) {
             break;
           }
 
           message.id = longToNumber(reader.uint64() as Long);
           continue;
         case 2:
-          if (tag != 18) {
+          if (tag !== 18) {
             break;
           }
 
           message.plaidAccountId = reader.string();
           continue;
         case 3:
-          if (tag != 26) {
+          if (tag !== 26) {
             break;
           }
 
           message.accountNumber = reader.string();
           continue;
         case 4:
-          if (tag != 33) {
+          if (tag !== 33) {
             break;
           }
 
           message.currentLateFee = reader.double();
           continue;
         case 5:
-          if (tag != 41) {
+          if (tag !== 41) {
             break;
           }
 
           message.escrowBalance = reader.double();
           continue;
         case 6:
-          if (tag != 48) {
+          if (tag !== 48) {
             break;
           }
 
           message.hasPmi = reader.bool();
           continue;
         case 7:
-          if (tag != 56) {
+          if (tag !== 56) {
             break;
           }
 
           message.hasPrepaymentPenalty = reader.bool();
           continue;
         case 9:
-          if (tag != 73) {
+          if (tag !== 73) {
             break;
           }
 
           message.lastPaymentAmount = reader.double();
           continue;
         case 10:
-          if (tag != 82) {
+          if (tag !== 82) {
             break;
           }
 
           message.lastPaymentDate = reader.string();
           continue;
         case 11:
-          if (tag != 90) {
+          if (tag !== 90) {
             break;
           }
 
           message.loanTerm = reader.string();
           continue;
         case 12:
-          if (tag != 98) {
+          if (tag !== 98) {
             break;
           }
 
           message.loanTypeDescription = reader.string();
           continue;
         case 13:
-          if (tag != 106) {
+          if (tag !== 106) {
             break;
           }
 
           message.maturityDate = reader.string();
           continue;
         case 14:
-          if (tag != 113) {
+          if (tag !== 113) {
             break;
           }
 
           message.nextMonthlyPayment = reader.double();
           continue;
         case 15:
-          if (tag != 122) {
+          if (tag !== 122) {
             break;
           }
 
           message.nextPaymentDueDate = reader.string();
           continue;
         case 16:
-          if (tag != 129) {
+          if (tag !== 129) {
             break;
           }
 
           message.originalPrincipalBalance = reader.double();
           continue;
         case 17:
-          if (tag != 137) {
+          if (tag !== 137) {
             break;
           }
 
           message.originalPropertyValue = reader.double();
           continue;
         case 18:
-          if (tag != 145) {
+          if (tag !== 145) {
             break;
           }
 
           message.outstandingPrincipalBalance = reader.double();
           continue;
         case 19:
-          if (tag != 153) {
+          if (tag !== 153) {
             break;
           }
 
           message.paymentAmount = reader.double();
           continue;
         case 20:
-          if (tag != 162) {
+          if (tag !== 162) {
             break;
           }
 
           message.paymentDate = reader.string();
           continue;
         case 25:
-          if (tag != 202) {
+          if (tag !== 202) {
             break;
           }
 
           message.originationDate = reader.string();
           continue;
         case 26:
-          if (tag != 209) {
+          if (tag !== 209) {
             break;
           }
 
           message.originationPrincipalAmount = reader.double();
           continue;
         case 28:
-          if (tag != 225) {
+          if (tag !== 225) {
             break;
           }
 
           message.pastDueAmount = reader.double();
           continue;
         case 29:
-          if (tag != 233) {
+          if (tag !== 233) {
             break;
           }
 
           message.ytdInterestPaid = reader.double();
           continue;
         case 30:
-          if (tag != 241) {
+          if (tag !== 241) {
             break;
           }
 
           message.ytdPrincipalPaid = reader.double();
           continue;
         case 31:
-          if (tag != 250) {
+          if (tag !== 250) {
             break;
           }
 
           message.propertyAddressCity = reader.string();
           continue;
         case 32:
-          if (tag != 258) {
+          if (tag !== 258) {
             break;
           }
 
           message.propertyAddressState = reader.string();
           continue;
         case 33:
-          if (tag != 266) {
+          if (tag !== 266) {
             break;
           }
 
           message.propertyAddressStreet = reader.string();
           continue;
         case 34:
-          if (tag != 274) {
+          if (tag !== 274) {
             break;
           }
 
           message.propertyAddressPostalCode = reader.string();
           continue;
         case 35:
-          if (tag != 282) {
+          if (tag !== 282) {
             break;
           }
 
           message.propertyRegion = reader.string();
           continue;
         case 36:
-          if (tag != 290) {
+          if (tag !== 290) {
             break;
           }
 
           message.propertyCountry = reader.string();
           continue;
         case 37:
-          if (tag != 297) {
+          if (tag !== 297) {
             break;
           }
 
           message.interestRatePercentage = reader.double();
           continue;
         case 38:
-          if (tag != 306) {
+          if (tag !== 306) {
             break;
           }
 
           message.interestRateType = reader.string();
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -3155,91 +3200,91 @@ export const InvestmentAccount = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 8) {
+          if (tag !== 8) {
             break;
           }
 
           message.id = longToNumber(reader.uint64() as Long);
           continue;
         case 2:
-          if (tag != 16) {
+          if (tag !== 16) {
             break;
           }
 
           message.userId = longToNumber(reader.uint64() as Long);
           continue;
         case 3:
-          if (tag != 26) {
+          if (tag !== 26) {
             break;
           }
 
           message.name = reader.string();
           continue;
         case 4:
-          if (tag != 34) {
+          if (tag !== 34) {
             break;
           }
 
           message.number = reader.string();
           continue;
         case 5:
-          if (tag != 42) {
+          if (tag !== 42) {
             break;
           }
 
           message.type = reader.string();
           continue;
         case 6:
-          if (tag != 53) {
+          if (tag !== 53) {
             break;
           }
 
           message.balance = reader.float();
           continue;
         case 9:
-          if (tag != 73) {
+          if (tag !== 73) {
             break;
           }
 
           message.currentFunds = reader.double();
           continue;
         case 10:
-          if (tag != 80) {
+          if (tag !== 80) {
             break;
           }
 
           message.balanceLimit = longToNumber(reader.uint64() as Long);
           continue;
         case 12:
-          if (tag != 98) {
+          if (tag !== 98) {
             break;
           }
 
           message.plaidAccountId = reader.string();
           continue;
         case 13:
-          if (tag != 106) {
+          if (tag !== 106) {
             break;
           }
 
           message.subtype = reader.string();
           continue;
         case 7:
-          if (tag != 58) {
+          if (tag !== 58) {
             break;
           }
 
           message.holdings.push(InvesmentHolding.decode(reader, reader.uint32()));
           continue;
         case 8:
-          if (tag != 66) {
+          if (tag !== 66) {
             break;
           }
 
           message.securities.push(InvestmentSecurity.decode(reader, reader.uint32()));
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -3379,91 +3424,91 @@ export const BankAccount = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 8) {
+          if (tag !== 8) {
             break;
           }
 
           message.id = longToNumber(reader.uint64() as Long);
           continue;
         case 2:
-          if (tag != 16) {
+          if (tag !== 16) {
             break;
           }
 
           message.userId = longToNumber(reader.uint64() as Long);
           continue;
         case 3:
-          if (tag != 26) {
+          if (tag !== 26) {
             break;
           }
 
           message.name = reader.string();
           continue;
         case 4:
-          if (tag != 34) {
+          if (tag !== 34) {
             break;
           }
 
           message.number = reader.string();
           continue;
         case 5:
-          if (tag != 40) {
+          if (tag !== 40) {
             break;
           }
 
           message.type = reader.int32() as any;
           continue;
         case 6:
-          if (tag != 53) {
+          if (tag !== 53) {
             break;
           }
 
           message.balance = reader.float();
           continue;
         case 7:
-          if (tag != 58) {
+          if (tag !== 58) {
             break;
           }
 
           message.currency = reader.string();
           continue;
         case 9:
-          if (tag != 73) {
+          if (tag !== 73) {
             break;
           }
 
           message.currentFunds = reader.double();
           continue;
         case 10:
-          if (tag != 80) {
+          if (tag !== 80) {
             break;
           }
 
           message.balanceLimit = longToNumber(reader.uint64() as Long);
           continue;
         case 11:
-          if (tag != 90) {
+          if (tag !== 90) {
             break;
           }
 
           message.pockets.push(Pocket.decode(reader, reader.uint32()));
           continue;
         case 13:
-          if (tag != 106) {
+          if (tag !== 106) {
             break;
           }
 
           message.plaidAccountId = reader.string();
           continue;
         case 14:
-          if (tag != 114) {
+          if (tag !== 114) {
             break;
           }
 
           message.subtype = reader.string();
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -3557,28 +3602,28 @@ export const Pocket = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 8) {
+          if (tag !== 8) {
             break;
           }
 
           message.id = longToNumber(reader.uint64() as Long);
           continue;
         case 3:
-          if (tag != 26) {
+          if (tag !== 26) {
             break;
           }
 
           message.goals.push(SmartGoal.decode(reader, reader.uint32()));
           continue;
         case 4:
-          if (tag != 32) {
+          if (tag !== 32) {
             break;
           }
 
           message.type = reader.int32() as any;
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -3689,98 +3734,98 @@ export const SmartGoal = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 8) {
+          if (tag !== 8) {
             break;
           }
 
           message.id = longToNumber(reader.uint64() as Long);
           continue;
         case 2:
-          if (tag != 16) {
+          if (tag !== 16) {
             break;
           }
 
           message.userId = longToNumber(reader.uint64() as Long);
           continue;
         case 3:
-          if (tag != 26) {
+          if (tag !== 26) {
             break;
           }
 
           message.name = reader.string();
           continue;
         case 4:
-          if (tag != 34) {
+          if (tag !== 34) {
             break;
           }
 
           message.description = reader.string();
           continue;
         case 5:
-          if (tag != 40) {
+          if (tag !== 40) {
             break;
           }
 
           message.isCompleted = reader.bool();
           continue;
         case 9:
-          if (tag != 72) {
+          if (tag !== 72) {
             break;
           }
 
           message.goalType = reader.int32() as any;
           continue;
         case 10:
-          if (tag != 82) {
+          if (tag !== 82) {
             break;
           }
 
           message.duration = reader.string();
           continue;
         case 11:
-          if (tag != 90) {
+          if (tag !== 90) {
             break;
           }
 
           message.startDate = reader.string();
           continue;
         case 12:
-          if (tag != 98) {
+          if (tag !== 98) {
             break;
           }
 
           message.endDate = reader.string();
           continue;
         case 13:
-          if (tag != 106) {
+          if (tag !== 106) {
             break;
           }
 
           message.targetAmount = reader.string();
           continue;
         case 14:
-          if (tag != 114) {
+          if (tag !== 114) {
             break;
           }
 
           message.currentAmount = reader.string();
           continue;
         case 15:
-          if (tag != 122) {
+          if (tag !== 122) {
             break;
           }
 
           message.milestones.push(Milestone.decode(reader, reader.uint32()));
           continue;
         case 16:
-          if (tag != 130) {
+          if (tag !== 130) {
             break;
           }
 
           message.forecasts = Forecast.decode(reader, reader.uint32());
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -3883,35 +3928,35 @@ export const Forecast = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 8) {
+          if (tag !== 8) {
             break;
           }
 
           message.id = longToNumber(reader.uint64() as Long);
           continue;
         case 2:
-          if (tag != 18) {
+          if (tag !== 18) {
             break;
           }
 
           message.forecastedAmount = reader.string();
           continue;
         case 3:
-          if (tag != 26) {
+          if (tag !== 26) {
             break;
           }
 
           message.forecastedCompletionDate = reader.string();
           continue;
         case 4:
-          if (tag != 34) {
+          if (tag !== 34) {
             break;
           }
 
           message.varianceAmount = reader.string();
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -3989,56 +4034,56 @@ export const Milestone = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 8) {
+          if (tag !== 8) {
             break;
           }
 
           message.id = longToNumber(reader.uint64() as Long);
           continue;
         case 2:
-          if (tag != 18) {
+          if (tag !== 18) {
             break;
           }
 
           message.name = reader.string();
           continue;
         case 3:
-          if (tag != 26) {
+          if (tag !== 26) {
             break;
           }
 
           message.description = reader.string();
           continue;
         case 4:
-          if (tag != 34) {
+          if (tag !== 34) {
             break;
           }
 
           message.targetDate = reader.string();
           continue;
         case 5:
-          if (tag != 42) {
+          if (tag !== 42) {
             break;
           }
 
           message.targetAmount = reader.string();
           continue;
         case 6:
-          if (tag != 48) {
+          if (tag !== 48) {
             break;
           }
 
           message.isCompleted = reader.bool();
           continue;
         case 13:
-          if (tag != 106) {
+          if (tag !== 106) {
             break;
           }
 
           message.budget = Budget.decode(reader, reader.uint32());
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -4124,49 +4169,49 @@ export const Budget = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 8) {
+          if (tag !== 8) {
             break;
           }
 
           message.id = longToNumber(reader.uint64() as Long);
           continue;
         case 2:
-          if (tag != 18) {
+          if (tag !== 18) {
             break;
           }
 
           message.name = reader.string();
           continue;
         case 3:
-          if (tag != 26) {
+          if (tag !== 26) {
             break;
           }
 
           message.description = reader.string();
           continue;
         case 4:
-          if (tag != 34) {
+          if (tag !== 34) {
             break;
           }
 
           message.startDate = reader.string();
           continue;
         case 5:
-          if (tag != 42) {
+          if (tag !== 42) {
             break;
           }
 
           message.endDate = reader.string();
           continue;
         case 6:
-          if (tag != 50) {
+          if (tag !== 50) {
             break;
           }
 
           message.category = Category.decode(reader, reader.uint32());
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -4243,35 +4288,35 @@ export const Category = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 8) {
+          if (tag !== 8) {
             break;
           }
 
           message.id = longToNumber(reader.uint64() as Long);
           continue;
         case 2:
-          if (tag != 18) {
+          if (tag !== 18) {
             break;
           }
 
           message.name = reader.string();
           continue;
         case 3:
-          if (tag != 26) {
+          if (tag !== 26) {
             break;
           }
 
           message.description = reader.string();
           continue;
         case 4:
-          if (tag != 34) {
+          if (tag !== 34) {
             break;
           }
 
           message.subcategories.push(reader.string());
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -4381,91 +4426,91 @@ export const InvesmentHolding = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 8) {
+          if (tag !== 8) {
             break;
           }
 
           message.id = longToNumber(reader.uint64() as Long);
           continue;
         case 2:
-          if (tag != 18) {
+          if (tag !== 18) {
             break;
           }
 
           message.name = reader.string();
           continue;
         case 3:
-          if (tag != 26) {
+          if (tag !== 26) {
             break;
           }
 
           message.plaidAccountId = reader.string();
           continue;
         case 4:
-          if (tag != 33) {
+          if (tag !== 33) {
             break;
           }
 
           message.costBasis = reader.double();
           continue;
         case 5:
-          if (tag != 41) {
+          if (tag !== 41) {
             break;
           }
 
           message.institutionPrice = reader.double();
           continue;
         case 6:
-          if (tag != 50) {
+          if (tag !== 50) {
             break;
           }
 
           message.institutionPriceAsOf = reader.string();
           continue;
         case 7:
-          if (tag != 58) {
+          if (tag !== 58) {
             break;
           }
 
           message.institutionPriceDatetime = reader.string();
           continue;
         case 8:
-          if (tag != 65) {
+          if (tag !== 65) {
             break;
           }
 
           message.institutionValue = reader.double();
           continue;
         case 9:
-          if (tag != 74) {
+          if (tag !== 74) {
             break;
           }
 
           message.isoCurrencyCode = reader.string();
           continue;
         case 10:
-          if (tag != 81) {
+          if (tag !== 81) {
             break;
           }
 
           message.quantity = reader.double();
           continue;
         case 11:
-          if (tag != 90) {
+          if (tag !== 90) {
             break;
           }
 
           message.securityId = reader.string();
           continue;
         case 12:
-          if (tag != 98) {
+          if (tag !== 98) {
             break;
           }
 
           message.unofficialCurrencyCode = reader.string();
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -4615,126 +4660,126 @@ export const InvestmentSecurity = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 8) {
+          if (tag !== 8) {
             break;
           }
 
           message.id = longToNumber(reader.uint64() as Long);
           continue;
         case 2:
-          if (tag != 17) {
+          if (tag !== 17) {
             break;
           }
 
           message.closePrice = reader.double();
           continue;
         case 3:
-          if (tag != 26) {
+          if (tag !== 26) {
             break;
           }
 
           message.closePriceAsOf = reader.string();
           continue;
         case 4:
-          if (tag != 34) {
+          if (tag !== 34) {
             break;
           }
 
           message.cusip = reader.string();
           continue;
         case 5:
-          if (tag != 42) {
+          if (tag !== 42) {
             break;
           }
 
           message.institutionId = reader.string();
           continue;
         case 6:
-          if (tag != 50) {
+          if (tag !== 50) {
             break;
           }
 
           message.institutionSecurityId = reader.string();
           continue;
         case 7:
-          if (tag != 56) {
+          if (tag !== 56) {
             break;
           }
 
           message.isCashEquivalent = reader.bool();
           continue;
         case 8:
-          if (tag != 66) {
+          if (tag !== 66) {
             break;
           }
 
           message.isin = reader.string();
           continue;
         case 9:
-          if (tag != 74) {
+          if (tag !== 74) {
             break;
           }
 
           message.isoCurrencyCode = reader.string();
           continue;
         case 10:
-          if (tag != 82) {
+          if (tag !== 82) {
             break;
           }
 
           message.name = reader.string();
           continue;
         case 11:
-          if (tag != 90) {
+          if (tag !== 90) {
             break;
           }
 
           message.proxySecurityId = reader.string();
           continue;
         case 12:
-          if (tag != 98) {
+          if (tag !== 98) {
             break;
           }
 
           message.securityId = reader.string();
           continue;
         case 13:
-          if (tag != 106) {
+          if (tag !== 106) {
             break;
           }
 
           message.sedol = reader.string();
           continue;
         case 14:
-          if (tag != 114) {
+          if (tag !== 114) {
             break;
           }
 
           message.tickerSymbol = reader.string();
           continue;
         case 15:
-          if (tag != 122) {
+          if (tag !== 122) {
             break;
           }
 
           message.type = reader.string();
           continue;
         case 16:
-          if (tag != 130) {
+          if (tag !== 130) {
             break;
           }
 
           message.unofficialCurrencyCode = reader.string();
           continue;
         case 17:
-          if (tag != 138) {
+          if (tag !== 138) {
             break;
           }
 
           message.updateDatetime = reader.string();
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -4845,42 +4890,42 @@ export const Apr = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 8) {
+          if (tag !== 8) {
             break;
           }
 
           message.id = longToNumber(reader.uint64() as Long);
           continue;
         case 2:
-          if (tag != 17) {
+          if (tag !== 17) {
             break;
           }
 
           message.percentage = reader.double();
           continue;
         case 3:
-          if (tag != 26) {
+          if (tag !== 26) {
             break;
           }
 
           message.type = reader.string();
           continue;
         case 4:
-          if (tag != 33) {
+          if (tag !== 33) {
             break;
           }
 
           message.balanceSubjectToApr = reader.double();
           continue;
         case 5:
-          if (tag != 41) {
+          if (tag !== 41) {
             break;
           }
 
           message.interestChargeAmount = reader.double();
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);

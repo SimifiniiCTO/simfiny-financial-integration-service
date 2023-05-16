@@ -30,6 +30,7 @@ func newLinkORM(db *gorm.DB, opts ...gen.DOOption) linkORM {
 	_linkORM.ALL = field.NewAsterisk(tableName)
 	_linkORM.CustomInstitutionName = field.NewString(tableName, "custom_institution_name")
 	_linkORM.Description = field.NewString(tableName, "description")
+	_linkORM.ErrorCode = field.NewString(tableName, "error_code")
 	_linkORM.ExpirationDate = field.NewString(tableName, "expiration_date")
 	_linkORM.Id = field.NewUint64(tableName, "id")
 	_linkORM.InstitutionName = field.NewString(tableName, "institution_name")
@@ -37,8 +38,10 @@ func newLinkORM(db *gorm.DB, opts ...gen.DOOption) linkORM {
 	_linkORM.LastSuccessfulUpdate = field.NewString(tableName, "last_successful_update")
 	_linkORM.LinkStatus = field.NewString(tableName, "link_status")
 	_linkORM.LinkType = field.NewString(tableName, "link_type")
+	_linkORM.NewAccountsAvailable = field.NewBool(tableName, "new_accounts_available")
 	_linkORM.PlaidInstitutionId = field.NewString(tableName, "plaid_institution_id")
 	_linkORM.PlaidNewAccountsAvailable = field.NewBool(tableName, "plaid_new_accounts_available")
+	_linkORM.UpdatedAt = field.NewString(tableName, "updated_at")
 	_linkORM.UserProfileId = field.NewUint64(tableName, "user_profile_id")
 	_linkORM.PlaidLink = linkORMHasOnePlaidLink{
 		db: db.Session(&gorm.Session{}),
@@ -174,6 +177,7 @@ type linkORM struct {
 	ALL                       field.Asterisk
 	CustomInstitutionName     field.String
 	Description               field.String
+	ErrorCode                 field.String
 	ExpirationDate            field.String
 	Id                        field.Uint64
 	InstitutionName           field.String
@@ -181,8 +185,10 @@ type linkORM struct {
 	LastSuccessfulUpdate      field.String
 	LinkStatus                field.String
 	LinkType                  field.String
+	NewAccountsAvailable      field.Bool
 	PlaidInstitutionId        field.String
 	PlaidNewAccountsAvailable field.Bool
+	UpdatedAt                 field.String
 	UserProfileId             field.Uint64
 	PlaidLink                 linkORMHasOnePlaidLink
 
@@ -215,6 +221,7 @@ func (l *linkORM) updateTableName(table string) *linkORM {
 	l.ALL = field.NewAsterisk(table)
 	l.CustomInstitutionName = field.NewString(table, "custom_institution_name")
 	l.Description = field.NewString(table, "description")
+	l.ErrorCode = field.NewString(table, "error_code")
 	l.ExpirationDate = field.NewString(table, "expiration_date")
 	l.Id = field.NewUint64(table, "id")
 	l.InstitutionName = field.NewString(table, "institution_name")
@@ -222,8 +229,10 @@ func (l *linkORM) updateTableName(table string) *linkORM {
 	l.LastSuccessfulUpdate = field.NewString(table, "last_successful_update")
 	l.LinkStatus = field.NewString(table, "link_status")
 	l.LinkType = field.NewString(table, "link_type")
+	l.NewAccountsAvailable = field.NewBool(table, "new_accounts_available")
 	l.PlaidInstitutionId = field.NewString(table, "plaid_institution_id")
 	l.PlaidNewAccountsAvailable = field.NewBool(table, "plaid_new_accounts_available")
+	l.UpdatedAt = field.NewString(table, "updated_at")
 	l.UserProfileId = field.NewUint64(table, "user_profile_id")
 
 	l.fillFieldMap()
@@ -241,9 +250,10 @@ func (l *linkORM) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (l *linkORM) fillFieldMap() {
-	l.fieldMap = make(map[string]field.Expr, 19)
+	l.fieldMap = make(map[string]field.Expr, 22)
 	l.fieldMap["custom_institution_name"] = l.CustomInstitutionName
 	l.fieldMap["description"] = l.Description
+	l.fieldMap["error_code"] = l.ErrorCode
 	l.fieldMap["expiration_date"] = l.ExpirationDate
 	l.fieldMap["id"] = l.Id
 	l.fieldMap["institution_name"] = l.InstitutionName
@@ -251,8 +261,10 @@ func (l *linkORM) fillFieldMap() {
 	l.fieldMap["last_successful_update"] = l.LastSuccessfulUpdate
 	l.fieldMap["link_status"] = l.LinkStatus
 	l.fieldMap["link_type"] = l.LinkType
+	l.fieldMap["new_accounts_available"] = l.NewAccountsAvailable
 	l.fieldMap["plaid_institution_id"] = l.PlaidInstitutionId
 	l.fieldMap["plaid_new_accounts_available"] = l.PlaidNewAccountsAvailable
+	l.fieldMap["updated_at"] = l.UpdatedAt
 	l.fieldMap["user_profile_id"] = l.UserProfileId
 
 }

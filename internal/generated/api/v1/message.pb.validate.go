@@ -595,6 +595,12 @@ func (m *Link) validate(all bool) error {
 
 	// no validation rules for LinkType
 
+	// no validation rules for ErrorCode
+
+	// no validation rules for UpdatedAt
+
+	// no validation rules for NewAccountsAvailable
+
 	if len(errors) > 0 {
 		return LinkMultiError(errors)
 	}

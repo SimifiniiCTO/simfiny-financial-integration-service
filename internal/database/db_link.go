@@ -55,7 +55,19 @@ func (db *Db) GetLink(ctx context.Context, userID uint64, linkID uint64) (*schem
 
 	// ensure the link exists
 	l := db.QueryOperator.LinkORM
-	link, err := l.WithContext(ctx).Where(l.Id.Eq(linkID)).First()
+	link, err := l.
+		WithContext(ctx).
+		Where(l.Id.Eq(linkID)).
+		Preload(l.BankAccounts.Pockets.Goals.Forecasts).
+		Preload(l.BankAccounts.Pockets.Goals.Milestones).
+		Preload(l.CreditAccounts.Aprs).
+		Preload(l.InvestmentAccounts.Holdings).
+		Preload(l.InvestmentAccounts.Securities).
+		Preload(l.MortgageAccounts).
+		Preload(l.PlaidLink).
+		Preload(l.StudentLoanAccounts).
+		Preload(l.Token).
+		First()
 	if err != nil {
 		return nil, fmt.Errorf("link with id %d does not exist", linkID)
 	}
@@ -186,4 +198,88 @@ func (db *Db) CreateLink(ctx context.Context, userID uint64, link *schema.Link) 
 	}
 
 	return &createdLink, nil
+}
+
+// This function takes a context and an item ID as input and returns the associated PlaidLink object if
+// it exists. It first starts a datastore span to instrument the operation. It then queries the
+// PlaidLinkORM to find the link with the given item ID. If the link exists, it converts it to a
+// protobuf object and returns it. If the link does not exist, it returns an error.
+func (db *Db) GetLinkByItemId(ctx context.Context, itemId string) (*schema.Link, error) {
+	// instrument operation
+	if span := db.startDatastoreSpan(ctx, "dbtxn-get-link"); span != nil {
+		defer span.End()
+	}
+
+	// ensure the link exists
+	pl := db.QueryOperator.PlaidLinkORM
+	l := db.QueryOperator.LinkORM
+	plaidLink, err := pl.WithContext(ctx).Where(pl.ItemId.Eq(itemId)).First()
+	if err != nil {
+		return nil, fmt.Errorf("link with id %s does not exist", itemId)
+	}
+
+	linkId := plaidLink.LinkId
+	link, err := l.
+		WithContext(ctx).
+		Where(l.Id.Eq(*linkId)).
+		Preload(l.BankAccounts.Pockets.Goals.Forecasts).
+		Preload(l.BankAccounts.Pockets.Goals.Milestones).
+		Preload(l.CreditAccounts.Aprs).
+		Preload(l.InvestmentAccounts.Holdings).
+		Preload(l.InvestmentAccounts.Securities).
+		Preload(l.MortgageAccounts).
+		Preload(l.PlaidLink).
+		Preload(l.StudentLoanAccounts).
+		Preload(l.Token).
+		First()
+	if err != nil {
+		return nil, fmt.Errorf("link with id %d does not exist", *linkId)
+	}
+
+	// convert to pb
+	res, err := link.ToPB(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	// return the link
+	return &res, nil
+}
+
+func (db *Db) UpdateLink(ctx context.Context, link *schema.Link) error {
+	// instrument operation
+	if span := db.startDatastoreSpan(ctx, "dbtxn-update-pocket"); span != nil {
+		defer span.End()
+	}
+
+	if link == nil {
+		return fmt.Errorf("link must be provided")
+	}
+
+	if link.Id == 0 {
+		return fmt.Errorf("link id must be provided. got: %d", link.Id)
+	}
+
+	l := db.QueryOperator.LinkORM
+	if _, err := l.WithContext(ctx).Where(l.Id.Eq(link.Id)).First(); err != nil {
+		return fmt.Errorf("link with id %d does not exist", link.Id)
+	}
+
+	// update the link
+	linkORM, err := link.ToORM(ctx)
+	if err != nil {
+		return err
+	}
+
+	// perform the update operation
+	result, err := l.WithContext(ctx).Updates(&linkORM)
+	if err != nil {
+		return err
+	}
+
+	if result.RowsAffected == 0 {
+		return fmt.Errorf("no rows affected")
+	}
+
+	return nil
 }

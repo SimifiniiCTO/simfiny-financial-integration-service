@@ -61,6 +61,8 @@ import {
   PlaidExchangeTokenResponse,
   PlaidInitiateTokenExchangeRequest,
   PlaidInitiateTokenExchangeResponse,
+  ProcessWebhookRequest,
+  ProcessWebhookResponse,
   ReadynessCheckRequest,
   ReadynessCheckResponse,
   UpdateBankAccountRequest,
@@ -115,6 +117,7 @@ export interface FinancialService {
   GetLink(request: GetLinkRequest): Promise<GetLinkResponse>;
   GetLinks(request: GetLinksRequest): Promise<GetLinksResponse>;
   DeleteLink(request: DeleteLinkRequest): Promise<DeleteLinkResponse>;
+  ProcessWebhook(request: ProcessWebhookRequest): Promise<ProcessWebhookResponse>;
 }
 
 export class FinancialServiceClientImpl implements FinancialService {
@@ -159,6 +162,7 @@ export class FinancialServiceClientImpl implements FinancialService {
     this.GetLink = this.GetLink.bind(this);
     this.GetLinks = this.GetLinks.bind(this);
     this.DeleteLink = this.DeleteLink.bind(this);
+    this.ProcessWebhook = this.ProcessWebhook.bind(this);
   }
   PlaidInitiateTokenExchange(request: PlaidInitiateTokenExchangeRequest): Promise<PlaidInitiateTokenExchangeResponse> {
     const data = PlaidInitiateTokenExchangeRequest.encode(request).finish();
@@ -374,6 +378,12 @@ export class FinancialServiceClientImpl implements FinancialService {
     const data = DeleteLinkRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "DeleteLink", data);
     return promise.then((data) => DeleteLinkResponse.decode(_m0.Reader.create(data)));
+  }
+
+  ProcessWebhook(request: ProcessWebhookRequest): Promise<ProcessWebhookResponse> {
+    const data = ProcessWebhookRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "ProcessWebhook", data);
+    return promise.then((data) => ProcessWebhookResponse.decode(_m0.Reader.create(data)));
   }
 }
 

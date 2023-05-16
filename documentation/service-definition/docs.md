@@ -110,6 +110,9 @@
     - [PlaidExchangeTokenResponse](#api-v1-PlaidExchangeTokenResponse)
     - [PlaidInitiateTokenExchangeRequest](#api-v1-PlaidInitiateTokenExchangeRequest)
     - [PlaidInitiateTokenExchangeResponse](#api-v1-PlaidInitiateTokenExchangeResponse)
+    - [ProcessWebhookRequest](#api-v1-ProcessWebhookRequest)
+    - [ProcessWebhookRequest.ErrorEntry](#api-v1-ProcessWebhookRequest-ErrorEntry)
+    - [ProcessWebhookResponse](#api-v1-ProcessWebhookResponse)
     - [ReadynessCheckRequest](#api-v1-ReadynessCheckRequest)
     - [ReadynessCheckResponse](#api-v1-ReadynessCheckResponse)
     - [UpdateBankAccountRequest](#api-v1-UpdateBankAccountRequest)
@@ -580,6 +583,9 @@ Two Items created for the same set of credentials at the same institution will b
 | student_loan_accounts | [StudentLoanAccount](#api-v1-StudentLoanAccount) | repeated | student loan accounts tied to a link |
 | plaid_institution_id | [string](#string) |  | the id of the institution this link is tied to and against |
 | link_type | [LinkType](#api-v1-LinkType) |  | the type of link this is ... can be either a manual or plaid link type |
+| error_code | [string](#string) |  |  |
+| updated_at | [string](#string) |  |  |
+| new_accounts_available | [bool](#bool) |  |  |
 
 
 
@@ -2000,6 +2006,61 @@ the `get user profile` request
 
 
 
+<a name="api-v1-ProcessWebhookRequest"></a>
+
+### ProcessWebhookRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| webhook_type | [string](#string) |  |  |
+| webhook_code | [string](#string) |  |  |
+| item_id | [string](#string) |  | The item_id of the Item associated with this webhook, warning, or error |
+| initial_update_complete | [bool](#bool) |  | Indicates if initial pull information is available. |
+| historical_update_complete | [string](#string) |  | Indicates if historical pull information is available. |
+| environment | [string](#string) |  | The Plaid environment the webhook was sent from |
+| new_transactions | [string](#string) | repeated | The number of new, unfetched transactions available |
+| removed_transactions | [string](#string) | repeated | An array of transaction_ids corresponding to the removed transactions |
+| error | [ProcessWebhookRequest.ErrorEntry](#api-v1-ProcessWebhookRequest-ErrorEntry) | repeated | We use standard HTTP response codes for success and failure notifications, and our errors are further classified by error_type. In general, 200 HTTP codes correspond to success, 40X codes are for developer- or user-related failures, and 50X codes are for Plaid-related issues. An Item with a non-null error object will only be part of an API response when calling /item/get to view Item status. Otherwise, error fields will be null if no error has occurred; if an error has occurred, an error code will be returned instead. |
+| account_ids | [string](#string) | repeated | A list of account_ids for accounts that have new or updated recurring transactions data. |
+| consent_expiration_time | [string](#string) |  | The time at which the user&#39;s access_token will expire. This field will only be present |
+| account_ids_with_new_liabilities | [string](#string) | repeated | An array of account_id&#39;s for accounts that contain new liabilities.&#39; |
+| account_ids_with_updated_liabilities | [string](#string) | repeated | An object with keys of account_id&#39;s that are mapped to their respective liabilities fields that changed. |
+| new_holdings | [uint64](#uint64) |  | The number of new holdings reported since the last time this webhook was fired. |
+| updated_holdings | [uint64](#uint64) |  | The number of updated holdings reported since the last time this webhook was fired. |
+
+
+
+
+
+
+<a name="api-v1-ProcessWebhookRequest-ErrorEntry"></a>
+
+### ProcessWebhookRequest.ErrorEntry
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| key | [string](#string) |  |  |
+| value | [google.protobuf.Any](#google-protobuf-Any) |  |  |
+
+
+
+
+
+
+<a name="api-v1-ProcessWebhookResponse"></a>
+
+### ProcessWebhookResponse
+
+
+
+
+
+
+
 <a name="api-v1-ReadynessCheckRequest"></a>
 
 ### ReadynessCheckRequest
@@ -2244,6 +2305,7 @@ FinancialService API.
 | GetLink | [GetLinkRequest](#api-v1-GetLinkRequest) | [GetLinkResponse](#api-v1-GetLinkResponse) |  |
 | GetLinks | [GetLinksRequest](#api-v1-GetLinksRequest) | [GetLinksResponse](#api-v1-GetLinksResponse) |  |
 | DeleteLink | [DeleteLinkRequest](#api-v1-DeleteLinkRequest) | [DeleteLinkResponse](#api-v1-DeleteLinkResponse) |  |
+| ProcessWebhook | [ProcessWebhookRequest](#api-v1-ProcessWebhookRequest) | [ProcessWebhookResponse](#api-v1-ProcessWebhookResponse) |  |
 
  
 

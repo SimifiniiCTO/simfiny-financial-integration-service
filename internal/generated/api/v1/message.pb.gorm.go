@@ -205,6 +205,7 @@ type LinkORM struct {
 	CreditAccounts            []*CreditAccountORM `gorm:"foreignkey:LinkId;association_foreignkey:Id;preload:true"`
 	CustomInstitutionName     string
 	Description               string
+	ErrorCode                 string
 	ExpirationDate            string
 	Id                        uint64
 	InstitutionName           string
@@ -214,11 +215,13 @@ type LinkORM struct {
 	LinkStatus                string
 	LinkType                  string
 	MortgageAccounts          []*MortgageAccountORM `gorm:"foreignkey:LinkId;association_foreignkey:Id;preload:true"`
+	NewAccountsAvailable      bool
 	PlaidInstitutionId        string
 	PlaidLink                 *PlaidLinkORM `gorm:"foreignkey:LinkId;association_foreignkey:Id;preload:true"`
 	PlaidNewAccountsAvailable bool
 	StudentLoanAccounts       []*StudentLoanAccountORM `gorm:"foreignkey:LinkId;association_foreignkey:Id;preload:true"`
 	Token                     *TokenORM                `gorm:"foreignkey:LinkId;association_foreignkey:Id;preload:true"`
+	UpdatedAt                 string
 	UserProfileId             *uint64
 }
 
@@ -317,6 +320,9 @@ func (m *Link) ToORM(ctx context.Context) (LinkORM, error) {
 	}
 	to.PlaidInstitutionId = m.PlaidInstitutionId
 	to.LinkType = LinkType_name[int32(m.LinkType)]
+	to.ErrorCode = m.ErrorCode
+	to.UpdatedAt = m.UpdatedAt
+	to.NewAccountsAvailable = m.NewAccountsAvailable
 	if posthook, ok := interface{}(m).(LinkWithAfterToORM); ok {
 		err = posthook.AfterToORM(ctx, &to)
 	}
@@ -413,6 +419,9 @@ func (m *LinkORM) ToPB(ctx context.Context) (Link, error) {
 	}
 	to.PlaidInstitutionId = m.PlaidInstitutionId
 	to.LinkType = LinkType(LinkType_value[m.LinkType])
+	to.ErrorCode = m.ErrorCode
+	to.UpdatedAt = m.UpdatedAt
+	to.NewAccountsAvailable = m.NewAccountsAvailable
 	if posthook, ok := interface{}(m).(LinkWithAfterToPB); ok {
 		err = posthook.AfterToPB(ctx, &to)
 	}
@@ -3427,6 +3436,18 @@ func DefaultApplyFieldMaskLink(ctx context.Context, patchee *Link, patcher *Link
 		}
 		if f == prefix+"LinkType" {
 			patchee.LinkType = patcher.LinkType
+			continue
+		}
+		if f == prefix+"ErrorCode" {
+			patchee.ErrorCode = patcher.ErrorCode
+			continue
+		}
+		if f == prefix+"UpdatedAt" {
+			patchee.UpdatedAt = patcher.UpdatedAt
+			continue
+		}
+		if f == prefix+"NewAccountsAvailable" {
+			patchee.NewAccountsAvailable = patcher.NewAccountsAvailable
 			continue
 		}
 	}

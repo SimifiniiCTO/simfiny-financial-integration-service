@@ -755,4 +755,27 @@ service FinancialService {
       }
     };
   }
+
+  rpc ProcessWebhook(ProcessWebhookRequest) returns (ProcessWebhookResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/webhook"
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Processes a webhook obtained from plaid"
+      tags: ["webhook"]
+      operation_id: "ProcessWebhook"
+      description: "This endpoint enabled simfiny to process triggered webhooks"
+      responses: {
+        key: "200"
+        value: {
+          description: "A successful response."
+          schema: {
+            json_schema: {ref: ".api.v1.ProcessWebhookResponse"}
+          }
+        }
+      }
+    };
+  }
 }

@@ -12,6 +12,7 @@ import (
 	telemetry "github.com/SimifiniiCTO/core/core-telemetry"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/database"
 	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
+	inmemoryverifier "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/in-memory-verifier"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/instrumentation"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/plaidhandler"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/secrets"
@@ -22,15 +23,16 @@ import (
 type Server struct {
 	proto.UnimplementedFinancialServiceServer
 	// proto.UnimplementedFinancialServiceServer
-	logger             *zap.Logger
-	config             *Config
-	instrumentation    *instrumentation.ServiceTelemetry
-	conn               *database.Db
-	plaidClient        *plaidhandler.PlaidWrapper
-	MetricsEngine      *telemetry.MetricsEngine
-	stripeClient       *client.API
-	kms                secrets.KeyManagement
-	TransactionManager *transactionmanager.TransactionManager
+	logger                      *zap.Logger
+	config                      *Config
+	instrumentation             *instrumentation.ServiceTelemetry
+	conn                        *database.Db
+	plaidClient                 *plaidhandler.PlaidWrapper
+	MetricsEngine               *telemetry.MetricsEngine
+	stripeClient                *client.API
+	kms                         secrets.KeyManagement
+	TransactionManager          *transactionmanager.TransactionManager
+	InMemoryWebhookVerification inmemoryverifier.WebhookVerification
 }
 
 // Config is the config for the grpc server initialization
@@ -105,13 +107,14 @@ func NewServer(param *Params) (*Server, error) {
 	sc.Init(param.Config.StripeApiKey, nil)
 
 	return &Server{
-		logger:             param.Logger,
-		config:             param.Config,
-		conn:               param.Db,
-		plaidClient:        param.PlaidWrapper,
-		instrumentation:    param.Instrumentation,
-		stripeClient:       sc,
-		kms:                param.KeyManagement,
-		TransactionManager: param.TransactionManager,
+		logger:                      param.Logger,
+		config:                      param.Config,
+		conn:                        param.Db,
+		plaidClient:                 param.PlaidWrapper,
+		instrumentation:             param.Instrumentation,
+		stripeClient:                sc,
+		kms:                         param.KeyManagement,
+		TransactionManager:          param.TransactionManager,
+		InMemoryWebhookVerification: inmemoryverifier.NewInMemoryWebhookVerification(param.Logger, param.PlaidWrapper, 5*time.Minute),
 	}, nil
 }

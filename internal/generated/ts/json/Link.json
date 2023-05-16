@@ -122,6 +122,15 @@
                         }
                     ],
                     "title": "Link Type"
+                },
+                "error_code": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "new_accounts_available": {
+                    "type": "boolean"
                 }
             },
             "additionalProperties": true,
@@ -574,6 +583,7 @@
                     "description": "The description of the miletone Validations: - must be at least 3 characters long"
                 },
                 "target_date": {
+                    "minLength": 10,
                     "type": "string",
                     "description": "the target date of the milestone Validations: - must be at least 3 characters long"
                 },
