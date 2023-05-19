@@ -65,6 +65,8 @@ import {
   ProcessWebhookResponse,
   ReadynessCheckRequest,
   ReadynessCheckResponse,
+  StripeWebhookRequest,
+  StripeWebhookResponse,
   UpdateBankAccountRequest,
   UpdateBankAccountResponse,
   UpdateBudgetRequest,
@@ -118,6 +120,7 @@ export interface FinancialService {
   GetLinks(request: GetLinksRequest): Promise<GetLinksResponse>;
   DeleteLink(request: DeleteLinkRequest): Promise<DeleteLinkResponse>;
   ProcessWebhook(request: ProcessWebhookRequest): Promise<ProcessWebhookResponse>;
+  StripeWebhook(request: StripeWebhookRequest): Promise<StripeWebhookResponse>;
 }
 
 export class FinancialServiceClientImpl implements FinancialService {
@@ -163,6 +166,7 @@ export class FinancialServiceClientImpl implements FinancialService {
     this.GetLinks = this.GetLinks.bind(this);
     this.DeleteLink = this.DeleteLink.bind(this);
     this.ProcessWebhook = this.ProcessWebhook.bind(this);
+    this.StripeWebhook = this.StripeWebhook.bind(this);
   }
   PlaidInitiateTokenExchange(request: PlaidInitiateTokenExchangeRequest): Promise<PlaidInitiateTokenExchangeResponse> {
     const data = PlaidInitiateTokenExchangeRequest.encode(request).finish();
@@ -384,6 +388,12 @@ export class FinancialServiceClientImpl implements FinancialService {
     const data = ProcessWebhookRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "ProcessWebhook", data);
     return promise.then((data) => ProcessWebhookResponse.decode(_m0.Reader.create(data)));
+  }
+
+  StripeWebhook(request: StripeWebhookRequest): Promise<StripeWebhookResponse> {
+    const data = StripeWebhookRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "StripeWebhook", data);
+    return promise.then((data) => StripeWebhookResponse.decode(_m0.Reader.create(data)));
   }
 }
 

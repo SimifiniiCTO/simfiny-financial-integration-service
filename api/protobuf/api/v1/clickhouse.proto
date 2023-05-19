@@ -1,0 +1,62 @@
+syntax = "proto3";
+
+package api.v1;
+
+option go_package = "github.com/SimifiniiCTO/simfiny-financial-integration-service/generate/api/v1";
+import "protoc-gen-gorm/options/gorm.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+import "validate/validate.proto";
+
+message Transaction {
+    message Location {
+        string address = 1;
+        string city = 2;
+        string region = 3;
+        string postal_code = 4;
+        string country = 5;
+        double lat = 6;
+        double lon = 7;
+        string store_number = 8;
+    }
+    
+    message PaymentMeta {
+        string by_order_of = 1;
+        string payee = 2;
+        string payer = 3;
+        string payment_method = 4;
+        string payment_processor = 5;
+        string ppd_id = 6;
+        string reason = 7;
+        string reference_number = 8;
+    }
+
+    option (gorm.opts) = {ormable: true};
+    string account_id = 1;
+    double amount = 2;
+    string iso_currency_code = 3;
+    string unofficial_currency_code = 4;
+    repeated string category = 5;
+    string category_id = 6;
+    string check_number = 7;
+    string date = 8;
+    string datetime = 9;
+    string authorized_date = 10;
+    string authorized_datetime = 11;
+    Location location = 12;
+    string name = 13;
+    string merchant_name = 14;
+    PaymentMeta payment_meta = 15;
+    string payment_channel = 16;
+    bool pending = 17;
+    string pending_transaction_id = 18;
+    string account_owner = 19;
+    string transaction_id = 20;
+    string transaction_code = 21;
+    uint64 id = 22 [
+        (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}
+    ];
+    uint64 user_id = 23 [
+        (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""},
+        (validate.rules).uint64.gt = 0
+      ];
+}

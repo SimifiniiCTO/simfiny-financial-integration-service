@@ -8,9 +8,9 @@ import (
 	"go.uber.org/zap"
 
 	telemetry "github.com/SimifiniiCTO/core/core-telemetry"
+	"github.com/SimifiniiCTO/simfiny-core-lib/instrumentation"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/database"
 	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
-	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/instrumentation"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/plaidhandler"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/secrets"
 )
@@ -20,7 +20,7 @@ func TestServer_getPocketBudgets(t *testing.T) {
 		UnimplementedFinancialServiceServer proto.UnimplementedFinancialServiceServer
 		logger                              *zap.Logger
 		config                              *Config
-		instrumentation                     *instrumentation.ServiceTelemetry
+		instrumentation                     *instrumentation.Client
 		conn                                *database.Db
 		plaidClient                         *plaidhandler.PlaidWrapper
 		MetricsEngine                       *telemetry.MetricsEngine

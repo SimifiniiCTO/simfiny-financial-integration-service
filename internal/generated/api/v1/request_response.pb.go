@@ -4017,6 +4017,108 @@ func (*ProcessWebhookResponse) Descriptor() ([]byte, []int) {
 	return file_api_v1_request_response_proto_rawDescGZIP(), []int{73}
 }
 
+type StripeWebhookRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Body      string `protobuf:"bytes,1,opt,name=body,proto3" json:"body,omitempty"`
+	Signature string `protobuf:"bytes,2,opt,name=signature,proto3" json:"signature,omitempty"`
+}
+
+func (x *StripeWebhookRequest) Reset() {
+	*x = StripeWebhookRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_v1_request_response_proto_msgTypes[74]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *StripeWebhookRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*StripeWebhookRequest) ProtoMessage() {}
+
+func (x *StripeWebhookRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_v1_request_response_proto_msgTypes[74]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use StripeWebhookRequest.ProtoReflect.Descriptor instead.
+func (*StripeWebhookRequest) Descriptor() ([]byte, []int) {
+	return file_api_v1_request_response_proto_rawDescGZIP(), []int{74}
+}
+
+func (x *StripeWebhookRequest) GetBody() string {
+	if x != nil {
+		return x.Body
+	}
+	return ""
+}
+
+func (x *StripeWebhookRequest) GetSignature() string {
+	if x != nil {
+		return x.Signature
+	}
+	return ""
+}
+
+type StripeWebhookResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Message string `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
+}
+
+func (x *StripeWebhookResponse) Reset() {
+	*x = StripeWebhookResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_v1_request_response_proto_msgTypes[75]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *StripeWebhookResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*StripeWebhookResponse) ProtoMessage() {}
+
+func (x *StripeWebhookResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_v1_request_response_proto_msgTypes[75]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use StripeWebhookResponse.ProtoReflect.Descriptor instead.
+func (*StripeWebhookResponse) Descriptor() ([]byte, []int) {
+	return file_api_v1_request_response_proto_rawDescGZIP(), []int{75}
+}
+
+func (x *StripeWebhookResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
 var File_api_v1_request_response_proto protoreflect.FileDescriptor
 
 var file_api_v1_request_response_proto_rawDesc = []byte{
@@ -4472,20 +4574,27 @@ var file_api_v1_request_response_proto_rawDesc = []byte{
 	0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x41, 0x6e, 0x79,
 	0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38, 0x01, 0x22, 0x18, 0x0a, 0x16, 0x50,
 	0x72, 0x6f, 0x63, 0x65, 0x73, 0x73, 0x57, 0x65, 0x62, 0x68, 0x6f, 0x6f, 0x6b, 0x52, 0x65, 0x73,
-	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x42, 0xc1, 0x01, 0x0a, 0x0a, 0x63, 0x6f, 0x6d, 0x2e, 0x61, 0x70,
-	0x69, 0x2e, 0x76, 0x31, 0x42, 0x14, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x52, 0x65, 0x73,
-	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x64, 0x67, 0x69,
-	0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x53, 0x69, 0x6d, 0x69, 0x66, 0x69, 0x6e,
-	0x69, 0x69, 0x43, 0x54, 0x4f, 0x2f, 0x73, 0x69, 0x6d, 0x66, 0x69, 0x6e, 0x79, 0x2d, 0x66, 0x69,
-	0x6e, 0x61, 0x6e, 0x63, 0x69, 0x61, 0x6c, 0x2d, 0x69, 0x6e, 0x74, 0x65, 0x67, 0x72, 0x61, 0x74,
-	0x69, 0x6f, 0x6e, 0x2d, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x2f, 0x69, 0x6e, 0x74, 0x65,
-	0x72, 0x6e, 0x61, 0x6c, 0x2f, 0x67, 0x65, 0x6e, 0x65, 0x72, 0x61, 0x74, 0x65, 0x64, 0x2f, 0x61,
-	0x70, 0x69, 0x2f, 0x76, 0x31, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x76, 0x31, 0x3b, 0x61, 0x70, 0x69,
-	0x76, 0x31, 0xa2, 0x02, 0x03, 0x41, 0x58, 0x58, 0xaa, 0x02, 0x06, 0x41, 0x70, 0x69, 0x2e, 0x56,
-	0x31, 0xca, 0x02, 0x06, 0x41, 0x70, 0x69, 0x5c, 0x56, 0x31, 0xe2, 0x02, 0x12, 0x41, 0x70, 0x69,
-	0x5c, 0x56, 0x31, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea,
-	0x02, 0x07, 0x41, 0x70, 0x69, 0x3a, 0x3a, 0x56, 0x31, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f,
-	0x33,
+	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x48, 0x0a, 0x14, 0x53, 0x74, 0x72, 0x69, 0x70, 0x65, 0x57,
+	0x65, 0x62, 0x68, 0x6f, 0x6f, 0x6b, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x12, 0x0a,
+	0x04, 0x62, 0x6f, 0x64, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x62, 0x6f, 0x64,
+	0x79, 0x12, 0x1c, 0x0a, 0x09, 0x73, 0x69, 0x67, 0x6e, 0x61, 0x74, 0x75, 0x72, 0x65, 0x18, 0x02,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x73, 0x69, 0x67, 0x6e, 0x61, 0x74, 0x75, 0x72, 0x65, 0x22,
+	0x31, 0x0a, 0x15, 0x53, 0x74, 0x72, 0x69, 0x70, 0x65, 0x57, 0x65, 0x62, 0x68, 0x6f, 0x6f, 0x6b,
+	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x6d, 0x65, 0x73, 0x73,
+	0x61, 0x67, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61,
+	0x67, 0x65, 0x42, 0xc1, 0x01, 0x0a, 0x0a, 0x63, 0x6f, 0x6d, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76,
+	0x31, 0x42, 0x14, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
+	0x73, 0x65, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x64, 0x67, 0x69, 0x74, 0x68, 0x75,
+	0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x53, 0x69, 0x6d, 0x69, 0x66, 0x69, 0x6e, 0x69, 0x69, 0x43,
+	0x54, 0x4f, 0x2f, 0x73, 0x69, 0x6d, 0x66, 0x69, 0x6e, 0x79, 0x2d, 0x66, 0x69, 0x6e, 0x61, 0x6e,
+	0x63, 0x69, 0x61, 0x6c, 0x2d, 0x69, 0x6e, 0x74, 0x65, 0x67, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e,
+	0x2d, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x2f, 0x69, 0x6e, 0x74, 0x65, 0x72, 0x6e, 0x61,
+	0x6c, 0x2f, 0x67, 0x65, 0x6e, 0x65, 0x72, 0x61, 0x74, 0x65, 0x64, 0x2f, 0x61, 0x70, 0x69, 0x2f,
+	0x76, 0x31, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x76, 0x31, 0x3b, 0x61, 0x70, 0x69, 0x76, 0x31, 0xa2,
+	0x02, 0x03, 0x41, 0x58, 0x58, 0xaa, 0x02, 0x06, 0x41, 0x70, 0x69, 0x2e, 0x56, 0x31, 0xca, 0x02,
+	0x06, 0x41, 0x70, 0x69, 0x5c, 0x56, 0x31, 0xe2, 0x02, 0x12, 0x41, 0x70, 0x69, 0x5c, 0x56, 0x31,
+	0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x07, 0x41,
+	0x70, 0x69, 0x3a, 0x3a, 0x56, 0x31, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -4500,7 +4609,7 @@ func file_api_v1_request_response_proto_rawDescGZIP() []byte {
 	return file_api_v1_request_response_proto_rawDescData
 }
 
-var file_api_v1_request_response_proto_msgTypes = make([]protoimpl.MessageInfo, 75)
+var file_api_v1_request_response_proto_msgTypes = make([]protoimpl.MessageInfo, 77)
 var file_api_v1_request_response_proto_goTypes = []interface{}{
 	(*CreateUserProfileRequest)(nil),           // 0: api.v1.CreateUserProfileRequest
 	(*CreateUserProfileResponse)(nil),          // 1: api.v1.CreateUserProfileResponse
@@ -4576,54 +4685,56 @@ var file_api_v1_request_response_proto_goTypes = []interface{}{
 	(*DeleteLinkResponse)(nil),                 // 71: api.v1.DeleteLinkResponse
 	(*ProcessWebhookRequest)(nil),              // 72: api.v1.ProcessWebhookRequest
 	(*ProcessWebhookResponse)(nil),             // 73: api.v1.ProcessWebhookResponse
-	nil,                                        // 74: api.v1.ProcessWebhookRequest.ErrorEntry
-	(*UserProfile)(nil),                        // 75: api.v1.UserProfile
-	(*BankAccount)(nil),                        // 76: api.v1.BankAccount
-	(*Pocket)(nil),                             // 77: api.v1.Pocket
-	(*SmartGoal)(nil),                          // 78: api.v1.SmartGoal
-	(*Milestone)(nil),                          // 79: api.v1.Milestone
-	(*Forecast)(nil),                           // 80: api.v1.Forecast
-	(*Budget)(nil),                             // 81: api.v1.Budget
-	(*InvestmentAccount)(nil),                  // 82: api.v1.InvestmentAccount
-	(*MortgageAccount)(nil),                    // 83: api.v1.MortgageAccount
-	(*CreditAccount)(nil),                      // 84: api.v1.CreditAccount
-	(*StudentLoanAccount)(nil),                 // 85: api.v1.StudentLoanAccount
-	(*Link)(nil),                               // 86: api.v1.Link
-	(*anypb.Any)(nil),                          // 87: google.protobuf.Any
+	(*StripeWebhookRequest)(nil),               // 74: api.v1.StripeWebhookRequest
+	(*StripeWebhookResponse)(nil),              // 75: api.v1.StripeWebhookResponse
+	nil,                                        // 76: api.v1.ProcessWebhookRequest.ErrorEntry
+	(*UserProfile)(nil),                        // 77: api.v1.UserProfile
+	(*BankAccount)(nil),                        // 78: api.v1.BankAccount
+	(*Pocket)(nil),                             // 79: api.v1.Pocket
+	(*SmartGoal)(nil),                          // 80: api.v1.SmartGoal
+	(*Milestone)(nil),                          // 81: api.v1.Milestone
+	(*Forecast)(nil),                           // 82: api.v1.Forecast
+	(*Budget)(nil),                             // 83: api.v1.Budget
+	(*InvestmentAccount)(nil),                  // 84: api.v1.InvestmentAccount
+	(*MortgageAccount)(nil),                    // 85: api.v1.MortgageAccount
+	(*CreditAccount)(nil),                      // 86: api.v1.CreditAccount
+	(*StudentLoanAccount)(nil),                 // 87: api.v1.StudentLoanAccount
+	(*Link)(nil),                               // 88: api.v1.Link
+	(*anypb.Any)(nil),                          // 89: google.protobuf.Any
 }
 var file_api_v1_request_response_proto_depIdxs = []int32{
-	75, // 0: api.v1.CreateUserProfileRequest.profile:type_name -> api.v1.UserProfile
-	75, // 1: api.v1.GetUserProfileResponse.profile:type_name -> api.v1.UserProfile
-	75, // 2: api.v1.UpdateUserProfileRequest.profile:type_name -> api.v1.UserProfile
-	75, // 3: api.v1.UpdateUserProfileResponse.profile:type_name -> api.v1.UserProfile
-	76, // 4: api.v1.CreateBankAccountRequest.bank_account:type_name -> api.v1.BankAccount
-	76, // 5: api.v1.GetBankAccountResponse.bank_account:type_name -> api.v1.BankAccount
-	76, // 6: api.v1.UpdateBankAccountRequest.bank_account:type_name -> api.v1.BankAccount
-	76, // 7: api.v1.UpdateBankAccountResponse.bank_account:type_name -> api.v1.BankAccount
-	77, // 8: api.v1.GetPocketResponse.pocket:type_name -> api.v1.Pocket
-	78, // 9: api.v1.GetSmartGoalsByPocketIdResponse.smart_goals:type_name -> api.v1.SmartGoal
-	78, // 10: api.v1.CreateSmartGoalRequest.smart_goal:type_name -> api.v1.SmartGoal
-	78, // 11: api.v1.UpdateSmartGoalRequest.smart_goal:type_name -> api.v1.SmartGoal
-	79, // 12: api.v1.CreateMilestoneRequest.milestone:type_name -> api.v1.Milestone
-	79, // 13: api.v1.UpdateMilestoneRequest.milestone:type_name -> api.v1.Milestone
-	79, // 14: api.v1.UpdateMilestoneResponse.milestone:type_name -> api.v1.Milestone
-	79, // 15: api.v1.GetMilestonesBySmartGoalIdResponse.milestones:type_name -> api.v1.Milestone
-	79, // 16: api.v1.GetMilestoneResponse.milestone:type_name -> api.v1.Milestone
-	80, // 17: api.v1.GetForecastResponse.forecast:type_name -> api.v1.Forecast
-	81, // 18: api.v1.CreateBudgetRequest.budget:type_name -> api.v1.Budget
-	81, // 19: api.v1.UpdateBudgetRequest.budget:type_name -> api.v1.Budget
-	81, // 20: api.v1.UpdateBudgetResponse.budget:type_name -> api.v1.Budget
-	81, // 21: api.v1.GetBudgetResponse.budget:type_name -> api.v1.Budget
-	81, // 22: api.v1.GetAllBudgetsResponse.budgets:type_name -> api.v1.Budget
-	82, // 23: api.v1.GetInvestmentAcccountResponse.investment_account:type_name -> api.v1.InvestmentAccount
-	83, // 24: api.v1.GetMortgageAccountResponse.mortage_account:type_name -> api.v1.MortgageAccount
-	84, // 25: api.v1.GetLiabilityAccountResponse.liability_account:type_name -> api.v1.CreditAccount
-	85, // 26: api.v1.GetStudentLoanAccountResponse.student_loan_account:type_name -> api.v1.StudentLoanAccount
-	86, // 27: api.v1.CreateManualLinkRequest.manual_account_link:type_name -> api.v1.Link
-	86, // 28: api.v1.GetLinkResponse.link:type_name -> api.v1.Link
-	86, // 29: api.v1.GetLinksResponse.links:type_name -> api.v1.Link
-	74, // 30: api.v1.ProcessWebhookRequest.error:type_name -> api.v1.ProcessWebhookRequest.ErrorEntry
-	87, // 31: api.v1.ProcessWebhookRequest.ErrorEntry.value:type_name -> google.protobuf.Any
+	77, // 0: api.v1.CreateUserProfileRequest.profile:type_name -> api.v1.UserProfile
+	77, // 1: api.v1.GetUserProfileResponse.profile:type_name -> api.v1.UserProfile
+	77, // 2: api.v1.UpdateUserProfileRequest.profile:type_name -> api.v1.UserProfile
+	77, // 3: api.v1.UpdateUserProfileResponse.profile:type_name -> api.v1.UserProfile
+	78, // 4: api.v1.CreateBankAccountRequest.bank_account:type_name -> api.v1.BankAccount
+	78, // 5: api.v1.GetBankAccountResponse.bank_account:type_name -> api.v1.BankAccount
+	78, // 6: api.v1.UpdateBankAccountRequest.bank_account:type_name -> api.v1.BankAccount
+	78, // 7: api.v1.UpdateBankAccountResponse.bank_account:type_name -> api.v1.BankAccount
+	79, // 8: api.v1.GetPocketResponse.pocket:type_name -> api.v1.Pocket
+	80, // 9: api.v1.GetSmartGoalsByPocketIdResponse.smart_goals:type_name -> api.v1.SmartGoal
+	80, // 10: api.v1.CreateSmartGoalRequest.smart_goal:type_name -> api.v1.SmartGoal
+	80, // 11: api.v1.UpdateSmartGoalRequest.smart_goal:type_name -> api.v1.SmartGoal
+	81, // 12: api.v1.CreateMilestoneRequest.milestone:type_name -> api.v1.Milestone
+	81, // 13: api.v1.UpdateMilestoneRequest.milestone:type_name -> api.v1.Milestone
+	81, // 14: api.v1.UpdateMilestoneResponse.milestone:type_name -> api.v1.Milestone
+	81, // 15: api.v1.GetMilestonesBySmartGoalIdResponse.milestones:type_name -> api.v1.Milestone
+	81, // 16: api.v1.GetMilestoneResponse.milestone:type_name -> api.v1.Milestone
+	82, // 17: api.v1.GetForecastResponse.forecast:type_name -> api.v1.Forecast
+	83, // 18: api.v1.CreateBudgetRequest.budget:type_name -> api.v1.Budget
+	83, // 19: api.v1.UpdateBudgetRequest.budget:type_name -> api.v1.Budget
+	83, // 20: api.v1.UpdateBudgetResponse.budget:type_name -> api.v1.Budget
+	83, // 21: api.v1.GetBudgetResponse.budget:type_name -> api.v1.Budget
+	83, // 22: api.v1.GetAllBudgetsResponse.budgets:type_name -> api.v1.Budget
+	84, // 23: api.v1.GetInvestmentAcccountResponse.investment_account:type_name -> api.v1.InvestmentAccount
+	85, // 24: api.v1.GetMortgageAccountResponse.mortage_account:type_name -> api.v1.MortgageAccount
+	86, // 25: api.v1.GetLiabilityAccountResponse.liability_account:type_name -> api.v1.CreditAccount
+	87, // 26: api.v1.GetStudentLoanAccountResponse.student_loan_account:type_name -> api.v1.StudentLoanAccount
+	88, // 27: api.v1.CreateManualLinkRequest.manual_account_link:type_name -> api.v1.Link
+	88, // 28: api.v1.GetLinkResponse.link:type_name -> api.v1.Link
+	88, // 29: api.v1.GetLinksResponse.links:type_name -> api.v1.Link
+	76, // 30: api.v1.ProcessWebhookRequest.error:type_name -> api.v1.ProcessWebhookRequest.ErrorEntry
+	89, // 31: api.v1.ProcessWebhookRequest.ErrorEntry.value:type_name -> google.protobuf.Any
 	32, // [32:32] is the sub-list for method output_type
 	32, // [32:32] is the sub-list for method input_type
 	32, // [32:32] is the sub-list for extension type_name
@@ -5526,6 +5637,30 @@ func file_api_v1_request_response_proto_init() {
 				return nil
 			}
 		}
+		file_api_v1_request_response_proto_msgTypes[74].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*StripeWebhookRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_api_v1_request_response_proto_msgTypes[75].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*StripeWebhookResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -5533,7 +5668,7 @@ func file_api_v1_request_response_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_api_v1_request_response_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   75,
+			NumMessages:   77,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

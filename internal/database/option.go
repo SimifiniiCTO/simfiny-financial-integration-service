@@ -3,11 +3,11 @@ package database
 import (
 	"time"
 
+	postgresdb "github.com/SimifiniiCTO/simfiny-core-lib/database/postgres"
 	"go.uber.org/zap"
 
-	core_database "github.com/SimifiniiCTO/core/core-database"
+	"github.com/SimifiniiCTO/simfiny-core-lib/instrumentation"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/dal"
-	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/instrumentation"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/secrets"
 )
 
@@ -50,7 +50,7 @@ func WithDatabaseOperationSleepInterval(operationSleepInterval time.Duration) Op
 }
 
 // WithDatabaseInstrumentation configures the database instrumentation
-func WithDatabaseInstrumentation(instrumentation *instrumentation.ServiceTelemetry) Option {
+func WithDatabaseInstrumentation(instrumentation *instrumentation.Client) Option {
 	return func(d *Db) {
 		d.Instrumentation = instrumentation
 	}
@@ -64,7 +64,7 @@ func WithDatabaseQueryOperator(queryOperator *dal.Query) Option {
 }
 
 // WithConnection configures the database connection
-func WithConnection(params *core_database.DatabaseConn) Option {
+func WithConnection(params *postgresdb.Client) Option {
 	return func(d *Db) {
 		d.Conn = params
 	}

@@ -3,6 +3,11 @@
 
 ## Table of Contents
 
+- [api/v1/clickhouse.proto](#api_v1_clickhouse-proto)
+    - [Transaction](#api-v1-Transaction)
+    - [Transaction.Location](#api-v1-Transaction-Location)
+    - [Transaction.PaymentMeta](#api-v1-Transaction-PaymentMeta)
+  
 - [api/v1/errors_ignore.proto](#api_v1_errors_ignore-proto)
     - [ErrorMessageRequest](#api-v1-ErrorMessageRequest)
     - [InternalErrorMessageResponse](#api-v1-InternalErrorMessageResponse)
@@ -42,11 +47,6 @@
     - [LinkType](#api-v1-LinkType)
     - [PocketType](#api-v1-PocketType)
     - [StripeSubscriptionStatus](#api-v1-StripeSubscriptionStatus)
-  
-- [api/v1/mongo.proto](#api_v1_mongo-proto)
-    - [PaymentMeta](#api-v1-PaymentMeta)
-    - [Transaction](#api-v1-Transaction)
-    - [TransactionLocation](#api-v1-TransactionLocation)
   
 - [api/v1/openapi.proto](#api_v1_openapi-proto)
 - [api/v1/request_response.proto](#api_v1_request_response-proto)
@@ -115,6 +115,8 @@
     - [ProcessWebhookResponse](#api-v1-ProcessWebhookResponse)
     - [ReadynessCheckRequest](#api-v1-ReadynessCheckRequest)
     - [ReadynessCheckResponse](#api-v1-ReadynessCheckResponse)
+    - [StripeWebhookRequest](#api-v1-StripeWebhookRequest)
+    - [StripeWebhookResponse](#api-v1-StripeWebhookResponse)
     - [UpdateBankAccountRequest](#api-v1-UpdateBankAccountRequest)
     - [UpdateBankAccountResponse](#api-v1-UpdateBankAccountResponse)
     - [UpdateBudgetRequest](#api-v1-UpdateBudgetRequest)
@@ -130,6 +132,103 @@
     - [FinancialService](#api-v1-FinancialService)
   
 - [Scalar Value Types](#scalar-value-types)
+
+
+
+<a name="api_v1_clickhouse-proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## api/v1/clickhouse.proto
+
+
+
+<a name="api-v1-Transaction"></a>
+
+### Transaction
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| account_id | [string](#string) |  |  |
+| amount | [double](#double) |  |  |
+| iso_currency_code | [string](#string) |  |  |
+| unofficial_currency_code | [string](#string) |  |  |
+| category | [string](#string) | repeated |  |
+| category_id | [string](#string) |  |  |
+| check_number | [string](#string) |  |  |
+| date | [string](#string) |  |  |
+| datetime | [string](#string) |  |  |
+| authorized_date | [string](#string) |  |  |
+| authorized_datetime | [string](#string) |  |  |
+| location | [Transaction.Location](#api-v1-Transaction-Location) |  |  |
+| name | [string](#string) |  |  |
+| merchant_name | [string](#string) |  |  |
+| payment_meta | [Transaction.PaymentMeta](#api-v1-Transaction-PaymentMeta) |  |  |
+| payment_channel | [string](#string) |  |  |
+| pending | [bool](#bool) |  |  |
+| pending_transaction_id | [string](#string) |  |  |
+| account_owner | [string](#string) |  |  |
+| transaction_id | [string](#string) |  |  |
+| transaction_code | [string](#string) |  |  |
+| id | [uint64](#uint64) |  |  |
+| user_id | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="api-v1-Transaction-Location"></a>
+
+### Transaction.Location
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| address | [string](#string) |  |  |
+| city | [string](#string) |  |  |
+| region | [string](#string) |  |  |
+| postal_code | [string](#string) |  |  |
+| country | [string](#string) |  |  |
+| lat | [double](#double) |  |  |
+| lon | [double](#double) |  |  |
+| store_number | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="api-v1-Transaction-PaymentMeta"></a>
+
+### Transaction.PaymentMeta
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| by_order_of | [string](#string) |  |  |
+| payee | [string](#string) |  |  |
+| payer | [string](#string) |  |  |
+| payment_method | [string](#string) |  |  |
+| payment_processor | [string](#string) |  |  |
+| ppd_id | [string](#string) |  |  |
+| reason | [string](#string) |  |  |
+| reference_number | [string](#string) |  |  |
+
+
+
+
+
+ 
+
+ 
+
+ 
+
+ 
 
 
 
@@ -951,101 +1050,6 @@ such as the id, user_id tied to the profile, and many more
 | STRIPE_SUBSCRIPTION_STATUS_UNPAID | 5 |  |
 | STRIPE_SUBSCRIPTION_STATUS_COMPLETE | 6 |  |
 
-
- 
-
- 
-
- 
-
-
-
-<a name="api_v1_mongo-proto"></a>
-<p align="right"><a href="#top">Top</a></p>
-
-## api/v1/mongo.proto
-
-
-
-<a name="api-v1-PaymentMeta"></a>
-
-### PaymentMeta
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| by_order_of | [string](#string) |  |  |
-| payee | [string](#string) |  |  |
-| payer | [string](#string) |  |  |
-| payment_method | [string](#string) |  |  |
-| payment_processor | [string](#string) |  |  |
-| ppd_id | [string](#string) |  |  |
-| reason | [string](#string) |  |  |
-| reference_number | [string](#string) |  |  |
-
-
-
-
-
-
-<a name="api-v1-Transaction"></a>
-
-### Transaction
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| account_id | [string](#string) |  |  |
-| amount | [double](#double) |  |  |
-| iso_currency_code | [string](#string) |  |  |
-| unofficial_currency_code | [string](#string) |  |  |
-| category | [string](#string) | repeated |  |
-| category_id | [string](#string) |  |  |
-| check_number | [string](#string) |  |  |
-| date | [string](#string) |  |  |
-| datetime | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
-| authorized_date | [string](#string) |  |  |
-| authorized_datetime | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
-| location | [TransactionLocation](#api-v1-TransactionLocation) |  |  |
-| name | [string](#string) |  |  |
-| merchant_name | [string](#string) |  |  |
-| payment_meta | [PaymentMeta](#api-v1-PaymentMeta) |  |  |
-| payment_channel | [string](#string) |  |  |
-| pending | [bool](#bool) |  |  |
-| pending_transaction_id | [string](#string) |  |  |
-| account_owner | [string](#string) |  |  |
-| transaction_id | [string](#string) |  |  |
-| transaction_code | [string](#string) |  |  |
-
-
-
-
-
-
-<a name="api-v1-TransactionLocation"></a>
-
-### TransactionLocation
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| address | [string](#string) |  |  |
-| city | [string](#string) |  |  |
-| region | [string](#string) |  |  |
-| postal_code | [string](#string) |  |  |
-| country | [string](#string) |  |  |
-| lat | [double](#double) |  |  |
-| lon | [double](#double) |  |  |
-| store_number | [string](#string) |  |  |
-
-
-
-
-
- 
 
  
 
@@ -2086,6 +2090,37 @@ the `get user profile` request
 
 
 
+<a name="api-v1-StripeWebhookRequest"></a>
+
+### StripeWebhookRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| body | [string](#string) |  |  |
+| signature | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="api-v1-StripeWebhookResponse"></a>
+
+### StripeWebhookResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| message | [string](#string) |  |  |
+
+
+
+
+
+
 <a name="api-v1-UpdateBankAccountRequest"></a>
 
 ### UpdateBankAccountRequest
@@ -2306,6 +2341,7 @@ FinancialService API.
 | GetLinks | [GetLinksRequest](#api-v1-GetLinksRequest) | [GetLinksResponse](#api-v1-GetLinksResponse) |  |
 | DeleteLink | [DeleteLinkRequest](#api-v1-DeleteLinkRequest) | [DeleteLinkResponse](#api-v1-DeleteLinkResponse) |  |
 | ProcessWebhook | [ProcessWebhookRequest](#api-v1-ProcessWebhookRequest) | [ProcessWebhookResponse](#api-v1-ProcessWebhookResponse) |  |
+| StripeWebhook | [StripeWebhookRequest](#api-v1-StripeWebhookRequest) | [StripeWebhookResponse](#api-v1-StripeWebhookResponse) |  |
 
  
 

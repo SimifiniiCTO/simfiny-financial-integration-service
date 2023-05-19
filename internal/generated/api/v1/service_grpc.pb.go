@@ -56,6 +56,7 @@ const (
 	FinancialService_GetLinks_FullMethodName                   = "/api.v1.FinancialService/GetLinks"
 	FinancialService_DeleteLink_FullMethodName                 = "/api.v1.FinancialService/DeleteLink"
 	FinancialService_ProcessWebhook_FullMethodName             = "/api.v1.FinancialService/ProcessWebhook"
+	FinancialService_StripeWebhook_FullMethodName              = "/api.v1.FinancialService/StripeWebhook"
 )
 
 // FinancialServiceClient is the client API for FinancialService service.
@@ -99,6 +100,7 @@ type FinancialServiceClient interface {
 	GetLinks(ctx context.Context, in *GetLinksRequest, opts ...grpc.CallOption) (*GetLinksResponse, error)
 	DeleteLink(ctx context.Context, in *DeleteLinkRequest, opts ...grpc.CallOption) (*DeleteLinkResponse, error)
 	ProcessWebhook(ctx context.Context, in *ProcessWebhookRequest, opts ...grpc.CallOption) (*ProcessWebhookResponse, error)
+	StripeWebhook(ctx context.Context, in *StripeWebhookRequest, opts ...grpc.CallOption) (*StripeWebhookResponse, error)
 }
 
 type financialServiceClient struct {
@@ -442,6 +444,15 @@ func (c *financialServiceClient) ProcessWebhook(ctx context.Context, in *Process
 	return out, nil
 }
 
+func (c *financialServiceClient) StripeWebhook(ctx context.Context, in *StripeWebhookRequest, opts ...grpc.CallOption) (*StripeWebhookResponse, error) {
+	out := new(StripeWebhookResponse)
+	err := c.cc.Invoke(ctx, FinancialService_StripeWebhook_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // FinancialServiceServer is the server API for FinancialService service.
 // All implementations must embed UnimplementedFinancialServiceServer
 // for forward compatibility
@@ -483,6 +494,7 @@ type FinancialServiceServer interface {
 	GetLinks(context.Context, *GetLinksRequest) (*GetLinksResponse, error)
 	DeleteLink(context.Context, *DeleteLinkRequest) (*DeleteLinkResponse, error)
 	ProcessWebhook(context.Context, *ProcessWebhookRequest) (*ProcessWebhookResponse, error)
+	StripeWebhook(context.Context, *StripeWebhookRequest) (*StripeWebhookResponse, error)
 	mustEmbedUnimplementedFinancialServiceServer()
 }
 
@@ -600,6 +612,9 @@ func (UnimplementedFinancialServiceServer) DeleteLink(context.Context, *DeleteLi
 }
 func (UnimplementedFinancialServiceServer) ProcessWebhook(context.Context, *ProcessWebhookRequest) (*ProcessWebhookResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ProcessWebhook not implemented")
+}
+func (UnimplementedFinancialServiceServer) StripeWebhook(context.Context, *StripeWebhookRequest) (*StripeWebhookResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method StripeWebhook not implemented")
 }
 func (UnimplementedFinancialServiceServer) mustEmbedUnimplementedFinancialServiceServer() {}
 
@@ -1280,6 +1295,24 @@ func _FinancialService_ProcessWebhook_Handler(srv interface{}, ctx context.Conte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _FinancialService_StripeWebhook_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(StripeWebhookRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FinancialServiceServer).StripeWebhook(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FinancialService_StripeWebhook_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FinancialServiceServer).StripeWebhook(ctx, req.(*StripeWebhookRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // FinancialService_ServiceDesc is the grpc.ServiceDesc for FinancialService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1434,6 +1467,10 @@ var FinancialService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ProcessWebhook",
 			Handler:    _FinancialService_ProcessWebhook_Handler,
+		},
+		{
+			MethodName: "StripeWebhook",
+			Handler:    _FinancialService_StripeWebhook_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

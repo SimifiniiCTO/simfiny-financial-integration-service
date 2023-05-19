@@ -758,7 +758,7 @@ service FinancialService {
 
   rpc ProcessWebhook(ProcessWebhookRequest) returns (ProcessWebhookResponse) {
     option (google.api.http) = {
-      post: "/api/v1/webhook"
+      post: "/api/v1/webhook/plaid"
       body: "*"
     };
 
@@ -773,6 +773,29 @@ service FinancialService {
           description: "A successful response."
           schema: {
             json_schema: {ref: ".api.v1.ProcessWebhookResponse"}
+          }
+        }
+      }
+    };
+  }
+
+  rpc StripeWebhook(StripeWebhookRequest) returns (StripeWebhookResponse){
+    option (google.api.http) = {
+      post: "/api/v1/webhook/stripe"
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Processes a webhook obtained from stripe"
+      tags: ["webhook"]
+      operation_id: "ProcessStripeWebhook"
+      description: "This endpoint enabled simfiny to process triggered webhooks from stripe"
+      responses: {
+        key: "200"
+        value: {
+          description: "A successful response."
+          schema: {
+            json_schema: {ref: ".api.v1.StripeWebhookResponse"}
           }
         }
       }

@@ -1953,7 +1953,7 @@
         ]
       }
     },
-    "/api/v1/webhook": {
+    "/api/v1/webhook/plaid": {
       "post": {
         "summary": "Processes a webhook obtained from plaid",
         "description": "This endpoint enabled simfiny to process triggered webhooks",
@@ -1997,6 +1997,58 @@
             "required": true,
             "schema": {
               "$ref": "#/definitions/ProcessWebhookRequest"
+            }
+          }
+        ],
+        "tags": [
+          "webhook"
+        ]
+      }
+    },
+    "/api/v1/webhook/stripe": {
+      "post": {
+        "summary": "Processes a webhook obtained from stripe",
+        "description": "This endpoint enabled simfiny to process triggered webhooks from stripe",
+        "operationId": "ProcessStripeWebhook",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/StripeWebhookResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/StripeWebhookRequest"
             }
           }
         ],
@@ -3631,6 +3683,25 @@
         "STRIPE_SUBSCRIPTION_STATUS_COMPLETE"
       ],
       "default": "STRIPE_SUBSCRIPTION_STATUS_UNSPECIFIED"
+    },
+    "StripeWebhookRequest": {
+      "type": "object",
+      "properties": {
+        "body": {
+          "type": "string"
+        },
+        "signature": {
+          "type": "string"
+        }
+      }
+    },
+    "StripeWebhookResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
+        }
+      }
     },
     "StudentLoanAccount": {
       "type": "object",

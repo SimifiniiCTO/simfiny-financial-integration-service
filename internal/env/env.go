@@ -18,7 +18,7 @@ import (
 
 // ReadEnvVars reads environment variables and flags
 func ReadEnvVars() {
-	// flags definition
+	// environment flags definition
 	fs := pflag.NewFlagSet("default", pflag.ContinueOnError)
 	fs.String("host", "", "Host to bind service to")
 	fs.Int("port", 9898, "HTTP port to bind service to")
@@ -53,17 +53,21 @@ func ReadEnvVars() {
 	fs.String("cache-server", "", "Redis address in the format <host>:<port>")
 	fs.String("newrelic-api-key", "62fd721c712d5863a4e75b8f547b7c1ea884NRAL", "new relic license key")
 	// database connection environment variables
-	fs.String("dbhost", "db", "database host string")
+	fs.String("dbhost", "service_db", "database host string")
 	fs.Int("dbport", 5432, "database port")
-	fs.String("dbuser", "postgres", "database user string")
-	fs.String("dbpassword", "postgres", "database password string")
-	fs.String("dbname", "postgres", "database name")
+	fs.String("dbuser", "service_db", "database user string")
+	fs.String("dbpassword", "service_db", "database password string")
+	fs.String("dbname", "service_db", "database name")
 	fs.String("dbsslmode", "disable", "wether tls connection is enabled")
 	fs.Int("max-db-conn-attempts", 1, "max database connection attempts")
 	fs.Int("max-db-conn-retries", 1, "max database connection attempts")
 	fs.Duration("max-db-retry-timeout", 500*time.Millisecond, "max time until a db connection request is seen as timing out")
 	fs.Duration("max-db-retry-sleep-interval", 100*time.Millisecond, "max time to sleep in between db connection attempts")
 	fs.Duration("max-query-timeout", 500*time.Millisecond, "max time until a db query is seen as timing out")
+
+	fs.String("max-db-idle-connections", "10", "max number of idle connections to the database")            // exists
+	fs.String("max-db-open-connections", "10", "max number of open connections to the database")            // exists
+	fs.Duration("max-db-connection-lifetime", 10*time.Hour, "max lifetime of a connection to the database") // exists
 
 	// plaid specific keys
 	fs.String("plaid-client-id", "61eb5d49ea3b4700127560d1", "plaid client id")
@@ -112,6 +116,8 @@ func ReadEnvVars() {
 	fs.Duration("workflow-execution-timeout", 1*time.Second, "e timeout for duration of workflow execution. It includes retries and continue as new. Use WorkflowRunTimeout to limit execution time of a single workflow run.")
 	fs.Duration("workflow-task-timeout", 1*time.Second, "The timeout for processing workflow task from the time the worker pulled this task. If a workflow task is lost, it is retried after this timeout. The resolution is seconds.")
 	fs.Duration("workflow-run-timeout", 1*time.Second, "The timeout for duration of a single workflow run. The resolution is seconds. Optional: defaulted to WorkflowExecutionTimeout.")
+
+	fs.String("clickhouse-connection-uri", "clickhouse://gorm:gorm@clickhouse-database:9942/gorm?dial_timeout=10s&read_timeout=20s", "clickhouse-connection-uri")
 	defaultLogger := zap.L()
 
 	// parse flags

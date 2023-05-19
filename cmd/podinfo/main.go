@@ -14,12 +14,13 @@ import (
 	"go.temporal.io/sdk/client"
 	"go.uber.org/zap"
 
-	core_database "github.com/SimifiniiCTO/core/core-database"
+	clickhousedb "github.com/SimifiniiCTO/simfiny-core-lib/database/clickhouse"
+	postgresdb "github.com/SimifiniiCTO/simfiny-core-lib/database/postgres"
+	"github.com/SimifiniiCTO/simfiny-core-lib/instrumentation"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/database"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/env"
 	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/dal"
-	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/instrumentation"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/plaidhandler"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/secrets"
 	transactionmanager "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/transaction_manager"
@@ -47,7 +48,10 @@ func main() {
 	logger.Info("starting service ....")
 
 	logger.Info("successfully initialized newrelic sdk ....")
-	instrumentation := configureServiceTelemetryInstance(logger)
+	instrumentation, err := configureInstrumentationClient(logger)
+	if err != nil {
+		logger.Panic(err.Error())
+	}
 
 	// load gRPC server config
 	var grpcCfg grpc.Config
@@ -133,7 +137,7 @@ func main() {
 	srv.ListenAndServe(stopCh)
 }
 
-func configureTransactionManager(log *zap.Logger, db *database.Db, telemetrySdk *instrumentation.ServiceTelemetry) (*transactionmanager.TransactionManager, error) {
+func configureTransactionManager(log *zap.Logger, db *database.Db, telemetrySdk *instrumentation.Client) (*transactionmanager.TransactionManager, error) {
 	rpcTimeout := viper.GetDuration("temporal-rpc-timeout")
 	metricsEnabled := viper.GetBool("metrics-reporting-enabled")
 	concurrentActivityExecutionSize := viper.GetUint64("temporal-max-concurrent-activity-execution-size")
@@ -245,7 +249,7 @@ func configureNewrelicSDK(logger *zap.Logger) (*newrelic.Application, error) {
 }
 
 // configurePlaidWrapper configures the plaid sdk wrapper to be userd by the service
-func configurePlaidWrapper(instrumentation *instrumentation.ServiceTelemetry, logger *zap.Logger) (*plaidhandler.PlaidWrapper, error) {
+func configurePlaidWrapper(instrumentation *instrumentation.Client, logger *zap.Logger) (*plaidhandler.PlaidWrapper, error) {
 	var (
 		plaidClientID       = viper.GetString("plaid-client-id")
 		plaidSecretKey      = viper.GetString("plaid-secret-key")
@@ -329,8 +333,35 @@ func configurePlaidSDK() (*plaid.APIClient, error) {
 	return plaid.NewAPIClient(configuration), nil
 }
 
+func configureClickhouseConn(ctx context.Context, logger *zap.Logger, instrumentation *instrumentation.Client) (*clickhousedb.Client, error) {
+	host := viper.GetString("clickhouse-connection-uri")
+	maxConnectionRetries := viper.GetInt("max-db-conn-attempts")
+	maxDBRetryTimeout := viper.GetDuration("max-db-retry-timeout")
+	maxDBSleepInterval := viper.GetDuration("max-db-retry-sleep-interval")
+	queryTimeout := viper.GetDuration("max-query-timeout")
+
+	maxIdleConnections := viper.GetInt("max-db-idle-connections")
+	maxOpenConnections := viper.GetInt("max-db-open-connections")
+	maxConnectionLifetime := viper.GetDuration("max-db-connection-lifetime")
+
+	opts := []clickhousedb.Option{
+		clickhousedb.WithConnectionString(&host),
+		clickhousedb.WithQueryTimeout(&queryTimeout),
+		clickhousedb.WithMaxConnectionRetries(&maxConnectionRetries),
+		clickhousedb.WithMaxConnectionRetryTimeout(&maxDBRetryTimeout),
+		clickhousedb.WithRetrySleep(&maxDBSleepInterval),
+		clickhousedb.WithMaxIdleConnections(&maxIdleConnections),
+		clickhousedb.WithMaxOpenConnections(&maxOpenConnections),
+		clickhousedb.WithMaxConnectionLifetime(&maxConnectionLifetime),
+		clickhousedb.WithInstrumentationClient(instrumentation),
+		clickhousedb.WithLogger(logger),
+	}
+
+	return clickhousedb.New(opts...)
+}
+
 // configureDatabaseConn configures the database connection
-func configureDatabaseConn(ctx context.Context, logger *zap.Logger, instrumentation *instrumentation.ServiceTelemetry, keyManagment secrets.KeyManagement) (*database.Db, error) {
+func configureDatabaseConn(ctx context.Context, logger *zap.Logger, instrumentation *instrumentation.Client, keyManagment secrets.KeyManagement) (*database.Db, error) {
 	host := viper.GetString("dbhost")
 	port := viper.GetInt("dbport")
 	user := viper.GetString("dbuser")
@@ -338,28 +369,39 @@ func configureDatabaseConn(ctx context.Context, logger *zap.Logger, instrumentat
 	dbname := viper.GetString("dbname")
 	sslMode := viper.GetString("dbsslmode")
 
-	maxDBConnAttempts := viper.GetInt("max-db-conn-attempts")
+	maxConnectionRetries := viper.GetInt("max-db-conn-attempts")
 	maxRetriesPerDBConnectionAttempt := viper.GetInt("max-db-conn-retries")
 	maxDBRetryTimeout := viper.GetDuration("max-db-retry-timeout")
 	maxDBSleepInterval := viper.GetDuration("max-db-retry-sleep-interval")
-	dbQueryTimeout := viper.GetDuration("max-query-timeout")
+	queryTimeout := viper.GetDuration("max-query-timeout")
+
+	maxIdleConnections := viper.GetInt("max-db-idle-connections")
+	maxOpenConnections := viper.GetInt("max-db-open-connections")
+	maxConnectionLifetime := viper.GetDuration("max-db-connection-lifetime")
 
 	connectionString := database.ConfigureConnectionString(host, user, password, dbname, sslMode, port)
+	opts := []postgresdb.Option{
+		postgresdb.WithConnectionString(&connectionString),
+		postgresdb.WithQueryTimeout(&queryTimeout),
+		postgresdb.WithMaxConnectionRetries(&maxConnectionRetries),
+		postgresdb.WithMaxConnectionRetryTimeout(&maxDBRetryTimeout),
+		postgresdb.WithRetrySleep(&maxDBSleepInterval),
+		postgresdb.WithMaxIdleConnections(&maxIdleConnections),
+		postgresdb.WithMaxOpenConnections(&maxOpenConnections),
+		postgresdb.WithMaxConnectionLifetime(&maxConnectionLifetime),
+		postgresdb.WithInstrumentationClient(instrumentation),
+		postgresdb.WithLogger(logger),
+	}
 
-	// establish db connections
-	conn := core_database.NewDatabaseConn(
-		&core_database.Parameters{
-			QueryTimeout:              &dbQueryTimeout,
-			MaxConnectionRetries:      &maxDBConnAttempts,
-			MaxConnectionRetryTimeout: &maxDBRetryTimeout,
-			RetrySleep:                &maxDBSleepInterval,
-			ConnectionString:          &connectionString,
-		})
+	conn, err := postgresdb.New(opts...)
+	if err != nil {
+		return nil, err
+	}
 
 	queryOperator := dal.Use(conn.Engine)
-	opts := []database.Option{
+	databaseOpts := []database.Option{
 		database.WithConnection(conn),
-		database.WithDatabaseMaxConnectionAttempts(maxDBConnAttempts),
+		database.WithDatabaseMaxConnectionAttempts(maxConnectionRetries),
 		database.WithDatabaseMaxRetriesPerOperation(maxRetriesPerDBConnectionAttempt),
 		database.WithDatabaseRetryTimeOut(maxDBRetryTimeout),
 		database.WithDatabaseOperationSleepInterval(maxDBSleepInterval),
@@ -369,7 +411,7 @@ func configureDatabaseConn(ctx context.Context, logger *zap.Logger, instrumentat
 		database.WithKms(keyManagment),
 	}
 
-	db, err := database.New(ctx, opts...)
+	db, err := database.New(ctx, databaseOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -378,25 +420,16 @@ func configureDatabaseConn(ctx context.Context, logger *zap.Logger, instrumentat
 	return db, nil
 }
 
-// configureServiceTelemetryInstance configures the service telemetry instance object
-func configureServiceTelemetryInstance(logger *zap.Logger) *instrumentation.ServiceTelemetry {
+func configureInstrumentationClient(logger *zap.Logger) (*instrumentation.Client, error) {
 	// configure new relic sdk
-	app, err := configureNewrelicSDK(logger)
-	if err != nil {
-		logger.Panic(err.Error())
-	}
-
-	metricsEnabled := viper.GetBool("metrics-reporting-enabled")
-	env := viper.GetString("service-environment")
-	serviceName := viper.GetString("grpc-service-name")
-
-	opts := []instrumentation.ServiceTelemetryOption{
-		instrumentation.WithServiceName(serviceName),
+	opts := []instrumentation.Option{
+		instrumentation.WithServiceName(viper.GetString("grpc-service-name")),
 		instrumentation.WithServiceVersion(version.VERSION),
-		instrumentation.WithServiceEnvironment(env),
-		instrumentation.WithMetricsEnabled(metricsEnabled),
-		instrumentation.WithNewrelicSdk(app),
+		instrumentation.WithServiceEnvironment(viper.GetString("service-environment")),
+		instrumentation.WithEnabled(viper.GetBool("metrics-reporting-enabled")), // enables instrumentation
+		instrumentation.WithNewrelicKey(viper.GetString("newrelic-api-key")),
+		instrumentation.WithLogger(logger),
 	}
 
-	return instrumentation.NewServiceTelemetry(opts...)
+	return instrumentation.New(opts...)
 }

@@ -25,6 +25,17 @@ faults:
   test_fail: false
   test_timeout: false
 
+clickhouse:
+  host: l77zn1po0n.us-east-1.aws.clickhouse.cloud
+  port: 8443
+  user: default
+  password: nnqMml.lfh2g9
+  maxConnectionAttempts: 4
+  maxConnectionRetries: 4
+  maxConnectionRetryTimeout: 500ms
+  maxConnectionRetrySleepInterval: 100ms
+  maxQueryTimeout: 500ms
+  
 database:
   host: simfiny-db-cluster-do-user-11446161-0.b.db.ondigitalocean.com
   port: 25061

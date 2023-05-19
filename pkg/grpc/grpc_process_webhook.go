@@ -53,6 +53,7 @@ func (c PlaidClaims) Valid() error {
 	return vErr
 }
 
+// ProcessWebhook processes a webhook from Plaid
 func (s *Server) ProcessWebhook(ctx context.Context, req *proto.ProcessWebhookRequest) (*proto.ProcessWebhookResponse, error) {
 	// perform validations
 	if req == nil {

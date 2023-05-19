@@ -32,18 +32,16 @@
                     "type": "string"
                 },
                 "datetime": {
-                    "type": "string",
-                    "format": "date-time"
+                    "type": "string"
                 },
                 "authorized_date": {
                     "type": "string"
                 },
                 "authorized_datetime": {
-                    "type": "string",
-                    "format": "date-time"
+                    "type": "string"
                 },
                 "location": {
-                    "$ref": "#/definitions/api.v1.TransactionLocation",
+                    "$ref": "#/definitions/api.v1.Transaction.Location",
                     "additionalProperties": true
                 },
                 "name": {
@@ -53,7 +51,7 @@
                     "type": "string"
                 },
                 "payment_meta": {
-                    "$ref": "#/definitions/api.v1.PaymentMeta",
+                    "$ref": "#/definitions/api.v1.Transaction.PaymentMeta",
                     "additionalProperties": true
                 },
                 "payment_channel": {
@@ -73,13 +71,50 @@
                 },
                 "transaction_code": {
                     "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "string"
                 }
             },
             "additionalProperties": true,
             "type": "object",
             "title": "Transaction"
         },
-        "api.v1.PaymentMeta": {
+        "api.v1.Transaction.Location": {
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "city": {
+                    "type": "string"
+                },
+                "region": {
+                    "type": "string"
+                },
+                "postal_code": {
+                    "type": "string"
+                },
+                "country": {
+                    "type": "string"
+                },
+                "lat": {
+                    "type": "number"
+                },
+                "lon": {
+                    "type": "number"
+                },
+                "store_number": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Location"
+        },
+        "api.v1.Transaction.PaymentMeta": {
             "properties": {
                 "by_order_of": {
                     "type": "string"
@@ -109,37 +144,6 @@
             "additionalProperties": true,
             "type": "object",
             "title": "Payment Meta"
-        },
-        "api.v1.TransactionLocation": {
-            "properties": {
-                "address": {
-                    "type": "string"
-                },
-                "city": {
-                    "type": "string"
-                },
-                "region": {
-                    "type": "string"
-                },
-                "postal_code": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string"
-                },
-                "lat": {
-                    "type": "number"
-                },
-                "lon": {
-                    "type": "number"
-                },
-                "store_number": {
-                    "type": "string"
-                }
-            },
-            "additionalProperties": true,
-            "type": "object",
-            "title": "Transaction Location"
         }
     }
 }

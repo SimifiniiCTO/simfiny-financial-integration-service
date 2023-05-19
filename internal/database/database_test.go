@@ -1,20 +1,22 @@
 package database
 
 import (
+	"context"
 	"fmt"
 	"sync"
 	"time"
 
 	"go.uber.org/zap"
-	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 
-	core_database "github.com/SimifiniiCTO/core/core-database"
+	postgresdb "github.com/SimifiniiCTO/simfiny-core-lib/database/postgres"
+	"github.com/SimifiniiCTO/simfiny-core-lib/instrumentation"
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/dal"
 )
 
 const dbName = "gen_test.db"
+const SAVE_POINT = "test_save_point"
 
 var testdb *gorm.DB
 var once sync.Once
@@ -25,26 +27,37 @@ func init() {
 }
 
 func NewTestDatabase() *Db {
-	InitializeDB()
-	testdb.AutoMigrate(schema.GetDatabaseSchemas()...)
+	client, err := postgresdb.NewInMemoryTestDbClient(schema.GetDatabaseSchemas()...)
+	if err != nil {
+		panic(fmt.Errorf("failed to create in memory test db client: %w", err))
+	}
+
 	return &Db{
-		Conn:                   &core_database.DatabaseConn{Engine: testdb},
-		Logger:                 zap.L(),
-		MaxConnectionAttempts:  3,
-		MaxRetriesPerOperation: 0,
-		RetryTimeOut:           1 * time.Minute,
-		OperationSleepInterval: 500 * time.Millisecond,
-		QueryOperator:          dal.Use(testdb),
-		Kms:                    nil,
+		Conn:            client,
+		QueryOperator:   dal.Use(client.Engine),
+		Logger:          zap.NewNop(),
+		Instrumentation: &instrumentation.Client{},
 	}
 }
 
-func InitializeDB() {
-	once.Do(func() {
-		var err error
-		testdb, err = gorm.Open(sqlite.Open(dbName), &gorm.Config{})
-		if err != nil {
-			panic(fmt.Errorf("open sqlite %q fail: %w", dbName, err))
-		}
-	})
+type TxCleanupHandler struct {
+	cancelFunc               context.CancelFunc
+	Tx                       *gorm.DB
+	savePointRollbackHandler func(tx *gorm.DB)
+}
+
+func txCleanupHandler() *TxCleanupHandler {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	db := conn.Conn.Engine
+	tx := db.WithContext(ctx).Begin()
+	tx.SavePoint(SAVE_POINT)
+
+	return &TxCleanupHandler{
+		cancelFunc: cancel,
+		Tx:         tx,
+		savePointRollbackHandler: func(tx *gorm.DB) {
+			tx.RollbackTo(SAVE_POINT)
+			tx.Commit()
+		},
+	}
 }

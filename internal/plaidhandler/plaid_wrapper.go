@@ -9,14 +9,14 @@ import (
 	"github.com/plaid/plaid-go/plaid"
 	"go.uber.org/zap"
 
+	"github.com/SimifiniiCTO/simfiny-core-lib/instrumentation"
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
-	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/instrumentation"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/pointer"
 )
 
 type PlaidWrapper struct {
 	client             *plaid.APIClient
-	InstrumentationSdk *instrumentation.ServiceTelemetry
+	InstrumentationSdk *instrumentation.Client
 	Logger             *zap.Logger
 	Environment        plaid.Environment
 	ClientID           string

@@ -12,17 +12,16 @@ import (
 	"testing"
 	"time"
 
+	postgresdb "github.com/SimifiniiCTO/simfiny-core-lib/database/postgres"
+
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/test/bufconn"
-	"gorm.io/driver/sqlite"
-	"gorm.io/gorm"
 
-	core_database "github.com/SimifiniiCTO/core/core-database"
+	"github.com/SimifiniiCTO/simfiny-core-lib/instrumentation"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/database"
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/dal"
-	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/instrumentation"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/plaidhandler"
 )
 
@@ -85,7 +84,7 @@ func NewMockServer(db *database.Db) {
 	MockServer, err = NewServer(&Params{
 		Config:          config,
 		Logger:          zap.L(),
-		Instrumentation: &instrumentation.ServiceTelemetry{},
+		Instrumentation: &instrumentation.Client{},
 		Db:              DbConnHandler,
 		PlaidWrapper:    handler,
 	})
@@ -118,17 +117,15 @@ func run(m *testing.M) (code int, err error) {
 		os.Exit(1)
 	}
 
-	testdb, err := gorm.Open(sqlite.Open("test-b"), &gorm.Config{})
+	testdb, err := postgresdb.NewInMemoryTestDbClient(schema.GetDatabaseSchemas()...)
 	if err != nil {
-		panic(fmt.Errorf("open sqlite %q fail: %w", "test-db", err))
+		panic(fmt.Errorf("failed to create in memory test db client: %w", err))
 	}
 
-	testdb.AutoMigrate(schema.GetDatabaseSchemas()...)
+	testdb.Engine.AutoMigrate(schema.GetDatabaseSchemas()...)
 	DbConnHandler = &database.Db{
-		Conn: &core_database.DatabaseConn{
-			Engine: testdb,
-		},
-		QueryOperator:          dal.Use(testdb),
+		Conn:                   testdb,
+		QueryOperator:          dal.Use(testdb.Engine),
 		Logger:                 logger,
 		MaxConnectionAttempts:  3,
 		RetryTimeOut:           1 * time.Minute,

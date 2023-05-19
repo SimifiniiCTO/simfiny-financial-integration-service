@@ -8,10 +8,10 @@ import (
 	"go.uber.org/zap"
 	"gorm.io/gorm"
 
-	core_database "github.com/SimifiniiCTO/core/core-database"
+	postgresdb "github.com/SimifiniiCTO/simfiny-core-lib/database/postgres"
+	"github.com/SimifiniiCTO/simfiny-core-lib/instrumentation"
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/dal"
-	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/instrumentation"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/secrets"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/service_errors"
 )
@@ -110,7 +110,7 @@ type DatabaseOperations interface {
 // Db withholds connection to a postgres database as well as a logging handler
 type Db struct {
 	// Conn serves as the actual database connection object
-	Conn *core_database.DatabaseConn
+	Conn *postgresdb.Client
 	// Logger is the logging utility used by this object
 	Logger *zap.Logger
 	// MaxConnectionAttempts outlines the maximum connection attempts
@@ -126,7 +126,7 @@ type Db struct {
 	// that the system sleeps
 	OperationSleepInterval time.Duration
 	// Telemetry defines the object by which we will emit metrics, trace requests, and database operations
-	Instrumentation *instrumentation.ServiceTelemetry
+	Instrumentation *instrumentation.Client
 	// QueryOperator is the object that will be used to execute database queries
 	QueryOperator *dal.Query
 	// Kms is the object that will be used to encrypt and decrypt sensitive data
@@ -154,7 +154,7 @@ type ConnectionInitializationParams struct {
 	// that the system sleeps
 	RetrySleepInterval time.Duration
 	// Telemetry defines the object by which we will emit metrics, trace requests, and database operations
-	Instrumentation *instrumentation.ServiceTelemetry
+	Instrumentation *instrumentation.Client
 	QueryTimeout    *time.Duration
 }
 

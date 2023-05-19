@@ -6,14 +6,14 @@ import (
 	"go.temporal.io/sdk/client"
 	"go.uber.org/zap"
 
+	"github.com/SimifiniiCTO/simfiny-core-lib/instrumentation"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/database"
-	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/instrumentation"
 )
 
 type Configs struct {
 	ClientOptions                      *client.Options
 	Logger                             *zap.Logger
-	TelemetrySDK                       *instrumentation.ServiceTelemetry
+	TelemetrySDK                       *instrumentation.Client
 	DatabaseConn                       *database.Db
 	RetryPolicy                        *Policy
 	RpcTimeout                         *time.Duration
@@ -41,7 +41,7 @@ func WithLogger(logger *zap.Logger) Option {
 }
 
 // WithTelemetrySDK is an option that configures the transaction manager with a telemetry sdk
-func WithTelemetrySDK(telemetrySDK *instrumentation.ServiceTelemetry) Option {
+func WithTelemetrySDK(telemetrySDK *instrumentation.Client) Option {
 	return func(c *Configs) {
 		c.TelemetrySDK = telemetrySDK
 	}

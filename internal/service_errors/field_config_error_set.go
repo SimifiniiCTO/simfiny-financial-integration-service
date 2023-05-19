@@ -47,3 +47,17 @@ var ErrInvalidDbObject *FieldConfigurationError = &FieldConfigurationError{
 		OAuthErrorDescription: "",
 	},
 }
+
+var ErrInvalidConn *FieldConfigurationError = &FieldConfigurationError{
+	err: &ServiceError{
+		Code:                  ErrorCodeInvalidConfigurationParameters,
+		Err:                   errors.New("invalid database connection object"),
+		GRPCStatusCode:        codes.Internal,
+		Msg:                   "",
+		Param:                 "",
+		RequestID:             "",
+		Type:                  ErrorTypeParameters,
+		OAuthError:            "",
+		OAuthErrorDescription: "",
+	},
+}

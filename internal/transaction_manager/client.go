@@ -13,8 +13,8 @@ import (
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 
+	"github.com/SimifiniiCTO/simfiny-core-lib/instrumentation"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/database"
-	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/instrumentation"
 )
 
 var (
@@ -42,7 +42,7 @@ var (
 type TransactionManager struct {
 	Client                             client.Client
 	NamespaceClient                    client.NamespaceClient
-	TelemetrySDK                       *instrumentation.ServiceTelemetry
+	TelemetrySDK                       *instrumentation.Client
 	Logger                             *zap.Logger
 	DatabaseConn                       *database.Db
 	RetryPolicy                        *Policy

@@ -5,7 +5,7 @@ import (
 	"github.com/plaid/plaid-go/plaid"
 	"go.uber.org/zap"
 
-	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/instrumentation"
+	"github.com/SimifiniiCTO/simfiny-core-lib/instrumentation"
 )
 
 var (
@@ -39,7 +39,7 @@ func GetPlaidWrapperForTest() (*PlaidWrapper, error) {
 
 	return &PlaidWrapper{
 		client:             NewMockPlaidClient(),
-		InstrumentationSdk: &instrumentation.ServiceTelemetry{},
+		InstrumentationSdk: &instrumentation.Client{},
 		Logger:             l,
 		Environment:        plaid.Sandbox,
 		ClientID:           PLAID_CLIENT_ID_TEST_UTILS,

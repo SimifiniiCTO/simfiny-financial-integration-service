@@ -95,6 +95,7 @@ func Test_WithContext(t *testing.T) {
 		qCtx.StripeSubscriptionORM.UnderlyingDB().Statement.Context,
 		qCtx.StudentLoanAccountORM.UnderlyingDB().Statement.Context,
 		qCtx.TokenORM.UnderlyingDB().Statement.Context,
+		qCtx.TransactionORM.UnderlyingDB().Statement.Context,
 		qCtx.UserProfileORM.UnderlyingDB().Statement.Context,
 	} {
 		if v := ctx.Value(key); v != value {

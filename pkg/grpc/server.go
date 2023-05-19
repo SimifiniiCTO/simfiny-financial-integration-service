@@ -10,10 +10,10 @@ import (
 	"google.golang.org/grpc"
 
 	telemetry "github.com/SimifiniiCTO/core/core-telemetry"
+	"github.com/SimifiniiCTO/simfiny-core-lib/instrumentation"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/database"
 	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 	inmemoryverifier "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/in-memory-verifier"
-	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/instrumentation"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/plaidhandler"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/secrets"
 	transactionmanager "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/transaction_manager"
@@ -25,7 +25,7 @@ type Server struct {
 	// proto.UnimplementedFinancialServiceServer
 	logger                      *zap.Logger
 	config                      *Config
-	instrumentation             *instrumentation.ServiceTelemetry
+	instrumentation             *instrumentation.Client
 	conn                        *database.Db
 	plaidClient                 *plaidhandler.PlaidWrapper
 	MetricsEngine               *telemetry.MetricsEngine
@@ -68,7 +68,7 @@ var _ proto.FinancialServiceServer = (*Server)(nil)
 type Params struct {
 	Config             *Config
 	Logger             *zap.Logger
-	Instrumentation    *instrumentation.ServiceTelemetry
+	Instrumentation    *instrumentation.Client
 	Db                 *database.Db
 	KeyManagement      secrets.KeyManagement
 	PlaidWrapper       *plaidhandler.PlaidWrapper
@@ -103,6 +103,7 @@ func NewServer(param *Params) (*Server, error) {
 		return nil, errors.New("invalid param")
 	}
 
+	// initialize a stripe connection for the user
 	sc := &client.API{}
 	sc.Init(param.Config.StripeApiKey, nil)
 

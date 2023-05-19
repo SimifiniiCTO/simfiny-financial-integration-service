@@ -35,6 +35,7 @@ var (
 	StripeSubscriptionORM *stripeSubscriptionORM
 	StudentLoanAccountORM *studentLoanAccountORM
 	TokenORM              *tokenORM
+	TransactionORM        *transactionORM
 	UserProfileORM        *userProfileORM
 )
 
@@ -58,6 +59,7 @@ func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	StripeSubscriptionORM = &Q.StripeSubscriptionORM
 	StudentLoanAccountORM = &Q.StudentLoanAccountORM
 	TokenORM = &Q.TokenORM
+	TransactionORM = &Q.TransactionORM
 	UserProfileORM = &Q.UserProfileORM
 }
 
@@ -82,6 +84,7 @@ func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 		StripeSubscriptionORM: newStripeSubscriptionORM(db, opts...),
 		StudentLoanAccountORM: newStudentLoanAccountORM(db, opts...),
 		TokenORM:              newTokenORM(db, opts...),
+		TransactionORM:        newTransactionORM(db, opts...),
 		UserProfileORM:        newUserProfileORM(db, opts...),
 	}
 }
@@ -107,6 +110,7 @@ type Query struct {
 	StripeSubscriptionORM stripeSubscriptionORM
 	StudentLoanAccountORM studentLoanAccountORM
 	TokenORM              tokenORM
+	TransactionORM        transactionORM
 	UserProfileORM        userProfileORM
 }
 
@@ -133,6 +137,7 @@ func (q *Query) clone(db *gorm.DB) *Query {
 		StripeSubscriptionORM: q.StripeSubscriptionORM.clone(db),
 		StudentLoanAccountORM: q.StudentLoanAccountORM.clone(db),
 		TokenORM:              q.TokenORM.clone(db),
+		TransactionORM:        q.TransactionORM.clone(db),
 		UserProfileORM:        q.UserProfileORM.clone(db),
 	}
 }
@@ -166,6 +171,7 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 		StripeSubscriptionORM: q.StripeSubscriptionORM.replaceDB(db),
 		StudentLoanAccountORM: q.StudentLoanAccountORM.replaceDB(db),
 		TokenORM:              q.TokenORM.replaceDB(db),
+		TransactionORM:        q.TransactionORM.replaceDB(db),
 		UserProfileORM:        q.UserProfileORM.replaceDB(db),
 	}
 }
@@ -189,6 +195,7 @@ type queryCtx struct {
 	StripeSubscriptionORM IStripeSubscriptionORMDo
 	StudentLoanAccountORM IStudentLoanAccountORMDo
 	TokenORM              ITokenORMDo
+	TransactionORM        ITransactionORMDo
 	UserProfileORM        IUserProfileORMDo
 }
 
@@ -212,6 +219,7 @@ func (q *Query) WithContext(ctx context.Context) *queryCtx {
 		StripeSubscriptionORM: q.StripeSubscriptionORM.WithContext(ctx),
 		StudentLoanAccountORM: q.StudentLoanAccountORM.WithContext(ctx),
 		TokenORM:              q.TokenORM.WithContext(ctx),
+		TransactionORM:        q.TransactionORM.WithContext(ctx),
 		UserProfileORM:        q.UserProfileORM.WithContext(ctx),
 	}
 }

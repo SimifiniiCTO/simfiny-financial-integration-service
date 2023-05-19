@@ -21,7 +21,7 @@ func NewTransactionFromPlaid(input plaid.Transaction) (*schema.Transaction, erro
 		Datetime:               &timestamppb.Timestamp{},
 		AuthorizedDate:         input.GetAuthorizedDate(),
 		AuthorizedDatetime:     &timestamppb.Timestamp{Seconds: 0, Nanos: 0},
-		Location: &schema.TransactionLocation{
+		Location: &schema.Transaction_Location{
 			Address:     *input.GetLocation().Address.Get(),
 			City:        *input.GetLocation().City.Get(),
 			Region:      *input.GetLocation().Region.Get(),
@@ -33,7 +33,7 @@ func NewTransactionFromPlaid(input plaid.Transaction) (*schema.Transaction, erro
 		},
 		Name:         input.GetName(),
 		MerchantName: input.GetMerchantName(),
-		PaymentMeta: &schema.PaymentMeta{
+		PaymentMeta: &schema.Transaction_PaymentMeta{
 			ByOrderOf:        input.PaymentMeta.GetByOrderOf(),
 			Payee:            input.PaymentMeta.GetPayee(),
 			Payer:            input.PaymentMeta.GetPayer(),

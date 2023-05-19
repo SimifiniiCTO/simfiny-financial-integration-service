@@ -714,6 +714,15 @@ export interface ProcessWebhookRequest_ErrorEntry {
 export interface ProcessWebhookResponse {
 }
 
+export interface StripeWebhookRequest {
+  body: string;
+  signature: string;
+}
+
+export interface StripeWebhookResponse {
+  message: string;
+}
+
 function createBaseCreateUserProfileRequest(): CreateUserProfileRequest {
   return { profile: undefined, email: "" };
 }
@@ -5623,6 +5632,133 @@ export const ProcessWebhookResponse = {
 
   fromPartial<I extends Exact<DeepPartial<ProcessWebhookResponse>, I>>(_: I): ProcessWebhookResponse {
     const message = createBaseProcessWebhookResponse();
+    return message;
+  },
+};
+
+function createBaseStripeWebhookRequest(): StripeWebhookRequest {
+  return { body: "", signature: "" };
+}
+
+export const StripeWebhookRequest = {
+  encode(message: StripeWebhookRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.body !== "") {
+      writer.uint32(10).string(message.body);
+    }
+    if (message.signature !== "") {
+      writer.uint32(18).string(message.signature);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): StripeWebhookRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseStripeWebhookRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.body = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.signature = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): StripeWebhookRequest {
+    return {
+      body: isSet(object.body) ? String(object.body) : "",
+      signature: isSet(object.signature) ? String(object.signature) : "",
+    };
+  },
+
+  toJSON(message: StripeWebhookRequest): unknown {
+    const obj: any = {};
+    message.body !== undefined && (obj.body = message.body);
+    message.signature !== undefined && (obj.signature = message.signature);
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<StripeWebhookRequest>, I>>(base?: I): StripeWebhookRequest {
+    return StripeWebhookRequest.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<StripeWebhookRequest>, I>>(object: I): StripeWebhookRequest {
+    const message = createBaseStripeWebhookRequest();
+    message.body = object.body ?? "";
+    message.signature = object.signature ?? "";
+    return message;
+  },
+};
+
+function createBaseStripeWebhookResponse(): StripeWebhookResponse {
+  return { message: "" };
+}
+
+export const StripeWebhookResponse = {
+  encode(message: StripeWebhookResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.message !== "") {
+      writer.uint32(10).string(message.message);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): StripeWebhookResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseStripeWebhookResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.message = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): StripeWebhookResponse {
+    return { message: isSet(object.message) ? String(object.message) : "" };
+  },
+
+  toJSON(message: StripeWebhookResponse): unknown {
+    const obj: any = {};
+    message.message !== undefined && (obj.message = message.message);
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<StripeWebhookResponse>, I>>(base?: I): StripeWebhookResponse {
+    return StripeWebhookResponse.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<StripeWebhookResponse>, I>>(object: I): StripeWebhookResponse {
+    const message = createBaseStripeWebhookResponse();
+    message.message = object.message ?? "";
     return message;
   },
 };
