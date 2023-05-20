@@ -90,6 +90,7 @@ func Test_WithContext(t *testing.T) {
 		qCtx.MilestoneORM.UnderlyingDB().Statement.Context,
 		qCtx.MortgageAccountORM.UnderlyingDB().Statement.Context,
 		qCtx.PlaidLinkORM.UnderlyingDB().Statement.Context,
+		qCtx.PlaidSyncORM.UnderlyingDB().Statement.Context,
 		qCtx.PocketORM.UnderlyingDB().Statement.Context,
 		qCtx.SmartGoalORM.UnderlyingDB().Statement.Context,
 		qCtx.StripeSubscriptionORM.UnderlyingDB().Statement.Context,

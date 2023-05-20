@@ -144,7 +144,7 @@ func (db *Db) performSchemaMigration() error {
 
 	if len(models) > 0 {
 		if err := engine.AutoMigrate(models...); err != nil {
-			// TODO: emit metric
+			// TODO: emit failure metric here
 			log.Error(err.Error())
 			return err
 		}

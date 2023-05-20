@@ -161,11 +161,27 @@ func (s *Server) createAndStoreLink(ctx context.Context, userID uint64, meta *to
 	}
 
 	// TODO: kick off a background job to fetch the account transactions
-	/*if plaidLink.UsePlaidSync {
+	if plaidLink.UsePlaidSync {
 		// kick off a background job to pull transactions by use of plaid sync
+		if err := s.DispatchPlaidSyncTask(ctx, userID, plaidLink.ItemId, accessToken); err != nil {
+			return nil, status.Error(codes.Internal, err.Error())
+		}
 	} else {
+		linkId := result.Id
+		start := time.Now().Add(-30 * 24 * time.Hour) // Last 30 days.
+		end := time.Now()
 		// kick off background job to pull transactions
-	}*/
+		if err := s.DispatchPullTransactionsTask(
+			ctx,
+			userID,
+			linkId,
+			accessToken,
+			start,
+			end,
+		); err != nil {
+			return nil, status.Error(codes.Internal, err.Error())
+		}
+	}
 
 	return &result.Id, nil
 }

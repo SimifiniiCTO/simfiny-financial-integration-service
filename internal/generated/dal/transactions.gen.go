@@ -34,13 +34,14 @@ func newTransactionORM(db *gorm.DB, opts ...gen.DOOption) transactionORM {
 	_transactionORM.Amount = field.NewFloat64(tableName, "amount")
 	_transactionORM.AuthorizedDate = field.NewString(tableName, "authorized_date")
 	_transactionORM.AuthorizedDatetime = field.NewString(tableName, "authorized_datetime")
-	_transactionORM.Category = field.NewField(tableName, "category")
+	_transactionORM.Category = field.NewString(tableName, "category")
 	_transactionORM.CategoryId = field.NewString(tableName, "category_id")
 	_transactionORM.CheckNumber = field.NewString(tableName, "check_number")
 	_transactionORM.Date = field.NewString(tableName, "date")
 	_transactionORM.Datetime = field.NewString(tableName, "datetime")
 	_transactionORM.Id = field.NewUint64(tableName, "id")
 	_transactionORM.IsoCurrencyCode = field.NewString(tableName, "iso_currency_code")
+	_transactionORM.LinkId = field.NewUint64(tableName, "link_id")
 	_transactionORM.MerchantName = field.NewString(tableName, "merchant_name")
 	_transactionORM.Name = field.NewString(tableName, "name")
 	_transactionORM.PaymentChannel = field.NewString(tableName, "payment_channel")
@@ -65,13 +66,14 @@ type transactionORM struct {
 	Amount                 field.Float64
 	AuthorizedDate         field.String
 	AuthorizedDatetime     field.String
-	Category               field.Field
+	Category               field.String
 	CategoryId             field.String
 	CheckNumber            field.String
 	Date                   field.String
 	Datetime               field.String
 	Id                     field.Uint64
 	IsoCurrencyCode        field.String
+	LinkId                 field.Uint64
 	MerchantName           field.String
 	Name                   field.String
 	PaymentChannel         field.String
@@ -102,13 +104,14 @@ func (t *transactionORM) updateTableName(table string) *transactionORM {
 	t.Amount = field.NewFloat64(table, "amount")
 	t.AuthorizedDate = field.NewString(table, "authorized_date")
 	t.AuthorizedDatetime = field.NewString(table, "authorized_datetime")
-	t.Category = field.NewField(table, "category")
+	t.Category = field.NewString(table, "category")
 	t.CategoryId = field.NewString(table, "category_id")
 	t.CheckNumber = field.NewString(table, "check_number")
 	t.Date = field.NewString(table, "date")
 	t.Datetime = field.NewString(table, "datetime")
 	t.Id = field.NewUint64(table, "id")
 	t.IsoCurrencyCode = field.NewString(table, "iso_currency_code")
+	t.LinkId = field.NewUint64(table, "link_id")
 	t.MerchantName = field.NewString(table, "merchant_name")
 	t.Name = field.NewString(table, "name")
 	t.PaymentChannel = field.NewString(table, "payment_channel")
@@ -134,7 +137,7 @@ func (t *transactionORM) GetFieldByName(fieldName string) (field.OrderExpr, bool
 }
 
 func (t *transactionORM) fillFieldMap() {
-	t.fieldMap = make(map[string]field.Expr, 21)
+	t.fieldMap = make(map[string]field.Expr, 22)
 	t.fieldMap["account_id"] = t.AccountId
 	t.fieldMap["account_owner"] = t.AccountOwner
 	t.fieldMap["amount"] = t.Amount
@@ -147,6 +150,7 @@ func (t *transactionORM) fillFieldMap() {
 	t.fieldMap["datetime"] = t.Datetime
 	t.fieldMap["id"] = t.Id
 	t.fieldMap["iso_currency_code"] = t.IsoCurrencyCode
+	t.fieldMap["link_id"] = t.LinkId
 	t.fieldMap["merchant_name"] = t.MerchantName
 	t.fieldMap["name"] = t.Name
 	t.fieldMap["payment_channel"] = t.PaymentChannel

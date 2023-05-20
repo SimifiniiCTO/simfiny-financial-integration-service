@@ -702,7 +702,10 @@ export interface ProcessWebhookRequest {
   accountIdsWithUpdatedLiabilities: string[];
   /** The number of new holdings reported since the last time this webhook was fired. */
   newHoldings: number;
-  /** The number of updated holdings reported since the last time this webhook was fired. */
+  /**
+   * The number of updated holdings reported since the last time this webhook was fired.
+   * @gotag: json:"updated_holdings"
+   */
   updatedHoldings: number;
 }
 

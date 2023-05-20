@@ -65,6 +65,8 @@ func (m *Transaction) validate(all bool) error {
 
 	// no validation rules for UnofficialCurrencyCode
 
+	// no validation rules for Category
+
 	// no validation rules for CategoryId
 
 	// no validation rules for CheckNumber
@@ -164,6 +166,17 @@ func (m *Transaction) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
+	if m.GetLinkId() <= 0 {
+		err := TransactionValidationError{
+			field:  "LinkId",
+			reason: "value must be greater than 0",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
 	if len(errors) > 0 {
 		return TransactionMultiError(errors)
 	}
@@ -240,6 +253,569 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = TransactionValidationError{}
+
+// Validate checks the field values on TransactionAmountByCountryMetric with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the first error encountered is returned, or nil if there are
+// no violations.
+func (m *TransactionAmountByCountryMetric) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on TransactionAmountByCountryMetric with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the result is a list of violation errors wrapped in
+// TransactionAmountByCountryMetricMultiError, or nil if none found.
+func (m *TransactionAmountByCountryMetric) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *TransactionAmountByCountryMetric) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Country
+
+	// no validation rules for Amount
+
+	if len(errors) > 0 {
+		return TransactionAmountByCountryMetricMultiError(errors)
+	}
+
+	return nil
+}
+
+// TransactionAmountByCountryMetricMultiError is an error wrapping multiple
+// validation errors returned by
+// TransactionAmountByCountryMetric.ValidateAll() if the designated
+// constraints aren't met.
+type TransactionAmountByCountryMetricMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m TransactionAmountByCountryMetricMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m TransactionAmountByCountryMetricMultiError) AllErrors() []error { return m }
+
+// TransactionAmountByCountryMetricValidationError is the validation error
+// returned by TransactionAmountByCountryMetric.Validate if the designated
+// constraints aren't met.
+type TransactionAmountByCountryMetricValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e TransactionAmountByCountryMetricValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e TransactionAmountByCountryMetricValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e TransactionAmountByCountryMetricValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e TransactionAmountByCountryMetricValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e TransactionAmountByCountryMetricValidationError) ErrorName() string {
+	return "TransactionAmountByCountryMetricValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e TransactionAmountByCountryMetricValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sTransactionAmountByCountryMetric.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = TransactionAmountByCountryMetricValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = TransactionAmountByCountryMetricValidationError{}
+
+// Validate checks the field values on AverageTransactionAmountByCategoryMetric
+// with the rules defined in the proto definition for this message. If any
+// rules are violated, the first error encountered is returned, or nil if
+// there are no violations.
+func (m *AverageTransactionAmountByCategoryMetric) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on
+// AverageTransactionAmountByCategoryMetric with the rules defined in the
+// proto definition for this message. If any rules are violated, the result is
+// a list of violation errors wrapped in
+// AverageTransactionAmountByCategoryMetricMultiError, or nil if none found.
+func (m *AverageTransactionAmountByCategoryMetric) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *AverageTransactionAmountByCategoryMetric) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Category
+
+	// no validation rules for Amount
+
+	if len(errors) > 0 {
+		return AverageTransactionAmountByCategoryMetricMultiError(errors)
+	}
+
+	return nil
+}
+
+// AverageTransactionAmountByCategoryMetricMultiError is an error wrapping
+// multiple validation errors returned by
+// AverageTransactionAmountByCategoryMetric.ValidateAll() if the designated
+// constraints aren't met.
+type AverageTransactionAmountByCategoryMetricMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m AverageTransactionAmountByCategoryMetricMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m AverageTransactionAmountByCategoryMetricMultiError) AllErrors() []error { return m }
+
+// AverageTransactionAmountByCategoryMetricValidationError is the validation
+// error returned by AverageTransactionAmountByCategoryMetric.Validate if the
+// designated constraints aren't met.
+type AverageTransactionAmountByCategoryMetricValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e AverageTransactionAmountByCategoryMetricValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e AverageTransactionAmountByCategoryMetricValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e AverageTransactionAmountByCategoryMetricValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e AverageTransactionAmountByCategoryMetricValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e AverageTransactionAmountByCategoryMetricValidationError) ErrorName() string {
+	return "AverageTransactionAmountByCategoryMetricValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e AverageTransactionAmountByCategoryMetricValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sAverageTransactionAmountByCategoryMetric.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = AverageTransactionAmountByCategoryMetricValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = AverageTransactionAmountByCategoryMetricValidationError{}
+
+// Validate checks the field values on MonthlyTransactionCountByCategoryMetric
+// with the rules defined in the proto definition for this message. If any
+// rules are violated, the first error encountered is returned, or nil if
+// there are no violations.
+func (m *MonthlyTransactionCountByCategoryMetric) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on
+// MonthlyTransactionCountByCategoryMetric with the rules defined in the proto
+// definition for this message. If any rules are violated, the result is a
+// list of violation errors wrapped in
+// MonthlyTransactionCountByCategoryMetricMultiError, or nil if none found.
+func (m *MonthlyTransactionCountByCategoryMetric) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *MonthlyTransactionCountByCategoryMetric) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Category
+
+	// no validation rules for Count
+
+	// no validation rules for Month
+
+	if len(errors) > 0 {
+		return MonthlyTransactionCountByCategoryMetricMultiError(errors)
+	}
+
+	return nil
+}
+
+// MonthlyTransactionCountByCategoryMetricMultiError is an error wrapping
+// multiple validation errors returned by
+// MonthlyTransactionCountByCategoryMetric.ValidateAll() if the designated
+// constraints aren't met.
+type MonthlyTransactionCountByCategoryMetricMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m MonthlyTransactionCountByCategoryMetricMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m MonthlyTransactionCountByCategoryMetricMultiError) AllErrors() []error { return m }
+
+// MonthlyTransactionCountByCategoryMetricValidationError is the validation
+// error returned by MonthlyTransactionCountByCategoryMetric.Validate if the
+// designated constraints aren't met.
+type MonthlyTransactionCountByCategoryMetricValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e MonthlyTransactionCountByCategoryMetricValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e MonthlyTransactionCountByCategoryMetricValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e MonthlyTransactionCountByCategoryMetricValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e MonthlyTransactionCountByCategoryMetricValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e MonthlyTransactionCountByCategoryMetricValidationError) ErrorName() string {
+	return "MonthlyTransactionCountByCategoryMetricValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e MonthlyTransactionCountByCategoryMetricValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sMonthlyTransactionCountByCategoryMetric.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = MonthlyTransactionCountByCategoryMetricValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = MonthlyTransactionCountByCategoryMetricValidationError{}
+
+// Validate checks the field values on
+// TransactionCountByMerchantPaymentChannelMetric with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *TransactionCountByMerchantPaymentChannelMetric) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on
+// TransactionCountByMerchantPaymentChannelMetric with the rules defined in
+// the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in
+// TransactionCountByMerchantPaymentChannelMetricMultiError, or nil if none found.
+func (m *TransactionCountByMerchantPaymentChannelMetric) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *TransactionCountByMerchantPaymentChannelMetric) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for MerchantName
+
+	// no validation rules for PaymentChannel
+
+	// no validation rules for TransactionCount
+
+	if len(errors) > 0 {
+		return TransactionCountByMerchantPaymentChannelMetricMultiError(errors)
+	}
+
+	return nil
+}
+
+// TransactionCountByMerchantPaymentChannelMetricMultiError is an error
+// wrapping multiple validation errors returned by
+// TransactionCountByMerchantPaymentChannelMetric.ValidateAll() if the
+// designated constraints aren't met.
+type TransactionCountByMerchantPaymentChannelMetricMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m TransactionCountByMerchantPaymentChannelMetricMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m TransactionCountByMerchantPaymentChannelMetricMultiError) AllErrors() []error { return m }
+
+// TransactionCountByMerchantPaymentChannelMetricValidationError is the
+// validation error returned by
+// TransactionCountByMerchantPaymentChannelMetric.Validate if the designated
+// constraints aren't met.
+type TransactionCountByMerchantPaymentChannelMetricValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e TransactionCountByMerchantPaymentChannelMetricValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e TransactionCountByMerchantPaymentChannelMetricValidationError) Reason() string {
+	return e.reason
+}
+
+// Cause function returns cause value.
+func (e TransactionCountByMerchantPaymentChannelMetricValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e TransactionCountByMerchantPaymentChannelMetricValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e TransactionCountByMerchantPaymentChannelMetricValidationError) ErrorName() string {
+	return "TransactionCountByMerchantPaymentChannelMetricValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e TransactionCountByMerchantPaymentChannelMetricValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sTransactionCountByMerchantPaymentChannelMetric.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = TransactionCountByMerchantPaymentChannelMetricValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = TransactionCountByMerchantPaymentChannelMetricValidationError{}
+
+// Validate checks the field values on
+// TransactionAmountDistributionByCategoryMetric with the rules defined in the
+// proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *TransactionAmountDistributionByCategoryMetric) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on
+// TransactionAmountDistributionByCategoryMetric with the rules defined in the
+// proto definition for this message. If any rules are violated, the result is
+// a list of violation errors wrapped in
+// TransactionAmountDistributionByCategoryMetricMultiError, or nil if none found.
+func (m *TransactionAmountDistributionByCategoryMetric) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *TransactionAmountDistributionByCategoryMetric) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Category
+
+	// no validation rules for Mean
+
+	// no validation rules for Median
+
+	// no validation rules for StandardDeviation
+
+	if len(errors) > 0 {
+		return TransactionAmountDistributionByCategoryMetricMultiError(errors)
+	}
+
+	return nil
+}
+
+// TransactionAmountDistributionByCategoryMetricMultiError is an error wrapping
+// multiple validation errors returned by
+// TransactionAmountDistributionByCategoryMetric.ValidateAll() if the
+// designated constraints aren't met.
+type TransactionAmountDistributionByCategoryMetricMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m TransactionAmountDistributionByCategoryMetricMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m TransactionAmountDistributionByCategoryMetricMultiError) AllErrors() []error { return m }
+
+// TransactionAmountDistributionByCategoryMetricValidationError is the
+// validation error returned by
+// TransactionAmountDistributionByCategoryMetric.Validate if the designated
+// constraints aren't met.
+type TransactionAmountDistributionByCategoryMetricValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e TransactionAmountDistributionByCategoryMetricValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e TransactionAmountDistributionByCategoryMetricValidationError) Reason() string {
+	return e.reason
+}
+
+// Cause function returns cause value.
+func (e TransactionAmountDistributionByCategoryMetricValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e TransactionAmountDistributionByCategoryMetricValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e TransactionAmountDistributionByCategoryMetricValidationError) ErrorName() string {
+	return "TransactionAmountDistributionByCategoryMetricValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e TransactionAmountDistributionByCategoryMetricValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sTransactionAmountDistributionByCategoryMetric.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = TransactionAmountDistributionByCategoryMetricValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = TransactionAmountDistributionByCategoryMetricValidationError{}
 
 // Validate checks the field values on Transaction_Location with the rules
 // defined in the proto definition for this message. If any rules are

@@ -10,12 +10,16 @@ import (
 	"google.golang.org/grpc"
 
 	telemetry "github.com/SimifiniiCTO/core/core-telemetry"
+	"github.com/SimifiniiCTO/simfiny-core-lib/database/redis"
 	"github.com/SimifiniiCTO/simfiny-core-lib/instrumentation"
-	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/database"
+	taskprocessor "github.com/SimifiniiCTO/simfiny-core-lib/task-processor"
+	clickhousedatabase "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/clickhouse-database"
 	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 	inmemoryverifier "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/in-memory-verifier"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/plaidhandler"
+	database "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/postgres-database"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/secrets"
+	taskhandler "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/task-handler"
 	transactionmanager "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/transaction_manager"
 )
 
@@ -27,12 +31,15 @@ type Server struct {
 	config                      *Config
 	instrumentation             *instrumentation.Client
 	conn                        *database.Db
+	clickhouseConn              *clickhousedatabase.Db
 	plaidClient                 *plaidhandler.PlaidWrapper
 	MetricsEngine               *telemetry.MetricsEngine
 	stripeClient                *client.API
 	kms                         secrets.KeyManagement
 	TransactionManager          *transactionmanager.TransactionManager
 	InMemoryWebhookVerification inmemoryverifier.WebhookVerification
+	redisDb                     *redis.Client
+	taskprocessor               *taskprocessor.TaskProcessor
 }
 
 // Config is the config for the grpc server initialization
@@ -60,6 +67,7 @@ type Config struct {
 	WorkflowExecutionTimeout time.Duration    `mapstructure:"workflow-execution-timeout"`
 	WorkflowTaskTimeout      time.Duration    `mapstructure:"workflow-task-timeout"`
 	WorkflowRunTimeout       time.Duration    `mapstructure:"workflow-run-timeout"`
+	TaskProcessorWorkers     int              `mapstructure:"task-processor-workers"`
 }
 
 var _ proto.FinancialServiceServer = (*Server)(nil)
@@ -73,6 +81,8 @@ type Params struct {
 	KeyManagement      secrets.KeyManagement
 	PlaidWrapper       *plaidhandler.PlaidWrapper
 	TransactionManager *transactionmanager.TransactionManager
+	ClickhouseDb       *clickhousedatabase.Db
+	RedisDb            *redis.Client
 }
 
 // RegisterGrpcServer registers the grpc server object
@@ -97,6 +107,18 @@ func (p *Params) Validate() error {
 	return nil
 }
 
+func configureTaskHandler(param *Params) *taskhandler.TaskHandler {
+	opts := []taskhandler.Option{
+		taskhandler.WithLogger(param.Logger),
+		taskhandler.WithInstrumentationClient(param.Instrumentation),
+		taskhandler.WithClickhouseDb(param.ClickhouseDb),
+		taskhandler.WithPostgresDb(param.Db),
+		taskhandler.WithPlaidClient(param.PlaidWrapper),
+	}
+
+	return taskhandler.NewTaskHandler(opts...)
+}
+
 // NewServer creates a new grpc server
 func NewServer(param *Params) (*Server, error) {
 	if param.Validate() != nil {
@@ -107,7 +129,22 @@ func NewServer(param *Params) (*Server, error) {
 	sc := &client.API{}
 	sc.Init(param.Config.StripeApiKey, nil)
 
-	return &Server{
+	th := configureTaskHandler(param)
+	// generatee task procerssor
+	opts := []taskprocessor.Option{
+		taskprocessor.WithLoggerOpt(param.Logger),
+		taskprocessor.WithInstrumentationClientOpt(param.Instrumentation),
+		taskprocessor.WithRedisAddressOpt(param.RedisDb.URI),
+		taskprocessor.WithConcurrencyFactorOpt(&param.Config.TaskProcessorWorkers),
+		taskprocessor.WithTaskHandlerOpt(th),
+	}
+
+	tp, err := taskprocessor.NewTaskProcessor(opts...)
+	if err != nil {
+		return nil, err
+	}
+
+	srv := &Server{
 		logger:                      param.Logger,
 		config:                      param.Config,
 		conn:                        param.Db,
@@ -117,5 +154,9 @@ func NewServer(param *Params) (*Server, error) {
 		kms:                         param.KeyManagement,
 		TransactionManager:          param.TransactionManager,
 		InMemoryWebhookVerification: inmemoryverifier.NewInMemoryWebhookVerification(param.Logger, param.PlaidWrapper, 5*time.Minute),
-	}, nil
+		clickhouseConn:              param.ClickhouseDb,
+		redisDb:                     param.RedisDb,
+		taskprocessor:               tp,
+	}
+	return srv, nil
 }

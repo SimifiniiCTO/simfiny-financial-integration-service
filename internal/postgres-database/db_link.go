@@ -67,6 +67,7 @@ func (db *Db) GetLink(ctx context.Context, userID uint64, linkID uint64) (*schem
 		Preload(l.PlaidLink).
 		Preload(l.StudentLoanAccounts).
 		Preload(l.Token).
+		Preload(l.PlaidSync).
 		First()
 	if err != nil {
 		return nil, fmt.Errorf("link with id %d does not exist", linkID)
@@ -231,6 +232,7 @@ func (db *Db) GetLinkByItemId(ctx context.Context, itemId string) (*schema.Link,
 		Preload(l.PlaidLink).
 		Preload(l.StudentLoanAccounts).
 		Preload(l.Token).
+		Preload(l.PlaidSync).
 		First()
 	if err != nil {
 		return nil, fmt.Errorf("link with id %d does not exist", *linkId)

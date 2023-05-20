@@ -6,7 +6,6 @@ import (
 	gorm1 "github.com/infobloxopen/atlas-app-toolkit/gorm"
 	errors "github.com/infobloxopen/protoc-gen-gorm/errors"
 	gorm "github.com/jinzhu/gorm"
-	pq "github.com/lib/pq"
 	field_mask "google.golang.org/genproto/protobuf/field_mask"
 	strings "strings"
 )
@@ -17,13 +16,14 @@ type TransactionORM struct {
 	Amount                 float64
 	AuthorizedDate         string
 	AuthorizedDatetime     string
-	Category               pq.StringArray `gorm:"type:text[]"`
+	Category               string
 	CategoryId             string
 	CheckNumber            string
 	Date                   string
 	Datetime               string
 	Id                     uint64
 	IsoCurrencyCode        string
+	LinkId                 uint64
 	MerchantName           string
 	Name                   string
 	PaymentChannel         string
@@ -54,10 +54,7 @@ func (m *Transaction) ToORM(ctx context.Context) (TransactionORM, error) {
 	to.Amount = m.Amount
 	to.IsoCurrencyCode = m.IsoCurrencyCode
 	to.UnofficialCurrencyCode = m.UnofficialCurrencyCode
-	if m.Category != nil {
-		to.Category = make(pq.StringArray, len(m.Category))
-		copy(to.Category, m.Category)
-	}
+	to.Category = m.Category
 	to.CategoryId = m.CategoryId
 	to.CheckNumber = m.CheckNumber
 	to.Date = m.Date
@@ -74,6 +71,7 @@ func (m *Transaction) ToORM(ctx context.Context) (TransactionORM, error) {
 	to.TransactionCode = m.TransactionCode
 	to.Id = m.Id
 	to.UserId = m.UserId
+	to.LinkId = m.LinkId
 	if posthook, ok := interface{}(m).(TransactionWithAfterToORM); ok {
 		err = posthook.AfterToORM(ctx, &to)
 	}
@@ -94,10 +92,7 @@ func (m *TransactionORM) ToPB(ctx context.Context) (Transaction, error) {
 	to.Amount = m.Amount
 	to.IsoCurrencyCode = m.IsoCurrencyCode
 	to.UnofficialCurrencyCode = m.UnofficialCurrencyCode
-	if m.Category != nil {
-		to.Category = make(pq.StringArray, len(m.Category))
-		copy(to.Category, m.Category)
-	}
+	to.Category = m.Category
 	to.CategoryId = m.CategoryId
 	to.CheckNumber = m.CheckNumber
 	to.Date = m.Date
@@ -114,6 +109,7 @@ func (m *TransactionORM) ToPB(ctx context.Context) (Transaction, error) {
 	to.TransactionCode = m.TransactionCode
 	to.Id = m.Id
 	to.UserId = m.UserId
+	to.LinkId = m.LinkId
 	if posthook, ok := interface{}(m).(TransactionWithAfterToPB); ok {
 		err = posthook.AfterToPB(ctx, &to)
 	}
@@ -553,6 +549,10 @@ func DefaultApplyFieldMaskTransaction(ctx context.Context, patchee *Transaction,
 		}
 		if f == prefix+"UserId" {
 			patchee.UserId = patcher.UserId
+			continue
+		}
+		if f == prefix+"LinkId" {
+			patchee.LinkId = patcher.LinkId
 			continue
 		}
 	}

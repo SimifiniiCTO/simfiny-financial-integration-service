@@ -4,6 +4,45 @@ import * as _m0 from "protobufjs/minimal";
 
 export const protobufPackage = "api.v1";
 
+export enum BankAccountStatus {
+  BANK_ACCOUNT_STATUS_UNSPECIFIED = 0,
+  BANK_ACCOUNT_STATUS_ACTIVE = 1,
+  BANK_ACCOUNT_STATUS_INACTIVE = 2,
+  UNRECOGNIZED = -1,
+}
+
+export function bankAccountStatusFromJSON(object: any): BankAccountStatus {
+  switch (object) {
+    case 0:
+    case "BANK_ACCOUNT_STATUS_UNSPECIFIED":
+      return BankAccountStatus.BANK_ACCOUNT_STATUS_UNSPECIFIED;
+    case 1:
+    case "BANK_ACCOUNT_STATUS_ACTIVE":
+      return BankAccountStatus.BANK_ACCOUNT_STATUS_ACTIVE;
+    case 2:
+    case "BANK_ACCOUNT_STATUS_INACTIVE":
+      return BankAccountStatus.BANK_ACCOUNT_STATUS_INACTIVE;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return BankAccountStatus.UNRECOGNIZED;
+  }
+}
+
+export function bankAccountStatusToJSON(object: BankAccountStatus): string {
+  switch (object) {
+    case BankAccountStatus.BANK_ACCOUNT_STATUS_UNSPECIFIED:
+      return "BANK_ACCOUNT_STATUS_UNSPECIFIED";
+    case BankAccountStatus.BANK_ACCOUNT_STATUS_ACTIVE:
+      return "BANK_ACCOUNT_STATUS_ACTIVE";
+    case BankAccountStatus.BANK_ACCOUNT_STATUS_INACTIVE:
+      return "BANK_ACCOUNT_STATUS_INACTIVE";
+    case BankAccountStatus.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
 export enum GoalStatus {
   GOAL_STATUS_UNSPECIFIED = 0,
   GOAL_STATUS_ACTIVE = 1,
@@ -468,6 +507,18 @@ export interface Link {
   errorCode: string;
   updatedAt: string;
   newAccountsAvailable: boolean;
+  plaidSync: PlaidSync | undefined;
+}
+
+export interface PlaidSync {
+  /** id */
+  id: number;
+  timeStamp: string;
+  trigger: string;
+  nextCursor: string;
+  added: number;
+  removed: number;
+  modified: number;
 }
 
 export interface Token {
@@ -662,6 +713,8 @@ export interface BankAccount {
   plaidAccountId: string;
   /** account subtype */
   subtype: string;
+  /** the bank account status */
+  status: BankAccountStatus;
 }
 
 /**
@@ -1134,6 +1187,7 @@ function createBaseLink(): Link {
     errorCode: "",
     updatedAt: "",
     newAccountsAvailable: false,
+    plaidSync: undefined,
   };
 }
 
@@ -1201,6 +1255,9 @@ export const Link = {
     }
     if (message.newAccountsAvailable === true) {
       writer.uint32(176).bool(message.newAccountsAvailable);
+    }
+    if (message.plaidSync !== undefined) {
+      PlaidSync.encode(message.plaidSync, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -1359,6 +1416,13 @@ export const Link = {
 
           message.newAccountsAvailable = reader.bool();
           continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.plaidSync = PlaidSync.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1403,6 +1467,7 @@ export const Link = {
       errorCode: isSet(object.errorCode) ? String(object.errorCode) : "",
       updatedAt: isSet(object.updatedAt) ? String(object.updatedAt) : "",
       newAccountsAvailable: isSet(object.newAccountsAvailable) ? Boolean(object.newAccountsAvailable) : false,
+      plaidSync: isSet(object.plaidSync) ? PlaidSync.fromJSON(object.plaidSync) : undefined,
     };
   },
 
@@ -1451,6 +1516,8 @@ export const Link = {
     message.errorCode !== undefined && (obj.errorCode = message.errorCode);
     message.updatedAt !== undefined && (obj.updatedAt = message.updatedAt);
     message.newAccountsAvailable !== undefined && (obj.newAccountsAvailable = message.newAccountsAvailable);
+    message.plaidSync !== undefined &&
+      (obj.plaidSync = message.plaidSync ? PlaidSync.toJSON(message.plaidSync) : undefined);
     return obj;
   },
 
@@ -1483,6 +1550,145 @@ export const Link = {
     message.errorCode = object.errorCode ?? "";
     message.updatedAt = object.updatedAt ?? "";
     message.newAccountsAvailable = object.newAccountsAvailable ?? false;
+    message.plaidSync = (object.plaidSync !== undefined && object.plaidSync !== null)
+      ? PlaidSync.fromPartial(object.plaidSync)
+      : undefined;
+    return message;
+  },
+};
+
+function createBasePlaidSync(): PlaidSync {
+  return { id: 0, timeStamp: "", trigger: "", nextCursor: "", added: 0, removed: 0, modified: 0 };
+}
+
+export const PlaidSync = {
+  encode(message: PlaidSync, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).uint64(message.id);
+    }
+    if (message.timeStamp !== "") {
+      writer.uint32(26).string(message.timeStamp);
+    }
+    if (message.trigger !== "") {
+      writer.uint32(34).string(message.trigger);
+    }
+    if (message.nextCursor !== "") {
+      writer.uint32(42).string(message.nextCursor);
+    }
+    if (message.added !== 0) {
+      writer.uint32(48).int64(message.added);
+    }
+    if (message.removed !== 0) {
+      writer.uint32(56).int64(message.removed);
+    }
+    if (message.modified !== 0) {
+      writer.uint32(64).int64(message.modified);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): PlaidSync {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePlaidSync();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.id = longToNumber(reader.uint64() as Long);
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.timeStamp = reader.string();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.trigger = reader.string();
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.nextCursor = reader.string();
+          continue;
+        case 6:
+          if (tag !== 48) {
+            break;
+          }
+
+          message.added = longToNumber(reader.int64() as Long);
+          continue;
+        case 7:
+          if (tag !== 56) {
+            break;
+          }
+
+          message.removed = longToNumber(reader.int64() as Long);
+          continue;
+        case 8:
+          if (tag !== 64) {
+            break;
+          }
+
+          message.modified = longToNumber(reader.int64() as Long);
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PlaidSync {
+    return {
+      id: isSet(object.id) ? Number(object.id) : 0,
+      timeStamp: isSet(object.timeStamp) ? String(object.timeStamp) : "",
+      trigger: isSet(object.trigger) ? String(object.trigger) : "",
+      nextCursor: isSet(object.nextCursor) ? String(object.nextCursor) : "",
+      added: isSet(object.added) ? Number(object.added) : 0,
+      removed: isSet(object.removed) ? Number(object.removed) : 0,
+      modified: isSet(object.modified) ? Number(object.modified) : 0,
+    };
+  },
+
+  toJSON(message: PlaidSync): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = Math.round(message.id));
+    message.timeStamp !== undefined && (obj.timeStamp = message.timeStamp);
+    message.trigger !== undefined && (obj.trigger = message.trigger);
+    message.nextCursor !== undefined && (obj.nextCursor = message.nextCursor);
+    message.added !== undefined && (obj.added = Math.round(message.added));
+    message.removed !== undefined && (obj.removed = Math.round(message.removed));
+    message.modified !== undefined && (obj.modified = Math.round(message.modified));
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<PlaidSync>, I>>(base?: I): PlaidSync {
+    return PlaidSync.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<PlaidSync>, I>>(object: I): PlaidSync {
+    const message = createBasePlaidSync();
+    message.id = object.id ?? 0;
+    message.timeStamp = object.timeStamp ?? "";
+    message.trigger = object.trigger ?? "";
+    message.nextCursor = object.nextCursor ?? "";
+    message.added = object.added ?? 0;
+    message.removed = object.removed ?? 0;
+    message.modified = object.modified ?? 0;
     return message;
   },
 };
@@ -3372,6 +3578,7 @@ function createBaseBankAccount(): BankAccount {
     pockets: [],
     plaidAccountId: "",
     subtype: "",
+    status: 0,
   };
 }
 
@@ -3412,6 +3619,9 @@ export const BankAccount = {
     }
     if (message.subtype !== "") {
       writer.uint32(114).string(message.subtype);
+    }
+    if (message.status !== 0) {
+      writer.uint32(120).int32(message.status);
     }
     return writer;
   },
@@ -3507,6 +3717,13 @@ export const BankAccount = {
 
           message.subtype = reader.string();
           continue;
+        case 15:
+          if (tag !== 120) {
+            break;
+          }
+
+          message.status = reader.int32() as any;
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -3530,6 +3747,7 @@ export const BankAccount = {
       pockets: Array.isArray(object?.pockets) ? object.pockets.map((e: any) => Pocket.fromJSON(e)) : [],
       plaidAccountId: isSet(object.plaidAccountId) ? String(object.plaidAccountId) : "",
       subtype: isSet(object.subtype) ? String(object.subtype) : "",
+      status: isSet(object.status) ? bankAccountStatusFromJSON(object.status) : 0,
     };
   },
 
@@ -3551,6 +3769,7 @@ export const BankAccount = {
     }
     message.plaidAccountId !== undefined && (obj.plaidAccountId = message.plaidAccountId);
     message.subtype !== undefined && (obj.subtype = message.subtype);
+    message.status !== undefined && (obj.status = bankAccountStatusToJSON(message.status));
     return obj;
   },
 
@@ -3572,6 +3791,7 @@ export const BankAccount = {
     message.pockets = object.pockets?.map((e) => Pocket.fromPartial(e)) || [];
     message.plaidAccountId = object.plaidAccountId ?? "";
     message.subtype = object.subtype ?? "";
+    message.status = object.status ?? 0;
     return message;
   },
 };

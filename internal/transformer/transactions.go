@@ -1,26 +1,28 @@
 package transformer
 
 import (
+	"strings"
+
 	"github.com/plaid/plaid-go/plaid"
-	"google.golang.org/protobuf/types/known/timestamppb"
 
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 )
 
 // NewTransactionFromPlaid converts a Plaid transaction to our own transaction interface.
 func NewTransactionFromPlaid(input plaid.Transaction) (*schema.Transaction, error) {
+	flattenedCategories := strings.Join(input.GetCategory(), ",")
 	return &schema.Transaction{
 		AccountId:              input.GetAccountId(),
 		Amount:                 float64(input.Amount),
 		IsoCurrencyCode:        input.GetIsoCurrencyCode(),
 		UnofficialCurrencyCode: input.GetUnofficialCurrencyCode(),
-		Category:               input.GetCategory(),
+		Category:               flattenedCategories,
 		CategoryId:             input.GetCategoryId(),
 		CheckNumber:            input.GetCheckNumber(),
 		Date:                   input.GetDate(),
-		Datetime:               &timestamppb.Timestamp{},
+		Datetime:               input.GetDate(),
 		AuthorizedDate:         input.GetAuthorizedDate(),
-		AuthorizedDatetime:     &timestamppb.Timestamp{Seconds: 0, Nanos: 0},
+		AuthorizedDatetime:     input.GetAuthorizedDate(),
 		Location: &schema.Transaction_Location{
 			Address:     *input.GetLocation().Address.Get(),
 			City:        *input.GetLocation().City.Get(),

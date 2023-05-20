@@ -7,7 +7,7 @@ import (
 	"go.uber.org/zap"
 
 	"github.com/SimifiniiCTO/simfiny-core-lib/instrumentation"
-	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/database"
+	database "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/postgres-database"
 )
 
 type Configs struct {

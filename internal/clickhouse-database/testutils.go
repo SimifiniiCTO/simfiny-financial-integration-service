@@ -11,7 +11,7 @@ func generateRandomTransaction() *schema.Transaction {
 		Amount:                 float64(helper.GenerateRandomId(10000, 3000000)),
 		IsoCurrencyCode:        helper.GenerateRandomString(20),
 		UnofficialCurrencyCode: helper.GenerateRandomString(20),
-		Category:               []string{helper.GenerateRandomString(8), helper.GenerateRandomString(8), helper.GenerateRandomString(8)},
+		Category:               helper.GenerateRandomString(8),
 		CategoryId:             helper.GenerateRandomString(20),
 		CheckNumber:            helper.GenerateRandomString(20),
 		Date:                   helper.GenerateRandomString(20),

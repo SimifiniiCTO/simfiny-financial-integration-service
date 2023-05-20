@@ -25,7 +25,7 @@ import (
 	"google.golang.org/grpc"
 
 	"github.com/SimifiniiCTO/simfiny-core-lib/instrumentation"
-	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/database"
+	database "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/postgres-database"
 	_ "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/api/docs"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/fscache"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/proto"
@@ -254,7 +254,6 @@ func (s *Server) startServer() *http.Server {
 
 	// determine if the port is specified
 	if s.config.Port == "0" {
-
 		// move on immediately
 		return nil
 	}

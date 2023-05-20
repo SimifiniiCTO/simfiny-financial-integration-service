@@ -7,7 +7,7 @@ require (
 	github.com/SimifiniiCTO/core v0.43.0
 	github.com/SimifiniiCTO/core/core-database v0.0.0-20230307040227-eeb14211b9ed
 	github.com/SimifiniiCTO/core/core-telemetry v0.0.0-20230307040227-eeb14211b9ed
-	github.com/SimifiniiCTO/simfiny-core-lib v1.0.6
+	github.com/SimifiniiCTO/simfiny-core-lib v1.0.7
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
 	github.com/aws/aws-sdk-go v1.44.264
 	github.com/chzyer/readline v1.5.1
@@ -57,16 +57,23 @@ require (
 )
 
 require (
+	github.com/cosmos/gogoproto v1.4.10 // indirect
+	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
+	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.0.0-rc.5 // indirect
 	github.com/jackc/pgx/v5 v5.3.1 // indirect
 	github.com/newrelic/go-agent/v3/integrations/nrgorilla v1.1.1 // indirect
 	github.com/newrelic/go-agent/v3/integrations/nrgrpc v1.3.2 // indirect
+	github.com/redis/go-redis/v9 v9.0.4 // indirect
+	github.com/robfig/cron/v3 v3.0.1 // indirect
+	golang.org/x/exp v0.0.0-20230131160201-f062dba9d201 // indirect
 )
 
 require (
-	github.com/ClickHouse/ch-go v0.53.0 // indirect
-	github.com/ClickHouse/clickhouse-go/v2 v2.8.3 // indirect
+	github.com/ClickHouse/ch-go v0.55.0 // indirect
+	github.com/ClickHouse/clickhouse-go/v2 v2.10.0 // indirect
 	github.com/KyleBanks/depth v1.2.1 // indirect
+	github.com/SimifiniiCTO/asynq v0.0.0-20230512193438-0e30b7c808e5
 	github.com/andres-erbsen/clock v0.0.0-20160526145045-9e14626cd129 // indirect
 	github.com/andybalholm/brotli v1.0.5 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
@@ -115,7 +122,7 @@ require (
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/newrelic/newrelic-telemetry-sdk-go v0.8.1 // indirect
 	github.com/openzipkin/zipkin-go v0.4.1 // indirect
-	github.com/paulmach/orb v0.9.0 // indirect
+	github.com/paulmach/orb v0.9.2 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.7 // indirect
 	github.com/pierrec/lz4/v4 v4.1.17 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect

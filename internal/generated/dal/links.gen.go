@@ -49,6 +49,12 @@ func newLinkORM(db *gorm.DB, opts ...gen.DOOption) linkORM {
 		RelationField: field.NewRelation("PlaidLink", "apiv1.PlaidLinkORM"),
 	}
 
+	_linkORM.PlaidSync = linkORMHasOnePlaidSync{
+		db: db.Session(&gorm.Session{}),
+
+		RelationField: field.NewRelation("PlaidSync", "apiv1.PlaidSyncORM"),
+	}
+
 	_linkORM.Token = linkORMHasOneToken{
 		db: db.Session(&gorm.Session{}),
 
@@ -192,6 +198,8 @@ type linkORM struct {
 	UserProfileId             field.Uint64
 	PlaidLink                 linkORMHasOnePlaidLink
 
+	PlaidSync linkORMHasOnePlaidSync
+
 	Token linkORMHasOneToken
 
 	BankAccounts linkORMHasManyBankAccounts
@@ -250,7 +258,7 @@ func (l *linkORM) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (l *linkORM) fillFieldMap() {
-	l.fieldMap = make(map[string]field.Expr, 22)
+	l.fieldMap = make(map[string]field.Expr, 23)
 	l.fieldMap["custom_institution_name"] = l.CustomInstitutionName
 	l.fieldMap["description"] = l.Description
 	l.fieldMap["error_code"] = l.ErrorCode
@@ -342,6 +350,72 @@ func (a linkORMHasOnePlaidLinkTx) Clear() error {
 }
 
 func (a linkORMHasOnePlaidLinkTx) Count() int64 {
+	return a.tx.Count()
+}
+
+type linkORMHasOnePlaidSync struct {
+	db *gorm.DB
+
+	field.RelationField
+}
+
+func (a linkORMHasOnePlaidSync) Where(conds ...field.Expr) *linkORMHasOnePlaidSync {
+	if len(conds) == 0 {
+		return &a
+	}
+
+	exprs := make([]clause.Expression, 0, len(conds))
+	for _, cond := range conds {
+		exprs = append(exprs, cond.BeCond().(clause.Expression))
+	}
+	a.db = a.db.Clauses(clause.Where{Exprs: exprs})
+	return &a
+}
+
+func (a linkORMHasOnePlaidSync) WithContext(ctx context.Context) *linkORMHasOnePlaidSync {
+	a.db = a.db.WithContext(ctx)
+	return &a
+}
+
+func (a linkORMHasOnePlaidSync) Model(m *apiv1.LinkORM) *linkORMHasOnePlaidSyncTx {
+	return &linkORMHasOnePlaidSyncTx{a.db.Model(m).Association(a.Name())}
+}
+
+type linkORMHasOnePlaidSyncTx struct{ tx *gorm.Association }
+
+func (a linkORMHasOnePlaidSyncTx) Find() (result *apiv1.PlaidSyncORM, err error) {
+	return result, a.tx.Find(&result)
+}
+
+func (a linkORMHasOnePlaidSyncTx) Append(values ...*apiv1.PlaidSyncORM) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Append(targetValues...)
+}
+
+func (a linkORMHasOnePlaidSyncTx) Replace(values ...*apiv1.PlaidSyncORM) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Replace(targetValues...)
+}
+
+func (a linkORMHasOnePlaidSyncTx) Delete(values ...*apiv1.PlaidSyncORM) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Delete(targetValues...)
+}
+
+func (a linkORMHasOnePlaidSyncTx) Clear() error {
+	return a.tx.Clear()
+}
+
+func (a linkORMHasOnePlaidSyncTx) Count() int64 {
 	return a.tx.Count()
 }
 

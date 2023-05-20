@@ -22,6 +22,7 @@ func GetDatabaseSchemas() []interface{} {
 		InvesmentHoldingORM{},
 		InvestmentSecurityORM{},
 		AprORM{},
+		PlaidSyncORM{},
 	}
 
 	return models

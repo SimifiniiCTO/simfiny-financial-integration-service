@@ -601,6 +601,35 @@ func (m *Link) validate(all bool) error {
 
 	// no validation rules for NewAccountsAvailable
 
+	if all {
+		switch v := interface{}(m.GetPlaidSync()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, LinkValidationError{
+					field:  "PlaidSync",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, LinkValidationError{
+					field:  "PlaidSync",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetPlaidSync()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return LinkValidationError{
+				field:  "PlaidSync",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
 	if len(errors) > 0 {
 		return LinkMultiError(errors)
 	}
@@ -677,6 +706,119 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = LinkValidationError{}
+
+// Validate checks the field values on PlaidSync with the rules defined in the
+// proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *PlaidSync) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on PlaidSync with the rules defined in
+// the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in PlaidSyncMultiError, or nil
+// if none found.
+func (m *PlaidSync) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *PlaidSync) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Id
+
+	// no validation rules for TimeStamp
+
+	// no validation rules for Trigger
+
+	// no validation rules for NextCursor
+
+	// no validation rules for Added
+
+	// no validation rules for Removed
+
+	// no validation rules for Modified
+
+	if len(errors) > 0 {
+		return PlaidSyncMultiError(errors)
+	}
+
+	return nil
+}
+
+// PlaidSyncMultiError is an error wrapping multiple validation errors returned
+// by PlaidSync.ValidateAll() if the designated constraints aren't met.
+type PlaidSyncMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m PlaidSyncMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m PlaidSyncMultiError) AllErrors() []error { return m }
+
+// PlaidSyncValidationError is the validation error returned by
+// PlaidSync.Validate if the designated constraints aren't met.
+type PlaidSyncValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e PlaidSyncValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e PlaidSyncValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e PlaidSyncValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e PlaidSyncValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e PlaidSyncValidationError) ErrorName() string { return "PlaidSyncValidationError" }
+
+// Error satisfies the builtin error interface
+func (e PlaidSyncValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sPlaidSync.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = PlaidSyncValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = PlaidSyncValidationError{}
 
 // Validate checks the field values on Token with the rules defined in the
 // proto definition for this message. If any rules are violated, the first
@@ -1679,6 +1821,8 @@ func (m *BankAccount) validate(all bool) error {
 	// no validation rules for PlaidAccountId
 
 	// no validation rules for Subtype
+
+	// no validation rules for Status
 
 	if len(errors) > 0 {
 		return BankAccountMultiError(errors)

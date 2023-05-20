@@ -37,6 +37,7 @@ func newBankAccountORM(db *gorm.DB, opts ...gen.DOOption) bankAccountORM {
 	_bankAccountORM.Name = field.NewString(tableName, "name")
 	_bankAccountORM.Number = field.NewString(tableName, "number")
 	_bankAccountORM.PlaidAccountId = field.NewString(tableName, "plaid_account_id")
+	_bankAccountORM.Status = field.NewString(tableName, "status")
 	_bankAccountORM.Subtype = field.NewString(tableName, "subtype")
 	_bankAccountORM.Type = field.NewString(tableName, "type")
 	_bankAccountORM.UserId = field.NewUint64(tableName, "user_id")
@@ -110,6 +111,7 @@ type bankAccountORM struct {
 	Name           field.String
 	Number         field.String
 	PlaidAccountId field.String
+	Status         field.String
 	Subtype        field.String
 	Type           field.String
 	UserId         field.Uint64
@@ -139,6 +141,7 @@ func (b *bankAccountORM) updateTableName(table string) *bankAccountORM {
 	b.Name = field.NewString(table, "name")
 	b.Number = field.NewString(table, "number")
 	b.PlaidAccountId = field.NewString(table, "plaid_account_id")
+	b.Status = field.NewString(table, "status")
 	b.Subtype = field.NewString(table, "subtype")
 	b.Type = field.NewString(table, "type")
 	b.UserId = field.NewUint64(table, "user_id")
@@ -158,7 +161,7 @@ func (b *bankAccountORM) GetFieldByName(fieldName string) (field.OrderExpr, bool
 }
 
 func (b *bankAccountORM) fillFieldMap() {
-	b.fieldMap = make(map[string]field.Expr, 13)
+	b.fieldMap = make(map[string]field.Expr, 14)
 	b.fieldMap["balance"] = b.Balance
 	b.fieldMap["balance_limit"] = b.BalanceLimit
 	b.fieldMap["currency"] = b.Currency
@@ -168,6 +171,7 @@ func (b *bankAccountORM) fillFieldMap() {
 	b.fieldMap["name"] = b.Name
 	b.fieldMap["number"] = b.Number
 	b.fieldMap["plaid_account_id"] = b.PlaidAccountId
+	b.fieldMap["status"] = b.Status
 	b.fieldMap["subtype"] = b.Subtype
 	b.fieldMap["type"] = b.Type
 	b.fieldMap["user_id"] = b.UserId

@@ -10,8 +10,9 @@ services:
     container_name: service
     ports:
       - "9896:9896" # grpc port
+      - "9898:9898" # http port
     environment:
-      - air_wd=/build
+      air_wd: /build  
     volumes:
       - './:/go/src/github.com/SimifiniiCTO/simfiny-financial-integration-service'
       - goData:/go/pkg/mod
@@ -20,6 +21,7 @@ services:
       - service_db
       - temporal
       - clickhouse-database
+      - ngrok
     networks:
       - service-network
     env_file:
@@ -28,6 +30,15 @@ services:
       - bash
       - -c
       - /build/compose/api-entrypoint.sh
+
+  redis_db:
+    image: redis:6.2.4
+    command: ["redis-server", "--bind", "0.0.0.0"]
+    ports:
+      - "6378:6379"
+    restart: always
+    networks:
+      - service-network
 
   service_db:
     container_name: service_db

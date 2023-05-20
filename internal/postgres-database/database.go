@@ -105,6 +105,10 @@ type DatabaseOperations interface {
 	LinkExistsForItem(ctx context.Context, userID uint64, itemID string) (bool, error)
 	// GetLinkByItemId retrieves a link by item id
 	GetLinkByItemId(ctx context.Context, itemId string) (*schema.Link, error)
+
+	// Plaid syncing
+	GetLastPlaidSync(ctx context.Context, userId, linkId uint64) (*schema.PlaidSync, error)
+	RecordPlaidSync(ctx context.Context, userId, plaidLinkId uint64, trigger, nextCursor string, added, modified, removed int64) error
 }
 
 // Db withholds connection to a postgres database as well as a logging handler

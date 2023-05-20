@@ -47,6 +47,11 @@ func newUserProfileORM(db *gorm.DB, opts ...gen.DOOption) userProfileORM {
 		}{
 			RelationField: field.NewRelation("Link.PlaidLink", "apiv1.PlaidLinkORM"),
 		},
+		PlaidSync: struct {
+			field.RelationField
+		}{
+			RelationField: field.NewRelation("Link.PlaidSync", "apiv1.PlaidSyncORM"),
+		},
 		Token: struct {
 			field.RelationField
 		}{
@@ -326,6 +331,9 @@ type userProfileORMHasManyLink struct {
 	field.RelationField
 
 	PlaidLink struct {
+		field.RelationField
+	}
+	PlaidSync struct {
 		field.RelationField
 	}
 	Token struct {

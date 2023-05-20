@@ -17,16 +17,19 @@ import (
 	clickhousedb "github.com/SimifiniiCTO/simfiny-core-lib/database/clickhouse"
 	postgresdb "github.com/SimifiniiCTO/simfiny-core-lib/database/postgres"
 	"github.com/SimifiniiCTO/simfiny-core-lib/instrumentation"
-	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/database"
+	clickhouseDatabase "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/clickhouse-database"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/env"
 	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/dal"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/plaidhandler"
+	database "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/postgres-database"
+
+	"github.com/SimifiniiCTO/simfiny-core-lib/database/redis"
+	"github.com/SimifiniiCTO/simfiny-core-lib/signals"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/secrets"
 	transactionmanager "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/transaction_manager"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/api"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/grpc"
-	"github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/signals"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/version"
 )
 
@@ -64,6 +67,12 @@ func main() {
 		logger.Panic(err.Error())
 	}
 
+	redisConn, err := configureRedisConn(logger, instrumentation)
+	if err != nil {
+		logger.Panic(err.Error())
+	}
+	defer redisConn.Close()
+
 	db, err := configureDatabaseConn(ctx, logger, instrumentation, keyManagement)
 	if err != nil {
 		logger.Panic(err.Error())
@@ -74,6 +83,17 @@ func main() {
 		logger.Panic(err.Error())
 	}
 	defer conn.Close()
+
+	clickHouseDb, err := configureClickhouseConn(ctx, logger, instrumentation)
+	if err != nil {
+		logger.Panic(err.Error())
+	}
+
+	clickHouseConn, err := clickHouseDb.Conn.Engine.DB()
+	if err != nil {
+		logger.Panic(err.Error())
+	}
+	defer clickHouseConn.Close()
 
 	plaidWrapper, err := configurePlaidWrapper(instrumentation, logger)
 	if err != nil {
@@ -94,6 +114,8 @@ func main() {
 		KeyManagement:      keyManagement,
 		PlaidWrapper:       plaidWrapper,
 		TransactionManager: transactionManager,
+		ClickhouseDb:       clickHouseDb,
+		RedisDb:            redisConn,
 	})
 	if err != nil {
 		logger.Panic(err.Error())
@@ -112,12 +134,6 @@ func main() {
 	// start the worker asynchronously
 	go grpcSrv.TransactionManager.StartWorker()
 
-	//
-	boot.Bootstrap(context.Background())
-
-	// Wait for shutdown sig
-	boot.WaitForShutdownSig(context.Background())
-
 	// load HTTP server config
 	var srvCfg api.Config
 	if err := viper.Unmarshal(&srvCfg); err != nil {
@@ -131,9 +147,14 @@ func main() {
 		zap.String("port", srvCfg.Port),
 	)
 
+	boot.Bootstrap(context.Background())
+
+	// Wait for shutdown sig dgfs
+	boot.WaitForShutdownSig(context.Background())
+
 	// start HTTP server
-	srv, _ := api.NewServer(&srvCfg, logger, instrumentation, db)
 	stopCh := signals.SetupSignalHandler()
+	srv, _ := api.NewServer(&srvCfg, logger, instrumentation, db)
 	srv.ListenAndServe(stopCh)
 }
 
@@ -333,7 +354,7 @@ func configurePlaidSDK() (*plaid.APIClient, error) {
 	return plaid.NewAPIClient(configuration), nil
 }
 
-func configureClickhouseConn(ctx context.Context, logger *zap.Logger, instrumentation *instrumentation.Client) (*clickhousedb.Client, error) {
+func configureClickhouseConn(ctx context.Context, logger *zap.Logger, instrumentation *instrumentation.Client) (*clickhouseDatabase.Db, error) {
 	host := viper.GetString("clickhouse-connection-uri")
 	maxConnectionRetries := viper.GetInt("max-db-conn-attempts")
 	maxDBRetryTimeout := viper.GetDuration("max-db-retry-timeout")
@@ -357,7 +378,49 @@ func configureClickhouseConn(ctx context.Context, logger *zap.Logger, instrument
 		clickhousedb.WithLogger(logger),
 	}
 
-	return clickhousedb.New(opts...)
+	conn, err := clickhousedb.New(opts...)
+	if err != nil {
+		return nil, err
+	}
+
+	queryOperator := dal.Use(conn.Engine)
+	databaseOpts := []clickhouseDatabase.Option{
+		clickhouseDatabase.WithDatabaseClient(conn),
+		clickhouseDatabase.WithDatabaseLogger(logger),
+		clickhouseDatabase.WithDatabaseInstrumentation(instrumentation),
+		clickhouseDatabase.WithDatabaseQueryOperator(queryOperator),
+	}
+
+	db, err := clickhouseDatabase.New(ctx, databaseOpts...)
+	if err != nil {
+		return nil, err
+	}
+
+	logger.Info("successfully initialized database connection object")
+	return db, nil
+}
+
+func configureRedisConn(logger *zap.Logger, instrumentation *instrumentation.Client) (*redis.Client, error) {
+	host := viper.GetString("cache-server")
+	serviceName := viper.GetString("grpc-service-name")
+	cacheTTLInSeconds := viper.GetInt("cache-ttl-in-seconds")
+
+	stopCh := signals.SetupSignalHandler()
+	opts := []redis.Option{
+		redis.WithLogger(logger),
+		redis.WithTelemetrySdk(instrumentation),
+		redis.WithURI(host),
+		redis.WithServiceName(serviceName),
+		redis.WithCacheTTLInSeconds(cacheTTLInSeconds),
+	}
+
+	c, err := redis.New(stopCh, opts...)
+	if err != nil {
+		return nil, err
+	}
+
+	logger.Info("successfully initialized redis connection object")
+	return c, nil
 }
 
 // configureDatabaseConn configures the database connection

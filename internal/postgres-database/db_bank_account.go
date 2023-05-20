@@ -121,6 +121,40 @@ func (db *Db) UpdateBankAccount(ctx context.Context, bankAccount *schema.BankAcc
 	return nil
 }
 
+func (db *Db) UpdateBankAccounts(ctx context.Context, bankAccounts []*schema.BankAccount) error {
+	// instrument operation
+	if span := db.startDatastoreSpan(ctx, "dbtxn-update-bank-accounts"); span != nil {
+		defer span.End()
+	}
+
+	if len(bankAccounts) == 0 {
+		return fmt.Errorf("bank accounts must be provided. got: %v", bankAccounts)
+	}
+
+	b := db.QueryOperator.BankAccountORM
+	bankAcctsOrm := make([]*schema.BankAccountORM, 0, len(bankAccounts))
+	for _, bankAccount := range bankAccounts {
+		acctOrm, err := bankAccount.ToORM(ctx)
+		if err != nil {
+			return err
+		}
+
+		bankAcctsOrm = append(bankAcctsOrm, &acctOrm)
+	}
+
+	// perform the update operation
+	result, err := b.WithContext(ctx).Updates(bankAcctsOrm)
+	if err != nil {
+		return err
+	}
+
+	if result.RowsAffected == 0 {
+		return fmt.Errorf("no rows affected")
+	}
+
+	return nil
+}
+
 // CreateBankAccount creates a new bank account for a given link
 // A link can have a multitude of bank accounts so as part of the creation process
 // we need to ensure the following conditions are met:

@@ -20,7 +20,8 @@
     }
   ],
   "schemes": [
-    "http"
+    "http",
+    "https"
   ],
   "consumes": [
     "application/json"
@@ -1449,6 +1450,58 @@
         ]
       }
     },
+    "/api/v1/plaid/webhook": {
+      "post": {
+        "summary": "Processes a webhook obtained from plaid",
+        "description": "This endpoint enabled simfiny to process triggered webhooks",
+        "operationId": "ProcessWebhook",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ProcessWebhookResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ProcessWebhookRequest"
+            }
+          }
+        ],
+        "tags": [
+          "webhook"
+        ]
+      }
+    },
     "/api/v1/pocket/{pocketId}": {
       "get": {
         "summary": "get a pocket",
@@ -1953,59 +2006,7 @@
         ]
       }
     },
-    "/api/v1/webhook/plaid": {
-      "post": {
-        "summary": "Processes a webhook obtained from plaid",
-        "description": "This endpoint enabled simfiny to process triggered webhooks",
-        "operationId": "ProcessWebhook",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/ProcessWebhookResponse"
-            }
-          },
-          "400": {
-            "description": "Request failed due to invalid input.",
-            "schema": {
-              "$ref": "#/definitions/ValidationErrorMessageResponse"
-            }
-          },
-          "404": {
-            "description": "Request failed due to incorrect path.",
-            "schema": {
-              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
-            }
-          },
-          "500": {
-            "description": "Request failed due to internal server error.",
-            "schema": {
-              "$ref": "#/definitions/InternalErrorMessageResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/ProcessWebhookRequest"
-            }
-          }
-        ],
-        "tags": [
-          "webhook"
-        ]
-      }
-    },
-    "/api/v1/webhook/stripe": {
+    "/api/v1/stripe/webhook": {
       "post": {
         "summary": "Processes a webhook obtained from stripe",
         "description": "This endpoint enabled simfiny to process triggered webhooks from stripe",
@@ -2150,6 +2151,10 @@
         "subtype": {
           "type": "string",
           "title": "account subtype"
+        },
+        "status": {
+          "$ref": "#/definitions/BankAccountStatus",
+          "title": "the bank account status"
         }
       },
       "required": [
@@ -2160,6 +2165,15 @@
         "currency",
         "currentFunds"
       ]
+    },
+    "BankAccountStatus": {
+      "type": "string",
+      "enum": [
+        "BANK_ACCOUNT_STATUS_UNSPECIFIED",
+        "BANK_ACCOUNT_STATUS_ACTIVE",
+        "BANK_ACCOUNT_STATUS_INACTIVE"
+      ],
+      "default": "BANK_ACCOUNT_STATUS_UNSPECIFIED"
     },
     "BankAccountType": {
       "type": "string",
@@ -3103,6 +3117,9 @@
         },
         "newAccountsAvailable": {
           "type": "boolean"
+        },
+        "plaidSync": {
+          "$ref": "#/definitions/PlaidSync"
         }
       },
       "description": "A Link represents a login at a financial institution. A single end-user of your application might have accounts at different financial\ninstitutions, which means they would have multiple different Items. An Item is not the same as a financial institution account,\nalthough every account will be associated with an Item. For example, if a user has one login at their bank that allows them to access\nboth their checking account and their savings account, a single Item would be associated with both of those accounts. Each Item \nlinked within your application will have a corresponding access_token, which is a token that you can use to make API requests related\nto that specific Item.\nTwo Items created for the same set of credentials at the same institution will be considered different and not share the same item_id."
@@ -3422,6 +3439,37 @@
         }
       }
     },
+    "PlaidSync": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uint64",
+          "title": "id"
+        },
+        "timeStamp": {
+          "type": "string"
+        },
+        "trigger": {
+          "type": "string"
+        },
+        "nextCursor": {
+          "type": "string"
+        },
+        "added": {
+          "type": "string",
+          "format": "int64"
+        },
+        "removed": {
+          "type": "string",
+          "format": "int64"
+        },
+        "modified": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
     "Pocket": {
       "type": "object",
       "properties": {
@@ -3537,7 +3585,7 @@
         "updatedHoldings": {
           "type": "string",
           "format": "uint64",
-          "description": "The number of updated holdings reported since the last time this webhook was fired."
+          "title": "The number of updated holdings reported since the last time this webhook was fired.\n@gotag: json:\"updated_holdings\""
         }
       },
       "required": [

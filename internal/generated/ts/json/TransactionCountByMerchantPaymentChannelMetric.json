@@ -1,0 +1,22 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/TransactionCountByMerchantPaymentChannelMetric",
+    "definitions": {
+        "TransactionCountByMerchantPaymentChannelMetric": {
+            "properties": {
+                "merchant_name": {
+                    "type": "string"
+                },
+                "payment_channel": {
+                    "type": "string"
+                },
+                "transaction_count": {
+                    "type": "integer"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Transaction Count By Merchant Payment Channel Metric"
+        }
+    }
+}

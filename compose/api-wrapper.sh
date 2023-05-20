@@ -11,7 +11,6 @@ if [[ ${CLOUD_MAGIC} == "magic" ]]; then
 else
   WEBHOOKS_DOMAIN=$(curl http://ngrok:4040/api/tunnels -s -m 0.1 | perl -pe '/\"public_url\":\"https:\/\/(\S*?)\",/g; print $1;' | cut -d "{" -f1);
 
-
   if [[ ! -z "${WEBHOOKS_DOMAIN}" ]]; then
     echo "[wrapper] ngrok detected, webhooks should target: ${WEBHOOKS_DOMAIN}";
 
@@ -36,23 +35,6 @@ if [[ ! -z "${SIMFINY_STRIPE_API_KEY}" ]] && \
   export SIMFINY_STRIPE_BILLING_ENABLED="true";
   export SIMFINY_STRIPE_WEBHOOKS_ENABLED="true";
   export SIMFINY_STRIPE_WEBHOOKS_DOMAIN=${WEBHOOKS_DOMAIN};
-fi
-
-if [[ ! -z "${SIMFINY_CAPTCHA_PUBLIC_KEY}" ]] && [[ ! -z "${SIMFINY_CAPTCHA_PRIVATE_KEY}" ]]; then
-  echo "[wrapper] ReCAPTCHA credentials detected, requiring verification...";
-  export SIMFINY_CAPTCHA_ENABLED="true";
-fi
-
-if [[ ! -z "${SIMFINY_SENTRY_DSN}" ]]; then
-  echo "[wrapper] Sentry DSN detected, enabling...";
-  export SIMFINY_SENTRY_ENABLED="true";
-fi
-
-
-if [[ -f "/etc/monetr/google-service-account.json" ]] && [[ ! -z "${SIMFINY_KMS_RESOURCE_NAME}" ]]; then
-  echo "[wrapper] Google KMS will be used for encrypting Plaid credentials...";
-  export SIMFINY_KMS_PROVIDER=google;
-  export SIMFINY_KMS_RESOURCE_NAME=${SIMFINY_KMS_RESOURCE_NAME};
 fi
 
 # Sometimes the old process does not get killed properly. This should do it.

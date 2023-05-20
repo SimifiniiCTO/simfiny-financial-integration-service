@@ -5,29 +5,57 @@ import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "api.v1";
 
 export interface Transaction {
+  /** @gotag: clickhouse:"account_id" */
   accountId: string;
+  /** @gotag: clickhouse:"amount" */
   amount: number;
+  /** @gotag: clickhouse:"iso_currency_code" */
   isoCurrencyCode: string;
+  /** @gotag: clickhouse:"unofficial_currency_code" */
   unofficialCurrencyCode: string;
-  category: string[];
+  /** @gotag: clickhouse:"category" */
+  category: string;
+  /** @gotag: clickhouse:"category_id" */
   categoryId: string;
+  /** @gotag: clickhouse:"check_number" */
   checkNumber: string;
+  /** @gotag: clickhouse:"date" */
   date: string;
+  /** @gotag: clickhouse:"datetime" */
   datetime: string;
+  /** @gotag: clickhouse:"authorized_date" */
   authorizedDate: string;
+  /** @gotag: clickhouse:"authorized_datetime" */
   authorizedDatetime: string;
-  location: Transaction_Location | undefined;
+  /** @gotag: clickhouse:"location" */
+  location:
+    | Transaction_Location
+    | undefined;
+  /** @gotag: clickhouse:"name" */
   name: string;
+  /** @gotag: clickhouse:"merchant_name" */
   merchantName: string;
-  paymentMeta: Transaction_PaymentMeta | undefined;
+  /** @gotag: clickhouse:"payment_meta" */
+  paymentMeta:
+    | Transaction_PaymentMeta
+    | undefined;
+  /** @gotag: clickhouse:"payment_channel" */
   paymentChannel: string;
+  /** @gotag: clickhouse:"pending" */
   pending: boolean;
+  /** @gotag: clickhouse:"pending_transaction_id" */
   pendingTransactionId: string;
+  /** @gotag: clickhouse:"account_owner" */
   accountOwner: string;
+  /** @gotag: clickhouse:"transaction_id" */
   transactionId: string;
+  /** @gotag: clickhouse:"transaction_code" */
   transactionCode: string;
   id: number;
+  /** @gotag: clickhouse:"user_id" */
   userId: number;
+  /** @gotag: clickhouse:"link_id" */
+  linkId: number;
 }
 
 export interface Transaction_Location {
@@ -52,13 +80,42 @@ export interface Transaction_PaymentMeta {
   referenceNumber: string;
 }
 
+export interface TransactionAmountByCountryMetric {
+  country: string;
+  amount: number;
+}
+
+export interface AverageTransactionAmountByCategoryMetric {
+  category: string;
+  amount: number;
+}
+
+export interface MonthlyTransactionCountByCategoryMetric {
+  category: string;
+  count: number;
+  month: string;
+}
+
+export interface TransactionCountByMerchantPaymentChannelMetric {
+  merchantName: string;
+  paymentChannel: string;
+  transactionCount: number;
+}
+
+export interface TransactionAmountDistributionByCategoryMetric {
+  category: string;
+  mean: number;
+  median: number;
+  standardDeviation: number;
+}
+
 function createBaseTransaction(): Transaction {
   return {
     accountId: "",
     amount: 0,
     isoCurrencyCode: "",
     unofficialCurrencyCode: "",
-    category: [],
+    category: "",
     categoryId: "",
     checkNumber: "",
     date: "",
@@ -77,6 +134,7 @@ function createBaseTransaction(): Transaction {
     transactionCode: "",
     id: 0,
     userId: 0,
+    linkId: 0,
   };
 }
 
@@ -94,8 +152,8 @@ export const Transaction = {
     if (message.unofficialCurrencyCode !== "") {
       writer.uint32(34).string(message.unofficialCurrencyCode);
     }
-    for (const v of message.category) {
-      writer.uint32(42).string(v!);
+    if (message.category !== "") {
+      writer.uint32(42).string(message.category);
     }
     if (message.categoryId !== "") {
       writer.uint32(50).string(message.categoryId);
@@ -151,6 +209,9 @@ export const Transaction = {
     if (message.userId !== 0) {
       writer.uint32(184).uint64(message.userId);
     }
+    if (message.linkId !== 0) {
+      writer.uint32(192).uint64(message.linkId);
+    }
     return writer;
   },
 
@@ -194,7 +255,7 @@ export const Transaction = {
             break;
           }
 
-          message.category.push(reader.string());
+          message.category = reader.string();
           continue;
         case 6:
           if (tag !== 50) {
@@ -322,6 +383,13 @@ export const Transaction = {
 
           message.userId = longToNumber(reader.uint64() as Long);
           continue;
+        case 24:
+          if (tag !== 192) {
+            break;
+          }
+
+          message.linkId = longToNumber(reader.uint64() as Long);
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -337,7 +405,7 @@ export const Transaction = {
       amount: isSet(object.amount) ? Number(object.amount) : 0,
       isoCurrencyCode: isSet(object.isoCurrencyCode) ? String(object.isoCurrencyCode) : "",
       unofficialCurrencyCode: isSet(object.unofficialCurrencyCode) ? String(object.unofficialCurrencyCode) : "",
-      category: Array.isArray(object?.category) ? object.category.map((e: any) => String(e)) : [],
+      category: isSet(object.category) ? String(object.category) : "",
       categoryId: isSet(object.categoryId) ? String(object.categoryId) : "",
       checkNumber: isSet(object.checkNumber) ? String(object.checkNumber) : "",
       date: isSet(object.date) ? String(object.date) : "",
@@ -356,6 +424,7 @@ export const Transaction = {
       transactionCode: isSet(object.transactionCode) ? String(object.transactionCode) : "",
       id: isSet(object.id) ? Number(object.id) : 0,
       userId: isSet(object.userId) ? Number(object.userId) : 0,
+      linkId: isSet(object.linkId) ? Number(object.linkId) : 0,
     };
   },
 
@@ -365,11 +434,7 @@ export const Transaction = {
     message.amount !== undefined && (obj.amount = message.amount);
     message.isoCurrencyCode !== undefined && (obj.isoCurrencyCode = message.isoCurrencyCode);
     message.unofficialCurrencyCode !== undefined && (obj.unofficialCurrencyCode = message.unofficialCurrencyCode);
-    if (message.category) {
-      obj.category = message.category.map((e) => e);
-    } else {
-      obj.category = [];
-    }
+    message.category !== undefined && (obj.category = message.category);
     message.categoryId !== undefined && (obj.categoryId = message.categoryId);
     message.checkNumber !== undefined && (obj.checkNumber = message.checkNumber);
     message.date !== undefined && (obj.date = message.date);
@@ -390,6 +455,7 @@ export const Transaction = {
     message.transactionCode !== undefined && (obj.transactionCode = message.transactionCode);
     message.id !== undefined && (obj.id = Math.round(message.id));
     message.userId !== undefined && (obj.userId = Math.round(message.userId));
+    message.linkId !== undefined && (obj.linkId = Math.round(message.linkId));
     return obj;
   },
 
@@ -403,7 +469,7 @@ export const Transaction = {
     message.amount = object.amount ?? 0;
     message.isoCurrencyCode = object.isoCurrencyCode ?? "";
     message.unofficialCurrencyCode = object.unofficialCurrencyCode ?? "";
-    message.category = object.category?.map((e) => e) || [];
+    message.category = object.category ?? "";
     message.categoryId = object.categoryId ?? "";
     message.checkNumber = object.checkNumber ?? "";
     message.date = object.date ?? "";
@@ -426,6 +492,7 @@ export const Transaction = {
     message.transactionCode = object.transactionCode ?? "";
     message.id = object.id ?? 0;
     message.userId = object.userId ?? 0;
+    message.linkId = object.linkId ?? 0;
     return message;
   },
 };
@@ -733,6 +800,436 @@ export const Transaction_PaymentMeta = {
     message.ppdId = object.ppdId ?? "";
     message.reason = object.reason ?? "";
     message.referenceNumber = object.referenceNumber ?? "";
+    return message;
+  },
+};
+
+function createBaseTransactionAmountByCountryMetric(): TransactionAmountByCountryMetric {
+  return { country: "", amount: 0 };
+}
+
+export const TransactionAmountByCountryMetric = {
+  encode(message: TransactionAmountByCountryMetric, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.country !== "") {
+      writer.uint32(10).string(message.country);
+    }
+    if (message.amount !== 0) {
+      writer.uint32(17).double(message.amount);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): TransactionAmountByCountryMetric {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseTransactionAmountByCountryMetric();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.country = reader.string();
+          continue;
+        case 2:
+          if (tag !== 17) {
+            break;
+          }
+
+          message.amount = reader.double();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): TransactionAmountByCountryMetric {
+    return {
+      country: isSet(object.country) ? String(object.country) : "",
+      amount: isSet(object.amount) ? Number(object.amount) : 0,
+    };
+  },
+
+  toJSON(message: TransactionAmountByCountryMetric): unknown {
+    const obj: any = {};
+    message.country !== undefined && (obj.country = message.country);
+    message.amount !== undefined && (obj.amount = message.amount);
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<TransactionAmountByCountryMetric>, I>>(
+    base?: I,
+  ): TransactionAmountByCountryMetric {
+    return TransactionAmountByCountryMetric.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<TransactionAmountByCountryMetric>, I>>(
+    object: I,
+  ): TransactionAmountByCountryMetric {
+    const message = createBaseTransactionAmountByCountryMetric();
+    message.country = object.country ?? "";
+    message.amount = object.amount ?? 0;
+    return message;
+  },
+};
+
+function createBaseAverageTransactionAmountByCategoryMetric(): AverageTransactionAmountByCategoryMetric {
+  return { category: "", amount: 0 };
+}
+
+export const AverageTransactionAmountByCategoryMetric = {
+  encode(message: AverageTransactionAmountByCategoryMetric, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.category !== "") {
+      writer.uint32(10).string(message.category);
+    }
+    if (message.amount !== 0) {
+      writer.uint32(17).double(message.amount);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): AverageTransactionAmountByCategoryMetric {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseAverageTransactionAmountByCategoryMetric();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.category = reader.string();
+          continue;
+        case 2:
+          if (tag !== 17) {
+            break;
+          }
+
+          message.amount = reader.double();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): AverageTransactionAmountByCategoryMetric {
+    return {
+      category: isSet(object.category) ? String(object.category) : "",
+      amount: isSet(object.amount) ? Number(object.amount) : 0,
+    };
+  },
+
+  toJSON(message: AverageTransactionAmountByCategoryMetric): unknown {
+    const obj: any = {};
+    message.category !== undefined && (obj.category = message.category);
+    message.amount !== undefined && (obj.amount = message.amount);
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<AverageTransactionAmountByCategoryMetric>, I>>(
+    base?: I,
+  ): AverageTransactionAmountByCategoryMetric {
+    return AverageTransactionAmountByCategoryMetric.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<AverageTransactionAmountByCategoryMetric>, I>>(
+    object: I,
+  ): AverageTransactionAmountByCategoryMetric {
+    const message = createBaseAverageTransactionAmountByCategoryMetric();
+    message.category = object.category ?? "";
+    message.amount = object.amount ?? 0;
+    return message;
+  },
+};
+
+function createBaseMonthlyTransactionCountByCategoryMetric(): MonthlyTransactionCountByCategoryMetric {
+  return { category: "", count: 0, month: "" };
+}
+
+export const MonthlyTransactionCountByCategoryMetric = {
+  encode(message: MonthlyTransactionCountByCategoryMetric, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.category !== "") {
+      writer.uint32(10).string(message.category);
+    }
+    if (message.count !== 0) {
+      writer.uint32(16).uint32(message.count);
+    }
+    if (message.month !== "") {
+      writer.uint32(26).string(message.month);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MonthlyTransactionCountByCategoryMetric {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMonthlyTransactionCountByCategoryMetric();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.category = reader.string();
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.count = reader.uint32();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.month = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MonthlyTransactionCountByCategoryMetric {
+    return {
+      category: isSet(object.category) ? String(object.category) : "",
+      count: isSet(object.count) ? Number(object.count) : 0,
+      month: isSet(object.month) ? String(object.month) : "",
+    };
+  },
+
+  toJSON(message: MonthlyTransactionCountByCategoryMetric): unknown {
+    const obj: any = {};
+    message.category !== undefined && (obj.category = message.category);
+    message.count !== undefined && (obj.count = Math.round(message.count));
+    message.month !== undefined && (obj.month = message.month);
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<MonthlyTransactionCountByCategoryMetric>, I>>(
+    base?: I,
+  ): MonthlyTransactionCountByCategoryMetric {
+    return MonthlyTransactionCountByCategoryMetric.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MonthlyTransactionCountByCategoryMetric>, I>>(
+    object: I,
+  ): MonthlyTransactionCountByCategoryMetric {
+    const message = createBaseMonthlyTransactionCountByCategoryMetric();
+    message.category = object.category ?? "";
+    message.count = object.count ?? 0;
+    message.month = object.month ?? "";
+    return message;
+  },
+};
+
+function createBaseTransactionCountByMerchantPaymentChannelMetric(): TransactionCountByMerchantPaymentChannelMetric {
+  return { merchantName: "", paymentChannel: "", transactionCount: 0 };
+}
+
+export const TransactionCountByMerchantPaymentChannelMetric = {
+  encode(
+    message: TransactionCountByMerchantPaymentChannelMetric,
+    writer: _m0.Writer = _m0.Writer.create(),
+  ): _m0.Writer {
+    if (message.merchantName !== "") {
+      writer.uint32(10).string(message.merchantName);
+    }
+    if (message.paymentChannel !== "") {
+      writer.uint32(18).string(message.paymentChannel);
+    }
+    if (message.transactionCount !== 0) {
+      writer.uint32(24).uint32(message.transactionCount);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): TransactionCountByMerchantPaymentChannelMetric {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseTransactionCountByMerchantPaymentChannelMetric();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.merchantName = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.paymentChannel = reader.string();
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.transactionCount = reader.uint32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): TransactionCountByMerchantPaymentChannelMetric {
+    return {
+      merchantName: isSet(object.merchantName) ? String(object.merchantName) : "",
+      paymentChannel: isSet(object.paymentChannel) ? String(object.paymentChannel) : "",
+      transactionCount: isSet(object.transactionCount) ? Number(object.transactionCount) : 0,
+    };
+  },
+
+  toJSON(message: TransactionCountByMerchantPaymentChannelMetric): unknown {
+    const obj: any = {};
+    message.merchantName !== undefined && (obj.merchantName = message.merchantName);
+    message.paymentChannel !== undefined && (obj.paymentChannel = message.paymentChannel);
+    message.transactionCount !== undefined && (obj.transactionCount = Math.round(message.transactionCount));
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<TransactionCountByMerchantPaymentChannelMetric>, I>>(
+    base?: I,
+  ): TransactionCountByMerchantPaymentChannelMetric {
+    return TransactionCountByMerchantPaymentChannelMetric.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<TransactionCountByMerchantPaymentChannelMetric>, I>>(
+    object: I,
+  ): TransactionCountByMerchantPaymentChannelMetric {
+    const message = createBaseTransactionCountByMerchantPaymentChannelMetric();
+    message.merchantName = object.merchantName ?? "";
+    message.paymentChannel = object.paymentChannel ?? "";
+    message.transactionCount = object.transactionCount ?? 0;
+    return message;
+  },
+};
+
+function createBaseTransactionAmountDistributionByCategoryMetric(): TransactionAmountDistributionByCategoryMetric {
+  return { category: "", mean: 0, median: 0, standardDeviation: 0 };
+}
+
+export const TransactionAmountDistributionByCategoryMetric = {
+  encode(message: TransactionAmountDistributionByCategoryMetric, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.category !== "") {
+      writer.uint32(10).string(message.category);
+    }
+    if (message.mean !== 0) {
+      writer.uint32(17).double(message.mean);
+    }
+    if (message.median !== 0) {
+      writer.uint32(25).double(message.median);
+    }
+    if (message.standardDeviation !== 0) {
+      writer.uint32(33).double(message.standardDeviation);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): TransactionAmountDistributionByCategoryMetric {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseTransactionAmountDistributionByCategoryMetric();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.category = reader.string();
+          continue;
+        case 2:
+          if (tag !== 17) {
+            break;
+          }
+
+          message.mean = reader.double();
+          continue;
+        case 3:
+          if (tag !== 25) {
+            break;
+          }
+
+          message.median = reader.double();
+          continue;
+        case 4:
+          if (tag !== 33) {
+            break;
+          }
+
+          message.standardDeviation = reader.double();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): TransactionAmountDistributionByCategoryMetric {
+    return {
+      category: isSet(object.category) ? String(object.category) : "",
+      mean: isSet(object.mean) ? Number(object.mean) : 0,
+      median: isSet(object.median) ? Number(object.median) : 0,
+      standardDeviation: isSet(object.standardDeviation) ? Number(object.standardDeviation) : 0,
+    };
+  },
+
+  toJSON(message: TransactionAmountDistributionByCategoryMetric): unknown {
+    const obj: any = {};
+    message.category !== undefined && (obj.category = message.category);
+    message.mean !== undefined && (obj.mean = message.mean);
+    message.median !== undefined && (obj.median = message.median);
+    message.standardDeviation !== undefined && (obj.standardDeviation = message.standardDeviation);
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<TransactionAmountDistributionByCategoryMetric>, I>>(
+    base?: I,
+  ): TransactionAmountDistributionByCategoryMetric {
+    return TransactionAmountDistributionByCategoryMetric.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<TransactionAmountDistributionByCategoryMetric>, I>>(
+    object: I,
+  ): TransactionAmountDistributionByCategoryMetric {
+    const message = createBaseTransactionAmountDistributionByCategoryMetric();
+    message.category = object.category ?? "";
+    message.mean = object.mean ?? 0;
+    message.median = object.median ?? 0;
+    message.standardDeviation = object.standardDeviation ?? 0;
     return message;
   },
 };

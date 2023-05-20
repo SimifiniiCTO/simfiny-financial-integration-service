@@ -6,6 +6,19 @@ option go_package = "github.com/SimifiniiCTO/simfiny-financial-integration-servi
 import "protoc-gen-gorm/options/gorm.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 import "validate/validate.proto";
+import "gogoproto/gogo.proto";
+
+option (gogoproto.gostring_all) = true;
+option (gogoproto.equal_all) = true;
+option (gogoproto.verbose_equal_all) = true;
+option (gogoproto.goproto_stringer_all) = false;
+option (gogoproto.stringer_all) =  true;
+option (gogoproto.populate_all) = true;
+option (gogoproto.testgen_all) = true;
+option (gogoproto.benchgen_all) = true;
+option (gogoproto.marshaler_all) = true;
+option (gogoproto.sizer_all) = true;
+option (gogoproto.unmarshaler_all) = true;
 
 message Transaction {
     message Location {
@@ -31,32 +44,88 @@ message Transaction {
     }
 
     option (gorm.opts) = {ormable: true};
+    // @gotag: clickhouse:"account_id"
     string account_id = 1;
+    // @gotag: clickhouse:"amount"
     double amount = 2;
+    // @gotag: clickhouse:"iso_currency_code"
     string iso_currency_code = 3;
+    // @gotag: clickhouse:"unofficial_currency_code"
     string unofficial_currency_code = 4;
-    repeated string category = 5;
+    // @gotag: clickhouse:"category"
+    string category = 5;
+    // @gotag: clickhouse:"category_id"
     string category_id = 6;
+    // @gotag: clickhouse:"check_number"
     string check_number = 7;
+    // @gotag: clickhouse:"date"
     string date = 8;
+    // @gotag: clickhouse:"datetime"
     string datetime = 9;
+    // @gotag: clickhouse:"authorized_date"
     string authorized_date = 10;
+    // @gotag: clickhouse:"authorized_datetime"
     string authorized_datetime = 11;
+    // @gotag: clickhouse:"location"
     Location location = 12;
+    // @gotag: clickhouse:"name"
     string name = 13;
+    // @gotag: clickhouse:"merchant_name"
     string merchant_name = 14;
+    // @gotag: clickhouse:"payment_meta"
     PaymentMeta payment_meta = 15;
+    // @gotag: clickhouse:"payment_channel"
     string payment_channel = 16;
+    // @gotag: clickhouse:"pending"
     bool pending = 17;
+    // @gotag: clickhouse:"pending_transaction_id"
     string pending_transaction_id = 18;
+    // @gotag: clickhouse:"account_owner"
     string account_owner = 19;
+    // @gotag: clickhouse:"transaction_id"
     string transaction_id = 20;
+    // @gotag: clickhouse:"transaction_code"
     string transaction_code = 21;
     uint64 id = 22 [
         (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}
     ];
+    // @gotag: clickhouse:"user_id"
     uint64 user_id = 23 [
         (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""},
         (validate.rules).uint64.gt = 0
-      ];
+    ];
+    // @gotag: clickhouse:"link_id"
+    uint64 link_id = 24 [
+        (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""},
+        (validate.rules).uint64.gt = 0
+    ];
+}
+
+message TransactionAmountByCountryMetric {
+    string country = 1;
+    double amount = 2;
+}
+
+message AverageTransactionAmountByCategoryMetric {
+    string category = 1;
+    double amount = 2;
+}
+
+message MonthlyTransactionCountByCategoryMetric {
+    string category = 1;
+    uint32 count = 2;
+    string month = 3;
+}
+
+message TransactionCountByMerchantPaymentChannelMetric {
+    string merchant_name = 1;
+    string payment_channel = 2;
+    uint32 transaction_count = 3;
+}
+
+message TransactionAmountDistributionByCategoryMetric {
+    string category = 1;
+    double mean = 2;
+    double median = 3;
+    double standard_deviation = 4;
 }

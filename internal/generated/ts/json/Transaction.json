@@ -5,78 +5,101 @@
         "Transaction": {
             "properties": {
                 "account_id": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"account_id\""
                 },
                 "amount": {
-                    "type": "number"
+                    "type": "number",
+                    "description": "@gotag: clickhouse:\"amount\""
                 },
                 "iso_currency_code": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"iso_currency_code\""
                 },
                 "unofficial_currency_code": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"unofficial_currency_code\""
                 },
                 "category": {
-                    "items": {
-                        "type": "string"
-                    },
-                    "type": "array"
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"category\""
                 },
                 "category_id": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"category_id\""
                 },
                 "check_number": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"check_number\""
                 },
                 "date": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"date\""
                 },
                 "datetime": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"datetime\""
                 },
                 "authorized_date": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"authorized_date\""
                 },
                 "authorized_datetime": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"authorized_datetime\""
                 },
                 "location": {
                     "$ref": "#/definitions/api.v1.Transaction.Location",
-                    "additionalProperties": true
+                    "additionalProperties": true,
+                    "description": "@gotag: clickhouse:\"location\""
                 },
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"name\""
                 },
                 "merchant_name": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"merchant_name\""
                 },
                 "payment_meta": {
                     "$ref": "#/definitions/api.v1.Transaction.PaymentMeta",
-                    "additionalProperties": true
+                    "additionalProperties": true,
+                    "description": "@gotag: clickhouse:\"payment_meta\""
                 },
                 "payment_channel": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"payment_channel\""
                 },
                 "pending": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "@gotag: clickhouse:\"pending\""
                 },
                 "pending_transaction_id": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"pending_transaction_id\""
                 },
                 "account_owner": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"account_owner\""
                 },
                 "transaction_id": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"transaction_id\""
                 },
                 "transaction_code": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"transaction_code\""
                 },
                 "id": {
                     "type": "string"
                 },
                 "user_id": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"user_id\""
+                },
+                "link_id": {
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"link_id\""
                 }
             },
             "additionalProperties": true,

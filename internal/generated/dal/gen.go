@@ -30,6 +30,7 @@ var (
 	MilestoneORM          *milestoneORM
 	MortgageAccountORM    *mortgageAccountORM
 	PlaidLinkORM          *plaidLinkORM
+	PlaidSyncORM          *plaidSyncORM
 	PocketORM             *pocketORM
 	SmartGoalORM          *smartGoalORM
 	StripeSubscriptionORM *stripeSubscriptionORM
@@ -54,6 +55,7 @@ func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	MilestoneORM = &Q.MilestoneORM
 	MortgageAccountORM = &Q.MortgageAccountORM
 	PlaidLinkORM = &Q.PlaidLinkORM
+	PlaidSyncORM = &Q.PlaidSyncORM
 	PocketORM = &Q.PocketORM
 	SmartGoalORM = &Q.SmartGoalORM
 	StripeSubscriptionORM = &Q.StripeSubscriptionORM
@@ -79,6 +81,7 @@ func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 		MilestoneORM:          newMilestoneORM(db, opts...),
 		MortgageAccountORM:    newMortgageAccountORM(db, opts...),
 		PlaidLinkORM:          newPlaidLinkORM(db, opts...),
+		PlaidSyncORM:          newPlaidSyncORM(db, opts...),
 		PocketORM:             newPocketORM(db, opts...),
 		SmartGoalORM:          newSmartGoalORM(db, opts...),
 		StripeSubscriptionORM: newStripeSubscriptionORM(db, opts...),
@@ -105,6 +108,7 @@ type Query struct {
 	MilestoneORM          milestoneORM
 	MortgageAccountORM    mortgageAccountORM
 	PlaidLinkORM          plaidLinkORM
+	PlaidSyncORM          plaidSyncORM
 	PocketORM             pocketORM
 	SmartGoalORM          smartGoalORM
 	StripeSubscriptionORM stripeSubscriptionORM
@@ -132,6 +136,7 @@ func (q *Query) clone(db *gorm.DB) *Query {
 		MilestoneORM:          q.MilestoneORM.clone(db),
 		MortgageAccountORM:    q.MortgageAccountORM.clone(db),
 		PlaidLinkORM:          q.PlaidLinkORM.clone(db),
+		PlaidSyncORM:          q.PlaidSyncORM.clone(db),
 		PocketORM:             q.PocketORM.clone(db),
 		SmartGoalORM:          q.SmartGoalORM.clone(db),
 		StripeSubscriptionORM: q.StripeSubscriptionORM.clone(db),
@@ -166,6 +171,7 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 		MilestoneORM:          q.MilestoneORM.replaceDB(db),
 		MortgageAccountORM:    q.MortgageAccountORM.replaceDB(db),
 		PlaidLinkORM:          q.PlaidLinkORM.replaceDB(db),
+		PlaidSyncORM:          q.PlaidSyncORM.replaceDB(db),
 		PocketORM:             q.PocketORM.replaceDB(db),
 		SmartGoalORM:          q.SmartGoalORM.replaceDB(db),
 		StripeSubscriptionORM: q.StripeSubscriptionORM.replaceDB(db),
@@ -190,6 +196,7 @@ type queryCtx struct {
 	MilestoneORM          IMilestoneORMDo
 	MortgageAccountORM    IMortgageAccountORMDo
 	PlaidLinkORM          IPlaidLinkORMDo
+	PlaidSyncORM          IPlaidSyncORMDo
 	PocketORM             IPocketORMDo
 	SmartGoalORM          ISmartGoalORMDo
 	StripeSubscriptionORM IStripeSubscriptionORMDo
@@ -214,6 +221,7 @@ func (q *Query) WithContext(ctx context.Context) *queryCtx {
 		MilestoneORM:          q.MilestoneORM.WithContext(ctx),
 		MortgageAccountORM:    q.MortgageAccountORM.WithContext(ctx),
 		PlaidLinkORM:          q.PlaidLinkORM.WithContext(ctx),
+		PlaidSyncORM:          q.PlaidSyncORM.WithContext(ctx),
 		PocketORM:             q.PocketORM.WithContext(ctx),
 		SmartGoalORM:          q.SmartGoalORM.WithContext(ctx),
 		StripeSubscriptionORM: q.StripeSubscriptionORM.WithContext(ctx),

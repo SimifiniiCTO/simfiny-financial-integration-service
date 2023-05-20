@@ -4,9 +4,14 @@
 ## Table of Contents
 
 - [api/v1/clickhouse.proto](#api_v1_clickhouse-proto)
+    - [AverageTransactionAmountByCategoryMetric](#api-v1-AverageTransactionAmountByCategoryMetric)
+    - [MonthlyTransactionCountByCategoryMetric](#api-v1-MonthlyTransactionCountByCategoryMetric)
     - [Transaction](#api-v1-Transaction)
     - [Transaction.Location](#api-v1-Transaction-Location)
     - [Transaction.PaymentMeta](#api-v1-Transaction-PaymentMeta)
+    - [TransactionAmountByCountryMetric](#api-v1-TransactionAmountByCountryMetric)
+    - [TransactionAmountDistributionByCategoryMetric](#api-v1-TransactionAmountDistributionByCategoryMetric)
+    - [TransactionCountByMerchantPaymentChannelMetric](#api-v1-TransactionCountByMerchantPaymentChannelMetric)
   
 - [api/v1/errors_ignore.proto](#api_v1_errors_ignore-proto)
     - [ErrorMessageRequest](#api-v1-ErrorMessageRequest)
@@ -33,6 +38,7 @@
     - [Milestone](#api-v1-Milestone)
     - [MortgageAccount](#api-v1-MortgageAccount)
     - [PlaidLink](#api-v1-PlaidLink)
+    - [PlaidSync](#api-v1-PlaidSync)
     - [Pocket](#api-v1-Pocket)
     - [SmartGoal](#api-v1-SmartGoal)
     - [StripeSubscription](#api-v1-StripeSubscription)
@@ -40,6 +46,7 @@
     - [Token](#api-v1-Token)
     - [UserProfile](#api-v1-UserProfile)
   
+    - [BankAccountStatus](#api-v1-BankAccountStatus)
     - [BankAccountType](#api-v1-BankAccountType)
     - [GoalStatus](#api-v1-GoalStatus)
     - [GoalType](#api-v1-GoalType)
@@ -142,6 +149,39 @@
 
 
 
+<a name="api-v1-AverageTransactionAmountByCategoryMetric"></a>
+
+### AverageTransactionAmountByCategoryMetric
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| category | [string](#string) |  |  |
+| amount | [double](#double) |  |  |
+
+
+
+
+
+
+<a name="api-v1-MonthlyTransactionCountByCategoryMetric"></a>
+
+### MonthlyTransactionCountByCategoryMetric
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| category | [string](#string) |  |  |
+| count | [uint32](#uint32) |  |  |
+| month | [string](#string) |  |  |
+
+
+
+
+
+
 <a name="api-v1-Transaction"></a>
 
 ### Transaction
@@ -150,29 +190,30 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| account_id | [string](#string) |  |  |
-| amount | [double](#double) |  |  |
-| iso_currency_code | [string](#string) |  |  |
-| unofficial_currency_code | [string](#string) |  |  |
-| category | [string](#string) | repeated |  |
-| category_id | [string](#string) |  |  |
-| check_number | [string](#string) |  |  |
-| date | [string](#string) |  |  |
-| datetime | [string](#string) |  |  |
-| authorized_date | [string](#string) |  |  |
-| authorized_datetime | [string](#string) |  |  |
-| location | [Transaction.Location](#api-v1-Transaction-Location) |  |  |
-| name | [string](#string) |  |  |
-| merchant_name | [string](#string) |  |  |
-| payment_meta | [Transaction.PaymentMeta](#api-v1-Transaction-PaymentMeta) |  |  |
-| payment_channel | [string](#string) |  |  |
-| pending | [bool](#bool) |  |  |
-| pending_transaction_id | [string](#string) |  |  |
-| account_owner | [string](#string) |  |  |
-| transaction_id | [string](#string) |  |  |
-| transaction_code | [string](#string) |  |  |
+| account_id | [string](#string) |  | @gotag: clickhouse:&#34;account_id&#34; |
+| amount | [double](#double) |  | @gotag: clickhouse:&#34;amount&#34; |
+| iso_currency_code | [string](#string) |  | @gotag: clickhouse:&#34;iso_currency_code&#34; |
+| unofficial_currency_code | [string](#string) |  | @gotag: clickhouse:&#34;unofficial_currency_code&#34; |
+| category | [string](#string) |  | @gotag: clickhouse:&#34;category&#34; |
+| category_id | [string](#string) |  | @gotag: clickhouse:&#34;category_id&#34; |
+| check_number | [string](#string) |  | @gotag: clickhouse:&#34;check_number&#34; |
+| date | [string](#string) |  | @gotag: clickhouse:&#34;date&#34; |
+| datetime | [string](#string) |  | @gotag: clickhouse:&#34;datetime&#34; |
+| authorized_date | [string](#string) |  | @gotag: clickhouse:&#34;authorized_date&#34; |
+| authorized_datetime | [string](#string) |  | @gotag: clickhouse:&#34;authorized_datetime&#34; |
+| location | [Transaction.Location](#api-v1-Transaction-Location) |  | @gotag: clickhouse:&#34;location&#34; |
+| name | [string](#string) |  | @gotag: clickhouse:&#34;name&#34; |
+| merchant_name | [string](#string) |  | @gotag: clickhouse:&#34;merchant_name&#34; |
+| payment_meta | [Transaction.PaymentMeta](#api-v1-Transaction-PaymentMeta) |  | @gotag: clickhouse:&#34;payment_meta&#34; |
+| payment_channel | [string](#string) |  | @gotag: clickhouse:&#34;payment_channel&#34; |
+| pending | [bool](#bool) |  | @gotag: clickhouse:&#34;pending&#34; |
+| pending_transaction_id | [string](#string) |  | @gotag: clickhouse:&#34;pending_transaction_id&#34; |
+| account_owner | [string](#string) |  | @gotag: clickhouse:&#34;account_owner&#34; |
+| transaction_id | [string](#string) |  | @gotag: clickhouse:&#34;transaction_id&#34; |
+| transaction_code | [string](#string) |  | @gotag: clickhouse:&#34;transaction_code&#34; |
 | id | [uint64](#uint64) |  |  |
-| user_id | [uint64](#uint64) |  |  |
+| user_id | [uint64](#uint64) |  | @gotag: clickhouse:&#34;user_id&#34; |
+| link_id | [uint64](#uint64) |  | @gotag: clickhouse:&#34;link_id&#34; |
 
 
 
@@ -217,6 +258,57 @@
 | ppd_id | [string](#string) |  |  |
 | reason | [string](#string) |  |  |
 | reference_number | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="api-v1-TransactionAmountByCountryMetric"></a>
+
+### TransactionAmountByCountryMetric
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| country | [string](#string) |  |  |
+| amount | [double](#double) |  |  |
+
+
+
+
+
+
+<a name="api-v1-TransactionAmountDistributionByCategoryMetric"></a>
+
+### TransactionAmountDistributionByCategoryMetric
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| category | [string](#string) |  |  |
+| mean | [double](#double) |  |  |
+| median | [double](#double) |  |  |
+| standard_deviation | [double](#double) |  |  |
+
+
+
+
+
+
+<a name="api-v1-TransactionCountByMerchantPaymentChannelMetric"></a>
+
+### TransactionCountByMerchantPaymentChannelMetric
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| merchant_name | [string](#string) |  |  |
+| payment_channel | [string](#string) |  |  |
+| transaction_count | [uint32](#uint32) |  |  |
 
 
 
@@ -463,6 +555,7 @@
 | pockets | [Pocket](#api-v1-Pocket) | repeated | the set of &#34;virtualized accounts this user witholds&#34; NOTE: these pockets are automatically created by the system when a user connects a bank account |
 | plaid_account_id | [string](#string) |  | plaid account id mapped to this bank account |
 | subtype | [string](#string) |  | account subtype |
+| status | [BankAccountStatus](#api-v1-BankAccountStatus) |  | the bank account status |
 
 
 
@@ -685,6 +778,7 @@ Two Items created for the same set of credentials at the same institution will b
 | error_code | [string](#string) |  |  |
 | updated_at | [string](#string) |  |  |
 | new_accounts_available | [bool](#bool) |  |  |
+| plaid_sync | [PlaidSync](#api-v1-PlaidSync) |  |  |
 
 
 
@@ -774,6 +868,27 @@ and achievable. A milestone is a sub goal of a goal and is tied to a goal by the
 | institution_name | [string](#string) |  |  |
 | use_plaid_sync | [bool](#bool) |  |  |
 | item_id | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="api-v1-PlaidSync"></a>
+
+### PlaidSync
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [uint64](#uint64) |  | id |
+| time_stamp | [string](#string) |  |  |
+| trigger | [string](#string) |  |  |
+| next_cursor | [string](#string) |  |  |
+| added | [int64](#int64) |  |  |
+| removed | [int64](#int64) |  |  |
+| modified | [int64](#int64) |  |  |
 
 
 
@@ -942,6 +1057,19 @@ such as the id, user_id tied to the profile, and many more
 
 
  
+
+
+<a name="api-v1-BankAccountStatus"></a>
+
+### BankAccountStatus
+
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| BANK_ACCOUNT_STATUS_UNSPECIFIED | 0 |  |
+| BANK_ACCOUNT_STATUS_ACTIVE | 1 |  |
+| BANK_ACCOUNT_STATUS_INACTIVE | 2 |  |
+
 
 
 <a name="api-v1-BankAccountType"></a>
@@ -2032,7 +2160,7 @@ the `get user profile` request
 | account_ids_with_new_liabilities | [string](#string) | repeated | An array of account_id&#39;s for accounts that contain new liabilities.&#39; |
 | account_ids_with_updated_liabilities | [string](#string) | repeated | An object with keys of account_id&#39;s that are mapped to their respective liabilities fields that changed. |
 | new_holdings | [uint64](#uint64) |  | The number of new holdings reported since the last time this webhook was fired. |
-| updated_holdings | [uint64](#uint64) |  | The number of updated holdings reported since the last time this webhook was fired. |
+| updated_holdings | [uint64](#uint64) |  | The number of updated holdings reported since the last time this webhook was fired. @gotag: json:&#34;updated_holdings&#34; |
 
 
 

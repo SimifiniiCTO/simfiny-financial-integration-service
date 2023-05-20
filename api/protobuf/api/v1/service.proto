@@ -758,7 +758,7 @@ service FinancialService {
 
   rpc ProcessWebhook(ProcessWebhookRequest) returns (ProcessWebhookResponse) {
     option (google.api.http) = {
-      post: "/api/v1/webhook/plaid"
+      post: "/api/v1/plaid/webhook"
       body: "*"
     };
 
@@ -781,7 +781,7 @@ service FinancialService {
 
   rpc StripeWebhook(StripeWebhookRequest) returns (StripeWebhookResponse){
     option (google.api.http) = {
-      post: "/api/v1/webhook/stripe"
+      post: "/api/v1/stripe/webhook"
       body: "*"
     };
 

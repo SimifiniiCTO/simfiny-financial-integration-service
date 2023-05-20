@@ -144,6 +144,30 @@ func (db *Db) DeleteTransactionsByIds(ctx context.Context, txIds []uint64) error
 	return nil
 }
 
+func (db *Db) DeleteTransactionsByLinkId(ctx context.Context, linkId *uint64) error {
+	if span := db.startDatastoreSpan(ctx, "dbtxn-delete-transactions-by-ids"); span != nil {
+		defer span.End()
+	}
+
+	if linkId == nil {
+		return fmt.Errorf("transaction ID must be 0 at creation time")
+	}
+
+	//	get the transacton by tx id
+	t := db.queryOperator.TransactionORM
+	// delete all transactions matching this link id
+	result, err := t.WithContext(ctx).Where(t.LinkId.Eq(*linkId)).Delete()
+	if err != nil {
+		return err
+	}
+
+	if result.RowsAffected == 0 {
+		return fmt.Errorf("no rows affected")
+	}
+
+	return nil
+}
+
 // DeleteUserTransactons implements ClickhouseDatabaseOperations.
 func (db *Db) DeleteUserTransactons(ctx context.Context, userId *uint64) error {
 	if span := db.startDatastoreSpan(ctx, "dbtxn-delete-transaction"); span != nil {
@@ -260,6 +284,47 @@ func (db *Db) UpdateTransaction(ctx context.Context, userId *uint64, txId *uint6
 	return nil
 }
 
+// UpdateTransaction implements ClickhouseDatabaseOperations.
+func (db *Db) UpdateTransactions(ctx context.Context, userId *uint64, txs []*schema.Transaction) error {
+	if span := db.startDatastoreSpan(ctx, "dbtxn-update-transaction"); span != nil {
+		defer span.End()
+	}
+
+	if len(txs) == 0 {
+		return fmt.Errorf("transactions length must be greater than 0")
+	}
+
+	if userId == nil {
+		return fmt.Errorf("user ID must be 0 at creation time")
+	}
+
+	txnsOrmRecords := make([]*schema.TransactionORM, 0, len(txs))
+	for _, tx := range txs {
+		// associate the user id with the transaction
+		tx.UserId = *userId
+
+		txnOrm, err := tx.ToORM(ctx)
+		if err != nil {
+			return err
+		}
+
+		txnsOrmRecords = append(txnsOrmRecords, &txnOrm)
+	}
+
+	t := db.queryOperator.TransactionORM
+	// perform the update operation
+	result, err := t.WithContext(ctx).Where(t.UserId.Eq(*userId)).Updates(txnsOrmRecords)
+	if err != nil {
+		return err
+	}
+
+	if result.RowsAffected == 0 {
+		return fmt.Errorf("no rows affected")
+	}
+
+	return nil
+}
+
 func (db *Db) GetTransactionById(ctx context.Context, txId *uint64) (*schema.Transaction, error) {
 	if span := db.startDatastoreSpan(ctx, "dbtxn-get-transaction-by-id"); span != nil {
 		defer span.End()
@@ -281,6 +346,41 @@ func (db *Db) GetTransactionById(ctx context.Context, txId *uint64) (*schema.Tra
 	}
 
 	return &tx, nil
+}
+
+// DeleteTransactionsByIds implements ClickhouseDatabaseOperations.
+func (db *Db) GetTransactionsByPlaidTransactionIds(ctx context.Context, txIds []string) ([]*schema.Transaction, error) {
+	if span := db.startDatastoreSpan(ctx, "dbtxn-delete-transactions-by-ids"); span != nil {
+		defer span.End()
+	}
+
+	if txIds == nil {
+		return nil, fmt.Errorf("transaction ID must be 0 at creation time")
+	}
+
+	//	get the transacton by tx id
+	t := db.queryOperator.TransactionORM
+	// delete the transaction
+	result, err := t.WithContext(ctx).Where(t.TransactionId.In(txIds...)).Find()
+	if err != nil {
+		return nil, err
+	}
+
+	if result == nil {
+		return nil, fmt.Errorf("no txn found")
+	}
+
+	resultSet := make([]*schema.Transaction, 0, len(result))
+	for _, tx := range result {
+		txRecord, err := tx.ToPB(ctx)
+		if err != nil {
+			return nil, err
+		}
+
+		resultSet = append(resultSet, &txRecord)
+	}
+
+	return resultSet, nil
 }
 
 // `sanitizePaginationParams` is a method of the `Db` struct in the `postgres` package.

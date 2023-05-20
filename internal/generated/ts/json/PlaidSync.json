@@ -1,0 +1,35 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/PlaidSync",
+    "definitions": {
+        "PlaidSync": {
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "id"
+                },
+                "time_stamp": {
+                    "type": "string"
+                },
+                "trigger": {
+                    "type": "string"
+                },
+                "next_cursor": {
+                    "type": "string"
+                },
+                "added": {
+                    "type": "string"
+                },
+                "removed": {
+                    "type": "string"
+                },
+                "modified": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Plaid Sync"
+        }
+    }
+}

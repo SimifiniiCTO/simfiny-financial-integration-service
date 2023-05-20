@@ -93,7 +93,7 @@
                 },
                 "updated_holdings": {
                     "type": "string",
-                    "description": "The number of updated holdings reported since the last time this webhook was fired."
+                    "description": "The number of updated holdings reported since the last time this webhook was fired. @gotag: json:\"updated_holdings\""
                 }
             },
             "additionalProperties": true,

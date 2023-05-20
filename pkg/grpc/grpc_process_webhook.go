@@ -60,6 +60,8 @@ func (s *Server) ProcessWebhook(ctx context.Context, req *proto.ProcessWebhookRe
 		return nil, status.Error(codes.InvalidArgument, "missing request")
 	}
 
+	s.logger.Info("processing webhook request", zap.Any("request", req))
+
 	if err := req.ValidateAll(); err != nil {
 		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
@@ -169,6 +171,20 @@ func (s *Server) processWebhook(ctx context.Context, req *proto.ProcessWebhookRe
 		return err
 	}
 
+	// decript the access token
+	accessToken, err := s.DecryptUserAccessToken(ctx, link.Token)
+	if err != nil {
+		return err
+	}
+
+	// get the user id from one of the connected bank accounts
+	if len(link.BankAccounts) == 0 {
+		return status.Error(codes.Internal, "no bank accounts found")
+	}
+
+	userId := link.BankAccounts[0].UserId
+	plaidItemId := link.PlaidLink.ItemId
+
 	switch req.WebhookType {
 	case "INVESTMENTS_TRANSACTIONS":
 		switch req.WebhookCode {
@@ -203,6 +219,9 @@ func (s *Server) processWebhook(ctx context.Context, req *proto.ProcessWebhookRe
 		switch link.PlaidLink.UsePlaidSync {
 		case true:
 			// Trigger a background job to sync the plaid transactions
+			if err := s.DispatchPlaidSyncTask(ctx, userId, plaidItemId, *accessToken); err != nil {
+				return err
+			}
 		default:
 			switch req.WebhookCode {
 			/*
@@ -261,13 +280,10 @@ func (s *Server) processWebhook(ctx context.Context, req *proto.ProcessWebhookRe
 				``
 			*/
 			case "SYNC_UPDATES_AVAILABLE":
-				// if initial update field is present ... pull the past 7 days of tx
-				// if historical update field is present ... pull the past 2 years of tx
-				// trigger a backgrund job to pull the past 7 days of plaid transactions
-				// start: time.Now().Add(-7 * 24 * time.Hour) | time.Now().Add(-2 * 365 * 24 * time.Hour)
-				// end: time.Now()
-			// Fired when transaction(s) for an Item are deleted. The deleted transaction IDs are
-			// included in the webhook payload. Plaid will typically check for deleted transaction data several times a day.
+				// Trigger a background job to sync the plaid transactions
+				if err := s.DispatchPlaidSyncTask(ctx, userId, plaidItemId, *accessToken); err != nil {
+					return err
+				}
 			default:
 				s.logger.Error("Plaid webhook will not be handled, it is not implemented.")
 			}
