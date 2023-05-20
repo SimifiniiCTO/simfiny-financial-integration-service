@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 
@@ -67,7 +68,21 @@ func TestServer_PlaidExchangeToken(t *testing.T) {
 				return
 			}
 
+			time.Sleep(time.Second * 40)
+
 			if !tt.wantErr {
+				res, err := client.GetUserProfile(tt.args.ctx, &proto.GetUserProfileRequest{
+					UserId: userId,
+				})
+
+				assert.Nil(t, err)
+				assert.NotNil(t, res)
+
+				txns, cnt, err := MockServer.clickhouseConn.GetTransactions(tt.args.ctx, &userId, int64(1), int64(100))
+				assert.NoError(t, err)
+				assert.NotNil(t, txns)
+				assert.NotNil(t, cnt)
+
 				assert.NotNil(t, got)
 			}
 		})

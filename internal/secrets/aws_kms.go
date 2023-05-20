@@ -27,6 +27,10 @@ type AWSKMSConfig struct {
 	KmsKeyID string
 }
 
+// `func (c *AWSKMSConfig) Validate() error` is a method defined on the `AWSKMSConfig` struct. It
+// validates that all the required fields in the `AWSKMSConfig` struct are present and returns an error
+// if any of them are missing. This method is called when creating a new instance of the `AWSKMS`
+// struct to ensure that the configuration is valid.
 func (c *AWSKMSConfig) Validate() error {
 	if c.Log == nil {
 		return errors.New("log is required")

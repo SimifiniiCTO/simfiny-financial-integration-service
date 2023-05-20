@@ -74,21 +74,15 @@ func MockGRPCService(ctx context.Context) *grpc.ClientConn {
 }
 
 func MockRedis() *redisDatabase.Client {
-	redisTestServer, err := miniredis.Run()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	defer redisTestServer.Close()
+	redisTestServer = mockRedis()
 	// Set up test stop channel
 	stopCh := make(chan struct{})
-	addr := redisTestServer.Addr()
 
 	// Set up test options
 	logger := zap.NewNop()
 	opts := []redisDatabase.Option{
 		redisDatabase.WithLogger(logger),
-		redisDatabase.WithURI(addr),
+		redisDatabase.WithURI(getRedisConnectionString()),
 		redisDatabase.WithCacheTTLInSeconds(60),
 		redisDatabase.WithServiceName("test-service"),
 		redisDatabase.WithTelemetrySdk(&instrumentation.Client{}),
@@ -99,9 +93,6 @@ func MockRedis() *redisDatabase.Client {
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	// THIS IS NECCESSARY FOR TESTING (DUE TO HOW THE TASK PROCESSOR READ REDIS TASKS)
-	client.URI = fmt.Sprintf("redis://:@%s", addr)
 
 	return client
 }
@@ -143,14 +134,7 @@ func NewMockServer(db *database.Db) {
 
 	redisDb := MockRedis()
 
-	kms, err := secrets.NewAWSKMS(secrets.AWSKMSConfig{
-		Region:    "us-east-2",
-		AccessKey: "AKIA5HFOAJRN7YDEYPST",
-		SecretKey: "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",
-		KmsKeyID:  "mrk-e44f269bc0034feb95ede34154c3cfe4",
-		Log:       zap.L(),
-	})
-
+	kms, err := secrets.NewMockAwsKms()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -257,4 +241,18 @@ func exec_cmd(cmd *exec.Cmd) {
 		waitStatus = cmd.ProcessState.Sys().(syscall.WaitStatus)
 		fmt.Printf("Port successfully killed (exit code: %s)\n", []byte(fmt.Sprintf("%d", waitStatus.ExitStatus())))
 	}
+}
+
+// mockRedis returns a mock redis server.
+func mockRedis() *miniredis.Miniredis {
+	s, err := miniredis.Run()
+	if err != nil {
+		panic(err)
+	}
+
+	return s
+}
+
+func getRedisConnectionString() string {
+	return fmt.Sprintf("redis://:@%s", redisTestServer.Addr())
 }
