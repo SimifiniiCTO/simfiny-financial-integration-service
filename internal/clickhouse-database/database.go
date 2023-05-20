@@ -2,7 +2,9 @@ package clickhousedatabase
 
 import (
 	"context"
+	"fmt"
 
+	"github.com/SimifiniiCTO/simfiny-core-lib/database/clickhouse"
 	clickhousedb "github.com/SimifiniiCTO/simfiny-core-lib/database/clickhouse"
 	"github.com/SimifiniiCTO/simfiny-core-lib/instrumentation"
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
@@ -164,4 +166,18 @@ func (db *Db) startDatastoreSpan(ctx context.Context, name string) *newrelic.Dat
 	}
 
 	return nil
+}
+
+func NewMockInMemoryClickhouseDB() *Db {
+	client, err := clickhouse.NewInMemoryTestDbClient(schema.GetClickhouseSchemas()...)
+	if err != nil {
+		panic(fmt.Errorf("failed to create in memory test db client: %w", err))
+	}
+
+	return &Db{
+		Conn:                  client,
+		queryOperator:         dal.Use(client.Engine),
+		logger:                zap.NewNop(),
+		instrumentationClient: &instrumentation.Client{},
+	}
 }

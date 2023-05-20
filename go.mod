@@ -57,6 +57,8 @@ require (
 )
 
 require (
+	github.com/alicebob/gopher-json v0.0.0-20200520072559-a9ecdc9d1d3a // indirect
+	github.com/alicebob/miniredis/v2 v2.30.2 // indirect
 	github.com/cosmos/gogoproto v1.4.10 // indirect
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
@@ -66,6 +68,7 @@ require (
 	github.com/newrelic/go-agent/v3/integrations/nrgrpc v1.3.2 // indirect
 	github.com/redis/go-redis/v9 v9.0.4 // indirect
 	github.com/robfig/cron/v3 v3.0.1 // indirect
+	github.com/yuin/gopher-lua v1.1.0 // indirect
 	golang.org/x/exp v0.0.0-20230131160201-f062dba9d201 // indirect
 )
 

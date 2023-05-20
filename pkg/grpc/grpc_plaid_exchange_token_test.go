@@ -46,15 +46,20 @@ func TestServer_PlaidExchangeToken(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			userId := tt.args.req.UserId
 			if tt.shouldCreateProfile {
-				_, err := client.CreateUserProfile(context.Background(), &proto.CreateUserProfileRequest{
+				res, err := client.CreateUserProfile(context.Background(), &proto.CreateUserProfileRequest{
 					Profile: &proto.UserProfile{
 						UserId: tt.args.req.UserId,
 					},
 					Email: fmt.Sprintf("%s@gmail.com", helper.GenerateRandomString(10)),
 				})
 				assert.Nil(t, err)
+
+				userId = res.UserId
 			}
+
+			tt.args.req.UserId = userId
 
 			got, err := client.PlaidExchangeToken(tt.args.ctx, tt.args.req)
 			if (err != nil) != tt.wantErr {

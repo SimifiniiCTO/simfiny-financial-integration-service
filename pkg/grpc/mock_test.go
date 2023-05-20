@@ -12,6 +12,10 @@ import (
 	"testing"
 	"time"
 
+	clickhouseDatabase "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/clickhouse-database"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/secrets"
+	"github.com/alicebob/miniredis/v2"
+
 	postgresdb "github.com/SimifiniiCTO/simfiny-core-lib/database/postgres"
 
 	"go.uber.org/zap"
@@ -23,16 +27,19 @@ import (
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/dal"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/plaidhandler"
 	database "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/postgres-database"
+
+	redisDatabase "github.com/SimifiniiCTO/simfiny-core-lib/database/redis"
 )
 
 var (
-	DbConnHandler *database.Db
-	Port          int    = 5555
-	Host          string = "localhost"
-	User          string = "service_db"
-	Password      string = "service_db"
-	Dbname        string = "service_db"
-	MockServer    *Server
+	DbConnHandler   *database.Db
+	Port            int    = 5555
+	Host            string = "localhost"
+	User            string = "service_db"
+	Password        string = "service_db"
+	Dbname          string = "service_db"
+	MockServer      *Server
+	redisTestServer *miniredis.Miniredis
 )
 
 type MockDialOption func(context.Context, string) (net.Conn, error)
@@ -66,14 +73,65 @@ func MockGRPCService(ctx context.Context) *grpc.ClientConn {
 	return conn
 }
 
+func MockRedis() *redisDatabase.Client {
+	redisTestServer, err := miniredis.Run()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer redisTestServer.Close()
+	// Set up test stop channel
+	stopCh := make(chan struct{})
+	addr := redisTestServer.Addr()
+
+	// Set up test options
+	logger := zap.NewNop()
+	opts := []redisDatabase.Option{
+		redisDatabase.WithLogger(logger),
+		redisDatabase.WithURI(addr),
+		redisDatabase.WithCacheTTLInSeconds(60),
+		redisDatabase.WithServiceName("test-service"),
+		redisDatabase.WithTelemetrySdk(&instrumentation.Client{}),
+	}
+
+	// Call New() to create a new Redis client
+	client, err := redisDatabase.New(stopCh, opts...)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// THIS IS NECCESSARY FOR TESTING (DUE TO HOW THE TASK PROCESSOR READ REDIS TASKS)
+	client.URI = fmt.Sprintf("redis://:@%s", addr)
+
+	return client
+}
+
 // NewMockServer creates a new mock server instance
 func NewMockServer(db *database.Db) {
 	config := &Config{
-		Port:            9897,
-		ServiceName:     "FinancialIntegrationService",
-		Environment:     "dev",
-		NewRelicLicense: "62fd721c712d5863a4e75b8f547b7c1ea884NRAL",
-		RpcTimeout:      3 * time.Minute,
+		Port:                     9897,
+		GatewayPort:              Port,
+		ServiceName:              "FinancialIntegrationService",
+		NewRelicLicense:          "62fd721c712d5863a4e75b8f547b7c1ea884NRAL",
+		Environment:              "dev",
+		RpcTimeout:               30 * time.Minute,
+		StripeApiKey:             "sk_test_51M1F1pBV97V9M33e3Ki1k5OqkdhfdDUBNTwDFzUtRmsSYbHf7qE3d1kkFCYRxfS70bJKBOKR5Zbv103sqvNd0gnm00lMyRDWEh",
+		PlaidClientID:            "",
+		PlaidSecretKey:           "",
+		PlaidEnv:                 "",
+		PlaidOauthDomain:         "",
+		PlaidWebhooksEnabled:     false,
+		PlaidWebhookOauthDomain:  "",
+		AwsAccessKeyID:           "",
+		AwsRegion:                "",
+		AwsSecretAccessKey:       "",
+		AwsKmsKeyID:              "",
+		MaxPlaidLinks:            0,
+		BillingEnabled:           false,
+		WorkflowExecutionTimeout: 0,
+		WorkflowTaskTimeout:      0,
+		WorkflowRunTimeout:       0,
+		TaskProcessorWorkers:     3,
 	}
 
 	handler, err := plaidhandler.GetPlaidWrapperForTest()
@@ -81,12 +139,32 @@ func NewMockServer(db *database.Db) {
 		log.Fatal(err)
 	}
 
+	clickhouseDb := clickhouseDatabase.NewMockInMemoryClickhouseDB()
+
+	redisDb := MockRedis()
+
+	kms, err := secrets.NewAWSKMS(secrets.AWSKMSConfig{
+		Region:    "us-east-2",
+		AccessKey: "AKIA5HFOAJRN7YDEYPST",
+		SecretKey: "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",
+		KmsKeyID:  "mrk-e44f269bc0034feb95ede34154c3cfe4",
+		Log:       zap.L(),
+	})
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	MockServer, err = NewServer(&Params{
-		Config:          config,
-		Logger:          zap.L(),
-		Instrumentation: &instrumentation.Client{},
-		Db:              DbConnHandler,
-		PlaidWrapper:    handler,
+		Config:             config,
+		Logger:             zap.L(),
+		Instrumentation:    &instrumentation.Client{},
+		Db:                 DbConnHandler,
+		PlaidWrapper:       handler,
+		TransactionManager: nil,
+		ClickhouseDb:       clickhouseDb,
+		RedisDb:            redisDb,
+		KeyManagement:      kms,
 	})
 	if err != nil {
 		log.Fatal(err)
@@ -95,6 +173,7 @@ func NewMockServer(db *database.Db) {
 
 // TestMain runs main function
 func TestMain(m *testing.M) {
+
 	// os.Exit skips defer calls
 	// so we need to call another function
 	code, err := run(m)
