@@ -69,6 +69,33 @@ func (th *TaskHandler) RunSyncPlaidTransactionsTask(ctx context.Context, task *a
 	return nil
 }
 
+func (th *TaskHandler) pullReOcurringTransactions(ctx context.Context, userId, linkId *uint64, accessToken *string) error {
+	var (
+		clickhouseClient = th.clickhouseDb
+		plaidClient      = th.plaidClient
+	)
+	// sync the recurring transactions for the given user
+	recurringTransactions, err :=
+		plaidClient.
+			GetRecurringTransactions(
+				ctx,
+				accessToken,
+				userId,
+				linkId)
+	if err != nil {
+		th.logger.Error("failed to get recurring transactions", zap.Error(err))
+		return err
+	}
+
+	// store the recurring transactions in the database
+	if err := clickhouseClient.AddReOccurringTransactions(ctx, userId, recurringTransactions); err != nil {
+		th.logger.Error("failed to add recurring transactions", zap.Error(err))
+		return err
+	}
+
+	return nil
+}
+
 func (th *TaskHandler) processSyncOperation(ctx context.Context, payload *SyncPlaidTaskPayload) ([]*apiv1.BankAccount, error) {
 	var (
 		postgresClient   = th.postgresDb
@@ -370,6 +397,12 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, payload *SyncPl
 	if linkWasSetup {
 		// TODO: Send the notification that the link has been set up.
 		th.logger.Info("sending link setup notification")
+	}
+
+	// sync the recurring transactions for the given user
+	if err := th.pullReOcurringTransactions(ctx, &payload.UserId, &link.Id, &payload.AccessToken); err != nil {
+		th.logger.Error("failed to pull recurring transactions", zap.Error(err))
+		return nil, err
 	}
 
 	return plaidBankAccounts, nil

@@ -19,6 +19,7 @@ type ReOccuringTransactionORM struct {
 	CategoryId                      string
 	Description                     string
 	FirstDate                       string
+	Flow                            string
 	Frequency                       string
 	Id                              uint64
 	IsActive                        bool
@@ -79,6 +80,7 @@ func (m *ReOccuringTransaction) ToORM(ctx context.Context) (ReOccuringTransactio
 	to.UserId = m.UserId
 	to.LinkId = m.LinkId
 	to.Id = m.Id
+	to.Flow = ReCurringFlow_name[int32(m.Flow)]
 	if posthook, ok := interface{}(m).(ReOccuringTransactionWithAfterToORM); ok {
 		err = posthook.AfterToORM(ctx, &to)
 	}
@@ -123,6 +125,7 @@ func (m *ReOccuringTransactionORM) ToPB(ctx context.Context) (ReOccuringTransact
 	to.UserId = m.UserId
 	to.LinkId = m.LinkId
 	to.Id = m.Id
+	to.Flow = ReCurringFlow(ReCurringFlow_value[m.Flow])
 	if posthook, ok := interface{}(m).(ReOccuringTransactionWithAfterToPB); ok {
 		err = posthook.AfterToPB(ctx, &to)
 	}
@@ -647,6 +650,10 @@ func DefaultApplyFieldMaskReOccuringTransaction(ctx context.Context, patchee *Re
 		}
 		if f == prefix+"Id" {
 			patchee.Id = patcher.Id
+			continue
+		}
+		if f == prefix+"Flow" {
+			patchee.Flow = patcher.Flow
 			continue
 		}
 	}

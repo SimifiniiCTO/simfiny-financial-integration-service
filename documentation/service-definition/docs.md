@@ -15,6 +15,7 @@
     - [TransactionAmountDistributionByCategoryMetric](#api-v1-TransactionAmountDistributionByCategoryMetric)
     - [TransactionCountByMerchantPaymentChannelMetric](#api-v1-TransactionCountByMerchantPaymentChannelMetric)
   
+    - [ReCurringFlow](#api-v1-ReCurringFlow)
     - [ReOccuringTransactionsFrequency](#api-v1-ReOccuringTransactionsFrequency)
     - [ReOccuringTransactionsStatus](#api-v1-ReOccuringTransactionsStatus)
   
@@ -232,7 +233,8 @@
 | updated_time | [string](#string) |  | @gotag: clickhouse:&#34;updated_time&#34; |
 | user_id | [uint64](#uint64) |  | @gotag: clickhouse:&#34;user_id&#34; |
 | link_id | [uint64](#uint64) |  | @gotag: clickhouse:&#34;link_id&#34; |
-| id | [uint64](#uint64) |  |  |
+| id | [uint64](#uint64) |  | @gotag: clickhouse:&#34;id&#34; |
+| flow | [ReCurringFlow](#api-v1-ReCurringFlow) |  | @gotag: clickhouse:&#34;flow&#34; |
 
 
 
@@ -374,60 +376,23 @@
  
 
 
+<a name="api-v1-ReCurringFlow"></a>
+
+### ReCurringFlow
+
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| RE_CURRING_FLOW_UNSPECIFIED | 0 |  |
+| RE_CURRING_FLOW_INFLOW | 1 |  |
+| RE_CURRING_FLOW_OUTFLOW | 2 |  |
+
+
+
 <a name="api-v1-ReOccuringTransactionsFrequency"></a>
 
 ### ReOccuringTransactionsFrequency
-account_id
-string
-The ID of the account to which the stream belongs
 
-stream_id
-string
-A unique id for the stream
-
-category
-[string]
-A hierarchical array of the categories to which this transaction belongs. See Categories. 
-All implementations are encouraged to use the new personal_finance_category instead of category. personal_finance_category provides more meaningful categorization and greater accuracy.
-
-category_id
-string
-The ID of the category to which this transaction belongs. See Categories.
-All implementations are encouraged to use the new personal_finance_category instead of category. personal_finance_category provides more meaningful categorization and greater accuracy.
-
-description
-string
-A description of the transaction stream.
-
-merchant_name
-nullable
-string
-The merchant associated with the transaction stream.
-
-first_date
-string
-The posted date of the earliest transaction in the stream.
-Format: date 
-
-last_date
-string
-The posted date of the latest transaction in the stream.
-Format: date 
-
-frequency
-string
-Describes the frequency of the transaction stream.
-WEEKLY: Assigned to a transaction stream that occurs approximately every week.
-BIWEEKLY: Assigned to a transaction stream that occurs approximately every 2 weeks.
-SEMI_MONTHLY: Assigned to a transaction stream that occurs approximately twice per month. This frequency is typically seen for inflow transaction streams.
-MONTHLY: Assigned to a transaction stream that occurs approximately every month.
-ANNUALLY: Assigned to a transaction stream that occurs approximately every year.
-UNKNOWN: Assigned to a transaction stream that does not fit any of the pre-defined frequencies.
-Possible values: UNKNOWN, WEEKLY, BIWEEKLY, SEMI_MONTHLY, MONTHLY, ANNUALLY
-
-transaction_ids
-[string]
-An array of Plaid transaction IDs belonging to the stream, sorted by posted date.
 
 | Name | Number | Description |
 | ---- | ------ | ----------- |

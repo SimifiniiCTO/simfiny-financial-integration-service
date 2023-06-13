@@ -4,7 +4,7 @@ import (
 	"errors"
 
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/proto"
-	"github.com/plaid/plaid-go/plaid"
+	"github.com/plaid/plaid-go/v12/plaid"
 )
 
 // transformStudentloanObject transforms a plaid student loan liabilities object to the internal mortgage account object

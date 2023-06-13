@@ -221,6 +221,8 @@ func (m *ReOccuringTransaction) validate(all bool) error {
 
 	// no validation rules for Id
 
+	// no validation rules for Flow
+
 	if len(errors) > 0 {
 		return ReOccuringTransactionMultiError(errors)
 	}

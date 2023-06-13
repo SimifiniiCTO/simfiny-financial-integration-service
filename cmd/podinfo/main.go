@@ -6,7 +6,7 @@ import (
 
 	"github.com/newrelic/go-agent/v3/integrations/nrzap"
 	"github.com/newrelic/go-agent/v3/newrelic"
-	"github.com/plaid/plaid-go/plaid"
+	"github.com/plaid/plaid-go/v12/plaid"
 	rkboot "github.com/rookie-ninja/rk-boot/v2"
 	rkentry "github.com/rookie-ninja/rk-entry/v2/entry"
 	rkgrpc "github.com/rookie-ninja/rk-grpc/v2/boot"

@@ -36,6 +36,7 @@ func newReOccuringTransactionORM(db *gorm.DB, opts ...gen.DOOption) reOccuringTr
 	_reOccuringTransactionORM.CategoryId = field.NewString(tableName, "category_id")
 	_reOccuringTransactionORM.Description = field.NewString(tableName, "description")
 	_reOccuringTransactionORM.FirstDate = field.NewString(tableName, "first_date")
+	_reOccuringTransactionORM.Flow = field.NewString(tableName, "flow")
 	_reOccuringTransactionORM.Frequency = field.NewString(tableName, "frequency")
 	_reOccuringTransactionORM.Id = field.NewUint64(tableName, "id")
 	_reOccuringTransactionORM.IsActive = field.NewBool(tableName, "is_active")
@@ -68,6 +69,7 @@ type reOccuringTransactionORM struct {
 	CategoryId                      field.String
 	Description                     field.String
 	FirstDate                       field.String
+	Flow                            field.String
 	Frequency                       field.String
 	Id                              field.Uint64
 	IsActive                        field.Bool
@@ -106,6 +108,7 @@ func (r *reOccuringTransactionORM) updateTableName(table string) *reOccuringTran
 	r.CategoryId = field.NewString(table, "category_id")
 	r.Description = field.NewString(table, "description")
 	r.FirstDate = field.NewString(table, "first_date")
+	r.Flow = field.NewString(table, "flow")
 	r.Frequency = field.NewString(table, "frequency")
 	r.Id = field.NewUint64(table, "id")
 	r.IsActive = field.NewBool(table, "is_active")
@@ -137,7 +140,7 @@ func (r *reOccuringTransactionORM) GetFieldByName(fieldName string) (field.Order
 }
 
 func (r *reOccuringTransactionORM) fillFieldMap() {
-	r.fieldMap = make(map[string]field.Expr, 22)
+	r.fieldMap = make(map[string]field.Expr, 23)
 	r.fieldMap["account_id"] = r.AccountId
 	r.fieldMap["average_amount"] = r.AverageAmount
 	r.fieldMap["average_amount_iso_currency_code"] = r.AverageAmountIsoCurrencyCode
@@ -145,6 +148,7 @@ func (r *reOccuringTransactionORM) fillFieldMap() {
 	r.fieldMap["category_id"] = r.CategoryId
 	r.fieldMap["description"] = r.Description
 	r.fieldMap["first_date"] = r.FirstDate
+	r.fieldMap["flow"] = r.Flow
 	r.fieldMap["frequency"] = r.Frequency
 	r.fieldMap["id"] = r.Id
 	r.fieldMap["is_active"] = r.IsActive

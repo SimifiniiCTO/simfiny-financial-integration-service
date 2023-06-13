@@ -371,3 +371,37 @@ func (db *Db) GetReOcurringTransactionById(ctx context.Context, txId *uint64) (*
 
 	return &tx, nil
 }
+
+func (db *Db) GetUserReOccurringTransactions(ctx context.Context, userId *uint64) ([]*schema.ReOccuringTransaction, error) {
+	if span := db.startDatastoreSpan(ctx, "dbtxn-get-reocurring-transaction-for-user"); span != nil {
+		defer span.End()
+	}
+
+	if userId == nil {
+		return nil, fmt.Errorf("userId must not be nil")
+	}
+
+	t := db.queryOperator.ReOccuringTransactionORM
+	txs, err := t.
+		WithContext(ctx).
+		Where(t.UserId.Eq(*userId)).
+		Find()
+	if err != nil {
+		return nil, err
+	}
+
+	if len(txs) == 0 {
+		return nil, fmt.Errorf("no transactions found")
+	}
+
+	results := make([]*schema.ReOccuringTransaction, 0, len(txs))
+	for _, tx := range txs {
+		txRecord, err := tx.ToPB(ctx)
+		if err != nil {
+			return nil, err
+		}
+		results = append(results, &txRecord)
+	}
+
+	return results, nil
+}

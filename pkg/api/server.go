@@ -14,7 +14,7 @@ import (
 	"github.com/gomodule/redigo/redis"
 	"github.com/gorilla/mux"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
-	"github.com/plaid/plaid-go/plaid"
+	"github.com/plaid/plaid-go/v12/plaid"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/spf13/viper"
 	httpSwagger "github.com/swaggo/http-swagger"

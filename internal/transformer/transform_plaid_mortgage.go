@@ -3,7 +3,7 @@ package transformer
 import (
 	"errors"
 
-	"github.com/plaid/plaid-go/plaid"
+	"github.com/plaid/plaid-go/v12/plaid"
 
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/proto"
 )

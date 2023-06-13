@@ -1,7 +1,7 @@
 package transformer
 
 import (
-	"github.com/plaid/plaid-go/plaid"
+	"github.com/plaid/plaid-go/v12/plaid"
 
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 )
@@ -14,7 +14,7 @@ func NewInvestmentAccount(userID uint64, input *plaid.AccountBase) *schema.Inves
 		Name:           input.Name,
 		Number:         input.GetMask(),
 		Type:           string(input.Type),
-		Balance:        input.Balances.GetAvailable(),
+		Balance:        float32(input.Balances.GetAvailable()),
 		CurrentFunds:   float64(input.Balances.GetCurrent()),
 		BalanceLimit:   uint64(input.Balances.GetLimit()),
 		PlaidAccountId: input.GetAccountId(),

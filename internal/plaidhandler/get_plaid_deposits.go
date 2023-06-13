@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 
-	"github.com/plaid/plaid-go/plaid"
+	"github.com/plaid/plaid-go/v12/plaid"
 )
 
 type Deposits struct {

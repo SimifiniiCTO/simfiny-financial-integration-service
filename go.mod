@@ -9,8 +9,10 @@ require (
 	github.com/SimifiniiCTO/core/core-telemetry v0.0.0-20230307040227-eeb14211b9ed
 	github.com/SimifiniiCTO/simfiny-core-lib v1.0.7
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
+	github.com/alicebob/miniredis/v2 v2.30.2
 	github.com/aws/aws-sdk-go v1.44.264
 	github.com/chzyer/readline v1.5.1
+	github.com/cosmos/gogoproto v1.4.10
 	github.com/emirpasic/gods v1.18.1
 	github.com/envoyproxy/protoc-gen-validate v0.10.0
 	github.com/fatih/color v1.15.0
@@ -58,14 +60,13 @@ require (
 
 require (
 	github.com/alicebob/gopher-json v0.0.0-20200520072559-a9ecdc9d1d3a // indirect
-	github.com/alicebob/miniredis/v2 v2.30.2 // indirect
-	github.com/cosmos/gogoproto v1.4.10 // indirect
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.0.0-rc.5 // indirect
 	github.com/jackc/pgx/v5 v5.3.1 // indirect
 	github.com/newrelic/go-agent/v3/integrations/nrgorilla v1.1.1 // indirect
 	github.com/newrelic/go-agent/v3/integrations/nrgrpc v1.3.2 // indirect
+	github.com/plaid/plaid-go/v12 v12.0.0 // indirect
 	github.com/redis/go-redis/v9 v9.0.4 // indirect
 	github.com/robfig/cron/v3 v3.0.1 // indirect
 	github.com/yuin/gopher-lua v1.1.0 // indirect

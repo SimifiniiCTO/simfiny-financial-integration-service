@@ -6,7 +6,7 @@ import (
 
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/transformer"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/proto"
-	"github.com/plaid/plaid-go/plaid"
+	"github.com/plaid/plaid-go/v12/plaid"
 )
 
 const (

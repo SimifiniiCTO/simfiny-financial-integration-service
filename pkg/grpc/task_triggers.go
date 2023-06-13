@@ -66,3 +66,30 @@ func (s *Server) DispatchPullTransactionsTask(ctx context.Context, userId uint64
 
 	return nil
 }
+
+func (s *Server) DispatchPullUpdatedReCurringTransactionsTask(ctx context.Context, userId, linkId uint64, accessToken string, accountIds []string) error {
+	var (
+		tp = s.taskprocessor
+	)
+
+	if s.instrumentation != nil {
+		txn := s.instrumentation.GetTraceFromContext(ctx)
+		span := s.instrumentation.StartDatastoreSegment(txn, "trigger-pull-recurring-transactions")
+		defer span.End()
+	}
+
+	task, err := taskhandler.NewPullUpdatedReCurringTransactionsTask(userId, linkId, accessToken, accountIds)
+	if err != nil {
+		return err
+	}
+
+	// enqueue the task
+	taskInfo, err := tp.EnqueueTask(ctx, task)
+	if err != nil {
+		return err
+	}
+
+	s.logger.Info("enqueue task", zap.Any("task", taskInfo))
+
+	return nil
+}

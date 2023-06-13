@@ -25,10 +25,11 @@ var (
 type TaskType string
 
 const (
-	TaskSyncTransactions   TaskType = "transactions:sync"
-	TaskDeleteLink         TaskType = "link:delete"
-	TaskDeleteTransactions TaskType = "transactions:delete"
-	TaskPullTransactions   TaskType = "transactions:pull"
+	TaskSyncTransactions                 TaskType = "transactions:sync"
+	TaskDeleteLink                       TaskType = "link:delete"
+	TaskDeleteTransactions               TaskType = "transactions:delete"
+	TaskPullTransactions                 TaskType = "transactions:pull"
+	TaskPullUpdatedRecurringTransactions TaskType = "transactions:pull:updated-recurring"
 )
 
 func (t TaskType) String() string {
@@ -142,6 +143,7 @@ func (th *TaskHandler) RegisterTaskHandler() *asynq.ServeMux {
 	mux.HandleFunc(TaskDeleteLink.String(), th.RunDeleteLinkTask)
 	mux.HandleFunc(TaskDeleteTransactions.String(), th.RunDeleteTransactionsTask)
 	mux.HandleFunc(TaskPullTransactions.String(), th.RunPullTransactionsTask)
+	mux.HandleFunc(TaskPullUpdatedRecurringTransactions.String(), th.RunPullUpdatedReCurringTransactionsTask)
 	return mux
 }
 

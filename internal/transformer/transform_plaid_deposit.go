@@ -2,7 +2,7 @@ package transformer
 
 import (
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/proto"
-	"github.com/plaid/plaid-go/plaid"
+	"github.com/plaid/plaid-go/v12/plaid"
 )
 
 func transformPlaidAccountToDepositAccount(accounts *[]plaid.AccountBase) []*schema.DepositAccount {

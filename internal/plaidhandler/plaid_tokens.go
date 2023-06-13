@@ -3,7 +3,7 @@ package plaidhandler
 import (
 	"time"
 
-	"github.com/plaid/plaid-go/plaid"
+	"github.com/plaid/plaid-go/v12/plaid"
 )
 
 type ItemToken struct {

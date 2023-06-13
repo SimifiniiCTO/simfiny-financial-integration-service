@@ -4,7 +4,7 @@ import (
 	"errors"
 	"time"
 
-	"github.com/plaid/plaid-go/plaid"
+	"github.com/plaid/plaid-go/v12/plaid"
 	"github.com/stripe/stripe-go/v74/client"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"

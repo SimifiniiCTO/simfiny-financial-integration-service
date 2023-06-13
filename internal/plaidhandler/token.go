@@ -3,10 +3,11 @@ package plaidhandler
 import (
 	"context"
 	"fmt"
-	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/pointer"
-	"github.com/plaid/plaid-go/plaid"
-	"go.uber.org/zap"
 	"io/ioutil"
+
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/pointer"
+	"github.com/plaid/plaid-go/v12/plaid"
+	"go.uber.org/zap"
 )
 
 func (p *PlaidWrapper) CreateLinkToken(ctx context.Context, options *LinkTokenOptions) (LinkToken, error) {
@@ -42,10 +43,11 @@ func (p *PlaidWrapper) CreateLinkToken(ctx context.Context, options *LinkTokenOp
 		ClientUserId:             options.ClientUserID,
 		LegalName:                &options.LegalName,
 		PhoneNumber:              options.PhoneNumber,
-		PhoneNumberVerifiedTime:  options.PhoneNumberVerifiedTime,
+		PhoneNumberVerifiedTime:  *plaid.NewNullableTime(options.PhoneNumberVerifiedTime),
 		EmailAddress:             &options.EmailAddress,
-		EmailAddressVerifiedTime: options.EmailAddressVerifiedTime,
+		EmailAddressVerifiedTime: *plaid.NewNullableTime(options.EmailAddressVerifiedTime),
 	}
+
 	request := plaid.NewLinkTokenCreateRequest(
 		PlaidClientName,
 		PlaidLanguage,

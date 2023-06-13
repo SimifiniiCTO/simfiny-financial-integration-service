@@ -4,59 +4,6 @@ import * as _m0 from "protobufjs/minimal";
 
 export const protobufPackage = "api.v1";
 
-/**
- * account_id
- * string
- * The ID of the account to which the stream belongs
- *
- * stream_id
- * string
- * A unique id for the stream
- *
- * category
- * [string]
- * A hierarchical array of the categories to which this transaction belongs. See Categories.
- * All implementations are encouraged to use the new personal_finance_category instead of category. personal_finance_category provides more meaningful categorization and greater accuracy.
- *
- * category_id
- * string
- * The ID of the category to which this transaction belongs. See Categories.
- * All implementations are encouraged to use the new personal_finance_category instead of category. personal_finance_category provides more meaningful categorization and greater accuracy.
- *
- * description
- * string
- * A description of the transaction stream.
- *
- * merchant_name
- * nullable
- * string
- * The merchant associated with the transaction stream.
- *
- * first_date
- * string
- * The posted date of the earliest transaction in the stream.
- * Format: date
- *
- * last_date
- * string
- * The posted date of the latest transaction in the stream.
- * Format: date
- *
- * frequency
- * string
- * Describes the frequency of the transaction stream.
- * WEEKLY: Assigned to a transaction stream that occurs approximately every week.
- * BIWEEKLY: Assigned to a transaction stream that occurs approximately every 2 weeks.
- * SEMI_MONTHLY: Assigned to a transaction stream that occurs approximately twice per month. This frequency is typically seen for inflow transaction streams.
- * MONTHLY: Assigned to a transaction stream that occurs approximately every month.
- * ANNUALLY: Assigned to a transaction stream that occurs approximately every year.
- * UNKNOWN: Assigned to a transaction stream that does not fit any of the pre-defined frequencies.
- * Possible values: UNKNOWN, WEEKLY, BIWEEKLY, SEMI_MONTHLY, MONTHLY, ANNUALLY
- *
- * transaction_ids
- * [string]
- * An array of Plaid transaction IDs belonging to the stream, sorted by posted date.
- */
 export enum ReOccuringTransactionsFrequency {
   RE_OCCURING_TRANSACTIONS_FREQUENCY_UNSPECIFIED = 0,
   RE_OCCURING_TRANSACTIONS_FREQUENCY_WEEKLY = 1,
@@ -171,6 +118,45 @@ export function reOccuringTransactionsStatusToJSON(object: ReOccuringTransaction
   }
 }
 
+export enum ReCurringFlow {
+  RE_CURRING_FLOW_UNSPECIFIED = 0,
+  RE_CURRING_FLOW_INFLOW = 1,
+  RE_CURRING_FLOW_OUTFLOW = 2,
+  UNRECOGNIZED = -1,
+}
+
+export function reCurringFlowFromJSON(object: any): ReCurringFlow {
+  switch (object) {
+    case 0:
+    case "RE_CURRING_FLOW_UNSPECIFIED":
+      return ReCurringFlow.RE_CURRING_FLOW_UNSPECIFIED;
+    case 1:
+    case "RE_CURRING_FLOW_INFLOW":
+      return ReCurringFlow.RE_CURRING_FLOW_INFLOW;
+    case 2:
+    case "RE_CURRING_FLOW_OUTFLOW":
+      return ReCurringFlow.RE_CURRING_FLOW_OUTFLOW;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return ReCurringFlow.UNRECOGNIZED;
+  }
+}
+
+export function reCurringFlowToJSON(object: ReCurringFlow): string {
+  switch (object) {
+    case ReCurringFlow.RE_CURRING_FLOW_UNSPECIFIED:
+      return "RE_CURRING_FLOW_UNSPECIFIED";
+    case ReCurringFlow.RE_CURRING_FLOW_INFLOW:
+      return "RE_CURRING_FLOW_INFLOW";
+    case ReCurringFlow.RE_CURRING_FLOW_OUTFLOW:
+      return "RE_CURRING_FLOW_OUTFLOW";
+    case ReCurringFlow.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
 export interface PersonalFinanceCategory {
   primary: string;
   detailed: string;
@@ -219,7 +205,10 @@ export interface ReOccuringTransaction {
   userId: number;
   /** @gotag: clickhouse:"link_id" */
   linkId: number;
+  /** @gotag: clickhouse:"id" */
   id: number;
+  /** @gotag: clickhouse:"flow" */
+  flow: ReCurringFlow;
 }
 
 export interface Transaction {
@@ -422,6 +411,7 @@ function createBaseReOccuringTransaction(): ReOccuringTransaction {
     userId: 0,
     linkId: 0,
     id: 0,
+    flow: 0,
   };
 }
 
@@ -492,6 +482,9 @@ export const ReOccuringTransaction = {
     }
     if (message.id !== 0) {
       writer.uint32(176).uint64(message.id);
+    }
+    if (message.flow !== 0) {
+      writer.uint32(184).int32(message.flow);
     }
     return writer;
   },
@@ -657,6 +650,13 @@ export const ReOccuringTransaction = {
 
           message.id = longToNumber(reader.uint64() as Long);
           continue;
+        case 23:
+          if (tag !== 184) {
+            break;
+          }
+
+          message.flow = reader.int32() as any;
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -698,6 +698,7 @@ export const ReOccuringTransaction = {
       userId: isSet(object.userId) ? Number(object.userId) : 0,
       linkId: isSet(object.linkId) ? Number(object.linkId) : 0,
       id: isSet(object.id) ? Number(object.id) : 0,
+      flow: isSet(object.flow) ? reCurringFlowFromJSON(object.flow) : 0,
     };
   },
 
@@ -737,6 +738,7 @@ export const ReOccuringTransaction = {
     message.userId !== undefined && (obj.userId = Math.round(message.userId));
     message.linkId !== undefined && (obj.linkId = Math.round(message.linkId));
     message.id !== undefined && (obj.id = Math.round(message.id));
+    message.flow !== undefined && (obj.flow = reCurringFlowToJSON(message.flow));
     return obj;
   },
 
@@ -768,6 +770,7 @@ export const ReOccuringTransaction = {
     message.userId = object.userId ?? 0;
     message.linkId = object.linkId ?? 0;
     message.id = object.id ?? 0;
+    message.flow = object.flow ?? 0;
     return message;
   },
 };

@@ -3,7 +3,7 @@ package transformer
 import (
 	"fmt"
 
-	"github.com/plaid/plaid-go/plaid"
+	"github.com/plaid/plaid-go/v12/plaid"
 
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/proto"
 )
@@ -25,9 +25,9 @@ func NewCreditAccount(userID uint64, input *plaid.CreditCardLiability, acct *pla
 		AccountSubtype:         string(acct.GetSubtype()),
 		AccountType:            string(acct.GetSubtype()),
 		IsOverdue:              input.GetIsOverdue(),
-		LastPaymentAmount:      float64(input.LastPaymentAmount),
+		LastPaymentAmount:      float64(*input.LastPaymentAmount.Get()),
 		LastPaymentDate:        input.GetLastPaymentDate(),
-		LastStatementIssueDate: input.LastStatementIssueDate,
+		LastStatementIssueDate: *input.LastStatementIssueDate.Get(),
 		MinimumPaymentAmount:   float64(input.GetMinimumPaymentAmount()),
 		NextPaymentDueDate:     input.GetNextPaymentDueDate(),
 		Aprs:                   aprs,

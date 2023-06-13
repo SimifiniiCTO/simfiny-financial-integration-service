@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/plaid/plaid-go/plaid"
+	"github.com/plaid/plaid-go/v12/plaid"
 	"go.uber.org/zap"
 
 	"github.com/SimifiniiCTO/simfiny-core-lib/instrumentation"

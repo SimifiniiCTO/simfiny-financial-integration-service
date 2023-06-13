@@ -4,7 +4,7 @@ import (
 	"errors"
 
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/proto"
-	"github.com/plaid/plaid-go/plaid"
+	"github.com/plaid/plaid-go/v12/plaid"
 )
 
 // transformPlaidCreditObject transforms a plaid credit card liabilities object to the internal credit account object
@@ -32,9 +32,9 @@ func transformPlaidCreditObject(creditCardliabilities *[]plaid.CreditCardLiabili
 			AccountSubtype:         metadata.accountSubtype,
 			AccountType:            metadata.accountType,
 			IsOverdue:              element.GetIsOverdue(),
-			LastPaymentAmount:      float64(element.LastPaymentAmount),
+			LastPaymentAmount:      float64(*element.LastPaymentAmount.Get()),
 			LastPaymentDate:        element.GetLastPaymentDate(),
-			LastStatementIssueDate: element.LastStatementIssueDate,
+			LastStatementIssueDate: *element.LastStatementIssueDate.Get(),
 			MinimumPaymentAmount:   float64(element.GetMinimumPaymentAmount()),
 			NextPaymentDueDate:     element.GetNextPaymentDueDate(),
 			Aprs:                   aprs,

@@ -1,7 +1,7 @@
 package transformer
 
 import (
-	"github.com/plaid/plaid-go/plaid"
+	"github.com/plaid/plaid-go/v12/plaid"
 
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 )
@@ -15,13 +15,14 @@ func NewPlaidBankAccount(userID uint64, bankAccount plaid.AccountBase) (*schema.
 		Name:           bankAccount.GetName(),
 		Number:         bankAccount.GetMask(),
 		Type:           schema.BankAccountType_BANK_ACCOUNT_TYPE_PLAID,
-		Balance:        bankAccount.Balances.GetAvailable(),
-		Currency:       "USD",
+		Balance:        float32(bankAccount.Balances.GetAvailable()),
+		Currency:       bankAccount.Balances.GetIsoCurrencyCode(),
 		CurrentFunds:   float64(bankAccount.Balances.GetCurrent()),
 		BalanceLimit:   uint64(bankAccount.Balances.GetLimit()),
-		Pockets:        []*schema.Pocket{}, // TODO: auto generate default pockets
+		Pockets:        []*schema.Pocket{},
 		PlaidAccountId: bankAccount.AccountId,
 		Subtype:        string(bankAccount.GetSubtype()),
+		Status:         schema.BankAccountStatus_BANK_ACCOUNT_STATUS_ACTIVE,
 	}, nil
 
 }

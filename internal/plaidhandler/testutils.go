@@ -2,7 +2,7 @@ package plaidhandler
 
 import (
 	"github.com/newrelic/go-agent/v3/newrelic"
-	"github.com/plaid/plaid-go/plaid"
+	"github.com/plaid/plaid-go/v12/plaid"
 	"go.uber.org/zap"
 
 	"github.com/SimifiniiCTO/simfiny-core-lib/instrumentation"
