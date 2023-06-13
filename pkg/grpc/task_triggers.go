@@ -78,6 +78,11 @@ func (s *Server) DispatchPullUpdatedReCurringTransactionsTask(ctx context.Contex
 		defer span.End()
 	}
 
+	if len(accountIds) == 0 {
+		s.logger.Error("no account ids found in webhook")
+		return nil
+	}
+
 	task, err := taskhandler.NewPullUpdatedReCurringTransactionsTask(userId, linkId, accessToken, accountIds)
 	if err != nil {
 		return err

@@ -186,7 +186,7 @@ func (s *Server) processWebhook(ctx context.Context, req *proto.ProcessWebhookRe
 	plaidItemId := link.PlaidLink.ItemId
 
 	switch req.WebhookType {
-	case "INVESTMENTS_TRANSACTIONS":
+	case "INVESTMENTS_TRANSACTIONS": // TODO: DO THIS TONIGHT
 		switch req.WebhookCode {
 		// Fired when new or updated investment transactions have been detected on an investment account.
 		// The webhook typically fires in response to any newly added transactions or price changes to existing
@@ -196,7 +196,7 @@ func (s *Server) processWebhook(ctx context.Context, req *proto.ProcessWebhookRe
 		default:
 			s.logger.Error("Plaid webhook will not be handled, it is not implemented.")
 		}
-	case "HOLDINGS":
+	case "HOLDINGS": // TODO: DO THIS TONIGHT
 		switch req.WebhookCode {
 		// Fired when new or updated holdings have been detected on an investment account.
 		// The webhook typically fires in response to any newly added holdings or price changes to existing
@@ -247,15 +247,9 @@ func (s *Server) processWebhook(ctx context.Context, req *proto.ProcessWebhookRe
 				```
 			*/
 			case "RECURRING_TRANSACTIONS_UPDATE":
-				accountIds := req.AccountIds
-				if len(accountIds) == 0 {
-					s.logger.Error("no account ids found in webhook")
-					return nil
-				}
-
 				// DISPATCH task to pull the recurring transactions for the given account ids and update the database
 				// with the new recurring transactions
-				if err := s.DispatchPullUpdatedReCurringTransactionsTask(ctx, userId, link.Id, *accessToken, accountIds); err != nil {
+				if err := s.DispatchPullUpdatedReCurringTransactionsTask(ctx, userId, link.Id, *accessToken, req.AccountIds); err != nil {
 					return err
 				}
 
