@@ -111,10 +111,15 @@
     - [GetMortgageAccountResponse](#api-v1-GetMortgageAccountResponse)
     - [GetPocketRequest](#api-v1-GetPocketRequest)
     - [GetPocketResponse](#api-v1-GetPocketResponse)
+    - [GetReCurringTransactionsRequest](#api-v1-GetReCurringTransactionsRequest)
+    - [GetReCurringTransactionsResponse](#api-v1-GetReCurringTransactionsResponse)
+    - [GetReCurringTransactionsResponse.ParticipantReCurringTransactions](#api-v1-GetReCurringTransactionsResponse-ParticipantReCurringTransactions)
     - [GetSmartGoalsByPocketIdRequest](#api-v1-GetSmartGoalsByPocketIdRequest)
     - [GetSmartGoalsByPocketIdResponse](#api-v1-GetSmartGoalsByPocketIdResponse)
     - [GetStudentLoanAccountRequest](#api-v1-GetStudentLoanAccountRequest)
     - [GetStudentLoanAccountResponse](#api-v1-GetStudentLoanAccountResponse)
+    - [GetTransactionsRequest](#api-v1-GetTransactionsRequest)
+    - [GetTransactionsResponse](#api-v1-GetTransactionsResponse)
     - [GetUserProfileRequest](#api-v1-GetUserProfileRequest)
     - [GetUserProfileResponse](#api-v1-GetUserProfileResponse)
     - [HealthCheckRequest](#api-v1-HealthCheckRequest)
@@ -2054,6 +2059,53 @@ the `get bank account` request
 
 
 
+<a name="api-v1-GetReCurringTransactionsRequest"></a>
+
+### GetReCurringTransactionsRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| user_id | [uint64](#uint64) |  | The user id Validations: - user_id must be greater than 0 |
+
+
+
+
+
+
+<a name="api-v1-GetReCurringTransactionsResponse"></a>
+
+### GetReCurringTransactionsResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| re_ccuring_transactions | [ReOccuringTransaction](#api-v1-ReOccuringTransaction) | repeated | The re-occuring transactions |
+| participant_re_ccuring_transactions | [GetReCurringTransactionsResponse.ParticipantReCurringTransactions](#api-v1-GetReCurringTransactionsResponse-ParticipantReCurringTransactions) | repeated |  |
+
+
+
+
+
+
+<a name="api-v1-GetReCurringTransactionsResponse-ParticipantReCurringTransactions"></a>
+
+### GetReCurringTransactionsResponse.ParticipantReCurringTransactions
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| reocurring_transaction_id | [uint64](#uint64) |  | The participant id |
+| transactions | [Transaction](#api-v1-Transaction) | repeated | The transactions |
+
+
+
+
+
+
 <a name="api-v1-GetSmartGoalsByPocketIdRequest"></a>
 
 ### GetSmartGoalsByPocketIdRequest
@@ -2109,6 +2161,39 @@ the `get bank account` request
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | student_loan_account | [StudentLoanAccount](#api-v1-StudentLoanAccount) |  | The student loan account |
+
+
+
+
+
+
+<a name="api-v1-GetTransactionsRequest"></a>
+
+### GetTransactionsRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| user_id | [uint64](#uint64) |  | The user id Validations: - user_id must be greater than 0 |
+| page_number | [uint64](#uint64) |  |  |
+| page_size | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="api-v1-GetTransactionsResponse"></a>
+
+### GetTransactionsResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| transactions | [Transaction](#api-v1-Transaction) | repeated | The transactions |
+| next_page_number | [uint64](#uint64) |  |  |
 
 
 
@@ -2570,6 +2655,8 @@ FinancialService API.
 | GetLink | [GetLinkRequest](#api-v1-GetLinkRequest) | [GetLinkResponse](#api-v1-GetLinkResponse) |  |
 | GetLinks | [GetLinksRequest](#api-v1-GetLinksRequest) | [GetLinksResponse](#api-v1-GetLinksResponse) |  |
 | DeleteLink | [DeleteLinkRequest](#api-v1-DeleteLinkRequest) | [DeleteLinkResponse](#api-v1-DeleteLinkResponse) |  |
+| GetReCurringTransactions | [GetReCurringTransactionsRequest](#api-v1-GetReCurringTransactionsRequest) | [GetReCurringTransactionsResponse](#api-v1-GetReCurringTransactionsResponse) |  |
+| GetTransactions | [GetTransactionsRequest](#api-v1-GetTransactionsRequest) | [GetTransactionsResponse](#api-v1-GetTransactionsResponse) |  |
 | ProcessWebhook | [ProcessWebhookRequest](#api-v1-ProcessWebhookRequest) | [ProcessWebhookResponse](#api-v1-ProcessWebhookResponse) |  |
 | StripeWebhook | [StripeWebhookRequest](#api-v1-StripeWebhookRequest) | [StripeWebhookResponse](#api-v1-StripeWebhookResponse) |  |
 

@@ -2057,6 +2057,124 @@
           "webhook"
         ]
       }
+    },
+    "/api/v1/transactions/recurring-transactions/{userId}": {
+      "get": {
+        "summary": "get recurring transactions",
+        "description": "This endpoint returns the recurring transactions for a given user id",
+        "operationId": "GetRecurringTransactions",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": ".api.v1.GetRecurringTransactionsResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "description": "The user id\nValidations:\n- user_id must be greater than 0",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "recurring transactions"
+        ]
+      }
+    },
+    "/api/v1/transactions/{userId}/pageNumber/{pageNumber}/pageSize/{pageSize}": {
+      "get": {
+        "summary": "get transactions",
+        "description": "This endpoint returns the transactions for a given user id",
+        "operationId": "GetTransactions",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/GetTransactionsResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "description": "The user id\nValidations:\n- user_id must be greater than 0",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "pageNumber",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "pageSize",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "transactions"
+        ]
+      }
     }
   },
   "definitions": {
@@ -2748,6 +2866,24 @@
         }
       }
     },
+    "GetReCurringTransactionsResponse": {
+      "type": "object",
+      "properties": {
+        "reCcuringTransactions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ReOccuringTransaction"
+          },
+          "title": "The re-occuring transactions"
+        },
+        "participantReCcuringTransactions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ParticipantReCurringTransactions"
+          }
+        }
+      }
+    },
     "GetSmartGoalsByPocketIdResponse": {
       "type": "object",
       "properties": {
@@ -2766,6 +2902,22 @@
         "studentLoanAccount": {
           "$ref": "#/definitions/StudentLoanAccount",
           "title": "The student loan account"
+        }
+      }
+    },
+    "GetTransactionsResponse": {
+      "type": "object",
+      "properties": {
+        "transactions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Transaction"
+          },
+          "title": "The transactions"
+        },
+        "nextPageNumber": {
+          "type": "string",
+          "format": "uint64"
         }
       }
     },
@@ -3311,6 +3463,23 @@
       ],
       "default": "no_not_found_error"
     },
+    "ParticipantReCurringTransactions": {
+      "type": "object",
+      "properties": {
+        "reocurringTransactionId": {
+          "type": "string",
+          "format": "uint64",
+          "title": "The participant id"
+        },
+        "transactions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Transaction"
+          },
+          "title": "The transactions"
+        }
+      }
+    },
     "PathUnknownErrorMessageResponse": {
       "type": "object",
       "example": {
@@ -3322,6 +3491,35 @@
           "$ref": "#/definitions/NotFoundErrorCode"
         },
         "message": {
+          "type": "string"
+        }
+      }
+    },
+    "PaymentMeta": {
+      "type": "object",
+      "properties": {
+        "byOrderOf": {
+          "type": "string"
+        },
+        "payee": {
+          "type": "string"
+        },
+        "payer": {
+          "type": "string"
+        },
+        "paymentMethod": {
+          "type": "string"
+        },
+        "paymentProcessor": {
+          "type": "string"
+        },
+        "ppdId": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "referenceNumber": {
           "type": "string"
         }
       }
@@ -3595,6 +3793,144 @@
     },
     "ProcessWebhookResponse": {
       "type": "object"
+    },
+    "ReCurringFlow": {
+      "type": "string",
+      "enum": [
+        "RE_CURRING_FLOW_UNSPECIFIED",
+        "RE_CURRING_FLOW_INFLOW",
+        "RE_CURRING_FLOW_OUTFLOW"
+      ],
+      "default": "RE_CURRING_FLOW_UNSPECIFIED"
+    },
+    "ReOccuringTransaction": {
+      "type": "object",
+      "properties": {
+        "accountId": {
+          "type": "string",
+          "title": "@gotag: clickhouse:\"account_id\""
+        },
+        "streamId": {
+          "type": "string",
+          "title": "@gotag: clickhouse:\"stream_id\""
+        },
+        "category": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "@gotag: clickhouse:\"category\""
+        },
+        "categoryId": {
+          "type": "string",
+          "title": "@gotag: clickhouse:\"category_id\""
+        },
+        "description": {
+          "type": "string",
+          "title": "@gotag: clickhouse:\"description\""
+        },
+        "merchantName": {
+          "type": "string",
+          "title": "@gotag: clickhouse:\"merchant_name\""
+        },
+        "personalFinanceCategoryPrimary": {
+          "type": "string",
+          "title": "@gotag: clickhouse:\"personal_finance_category_primary\""
+        },
+        "personalFinanceCategoryDetailed": {
+          "type": "string",
+          "title": "@gotag: clickhouse:\"personal_finance_category_detailed\""
+        },
+        "firstDate": {
+          "type": "string",
+          "title": "@gotag: clickhouse:\"first_date\""
+        },
+        "lastDate": {
+          "type": "string",
+          "title": "@gotag: clickhouse:\"last_date\""
+        },
+        "frequency": {
+          "$ref": "#/definitions/ReOccuringTransactionsFrequency",
+          "title": "@gotag: clickhouse:\"frequency\""
+        },
+        "transactionIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "@gotag: clickhouse:\"transaction_ids\""
+        },
+        "averageAmount": {
+          "type": "string",
+          "title": "@gotag: clickhouse:\"average_amount\""
+        },
+        "averageAmountIsoCurrencyCode": {
+          "type": "string",
+          "title": "@gotag: clickhouse:\"average_amount_iso_currency_code\""
+        },
+        "lastAmount": {
+          "type": "string",
+          "title": "@gotag: clickhouse:\"last_amount\""
+        },
+        "lastAmountIsoCurrencyCode": {
+          "type": "string",
+          "title": "@gotag: clickhouse:\"last_amount_iso_currency_code\""
+        },
+        "isActive": {
+          "type": "boolean",
+          "title": "@gotag: clickhouse:\"is_active\""
+        },
+        "status": {
+          "$ref": "#/definitions/ReOccuringTransactionsStatus",
+          "title": "@gotag: clickhouse:\"status\""
+        },
+        "updatedTime": {
+          "type": "string",
+          "title": "@gotag: clickhouse:\"updated_time\""
+        },
+        "userId": {
+          "type": "string",
+          "format": "uint64",
+          "title": "@gotag: clickhouse:\"user_id\""
+        },
+        "linkId": {
+          "type": "string",
+          "format": "uint64",
+          "title": "@gotag: clickhouse:\"link_id\""
+        },
+        "id": {
+          "type": "string",
+          "format": "uint64",
+          "title": "@gotag: clickhouse:\"id\""
+        },
+        "flow": {
+          "$ref": "#/definitions/ReCurringFlow",
+          "title": "@gotag: clickhouse:\"flow\""
+        }
+      }
+    },
+    "ReOccuringTransactionsFrequency": {
+      "type": "string",
+      "enum": [
+        "RE_OCCURING_TRANSACTIONS_FREQUENCY_UNSPECIFIED",
+        "RE_OCCURING_TRANSACTIONS_FREQUENCY_WEEKLY",
+        "RE_OCCURING_TRANSACTIONS_FREQUENCY_BIWEEKLY",
+        "RE_OCCURING_TRANSACTIONS_FREQUENCY_SEMI_MONTHLY",
+        "RE_OCCURING_TRANSACTIONS_FREQUENCY_MONTHLY",
+        "RE_OCCURING_TRANSACTIONS_FREQUENCY_ANNUALLY"
+      ],
+      "default": "RE_OCCURING_TRANSACTIONS_FREQUENCY_UNSPECIFIED"
+    },
+    "ReOccuringTransactionsStatus": {
+      "type": "string",
+      "enum": [
+        "RE_OCCURING_TRANSACTIONS_STATUS_UNSPECIFIED",
+        "RE_OCCURING_TRANSACTIONS_STATUS_MATURE",
+        "RE_OCCURING_TRANSACTIONS_STATUS_EARLY_DETECTION",
+        "RE_OCCURING_TRANSACTIONS_STATUS_TOMBSTONED"
+      ],
+      "default": "RE_OCCURING_TRANSACTIONS_STATUS_UNSPECIFIED",
+      "description": " - RE_OCCURING_TRANSACTIONS_STATUS_MATURE: A MATURE recurring stream should have at least 3 transactions and happen\n on a regular cadence (For Annual recurring stream, we will mark it MATURE after 2 instances).\n - RE_OCCURING_TRANSACTIONS_STATUS_EARLY_DETECTION: When a recurring transaction first appears in the transaction history and before it fulfills\nthe requirement of a mature stream, the status will be EARLY_DETECTION.\n - RE_OCCURING_TRANSACTIONS_STATUS_TOMBSTONED: A stream that was previously in the EARLY_DETECTION status will move to the TOMBSTONED\nstatus when no further transactions were found at the next expected date."
     },
     "ReadynessCheckResponse": {
       "type": "object",
@@ -3897,6 +4233,141 @@
           "type": "string"
         },
         "version": {
+          "type": "string"
+        }
+      }
+    },
+    "Transaction": {
+      "type": "object",
+      "properties": {
+        "accountId": {
+          "type": "string",
+          "title": "@gotag: clickhouse:\"account_id\""
+        },
+        "amount": {
+          "type": "number",
+          "format": "double",
+          "title": "@gotag: clickhouse:\"amount\""
+        },
+        "isoCurrencyCode": {
+          "type": "string",
+          "title": "@gotag: clickhouse:\"iso_currency_code\""
+        },
+        "unofficialCurrencyCode": {
+          "type": "string",
+          "title": "@gotag: clickhouse:\"unofficial_currency_code\""
+        },
+        "category": {
+          "type": "string",
+          "title": "@gotag: clickhouse:\"category\""
+        },
+        "categoryId": {
+          "type": "string",
+          "title": "@gotag: clickhouse:\"category_id\""
+        },
+        "checkNumber": {
+          "type": "string",
+          "title": "@gotag: clickhouse:\"check_number\""
+        },
+        "date": {
+          "type": "string",
+          "title": "@gotag: clickhouse:\"date\""
+        },
+        "datetime": {
+          "type": "string",
+          "title": "@gotag: clickhouse:\"datetime\""
+        },
+        "authorizedDate": {
+          "type": "string",
+          "title": "@gotag: clickhouse:\"authorized_date\""
+        },
+        "authorizedDatetime": {
+          "type": "string",
+          "title": "@gotag: clickhouse:\"authorized_datetime\""
+        },
+        "location": {
+          "$ref": "#/definitions/Transaction.Location",
+          "title": "@gotag: clickhouse:\"location\""
+        },
+        "name": {
+          "type": "string",
+          "title": "@gotag: clickhouse:\"name\""
+        },
+        "merchantName": {
+          "type": "string",
+          "title": "@gotag: clickhouse:\"merchant_name\""
+        },
+        "paymentMeta": {
+          "$ref": "#/definitions/PaymentMeta",
+          "title": "@gotag: clickhouse:\"payment_meta\""
+        },
+        "paymentChannel": {
+          "type": "string",
+          "title": "@gotag: clickhouse:\"payment_channel\""
+        },
+        "pending": {
+          "type": "boolean",
+          "title": "@gotag: clickhouse:\"pending\""
+        },
+        "pendingTransactionId": {
+          "type": "string",
+          "title": "@gotag: clickhouse:\"pending_transaction_id\""
+        },
+        "accountOwner": {
+          "type": "string",
+          "title": "@gotag: clickhouse:\"account_owner\""
+        },
+        "transactionId": {
+          "type": "string",
+          "title": "@gotag: clickhouse:\"transaction_id\""
+        },
+        "transactionCode": {
+          "type": "string",
+          "title": "@gotag: clickhouse:\"transaction_code\""
+        },
+        "id": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "userId": {
+          "type": "string",
+          "format": "uint64",
+          "title": "@gotag: clickhouse:\"user_id\""
+        },
+        "linkId": {
+          "type": "string",
+          "format": "uint64",
+          "title": "@gotag: clickhouse:\"link_id\""
+        }
+      }
+    },
+    "Transaction.Location": {
+      "type": "object",
+      "properties": {
+        "address": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "region": {
+          "type": "string"
+        },
+        "postalCode": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        },
+        "lat": {
+          "type": "number",
+          "format": "double"
+        },
+        "lon": {
+          "type": "number",
+          "format": "double"
+        },
+        "storeNumber": {
           "type": "string"
         }
       }

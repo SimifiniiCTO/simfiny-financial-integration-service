@@ -2,6 +2,7 @@
 import * as Long from "long";
 import * as _m0 from "protobufjs/minimal";
 import { Any } from "../../google/protobuf/any";
+import { ReOccuringTransaction, Transaction } from "./clickhouse";
 import {
   BankAccount,
   Budget,
@@ -665,6 +666,45 @@ export interface DeleteLinkRequest {
 export interface DeleteLinkResponse {
   /** The link's id */
   linkId: number;
+}
+
+export interface GetReCurringTransactionsRequest {
+  /**
+   * The user id
+   * Validations:
+   * - user_id must be greater than 0
+   */
+  userId: number;
+}
+
+export interface GetReCurringTransactionsResponse {
+  /** The re-occuring transactions */
+  reCcuringTransactions: ReOccuringTransaction[];
+  participantReCcuringTransactions: GetReCurringTransactionsResponse_ParticipantReCurringTransactions[];
+}
+
+export interface GetReCurringTransactionsResponse_ParticipantReCurringTransactions {
+  /** The participant id */
+  reocurringTransactionId: number;
+  /** The transactions */
+  transactions: Transaction[];
+}
+
+export interface GetTransactionsRequest {
+  /**
+   * The user id
+   * Validations:
+   * - user_id must be greater than 0
+   */
+  userId: number;
+  pageNumber: number;
+  pageSize: number;
+}
+
+export interface GetTransactionsResponse {
+  /** The transactions */
+  transactions: Transaction[];
+  nextPageNumber: number;
 }
 
 export interface ProcessWebhookRequest {
@@ -5216,6 +5256,412 @@ export const DeleteLinkResponse = {
   fromPartial<I extends Exact<DeepPartial<DeleteLinkResponse>, I>>(object: I): DeleteLinkResponse {
     const message = createBaseDeleteLinkResponse();
     message.linkId = object.linkId ?? 0;
+    return message;
+  },
+};
+
+function createBaseGetReCurringTransactionsRequest(): GetReCurringTransactionsRequest {
+  return { userId: 0 };
+}
+
+export const GetReCurringTransactionsRequest = {
+  encode(message: GetReCurringTransactionsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.userId !== 0) {
+      writer.uint32(16).uint64(message.userId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetReCurringTransactionsRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetReCurringTransactionsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.userId = longToNumber(reader.uint64() as Long);
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetReCurringTransactionsRequest {
+    return { userId: isSet(object.userId) ? Number(object.userId) : 0 };
+  },
+
+  toJSON(message: GetReCurringTransactionsRequest): unknown {
+    const obj: any = {};
+    message.userId !== undefined && (obj.userId = Math.round(message.userId));
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetReCurringTransactionsRequest>, I>>(base?: I): GetReCurringTransactionsRequest {
+    return GetReCurringTransactionsRequest.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<GetReCurringTransactionsRequest>, I>>(
+    object: I,
+  ): GetReCurringTransactionsRequest {
+    const message = createBaseGetReCurringTransactionsRequest();
+    message.userId = object.userId ?? 0;
+    return message;
+  },
+};
+
+function createBaseGetReCurringTransactionsResponse(): GetReCurringTransactionsResponse {
+  return { reCcuringTransactions: [], participantReCcuringTransactions: [] };
+}
+
+export const GetReCurringTransactionsResponse = {
+  encode(message: GetReCurringTransactionsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.reCcuringTransactions) {
+      ReOccuringTransaction.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    for (const v of message.participantReCcuringTransactions) {
+      GetReCurringTransactionsResponse_ParticipantReCurringTransactions.encode(v!, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetReCurringTransactionsResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetReCurringTransactionsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.reCcuringTransactions.push(ReOccuringTransaction.decode(reader, reader.uint32()));
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.participantReCcuringTransactions.push(
+            GetReCurringTransactionsResponse_ParticipantReCurringTransactions.decode(reader, reader.uint32()),
+          );
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetReCurringTransactionsResponse {
+    return {
+      reCcuringTransactions: Array.isArray(object?.reCcuringTransactions)
+        ? object.reCcuringTransactions.map((e: any) => ReOccuringTransaction.fromJSON(e))
+        : [],
+      participantReCcuringTransactions: Array.isArray(object?.participantReCcuringTransactions)
+        ? object.participantReCcuringTransactions.map((e: any) =>
+          GetReCurringTransactionsResponse_ParticipantReCurringTransactions.fromJSON(e)
+        )
+        : [],
+    };
+  },
+
+  toJSON(message: GetReCurringTransactionsResponse): unknown {
+    const obj: any = {};
+    if (message.reCcuringTransactions) {
+      obj.reCcuringTransactions = message.reCcuringTransactions.map((e) =>
+        e ? ReOccuringTransaction.toJSON(e) : undefined
+      );
+    } else {
+      obj.reCcuringTransactions = [];
+    }
+    if (message.participantReCcuringTransactions) {
+      obj.participantReCcuringTransactions = message.participantReCcuringTransactions.map((e) =>
+        e ? GetReCurringTransactionsResponse_ParticipantReCurringTransactions.toJSON(e) : undefined
+      );
+    } else {
+      obj.participantReCcuringTransactions = [];
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetReCurringTransactionsResponse>, I>>(
+    base?: I,
+  ): GetReCurringTransactionsResponse {
+    return GetReCurringTransactionsResponse.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<GetReCurringTransactionsResponse>, I>>(
+    object: I,
+  ): GetReCurringTransactionsResponse {
+    const message = createBaseGetReCurringTransactionsResponse();
+    message.reCcuringTransactions = object.reCcuringTransactions?.map((e) => ReOccuringTransaction.fromPartial(e)) ||
+      [];
+    message.participantReCcuringTransactions =
+      object.participantReCcuringTransactions?.map((e) =>
+        GetReCurringTransactionsResponse_ParticipantReCurringTransactions.fromPartial(e)
+      ) || [];
+    return message;
+  },
+};
+
+function createBaseGetReCurringTransactionsResponse_ParticipantReCurringTransactions(): GetReCurringTransactionsResponse_ParticipantReCurringTransactions {
+  return { reocurringTransactionId: 0, transactions: [] };
+}
+
+export const GetReCurringTransactionsResponse_ParticipantReCurringTransactions = {
+  encode(
+    message: GetReCurringTransactionsResponse_ParticipantReCurringTransactions,
+    writer: _m0.Writer = _m0.Writer.create(),
+  ): _m0.Writer {
+    if (message.reocurringTransactionId !== 0) {
+      writer.uint32(8).uint64(message.reocurringTransactionId);
+    }
+    for (const v of message.transactions) {
+      Transaction.encode(v!, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number,
+  ): GetReCurringTransactionsResponse_ParticipantReCurringTransactions {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetReCurringTransactionsResponse_ParticipantReCurringTransactions();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.reocurringTransactionId = longToNumber(reader.uint64() as Long);
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.transactions.push(Transaction.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetReCurringTransactionsResponse_ParticipantReCurringTransactions {
+    return {
+      reocurringTransactionId: isSet(object.reocurringTransactionId) ? Number(object.reocurringTransactionId) : 0,
+      transactions: Array.isArray(object?.transactions)
+        ? object.transactions.map((e: any) => Transaction.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: GetReCurringTransactionsResponse_ParticipantReCurringTransactions): unknown {
+    const obj: any = {};
+    message.reocurringTransactionId !== undefined &&
+      (obj.reocurringTransactionId = Math.round(message.reocurringTransactionId));
+    if (message.transactions) {
+      obj.transactions = message.transactions.map((e) => e ? Transaction.toJSON(e) : undefined);
+    } else {
+      obj.transactions = [];
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetReCurringTransactionsResponse_ParticipantReCurringTransactions>, I>>(
+    base?: I,
+  ): GetReCurringTransactionsResponse_ParticipantReCurringTransactions {
+    return GetReCurringTransactionsResponse_ParticipantReCurringTransactions.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<GetReCurringTransactionsResponse_ParticipantReCurringTransactions>, I>>(
+    object: I,
+  ): GetReCurringTransactionsResponse_ParticipantReCurringTransactions {
+    const message = createBaseGetReCurringTransactionsResponse_ParticipantReCurringTransactions();
+    message.reocurringTransactionId = object.reocurringTransactionId ?? 0;
+    message.transactions = object.transactions?.map((e) => Transaction.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseGetTransactionsRequest(): GetTransactionsRequest {
+  return { userId: 0, pageNumber: 0, pageSize: 0 };
+}
+
+export const GetTransactionsRequest = {
+  encode(message: GetTransactionsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.userId !== 0) {
+      writer.uint32(16).uint64(message.userId);
+    }
+    if (message.pageNumber !== 0) {
+      writer.uint32(24).uint64(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      writer.uint32(32).uint64(message.pageSize);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetTransactionsRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetTransactionsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.userId = longToNumber(reader.uint64() as Long);
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.pageNumber = longToNumber(reader.uint64() as Long);
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.pageSize = longToNumber(reader.uint64() as Long);
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetTransactionsRequest {
+    return {
+      userId: isSet(object.userId) ? Number(object.userId) : 0,
+      pageNumber: isSet(object.pageNumber) ? Number(object.pageNumber) : 0,
+      pageSize: isSet(object.pageSize) ? Number(object.pageSize) : 0,
+    };
+  },
+
+  toJSON(message: GetTransactionsRequest): unknown {
+    const obj: any = {};
+    message.userId !== undefined && (obj.userId = Math.round(message.userId));
+    message.pageNumber !== undefined && (obj.pageNumber = Math.round(message.pageNumber));
+    message.pageSize !== undefined && (obj.pageSize = Math.round(message.pageSize));
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetTransactionsRequest>, I>>(base?: I): GetTransactionsRequest {
+    return GetTransactionsRequest.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<GetTransactionsRequest>, I>>(object: I): GetTransactionsRequest {
+    const message = createBaseGetTransactionsRequest();
+    message.userId = object.userId ?? 0;
+    message.pageNumber = object.pageNumber ?? 0;
+    message.pageSize = object.pageSize ?? 0;
+    return message;
+  },
+};
+
+function createBaseGetTransactionsResponse(): GetTransactionsResponse {
+  return { transactions: [], nextPageNumber: 0 };
+}
+
+export const GetTransactionsResponse = {
+  encode(message: GetTransactionsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.transactions) {
+      Transaction.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.nextPageNumber !== 0) {
+      writer.uint32(16).uint64(message.nextPageNumber);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetTransactionsResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetTransactionsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.transactions.push(Transaction.decode(reader, reader.uint32()));
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.nextPageNumber = longToNumber(reader.uint64() as Long);
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetTransactionsResponse {
+    return {
+      transactions: Array.isArray(object?.transactions)
+        ? object.transactions.map((e: any) => Transaction.fromJSON(e))
+        : [],
+      nextPageNumber: isSet(object.nextPageNumber) ? Number(object.nextPageNumber) : 0,
+    };
+  },
+
+  toJSON(message: GetTransactionsResponse): unknown {
+    const obj: any = {};
+    if (message.transactions) {
+      obj.transactions = message.transactions.map((e) => e ? Transaction.toJSON(e) : undefined);
+    } else {
+      obj.transactions = [];
+    }
+    message.nextPageNumber !== undefined && (obj.nextPageNumber = Math.round(message.nextPageNumber));
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetTransactionsResponse>, I>>(base?: I): GetTransactionsResponse {
+    return GetTransactionsResponse.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<GetTransactionsResponse>, I>>(object: I): GetTransactionsResponse {
+    const message = createBaseGetTransactionsResponse();
+    message.transactions = object.transactions?.map((e) => Transaction.fromPartial(e)) || [];
+    message.nextPageNumber = object.nextPageNumber ?? 0;
     return message;
   },
 };

@@ -756,6 +756,40 @@ service FinancialService {
     };
   }
 
+  rpc GetReCurringTransactions(GetReCurringTransactionsRequest) returns (GetReCurringTransactionsResponse) {
+    option (google.api.http) = {get: "/api/v1/transactions/recurring-transactions/{user_id}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "get recurring transactions"
+      tags: ["recurring transactions"]
+      operation_id: "GetRecurringTransactions"
+      description: "This endpoint returns the recurring transactions for a given user id"
+      responses: {
+        key: "200"
+        value: {
+          description: "A successful response."
+          schema: {json_schema: {ref: ".api.v1.GetRecurringTransactionsResponse"}}
+        }
+      }
+    };
+  }
+
+  rpc GetTransactions(GetTransactionsRequest) returns (GetTransactionsResponse) {
+    option (google.api.http) = {get: "/api/v1/transactions/{user_id}/pageNumber/{page_number}/pageSize/{page_size}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "get transactions"
+      tags: ["transactions"]
+      operation_id: "GetTransactions"
+      description: "This endpoint returns the transactions for a given user id"
+      responses: {
+        key: "200"
+        value: {
+          description: "A successful response."
+          schema: {json_schema: {ref: ".api.v1.GetTransactionsResponse"}}
+        }
+      }
+    };
+  }
+
   rpc ProcessWebhook(ProcessWebhookRequest) returns (ProcessWebhookResponse) {
     option (google.api.http) = {
       post: "/api/v1/plaid/webhook"

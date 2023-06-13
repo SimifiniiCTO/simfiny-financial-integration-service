@@ -49,10 +49,14 @@ import {
   GetMortgageAccountResponse,
   GetPocketRequest,
   GetPocketResponse,
+  GetReCurringTransactionsRequest,
+  GetReCurringTransactionsResponse,
   GetSmartGoalsByPocketIdRequest,
   GetSmartGoalsByPocketIdResponse,
   GetStudentLoanAccountRequest,
   GetStudentLoanAccountResponse,
+  GetTransactionsRequest,
+  GetTransactionsResponse,
   GetUserProfileRequest,
   GetUserProfileResponse,
   HealthCheckRequest,
@@ -119,6 +123,8 @@ export interface FinancialService {
   GetLink(request: GetLinkRequest): Promise<GetLinkResponse>;
   GetLinks(request: GetLinksRequest): Promise<GetLinksResponse>;
   DeleteLink(request: DeleteLinkRequest): Promise<DeleteLinkResponse>;
+  GetReCurringTransactions(request: GetReCurringTransactionsRequest): Promise<GetReCurringTransactionsResponse>;
+  GetTransactions(request: GetTransactionsRequest): Promise<GetTransactionsResponse>;
   ProcessWebhook(request: ProcessWebhookRequest): Promise<ProcessWebhookResponse>;
   StripeWebhook(request: StripeWebhookRequest): Promise<StripeWebhookResponse>;
 }
@@ -165,6 +171,8 @@ export class FinancialServiceClientImpl implements FinancialService {
     this.GetLink = this.GetLink.bind(this);
     this.GetLinks = this.GetLinks.bind(this);
     this.DeleteLink = this.DeleteLink.bind(this);
+    this.GetReCurringTransactions = this.GetReCurringTransactions.bind(this);
+    this.GetTransactions = this.GetTransactions.bind(this);
     this.ProcessWebhook = this.ProcessWebhook.bind(this);
     this.StripeWebhook = this.StripeWebhook.bind(this);
   }
@@ -382,6 +390,18 @@ export class FinancialServiceClientImpl implements FinancialService {
     const data = DeleteLinkRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "DeleteLink", data);
     return promise.then((data) => DeleteLinkResponse.decode(_m0.Reader.create(data)));
+  }
+
+  GetReCurringTransactions(request: GetReCurringTransactionsRequest): Promise<GetReCurringTransactionsResponse> {
+    const data = GetReCurringTransactionsRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "GetReCurringTransactions", data);
+    return promise.then((data) => GetReCurringTransactionsResponse.decode(_m0.Reader.create(data)));
+  }
+
+  GetTransactions(request: GetTransactionsRequest): Promise<GetTransactionsResponse> {
+    const data = GetTransactionsRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "GetTransactions", data);
+    return promise.then((data) => GetTransactionsResponse.decode(_m0.Reader.create(data)));
   }
 
   ProcessWebhook(request: ProcessWebhookRequest): Promise<ProcessWebhookResponse> {

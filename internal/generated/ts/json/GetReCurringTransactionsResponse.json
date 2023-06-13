@@ -1,0 +1,368 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/GetReCurringTransactionsResponse",
+    "definitions": {
+        "GetReCurringTransactionsResponse": {
+            "properties": {
+                "re_ccuring_transactions": {
+                    "items": {
+                        "$ref": "#/definitions/api.v1.ReOccuringTransaction"
+                    },
+                    "type": "array",
+                    "description": "The re-occuring transactions"
+                },
+                "participant_re_ccuring_transactions": {
+                    "items": {
+                        "$ref": "#/definitions/api.v1.GetReCurringTransactionsResponse.ParticipantReCurringTransactions"
+                    },
+                    "type": "array"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Get Re Curring Transactions Response"
+        },
+        "api.v1.GetReCurringTransactionsResponse.ParticipantReCurringTransactions": {
+            "properties": {
+                "reocurring_transaction_id": {
+                    "type": "string",
+                    "description": "The participant id"
+                },
+                "transactions": {
+                    "items": {
+                        "$ref": "#/definitions/api.v1.Transaction"
+                    },
+                    "type": "array",
+                    "description": "The transactions"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Participant Re Curring Transactions"
+        },
+        "api.v1.ReOccuringTransaction": {
+            "properties": {
+                "account_id": {
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"account_id\""
+                },
+                "stream_id": {
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"stream_id\""
+                },
+                "category": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array",
+                    "description": "@gotag: clickhouse:\"category\""
+                },
+                "category_id": {
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"category_id\""
+                },
+                "description": {
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"description\""
+                },
+                "merchant_name": {
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"merchant_name\""
+                },
+                "personal_finance_category_primary": {
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"personal_finance_category_primary\""
+                },
+                "personal_finance_category_detailed": {
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"personal_finance_category_detailed\""
+                },
+                "first_date": {
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"first_date\""
+                },
+                "last_date": {
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"last_date\""
+                },
+                "frequency": {
+                    "enum": [
+                        "RE_OCCURING_TRANSACTIONS_FREQUENCY_UNSPECIFIED",
+                        0,
+                        "RE_OCCURING_TRANSACTIONS_FREQUENCY_WEEKLY",
+                        1,
+                        "RE_OCCURING_TRANSACTIONS_FREQUENCY_BIWEEKLY",
+                        2,
+                        "RE_OCCURING_TRANSACTIONS_FREQUENCY_SEMI_MONTHLY",
+                        3,
+                        "RE_OCCURING_TRANSACTIONS_FREQUENCY_MONTHLY",
+                        4,
+                        "RE_OCCURING_TRANSACTIONS_FREQUENCY_ANNUALLY",
+                        5
+                    ],
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "integer"
+                        }
+                    ],
+                    "title": "Re Occuring Transactions Frequency"
+                },
+                "transaction_ids": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array",
+                    "description": "@gotag: clickhouse:\"transaction_ids\""
+                },
+                "average_amount": {
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"average_amount\""
+                },
+                "average_amount_iso_currency_code": {
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"average_amount_iso_currency_code\""
+                },
+                "last_amount": {
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"last_amount\""
+                },
+                "last_amount_iso_currency_code": {
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"last_amount_iso_currency_code\""
+                },
+                "is_active": {
+                    "type": "boolean",
+                    "description": "@gotag: clickhouse:\"is_active\""
+                },
+                "status": {
+                    "enum": [
+                        "RE_OCCURING_TRANSACTIONS_STATUS_UNSPECIFIED",
+                        0,
+                        "RE_OCCURING_TRANSACTIONS_STATUS_MATURE",
+                        1,
+                        "RE_OCCURING_TRANSACTIONS_STATUS_EARLY_DETECTION",
+                        2,
+                        "RE_OCCURING_TRANSACTIONS_STATUS_TOMBSTONED",
+                        3
+                    ],
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "integer"
+                        }
+                    ],
+                    "title": "Re Occuring Transactions Status"
+                },
+                "updated_time": {
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"updated_time\""
+                },
+                "user_id": {
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"user_id\""
+                },
+                "link_id": {
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"link_id\""
+                },
+                "id": {
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"id\""
+                },
+                "flow": {
+                    "enum": [
+                        "RE_CURRING_FLOW_UNSPECIFIED",
+                        0,
+                        "RE_CURRING_FLOW_INFLOW",
+                        1,
+                        "RE_CURRING_FLOW_OUTFLOW",
+                        2
+                    ],
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "integer"
+                        }
+                    ],
+                    "title": "Re Curring Flow"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Re Occuring Transaction"
+        },
+        "api.v1.Transaction": {
+            "properties": {
+                "account_id": {
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"account_id\""
+                },
+                "amount": {
+                    "type": "number",
+                    "description": "@gotag: clickhouse:\"amount\""
+                },
+                "iso_currency_code": {
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"iso_currency_code\""
+                },
+                "unofficial_currency_code": {
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"unofficial_currency_code\""
+                },
+                "category": {
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"category\""
+                },
+                "category_id": {
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"category_id\""
+                },
+                "check_number": {
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"check_number\""
+                },
+                "date": {
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"date\""
+                },
+                "datetime": {
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"datetime\""
+                },
+                "authorized_date": {
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"authorized_date\""
+                },
+                "authorized_datetime": {
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"authorized_datetime\""
+                },
+                "location": {
+                    "$ref": "#/definitions/api.v1.Transaction.Location",
+                    "additionalProperties": true,
+                    "description": "@gotag: clickhouse:\"location\""
+                },
+                "name": {
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"name\""
+                },
+                "merchant_name": {
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"merchant_name\""
+                },
+                "payment_meta": {
+                    "$ref": "#/definitions/api.v1.Transaction.PaymentMeta",
+                    "additionalProperties": true,
+                    "description": "@gotag: clickhouse:\"payment_meta\""
+                },
+                "payment_channel": {
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"payment_channel\""
+                },
+                "pending": {
+                    "type": "boolean",
+                    "description": "@gotag: clickhouse:\"pending\""
+                },
+                "pending_transaction_id": {
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"pending_transaction_id\""
+                },
+                "account_owner": {
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"account_owner\""
+                },
+                "transaction_id": {
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"transaction_id\""
+                },
+                "transaction_code": {
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"transaction_code\""
+                },
+                "id": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"user_id\""
+                },
+                "link_id": {
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"link_id\""
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Transaction"
+        },
+        "api.v1.Transaction.Location": {
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "city": {
+                    "type": "string"
+                },
+                "region": {
+                    "type": "string"
+                },
+                "postal_code": {
+                    "type": "string"
+                },
+                "country": {
+                    "type": "string"
+                },
+                "lat": {
+                    "type": "number"
+                },
+                "lon": {
+                    "type": "number"
+                },
+                "store_number": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Location"
+        },
+        "api.v1.Transaction.PaymentMeta": {
+            "properties": {
+                "by_order_of": {
+                    "type": "string"
+                },
+                "payee": {
+                    "type": "string"
+                },
+                "payer": {
+                    "type": "string"
+                },
+                "payment_method": {
+                    "type": "string"
+                },
+                "payment_processor": {
+                    "type": "string"
+                },
+                "ppd_id": {
+                    "type": "string"
+                },
+                "reason": {
+                    "type": "string"
+                },
+                "reference_number": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Payment Meta"
+        }
+    }
+}

@@ -3,6 +3,7 @@ syntax = "proto3";
 package api.v1;
 
 import "api/v1/message.proto";
+import "api/v1/clickhouse.proto";
 option go_package = "github.com/SimifiniiCTO/simfiny-financial-integration-service/generate/api/v1";
 import "validate/validate.proto";
 import "google/api/field_behavior.proto";
@@ -722,6 +723,46 @@ message DeleteLinkResponse {
   uint64 link_id = 1;
 }
 
+message GetReCurringTransactionsRequest {
+  // The user id
+  // Validations:
+  // - user_id must be greater than 0
+  uint64 user_id = 2 [
+    (validate.rules).uint64.gt = 0,
+    (google.api.field_behavior) = REQUIRED
+  ];
+}
+
+message GetReCurringTransactionsResponse {
+  message ParticipantReCurringTransactions {
+  // The participant id
+  uint64 reocurring_transaction_id = 1;
+  // The transactions
+  repeated Transaction transactions = 2;
+}
+  // The re-occuring transactions
+  repeated ReOccuringTransaction re_ccuring_transactions = 1;
+  repeated ParticipantReCurringTransactions participant_re_ccuring_transactions = 2;
+}
+
+message GetTransactionsRequest {
+  // The user id
+  // Validations:
+  // - user_id must be greater than 0
+  uint64 user_id = 2 [
+    (validate.rules).uint64.gt = 0,
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  uint64 page_number = 3;
+  uint64 page_size = 4;  
+}
+
+message GetTransactionsResponse {
+  // The transactions
+  repeated Transaction transactions = 1;
+  uint64 next_page_number = 2;
+}
 
 message ProcessWebhookRequest {
   string webhook_type = 1 [
