@@ -1,0 +1,19 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/PersonalFinanceCategory",
+    "definitions": {
+        "PersonalFinanceCategory": {
+            "properties": {
+                "primary": {
+                    "type": "string"
+                },
+                "detailed": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Personal Finance Category"
+        }
+    }
+}

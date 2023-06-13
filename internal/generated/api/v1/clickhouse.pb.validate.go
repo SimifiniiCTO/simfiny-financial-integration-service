@@ -35,6 +35,272 @@ var (
 	_ = sort.Sort
 )
 
+// Validate checks the field values on PersonalFinanceCategory with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *PersonalFinanceCategory) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on PersonalFinanceCategory with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// PersonalFinanceCategoryMultiError, or nil if none found.
+func (m *PersonalFinanceCategory) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *PersonalFinanceCategory) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Primary
+
+	// no validation rules for Detailed
+
+	if len(errors) > 0 {
+		return PersonalFinanceCategoryMultiError(errors)
+	}
+
+	return nil
+}
+
+// PersonalFinanceCategoryMultiError is an error wrapping multiple validation
+// errors returned by PersonalFinanceCategory.ValidateAll() if the designated
+// constraints aren't met.
+type PersonalFinanceCategoryMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m PersonalFinanceCategoryMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m PersonalFinanceCategoryMultiError) AllErrors() []error { return m }
+
+// PersonalFinanceCategoryValidationError is the validation error returned by
+// PersonalFinanceCategory.Validate if the designated constraints aren't met.
+type PersonalFinanceCategoryValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e PersonalFinanceCategoryValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e PersonalFinanceCategoryValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e PersonalFinanceCategoryValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e PersonalFinanceCategoryValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e PersonalFinanceCategoryValidationError) ErrorName() string {
+	return "PersonalFinanceCategoryValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e PersonalFinanceCategoryValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sPersonalFinanceCategory.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = PersonalFinanceCategoryValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = PersonalFinanceCategoryValidationError{}
+
+// Validate checks the field values on ReOccuringTransaction with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ReOccuringTransaction) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ReOccuringTransaction with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ReOccuringTransactionMultiError, or nil if none found.
+func (m *ReOccuringTransaction) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ReOccuringTransaction) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for AccountId
+
+	// no validation rules for StreamId
+
+	// no validation rules for CategoryId
+
+	// no validation rules for Description
+
+	// no validation rules for MerchantName
+
+	// no validation rules for PersonalFinanceCategoryPrimary
+
+	// no validation rules for PersonalFinanceCategoryDetailed
+
+	// no validation rules for FirstDate
+
+	// no validation rules for LastDate
+
+	// no validation rules for Frequency
+
+	// no validation rules for AverageAmount
+
+	// no validation rules for AverageAmountIsoCurrencyCode
+
+	// no validation rules for LastAmount
+
+	// no validation rules for LastAmountIsoCurrencyCode
+
+	// no validation rules for IsActive
+
+	// no validation rules for Status
+
+	// no validation rules for UpdatedTime
+
+	if m.GetUserId() <= 0 {
+		err := ReOccuringTransactionValidationError{
+			field:  "UserId",
+			reason: "value must be greater than 0",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if m.GetLinkId() <= 0 {
+		err := ReOccuringTransactionValidationError{
+			field:  "LinkId",
+			reason: "value must be greater than 0",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	// no validation rules for Id
+
+	if len(errors) > 0 {
+		return ReOccuringTransactionMultiError(errors)
+	}
+
+	return nil
+}
+
+// ReOccuringTransactionMultiError is an error wrapping multiple validation
+// errors returned by ReOccuringTransaction.ValidateAll() if the designated
+// constraints aren't met.
+type ReOccuringTransactionMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ReOccuringTransactionMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ReOccuringTransactionMultiError) AllErrors() []error { return m }
+
+// ReOccuringTransactionValidationError is the validation error returned by
+// ReOccuringTransaction.Validate if the designated constraints aren't met.
+type ReOccuringTransactionValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ReOccuringTransactionValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ReOccuringTransactionValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ReOccuringTransactionValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ReOccuringTransactionValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ReOccuringTransactionValidationError) ErrorName() string {
+	return "ReOccuringTransactionValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ReOccuringTransactionValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sReOccuringTransaction.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ReOccuringTransactionValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ReOccuringTransactionValidationError{}
+
 // Validate checks the field values on Transaction with the rules defined in
 // the proto definition for this message. If any rules are violated, the first
 // error encountered is returned, or nil if there are no violations.

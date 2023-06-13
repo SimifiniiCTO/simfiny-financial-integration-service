@@ -4,6 +4,224 @@ import * as _m0 from "protobufjs/minimal";
 
 export const protobufPackage = "api.v1";
 
+/**
+ * account_id
+ * string
+ * The ID of the account to which the stream belongs
+ *
+ * stream_id
+ * string
+ * A unique id for the stream
+ *
+ * category
+ * [string]
+ * A hierarchical array of the categories to which this transaction belongs. See Categories.
+ * All implementations are encouraged to use the new personal_finance_category instead of category. personal_finance_category provides more meaningful categorization and greater accuracy.
+ *
+ * category_id
+ * string
+ * The ID of the category to which this transaction belongs. See Categories.
+ * All implementations are encouraged to use the new personal_finance_category instead of category. personal_finance_category provides more meaningful categorization and greater accuracy.
+ *
+ * description
+ * string
+ * A description of the transaction stream.
+ *
+ * merchant_name
+ * nullable
+ * string
+ * The merchant associated with the transaction stream.
+ *
+ * first_date
+ * string
+ * The posted date of the earliest transaction in the stream.
+ * Format: date
+ *
+ * last_date
+ * string
+ * The posted date of the latest transaction in the stream.
+ * Format: date
+ *
+ * frequency
+ * string
+ * Describes the frequency of the transaction stream.
+ * WEEKLY: Assigned to a transaction stream that occurs approximately every week.
+ * BIWEEKLY: Assigned to a transaction stream that occurs approximately every 2 weeks.
+ * SEMI_MONTHLY: Assigned to a transaction stream that occurs approximately twice per month. This frequency is typically seen for inflow transaction streams.
+ * MONTHLY: Assigned to a transaction stream that occurs approximately every month.
+ * ANNUALLY: Assigned to a transaction stream that occurs approximately every year.
+ * UNKNOWN: Assigned to a transaction stream that does not fit any of the pre-defined frequencies.
+ * Possible values: UNKNOWN, WEEKLY, BIWEEKLY, SEMI_MONTHLY, MONTHLY, ANNUALLY
+ *
+ * transaction_ids
+ * [string]
+ * An array of Plaid transaction IDs belonging to the stream, sorted by posted date.
+ */
+export enum ReOccuringTransactionsFrequency {
+  RE_OCCURING_TRANSACTIONS_FREQUENCY_UNSPECIFIED = 0,
+  RE_OCCURING_TRANSACTIONS_FREQUENCY_WEEKLY = 1,
+  RE_OCCURING_TRANSACTIONS_FREQUENCY_BIWEEKLY = 2,
+  RE_OCCURING_TRANSACTIONS_FREQUENCY_SEMI_MONTHLY = 3,
+  RE_OCCURING_TRANSACTIONS_FREQUENCY_MONTHLY = 4,
+  RE_OCCURING_TRANSACTIONS_FREQUENCY_ANNUALLY = 5,
+  UNRECOGNIZED = -1,
+}
+
+export function reOccuringTransactionsFrequencyFromJSON(object: any): ReOccuringTransactionsFrequency {
+  switch (object) {
+    case 0:
+    case "RE_OCCURING_TRANSACTIONS_FREQUENCY_UNSPECIFIED":
+      return ReOccuringTransactionsFrequency.RE_OCCURING_TRANSACTIONS_FREQUENCY_UNSPECIFIED;
+    case 1:
+    case "RE_OCCURING_TRANSACTIONS_FREQUENCY_WEEKLY":
+      return ReOccuringTransactionsFrequency.RE_OCCURING_TRANSACTIONS_FREQUENCY_WEEKLY;
+    case 2:
+    case "RE_OCCURING_TRANSACTIONS_FREQUENCY_BIWEEKLY":
+      return ReOccuringTransactionsFrequency.RE_OCCURING_TRANSACTIONS_FREQUENCY_BIWEEKLY;
+    case 3:
+    case "RE_OCCURING_TRANSACTIONS_FREQUENCY_SEMI_MONTHLY":
+      return ReOccuringTransactionsFrequency.RE_OCCURING_TRANSACTIONS_FREQUENCY_SEMI_MONTHLY;
+    case 4:
+    case "RE_OCCURING_TRANSACTIONS_FREQUENCY_MONTHLY":
+      return ReOccuringTransactionsFrequency.RE_OCCURING_TRANSACTIONS_FREQUENCY_MONTHLY;
+    case 5:
+    case "RE_OCCURING_TRANSACTIONS_FREQUENCY_ANNUALLY":
+      return ReOccuringTransactionsFrequency.RE_OCCURING_TRANSACTIONS_FREQUENCY_ANNUALLY;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return ReOccuringTransactionsFrequency.UNRECOGNIZED;
+  }
+}
+
+export function reOccuringTransactionsFrequencyToJSON(object: ReOccuringTransactionsFrequency): string {
+  switch (object) {
+    case ReOccuringTransactionsFrequency.RE_OCCURING_TRANSACTIONS_FREQUENCY_UNSPECIFIED:
+      return "RE_OCCURING_TRANSACTIONS_FREQUENCY_UNSPECIFIED";
+    case ReOccuringTransactionsFrequency.RE_OCCURING_TRANSACTIONS_FREQUENCY_WEEKLY:
+      return "RE_OCCURING_TRANSACTIONS_FREQUENCY_WEEKLY";
+    case ReOccuringTransactionsFrequency.RE_OCCURING_TRANSACTIONS_FREQUENCY_BIWEEKLY:
+      return "RE_OCCURING_TRANSACTIONS_FREQUENCY_BIWEEKLY";
+    case ReOccuringTransactionsFrequency.RE_OCCURING_TRANSACTIONS_FREQUENCY_SEMI_MONTHLY:
+      return "RE_OCCURING_TRANSACTIONS_FREQUENCY_SEMI_MONTHLY";
+    case ReOccuringTransactionsFrequency.RE_OCCURING_TRANSACTIONS_FREQUENCY_MONTHLY:
+      return "RE_OCCURING_TRANSACTIONS_FREQUENCY_MONTHLY";
+    case ReOccuringTransactionsFrequency.RE_OCCURING_TRANSACTIONS_FREQUENCY_ANNUALLY:
+      return "RE_OCCURING_TRANSACTIONS_FREQUENCY_ANNUALLY";
+    case ReOccuringTransactionsFrequency.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export enum ReOccuringTransactionsStatus {
+  RE_OCCURING_TRANSACTIONS_STATUS_UNSPECIFIED = 0,
+  /**
+   * RE_OCCURING_TRANSACTIONS_STATUS_MATURE - A MATURE recurring stream should have at least 3 transactions and happen
+   *  on a regular cadence (For Annual recurring stream, we will mark it MATURE after 2 instances).
+   */
+  RE_OCCURING_TRANSACTIONS_STATUS_MATURE = 1,
+  /**
+   * RE_OCCURING_TRANSACTIONS_STATUS_EARLY_DETECTION - When a recurring transaction first appears in the transaction history and before it fulfills
+   * the requirement of a mature stream, the status will be EARLY_DETECTION.
+   */
+  RE_OCCURING_TRANSACTIONS_STATUS_EARLY_DETECTION = 2,
+  /**
+   * RE_OCCURING_TRANSACTIONS_STATUS_TOMBSTONED - A stream that was previously in the EARLY_DETECTION status will move to the TOMBSTONED
+   * status when no further transactions were found at the next expected date.
+   */
+  RE_OCCURING_TRANSACTIONS_STATUS_TOMBSTONED = 3,
+  UNRECOGNIZED = -1,
+}
+
+export function reOccuringTransactionsStatusFromJSON(object: any): ReOccuringTransactionsStatus {
+  switch (object) {
+    case 0:
+    case "RE_OCCURING_TRANSACTIONS_STATUS_UNSPECIFIED":
+      return ReOccuringTransactionsStatus.RE_OCCURING_TRANSACTIONS_STATUS_UNSPECIFIED;
+    case 1:
+    case "RE_OCCURING_TRANSACTIONS_STATUS_MATURE":
+      return ReOccuringTransactionsStatus.RE_OCCURING_TRANSACTIONS_STATUS_MATURE;
+    case 2:
+    case "RE_OCCURING_TRANSACTIONS_STATUS_EARLY_DETECTION":
+      return ReOccuringTransactionsStatus.RE_OCCURING_TRANSACTIONS_STATUS_EARLY_DETECTION;
+    case 3:
+    case "RE_OCCURING_TRANSACTIONS_STATUS_TOMBSTONED":
+      return ReOccuringTransactionsStatus.RE_OCCURING_TRANSACTIONS_STATUS_TOMBSTONED;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return ReOccuringTransactionsStatus.UNRECOGNIZED;
+  }
+}
+
+export function reOccuringTransactionsStatusToJSON(object: ReOccuringTransactionsStatus): string {
+  switch (object) {
+    case ReOccuringTransactionsStatus.RE_OCCURING_TRANSACTIONS_STATUS_UNSPECIFIED:
+      return "RE_OCCURING_TRANSACTIONS_STATUS_UNSPECIFIED";
+    case ReOccuringTransactionsStatus.RE_OCCURING_TRANSACTIONS_STATUS_MATURE:
+      return "RE_OCCURING_TRANSACTIONS_STATUS_MATURE";
+    case ReOccuringTransactionsStatus.RE_OCCURING_TRANSACTIONS_STATUS_EARLY_DETECTION:
+      return "RE_OCCURING_TRANSACTIONS_STATUS_EARLY_DETECTION";
+    case ReOccuringTransactionsStatus.RE_OCCURING_TRANSACTIONS_STATUS_TOMBSTONED:
+      return "RE_OCCURING_TRANSACTIONS_STATUS_TOMBSTONED";
+    case ReOccuringTransactionsStatus.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export interface PersonalFinanceCategory {
+  primary: string;
+  detailed: string;
+}
+
+export interface ReOccuringTransaction {
+  /** @gotag: clickhouse:"account_id" */
+  accountId: string;
+  /** @gotag: clickhouse:"stream_id" */
+  streamId: string;
+  /** @gotag: clickhouse:"category" */
+  category: string[];
+  /** @gotag: clickhouse:"category_id" */
+  categoryId: string;
+  /** @gotag: clickhouse:"description" */
+  description: string;
+  /** @gotag: clickhouse:"merchant_name" */
+  merchantName: string;
+  /** @gotag: clickhouse:"personal_finance_category_primary" */
+  personalFinanceCategoryPrimary: string;
+  /** @gotag: clickhouse:"personal_finance_category_detailed" */
+  personalFinanceCategoryDetailed: string;
+  /** @gotag: clickhouse:"first_date" */
+  firstDate: string;
+  /** @gotag: clickhouse:"last_date" */
+  lastDate: string;
+  /** @gotag: clickhouse:"frequency" */
+  frequency: ReOccuringTransactionsFrequency;
+  /** @gotag: clickhouse:"transaction_ids" */
+  transactionIds: string[];
+  /** @gotag: clickhouse:"average_amount" */
+  averageAmount: string;
+  /** @gotag: clickhouse:"average_amount_iso_currency_code" */
+  averageAmountIsoCurrencyCode: string;
+  /** @gotag: clickhouse:"last_amount" */
+  lastAmount: string;
+  /** @gotag: clickhouse:"last_amount_iso_currency_code" */
+  lastAmountIsoCurrencyCode: string;
+  /** @gotag: clickhouse:"is_active" */
+  isActive: boolean;
+  /** @gotag: clickhouse:"status" */
+  status: ReOccuringTransactionsStatus;
+  /** @gotag: clickhouse:"updated_time" */
+  updatedTime: string;
+  /** @gotag: clickhouse:"user_id" */
+  userId: number;
+  /** @gotag: clickhouse:"link_id" */
+  linkId: number;
+  id: number;
+}
+
 export interface Transaction {
   /** @gotag: clickhouse:"account_id" */
   accountId: string;
@@ -108,6 +326,451 @@ export interface TransactionAmountDistributionByCategoryMetric {
   median: number;
   standardDeviation: number;
 }
+
+function createBasePersonalFinanceCategory(): PersonalFinanceCategory {
+  return { primary: "", detailed: "" };
+}
+
+export const PersonalFinanceCategory = {
+  encode(message: PersonalFinanceCategory, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.primary !== "") {
+      writer.uint32(10).string(message.primary);
+    }
+    if (message.detailed !== "") {
+      writer.uint32(18).string(message.detailed);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): PersonalFinanceCategory {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePersonalFinanceCategory();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.primary = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.detailed = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PersonalFinanceCategory {
+    return {
+      primary: isSet(object.primary) ? String(object.primary) : "",
+      detailed: isSet(object.detailed) ? String(object.detailed) : "",
+    };
+  },
+
+  toJSON(message: PersonalFinanceCategory): unknown {
+    const obj: any = {};
+    message.primary !== undefined && (obj.primary = message.primary);
+    message.detailed !== undefined && (obj.detailed = message.detailed);
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<PersonalFinanceCategory>, I>>(base?: I): PersonalFinanceCategory {
+    return PersonalFinanceCategory.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<PersonalFinanceCategory>, I>>(object: I): PersonalFinanceCategory {
+    const message = createBasePersonalFinanceCategory();
+    message.primary = object.primary ?? "";
+    message.detailed = object.detailed ?? "";
+    return message;
+  },
+};
+
+function createBaseReOccuringTransaction(): ReOccuringTransaction {
+  return {
+    accountId: "",
+    streamId: "",
+    category: [],
+    categoryId: "",
+    description: "",
+    merchantName: "",
+    personalFinanceCategoryPrimary: "",
+    personalFinanceCategoryDetailed: "",
+    firstDate: "",
+    lastDate: "",
+    frequency: 0,
+    transactionIds: [],
+    averageAmount: "",
+    averageAmountIsoCurrencyCode: "",
+    lastAmount: "",
+    lastAmountIsoCurrencyCode: "",
+    isActive: false,
+    status: 0,
+    updatedTime: "",
+    userId: 0,
+    linkId: 0,
+    id: 0,
+  };
+}
+
+export const ReOccuringTransaction = {
+  encode(message: ReOccuringTransaction, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.accountId !== "") {
+      writer.uint32(10).string(message.accountId);
+    }
+    if (message.streamId !== "") {
+      writer.uint32(18).string(message.streamId);
+    }
+    for (const v of message.category) {
+      writer.uint32(26).string(v!);
+    }
+    if (message.categoryId !== "") {
+      writer.uint32(34).string(message.categoryId);
+    }
+    if (message.description !== "") {
+      writer.uint32(42).string(message.description);
+    }
+    if (message.merchantName !== "") {
+      writer.uint32(50).string(message.merchantName);
+    }
+    if (message.personalFinanceCategoryPrimary !== "") {
+      writer.uint32(58).string(message.personalFinanceCategoryPrimary);
+    }
+    if (message.personalFinanceCategoryDetailed !== "") {
+      writer.uint32(66).string(message.personalFinanceCategoryDetailed);
+    }
+    if (message.firstDate !== "") {
+      writer.uint32(74).string(message.firstDate);
+    }
+    if (message.lastDate !== "") {
+      writer.uint32(82).string(message.lastDate);
+    }
+    if (message.frequency !== 0) {
+      writer.uint32(88).int32(message.frequency);
+    }
+    for (const v of message.transactionIds) {
+      writer.uint32(98).string(v!);
+    }
+    if (message.averageAmount !== "") {
+      writer.uint32(106).string(message.averageAmount);
+    }
+    if (message.averageAmountIsoCurrencyCode !== "") {
+      writer.uint32(114).string(message.averageAmountIsoCurrencyCode);
+    }
+    if (message.lastAmount !== "") {
+      writer.uint32(122).string(message.lastAmount);
+    }
+    if (message.lastAmountIsoCurrencyCode !== "") {
+      writer.uint32(130).string(message.lastAmountIsoCurrencyCode);
+    }
+    if (message.isActive === true) {
+      writer.uint32(136).bool(message.isActive);
+    }
+    if (message.status !== 0) {
+      writer.uint32(144).int32(message.status);
+    }
+    if (message.updatedTime !== "") {
+      writer.uint32(154).string(message.updatedTime);
+    }
+    if (message.userId !== 0) {
+      writer.uint32(160).uint64(message.userId);
+    }
+    if (message.linkId !== 0) {
+      writer.uint32(168).uint64(message.linkId);
+    }
+    if (message.id !== 0) {
+      writer.uint32(176).uint64(message.id);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ReOccuringTransaction {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseReOccuringTransaction();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.accountId = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.streamId = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.category.push(reader.string());
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.categoryId = reader.string();
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.description = reader.string();
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.merchantName = reader.string();
+          continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.personalFinanceCategoryPrimary = reader.string();
+          continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.personalFinanceCategoryDetailed = reader.string();
+          continue;
+        case 9:
+          if (tag !== 74) {
+            break;
+          }
+
+          message.firstDate = reader.string();
+          continue;
+        case 10:
+          if (tag !== 82) {
+            break;
+          }
+
+          message.lastDate = reader.string();
+          continue;
+        case 11:
+          if (tag !== 88) {
+            break;
+          }
+
+          message.frequency = reader.int32() as any;
+          continue;
+        case 12:
+          if (tag !== 98) {
+            break;
+          }
+
+          message.transactionIds.push(reader.string());
+          continue;
+        case 13:
+          if (tag !== 106) {
+            break;
+          }
+
+          message.averageAmount = reader.string();
+          continue;
+        case 14:
+          if (tag !== 114) {
+            break;
+          }
+
+          message.averageAmountIsoCurrencyCode = reader.string();
+          continue;
+        case 15:
+          if (tag !== 122) {
+            break;
+          }
+
+          message.lastAmount = reader.string();
+          continue;
+        case 16:
+          if (tag !== 130) {
+            break;
+          }
+
+          message.lastAmountIsoCurrencyCode = reader.string();
+          continue;
+        case 17:
+          if (tag !== 136) {
+            break;
+          }
+
+          message.isActive = reader.bool();
+          continue;
+        case 18:
+          if (tag !== 144) {
+            break;
+          }
+
+          message.status = reader.int32() as any;
+          continue;
+        case 19:
+          if (tag !== 154) {
+            break;
+          }
+
+          message.updatedTime = reader.string();
+          continue;
+        case 20:
+          if (tag !== 160) {
+            break;
+          }
+
+          message.userId = longToNumber(reader.uint64() as Long);
+          continue;
+        case 21:
+          if (tag !== 168) {
+            break;
+          }
+
+          message.linkId = longToNumber(reader.uint64() as Long);
+          continue;
+        case 22:
+          if (tag !== 176) {
+            break;
+          }
+
+          message.id = longToNumber(reader.uint64() as Long);
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ReOccuringTransaction {
+    return {
+      accountId: isSet(object.accountId) ? String(object.accountId) : "",
+      streamId: isSet(object.streamId) ? String(object.streamId) : "",
+      category: Array.isArray(object?.category) ? object.category.map((e: any) => String(e)) : [],
+      categoryId: isSet(object.categoryId) ? String(object.categoryId) : "",
+      description: isSet(object.description) ? String(object.description) : "",
+      merchantName: isSet(object.merchantName) ? String(object.merchantName) : "",
+      personalFinanceCategoryPrimary: isSet(object.personalFinanceCategoryPrimary)
+        ? String(object.personalFinanceCategoryPrimary)
+        : "",
+      personalFinanceCategoryDetailed: isSet(object.personalFinanceCategoryDetailed)
+        ? String(object.personalFinanceCategoryDetailed)
+        : "",
+      firstDate: isSet(object.firstDate) ? String(object.firstDate) : "",
+      lastDate: isSet(object.lastDate) ? String(object.lastDate) : "",
+      frequency: isSet(object.frequency) ? reOccuringTransactionsFrequencyFromJSON(object.frequency) : 0,
+      transactionIds: Array.isArray(object?.transactionIds) ? object.transactionIds.map((e: any) => String(e)) : [],
+      averageAmount: isSet(object.averageAmount) ? String(object.averageAmount) : "",
+      averageAmountIsoCurrencyCode: isSet(object.averageAmountIsoCurrencyCode)
+        ? String(object.averageAmountIsoCurrencyCode)
+        : "",
+      lastAmount: isSet(object.lastAmount) ? String(object.lastAmount) : "",
+      lastAmountIsoCurrencyCode: isSet(object.lastAmountIsoCurrencyCode)
+        ? String(object.lastAmountIsoCurrencyCode)
+        : "",
+      isActive: isSet(object.isActive) ? Boolean(object.isActive) : false,
+      status: isSet(object.status) ? reOccuringTransactionsStatusFromJSON(object.status) : 0,
+      updatedTime: isSet(object.updatedTime) ? String(object.updatedTime) : "",
+      userId: isSet(object.userId) ? Number(object.userId) : 0,
+      linkId: isSet(object.linkId) ? Number(object.linkId) : 0,
+      id: isSet(object.id) ? Number(object.id) : 0,
+    };
+  },
+
+  toJSON(message: ReOccuringTransaction): unknown {
+    const obj: any = {};
+    message.accountId !== undefined && (obj.accountId = message.accountId);
+    message.streamId !== undefined && (obj.streamId = message.streamId);
+    if (message.category) {
+      obj.category = message.category.map((e) => e);
+    } else {
+      obj.category = [];
+    }
+    message.categoryId !== undefined && (obj.categoryId = message.categoryId);
+    message.description !== undefined && (obj.description = message.description);
+    message.merchantName !== undefined && (obj.merchantName = message.merchantName);
+    message.personalFinanceCategoryPrimary !== undefined &&
+      (obj.personalFinanceCategoryPrimary = message.personalFinanceCategoryPrimary);
+    message.personalFinanceCategoryDetailed !== undefined &&
+      (obj.personalFinanceCategoryDetailed = message.personalFinanceCategoryDetailed);
+    message.firstDate !== undefined && (obj.firstDate = message.firstDate);
+    message.lastDate !== undefined && (obj.lastDate = message.lastDate);
+    message.frequency !== undefined && (obj.frequency = reOccuringTransactionsFrequencyToJSON(message.frequency));
+    if (message.transactionIds) {
+      obj.transactionIds = message.transactionIds.map((e) => e);
+    } else {
+      obj.transactionIds = [];
+    }
+    message.averageAmount !== undefined && (obj.averageAmount = message.averageAmount);
+    message.averageAmountIsoCurrencyCode !== undefined &&
+      (obj.averageAmountIsoCurrencyCode = message.averageAmountIsoCurrencyCode);
+    message.lastAmount !== undefined && (obj.lastAmount = message.lastAmount);
+    message.lastAmountIsoCurrencyCode !== undefined &&
+      (obj.lastAmountIsoCurrencyCode = message.lastAmountIsoCurrencyCode);
+    message.isActive !== undefined && (obj.isActive = message.isActive);
+    message.status !== undefined && (obj.status = reOccuringTransactionsStatusToJSON(message.status));
+    message.updatedTime !== undefined && (obj.updatedTime = message.updatedTime);
+    message.userId !== undefined && (obj.userId = Math.round(message.userId));
+    message.linkId !== undefined && (obj.linkId = Math.round(message.linkId));
+    message.id !== undefined && (obj.id = Math.round(message.id));
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ReOccuringTransaction>, I>>(base?: I): ReOccuringTransaction {
+    return ReOccuringTransaction.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ReOccuringTransaction>, I>>(object: I): ReOccuringTransaction {
+    const message = createBaseReOccuringTransaction();
+    message.accountId = object.accountId ?? "";
+    message.streamId = object.streamId ?? "";
+    message.category = object.category?.map((e) => e) || [];
+    message.categoryId = object.categoryId ?? "";
+    message.description = object.description ?? "";
+    message.merchantName = object.merchantName ?? "";
+    message.personalFinanceCategoryPrimary = object.personalFinanceCategoryPrimary ?? "";
+    message.personalFinanceCategoryDetailed = object.personalFinanceCategoryDetailed ?? "";
+    message.firstDate = object.firstDate ?? "";
+    message.lastDate = object.lastDate ?? "";
+    message.frequency = object.frequency ?? 0;
+    message.transactionIds = object.transactionIds?.map((e) => e) || [];
+    message.averageAmount = object.averageAmount ?? "";
+    message.averageAmountIsoCurrencyCode = object.averageAmountIsoCurrencyCode ?? "";
+    message.lastAmount = object.lastAmount ?? "";
+    message.lastAmountIsoCurrencyCode = object.lastAmountIsoCurrencyCode ?? "";
+    message.isActive = object.isActive ?? false;
+    message.status = object.status ?? 0;
+    message.updatedTime = object.updatedTime ?? "";
+    message.userId = object.userId ?? 0;
+    message.linkId = object.linkId ?? 0;
+    message.id = object.id ?? 0;
+    return message;
+  },
+};
 
 function createBaseTransaction(): Transaction {
   return {

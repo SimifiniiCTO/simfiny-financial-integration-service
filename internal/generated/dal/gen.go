@@ -16,28 +16,29 @@ import (
 )
 
 var (
-	Q                     = new(Query)
-	AprORM                *aprORM
-	BankAccountORM        *bankAccountORM
-	BudgetORM             *budgetORM
-	CategoryORM           *categoryORM
-	CreditAccountORM      *creditAccountORM
-	ForecastORM           *forecastORM
-	InvesmentHoldingORM   *invesmentHoldingORM
-	InvestmentAccountORM  *investmentAccountORM
-	InvestmentSecurityORM *investmentSecurityORM
-	LinkORM               *linkORM
-	MilestoneORM          *milestoneORM
-	MortgageAccountORM    *mortgageAccountORM
-	PlaidLinkORM          *plaidLinkORM
-	PlaidSyncORM          *plaidSyncORM
-	PocketORM             *pocketORM
-	SmartGoalORM          *smartGoalORM
-	StripeSubscriptionORM *stripeSubscriptionORM
-	StudentLoanAccountORM *studentLoanAccountORM
-	TokenORM              *tokenORM
-	TransactionORM        *transactionORM
-	UserProfileORM        *userProfileORM
+	Q                        = new(Query)
+	AprORM                   *aprORM
+	BankAccountORM           *bankAccountORM
+	BudgetORM                *budgetORM
+	CategoryORM              *categoryORM
+	CreditAccountORM         *creditAccountORM
+	ForecastORM              *forecastORM
+	InvesmentHoldingORM      *invesmentHoldingORM
+	InvestmentAccountORM     *investmentAccountORM
+	InvestmentSecurityORM    *investmentSecurityORM
+	LinkORM                  *linkORM
+	MilestoneORM             *milestoneORM
+	MortgageAccountORM       *mortgageAccountORM
+	PlaidLinkORM             *plaidLinkORM
+	PlaidSyncORM             *plaidSyncORM
+	PocketORM                *pocketORM
+	ReOccuringTransactionORM *reOccuringTransactionORM
+	SmartGoalORM             *smartGoalORM
+	StripeSubscriptionORM    *stripeSubscriptionORM
+	StudentLoanAccountORM    *studentLoanAccountORM
+	TokenORM                 *tokenORM
+	TransactionORM           *transactionORM
+	UserProfileORM           *userProfileORM
 )
 
 func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
@@ -57,6 +58,7 @@ func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	PlaidLinkORM = &Q.PlaidLinkORM
 	PlaidSyncORM = &Q.PlaidSyncORM
 	PocketORM = &Q.PocketORM
+	ReOccuringTransactionORM = &Q.ReOccuringTransactionORM
 	SmartGoalORM = &Q.SmartGoalORM
 	StripeSubscriptionORM = &Q.StripeSubscriptionORM
 	StudentLoanAccountORM = &Q.StudentLoanAccountORM
@@ -67,83 +69,86 @@ func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 
 func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 	return &Query{
-		db:                    db,
-		AprORM:                newAprORM(db, opts...),
-		BankAccountORM:        newBankAccountORM(db, opts...),
-		BudgetORM:             newBudgetORM(db, opts...),
-		CategoryORM:           newCategoryORM(db, opts...),
-		CreditAccountORM:      newCreditAccountORM(db, opts...),
-		ForecastORM:           newForecastORM(db, opts...),
-		InvesmentHoldingORM:   newInvesmentHoldingORM(db, opts...),
-		InvestmentAccountORM:  newInvestmentAccountORM(db, opts...),
-		InvestmentSecurityORM: newInvestmentSecurityORM(db, opts...),
-		LinkORM:               newLinkORM(db, opts...),
-		MilestoneORM:          newMilestoneORM(db, opts...),
-		MortgageAccountORM:    newMortgageAccountORM(db, opts...),
-		PlaidLinkORM:          newPlaidLinkORM(db, opts...),
-		PlaidSyncORM:          newPlaidSyncORM(db, opts...),
-		PocketORM:             newPocketORM(db, opts...),
-		SmartGoalORM:          newSmartGoalORM(db, opts...),
-		StripeSubscriptionORM: newStripeSubscriptionORM(db, opts...),
-		StudentLoanAccountORM: newStudentLoanAccountORM(db, opts...),
-		TokenORM:              newTokenORM(db, opts...),
-		TransactionORM:        newTransactionORM(db, opts...),
-		UserProfileORM:        newUserProfileORM(db, opts...),
+		db:                       db,
+		AprORM:                   newAprORM(db, opts...),
+		BankAccountORM:           newBankAccountORM(db, opts...),
+		BudgetORM:                newBudgetORM(db, opts...),
+		CategoryORM:              newCategoryORM(db, opts...),
+		CreditAccountORM:         newCreditAccountORM(db, opts...),
+		ForecastORM:              newForecastORM(db, opts...),
+		InvesmentHoldingORM:      newInvesmentHoldingORM(db, opts...),
+		InvestmentAccountORM:     newInvestmentAccountORM(db, opts...),
+		InvestmentSecurityORM:    newInvestmentSecurityORM(db, opts...),
+		LinkORM:                  newLinkORM(db, opts...),
+		MilestoneORM:             newMilestoneORM(db, opts...),
+		MortgageAccountORM:       newMortgageAccountORM(db, opts...),
+		PlaidLinkORM:             newPlaidLinkORM(db, opts...),
+		PlaidSyncORM:             newPlaidSyncORM(db, opts...),
+		PocketORM:                newPocketORM(db, opts...),
+		ReOccuringTransactionORM: newReOccuringTransactionORM(db, opts...),
+		SmartGoalORM:             newSmartGoalORM(db, opts...),
+		StripeSubscriptionORM:    newStripeSubscriptionORM(db, opts...),
+		StudentLoanAccountORM:    newStudentLoanAccountORM(db, opts...),
+		TokenORM:                 newTokenORM(db, opts...),
+		TransactionORM:           newTransactionORM(db, opts...),
+		UserProfileORM:           newUserProfileORM(db, opts...),
 	}
 }
 
 type Query struct {
 	db *gorm.DB
 
-	AprORM                aprORM
-	BankAccountORM        bankAccountORM
-	BudgetORM             budgetORM
-	CategoryORM           categoryORM
-	CreditAccountORM      creditAccountORM
-	ForecastORM           forecastORM
-	InvesmentHoldingORM   invesmentHoldingORM
-	InvestmentAccountORM  investmentAccountORM
-	InvestmentSecurityORM investmentSecurityORM
-	LinkORM               linkORM
-	MilestoneORM          milestoneORM
-	MortgageAccountORM    mortgageAccountORM
-	PlaidLinkORM          plaidLinkORM
-	PlaidSyncORM          plaidSyncORM
-	PocketORM             pocketORM
-	SmartGoalORM          smartGoalORM
-	StripeSubscriptionORM stripeSubscriptionORM
-	StudentLoanAccountORM studentLoanAccountORM
-	TokenORM              tokenORM
-	TransactionORM        transactionORM
-	UserProfileORM        userProfileORM
+	AprORM                   aprORM
+	BankAccountORM           bankAccountORM
+	BudgetORM                budgetORM
+	CategoryORM              categoryORM
+	CreditAccountORM         creditAccountORM
+	ForecastORM              forecastORM
+	InvesmentHoldingORM      invesmentHoldingORM
+	InvestmentAccountORM     investmentAccountORM
+	InvestmentSecurityORM    investmentSecurityORM
+	LinkORM                  linkORM
+	MilestoneORM             milestoneORM
+	MortgageAccountORM       mortgageAccountORM
+	PlaidLinkORM             plaidLinkORM
+	PlaidSyncORM             plaidSyncORM
+	PocketORM                pocketORM
+	ReOccuringTransactionORM reOccuringTransactionORM
+	SmartGoalORM             smartGoalORM
+	StripeSubscriptionORM    stripeSubscriptionORM
+	StudentLoanAccountORM    studentLoanAccountORM
+	TokenORM                 tokenORM
+	TransactionORM           transactionORM
+	UserProfileORM           userProfileORM
 }
 
 func (q *Query) Available() bool { return q.db != nil }
 
 func (q *Query) clone(db *gorm.DB) *Query {
 	return &Query{
-		db:                    db,
-		AprORM:                q.AprORM.clone(db),
-		BankAccountORM:        q.BankAccountORM.clone(db),
-		BudgetORM:             q.BudgetORM.clone(db),
-		CategoryORM:           q.CategoryORM.clone(db),
-		CreditAccountORM:      q.CreditAccountORM.clone(db),
-		ForecastORM:           q.ForecastORM.clone(db),
-		InvesmentHoldingORM:   q.InvesmentHoldingORM.clone(db),
-		InvestmentAccountORM:  q.InvestmentAccountORM.clone(db),
-		InvestmentSecurityORM: q.InvestmentSecurityORM.clone(db),
-		LinkORM:               q.LinkORM.clone(db),
-		MilestoneORM:          q.MilestoneORM.clone(db),
-		MortgageAccountORM:    q.MortgageAccountORM.clone(db),
-		PlaidLinkORM:          q.PlaidLinkORM.clone(db),
-		PlaidSyncORM:          q.PlaidSyncORM.clone(db),
-		PocketORM:             q.PocketORM.clone(db),
-		SmartGoalORM:          q.SmartGoalORM.clone(db),
-		StripeSubscriptionORM: q.StripeSubscriptionORM.clone(db),
-		StudentLoanAccountORM: q.StudentLoanAccountORM.clone(db),
-		TokenORM:              q.TokenORM.clone(db),
-		TransactionORM:        q.TransactionORM.clone(db),
-		UserProfileORM:        q.UserProfileORM.clone(db),
+		db:                       db,
+		AprORM:                   q.AprORM.clone(db),
+		BankAccountORM:           q.BankAccountORM.clone(db),
+		BudgetORM:                q.BudgetORM.clone(db),
+		CategoryORM:              q.CategoryORM.clone(db),
+		CreditAccountORM:         q.CreditAccountORM.clone(db),
+		ForecastORM:              q.ForecastORM.clone(db),
+		InvesmentHoldingORM:      q.InvesmentHoldingORM.clone(db),
+		InvestmentAccountORM:     q.InvestmentAccountORM.clone(db),
+		InvestmentSecurityORM:    q.InvestmentSecurityORM.clone(db),
+		LinkORM:                  q.LinkORM.clone(db),
+		MilestoneORM:             q.MilestoneORM.clone(db),
+		MortgageAccountORM:       q.MortgageAccountORM.clone(db),
+		PlaidLinkORM:             q.PlaidLinkORM.clone(db),
+		PlaidSyncORM:             q.PlaidSyncORM.clone(db),
+		PocketORM:                q.PocketORM.clone(db),
+		ReOccuringTransactionORM: q.ReOccuringTransactionORM.clone(db),
+		SmartGoalORM:             q.SmartGoalORM.clone(db),
+		StripeSubscriptionORM:    q.StripeSubscriptionORM.clone(db),
+		StudentLoanAccountORM:    q.StudentLoanAccountORM.clone(db),
+		TokenORM:                 q.TokenORM.clone(db),
+		TransactionORM:           q.TransactionORM.clone(db),
+		UserProfileORM:           q.UserProfileORM.clone(db),
 	}
 }
 
@@ -157,78 +162,81 @@ func (q *Query) WriteDB() *Query {
 
 func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 	return &Query{
-		db:                    db,
-		AprORM:                q.AprORM.replaceDB(db),
-		BankAccountORM:        q.BankAccountORM.replaceDB(db),
-		BudgetORM:             q.BudgetORM.replaceDB(db),
-		CategoryORM:           q.CategoryORM.replaceDB(db),
-		CreditAccountORM:      q.CreditAccountORM.replaceDB(db),
-		ForecastORM:           q.ForecastORM.replaceDB(db),
-		InvesmentHoldingORM:   q.InvesmentHoldingORM.replaceDB(db),
-		InvestmentAccountORM:  q.InvestmentAccountORM.replaceDB(db),
-		InvestmentSecurityORM: q.InvestmentSecurityORM.replaceDB(db),
-		LinkORM:               q.LinkORM.replaceDB(db),
-		MilestoneORM:          q.MilestoneORM.replaceDB(db),
-		MortgageAccountORM:    q.MortgageAccountORM.replaceDB(db),
-		PlaidLinkORM:          q.PlaidLinkORM.replaceDB(db),
-		PlaidSyncORM:          q.PlaidSyncORM.replaceDB(db),
-		PocketORM:             q.PocketORM.replaceDB(db),
-		SmartGoalORM:          q.SmartGoalORM.replaceDB(db),
-		StripeSubscriptionORM: q.StripeSubscriptionORM.replaceDB(db),
-		StudentLoanAccountORM: q.StudentLoanAccountORM.replaceDB(db),
-		TokenORM:              q.TokenORM.replaceDB(db),
-		TransactionORM:        q.TransactionORM.replaceDB(db),
-		UserProfileORM:        q.UserProfileORM.replaceDB(db),
+		db:                       db,
+		AprORM:                   q.AprORM.replaceDB(db),
+		BankAccountORM:           q.BankAccountORM.replaceDB(db),
+		BudgetORM:                q.BudgetORM.replaceDB(db),
+		CategoryORM:              q.CategoryORM.replaceDB(db),
+		CreditAccountORM:         q.CreditAccountORM.replaceDB(db),
+		ForecastORM:              q.ForecastORM.replaceDB(db),
+		InvesmentHoldingORM:      q.InvesmentHoldingORM.replaceDB(db),
+		InvestmentAccountORM:     q.InvestmentAccountORM.replaceDB(db),
+		InvestmentSecurityORM:    q.InvestmentSecurityORM.replaceDB(db),
+		LinkORM:                  q.LinkORM.replaceDB(db),
+		MilestoneORM:             q.MilestoneORM.replaceDB(db),
+		MortgageAccountORM:       q.MortgageAccountORM.replaceDB(db),
+		PlaidLinkORM:             q.PlaidLinkORM.replaceDB(db),
+		PlaidSyncORM:             q.PlaidSyncORM.replaceDB(db),
+		PocketORM:                q.PocketORM.replaceDB(db),
+		ReOccuringTransactionORM: q.ReOccuringTransactionORM.replaceDB(db),
+		SmartGoalORM:             q.SmartGoalORM.replaceDB(db),
+		StripeSubscriptionORM:    q.StripeSubscriptionORM.replaceDB(db),
+		StudentLoanAccountORM:    q.StudentLoanAccountORM.replaceDB(db),
+		TokenORM:                 q.TokenORM.replaceDB(db),
+		TransactionORM:           q.TransactionORM.replaceDB(db),
+		UserProfileORM:           q.UserProfileORM.replaceDB(db),
 	}
 }
 
 type queryCtx struct {
-	AprORM                IAprORMDo
-	BankAccountORM        IBankAccountORMDo
-	BudgetORM             IBudgetORMDo
-	CategoryORM           ICategoryORMDo
-	CreditAccountORM      ICreditAccountORMDo
-	ForecastORM           IForecastORMDo
-	InvesmentHoldingORM   IInvesmentHoldingORMDo
-	InvestmentAccountORM  IInvestmentAccountORMDo
-	InvestmentSecurityORM IInvestmentSecurityORMDo
-	LinkORM               ILinkORMDo
-	MilestoneORM          IMilestoneORMDo
-	MortgageAccountORM    IMortgageAccountORMDo
-	PlaidLinkORM          IPlaidLinkORMDo
-	PlaidSyncORM          IPlaidSyncORMDo
-	PocketORM             IPocketORMDo
-	SmartGoalORM          ISmartGoalORMDo
-	StripeSubscriptionORM IStripeSubscriptionORMDo
-	StudentLoanAccountORM IStudentLoanAccountORMDo
-	TokenORM              ITokenORMDo
-	TransactionORM        ITransactionORMDo
-	UserProfileORM        IUserProfileORMDo
+	AprORM                   IAprORMDo
+	BankAccountORM           IBankAccountORMDo
+	BudgetORM                IBudgetORMDo
+	CategoryORM              ICategoryORMDo
+	CreditAccountORM         ICreditAccountORMDo
+	ForecastORM              IForecastORMDo
+	InvesmentHoldingORM      IInvesmentHoldingORMDo
+	InvestmentAccountORM     IInvestmentAccountORMDo
+	InvestmentSecurityORM    IInvestmentSecurityORMDo
+	LinkORM                  ILinkORMDo
+	MilestoneORM             IMilestoneORMDo
+	MortgageAccountORM       IMortgageAccountORMDo
+	PlaidLinkORM             IPlaidLinkORMDo
+	PlaidSyncORM             IPlaidSyncORMDo
+	PocketORM                IPocketORMDo
+	ReOccuringTransactionORM IReOccuringTransactionORMDo
+	SmartGoalORM             ISmartGoalORMDo
+	StripeSubscriptionORM    IStripeSubscriptionORMDo
+	StudentLoanAccountORM    IStudentLoanAccountORMDo
+	TokenORM                 ITokenORMDo
+	TransactionORM           ITransactionORMDo
+	UserProfileORM           IUserProfileORMDo
 }
 
 func (q *Query) WithContext(ctx context.Context) *queryCtx {
 	return &queryCtx{
-		AprORM:                q.AprORM.WithContext(ctx),
-		BankAccountORM:        q.BankAccountORM.WithContext(ctx),
-		BudgetORM:             q.BudgetORM.WithContext(ctx),
-		CategoryORM:           q.CategoryORM.WithContext(ctx),
-		CreditAccountORM:      q.CreditAccountORM.WithContext(ctx),
-		ForecastORM:           q.ForecastORM.WithContext(ctx),
-		InvesmentHoldingORM:   q.InvesmentHoldingORM.WithContext(ctx),
-		InvestmentAccountORM:  q.InvestmentAccountORM.WithContext(ctx),
-		InvestmentSecurityORM: q.InvestmentSecurityORM.WithContext(ctx),
-		LinkORM:               q.LinkORM.WithContext(ctx),
-		MilestoneORM:          q.MilestoneORM.WithContext(ctx),
-		MortgageAccountORM:    q.MortgageAccountORM.WithContext(ctx),
-		PlaidLinkORM:          q.PlaidLinkORM.WithContext(ctx),
-		PlaidSyncORM:          q.PlaidSyncORM.WithContext(ctx),
-		PocketORM:             q.PocketORM.WithContext(ctx),
-		SmartGoalORM:          q.SmartGoalORM.WithContext(ctx),
-		StripeSubscriptionORM: q.StripeSubscriptionORM.WithContext(ctx),
-		StudentLoanAccountORM: q.StudentLoanAccountORM.WithContext(ctx),
-		TokenORM:              q.TokenORM.WithContext(ctx),
-		TransactionORM:        q.TransactionORM.WithContext(ctx),
-		UserProfileORM:        q.UserProfileORM.WithContext(ctx),
+		AprORM:                   q.AprORM.WithContext(ctx),
+		BankAccountORM:           q.BankAccountORM.WithContext(ctx),
+		BudgetORM:                q.BudgetORM.WithContext(ctx),
+		CategoryORM:              q.CategoryORM.WithContext(ctx),
+		CreditAccountORM:         q.CreditAccountORM.WithContext(ctx),
+		ForecastORM:              q.ForecastORM.WithContext(ctx),
+		InvesmentHoldingORM:      q.InvesmentHoldingORM.WithContext(ctx),
+		InvestmentAccountORM:     q.InvestmentAccountORM.WithContext(ctx),
+		InvestmentSecurityORM:    q.InvestmentSecurityORM.WithContext(ctx),
+		LinkORM:                  q.LinkORM.WithContext(ctx),
+		MilestoneORM:             q.MilestoneORM.WithContext(ctx),
+		MortgageAccountORM:       q.MortgageAccountORM.WithContext(ctx),
+		PlaidLinkORM:             q.PlaidLinkORM.WithContext(ctx),
+		PlaidSyncORM:             q.PlaidSyncORM.WithContext(ctx),
+		PocketORM:                q.PocketORM.WithContext(ctx),
+		ReOccuringTransactionORM: q.ReOccuringTransactionORM.WithContext(ctx),
+		SmartGoalORM:             q.SmartGoalORM.WithContext(ctx),
+		StripeSubscriptionORM:    q.StripeSubscriptionORM.WithContext(ctx),
+		StudentLoanAccountORM:    q.StudentLoanAccountORM.WithContext(ctx),
+		TokenORM:                 q.TokenORM.WithContext(ctx),
+		TransactionORM:           q.TransactionORM.WithContext(ctx),
+		UserProfileORM:           q.UserProfileORM.WithContext(ctx),
 	}
 }
 

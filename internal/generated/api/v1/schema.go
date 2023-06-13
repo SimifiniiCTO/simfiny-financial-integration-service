@@ -31,6 +31,7 @@ func GetDatabaseSchemas() []interface{} {
 func GetClickhouseSchemas() []interface{} {
 	var models = []interface{}{
 		TransactionORM{},
+		ReOccuringTransactionORM{},
 	}
 	return models
 }

@@ -20,6 +20,141 @@ option (gogoproto.marshaler_all) = true;
 option (gogoproto.sizer_all) = true;
 option (gogoproto.unmarshaler_all) = true;
 
+/**
+account_id
+string
+The ID of the account to which the stream belongs
+
+stream_id
+string
+A unique id for the stream
+
+category
+[string]
+A hierarchical array of the categories to which this transaction belongs. See Categories. 
+All implementations are encouraged to use the new personal_finance_category instead of category. personal_finance_category provides more meaningful categorization and greater accuracy.
+
+category_id
+string
+The ID of the category to which this transaction belongs. See Categories.
+All implementations are encouraged to use the new personal_finance_category instead of category. personal_finance_category provides more meaningful categorization and greater accuracy.
+
+description
+string
+A description of the transaction stream.
+
+merchant_name
+nullable
+string
+The merchant associated with the transaction stream.
+
+first_date
+string
+The posted date of the earliest transaction in the stream.
+Format: date 
+
+last_date
+string
+The posted date of the latest transaction in the stream.
+Format: date 
+
+frequency
+string
+Describes the frequency of the transaction stream.
+WEEKLY: Assigned to a transaction stream that occurs approximately every week.
+BIWEEKLY: Assigned to a transaction stream that occurs approximately every 2 weeks.
+SEMI_MONTHLY: Assigned to a transaction stream that occurs approximately twice per month. This frequency is typically seen for inflow transaction streams.
+MONTHLY: Assigned to a transaction stream that occurs approximately every month.
+ANNUALLY: Assigned to a transaction stream that occurs approximately every year.
+UNKNOWN: Assigned to a transaction stream that does not fit any of the pre-defined frequencies.
+Possible values: UNKNOWN, WEEKLY, BIWEEKLY, SEMI_MONTHLY, MONTHLY, ANNUALLY
+
+transaction_ids
+[string]
+An array of Plaid transaction IDs belonging to the stream, sorted by posted date.
+**/
+enum ReOccuringTransactionsFrequency {
+    RE_OCCURING_TRANSACTIONS_FREQUENCY_UNSPECIFIED = 0;
+    RE_OCCURING_TRANSACTIONS_FREQUENCY_WEEKLY = 1;
+    RE_OCCURING_TRANSACTIONS_FREQUENCY_BIWEEKLY = 2;
+    RE_OCCURING_TRANSACTIONS_FREQUENCY_SEMI_MONTHLY = 3;
+    RE_OCCURING_TRANSACTIONS_FREQUENCY_MONTHLY = 4;
+    RE_OCCURING_TRANSACTIONS_FREQUENCY_ANNUALLY = 5;
+}
+
+enum ReOccuringTransactionsStatus {
+    RE_OCCURING_TRANSACTIONS_STATUS_UNSPECIFIED = 0;
+    // A MATURE recurring stream should have at least 3 transactions and happen
+    //  on a regular cadence (For Annual recurring stream, we will mark it MATURE after 2 instances).
+    RE_OCCURING_TRANSACTIONS_STATUS_MATURE = 1;
+    // When a recurring transaction first appears in the transaction history and before it fulfills
+    // the requirement of a mature stream, the status will be EARLY_DETECTION.
+    RE_OCCURING_TRANSACTIONS_STATUS_EARLY_DETECTION = 2;
+    // A stream that was previously in the EARLY_DETECTION status will move to the TOMBSTONED
+    // status when no further transactions were found at the next expected date.
+    RE_OCCURING_TRANSACTIONS_STATUS_TOMBSTONED = 3;
+}
+
+message PersonalFinanceCategory {
+    string primary = 1;
+    string detailed = 2;
+}
+
+message ReOccuringTransaction {
+    // @gotag: clickhouse:"account_id"
+    string account_id = 1;
+    // @gotag: clickhouse:"stream_id"
+    string stream_id = 2;
+    // @gotag: clickhouse:"category"
+    repeated string category = 3;
+    // @gotag: clickhouse:"category_id"
+    string category_id = 4;
+    // @gotag: clickhouse:"description"
+    string description = 5;
+    // @gotag: clickhouse:"merchant_name"
+    string merchant_name = 6;
+    // @gotag: clickhouse:"personal_finance_category_primary"
+    string personal_finance_category_primary = 7;
+    // @gotag: clickhouse:"personal_finance_category_detailed"
+    string personal_finance_category_detailed = 8;
+    // @gotag: clickhouse:"first_date"
+    string first_date = 9;
+    // @gotag: clickhouse:"last_date"
+    string last_date = 10;
+    // @gotag: clickhouse:"frequency"
+    ReOccuringTransactionsFrequency frequency = 11;
+    // @gotag: clickhouse:"transaction_ids"
+    repeated string transaction_ids = 12;
+    // @gotag: clickhouse:"average_amount"
+    string average_amount = 13;
+    // @gotag: clickhouse:"average_amount_iso_currency_code"
+    string average_amount_iso_currency_code = 14;
+    // @gotag: clickhouse:"last_amount"
+    string last_amount = 15;
+    // @gotag: clickhouse:"last_amount_iso_currency_code"
+    string last_amount_iso_currency_code = 16;
+    // @gotag: clickhouse:"is_active"
+    bool is_active = 17;
+    // @gotag: clickhouse:"status"
+    ReOccuringTransactionsStatus status = 18;
+    // @gotag: clickhouse:"updated_time"
+    string updated_time = 19;
+    // @gotag: clickhouse:"user_id"
+    uint64 user_id = 20 [
+        (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""},
+        (validate.rules).uint64.gt = 0
+    ];
+    // @gotag: clickhouse:"link_id"
+    uint64 link_id = 21 [
+        (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""},
+        (validate.rules).uint64.gt = 0
+    ];
+    uint64 id = 22 [
+        (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}
+    ];
+    option (gorm.opts) = {ormable: true};
+}
+
 message Transaction {
     message Location {
         string address = 1;

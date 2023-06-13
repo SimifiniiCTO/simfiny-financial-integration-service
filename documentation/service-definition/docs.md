@@ -6,12 +6,17 @@
 - [api/v1/clickhouse.proto](#api_v1_clickhouse-proto)
     - [AverageTransactionAmountByCategoryMetric](#api-v1-AverageTransactionAmountByCategoryMetric)
     - [MonthlyTransactionCountByCategoryMetric](#api-v1-MonthlyTransactionCountByCategoryMetric)
+    - [PersonalFinanceCategory](#api-v1-PersonalFinanceCategory)
+    - [ReOccuringTransaction](#api-v1-ReOccuringTransaction)
     - [Transaction](#api-v1-Transaction)
     - [Transaction.Location](#api-v1-Transaction-Location)
     - [Transaction.PaymentMeta](#api-v1-Transaction-PaymentMeta)
     - [TransactionAmountByCountryMetric](#api-v1-TransactionAmountByCountryMetric)
     - [TransactionAmountDistributionByCategoryMetric](#api-v1-TransactionAmountDistributionByCategoryMetric)
     - [TransactionCountByMerchantPaymentChannelMetric](#api-v1-TransactionCountByMerchantPaymentChannelMetric)
+  
+    - [ReOccuringTransactionsFrequency](#api-v1-ReOccuringTransactionsFrequency)
+    - [ReOccuringTransactionsStatus](#api-v1-ReOccuringTransactionsStatus)
   
 - [api/v1/errors_ignore.proto](#api_v1_errors_ignore-proto)
     - [ErrorMessageRequest](#api-v1-ErrorMessageRequest)
@@ -182,6 +187,58 @@
 
 
 
+<a name="api-v1-PersonalFinanceCategory"></a>
+
+### PersonalFinanceCategory
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| primary | [string](#string) |  |  |
+| detailed | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="api-v1-ReOccuringTransaction"></a>
+
+### ReOccuringTransaction
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| account_id | [string](#string) |  | @gotag: clickhouse:&#34;account_id&#34; |
+| stream_id | [string](#string) |  | @gotag: clickhouse:&#34;stream_id&#34; |
+| category | [string](#string) | repeated | @gotag: clickhouse:&#34;category&#34; |
+| category_id | [string](#string) |  | @gotag: clickhouse:&#34;category_id&#34; |
+| description | [string](#string) |  | @gotag: clickhouse:&#34;description&#34; |
+| merchant_name | [string](#string) |  | @gotag: clickhouse:&#34;merchant_name&#34; |
+| personal_finance_category_primary | [string](#string) |  | @gotag: clickhouse:&#34;personal_finance_category_primary&#34; |
+| personal_finance_category_detailed | [string](#string) |  | @gotag: clickhouse:&#34;personal_finance_category_detailed&#34; |
+| first_date | [string](#string) |  | @gotag: clickhouse:&#34;first_date&#34; |
+| last_date | [string](#string) |  | @gotag: clickhouse:&#34;last_date&#34; |
+| frequency | [ReOccuringTransactionsFrequency](#api-v1-ReOccuringTransactionsFrequency) |  | @gotag: clickhouse:&#34;frequency&#34; |
+| transaction_ids | [string](#string) | repeated | @gotag: clickhouse:&#34;transaction_ids&#34; |
+| average_amount | [string](#string) |  | @gotag: clickhouse:&#34;average_amount&#34; |
+| average_amount_iso_currency_code | [string](#string) |  | @gotag: clickhouse:&#34;average_amount_iso_currency_code&#34; |
+| last_amount | [string](#string) |  | @gotag: clickhouse:&#34;last_amount&#34; |
+| last_amount_iso_currency_code | [string](#string) |  | @gotag: clickhouse:&#34;last_amount_iso_currency_code&#34; |
+| is_active | [bool](#bool) |  | @gotag: clickhouse:&#34;is_active&#34; |
+| status | [ReOccuringTransactionsStatus](#api-v1-ReOccuringTransactionsStatus) |  | @gotag: clickhouse:&#34;status&#34; |
+| updated_time | [string](#string) |  | @gotag: clickhouse:&#34;updated_time&#34; |
+| user_id | [uint64](#uint64) |  | @gotag: clickhouse:&#34;user_id&#34; |
+| link_id | [uint64](#uint64) |  | @gotag: clickhouse:&#34;link_id&#34; |
+| id | [uint64](#uint64) |  |  |
+
+
+
+
+
+
 <a name="api-v1-Transaction"></a>
 
 ### Transaction
@@ -315,6 +372,86 @@
 
 
  
+
+
+<a name="api-v1-ReOccuringTransactionsFrequency"></a>
+
+### ReOccuringTransactionsFrequency
+account_id
+string
+The ID of the account to which the stream belongs
+
+stream_id
+string
+A unique id for the stream
+
+category
+[string]
+A hierarchical array of the categories to which this transaction belongs. See Categories. 
+All implementations are encouraged to use the new personal_finance_category instead of category. personal_finance_category provides more meaningful categorization and greater accuracy.
+
+category_id
+string
+The ID of the category to which this transaction belongs. See Categories.
+All implementations are encouraged to use the new personal_finance_category instead of category. personal_finance_category provides more meaningful categorization and greater accuracy.
+
+description
+string
+A description of the transaction stream.
+
+merchant_name
+nullable
+string
+The merchant associated with the transaction stream.
+
+first_date
+string
+The posted date of the earliest transaction in the stream.
+Format: date 
+
+last_date
+string
+The posted date of the latest transaction in the stream.
+Format: date 
+
+frequency
+string
+Describes the frequency of the transaction stream.
+WEEKLY: Assigned to a transaction stream that occurs approximately every week.
+BIWEEKLY: Assigned to a transaction stream that occurs approximately every 2 weeks.
+SEMI_MONTHLY: Assigned to a transaction stream that occurs approximately twice per month. This frequency is typically seen for inflow transaction streams.
+MONTHLY: Assigned to a transaction stream that occurs approximately every month.
+ANNUALLY: Assigned to a transaction stream that occurs approximately every year.
+UNKNOWN: Assigned to a transaction stream that does not fit any of the pre-defined frequencies.
+Possible values: UNKNOWN, WEEKLY, BIWEEKLY, SEMI_MONTHLY, MONTHLY, ANNUALLY
+
+transaction_ids
+[string]
+An array of Plaid transaction IDs belonging to the stream, sorted by posted date.
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| RE_OCCURING_TRANSACTIONS_FREQUENCY_UNSPECIFIED | 0 |  |
+| RE_OCCURING_TRANSACTIONS_FREQUENCY_WEEKLY | 1 |  |
+| RE_OCCURING_TRANSACTIONS_FREQUENCY_BIWEEKLY | 2 |  |
+| RE_OCCURING_TRANSACTIONS_FREQUENCY_SEMI_MONTHLY | 3 |  |
+| RE_OCCURING_TRANSACTIONS_FREQUENCY_MONTHLY | 4 |  |
+| RE_OCCURING_TRANSACTIONS_FREQUENCY_ANNUALLY | 5 |  |
+
+
+
+<a name="api-v1-ReOccuringTransactionsStatus"></a>
+
+### ReOccuringTransactionsStatus
+
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| RE_OCCURING_TRANSACTIONS_STATUS_UNSPECIFIED | 0 |  |
+| RE_OCCURING_TRANSACTIONS_STATUS_MATURE | 1 | A MATURE recurring stream should have at least 3 transactions and happen on a regular cadence (For Annual recurring stream, we will mark it MATURE after 2 instances). |
+| RE_OCCURING_TRANSACTIONS_STATUS_EARLY_DETECTION | 2 | When a recurring transaction first appears in the transaction history and before it fulfills the requirement of a mature stream, the status will be EARLY_DETECTION. |
+| RE_OCCURING_TRANSACTIONS_STATUS_TOMBSTONED | 3 | A stream that was previously in the EARLY_DETECTION status will move to the TOMBSTONED status when no further transactions were found at the next expected date. |
+
 
  
 
