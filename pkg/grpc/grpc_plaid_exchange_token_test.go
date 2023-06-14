@@ -3,13 +3,13 @@ package grpc
 import (
 	"context"
 	"fmt"
+	"reflect"
 	"testing"
 	"time"
 
-	"github.com/stretchr/testify/assert"
-
 	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/helper"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestServer_PlaidExchangeToken(t *testing.T) {
@@ -84,6 +84,52 @@ func TestServer_PlaidExchangeToken(t *testing.T) {
 				assert.NotNil(t, cnt)
 
 				assert.NotNil(t, got)
+			}
+		})
+	}
+}
+
+func Test_tokenExchCallbackMetadata_validate(t *testing.T) {
+	tests := []struct {
+		name    string
+		tr      *tokenExchCallbackMetadata
+		wantErr bool
+	}{
+		// TODO: Add test cases.
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := tt.tr.validate(); (err != nil) != tt.wantErr {
+				t.Errorf("tokenExchCallbackMetadata.validate() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}
+
+func TestServer_createAndStoreLink(t *testing.T) {
+	type args struct {
+		ctx    context.Context
+		userID uint64
+		meta   *tokenExchCallbackMetadata
+	}
+	tests := []struct {
+		name    string
+		s       *Server
+		args    args
+		want    *uint64
+		wantErr bool
+	}{
+		// TODO: Add test cases.
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := tt.s.createAndStoreLink(tt.args.ctx, tt.args.userID, tt.args.meta)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("Server.createAndStoreLink() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("Server.createAndStoreLink() = %v, want %v", got, tt.want)
 			}
 		})
 	}

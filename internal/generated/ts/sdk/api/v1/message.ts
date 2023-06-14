@@ -261,6 +261,8 @@ export enum StripeSubscriptionStatus {
   STRIPE_SUBSCRIPTION_STATUS_CANCELED = 4,
   STRIPE_SUBSCRIPTION_STATUS_UNPAID = 5,
   STRIPE_SUBSCRIPTION_STATUS_COMPLETE = 6,
+  STRIPE_SUBSCRIPTION_STATUS_INCOMPLETE = 7,
+  STRIPE_SUBSCRIPTION_STATUS_INCOMPLETE_EXPIRED = 8,
   UNRECOGNIZED = -1,
 }
 
@@ -287,6 +289,12 @@ export function stripeSubscriptionStatusFromJSON(object: any): StripeSubscriptio
     case 6:
     case "STRIPE_SUBSCRIPTION_STATUS_COMPLETE":
       return StripeSubscriptionStatus.STRIPE_SUBSCRIPTION_STATUS_COMPLETE;
+    case 7:
+    case "STRIPE_SUBSCRIPTION_STATUS_INCOMPLETE":
+      return StripeSubscriptionStatus.STRIPE_SUBSCRIPTION_STATUS_INCOMPLETE;
+    case 8:
+    case "STRIPE_SUBSCRIPTION_STATUS_INCOMPLETE_EXPIRED":
+      return StripeSubscriptionStatus.STRIPE_SUBSCRIPTION_STATUS_INCOMPLETE_EXPIRED;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -310,6 +318,10 @@ export function stripeSubscriptionStatusToJSON(object: StripeSubscriptionStatus)
       return "STRIPE_SUBSCRIPTION_STATUS_UNPAID";
     case StripeSubscriptionStatus.STRIPE_SUBSCRIPTION_STATUS_COMPLETE:
       return "STRIPE_SUBSCRIPTION_STATUS_COMPLETE";
+    case StripeSubscriptionStatus.STRIPE_SUBSCRIPTION_STATUS_INCOMPLETE:
+      return "STRIPE_SUBSCRIPTION_STATUS_INCOMPLETE";
+    case StripeSubscriptionStatus.STRIPE_SUBSCRIPTION_STATUS_INCOMPLETE_EXPIRED:
+      return "STRIPE_SUBSCRIPTION_STATUS_INCOMPLETE_EXPIRED";
     case StripeSubscriptionStatus.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";

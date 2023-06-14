@@ -5,6 +5,7 @@
 
 - [api/v1/clickhouse.proto](#api_v1_clickhouse-proto)
     - [AverageTransactionAmountByCategoryMetric](#api-v1-AverageTransactionAmountByCategoryMetric)
+    - [InvestmentTransaction](#api-v1-InvestmentTransaction)
     - [MonthlyTransactionCountByCategoryMetric](#api-v1-MonthlyTransactionCountByCategoryMetric)
     - [PersonalFinanceCategory](#api-v1-PersonalFinanceCategory)
     - [ReOccuringTransaction](#api-v1-ReOccuringTransaction)
@@ -73,6 +74,8 @@
     - [CreateMilestoneResponse](#api-v1-CreateMilestoneResponse)
     - [CreateSmartGoalRequest](#api-v1-CreateSmartGoalRequest)
     - [CreateSmartGoalResponse](#api-v1-CreateSmartGoalResponse)
+    - [CreateSubscriptionRequest](#api-v1-CreateSubscriptionRequest)
+    - [CreateSubscriptionResponse](#api-v1-CreateSubscriptionResponse)
     - [CreateUserProfileRequest](#api-v1-CreateUserProfileRequest)
     - [CreateUserProfileResponse](#api-v1-CreateUserProfileResponse)
     - [DeleteBankAccountRequest](#api-v1-DeleteBankAccountRequest)
@@ -170,6 +173,38 @@
 | ----- | ---- | ----- | ----------- |
 | category | [string](#string) |  |  |
 | amount | [double](#double) |  |  |
+
+
+
+
+
+
+<a name="api-v1-InvestmentTransaction"></a>
+
+### InvestmentTransaction
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| account_id | [string](#string) |  | @gotag: clickhouse:&#34;account_id&#34; |
+| ammount | [string](#string) |  | @gotag: clickhouse:&#34;amount&#34; |
+| investment_transaction_id | [string](#string) |  | @gotag: clickhouse:&#34;investment_transaction_id&#34; |
+| security_id | [string](#string) |  | @gotag: clickhouse:&#34;security_id&#34; |
+| date | [string](#string) |  | @gotag: clickhouse:&#34;date&#34; |
+| name | [string](#string) |  | @gotag: clickhouse:&#34;name&#34; |
+| quantity | [double](#double) |  | @gotag: clickhouse:&#34;quantity&#34; |
+| amount | [double](#double) |  | @gotag: clickhouse:&#34;amount&#34; |
+| price | [double](#double) |  | @gotag: clickhouse:&#34;price&#34; |
+| fees | [double](#double) |  | @gotag: clickhouse:&#34;fees&#34; |
+| type | [string](#string) |  | @gotag: clickhouse:&#34;type&#34; |
+| subtype | [string](#string) |  | @gotag: clickhouse:&#34;subtype&#34; |
+| iso_currency_code | [string](#string) |  | @gotag: clickhouse:&#34;iso_currency_code&#34; |
+| unofficial_currency_code | [string](#string) |  | @gotag: clickhouse:&#34;unofficial_currency_code&#34; |
+| link_id | [uint64](#uint64) |  | @gotag: clickhouse:&#34;link_id&#34; |
+| id | [uint64](#uint64) |  | @gotag: clickhouse:&#34;id&#34; |
+| user_id | [uint64](#uint64) |  | @gotag: clickhouse:&#34;user_id&#34; |
+| created_at | [string](#string) |  |  |
 
 
 
@@ -1284,6 +1319,8 @@ such as the id, user_id tied to the profile, and many more
 | STRIPE_SUBSCRIPTION_STATUS_CANCELED | 4 |  |
 | STRIPE_SUBSCRIPTION_STATUS_UNPAID | 5 |  |
 | STRIPE_SUBSCRIPTION_STATUS_COMPLETE | 6 |  |
+| STRIPE_SUBSCRIPTION_STATUS_INCOMPLETE | 7 |  |
+| STRIPE_SUBSCRIPTION_STATUS_INCOMPLETE_EXPIRED | 8 |  |
 
 
  
@@ -1468,6 +1505,38 @@ the `create bank account` request
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | smart_goal_id | [uint64](#uint64) |  | The smart goal id |
+
+
+
+
+
+
+<a name="api-v1-CreateSubscriptionRequest"></a>
+
+### CreateSubscriptionRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| user_id | [uint64](#uint64) |  |  |
+| price_id | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="api-v1-CreateSubscriptionResponse"></a>
+
+### CreateSubscriptionResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| subscription_id | [string](#string) |  |  |
+| payment_intent_client_secret | [string](#string) |  |  |
 
 
 
@@ -2659,6 +2728,7 @@ FinancialService API.
 | GetTransactions | [GetTransactionsRequest](#api-v1-GetTransactionsRequest) | [GetTransactionsResponse](#api-v1-GetTransactionsResponse) |  |
 | ProcessWebhook | [ProcessWebhookRequest](#api-v1-ProcessWebhookRequest) | [ProcessWebhookResponse](#api-v1-ProcessWebhookResponse) |  |
 | StripeWebhook | [StripeWebhookRequest](#api-v1-StripeWebhookRequest) | [StripeWebhookResponse](#api-v1-StripeWebhookResponse) |  |
+| CreateSubscription | [CreateSubscriptionRequest](#api-v1-CreateSubscriptionRequest) | [CreateSubscriptionResponse](#api-v1-CreateSubscriptionResponse) |  |
 
  
 

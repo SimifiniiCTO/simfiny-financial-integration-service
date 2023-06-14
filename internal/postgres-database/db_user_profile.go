@@ -98,6 +98,48 @@ func (db *Db) UpdateUserProfile(ctx context.Context, profile *schema.UserProfile
 	return nil
 }
 
+func (db *Db) UpdateUserProfileSubscription(ctx context.Context, userId uint64, subscription *schema.StripeSubscription) error {
+	// instrument operation
+	if span := db.startDatastoreSpan(ctx, "dbtxn-update-profile"); span != nil {
+		defer span.End()
+	}
+
+	// validate the request
+	if userId == 0 {
+		return fmt.Errorf("invalid user_id")
+	}
+
+	if subscription == nil {
+		return fmt.Errorf("nil subscription")
+	}
+
+	// validate stripe subscription
+	if err := subscription.ValidateAll(); err != nil {
+		return err
+	}
+
+	// convert the subscription to orm
+	subscriptionRecord, err := subscription.ToORM(ctx)
+	if err != nil {
+		return err
+	}
+
+	u := db.QueryOperator.UserProfileORM
+	record, err := u.
+		WithContext(ctx).
+		Where(u.UserId.Eq(userId)).
+		First()
+	if err != nil {
+		return err
+	}
+
+	if err := u.StripeSubscriptions.Model(record).Replace(&subscriptionRecord); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 // GetUserProfileByUserID obtains a user profile by user_id if it exists within the database
 func (db *Db) GetUserProfileByUserID(ctx context.Context, userID uint64) (*schema.UserProfile, error) {
 	// instrument operation

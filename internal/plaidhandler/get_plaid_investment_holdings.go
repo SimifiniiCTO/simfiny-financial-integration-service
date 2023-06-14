@@ -13,14 +13,22 @@ type Investments struct {
 	Accounts   []plaid.AccountBase
 }
 
-func (p *PlaidWrapper) getPlaidInvestmentHoldings(ctx context.Context, accessToken *string) (*Investments, error) {
+func (p *PlaidWrapper) GetPlaidInvestmentHoldings(ctx context.Context, accessToken *string, accountIds []string) (*Investments, error) {
 	if accessToken == nil {
 		return nil, errors.New("invalid input argument. access token cannot be empty")
+	}
+
+	var opts plaid.InvestmentHoldingsGetRequestOptions
+	if len(accountIds) > 0 {
+		opts = plaid.InvestmentHoldingsGetRequestOptions{
+			AccountIds: &accountIds,
+		}
 	}
 
 	request := plaid.NewInvestmentsHoldingsGetRequest(*accessToken)
 	request.SetClientId(p.ClientID)
 	request.SetSecret(p.SecretKey)
+	request.SetOptions(opts)
 
 	resp, _, err := p.client.PlaidApi.InvestmentsHoldingsGet(ctx).InvestmentsHoldingsGetRequest(*request).Execute()
 	if err != nil {

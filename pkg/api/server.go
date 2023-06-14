@@ -52,33 +52,35 @@ var (
 )
 
 type Config struct {
-	HttpClientTimeout         time.Duration `mapstructure:"http-client-timeout"`
-	HttpServerTimeout         time.Duration `mapstructure:"http-server-timeout"`
-	HttpServerShutdownTimeout time.Duration `mapstructure:"http-server-shutdown-timeout"`
-	BackendURL                []string      `mapstructure:"backend-url"`
-	UILogo                    string        `mapstructure:"ui-logo"`
-	UIMessage                 string        `mapstructure:"ui-message"`
-	UIColor                   string        `mapstructure:"ui-color"`
-	UIPath                    string        `mapstructure:"ui-path"`
-	DataPath                  string        `mapstructure:"data-path"`
-	ConfigPath                string        `mapstructure:"config-path"`
-	CertPath                  string        `mapstructure:"cert-path"`
-	Host                      string        `mapstructure:"host"`
-	Port                      string        `mapstructure:"port"`
-	SecurePort                string        `mapstructure:"secure-port"`
-	PortMetrics               int           `mapstructure:"port-metrics"`
-	Hostname                  string        `mapstructure:"hostname"`
-	H2C                       bool          `mapstructure:"h2c"`
-	RandomDelay               bool          `mapstructure:"random-delay"`
-	RandomDelayUnit           string        `mapstructure:"random-delay-unit"`
-	RandomDelayMin            int           `mapstructure:"random-delay-min"`
-	RandomDelayMax            int           `mapstructure:"random-delay-max"`
-	RandomError               bool          `mapstructure:"random-error"`
-	Unhealthy                 bool          `mapstructure:"unhealthy"`
-	Unready                   bool          `mapstructure:"unready"`
-	JWTSecret                 string        `mapstructure:"jwt-secret"`
-	CacheServer               string        `mapstructure:"cache-server"`
-	GrpcServiceEndpoint       string        `mapstructure:"grpc-service-endpoint"`
+	HttpClientTimeout              time.Duration `mapstructure:"http-client-timeout"`
+	HttpServerTimeout              time.Duration `mapstructure:"http-server-timeout"`
+	HttpServerShutdownTimeout      time.Duration `mapstructure:"http-server-shutdown-timeout"`
+	BackendURL                     []string      `mapstructure:"backend-url"`
+	UILogo                         string        `mapstructure:"ui-logo"`
+	UIMessage                      string        `mapstructure:"ui-message"`
+	UIColor                        string        `mapstructure:"ui-color"`
+	UIPath                         string        `mapstructure:"ui-path"`
+	DataPath                       string        `mapstructure:"data-path"`
+	ConfigPath                     string        `mapstructure:"config-path"`
+	CertPath                       string        `mapstructure:"cert-path"`
+	Host                           string        `mapstructure:"host"`
+	Port                           string        `mapstructure:"port"`
+	SecurePort                     string        `mapstructure:"secure-port"`
+	PortMetrics                    int           `mapstructure:"port-metrics"`
+	Hostname                       string        `mapstructure:"hostname"`
+	H2C                            bool          `mapstructure:"h2c"`
+	RandomDelay                    bool          `mapstructure:"random-delay"`
+	RandomDelayUnit                string        `mapstructure:"random-delay-unit"`
+	RandomDelayMin                 int           `mapstructure:"random-delay-min"`
+	RandomDelayMax                 int           `mapstructure:"random-delay-max"`
+	RandomError                    bool          `mapstructure:"random-error"`
+	Unhealthy                      bool          `mapstructure:"unhealthy"`
+	Unready                        bool          `mapstructure:"unready"`
+	JWTSecret                      string        `mapstructure:"jwt-secret"`
+	CacheServer                    string        `mapstructure:"cache-server"`
+	GrpcServiceEndpoint            string        `mapstructure:"grpc-service-endpoint"`
+	StripeEndpointSigningSecretKey string        `mapstructure:"stripe-endpoint-signing-key"`
+	Environment                    string        `mapstructure:"service-environment"`
 }
 
 type Server struct {
@@ -93,7 +95,7 @@ type Server struct {
 	grpcGw          *runtime.ServeMux
 }
 
-func NewServer(config *Config, logger *zap.Logger, telemetry *instrumentation.Client, db *database.Db) (*Server, error) {
+func NewServer(config *Config, logger *zap.Logger, telemetry *instrumentation.Client, db *database.Db, router *mux.Router) (*Server, error) {
 	opts := []grpc.DialOption{grpc.WithInsecure()}
 	gw := runtime.NewServeMux()
 	ctx := context.Background()
@@ -101,8 +103,15 @@ func NewServer(config *Config, logger *zap.Logger, telemetry *instrumentation.Cl
 		return nil, err
 	}
 
+	var muxRouter *mux.Router
+	if router != nil {
+		muxRouter = router
+	} else {
+		muxRouter = mux.NewRouter()
+	}
+
 	srv := &Server{
-		router:          mux.NewRouter(),
+		router:          muxRouter,
 		logger:          logger,
 		config:          config,
 		instrumentation: telemetry,
@@ -113,7 +122,7 @@ func NewServer(config *Config, logger *zap.Logger, telemetry *instrumentation.Cl
 	return srv, nil
 }
 
-func (s *Server) registerHandlers() {
+func (s *Server) RegisterHandlers() {
 	s.router.Handle("/grpc-gateway", s.grpcGw)
 	s.router.Handle("/metrics", promhttp.Handler())
 	s.router.PathPrefix("/debug/pprof/").Handler(http.DefaultServeMux)
@@ -143,6 +152,8 @@ func (s *Server) registerHandlers() {
 	s.router.HandleFunc("/ws/echo", s.echoWsHandler)
 	s.router.HandleFunc("/chunked", s.chunkedHandler)
 	s.router.HandleFunc("/chunked/{wait:[0-9]+}", s.chunkedHandler)
+	s.router.HandleFunc("/webhook", s.handleStripeWebhook).Methods("POST")
+
 	s.router.PathPrefix("/swagger/").Handler(httpSwagger.Handler(
 		httpSwagger.URL("/swagger/doc.json"),
 	))
@@ -155,7 +166,7 @@ func (s *Server) registerHandlers() {
 	})
 }
 
-func (s *Server) registerMiddlewares() {
+func (s *Server) RegisterMiddlewares() {
 	prom := NewPrometheusMiddleware()
 	s.router.Use(prom.Handler)
 	httpLogger := NewLoggingMiddleware(s.logger)
@@ -170,11 +181,11 @@ func (s *Server) registerMiddlewares() {
 	}
 }
 
-func (s *Server) ListenAndServe(stopCh <-chan struct{}) {
+func (s *Server) ListenAndServe() (*http.Server, *http.Server) {
 	go s.startMetricsServer()
 
-	s.registerHandlers()
-	s.registerMiddlewares()
+	s.RegisterHandlers()
+	s.RegisterMiddlewares()
 
 	if s.config.H2C {
 		s.handler = h2c.NewHandler(s.router, &http2.Server{})
@@ -182,7 +193,7 @@ func (s *Server) ListenAndServe(stopCh <-chan struct{}) {
 		s.handler = s.router
 	}
 
-	//s.printRoutes()
+	s.printRoutes()
 
 	// load configs in memory and start watching for changes in the config dir
 	if stat, err := os.Stat(s.config.ConfigPath); err == nil && stat.IsDir() {
@@ -197,10 +208,10 @@ func (s *Server) ListenAndServe(stopCh <-chan struct{}) {
 
 	// start redis connection pool
 	ticker := time.NewTicker(30 * time.Second)
-	s.startCachePool(ticker, stopCh)
+	s.startCachePool(ticker)
 
 	// create the http server
-	srv := s.startServer()
+	srv := s.StartServer()
 
 	// create the secure server
 	secureSrv := s.startSecureServer()
@@ -213,11 +224,10 @@ func (s *Server) ListenAndServe(stopCh <-chan struct{}) {
 		atomic.StoreInt32(&ready, 1)
 	}
 
-	// wait for SIGTERM or SIGINT
-	<-stopCh
-	ctx, cancel := context.WithTimeout(context.Background(), s.config.HttpServerShutdownTimeout)
-	defer cancel()
+	return srv, secureSrv
+}
 
+func (s *Server) Shutdown(ctx context.Context, srv *http.Server, secureSrv *http.Server) {
 	// all calls to /healthz and /readyz will fail from now on
 	atomic.StoreInt32(&healthy, 0)
 	atomic.StoreInt32(&ready, 0)
@@ -250,13 +260,15 @@ func (s *Server) ListenAndServe(stopCh <-chan struct{}) {
 	}
 }
 
-func (s *Server) startServer() *http.Server {
+func (s *Server) StartServer() *http.Server {
 
 	// determine if the port is specified
 	if s.config.Port == "0" {
 		// move on immediately
 		return nil
 	}
+
+	s.logger.Info("Starting HTTP Server.", zap.String("addr", s.config.Host+":"+s.config.Port))
 
 	srv := &http.Server{
 		Addr:         s.config.Host + ":" + s.config.Port,

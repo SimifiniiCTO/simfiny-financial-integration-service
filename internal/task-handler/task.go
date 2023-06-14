@@ -30,6 +30,8 @@ const (
 	TaskDeleteTransactions               TaskType = "transactions:delete"
 	TaskPullTransactions                 TaskType = "transactions:pull"
 	TaskPullUpdatedRecurringTransactions TaskType = "transactions:pull:updated-recurring"
+	TaskPullInvestmentTransactions       TaskType = "transactions:pull:investment"
+	TaskPullInvestmentHoldings           TaskType = "holdings:pull:investment"
 )
 
 func (t TaskType) String() string {

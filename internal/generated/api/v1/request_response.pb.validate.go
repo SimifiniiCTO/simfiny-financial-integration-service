@@ -9974,6 +9974,236 @@ var _ interface {
 	ErrorName() string
 } = StripeWebhookResponseValidationError{}
 
+// Validate checks the field values on CreateSubscriptionRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *CreateSubscriptionRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on CreateSubscriptionRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// CreateSubscriptionRequestMultiError, or nil if none found.
+func (m *CreateSubscriptionRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *CreateSubscriptionRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if m.GetUserId() <= 0 {
+		err := CreateSubscriptionRequestValidationError{
+			field:  "UserId",
+			reason: "value must be greater than 0",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if utf8.RuneCountInString(m.GetPriceId()) < 1 {
+		err := CreateSubscriptionRequestValidationError{
+			field:  "PriceId",
+			reason: "value length must be at least 1 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if len(errors) > 0 {
+		return CreateSubscriptionRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// CreateSubscriptionRequestMultiError is an error wrapping multiple validation
+// errors returned by CreateSubscriptionRequest.ValidateAll() if the
+// designated constraints aren't met.
+type CreateSubscriptionRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m CreateSubscriptionRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m CreateSubscriptionRequestMultiError) AllErrors() []error { return m }
+
+// CreateSubscriptionRequestValidationError is the validation error returned by
+// CreateSubscriptionRequest.Validate if the designated constraints aren't met.
+type CreateSubscriptionRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e CreateSubscriptionRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e CreateSubscriptionRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e CreateSubscriptionRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e CreateSubscriptionRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e CreateSubscriptionRequestValidationError) ErrorName() string {
+	return "CreateSubscriptionRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e CreateSubscriptionRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCreateSubscriptionRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = CreateSubscriptionRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = CreateSubscriptionRequestValidationError{}
+
+// Validate checks the field values on CreateSubscriptionResponse with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *CreateSubscriptionResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on CreateSubscriptionResponse with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// CreateSubscriptionResponseMultiError, or nil if none found.
+func (m *CreateSubscriptionResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *CreateSubscriptionResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for SubscriptionId
+
+	// no validation rules for PaymentIntentClientSecret
+
+	if len(errors) > 0 {
+		return CreateSubscriptionResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// CreateSubscriptionResponseMultiError is an error wrapping multiple
+// validation errors returned by CreateSubscriptionResponse.ValidateAll() if
+// the designated constraints aren't met.
+type CreateSubscriptionResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m CreateSubscriptionResponseMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m CreateSubscriptionResponseMultiError) AllErrors() []error { return m }
+
+// CreateSubscriptionResponseValidationError is the validation error returned
+// by CreateSubscriptionResponse.Validate if the designated constraints aren't met.
+type CreateSubscriptionResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e CreateSubscriptionResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e CreateSubscriptionResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e CreateSubscriptionResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e CreateSubscriptionResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e CreateSubscriptionResponseValidationError) ErrorName() string {
+	return "CreateSubscriptionResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e CreateSubscriptionResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCreateSubscriptionResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = CreateSubscriptionResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = CreateSubscriptionResponseValidationError{}
+
 // Validate checks the field values on
 // GetReCurringTransactionsResponse_ParticipantReCurringTransactions with the
 // rules defined in the proto definition for this message. If any rules are

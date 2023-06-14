@@ -4,10 +4,9 @@ import (
 	"context"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
-
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/helper"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestDb_CreateBankAccount(t *testing.T) {
@@ -285,6 +284,28 @@ func TestDb_UpdateBankAccount(t *testing.T) {
 				assert.Nil(t, err)
 				assert.NotNil(t, got)
 				assert.Equal(t, got.Name, updateBankAcctName)
+			}
+		})
+	}
+}
+
+func TestDb_UpdateBankAccounts(t *testing.T) {
+	type args struct {
+		ctx          context.Context
+		bankAccounts []*schema.BankAccount
+	}
+	tests := []struct {
+		name    string
+		db      *Db
+		args    args
+		wantErr bool
+	}{
+		// TODO: Add test cases.
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := tt.db.UpdateBankAccounts(tt.args.ctx, tt.args.bankAccounts); (err != nil) != tt.wantErr {
+				t.Errorf("Db.UpdateBankAccounts() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
 	}

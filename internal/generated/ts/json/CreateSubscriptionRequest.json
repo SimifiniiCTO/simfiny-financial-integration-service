@@ -1,0 +1,20 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/CreateSubscriptionRequest",
+    "definitions": {
+        "CreateSubscriptionRequest": {
+            "properties": {
+                "user_id": {
+                    "type": "string"
+                },
+                "price_id": {
+                    "minLength": 1,
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Create Subscription Request"
+        }
+    }
+}

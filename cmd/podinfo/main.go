@@ -62,6 +62,11 @@ func main() {
 		logger.Panic("config unmarshal failed", zap.Error(err))
 	}
 
+	var httpCfg api.Config
+	if err := viper.Unmarshal(&httpCfg); err != nil {
+		logger.Panic("config unmarshal failed", zap.Error(err))
+	}
+
 	keyManagement, err := configureKeyManagement(logger)
 	if err != nil {
 		logger.Panic(err.Error())
@@ -100,10 +105,14 @@ func main() {
 		logger.Panic(err.Error())
 	}
 
+	logger.Info("successfully initialized plaid wrapper ....")
+
 	transactionManager, err := configureTransactionManager(logger, db, instrumentation)
 	if err != nil {
 		logger.Panic(err.Error())
 	}
+
+	logger.Info("successfully initialized temporal client ....")
 
 	// initialize gRPC server
 	grpcSrv, err := grpc.NewServer(&grpc.Params{
@@ -121,12 +130,20 @@ func main() {
 		logger.Panic(err.Error())
 	}
 
-	grpcEntry := rkgrpc.GetGrpcEntry("financial-integration-service")
+	logger.Info("successfully initialized grpc server ....")
+
+	serviceName := viper.GetString("grpc-service-name")
+
+	grpcEntry := rkgrpc.GetGrpcEntry(serviceName)
 	grpcEntry.AddRegFuncGrpc(grpcSrv.RegisterGrpcServer)
 	grpcEntry.AddRegFuncGw(proto.RegisterFinancialServiceHandlerFromEndpoint)
 
+	logger.Info("successfully configured grpc server ....")
+
 	// TODO: add grpc interceptor middleware to emit metrics on various gRPC calls
 	// Bootstrap
+
+	logger.Info("successfully initialized mux router .... ")
 
 	// ensure we can optimatelly close the transaction manager and all associated resources
 	defer grpcSrv.TransactionManager.Close()
@@ -141,21 +158,29 @@ func main() {
 	}
 
 	// log version and port
-	logger.Info("Starting financial integration service",
+	logger.Info("Starting financial integration service (grpc and http service)",
 		zap.String("version", viper.GetString("version")),
 		zap.String("revision", viper.GetString("revision")),
 		zap.String("port", srvCfg.Port),
 	)
 
+	srv, err := api.NewServer(&httpCfg, logger, instrumentation, db, nil)
+	if err != nil {
+		logger.Panic(err.Error())
+	}
+
+	httpServer, httpSecureServer := srv.ListenAndServe()
+
+	logger.Info("successfully initialized http server ....", zap.Any("srv", srv))
+
 	boot.Bootstrap(context.Background())
+	boot.AddShutdownHookFunc("shutdown http server", func() {
+		srv.Shutdown(ctx, httpServer, httpSecureServer)
+		// TODO: add shutdown hook for grpc server
+	})
 
 	// Wait for shutdown sig dgfs
 	boot.WaitForShutdownSig(context.Background())
-
-	// start HTTP server
-	stopCh := signals.SetupSignalHandler()
-	srv, _ := api.NewServer(&srvCfg, logger, instrumentation, db)
-	srv.ListenAndServe(stopCh)
 }
 
 func configureTransactionManager(log *zap.Logger, db *database.Db, telemetrySdk *instrumentation.Client) (*transactionmanager.TransactionManager, error) {

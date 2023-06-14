@@ -832,3 +832,19 @@ message StripeWebhookRequest{
 message StripeWebhookResponse{
   string message = 1;
 }
+
+message CreateSubscriptionRequest {
+  uint64 user_id = 1 [
+    (validate.rules).uint64.gt = 0,
+    (google.api.field_behavior) = REQUIRED
+  ];
+  string price_id = 2[
+    (validate.rules).string.min_len = 1,
+    (google.api.field_behavior) = REQUIRED
+  ];
+}
+
+message CreateSubscriptionResponse {
+  string subscription_id = 1;
+  string payment_intent_client_secret = 2;
+}

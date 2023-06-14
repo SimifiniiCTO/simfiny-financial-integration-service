@@ -141,6 +141,162 @@ var _ interface {
 	ErrorName() string
 } = PersonalFinanceCategoryValidationError{}
 
+// Validate checks the field values on InvestmentTransaction with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *InvestmentTransaction) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on InvestmentTransaction with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// InvestmentTransactionMultiError, or nil if none found.
+func (m *InvestmentTransaction) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *InvestmentTransaction) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for AccountId
+
+	// no validation rules for Ammount
+
+	// no validation rules for InvestmentTransactionId
+
+	// no validation rules for SecurityId
+
+	// no validation rules for Date
+
+	// no validation rules for Name
+
+	// no validation rules for Quantity
+
+	// no validation rules for Amount
+
+	// no validation rules for Price
+
+	// no validation rules for Fees
+
+	// no validation rules for Type
+
+	// no validation rules for Subtype
+
+	// no validation rules for IsoCurrencyCode
+
+	// no validation rules for UnofficialCurrencyCode
+
+	if m.GetLinkId() <= 0 {
+		err := InvestmentTransactionValidationError{
+			field:  "LinkId",
+			reason: "value must be greater than 0",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	// no validation rules for Id
+
+	if m.GetUserId() <= 0 {
+		err := InvestmentTransactionValidationError{
+			field:  "UserId",
+			reason: "value must be greater than 0",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	// no validation rules for CreatedAt
+
+	if len(errors) > 0 {
+		return InvestmentTransactionMultiError(errors)
+	}
+
+	return nil
+}
+
+// InvestmentTransactionMultiError is an error wrapping multiple validation
+// errors returned by InvestmentTransaction.ValidateAll() if the designated
+// constraints aren't met.
+type InvestmentTransactionMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m InvestmentTransactionMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m InvestmentTransactionMultiError) AllErrors() []error { return m }
+
+// InvestmentTransactionValidationError is the validation error returned by
+// InvestmentTransaction.Validate if the designated constraints aren't met.
+type InvestmentTransactionValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e InvestmentTransactionValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e InvestmentTransactionValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e InvestmentTransactionValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e InvestmentTransactionValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e InvestmentTransactionValidationError) ErrorName() string {
+	return "InvestmentTransactionValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e InvestmentTransactionValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sInvestmentTransaction.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = InvestmentTransactionValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = InvestmentTransactionValidationError{}
+
 // Validate checks the field values on ReOccuringTransaction with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.

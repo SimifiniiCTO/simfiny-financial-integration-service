@@ -110,7 +110,7 @@ func (s *Server) cacheReadHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(data))
 }
 
-func (s *Server) startCachePool(ticker *time.Ticker, stopCh <-chan struct{}) {
+func (s *Server) startCachePool(ticker *time.Ticker) {
 	if s.config.CacheServer == "" {
 		return
 	}
@@ -135,16 +135,5 @@ func (s *Server) startCachePool(ticker *time.Ticker, stopCh <-chan struct{}) {
 		_ = conn.Close()
 	}
 
-	// set version on a schedule
-	go func() {
-		setVersion()
-		for {
-			select {
-			case <-stopCh:
-				return
-			case <-ticker.C:
-				setVersion()
-			}
-		}
-	}()
+	setVersion()
 }

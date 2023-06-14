@@ -3,6 +3,7 @@ package plaidhandler
 import (
 	"context"
 	"errors"
+	"reflect"
 	"testing"
 
 	"github.com/plaid/plaid-go/v12/plaid"
@@ -71,5 +72,33 @@ func assertAccountsOfLiabilityType(t *testing.T, d *Liabilities) {
 		if acct.Type != plaid.AccountType(CREDIT) && acct.Type != plaid.AccountType(LOAN) {
 			t.Errorf("account can only be of credit or loan type")
 		}
+	}
+}
+
+func TestPlaidWrapper_getPlaidLiabilities(t *testing.T) {
+	type args struct {
+		ctx         context.Context
+		accessToken *string
+	}
+	tests := []struct {
+		name    string
+		p       *PlaidWrapper
+		args    args
+		want    *Liabilities
+		wantErr bool
+	}{
+		// TODO: Add test cases.
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := tt.p.getPlaidLiabilities(tt.args.ctx, tt.args.accessToken)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("PlaidWrapper.getPlaidLiabilities() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("PlaidWrapper.getPlaidLiabilities() = %v, want %v", got, tt.want)
+			}
+		})
 	}
 }

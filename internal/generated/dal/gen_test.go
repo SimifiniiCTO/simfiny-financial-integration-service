@@ -86,6 +86,7 @@ func Test_WithContext(t *testing.T) {
 		qCtx.InvesmentHoldingORM.UnderlyingDB().Statement.Context,
 		qCtx.InvestmentAccountORM.UnderlyingDB().Statement.Context,
 		qCtx.InvestmentSecurityORM.UnderlyingDB().Statement.Context,
+		qCtx.InvestmentTransactionORM.UnderlyingDB().Statement.Context,
 		qCtx.LinkORM.UnderlyingDB().Statement.Context,
 		qCtx.MilestoneORM.UnderlyingDB().Statement.Context,
 		qCtx.MortgageAccountORM.UnderlyingDB().Statement.Context,

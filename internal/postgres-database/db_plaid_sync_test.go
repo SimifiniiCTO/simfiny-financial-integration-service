@@ -60,3 +60,31 @@ func TestDb_GetLastPlaidSync(t *testing.T) {
 		})
 	}
 }
+
+func TestDb_RecordPlaidSync(t *testing.T) {
+	type args struct {
+		ctx         context.Context
+		userId      uint64
+		plaidLinkId uint64
+		trigger     string
+		nextCursor  string
+		added       int64
+		modified    int64
+		removed     int64
+	}
+	tests := []struct {
+		name    string
+		db      *Db
+		args    args
+		wantErr bool
+	}{
+		// TODO: Add test cases.
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := tt.db.RecordPlaidSync(tt.args.ctx, tt.args.userId, tt.args.plaidLinkId, tt.args.trigger, tt.args.nextCursor, tt.args.added, tt.args.modified, tt.args.removed); (err != nil) != tt.wantErr {
+				t.Errorf("Db.RecordPlaidSync() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}

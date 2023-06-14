@@ -5,6 +5,29 @@ import (
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/helper"
 )
 
+func generateRandomInvestmentTransaction() *schema.InvestmentTransaction {
+	return &schema.InvestmentTransaction{
+		AccountId:               helper.GenerateRandomString(20),
+		Ammount:                 helper.GenerateRandomString(20),
+		InvestmentTransactionId: helper.GenerateRandomString(20),
+		SecurityId:              helper.GenerateRandomString(20),
+		Date:                    helper.GenerateRandomString(20),
+		Name:                    helper.GenerateRandomString(20),
+		Quantity:                float64(*generateRandomId()),
+		Amount:                  float64(*generateRandomId()),
+		Price:                   float64(*generateRandomId()),
+		Fees:                    float64(*generateRandomId()),
+		Type:                    helper.GenerateRandomString(20),
+		Subtype:                 helper.GenerateRandomString(20),
+		IsoCurrencyCode:         helper.GenerateRandomString(20),
+		UnofficialCurrencyCode:  helper.GenerateRandomString(20),
+		LinkId:                  *generateRandomId(),
+		Id:                      0,
+		UserId:                  *generateRandomId(),
+		CreatedAt:               helper.GenerateRandomString(20),
+	}
+}
+
 func generateRandomReOccurringTransaction() *schema.ReOccuringTransaction {
 	return &schema.ReOccuringTransaction{
 		AccountId:                       helper.GenerateRandomString(20),
@@ -59,6 +82,14 @@ func generateRandomTransaction() *schema.Transaction {
 		UserId:                 *generateRandomId(),
 		LinkId:                 *generateRandomId(),
 	}
+}
+
+func generateMultipleInvestmentTransaction(numTransactions int) []*schema.InvestmentTransaction {
+	var transactions []*schema.InvestmentTransaction
+	for i := 0; i < numTransactions; i++ {
+		transactions = append(transactions, generateRandomInvestmentTransaction())
+	}
+	return transactions
 }
 
 func generateMultipleTransaction(numTransactions int64) []*schema.Transaction {

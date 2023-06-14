@@ -4349,6 +4349,116 @@ func (x *StripeWebhookResponse) GetMessage() string {
 	return ""
 }
 
+type CreateSubscriptionRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	UserId  uint64 `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	PriceId string `protobuf:"bytes,2,opt,name=price_id,json=priceId,proto3" json:"price_id,omitempty"`
+}
+
+func (x *CreateSubscriptionRequest) Reset() {
+	*x = CreateSubscriptionRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_v1_request_response_proto_msgTypes[80]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *CreateSubscriptionRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateSubscriptionRequest) ProtoMessage() {}
+
+func (x *CreateSubscriptionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_v1_request_response_proto_msgTypes[80]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateSubscriptionRequest.ProtoReflect.Descriptor instead.
+func (*CreateSubscriptionRequest) Descriptor() ([]byte, []int) {
+	return file_api_v1_request_response_proto_rawDescGZIP(), []int{80}
+}
+
+func (x *CreateSubscriptionRequest) GetUserId() uint64 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+func (x *CreateSubscriptionRequest) GetPriceId() string {
+	if x != nil {
+		return x.PriceId
+	}
+	return ""
+}
+
+type CreateSubscriptionResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	SubscriptionId            string `protobuf:"bytes,1,opt,name=subscription_id,json=subscriptionId,proto3" json:"subscription_id,omitempty"`
+	PaymentIntentClientSecret string `protobuf:"bytes,2,opt,name=payment_intent_client_secret,json=paymentIntentClientSecret,proto3" json:"payment_intent_client_secret,omitempty"`
+}
+
+func (x *CreateSubscriptionResponse) Reset() {
+	*x = CreateSubscriptionResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_v1_request_response_proto_msgTypes[81]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *CreateSubscriptionResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateSubscriptionResponse) ProtoMessage() {}
+
+func (x *CreateSubscriptionResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_v1_request_response_proto_msgTypes[81]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateSubscriptionResponse.ProtoReflect.Descriptor instead.
+func (*CreateSubscriptionResponse) Descriptor() ([]byte, []int) {
+	return file_api_v1_request_response_proto_rawDescGZIP(), []int{81}
+}
+
+func (x *CreateSubscriptionResponse) GetSubscriptionId() string {
+	if x != nil {
+		return x.SubscriptionId
+	}
+	return ""
+}
+
+func (x *CreateSubscriptionResponse) GetPaymentIntentClientSecret() string {
+	if x != nil {
+		return x.PaymentIntentClientSecret
+	}
+	return ""
+}
+
 type GetReCurringTransactionsResponse_ParticipantReCurringTransactions struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -4363,7 +4473,7 @@ type GetReCurringTransactionsResponse_ParticipantReCurringTransactions struct {
 func (x *GetReCurringTransactionsResponse_ParticipantReCurringTransactions) Reset() {
 	*x = GetReCurringTransactionsResponse_ParticipantReCurringTransactions{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_request_response_proto_msgTypes[80]
+		mi := &file_api_v1_request_response_proto_msgTypes[82]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4376,7 +4486,7 @@ func (x *GetReCurringTransactionsResponse_ParticipantReCurringTransactions) Stri
 func (*GetReCurringTransactionsResponse_ParticipantReCurringTransactions) ProtoMessage() {}
 
 func (x *GetReCurringTransactionsResponse_ParticipantReCurringTransactions) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_request_response_proto_msgTypes[80]
+	mi := &file_api_v1_request_response_proto_msgTypes[82]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4919,22 +5029,37 @@ var file_api_v1_request_response_proto_rawDesc = []byte{
 	0x72, 0x65, 0x22, 0x31, 0x0a, 0x15, 0x53, 0x74, 0x72, 0x69, 0x70, 0x65, 0x57, 0x65, 0x62, 0x68,
 	0x6f, 0x6f, 0x6b, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x6d,
 	0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x6d, 0x65,
-	0x73, 0x73, 0x61, 0x67, 0x65, 0x42, 0xed, 0x01, 0x0a, 0x0a, 0x63, 0x6f, 0x6d, 0x2e, 0x61, 0x70,
-	0x69, 0x2e, 0x76, 0x31, 0x42, 0x14, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x52, 0x65, 0x73,
-	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x64, 0x67, 0x69,
-	0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x53, 0x69, 0x6d, 0x69, 0x66, 0x69, 0x6e,
-	0x69, 0x69, 0x43, 0x54, 0x4f, 0x2f, 0x73, 0x69, 0x6d, 0x66, 0x69, 0x6e, 0x79, 0x2d, 0x66, 0x69,
-	0x6e, 0x61, 0x6e, 0x63, 0x69, 0x61, 0x6c, 0x2d, 0x69, 0x6e, 0x74, 0x65, 0x67, 0x72, 0x61, 0x74,
-	0x69, 0x6f, 0x6e, 0x2d, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x2f, 0x69, 0x6e, 0x74, 0x65,
-	0x72, 0x6e, 0x61, 0x6c, 0x2f, 0x67, 0x65, 0x6e, 0x65, 0x72, 0x61, 0x74, 0x65, 0x64, 0x2f, 0x61,
-	0x70, 0x69, 0x2f, 0x76, 0x31, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x76, 0x31, 0x3b, 0x61, 0x70, 0x69,
-	0x76, 0x31, 0xa2, 0x02, 0x03, 0x41, 0x58, 0x58, 0xaa, 0x02, 0x06, 0x41, 0x70, 0x69, 0x2e, 0x56,
-	0x31, 0xca, 0x02, 0x06, 0x41, 0x70, 0x69, 0x5c, 0x56, 0x31, 0xe2, 0x02, 0x12, 0x41, 0x70, 0x69,
-	0x5c, 0x56, 0x31, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea,
-	0x02, 0x07, 0x41, 0x70, 0x69, 0x3a, 0x3a, 0x56, 0x31, 0xd8, 0xe1, 0x1e, 0x00, 0xe0, 0xe1, 0x1e,
-	0x01, 0xf0, 0xe1, 0x1e, 0x01, 0xf8, 0xe1, 0x1e, 0x01, 0x80, 0xe2, 0x1e, 0x01, 0xa8, 0xe2, 0x1e,
-	0x01, 0xb8, 0xe2, 0x1e, 0x01, 0xc0, 0xe2, 0x1e, 0x01, 0xc8, 0xe2, 0x1e, 0x01, 0xd0, 0xe2, 0x1e,
-	0x01, 0xe0, 0xe2, 0x1e, 0x01, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x73, 0x73, 0x61, 0x67, 0x65, 0x22, 0x67, 0x0a, 0x19, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x53,
+	0x75, 0x62, 0x73, 0x63, 0x72, 0x69, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65,
+	0x73, 0x74, 0x12, 0x23, 0x0a, 0x07, 0x75, 0x73, 0x65, 0x72, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20,
+	0x01, 0x28, 0x04, 0x42, 0x0a, 0xe0, 0x41, 0x02, 0xfa, 0x42, 0x04, 0x32, 0x02, 0x20, 0x00, 0x52,
+	0x06, 0x75, 0x73, 0x65, 0x72, 0x49, 0x64, 0x12, 0x25, 0x0a, 0x08, 0x70, 0x72, 0x69, 0x63, 0x65,
+	0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x42, 0x0a, 0xe0, 0x41, 0x02, 0xfa, 0x42,
+	0x04, 0x72, 0x02, 0x10, 0x01, 0x52, 0x07, 0x70, 0x72, 0x69, 0x63, 0x65, 0x49, 0x64, 0x22, 0x86,
+	0x01, 0x0a, 0x1a, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x53, 0x75, 0x62, 0x73, 0x63, 0x72, 0x69,
+	0x70, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x27, 0x0a,
+	0x0f, 0x73, 0x75, 0x62, 0x73, 0x63, 0x72, 0x69, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x69, 0x64,
+	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0e, 0x73, 0x75, 0x62, 0x73, 0x63, 0x72, 0x69, 0x70,
+	0x74, 0x69, 0x6f, 0x6e, 0x49, 0x64, 0x12, 0x3f, 0x0a, 0x1c, 0x70, 0x61, 0x79, 0x6d, 0x65, 0x6e,
+	0x74, 0x5f, 0x69, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x5f, 0x63, 0x6c, 0x69, 0x65, 0x6e, 0x74, 0x5f,
+	0x73, 0x65, 0x63, 0x72, 0x65, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x19, 0x70, 0x61,
+	0x79, 0x6d, 0x65, 0x6e, 0x74, 0x49, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x43, 0x6c, 0x69, 0x65, 0x6e,
+	0x74, 0x53, 0x65, 0x63, 0x72, 0x65, 0x74, 0x42, 0xed, 0x01, 0x0a, 0x0a, 0x63, 0x6f, 0x6d, 0x2e,
+	0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x42, 0x14, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x52,
+	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x64,
+	0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x53, 0x69, 0x6d, 0x69, 0x66,
+	0x69, 0x6e, 0x69, 0x69, 0x43, 0x54, 0x4f, 0x2f, 0x73, 0x69, 0x6d, 0x66, 0x69, 0x6e, 0x79, 0x2d,
+	0x66, 0x69, 0x6e, 0x61, 0x6e, 0x63, 0x69, 0x61, 0x6c, 0x2d, 0x69, 0x6e, 0x74, 0x65, 0x67, 0x72,
+	0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2d, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x2f, 0x69, 0x6e,
+	0x74, 0x65, 0x72, 0x6e, 0x61, 0x6c, 0x2f, 0x67, 0x65, 0x6e, 0x65, 0x72, 0x61, 0x74, 0x65, 0x64,
+	0x2f, 0x61, 0x70, 0x69, 0x2f, 0x76, 0x31, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x76, 0x31, 0x3b, 0x61,
+	0x70, 0x69, 0x76, 0x31, 0xa2, 0x02, 0x03, 0x41, 0x58, 0x58, 0xaa, 0x02, 0x06, 0x41, 0x70, 0x69,
+	0x2e, 0x56, 0x31, 0xca, 0x02, 0x06, 0x41, 0x70, 0x69, 0x5c, 0x56, 0x31, 0xe2, 0x02, 0x12, 0x41,
+	0x70, 0x69, 0x5c, 0x56, 0x31, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74,
+	0x61, 0xea, 0x02, 0x07, 0x41, 0x70, 0x69, 0x3a, 0x3a, 0x56, 0x31, 0xd8, 0xe1, 0x1e, 0x00, 0xe0,
+	0xe1, 0x1e, 0x01, 0xf0, 0xe1, 0x1e, 0x01, 0xf8, 0xe1, 0x1e, 0x01, 0x80, 0xe2, 0x1e, 0x01, 0xa8,
+	0xe2, 0x1e, 0x01, 0xb8, 0xe2, 0x1e, 0x01, 0xc0, 0xe2, 0x1e, 0x01, 0xc8, 0xe2, 0x1e, 0x01, 0xd0,
+	0xe2, 0x1e, 0x01, 0xe0, 0xe2, 0x1e, 0x01, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -4949,7 +5074,7 @@ func file_api_v1_request_response_proto_rawDescGZIP() []byte {
 	return file_api_v1_request_response_proto_rawDescData
 }
 
-var file_api_v1_request_response_proto_msgTypes = make([]protoimpl.MessageInfo, 82)
+var file_api_v1_request_response_proto_msgTypes = make([]protoimpl.MessageInfo, 84)
 var file_api_v1_request_response_proto_goTypes = []interface{}{
 	(*CreateUserProfileRequest)(nil),                                          // 0: api.v1.CreateUserProfileRequest
 	(*CreateUserProfileResponse)(nil),                                         // 1: api.v1.CreateUserProfileResponse
@@ -5031,61 +5156,63 @@ var file_api_v1_request_response_proto_goTypes = []interface{}{
 	(*ProcessWebhookResponse)(nil),                                            // 77: api.v1.ProcessWebhookResponse
 	(*StripeWebhookRequest)(nil),                                              // 78: api.v1.StripeWebhookRequest
 	(*StripeWebhookResponse)(nil),                                             // 79: api.v1.StripeWebhookResponse
-	(*GetReCurringTransactionsResponse_ParticipantReCurringTransactions)(nil), // 80: api.v1.GetReCurringTransactionsResponse.ParticipantReCurringTransactions
-	nil,                           // 81: api.v1.ProcessWebhookRequest.ErrorEntry
-	(*UserProfile)(nil),           // 82: api.v1.UserProfile
-	(*BankAccount)(nil),           // 83: api.v1.BankAccount
-	(*Pocket)(nil),                // 84: api.v1.Pocket
-	(*SmartGoal)(nil),             // 85: api.v1.SmartGoal
-	(*Milestone)(nil),             // 86: api.v1.Milestone
-	(*Forecast)(nil),              // 87: api.v1.Forecast
-	(*Budget)(nil),                // 88: api.v1.Budget
-	(*InvestmentAccount)(nil),     // 89: api.v1.InvestmentAccount
-	(*MortgageAccount)(nil),       // 90: api.v1.MortgageAccount
-	(*CreditAccount)(nil),         // 91: api.v1.CreditAccount
-	(*StudentLoanAccount)(nil),    // 92: api.v1.StudentLoanAccount
-	(*Link)(nil),                  // 93: api.v1.Link
-	(*ReOccuringTransaction)(nil), // 94: api.v1.ReOccuringTransaction
-	(*Transaction)(nil),           // 95: api.v1.Transaction
-	(*anypb.Any)(nil),             // 96: google.protobuf.Any
+	(*CreateSubscriptionRequest)(nil),                                         // 80: api.v1.CreateSubscriptionRequest
+	(*CreateSubscriptionResponse)(nil),                                        // 81: api.v1.CreateSubscriptionResponse
+	(*GetReCurringTransactionsResponse_ParticipantReCurringTransactions)(nil), // 82: api.v1.GetReCurringTransactionsResponse.ParticipantReCurringTransactions
+	nil,                           // 83: api.v1.ProcessWebhookRequest.ErrorEntry
+	(*UserProfile)(nil),           // 84: api.v1.UserProfile
+	(*BankAccount)(nil),           // 85: api.v1.BankAccount
+	(*Pocket)(nil),                // 86: api.v1.Pocket
+	(*SmartGoal)(nil),             // 87: api.v1.SmartGoal
+	(*Milestone)(nil),             // 88: api.v1.Milestone
+	(*Forecast)(nil),              // 89: api.v1.Forecast
+	(*Budget)(nil),                // 90: api.v1.Budget
+	(*InvestmentAccount)(nil),     // 91: api.v1.InvestmentAccount
+	(*MortgageAccount)(nil),       // 92: api.v1.MortgageAccount
+	(*CreditAccount)(nil),         // 93: api.v1.CreditAccount
+	(*StudentLoanAccount)(nil),    // 94: api.v1.StudentLoanAccount
+	(*Link)(nil),                  // 95: api.v1.Link
+	(*ReOccuringTransaction)(nil), // 96: api.v1.ReOccuringTransaction
+	(*Transaction)(nil),           // 97: api.v1.Transaction
+	(*anypb.Any)(nil),             // 98: google.protobuf.Any
 }
 var file_api_v1_request_response_proto_depIdxs = []int32{
-	82, // 0: api.v1.CreateUserProfileRequest.profile:type_name -> api.v1.UserProfile
-	82, // 1: api.v1.GetUserProfileResponse.profile:type_name -> api.v1.UserProfile
-	82, // 2: api.v1.UpdateUserProfileRequest.profile:type_name -> api.v1.UserProfile
-	82, // 3: api.v1.UpdateUserProfileResponse.profile:type_name -> api.v1.UserProfile
-	83, // 4: api.v1.CreateBankAccountRequest.bank_account:type_name -> api.v1.BankAccount
-	83, // 5: api.v1.GetBankAccountResponse.bank_account:type_name -> api.v1.BankAccount
-	83, // 6: api.v1.UpdateBankAccountRequest.bank_account:type_name -> api.v1.BankAccount
-	83, // 7: api.v1.UpdateBankAccountResponse.bank_account:type_name -> api.v1.BankAccount
-	84, // 8: api.v1.GetPocketResponse.pocket:type_name -> api.v1.Pocket
-	85, // 9: api.v1.GetSmartGoalsByPocketIdResponse.smart_goals:type_name -> api.v1.SmartGoal
-	85, // 10: api.v1.CreateSmartGoalRequest.smart_goal:type_name -> api.v1.SmartGoal
-	85, // 11: api.v1.UpdateSmartGoalRequest.smart_goal:type_name -> api.v1.SmartGoal
-	86, // 12: api.v1.CreateMilestoneRequest.milestone:type_name -> api.v1.Milestone
-	86, // 13: api.v1.UpdateMilestoneRequest.milestone:type_name -> api.v1.Milestone
-	86, // 14: api.v1.UpdateMilestoneResponse.milestone:type_name -> api.v1.Milestone
-	86, // 15: api.v1.GetMilestonesBySmartGoalIdResponse.milestones:type_name -> api.v1.Milestone
-	86, // 16: api.v1.GetMilestoneResponse.milestone:type_name -> api.v1.Milestone
-	87, // 17: api.v1.GetForecastResponse.forecast:type_name -> api.v1.Forecast
-	88, // 18: api.v1.CreateBudgetRequest.budget:type_name -> api.v1.Budget
-	88, // 19: api.v1.UpdateBudgetRequest.budget:type_name -> api.v1.Budget
-	88, // 20: api.v1.UpdateBudgetResponse.budget:type_name -> api.v1.Budget
-	88, // 21: api.v1.GetBudgetResponse.budget:type_name -> api.v1.Budget
-	88, // 22: api.v1.GetAllBudgetsResponse.budgets:type_name -> api.v1.Budget
-	89, // 23: api.v1.GetInvestmentAcccountResponse.investment_account:type_name -> api.v1.InvestmentAccount
-	90, // 24: api.v1.GetMortgageAccountResponse.mortage_account:type_name -> api.v1.MortgageAccount
-	91, // 25: api.v1.GetLiabilityAccountResponse.liability_account:type_name -> api.v1.CreditAccount
-	92, // 26: api.v1.GetStudentLoanAccountResponse.student_loan_account:type_name -> api.v1.StudentLoanAccount
-	93, // 27: api.v1.CreateManualLinkRequest.manual_account_link:type_name -> api.v1.Link
-	93, // 28: api.v1.GetLinkResponse.link:type_name -> api.v1.Link
-	93, // 29: api.v1.GetLinksResponse.links:type_name -> api.v1.Link
-	94, // 30: api.v1.GetReCurringTransactionsResponse.re_ccuring_transactions:type_name -> api.v1.ReOccuringTransaction
-	80, // 31: api.v1.GetReCurringTransactionsResponse.participant_re_ccuring_transactions:type_name -> api.v1.GetReCurringTransactionsResponse.ParticipantReCurringTransactions
-	95, // 32: api.v1.GetTransactionsResponse.transactions:type_name -> api.v1.Transaction
-	81, // 33: api.v1.ProcessWebhookRequest.error:type_name -> api.v1.ProcessWebhookRequest.ErrorEntry
-	95, // 34: api.v1.GetReCurringTransactionsResponse.ParticipantReCurringTransactions.transactions:type_name -> api.v1.Transaction
-	96, // 35: api.v1.ProcessWebhookRequest.ErrorEntry.value:type_name -> google.protobuf.Any
+	84, // 0: api.v1.CreateUserProfileRequest.profile:type_name -> api.v1.UserProfile
+	84, // 1: api.v1.GetUserProfileResponse.profile:type_name -> api.v1.UserProfile
+	84, // 2: api.v1.UpdateUserProfileRequest.profile:type_name -> api.v1.UserProfile
+	84, // 3: api.v1.UpdateUserProfileResponse.profile:type_name -> api.v1.UserProfile
+	85, // 4: api.v1.CreateBankAccountRequest.bank_account:type_name -> api.v1.BankAccount
+	85, // 5: api.v1.GetBankAccountResponse.bank_account:type_name -> api.v1.BankAccount
+	85, // 6: api.v1.UpdateBankAccountRequest.bank_account:type_name -> api.v1.BankAccount
+	85, // 7: api.v1.UpdateBankAccountResponse.bank_account:type_name -> api.v1.BankAccount
+	86, // 8: api.v1.GetPocketResponse.pocket:type_name -> api.v1.Pocket
+	87, // 9: api.v1.GetSmartGoalsByPocketIdResponse.smart_goals:type_name -> api.v1.SmartGoal
+	87, // 10: api.v1.CreateSmartGoalRequest.smart_goal:type_name -> api.v1.SmartGoal
+	87, // 11: api.v1.UpdateSmartGoalRequest.smart_goal:type_name -> api.v1.SmartGoal
+	88, // 12: api.v1.CreateMilestoneRequest.milestone:type_name -> api.v1.Milestone
+	88, // 13: api.v1.UpdateMilestoneRequest.milestone:type_name -> api.v1.Milestone
+	88, // 14: api.v1.UpdateMilestoneResponse.milestone:type_name -> api.v1.Milestone
+	88, // 15: api.v1.GetMilestonesBySmartGoalIdResponse.milestones:type_name -> api.v1.Milestone
+	88, // 16: api.v1.GetMilestoneResponse.milestone:type_name -> api.v1.Milestone
+	89, // 17: api.v1.GetForecastResponse.forecast:type_name -> api.v1.Forecast
+	90, // 18: api.v1.CreateBudgetRequest.budget:type_name -> api.v1.Budget
+	90, // 19: api.v1.UpdateBudgetRequest.budget:type_name -> api.v1.Budget
+	90, // 20: api.v1.UpdateBudgetResponse.budget:type_name -> api.v1.Budget
+	90, // 21: api.v1.GetBudgetResponse.budget:type_name -> api.v1.Budget
+	90, // 22: api.v1.GetAllBudgetsResponse.budgets:type_name -> api.v1.Budget
+	91, // 23: api.v1.GetInvestmentAcccountResponse.investment_account:type_name -> api.v1.InvestmentAccount
+	92, // 24: api.v1.GetMortgageAccountResponse.mortage_account:type_name -> api.v1.MortgageAccount
+	93, // 25: api.v1.GetLiabilityAccountResponse.liability_account:type_name -> api.v1.CreditAccount
+	94, // 26: api.v1.GetStudentLoanAccountResponse.student_loan_account:type_name -> api.v1.StudentLoanAccount
+	95, // 27: api.v1.CreateManualLinkRequest.manual_account_link:type_name -> api.v1.Link
+	95, // 28: api.v1.GetLinkResponse.link:type_name -> api.v1.Link
+	95, // 29: api.v1.GetLinksResponse.links:type_name -> api.v1.Link
+	96, // 30: api.v1.GetReCurringTransactionsResponse.re_ccuring_transactions:type_name -> api.v1.ReOccuringTransaction
+	82, // 31: api.v1.GetReCurringTransactionsResponse.participant_re_ccuring_transactions:type_name -> api.v1.GetReCurringTransactionsResponse.ParticipantReCurringTransactions
+	97, // 32: api.v1.GetTransactionsResponse.transactions:type_name -> api.v1.Transaction
+	83, // 33: api.v1.ProcessWebhookRequest.error:type_name -> api.v1.ProcessWebhookRequest.ErrorEntry
+	97, // 34: api.v1.GetReCurringTransactionsResponse.ParticipantReCurringTransactions.transactions:type_name -> api.v1.Transaction
+	98, // 35: api.v1.ProcessWebhookRequest.ErrorEntry.value:type_name -> google.protobuf.Any
 	36, // [36:36] is the sub-list for method output_type
 	36, // [36:36] is the sub-list for method input_type
 	36, // [36:36] is the sub-list for extension type_name
@@ -6062,6 +6189,30 @@ func file_api_v1_request_response_proto_init() {
 			}
 		}
 		file_api_v1_request_response_proto_msgTypes[80].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*CreateSubscriptionRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_api_v1_request_response_proto_msgTypes[81].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*CreateSubscriptionResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_api_v1_request_response_proto_msgTypes[82].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetReCurringTransactionsResponse_ParticipantReCurringTransactions); i {
 			case 0:
 				return &v.state
@@ -6080,7 +6231,7 @@ func file_api_v1_request_response_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_api_v1_request_response_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   82,
+			NumMessages:   84,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

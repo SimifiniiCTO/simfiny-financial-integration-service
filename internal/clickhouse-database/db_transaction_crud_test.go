@@ -2,6 +2,7 @@ package clickhousedatabase
 
 import (
 	"context"
+	"reflect"
 	"testing"
 
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
@@ -405,6 +406,134 @@ func TestDb_UpdateTransaction(t *testing.T) {
 			txId, userId, tx := tt.args.precondition(tt.args.ctx, t, &tt.args)
 			if err := conn.UpdateTransaction(tt.args.ctx, userId, txId, tx); (err != nil) != tt.wantErr {
 				t.Errorf("conn.UpdateTransaction() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}
+
+func TestDb_DeleteTransactionsByLinkId(t *testing.T) {
+	type args struct {
+		ctx    context.Context
+		linkId *uint64
+	}
+	tests := []struct {
+		name    string
+		db      *Db
+		args    args
+		wantErr bool
+	}{
+		// TODO: Add test cases.
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := tt.db.DeleteTransactionsByLinkId(tt.args.ctx, tt.args.linkId); (err != nil) != tt.wantErr {
+				t.Errorf("Db.DeleteTransactionsByLinkId() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}
+
+func TestDb_UpdateTransactions(t *testing.T) {
+	type args struct {
+		ctx    context.Context
+		userId *uint64
+		txs    []*schema.Transaction
+	}
+	tests := []struct {
+		name    string
+		db      *Db
+		args    args
+		wantErr bool
+	}{
+		// TODO: Add test cases.
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := tt.db.UpdateTransactions(tt.args.ctx, tt.args.userId, tt.args.txs); (err != nil) != tt.wantErr {
+				t.Errorf("Db.UpdateTransactions() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}
+
+func TestDb_GetTransactionById(t *testing.T) {
+	type args struct {
+		ctx  context.Context
+		txId *uint64
+	}
+	tests := []struct {
+		name    string
+		db      *Db
+		args    args
+		want    *schema.Transaction
+		wantErr bool
+	}{
+		// TODO: Add test cases.
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := tt.db.GetTransactionById(tt.args.ctx, tt.args.txId)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("Db.GetTransactionById() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("Db.GetTransactionById() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestDb_GetTransactionsByPlaidTransactionIds(t *testing.T) {
+	type args struct {
+		ctx   context.Context
+		txIds []string
+	}
+	tests := []struct {
+		name    string
+		db      *Db
+		args    args
+		want    []*schema.Transaction
+		wantErr bool
+	}{
+		// TODO: Add test cases.
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := tt.db.GetTransactionsByPlaidTransactionIds(tt.args.ctx, tt.args.txIds)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("Db.GetTransactionsByPlaidTransactionIds() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("Db.GetTransactionsByPlaidTransactionIds() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestDb_sanitizePaginationParams(t *testing.T) {
+	type args struct {
+		pageNumber int64
+		pageSize   int64
+	}
+	tests := []struct {
+		name  string
+		d     *Db
+		args  args
+		want  int64
+		want1 int64
+	}{
+		// TODO: Add test cases.
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, got1 := tt.d.sanitizePaginationParams(tt.args.pageNumber, tt.args.pageSize)
+			if got != tt.want {
+				t.Errorf("Db.sanitizePaginationParams() got = %v, want %v", got, tt.want)
+			}
+			if got1 != tt.want1 {
+				t.Errorf("Db.sanitizePaginationParams() got1 = %v, want %v", got1, tt.want1)
 			}
 		})
 	}

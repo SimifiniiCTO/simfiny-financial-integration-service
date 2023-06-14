@@ -18,6 +18,8 @@ type SubscriptionData struct {
 }
 
 func (s *Server) handleStripeWebhook(w http.ResponseWriter, req *http.Request) {
+	// ref: https://github.com/kazamori/stripe-webhook-sample/blob/main/handler/webhook.go
+
 	const MaxBodyBytes = int64(65536)
 	req.Body = http.MaxBytesReader(w, req.Body, MaxBodyBytes)
 	payload, err := ioutil.ReadAll(req.Body)
@@ -39,7 +41,13 @@ func (s *Server) handleStripeWebhook(w http.ResponseWriter, req *http.Request) {
 	// If you are testing with the CLI, find the secret by running 'stripe listen'
 	// If you are using an endpoint defined with the API or dashboard, look in your webhook settings
 	// at https://dashboard.stripe.com/webhooks
-	endpointSecret := "whsec_..."
+	var endpointSecret string
+	if s.config.Environment == "dev" {
+		endpointSecret = "whsec_21441814697a4a51dc01395a030498131d56ec4d7155bb216cc75f36548c86bf"
+	} else {
+		endpointSecret = s.config.StripeEndpointSigningSecretKey
+	}
+
 	signatureHeader := req.Header.Get("Stripe-Signature")
 	event, err = webhook.ConstructEvent(payload, signatureHeader, endpointSecret)
 	if err != nil {
@@ -152,6 +160,7 @@ func (s *Server) handleStripeWebhook(w http.ResponseWriter, req *http.Request) {
 		// This approach helps you avoid hitting rate limits.
 		// Sent when the invoice is successfully paid. You can provision access to your product when you receive this event
 		// and the subscription status is active.
+		// TODO: just update the subscription status in the database
 	case "invoice.payment_action_required":
 		// Sent when the invoice requires customer authentication. Learn how to handle the subscription when the invoice requires action.
 		// ref: https://stripe.com/docs/billing/subscriptions/overview#requires-action

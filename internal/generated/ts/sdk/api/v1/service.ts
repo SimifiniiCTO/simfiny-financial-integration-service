@@ -11,6 +11,8 @@ import {
   CreateMilestoneResponse,
   CreateSmartGoalRequest,
   CreateSmartGoalResponse,
+  CreateSubscriptionRequest,
+  CreateSubscriptionResponse,
   CreateUserProfileRequest,
   CreateUserProfileResponse,
   DeleteBankAccountRequest,
@@ -127,6 +129,7 @@ export interface FinancialService {
   GetTransactions(request: GetTransactionsRequest): Promise<GetTransactionsResponse>;
   ProcessWebhook(request: ProcessWebhookRequest): Promise<ProcessWebhookResponse>;
   StripeWebhook(request: StripeWebhookRequest): Promise<StripeWebhookResponse>;
+  CreateSubscription(request: CreateSubscriptionRequest): Promise<CreateSubscriptionResponse>;
 }
 
 export class FinancialServiceClientImpl implements FinancialService {
@@ -175,6 +178,7 @@ export class FinancialServiceClientImpl implements FinancialService {
     this.GetTransactions = this.GetTransactions.bind(this);
     this.ProcessWebhook = this.ProcessWebhook.bind(this);
     this.StripeWebhook = this.StripeWebhook.bind(this);
+    this.CreateSubscription = this.CreateSubscription.bind(this);
   }
   PlaidInitiateTokenExchange(request: PlaidInitiateTokenExchangeRequest): Promise<PlaidInitiateTokenExchangeResponse> {
     const data = PlaidInitiateTokenExchangeRequest.encode(request).finish();
@@ -414,6 +418,12 @@ export class FinancialServiceClientImpl implements FinancialService {
     const data = StripeWebhookRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "StripeWebhook", data);
     return promise.then((data) => StripeWebhookResponse.decode(_m0.Reader.create(data)));
+  }
+
+  CreateSubscription(request: CreateSubscriptionRequest): Promise<CreateSubscriptionResponse> {
+    const data = CreateSubscriptionRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "CreateSubscription", data);
+    return promise.then((data) => CreateSubscriptionResponse.decode(_m0.Reader.create(data)));
   }
 }
 

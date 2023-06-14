@@ -103,6 +103,7 @@ func ReadEnvVars() {
 	// billing configs
 	fs.Bool("stripe-enabled", true, "enable billing")
 	fs.String("stripe-api-key", "sk_test_51M1F1pBV97V9M33e3Ki1k5OqkdhfdDUBNTwDFzUtRmsSYbHf7qE3d1kkFCYRxfS70bJKBOKR5Zbv103sqvNd0gnm00lMyRDWEh", "")
+	fs.String("stripe-endpoint-signing-key", "whsec_09exib1e5wYYlPJYUc8rNx28bM2Dwx0r", "stripe endpoint signing key")
 
 	// temporal configurations
 	fs.String("temporal-cluster-endpoint", "temporal:7233", "base endpoint of the temporal cluster")

@@ -98,3 +98,67 @@ func (s *Server) DispatchPullUpdatedReCurringTransactionsTask(ctx context.Contex
 
 	return nil
 }
+
+func (s *Server) DispatchPullInvestmentTransactionsTask(ctx context.Context, userId, linkId uint64, accessToken string, accountIds []string) error {
+	var (
+		tp = s.taskprocessor
+	)
+
+	if s.instrumentation != nil {
+		txn := s.instrumentation.GetTraceFromContext(ctx)
+		span := s.instrumentation.StartDatastoreSegment(txn, "trigger-pull-investment-transactions")
+		defer span.End()
+	}
+
+	if len(accountIds) == 0 {
+		s.logger.Error("no account ids found in webhook")
+		return nil
+	}
+
+	task, err := taskhandler.NewPullInvestmentTransactionsTask(userId, linkId, accessToken, accountIds)
+	if err != nil {
+		return err
+	}
+
+	// enqueue the task
+	taskInfo, err := tp.EnqueueTask(ctx, task)
+	if err != nil {
+		return err
+	}
+
+	s.logger.Info("enqueue task", zap.Any("task", taskInfo))
+
+	return nil
+}
+
+func (s *Server) DispatchPullInvestmentHoldingsTask(ctx context.Context, userId, linkId uint64, accessToken string, accountIds []string) error {
+	var (
+		tp = s.taskprocessor
+	)
+
+	if s.instrumentation != nil {
+		txn := s.instrumentation.GetTraceFromContext(ctx)
+		span := s.instrumentation.StartDatastoreSegment(txn, "trigger-pull-investment-holdings")
+		defer span.End()
+	}
+
+	if len(accountIds) == 0 {
+		s.logger.Error("no account ids found in webhook")
+		return nil
+	}
+
+	task, err := taskhandler.NewPullInvestmentHoldingsTask(userId, linkId, accessToken, accountIds)
+	if err != nil {
+		return err
+	}
+
+	// enqueue the task
+	taskInfo, err := tp.EnqueueTask(ctx, task)
+	if err != nil {
+		return err
+	}
+
+	s.logger.Info("enqueue task", zap.Any("task", taskInfo))
+
+	return nil
+}

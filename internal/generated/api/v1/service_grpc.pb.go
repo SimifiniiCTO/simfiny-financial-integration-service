@@ -59,6 +59,7 @@ const (
 	FinancialService_GetTransactions_FullMethodName            = "/api.v1.FinancialService/GetTransactions"
 	FinancialService_ProcessWebhook_FullMethodName             = "/api.v1.FinancialService/ProcessWebhook"
 	FinancialService_StripeWebhook_FullMethodName              = "/api.v1.FinancialService/StripeWebhook"
+	FinancialService_CreateSubscription_FullMethodName         = "/api.v1.FinancialService/CreateSubscription"
 )
 
 // FinancialServiceClient is the client API for FinancialService service.
@@ -105,6 +106,7 @@ type FinancialServiceClient interface {
 	GetTransactions(ctx context.Context, in *GetTransactionsRequest, opts ...grpc.CallOption) (*GetTransactionsResponse, error)
 	ProcessWebhook(ctx context.Context, in *ProcessWebhookRequest, opts ...grpc.CallOption) (*ProcessWebhookResponse, error)
 	StripeWebhook(ctx context.Context, in *StripeWebhookRequest, opts ...grpc.CallOption) (*StripeWebhookResponse, error)
+	CreateSubscription(ctx context.Context, in *CreateSubscriptionRequest, opts ...grpc.CallOption) (*CreateSubscriptionResponse, error)
 }
 
 type financialServiceClient struct {
@@ -475,6 +477,15 @@ func (c *financialServiceClient) StripeWebhook(ctx context.Context, in *StripeWe
 	return out, nil
 }
 
+func (c *financialServiceClient) CreateSubscription(ctx context.Context, in *CreateSubscriptionRequest, opts ...grpc.CallOption) (*CreateSubscriptionResponse, error) {
+	out := new(CreateSubscriptionResponse)
+	err := c.cc.Invoke(ctx, FinancialService_CreateSubscription_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // FinancialServiceServer is the server API for FinancialService service.
 // All implementations must embed UnimplementedFinancialServiceServer
 // for forward compatibility
@@ -519,6 +530,7 @@ type FinancialServiceServer interface {
 	GetTransactions(context.Context, *GetTransactionsRequest) (*GetTransactionsResponse, error)
 	ProcessWebhook(context.Context, *ProcessWebhookRequest) (*ProcessWebhookResponse, error)
 	StripeWebhook(context.Context, *StripeWebhookRequest) (*StripeWebhookResponse, error)
+	CreateSubscription(context.Context, *CreateSubscriptionRequest) (*CreateSubscriptionResponse, error)
 	mustEmbedUnimplementedFinancialServiceServer()
 }
 
@@ -645,6 +657,9 @@ func (UnimplementedFinancialServiceServer) ProcessWebhook(context.Context, *Proc
 }
 func (UnimplementedFinancialServiceServer) StripeWebhook(context.Context, *StripeWebhookRequest) (*StripeWebhookResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method StripeWebhook not implemented")
+}
+func (UnimplementedFinancialServiceServer) CreateSubscription(context.Context, *CreateSubscriptionRequest) (*CreateSubscriptionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateSubscription not implemented")
 }
 func (UnimplementedFinancialServiceServer) mustEmbedUnimplementedFinancialServiceServer() {}
 
@@ -1379,6 +1394,24 @@ func _FinancialService_StripeWebhook_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _FinancialService_CreateSubscription_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateSubscriptionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FinancialServiceServer).CreateSubscription(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FinancialService_CreateSubscription_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FinancialServiceServer).CreateSubscription(ctx, req.(*CreateSubscriptionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // FinancialService_ServiceDesc is the grpc.ServiceDesc for FinancialService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1545,6 +1578,10 @@ var FinancialService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "StripeWebhook",
 			Handler:    _FinancialService_StripeWebhook_Handler,
+		},
+		{
+			MethodName: "CreateSubscription",
+			Handler:    _FinancialService_CreateSubscription_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -3,6 +3,7 @@ package plaidhandler
 import (
 	"context"
 	"errors"
+	"reflect"
 	"testing"
 
 	"github.com/plaid/plaid-go/v12/plaid"
@@ -69,5 +70,33 @@ func assertAccountsOfDepositoryType(t *testing.T, d *Deposits) {
 	for _, acct := range d.Accounts {
 		assert.NotNil(t, acct)
 		assert.Equal(t, plaid.AccountType(DEPOSITORY), acct.Type)
+	}
+}
+
+func TestPlaidWrapper_getPlaidDeposit(t *testing.T) {
+	type args struct {
+		ctx         context.Context
+		accessToken *string
+	}
+	tests := []struct {
+		name    string
+		p       *PlaidWrapper
+		args    args
+		want    *Deposits
+		wantErr bool
+	}{
+		// TODO: Add test cases.
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := tt.p.getPlaidDeposit(tt.args.ctx, tt.args.accessToken)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("PlaidWrapper.getPlaidDeposit() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("PlaidWrapper.getPlaidDeposit() = %v, want %v", got, tt.want)
+			}
+		})
 	}
 }

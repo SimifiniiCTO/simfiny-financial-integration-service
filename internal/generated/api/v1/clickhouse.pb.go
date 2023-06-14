@@ -245,6 +245,206 @@ func (x *PersonalFinanceCategory) GetDetailed() string {
 	return ""
 }
 
+type InvestmentTransaction struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// @gotag: clickhouse:"account_id"
+	AccountId string `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id,omitempty"`
+	// @gotag: clickhouse:"amount"
+	Ammount string `protobuf:"bytes,2,opt,name=ammount,proto3" json:"ammount,omitempty"`
+	// @gotag: clickhouse:"investment_transaction_id"
+	InvestmentTransactionId string `protobuf:"bytes,3,opt,name=investment_transaction_id,json=investmentTransactionId,proto3" json:"investment_transaction_id,omitempty"`
+	// @gotag: clickhouse:"security_id"
+	SecurityId string `protobuf:"bytes,4,opt,name=security_id,json=securityId,proto3" json:"security_id,omitempty"`
+	// @gotag: clickhouse:"date"
+	Date string `protobuf:"bytes,5,opt,name=date,proto3" json:"date,omitempty"`
+	// @gotag: clickhouse:"name"
+	Name string `protobuf:"bytes,6,opt,name=name,proto3" json:"name,omitempty"`
+	// @gotag: clickhouse:"quantity"
+	Quantity float64 `protobuf:"fixed64,7,opt,name=quantity,proto3" json:"quantity,omitempty"`
+	// @gotag: clickhouse:"amount"
+	Amount float64 `protobuf:"fixed64,8,opt,name=amount,proto3" json:"amount,omitempty"`
+	// @gotag: clickhouse:"price"
+	Price float64 `protobuf:"fixed64,9,opt,name=price,proto3" json:"price,omitempty"`
+	// @gotag: clickhouse:"fees"
+	Fees float64 `protobuf:"fixed64,10,opt,name=fees,proto3" json:"fees,omitempty"`
+	// @gotag: clickhouse:"type"
+	Type string `protobuf:"bytes,11,opt,name=type,proto3" json:"type,omitempty"`
+	// @gotag: clickhouse:"subtype"
+	Subtype string `protobuf:"bytes,12,opt,name=subtype,proto3" json:"subtype,omitempty"`
+	// @gotag: clickhouse:"iso_currency_code"
+	IsoCurrencyCode string `protobuf:"bytes,13,opt,name=iso_currency_code,json=isoCurrencyCode,proto3" json:"iso_currency_code,omitempty"`
+	// @gotag: clickhouse:"unofficial_currency_code"
+	UnofficialCurrencyCode string `protobuf:"bytes,14,opt,name=unofficial_currency_code,json=unofficialCurrencyCode,proto3" json:"unofficial_currency_code,omitempty"`
+	// @gotag: clickhouse:"link_id"
+	LinkId uint64 `protobuf:"varint,15,opt,name=link_id,json=linkId,proto3" json:"link_id,omitempty"`
+	// @gotag: clickhouse:"id"
+	Id uint64 `protobuf:"varint,16,opt,name=id,proto3" json:"id,omitempty"`
+	// @gotag: clickhouse:"user_id"
+	UserId    uint64 `protobuf:"varint,17,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	CreatedAt string `protobuf:"bytes,18,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+}
+
+func (x *InvestmentTransaction) Reset() {
+	*x = InvestmentTransaction{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_v1_clickhouse_proto_msgTypes[1]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *InvestmentTransaction) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*InvestmentTransaction) ProtoMessage() {}
+
+func (x *InvestmentTransaction) ProtoReflect() protoreflect.Message {
+	mi := &file_api_v1_clickhouse_proto_msgTypes[1]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use InvestmentTransaction.ProtoReflect.Descriptor instead.
+func (*InvestmentTransaction) Descriptor() ([]byte, []int) {
+	return file_api_v1_clickhouse_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *InvestmentTransaction) GetAccountId() string {
+	if x != nil {
+		return x.AccountId
+	}
+	return ""
+}
+
+func (x *InvestmentTransaction) GetAmmount() string {
+	if x != nil {
+		return x.Ammount
+	}
+	return ""
+}
+
+func (x *InvestmentTransaction) GetInvestmentTransactionId() string {
+	if x != nil {
+		return x.InvestmentTransactionId
+	}
+	return ""
+}
+
+func (x *InvestmentTransaction) GetSecurityId() string {
+	if x != nil {
+		return x.SecurityId
+	}
+	return ""
+}
+
+func (x *InvestmentTransaction) GetDate() string {
+	if x != nil {
+		return x.Date
+	}
+	return ""
+}
+
+func (x *InvestmentTransaction) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *InvestmentTransaction) GetQuantity() float64 {
+	if x != nil {
+		return x.Quantity
+	}
+	return 0
+}
+
+func (x *InvestmentTransaction) GetAmount() float64 {
+	if x != nil {
+		return x.Amount
+	}
+	return 0
+}
+
+func (x *InvestmentTransaction) GetPrice() float64 {
+	if x != nil {
+		return x.Price
+	}
+	return 0
+}
+
+func (x *InvestmentTransaction) GetFees() float64 {
+	if x != nil {
+		return x.Fees
+	}
+	return 0
+}
+
+func (x *InvestmentTransaction) GetType() string {
+	if x != nil {
+		return x.Type
+	}
+	return ""
+}
+
+func (x *InvestmentTransaction) GetSubtype() string {
+	if x != nil {
+		return x.Subtype
+	}
+	return ""
+}
+
+func (x *InvestmentTransaction) GetIsoCurrencyCode() string {
+	if x != nil {
+		return x.IsoCurrencyCode
+	}
+	return ""
+}
+
+func (x *InvestmentTransaction) GetUnofficialCurrencyCode() string {
+	if x != nil {
+		return x.UnofficialCurrencyCode
+	}
+	return ""
+}
+
+func (x *InvestmentTransaction) GetLinkId() uint64 {
+	if x != nil {
+		return x.LinkId
+	}
+	return 0
+}
+
+func (x *InvestmentTransaction) GetId() uint64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *InvestmentTransaction) GetUserId() uint64 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+func (x *InvestmentTransaction) GetCreatedAt() string {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return ""
+}
+
 type ReOccuringTransaction struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -301,7 +501,7 @@ type ReOccuringTransaction struct {
 func (x *ReOccuringTransaction) Reset() {
 	*x = ReOccuringTransaction{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_clickhouse_proto_msgTypes[1]
+		mi := &file_api_v1_clickhouse_proto_msgTypes[2]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -314,7 +514,7 @@ func (x *ReOccuringTransaction) String() string {
 func (*ReOccuringTransaction) ProtoMessage() {}
 
 func (x *ReOccuringTransaction) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_clickhouse_proto_msgTypes[1]
+	mi := &file_api_v1_clickhouse_proto_msgTypes[2]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -327,7 +527,7 @@ func (x *ReOccuringTransaction) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReOccuringTransaction.ProtoReflect.Descriptor instead.
 func (*ReOccuringTransaction) Descriptor() ([]byte, []int) {
-	return file_api_v1_clickhouse_proto_rawDescGZIP(), []int{1}
+	return file_api_v1_clickhouse_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *ReOccuringTransaction) GetAccountId() string {
@@ -548,7 +748,7 @@ type Transaction struct {
 func (x *Transaction) Reset() {
 	*x = Transaction{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_clickhouse_proto_msgTypes[2]
+		mi := &file_api_v1_clickhouse_proto_msgTypes[3]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -561,7 +761,7 @@ func (x *Transaction) String() string {
 func (*Transaction) ProtoMessage() {}
 
 func (x *Transaction) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_clickhouse_proto_msgTypes[2]
+	mi := &file_api_v1_clickhouse_proto_msgTypes[3]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -574,7 +774,7 @@ func (x *Transaction) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Transaction.ProtoReflect.Descriptor instead.
 func (*Transaction) Descriptor() ([]byte, []int) {
-	return file_api_v1_clickhouse_proto_rawDescGZIP(), []int{2}
+	return file_api_v1_clickhouse_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *Transaction) GetAccountId() string {
@@ -757,7 +957,7 @@ type TransactionAmountByCountryMetric struct {
 func (x *TransactionAmountByCountryMetric) Reset() {
 	*x = TransactionAmountByCountryMetric{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_clickhouse_proto_msgTypes[3]
+		mi := &file_api_v1_clickhouse_proto_msgTypes[4]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -770,7 +970,7 @@ func (x *TransactionAmountByCountryMetric) String() string {
 func (*TransactionAmountByCountryMetric) ProtoMessage() {}
 
 func (x *TransactionAmountByCountryMetric) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_clickhouse_proto_msgTypes[3]
+	mi := &file_api_v1_clickhouse_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -783,7 +983,7 @@ func (x *TransactionAmountByCountryMetric) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TransactionAmountByCountryMetric.ProtoReflect.Descriptor instead.
 func (*TransactionAmountByCountryMetric) Descriptor() ([]byte, []int) {
-	return file_api_v1_clickhouse_proto_rawDescGZIP(), []int{3}
+	return file_api_v1_clickhouse_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *TransactionAmountByCountryMetric) GetCountry() string {
@@ -812,7 +1012,7 @@ type AverageTransactionAmountByCategoryMetric struct {
 func (x *AverageTransactionAmountByCategoryMetric) Reset() {
 	*x = AverageTransactionAmountByCategoryMetric{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_clickhouse_proto_msgTypes[4]
+		mi := &file_api_v1_clickhouse_proto_msgTypes[5]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -825,7 +1025,7 @@ func (x *AverageTransactionAmountByCategoryMetric) String() string {
 func (*AverageTransactionAmountByCategoryMetric) ProtoMessage() {}
 
 func (x *AverageTransactionAmountByCategoryMetric) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_clickhouse_proto_msgTypes[4]
+	mi := &file_api_v1_clickhouse_proto_msgTypes[5]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -838,7 +1038,7 @@ func (x *AverageTransactionAmountByCategoryMetric) ProtoReflect() protoreflect.M
 
 // Deprecated: Use AverageTransactionAmountByCategoryMetric.ProtoReflect.Descriptor instead.
 func (*AverageTransactionAmountByCategoryMetric) Descriptor() ([]byte, []int) {
-	return file_api_v1_clickhouse_proto_rawDescGZIP(), []int{4}
+	return file_api_v1_clickhouse_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *AverageTransactionAmountByCategoryMetric) GetCategory() string {
@@ -868,7 +1068,7 @@ type MonthlyTransactionCountByCategoryMetric struct {
 func (x *MonthlyTransactionCountByCategoryMetric) Reset() {
 	*x = MonthlyTransactionCountByCategoryMetric{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_clickhouse_proto_msgTypes[5]
+		mi := &file_api_v1_clickhouse_proto_msgTypes[6]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -881,7 +1081,7 @@ func (x *MonthlyTransactionCountByCategoryMetric) String() string {
 func (*MonthlyTransactionCountByCategoryMetric) ProtoMessage() {}
 
 func (x *MonthlyTransactionCountByCategoryMetric) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_clickhouse_proto_msgTypes[5]
+	mi := &file_api_v1_clickhouse_proto_msgTypes[6]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -894,7 +1094,7 @@ func (x *MonthlyTransactionCountByCategoryMetric) ProtoReflect() protoreflect.Me
 
 // Deprecated: Use MonthlyTransactionCountByCategoryMetric.ProtoReflect.Descriptor instead.
 func (*MonthlyTransactionCountByCategoryMetric) Descriptor() ([]byte, []int) {
-	return file_api_v1_clickhouse_proto_rawDescGZIP(), []int{5}
+	return file_api_v1_clickhouse_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *MonthlyTransactionCountByCategoryMetric) GetCategory() string {
@@ -931,7 +1131,7 @@ type TransactionCountByMerchantPaymentChannelMetric struct {
 func (x *TransactionCountByMerchantPaymentChannelMetric) Reset() {
 	*x = TransactionCountByMerchantPaymentChannelMetric{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_clickhouse_proto_msgTypes[6]
+		mi := &file_api_v1_clickhouse_proto_msgTypes[7]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -944,7 +1144,7 @@ func (x *TransactionCountByMerchantPaymentChannelMetric) String() string {
 func (*TransactionCountByMerchantPaymentChannelMetric) ProtoMessage() {}
 
 func (x *TransactionCountByMerchantPaymentChannelMetric) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_clickhouse_proto_msgTypes[6]
+	mi := &file_api_v1_clickhouse_proto_msgTypes[7]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -957,7 +1157,7 @@ func (x *TransactionCountByMerchantPaymentChannelMetric) ProtoReflect() protoref
 
 // Deprecated: Use TransactionCountByMerchantPaymentChannelMetric.ProtoReflect.Descriptor instead.
 func (*TransactionCountByMerchantPaymentChannelMetric) Descriptor() ([]byte, []int) {
-	return file_api_v1_clickhouse_proto_rawDescGZIP(), []int{6}
+	return file_api_v1_clickhouse_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *TransactionCountByMerchantPaymentChannelMetric) GetMerchantName() string {
@@ -995,7 +1195,7 @@ type TransactionAmountDistributionByCategoryMetric struct {
 func (x *TransactionAmountDistributionByCategoryMetric) Reset() {
 	*x = TransactionAmountDistributionByCategoryMetric{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_clickhouse_proto_msgTypes[7]
+		mi := &file_api_v1_clickhouse_proto_msgTypes[8]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1008,7 +1208,7 @@ func (x *TransactionAmountDistributionByCategoryMetric) String() string {
 func (*TransactionAmountDistributionByCategoryMetric) ProtoMessage() {}
 
 func (x *TransactionAmountDistributionByCategoryMetric) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_clickhouse_proto_msgTypes[7]
+	mi := &file_api_v1_clickhouse_proto_msgTypes[8]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1021,7 +1221,7 @@ func (x *TransactionAmountDistributionByCategoryMetric) ProtoReflect() protorefl
 
 // Deprecated: Use TransactionAmountDistributionByCategoryMetric.ProtoReflect.Descriptor instead.
 func (*TransactionAmountDistributionByCategoryMetric) Descriptor() ([]byte, []int) {
-	return file_api_v1_clickhouse_proto_rawDescGZIP(), []int{7}
+	return file_api_v1_clickhouse_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *TransactionAmountDistributionByCategoryMetric) GetCategory() string {
@@ -1070,7 +1270,7 @@ type Transaction_Location struct {
 func (x *Transaction_Location) Reset() {
 	*x = Transaction_Location{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_clickhouse_proto_msgTypes[8]
+		mi := &file_api_v1_clickhouse_proto_msgTypes[9]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1083,7 +1283,7 @@ func (x *Transaction_Location) String() string {
 func (*Transaction_Location) ProtoMessage() {}
 
 func (x *Transaction_Location) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_clickhouse_proto_msgTypes[8]
+	mi := &file_api_v1_clickhouse_proto_msgTypes[9]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1096,7 +1296,7 @@ func (x *Transaction_Location) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Transaction_Location.ProtoReflect.Descriptor instead.
 func (*Transaction_Location) Descriptor() ([]byte, []int) {
-	return file_api_v1_clickhouse_proto_rawDescGZIP(), []int{2, 0}
+	return file_api_v1_clickhouse_proto_rawDescGZIP(), []int{3, 0}
 }
 
 func (x *Transaction_Location) GetAddress() string {
@@ -1173,7 +1373,7 @@ type Transaction_PaymentMeta struct {
 func (x *Transaction_PaymentMeta) Reset() {
 	*x = Transaction_PaymentMeta{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_v1_clickhouse_proto_msgTypes[9]
+		mi := &file_api_v1_clickhouse_proto_msgTypes[10]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1186,7 +1386,7 @@ func (x *Transaction_PaymentMeta) String() string {
 func (*Transaction_PaymentMeta) ProtoMessage() {}
 
 func (x *Transaction_PaymentMeta) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_clickhouse_proto_msgTypes[9]
+	mi := &file_api_v1_clickhouse_proto_msgTypes[10]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1199,7 +1399,7 @@ func (x *Transaction_PaymentMeta) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Transaction_PaymentMeta.ProtoReflect.Descriptor instead.
 func (*Transaction_PaymentMeta) Descriptor() ([]byte, []int) {
-	return file_api_v1_clickhouse_proto_rawDescGZIP(), []int{2, 1}
+	return file_api_v1_clickhouse_proto_rawDescGZIP(), []int{3, 1}
 }
 
 func (x *Transaction_PaymentMeta) GetByOrderOf() string {
@@ -1276,7 +1476,44 @@ var file_api_v1_clickhouse_proto_rawDesc = []byte{
 	0x18, 0x0a, 0x07, 0x70, 0x72, 0x69, 0x6d, 0x61, 0x72, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09,
 	0x52, 0x07, 0x70, 0x72, 0x69, 0x6d, 0x61, 0x72, 0x79, 0x12, 0x1a, 0x0a, 0x08, 0x64, 0x65, 0x74,
 	0x61, 0x69, 0x6c, 0x65, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x64, 0x65, 0x74,
-	0x61, 0x69, 0x6c, 0x65, 0x64, 0x22, 0xfd, 0x07, 0x0a, 0x15, 0x52, 0x65, 0x4f, 0x63, 0x63, 0x75,
+	0x61, 0x69, 0x6c, 0x65, 0x64, 0x22, 0xcd, 0x04, 0x0a, 0x15, 0x49, 0x6e, 0x76, 0x65, 0x73, 0x74,
+	0x6d, 0x65, 0x6e, 0x74, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x12,
+	0x1d, 0x0a, 0x0a, 0x61, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20,
+	0x01, 0x28, 0x09, 0x52, 0x09, 0x61, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x49, 0x64, 0x12, 0x18,
+	0x0a, 0x07, 0x61, 0x6d, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x07, 0x61, 0x6d, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x12, 0x3a, 0x0a, 0x19, 0x69, 0x6e, 0x76, 0x65,
+	0x73, 0x74, 0x6d, 0x65, 0x6e, 0x74, 0x5f, 0x74, 0x72, 0x61, 0x6e, 0x73, 0x61, 0x63, 0x74, 0x69,
+	0x6f, 0x6e, 0x5f, 0x69, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x17, 0x69, 0x6e, 0x76,
+	0x65, 0x73, 0x74, 0x6d, 0x65, 0x6e, 0x74, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x61, 0x63, 0x74, 0x69,
+	0x6f, 0x6e, 0x49, 0x64, 0x12, 0x1f, 0x0a, 0x0b, 0x73, 0x65, 0x63, 0x75, 0x72, 0x69, 0x74, 0x79,
+	0x5f, 0x69, 0x64, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0a, 0x73, 0x65, 0x63, 0x75, 0x72,
+	0x69, 0x74, 0x79, 0x49, 0x64, 0x12, 0x12, 0x0a, 0x04, 0x64, 0x61, 0x74, 0x65, 0x18, 0x05, 0x20,
+	0x01, 0x28, 0x09, 0x52, 0x04, 0x64, 0x61, 0x74, 0x65, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d,
+	0x65, 0x18, 0x06, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x1a, 0x0a,
+	0x08, 0x71, 0x75, 0x61, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x18, 0x07, 0x20, 0x01, 0x28, 0x01, 0x52,
+	0x08, 0x71, 0x75, 0x61, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x12, 0x16, 0x0a, 0x06, 0x61, 0x6d, 0x6f,
+	0x75, 0x6e, 0x74, 0x18, 0x08, 0x20, 0x01, 0x28, 0x01, 0x52, 0x06, 0x61, 0x6d, 0x6f, 0x75, 0x6e,
+	0x74, 0x12, 0x14, 0x0a, 0x05, 0x70, 0x72, 0x69, 0x63, 0x65, 0x18, 0x09, 0x20, 0x01, 0x28, 0x01,
+	0x52, 0x05, 0x70, 0x72, 0x69, 0x63, 0x65, 0x12, 0x12, 0x0a, 0x04, 0x66, 0x65, 0x65, 0x73, 0x18,
+	0x0a, 0x20, 0x01, 0x28, 0x01, 0x52, 0x04, 0x66, 0x65, 0x65, 0x73, 0x12, 0x12, 0x0a, 0x04, 0x74,
+	0x79, 0x70, 0x65, 0x18, 0x0b, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x74, 0x79, 0x70, 0x65, 0x12,
+	0x18, 0x0a, 0x07, 0x73, 0x75, 0x62, 0x74, 0x79, 0x70, 0x65, 0x18, 0x0c, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x07, 0x73, 0x75, 0x62, 0x74, 0x79, 0x70, 0x65, 0x12, 0x2a, 0x0a, 0x11, 0x69, 0x73, 0x6f,
+	0x5f, 0x63, 0x75, 0x72, 0x72, 0x65, 0x6e, 0x63, 0x79, 0x5f, 0x63, 0x6f, 0x64, 0x65, 0x18, 0x0d,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x0f, 0x69, 0x73, 0x6f, 0x43, 0x75, 0x72, 0x72, 0x65, 0x6e, 0x63,
+	0x79, 0x43, 0x6f, 0x64, 0x65, 0x12, 0x38, 0x0a, 0x18, 0x75, 0x6e, 0x6f, 0x66, 0x66, 0x69, 0x63,
+	0x69, 0x61, 0x6c, 0x5f, 0x63, 0x75, 0x72, 0x72, 0x65, 0x6e, 0x63, 0x79, 0x5f, 0x63, 0x6f, 0x64,
+	0x65, 0x18, 0x0e, 0x20, 0x01, 0x28, 0x09, 0x52, 0x16, 0x75, 0x6e, 0x6f, 0x66, 0x66, 0x69, 0x63,
+	0x69, 0x61, 0x6c, 0x43, 0x75, 0x72, 0x72, 0x65, 0x6e, 0x63, 0x79, 0x43, 0x6f, 0x64, 0x65, 0x12,
+	0x23, 0x0a, 0x07, 0x6c, 0x69, 0x6e, 0x6b, 0x5f, 0x69, 0x64, 0x18, 0x0f, 0x20, 0x01, 0x28, 0x04,
+	0x42, 0x0a, 0x92, 0x41, 0x00, 0xfa, 0x42, 0x04, 0x32, 0x02, 0x20, 0x00, 0x52, 0x06, 0x6c, 0x69,
+	0x6e, 0x6b, 0x49, 0x64, 0x12, 0x13, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x10, 0x20, 0x01, 0x28, 0x04,
+	0x42, 0x03, 0x92, 0x41, 0x00, 0x52, 0x02, 0x69, 0x64, 0x12, 0x23, 0x0a, 0x07, 0x75, 0x73, 0x65,
+	0x72, 0x5f, 0x69, 0x64, 0x18, 0x11, 0x20, 0x01, 0x28, 0x04, 0x42, 0x0a, 0x92, 0x41, 0x00, 0xfa,
+	0x42, 0x04, 0x32, 0x02, 0x20, 0x00, 0x52, 0x06, 0x75, 0x73, 0x65, 0x72, 0x49, 0x64, 0x12, 0x1d,
+	0x0a, 0x0a, 0x63, 0x72, 0x65, 0x61, 0x74, 0x65, 0x64, 0x5f, 0x61, 0x74, 0x18, 0x12, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x09, 0x63, 0x72, 0x65, 0x61, 0x74, 0x65, 0x64, 0x41, 0x74, 0x3a, 0x06, 0xba,
+	0xb9, 0x19, 0x02, 0x08, 0x01, 0x22, 0xfd, 0x07, 0x0a, 0x15, 0x52, 0x65, 0x4f, 0x63, 0x63, 0x75,
 	0x72, 0x69, 0x6e, 0x67, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x12,
 	0x1d, 0x0a, 0x0a, 0x61, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20,
 	0x01, 0x28, 0x09, 0x52, 0x09, 0x61, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x49, 0x64, 0x12, 0x1b,
@@ -1541,28 +1778,29 @@ func file_api_v1_clickhouse_proto_rawDescGZIP() []byte {
 }
 
 var file_api_v1_clickhouse_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
-var file_api_v1_clickhouse_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
+var file_api_v1_clickhouse_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
 var file_api_v1_clickhouse_proto_goTypes = []interface{}{
 	(ReOccuringTransactionsFrequency)(0),                   // 0: api.v1.ReOccuringTransactionsFrequency
 	(ReOccuringTransactionsStatus)(0),                      // 1: api.v1.ReOccuringTransactionsStatus
 	(ReCurringFlow)(0),                                     // 2: api.v1.ReCurringFlow
 	(*PersonalFinanceCategory)(nil),                        // 3: api.v1.PersonalFinanceCategory
-	(*ReOccuringTransaction)(nil),                          // 4: api.v1.ReOccuringTransaction
-	(*Transaction)(nil),                                    // 5: api.v1.Transaction
-	(*TransactionAmountByCountryMetric)(nil),               // 6: api.v1.TransactionAmountByCountryMetric
-	(*AverageTransactionAmountByCategoryMetric)(nil),       // 7: api.v1.AverageTransactionAmountByCategoryMetric
-	(*MonthlyTransactionCountByCategoryMetric)(nil),        // 8: api.v1.MonthlyTransactionCountByCategoryMetric
-	(*TransactionCountByMerchantPaymentChannelMetric)(nil), // 9: api.v1.TransactionCountByMerchantPaymentChannelMetric
-	(*TransactionAmountDistributionByCategoryMetric)(nil),  // 10: api.v1.TransactionAmountDistributionByCategoryMetric
-	(*Transaction_Location)(nil),                           // 11: api.v1.Transaction.Location
-	(*Transaction_PaymentMeta)(nil),                        // 12: api.v1.Transaction.PaymentMeta
+	(*InvestmentTransaction)(nil),                          // 4: api.v1.InvestmentTransaction
+	(*ReOccuringTransaction)(nil),                          // 5: api.v1.ReOccuringTransaction
+	(*Transaction)(nil),                                    // 6: api.v1.Transaction
+	(*TransactionAmountByCountryMetric)(nil),               // 7: api.v1.TransactionAmountByCountryMetric
+	(*AverageTransactionAmountByCategoryMetric)(nil),       // 8: api.v1.AverageTransactionAmountByCategoryMetric
+	(*MonthlyTransactionCountByCategoryMetric)(nil),        // 9: api.v1.MonthlyTransactionCountByCategoryMetric
+	(*TransactionCountByMerchantPaymentChannelMetric)(nil), // 10: api.v1.TransactionCountByMerchantPaymentChannelMetric
+	(*TransactionAmountDistributionByCategoryMetric)(nil),  // 11: api.v1.TransactionAmountDistributionByCategoryMetric
+	(*Transaction_Location)(nil),                           // 12: api.v1.Transaction.Location
+	(*Transaction_PaymentMeta)(nil),                        // 13: api.v1.Transaction.PaymentMeta
 }
 var file_api_v1_clickhouse_proto_depIdxs = []int32{
 	0,  // 0: api.v1.ReOccuringTransaction.frequency:type_name -> api.v1.ReOccuringTransactionsFrequency
 	1,  // 1: api.v1.ReOccuringTransaction.status:type_name -> api.v1.ReOccuringTransactionsStatus
 	2,  // 2: api.v1.ReOccuringTransaction.flow:type_name -> api.v1.ReCurringFlow
-	11, // 3: api.v1.Transaction.location:type_name -> api.v1.Transaction.Location
-	12, // 4: api.v1.Transaction.payment_meta:type_name -> api.v1.Transaction.PaymentMeta
+	12, // 3: api.v1.Transaction.location:type_name -> api.v1.Transaction.Location
+	13, // 4: api.v1.Transaction.payment_meta:type_name -> api.v1.Transaction.PaymentMeta
 	5,  // [5:5] is the sub-list for method output_type
 	5,  // [5:5] is the sub-list for method input_type
 	5,  // [5:5] is the sub-list for extension type_name
@@ -1589,7 +1827,7 @@ func file_api_v1_clickhouse_proto_init() {
 			}
 		}
 		file_api_v1_clickhouse_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ReOccuringTransaction); i {
+			switch v := v.(*InvestmentTransaction); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1601,7 +1839,7 @@ func file_api_v1_clickhouse_proto_init() {
 			}
 		}
 		file_api_v1_clickhouse_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Transaction); i {
+			switch v := v.(*ReOccuringTransaction); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1613,7 +1851,7 @@ func file_api_v1_clickhouse_proto_init() {
 			}
 		}
 		file_api_v1_clickhouse_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*TransactionAmountByCountryMetric); i {
+			switch v := v.(*Transaction); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1625,7 +1863,7 @@ func file_api_v1_clickhouse_proto_init() {
 			}
 		}
 		file_api_v1_clickhouse_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*AverageTransactionAmountByCategoryMetric); i {
+			switch v := v.(*TransactionAmountByCountryMetric); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1637,7 +1875,7 @@ func file_api_v1_clickhouse_proto_init() {
 			}
 		}
 		file_api_v1_clickhouse_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*MonthlyTransactionCountByCategoryMetric); i {
+			switch v := v.(*AverageTransactionAmountByCategoryMetric); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1649,7 +1887,7 @@ func file_api_v1_clickhouse_proto_init() {
 			}
 		}
 		file_api_v1_clickhouse_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*TransactionCountByMerchantPaymentChannelMetric); i {
+			switch v := v.(*MonthlyTransactionCountByCategoryMetric); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1661,7 +1899,7 @@ func file_api_v1_clickhouse_proto_init() {
 			}
 		}
 		file_api_v1_clickhouse_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*TransactionAmountDistributionByCategoryMetric); i {
+			switch v := v.(*TransactionCountByMerchantPaymentChannelMetric); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1673,7 +1911,7 @@ func file_api_v1_clickhouse_proto_init() {
 			}
 		}
 		file_api_v1_clickhouse_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Transaction_Location); i {
+			switch v := v.(*TransactionAmountDistributionByCategoryMetric); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1685,6 +1923,18 @@ func file_api_v1_clickhouse_proto_init() {
 			}
 		}
 		file_api_v1_clickhouse_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Transaction_Location); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_api_v1_clickhouse_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Transaction_PaymentMeta); i {
 			case 0:
 				return &v.state
@@ -1703,7 +1953,7 @@ func file_api_v1_clickhouse_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_api_v1_clickhouse_proto_rawDesc,
 			NumEnums:      3,
-			NumMessages:   10,
+			NumMessages:   11,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

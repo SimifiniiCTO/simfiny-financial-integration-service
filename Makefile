@@ -206,9 +206,11 @@ kill.docker.desktop:
 start.docker.desktop:
 	./integration-test/docker-desktop.sh
 
+
 gen:
 	cd api && make && cd ..
 	./generate.sh
+	
 
 lint:
 	golangci-lint run

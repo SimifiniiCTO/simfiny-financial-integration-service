@@ -162,6 +162,44 @@ export interface PersonalFinanceCategory {
   detailed: string;
 }
 
+export interface InvestmentTransaction {
+  /** @gotag: clickhouse:"account_id" */
+  accountId: string;
+  /** @gotag: clickhouse:"amount" */
+  ammount: string;
+  /** @gotag: clickhouse:"investment_transaction_id" */
+  investmentTransactionId: string;
+  /** @gotag: clickhouse:"security_id" */
+  securityId: string;
+  /** @gotag: clickhouse:"date" */
+  date: string;
+  /** @gotag: clickhouse:"name" */
+  name: string;
+  /** @gotag: clickhouse:"quantity" */
+  quantity: number;
+  /** @gotag: clickhouse:"amount" */
+  amount: number;
+  /** @gotag: clickhouse:"price" */
+  price: number;
+  /** @gotag: clickhouse:"fees" */
+  fees: number;
+  /** @gotag: clickhouse:"type" */
+  type: string;
+  /** @gotag: clickhouse:"subtype" */
+  subtype: string;
+  /** @gotag: clickhouse:"iso_currency_code" */
+  isoCurrencyCode: string;
+  /** @gotag: clickhouse:"unofficial_currency_code" */
+  unofficialCurrencyCode: string;
+  /** @gotag: clickhouse:"link_id" */
+  linkId: number;
+  /** @gotag: clickhouse:"id" */
+  id: number;
+  /** @gotag: clickhouse:"user_id" */
+  userId: number;
+  createdAt: string;
+}
+
 export interface ReOccuringTransaction {
   /** @gotag: clickhouse:"account_id" */
   accountId: string;
@@ -383,6 +421,304 @@ export const PersonalFinanceCategory = {
     const message = createBasePersonalFinanceCategory();
     message.primary = object.primary ?? "";
     message.detailed = object.detailed ?? "";
+    return message;
+  },
+};
+
+function createBaseInvestmentTransaction(): InvestmentTransaction {
+  return {
+    accountId: "",
+    ammount: "",
+    investmentTransactionId: "",
+    securityId: "",
+    date: "",
+    name: "",
+    quantity: 0,
+    amount: 0,
+    price: 0,
+    fees: 0,
+    type: "",
+    subtype: "",
+    isoCurrencyCode: "",
+    unofficialCurrencyCode: "",
+    linkId: 0,
+    id: 0,
+    userId: 0,
+    createdAt: "",
+  };
+}
+
+export const InvestmentTransaction = {
+  encode(message: InvestmentTransaction, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.accountId !== "") {
+      writer.uint32(10).string(message.accountId);
+    }
+    if (message.ammount !== "") {
+      writer.uint32(18).string(message.ammount);
+    }
+    if (message.investmentTransactionId !== "") {
+      writer.uint32(26).string(message.investmentTransactionId);
+    }
+    if (message.securityId !== "") {
+      writer.uint32(34).string(message.securityId);
+    }
+    if (message.date !== "") {
+      writer.uint32(42).string(message.date);
+    }
+    if (message.name !== "") {
+      writer.uint32(50).string(message.name);
+    }
+    if (message.quantity !== 0) {
+      writer.uint32(57).double(message.quantity);
+    }
+    if (message.amount !== 0) {
+      writer.uint32(65).double(message.amount);
+    }
+    if (message.price !== 0) {
+      writer.uint32(73).double(message.price);
+    }
+    if (message.fees !== 0) {
+      writer.uint32(81).double(message.fees);
+    }
+    if (message.type !== "") {
+      writer.uint32(90).string(message.type);
+    }
+    if (message.subtype !== "") {
+      writer.uint32(98).string(message.subtype);
+    }
+    if (message.isoCurrencyCode !== "") {
+      writer.uint32(106).string(message.isoCurrencyCode);
+    }
+    if (message.unofficialCurrencyCode !== "") {
+      writer.uint32(114).string(message.unofficialCurrencyCode);
+    }
+    if (message.linkId !== 0) {
+      writer.uint32(120).uint64(message.linkId);
+    }
+    if (message.id !== 0) {
+      writer.uint32(128).uint64(message.id);
+    }
+    if (message.userId !== 0) {
+      writer.uint32(136).uint64(message.userId);
+    }
+    if (message.createdAt !== "") {
+      writer.uint32(146).string(message.createdAt);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): InvestmentTransaction {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseInvestmentTransaction();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.accountId = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.ammount = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.investmentTransactionId = reader.string();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.securityId = reader.string();
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.date = reader.string();
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        case 7:
+          if (tag !== 57) {
+            break;
+          }
+
+          message.quantity = reader.double();
+          continue;
+        case 8:
+          if (tag !== 65) {
+            break;
+          }
+
+          message.amount = reader.double();
+          continue;
+        case 9:
+          if (tag !== 73) {
+            break;
+          }
+
+          message.price = reader.double();
+          continue;
+        case 10:
+          if (tag !== 81) {
+            break;
+          }
+
+          message.fees = reader.double();
+          continue;
+        case 11:
+          if (tag !== 90) {
+            break;
+          }
+
+          message.type = reader.string();
+          continue;
+        case 12:
+          if (tag !== 98) {
+            break;
+          }
+
+          message.subtype = reader.string();
+          continue;
+        case 13:
+          if (tag !== 106) {
+            break;
+          }
+
+          message.isoCurrencyCode = reader.string();
+          continue;
+        case 14:
+          if (tag !== 114) {
+            break;
+          }
+
+          message.unofficialCurrencyCode = reader.string();
+          continue;
+        case 15:
+          if (tag !== 120) {
+            break;
+          }
+
+          message.linkId = longToNumber(reader.uint64() as Long);
+          continue;
+        case 16:
+          if (tag !== 128) {
+            break;
+          }
+
+          message.id = longToNumber(reader.uint64() as Long);
+          continue;
+        case 17:
+          if (tag !== 136) {
+            break;
+          }
+
+          message.userId = longToNumber(reader.uint64() as Long);
+          continue;
+        case 18:
+          if (tag !== 146) {
+            break;
+          }
+
+          message.createdAt = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): InvestmentTransaction {
+    return {
+      accountId: isSet(object.accountId) ? String(object.accountId) : "",
+      ammount: isSet(object.ammount) ? String(object.ammount) : "",
+      investmentTransactionId: isSet(object.investmentTransactionId) ? String(object.investmentTransactionId) : "",
+      securityId: isSet(object.securityId) ? String(object.securityId) : "",
+      date: isSet(object.date) ? String(object.date) : "",
+      name: isSet(object.name) ? String(object.name) : "",
+      quantity: isSet(object.quantity) ? Number(object.quantity) : 0,
+      amount: isSet(object.amount) ? Number(object.amount) : 0,
+      price: isSet(object.price) ? Number(object.price) : 0,
+      fees: isSet(object.fees) ? Number(object.fees) : 0,
+      type: isSet(object.type) ? String(object.type) : "",
+      subtype: isSet(object.subtype) ? String(object.subtype) : "",
+      isoCurrencyCode: isSet(object.isoCurrencyCode) ? String(object.isoCurrencyCode) : "",
+      unofficialCurrencyCode: isSet(object.unofficialCurrencyCode) ? String(object.unofficialCurrencyCode) : "",
+      linkId: isSet(object.linkId) ? Number(object.linkId) : 0,
+      id: isSet(object.id) ? Number(object.id) : 0,
+      userId: isSet(object.userId) ? Number(object.userId) : 0,
+      createdAt: isSet(object.createdAt) ? String(object.createdAt) : "",
+    };
+  },
+
+  toJSON(message: InvestmentTransaction): unknown {
+    const obj: any = {};
+    message.accountId !== undefined && (obj.accountId = message.accountId);
+    message.ammount !== undefined && (obj.ammount = message.ammount);
+    message.investmentTransactionId !== undefined && (obj.investmentTransactionId = message.investmentTransactionId);
+    message.securityId !== undefined && (obj.securityId = message.securityId);
+    message.date !== undefined && (obj.date = message.date);
+    message.name !== undefined && (obj.name = message.name);
+    message.quantity !== undefined && (obj.quantity = message.quantity);
+    message.amount !== undefined && (obj.amount = message.amount);
+    message.price !== undefined && (obj.price = message.price);
+    message.fees !== undefined && (obj.fees = message.fees);
+    message.type !== undefined && (obj.type = message.type);
+    message.subtype !== undefined && (obj.subtype = message.subtype);
+    message.isoCurrencyCode !== undefined && (obj.isoCurrencyCode = message.isoCurrencyCode);
+    message.unofficialCurrencyCode !== undefined && (obj.unofficialCurrencyCode = message.unofficialCurrencyCode);
+    message.linkId !== undefined && (obj.linkId = Math.round(message.linkId));
+    message.id !== undefined && (obj.id = Math.round(message.id));
+    message.userId !== undefined && (obj.userId = Math.round(message.userId));
+    message.createdAt !== undefined && (obj.createdAt = message.createdAt);
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<InvestmentTransaction>, I>>(base?: I): InvestmentTransaction {
+    return InvestmentTransaction.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<InvestmentTransaction>, I>>(object: I): InvestmentTransaction {
+    const message = createBaseInvestmentTransaction();
+    message.accountId = object.accountId ?? "";
+    message.ammount = object.ammount ?? "";
+    message.investmentTransactionId = object.investmentTransactionId ?? "";
+    message.securityId = object.securityId ?? "";
+    message.date = object.date ?? "";
+    message.name = object.name ?? "";
+    message.quantity = object.quantity ?? 0;
+    message.amount = object.amount ?? 0;
+    message.price = object.price ?? 0;
+    message.fees = object.fees ?? 0;
+    message.type = object.type ?? "";
+    message.subtype = object.subtype ?? "";
+    message.isoCurrencyCode = object.isoCurrencyCode ?? "";
+    message.unofficialCurrencyCode = object.unofficialCurrencyCode ?? "";
+    message.linkId = object.linkId ?? 0;
+    message.id = object.id ?? 0;
+    message.userId = object.userId ?? 0;
+    message.createdAt = object.createdAt ?? "";
     return message;
   },
 };

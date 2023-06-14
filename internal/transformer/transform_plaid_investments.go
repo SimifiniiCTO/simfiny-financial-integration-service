@@ -3,7 +3,7 @@ package transformer
 import (
 	"errors"
 
-	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/proto"
+	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 	"github.com/plaid/plaid-go/v12/plaid"
 )
 
@@ -27,14 +27,19 @@ func transformPlaidInvestmentObject(securities *[]plaid.Security,
 		metadata := acctIDToTypeMap[element.AccountId]
 		if securities, ok := acctToSecuritiesMap[metadata.accountType]; ok {
 			investmentAcct := &schema.InvestmentAccount{
-				PlaidAccountID: metadata.accountID,
-				AccountSubtype: metadata.accountSubtype,
-				AccountType:    metadata.accountType,
-				AccountName:    metadata.accountName,
-				BalanceID:      metadata.balance,
-				SecurityID:     securities,
+				Id:             0,
+				UserId:         0,
+				Name:           metadata.accountName,
+				Number:         "",
+				Type:           metadata.accountType,
+				Balance:        0,
+				CurrentFunds:   0,
+				BalanceLimit:   0,
+				PlaidAccountId: metadata.accountID,
+				Subtype:        metadata.accountType,
+				Holdings:       []*schema.InvesmentHolding{},
+				Securities:     securities,
 			}
-
 			accts = append(accts, investmentAcct)
 		}
 	}
@@ -42,23 +47,14 @@ func transformPlaidInvestmentObject(securities *[]plaid.Security,
 	return accts, nil
 }
 
-func transformAndMapSecuritiesToAcctType(securities *[]plaid.Security) map[string][]*schema.Security {
+func transformAndMapSecuritiesToAcctType(securities *[]plaid.Security) map[string][]*schema.InvestmentSecurity {
 	// iterate and transform securities set
-	var acctTypeToSecuritiesMap map[string][]*schema.Security
+	var acctTypeToSecuritiesMap map[string][]*schema.InvestmentSecurity
 	for _, security := range *securities {
 		key := security.GetType()
 
 		if val, ok := acctTypeToSecuritiesMap[key]; ok {
-			sec := &schema.Security{
-				ClosePrice:       uint64(security.GetClosePrice()),
-				IsCashEquivalent: security.GetIsCashEquivalent(),
-				CurrencyCode:     security.GetIsoCurrencyCode(),
-				SecurityID:       security.GetSecurityId(),
-				TickerSymbol:     security.GetTickerSymbol(),
-				SecurityType:     security.GetType(),
-				SecurityName:     security.GetName(),
-			}
-
+			sec := TransformSinglePlaidInvestmentSecurity(security)
 			val = append(val, sec)
 			acctTypeToSecuritiesMap[key] = val
 		}

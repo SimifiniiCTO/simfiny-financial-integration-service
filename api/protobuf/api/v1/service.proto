@@ -835,4 +835,27 @@ service FinancialService {
       }
     };
   }
+
+  rpc CreateSubscription(CreateSubscriptionRequest) returns (CreateSubscriptionResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/stripe/subscription"
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Creates a new subscription for a given customer against stripe"
+      tags: ["payment"]
+      operation_id: "CreateSubscription"
+      description: "This endpoint enabled a user to create a new subscription against stripe"
+      responses: {
+        key: "200"
+        value: {
+          description: "A successful response."
+          schema: {
+            json_schema: {ref: ".api.v1.CreateSubscriptionResponse"}
+          }
+        }
+      }
+    };
+  }
 }

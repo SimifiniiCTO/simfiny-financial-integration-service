@@ -26,6 +26,7 @@ var (
 	InvesmentHoldingORM      *invesmentHoldingORM
 	InvestmentAccountORM     *investmentAccountORM
 	InvestmentSecurityORM    *investmentSecurityORM
+	InvestmentTransactionORM *investmentTransactionORM
 	LinkORM                  *linkORM
 	MilestoneORM             *milestoneORM
 	MortgageAccountORM       *mortgageAccountORM
@@ -52,6 +53,7 @@ func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	InvesmentHoldingORM = &Q.InvesmentHoldingORM
 	InvestmentAccountORM = &Q.InvestmentAccountORM
 	InvestmentSecurityORM = &Q.InvestmentSecurityORM
+	InvestmentTransactionORM = &Q.InvestmentTransactionORM
 	LinkORM = &Q.LinkORM
 	MilestoneORM = &Q.MilestoneORM
 	MortgageAccountORM = &Q.MortgageAccountORM
@@ -79,6 +81,7 @@ func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 		InvesmentHoldingORM:      newInvesmentHoldingORM(db, opts...),
 		InvestmentAccountORM:     newInvestmentAccountORM(db, opts...),
 		InvestmentSecurityORM:    newInvestmentSecurityORM(db, opts...),
+		InvestmentTransactionORM: newInvestmentTransactionORM(db, opts...),
 		LinkORM:                  newLinkORM(db, opts...),
 		MilestoneORM:             newMilestoneORM(db, opts...),
 		MortgageAccountORM:       newMortgageAccountORM(db, opts...),
@@ -107,6 +110,7 @@ type Query struct {
 	InvesmentHoldingORM      invesmentHoldingORM
 	InvestmentAccountORM     investmentAccountORM
 	InvestmentSecurityORM    investmentSecurityORM
+	InvestmentTransactionORM investmentTransactionORM
 	LinkORM                  linkORM
 	MilestoneORM             milestoneORM
 	MortgageAccountORM       mortgageAccountORM
@@ -136,6 +140,7 @@ func (q *Query) clone(db *gorm.DB) *Query {
 		InvesmentHoldingORM:      q.InvesmentHoldingORM.clone(db),
 		InvestmentAccountORM:     q.InvestmentAccountORM.clone(db),
 		InvestmentSecurityORM:    q.InvestmentSecurityORM.clone(db),
+		InvestmentTransactionORM: q.InvestmentTransactionORM.clone(db),
 		LinkORM:                  q.LinkORM.clone(db),
 		MilestoneORM:             q.MilestoneORM.clone(db),
 		MortgageAccountORM:       q.MortgageAccountORM.clone(db),
@@ -172,6 +177,7 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 		InvesmentHoldingORM:      q.InvesmentHoldingORM.replaceDB(db),
 		InvestmentAccountORM:     q.InvestmentAccountORM.replaceDB(db),
 		InvestmentSecurityORM:    q.InvestmentSecurityORM.replaceDB(db),
+		InvestmentTransactionORM: q.InvestmentTransactionORM.replaceDB(db),
 		LinkORM:                  q.LinkORM.replaceDB(db),
 		MilestoneORM:             q.MilestoneORM.replaceDB(db),
 		MortgageAccountORM:       q.MortgageAccountORM.replaceDB(db),
@@ -198,6 +204,7 @@ type queryCtx struct {
 	InvesmentHoldingORM      IInvesmentHoldingORMDo
 	InvestmentAccountORM     IInvestmentAccountORMDo
 	InvestmentSecurityORM    IInvestmentSecurityORMDo
+	InvestmentTransactionORM IInvestmentTransactionORMDo
 	LinkORM                  ILinkORMDo
 	MilestoneORM             IMilestoneORMDo
 	MortgageAccountORM       IMortgageAccountORMDo
@@ -224,6 +231,7 @@ func (q *Query) WithContext(ctx context.Context) *queryCtx {
 		InvesmentHoldingORM:      q.InvesmentHoldingORM.WithContext(ctx),
 		InvestmentAccountORM:     q.InvestmentAccountORM.WithContext(ctx),
 		InvestmentSecurityORM:    q.InvestmentSecurityORM.WithContext(ctx),
+		InvestmentTransactionORM: q.InvestmentTransactionORM.WithContext(ctx),
 		LinkORM:                  q.LinkORM.WithContext(ctx),
 		MilestoneORM:             q.MilestoneORM.WithContext(ctx),
 		MortgageAccountORM:       q.MortgageAccountORM.WithContext(ctx),

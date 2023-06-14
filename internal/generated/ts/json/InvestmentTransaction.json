@@ -1,0 +1,84 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/InvestmentTransaction",
+    "definitions": {
+        "InvestmentTransaction": {
+            "properties": {
+                "account_id": {
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"account_id\""
+                },
+                "ammount": {
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"amount\""
+                },
+                "investment_transaction_id": {
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"investment_transaction_id\""
+                },
+                "security_id": {
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"security_id\""
+                },
+                "date": {
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"date\""
+                },
+                "name": {
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"name\""
+                },
+                "quantity": {
+                    "type": "number",
+                    "description": "@gotag: clickhouse:\"quantity\""
+                },
+                "amount": {
+                    "type": "number",
+                    "description": "@gotag: clickhouse:\"amount\""
+                },
+                "price": {
+                    "type": "number",
+                    "description": "@gotag: clickhouse:\"price\""
+                },
+                "fees": {
+                    "type": "number",
+                    "description": "@gotag: clickhouse:\"fees\""
+                },
+                "type": {
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"type\""
+                },
+                "subtype": {
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"subtype\""
+                },
+                "iso_currency_code": {
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"iso_currency_code\""
+                },
+                "unofficial_currency_code": {
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"unofficial_currency_code\""
+                },
+                "link_id": {
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"link_id\""
+                },
+                "id": {
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"id\""
+                },
+                "user_id": {
+                    "type": "string",
+                    "description": "@gotag: clickhouse:\"user_id\""
+                },
+                "created_at": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Investment Transaction"
+        }
+    }
+}

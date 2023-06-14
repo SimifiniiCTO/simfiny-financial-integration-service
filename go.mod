@@ -69,6 +69,9 @@ require (
 	github.com/plaid/plaid-go/v12 v12.0.0 // indirect
 	github.com/redis/go-redis/v9 v9.0.4 // indirect
 	github.com/robfig/cron/v3 v3.0.1 // indirect
+	github.com/rookie-ninja/rk-mux v1.2.16 // indirect
+	github.com/streadway/handy v0.0.0-20190108123426-d5acb3125c2a // indirect
+	github.com/stripe/stripe-go/v72 v72.122.0 // indirect
 	github.com/yuin/gopher-lua v1.1.0 // indirect
 	golang.org/x/exp v0.0.0-20230131160201-f062dba9d201 // indirect
 )

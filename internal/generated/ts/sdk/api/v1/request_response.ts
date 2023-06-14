@@ -766,6 +766,16 @@ export interface StripeWebhookResponse {
   message: string;
 }
 
+export interface CreateSubscriptionRequest {
+  userId: number;
+  priceId: string;
+}
+
+export interface CreateSubscriptionResponse {
+  subscriptionId: string;
+  paymentIntentClientSecret: string;
+}
+
 function createBaseCreateUserProfileRequest(): CreateUserProfileRequest {
   return { profile: undefined, email: "" };
 }
@@ -6208,6 +6218,151 @@ export const StripeWebhookResponse = {
   fromPartial<I extends Exact<DeepPartial<StripeWebhookResponse>, I>>(object: I): StripeWebhookResponse {
     const message = createBaseStripeWebhookResponse();
     message.message = object.message ?? "";
+    return message;
+  },
+};
+
+function createBaseCreateSubscriptionRequest(): CreateSubscriptionRequest {
+  return { userId: 0, priceId: "" };
+}
+
+export const CreateSubscriptionRequest = {
+  encode(message: CreateSubscriptionRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.userId !== 0) {
+      writer.uint32(8).uint64(message.userId);
+    }
+    if (message.priceId !== "") {
+      writer.uint32(18).string(message.priceId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): CreateSubscriptionRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCreateSubscriptionRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.userId = longToNumber(reader.uint64() as Long);
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.priceId = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateSubscriptionRequest {
+    return {
+      userId: isSet(object.userId) ? Number(object.userId) : 0,
+      priceId: isSet(object.priceId) ? String(object.priceId) : "",
+    };
+  },
+
+  toJSON(message: CreateSubscriptionRequest): unknown {
+    const obj: any = {};
+    message.userId !== undefined && (obj.userId = Math.round(message.userId));
+    message.priceId !== undefined && (obj.priceId = message.priceId);
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CreateSubscriptionRequest>, I>>(base?: I): CreateSubscriptionRequest {
+    return CreateSubscriptionRequest.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<CreateSubscriptionRequest>, I>>(object: I): CreateSubscriptionRequest {
+    const message = createBaseCreateSubscriptionRequest();
+    message.userId = object.userId ?? 0;
+    message.priceId = object.priceId ?? "";
+    return message;
+  },
+};
+
+function createBaseCreateSubscriptionResponse(): CreateSubscriptionResponse {
+  return { subscriptionId: "", paymentIntentClientSecret: "" };
+}
+
+export const CreateSubscriptionResponse = {
+  encode(message: CreateSubscriptionResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.subscriptionId !== "") {
+      writer.uint32(10).string(message.subscriptionId);
+    }
+    if (message.paymentIntentClientSecret !== "") {
+      writer.uint32(18).string(message.paymentIntentClientSecret);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): CreateSubscriptionResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCreateSubscriptionResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.subscriptionId = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.paymentIntentClientSecret = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateSubscriptionResponse {
+    return {
+      subscriptionId: isSet(object.subscriptionId) ? String(object.subscriptionId) : "",
+      paymentIntentClientSecret: isSet(object.paymentIntentClientSecret)
+        ? String(object.paymentIntentClientSecret)
+        : "",
+    };
+  },
+
+  toJSON(message: CreateSubscriptionResponse): unknown {
+    const obj: any = {};
+    message.subscriptionId !== undefined && (obj.subscriptionId = message.subscriptionId);
+    message.paymentIntentClientSecret !== undefined &&
+      (obj.paymentIntentClientSecret = message.paymentIntentClientSecret);
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CreateSubscriptionResponse>, I>>(base?: I): CreateSubscriptionResponse {
+    return CreateSubscriptionResponse.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<CreateSubscriptionResponse>, I>>(object: I): CreateSubscriptionResponse {
+    const message = createBaseCreateSubscriptionResponse();
+    message.subscriptionId = object.subscriptionId ?? "";
+    message.paymentIntentClientSecret = object.paymentIntentClientSecret ?? "";
     return message;
   },
 };

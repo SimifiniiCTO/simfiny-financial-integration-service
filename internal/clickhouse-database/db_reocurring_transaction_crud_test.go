@@ -2,6 +2,7 @@ package clickhousedatabase
 
 import (
 	"context"
+	"reflect"
 	"testing"
 
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
@@ -346,6 +347,202 @@ func TestDb_UpdateReOccurringTransaction(t *testing.T) {
 			txId, userId, tx := tt.args.precondition(tt.args.ctx, t, &tt.args)
 			if err := conn.UpdateReOccurringTransaction(tt.args.ctx, userId, txId, tx); (err != nil) != tt.wantErr {
 				t.Errorf("conn.UpdateTransaction() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}
+
+func TestDb_AddReOccurringTransaction(t *testing.T) {
+	type args struct {
+		ctx    context.Context
+		userId *uint64
+		tx     *schema.ReOccuringTransaction
+	}
+	tests := []struct {
+		name    string
+		db      *Db
+		args    args
+		want    *uint64
+		wantErr bool
+	}{
+		// TODO: Add test cases.
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := tt.db.AddReOccurringTransaction(tt.args.ctx, tt.args.userId, tt.args.tx)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("Db.AddReOccurringTransaction() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("Db.AddReOccurringTransaction() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestDb_DeleteReOccuringTransaction(t *testing.T) {
+	type args struct {
+		ctx  context.Context
+		txId *uint64
+	}
+	tests := []struct {
+		name    string
+		db      *Db
+		args    args
+		wantErr bool
+	}{
+		// TODO: Add test cases.
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := tt.db.DeleteReOccuringTransaction(tt.args.ctx, tt.args.txId); (err != nil) != tt.wantErr {
+				t.Errorf("Db.DeleteReOccuringTransaction() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}
+
+func TestDb_DeleteReOccurringTransactionsByIds(t *testing.T) {
+	type args struct {
+		ctx   context.Context
+		txIds []uint64
+	}
+	tests := []struct {
+		name    string
+		db      *Db
+		args    args
+		wantErr bool
+	}{
+		// TODO: Add test cases.
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := tt.db.DeleteReOccurringTransactionsByIds(tt.args.ctx, tt.args.txIds); (err != nil) != tt.wantErr {
+				t.Errorf("Db.DeleteReOccurringTransactionsByIds() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}
+
+func TestDb_DeleteReOcurringTransactionsByLinkId(t *testing.T) {
+	type args struct {
+		ctx    context.Context
+		linkId *uint64
+	}
+	tests := []struct {
+		name    string
+		db      *Db
+		args    args
+		wantErr bool
+	}{
+		// TODO: Add test cases.
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := tt.db.DeleteReOcurringTransactionsByLinkId(tt.args.ctx, tt.args.linkId); (err != nil) != tt.wantErr {
+				t.Errorf("Db.DeleteReOcurringTransactionsByLinkId() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}
+
+func TestDb_DeleteUserReOcurringTransactons(t *testing.T) {
+	type args struct {
+		ctx    context.Context
+		userId *uint64
+	}
+	tests := []struct {
+		name    string
+		db      *Db
+		args    args
+		wantErr bool
+	}{
+		// TODO: Add test cases.
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := tt.db.DeleteUserReOcurringTransactons(tt.args.ctx, tt.args.userId); (err != nil) != tt.wantErr {
+				t.Errorf("Db.DeleteUserReOcurringTransactons() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}
+
+func TestDb_UpdateReOccurringTransactions(t *testing.T) {
+	type args struct {
+		ctx    context.Context
+		userId *uint64
+		txs    []*schema.ReOccuringTransaction
+	}
+	tests := []struct {
+		name    string
+		db      *Db
+		args    args
+		wantErr bool
+	}{
+		// TODO: Add test cases.
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := tt.db.UpdateReOccurringTransactions(tt.args.ctx, tt.args.userId, tt.args.txs); (err != nil) != tt.wantErr {
+				t.Errorf("Db.UpdateReOccurringTransactions() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}
+
+func TestDb_GetReOcurringTransactionById(t *testing.T) {
+	type args struct {
+		ctx  context.Context
+		txId *uint64
+	}
+	tests := []struct {
+		name    string
+		db      *Db
+		args    args
+		want    *schema.ReOccuringTransaction
+		wantErr bool
+	}{
+		// TODO: Add test cases.
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := tt.db.GetReOcurringTransactionById(tt.args.ctx, tt.args.txId)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("Db.GetReOcurringTransactionById() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("Db.GetReOcurringTransactionById() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestDb_GetUserReOccurringTransactions(t *testing.T) {
+	type args struct {
+		ctx    context.Context
+		userId *uint64
+	}
+	tests := []struct {
+		name    string
+		db      *Db
+		args    args
+		want    []*schema.ReOccuringTransaction
+		wantErr bool
+	}{
+		// TODO: Add test cases.
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := tt.db.GetUserReOccurringTransactions(tt.args.ctx, tt.args.userId)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("Db.GetUserReOccurringTransactions() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("Db.GetUserReOccurringTransactions() = %v, want %v", got, tt.want)
 			}
 		})
 	}

@@ -2006,6 +2006,58 @@
         ]
       }
     },
+    "/api/v1/stripe/subscription": {
+      "post": {
+        "summary": "Creates a new subscription for a given customer against stripe",
+        "description": "This endpoint enabled a user to create a new subscription against stripe",
+        "operationId": "CreateSubscription",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/CreateSubscriptionResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateSubscriptionRequest"
+            }
+          }
+        ],
+        "tags": [
+          "payment"
+        ]
+      }
+    },
     "/api/v1/stripe/webhook": {
       "post": {
         "summary": "Processes a webhook obtained from stripe",
@@ -2484,6 +2536,33 @@
           "type": "string",
           "format": "uint64",
           "title": "The smart goal id"
+        }
+      }
+    },
+    "CreateSubscriptionRequest": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "priceId": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "userId",
+        "priceId"
+      ]
+    },
+    "CreateSubscriptionResponse": {
+      "type": "object",
+      "properties": {
+        "subscriptionId": {
+          "type": "string"
+        },
+        "paymentIntentClientSecret": {
+          "type": "string"
         }
       }
     },
@@ -4064,7 +4143,9 @@
         "STRIPE_SUBSCRIPTION_STATUS_PAST_DUE",
         "STRIPE_SUBSCRIPTION_STATUS_CANCELED",
         "STRIPE_SUBSCRIPTION_STATUS_UNPAID",
-        "STRIPE_SUBSCRIPTION_STATUS_COMPLETE"
+        "STRIPE_SUBSCRIPTION_STATUS_COMPLETE",
+        "STRIPE_SUBSCRIPTION_STATUS_INCOMPLETE",
+        "STRIPE_SUBSCRIPTION_STATUS_INCOMPLETE_EXPIRED"
       ],
       "default": "STRIPE_SUBSCRIPTION_STATUS_UNSPECIFIED"
     },

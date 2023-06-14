@@ -960,7 +960,11 @@
                         "STRIPE_SUBSCRIPTION_STATUS_UNPAID",
                         5,
                         "STRIPE_SUBSCRIPTION_STATUS_COMPLETE",
-                        6
+                        6,
+                        "STRIPE_SUBSCRIPTION_STATUS_INCOMPLETE",
+                        7,
+                        "STRIPE_SUBSCRIPTION_STATUS_INCOMPLETE_EXPIRED",
+                        8
                     ],
                     "oneOf": [
                         {

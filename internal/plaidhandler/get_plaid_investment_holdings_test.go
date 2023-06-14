@@ -3,6 +3,7 @@ package plaidhandler
 import (
 	"context"
 	"errors"
+	"reflect"
 	"testing"
 
 	"github.com/plaid/plaid-go/v12/plaid"
@@ -45,7 +46,7 @@ func TestGetPlaidInvestmentsAccountsOperation(t *testing.T) {
 	assert.Nil(t, err)
 
 	for _, scenario := range scenarios {
-		investments, err := p.getPlaidInvestmentHoldings(context.Background(), scenario.accessToken)
+		investments, err := p.GetPlaidInvestmentHoldings(context.Background(), scenario.accessToken, nil)
 		if err != nil {
 			if scenario.shouldErrorOccur {
 				assert.Equal(t, err, scenario.expectedError)
@@ -73,4 +74,33 @@ func assertAccountsOfInvestmentType(t *testing.T, i *Investments) {
 	}
 	assert.NotNil(t, i.Securities)
 	assert.NotNil(t, i.Holdings)
+}
+
+func TestPlaidWrapper_GetPlaidInvestmentHoldings(t *testing.T) {
+	type args struct {
+		ctx         context.Context
+		accessToken *string
+		accountIds  []string
+	}
+	tests := []struct {
+		name    string
+		p       *PlaidWrapper
+		args    args
+		want    *Investments
+		wantErr bool
+	}{
+		// TODO: Add test cases.
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := tt.p.GetPlaidInvestmentHoldings(tt.args.ctx, tt.args.accessToken, tt.args.accountIds)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("PlaidWrapper.GetPlaidInvestmentHoldings() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("PlaidWrapper.GetPlaidInvestmentHoldings() = %v, want %v", got, tt.want)
+			}
+		})
+	}
 }

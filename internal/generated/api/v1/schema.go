@@ -32,6 +32,7 @@ func GetClickhouseSchemas() []interface{} {
 	var models = []interface{}{
 		TransactionORM{},
 		ReOccuringTransactionORM{},
+		InvestmentTransactionORM{},
 	}
 	return models
 }

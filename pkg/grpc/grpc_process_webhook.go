@@ -186,13 +186,22 @@ func (s *Server) processWebhook(ctx context.Context, req *proto.ProcessWebhookRe
 	plaidItemId := link.PlaidLink.ItemId
 
 	switch req.WebhookType {
-	case "INVESTMENTS_TRANSACTIONS": // TODO: DO THIS TONIGHT
+	case "INVESTMENTS_TRANSACTIONS":
 		switch req.WebhookCode {
 		// Fired when new or updated investment transactions have been detected on an investment account.
 		// The webhook typically fires in response to any newly added transactions or price changes to existing
 		// transactions, most commonly after market close.
 		case "DEFAULT_UPDATE":
 			// Trigger a background job to sync the plaid transactions
+			// 1. Get investment transactions
+			accountIds := make([]string, 0, len(link.InvestmentAccounts))
+			for _, acct := range link.InvestmentAccounts {
+				accountIds = append(accountIds, acct.PlaidAccountId)
+			}
+
+			if err := s.DispatchPullInvestmentTransactionsTask(ctx, userId, link.Id, *accessToken, accountIds); err != nil {
+				return err
+			}
 		default:
 			s.logger.Error("Plaid webhook will not be handled, it is not implemented.")
 		}
@@ -202,11 +211,18 @@ func (s *Server) processWebhook(ctx context.Context, req *proto.ProcessWebhookRe
 		// The webhook typically fires in response to any newly added holdings or price changes to existing
 		// holdings, most commonly after market close.
 		case "DEFAULT_UPDATE":
+			accountIds := make([]string, 0, len(link.InvestmentAccounts))
+			for _, acct := range link.InvestmentAccounts {
+				accountIds = append(accountIds, acct.PlaidAccountId)
+			}
 			// Trigger a background job to sync the plaid holdings
+			if err := s.DispatchPullInvestmentHoldingsTask(ctx, userId, link.Id, *accessToken, accountIds); err != nil {
+				return err
+			}
 		default:
 			s.logger.Error("Plaid webhook will not be handled, it is not implemented.")
 		}
-	case "LIABILITIES":
+	case "LIABILITIES": // TODO: DO THIS TONIGHT
 		switch req.WebhookCode {
 		// Liabilities webhooks are sent to indicate that new loans or updated loan fields for existing accounts are available.
 		// will be fired when new or updated liabilities have been detected on a liabilities item
