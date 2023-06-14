@@ -263,6 +263,8 @@ export enum StripeSubscriptionStatus {
   STRIPE_SUBSCRIPTION_STATUS_COMPLETE = 6,
   STRIPE_SUBSCRIPTION_STATUS_INCOMPLETE = 7,
   STRIPE_SUBSCRIPTION_STATUS_INCOMPLETE_EXPIRED = 8,
+  STRIPE_SUBSCRIPTION_STATUS_CREATED = 9,
+  STRIPE_SUBSCRIPTION_STATUS_PAUSED = 10,
   UNRECOGNIZED = -1,
 }
 
@@ -295,6 +297,12 @@ export function stripeSubscriptionStatusFromJSON(object: any): StripeSubscriptio
     case 8:
     case "STRIPE_SUBSCRIPTION_STATUS_INCOMPLETE_EXPIRED":
       return StripeSubscriptionStatus.STRIPE_SUBSCRIPTION_STATUS_INCOMPLETE_EXPIRED;
+    case 9:
+    case "STRIPE_SUBSCRIPTION_STATUS_CREATED":
+      return StripeSubscriptionStatus.STRIPE_SUBSCRIPTION_STATUS_CREATED;
+    case 10:
+    case "STRIPE_SUBSCRIPTION_STATUS_PAUSED":
+      return StripeSubscriptionStatus.STRIPE_SUBSCRIPTION_STATUS_PAUSED;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -322,6 +330,10 @@ export function stripeSubscriptionStatusToJSON(object: StripeSubscriptionStatus)
       return "STRIPE_SUBSCRIPTION_STATUS_INCOMPLETE";
     case StripeSubscriptionStatus.STRIPE_SUBSCRIPTION_STATUS_INCOMPLETE_EXPIRED:
       return "STRIPE_SUBSCRIPTION_STATUS_INCOMPLETE_EXPIRED";
+    case StripeSubscriptionStatus.STRIPE_SUBSCRIPTION_STATUS_CREATED:
+      return "STRIPE_SUBSCRIPTION_STATUS_CREATED";
+    case StripeSubscriptionStatus.STRIPE_SUBSCRIPTION_STATUS_PAUSED:
+      return "STRIPE_SUBSCRIPTION_STATUS_PAUSED";
     case StripeSubscriptionStatus.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -441,6 +453,8 @@ export interface StripeSubscription {
   stripeSubscriptionActiveUntil: string;
   /** stripe webhook latest timestamp */
   stripeWebhookLatestTimestamp: string;
+  /** wether the subscription is trialing */
+  isTrialing: boolean;
 }
 
 /**
@@ -938,6 +952,7 @@ function createBaseStripeSubscription(): StripeSubscription {
     stripeSubscriptionStatus: 0,
     stripeSubscriptionActiveUntil: "",
     stripeWebhookLatestTimestamp: "",
+    isTrialing: false,
   };
 }
 
@@ -957,6 +972,9 @@ export const StripeSubscription = {
     }
     if (message.stripeWebhookLatestTimestamp !== "") {
       writer.uint32(42).string(message.stripeWebhookLatestTimestamp);
+    }
+    if (message.isTrialing === true) {
+      writer.uint32(48).bool(message.isTrialing);
     }
     return writer;
   },
@@ -1003,6 +1021,13 @@ export const StripeSubscription = {
 
           message.stripeWebhookLatestTimestamp = reader.string();
           continue;
+        case 6:
+          if (tag !== 48) {
+            break;
+          }
+
+          message.isTrialing = reader.bool();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1025,6 +1050,7 @@ export const StripeSubscription = {
       stripeWebhookLatestTimestamp: isSet(object.stripeWebhookLatestTimestamp)
         ? String(object.stripeWebhookLatestTimestamp)
         : "",
+      isTrialing: isSet(object.isTrialing) ? Boolean(object.isTrialing) : false,
     };
   },
 
@@ -1038,6 +1064,7 @@ export const StripeSubscription = {
       (obj.stripeSubscriptionActiveUntil = message.stripeSubscriptionActiveUntil);
     message.stripeWebhookLatestTimestamp !== undefined &&
       (obj.stripeWebhookLatestTimestamp = message.stripeWebhookLatestTimestamp);
+    message.isTrialing !== undefined && (obj.isTrialing = message.isTrialing);
     return obj;
   },
 
@@ -1052,6 +1079,7 @@ export const StripeSubscription = {
     message.stripeSubscriptionStatus = object.stripeSubscriptionStatus ?? 0;
     message.stripeSubscriptionActiveUntil = object.stripeSubscriptionActiveUntil ?? "";
     message.stripeWebhookLatestTimestamp = object.stripeWebhookLatestTimestamp ?? "";
+    message.isTrialing = object.isTrialing ?? false;
     return message;
   },
 };

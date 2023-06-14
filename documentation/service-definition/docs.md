@@ -1105,6 +1105,7 @@ StripeSubscription stores high level stripe subscription details of which the us
 | stripe_subscription_status | [StripeSubscriptionStatus](#api-v1-StripeSubscriptionStatus) |  | stripe subscription status |
 | stripe_subscription_active_until | [string](#string) |  | stripe subscription active until |
 | stripe_webhook_latest_timestamp | [string](#string) |  | stripe webhook latest timestamp |
+| is_trialing | [bool](#bool) |  | wether the subscription is trialing |
 
 
 
@@ -1321,6 +1322,8 @@ such as the id, user_id tied to the profile, and many more
 | STRIPE_SUBSCRIPTION_STATUS_COMPLETE | 6 |  |
 | STRIPE_SUBSCRIPTION_STATUS_INCOMPLETE | 7 |  |
 | STRIPE_SUBSCRIPTION_STATUS_INCOMPLETE_EXPIRED | 8 |  |
+| STRIPE_SUBSCRIPTION_STATUS_CREATED | 9 |  |
+| STRIPE_SUBSCRIPTION_STATUS_PAUSED | 10 |  |
 
 
  

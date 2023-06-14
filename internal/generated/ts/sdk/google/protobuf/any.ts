@@ -122,7 +122,7 @@ export interface Any {
 }
 
 function createBaseAny(): Any {
-  return { typeUrl: "", value: new Uint8Array() };
+  return { typeUrl: "", value: new Uint8Array(0) };
 }
 
 export const Any = {
@@ -169,7 +169,7 @@ export const Any = {
   fromJSON(object: any): Any {
     return {
       typeUrl: isSet(object.typeUrl) ? String(object.typeUrl) : "",
-      value: isSet(object.value) ? bytesFromBase64(object.value) : new Uint8Array(),
+      value: isSet(object.value) ? bytesFromBase64(object.value) : new Uint8Array(0),
     };
   },
 
@@ -177,7 +177,7 @@ export const Any = {
     const obj: any = {};
     message.typeUrl !== undefined && (obj.typeUrl = message.typeUrl);
     message.value !== undefined &&
-      (obj.value = base64FromBytes(message.value !== undefined ? message.value : new Uint8Array()));
+      (obj.value = base64FromBytes(message.value !== undefined ? message.value : new Uint8Array(0)));
     return obj;
   },
 
@@ -188,7 +188,7 @@ export const Any = {
   fromPartial<I extends Exact<DeepPartial<Any>, I>>(object: I): Any {
     const message = createBaseAny();
     message.typeUrl = object.typeUrl ?? "";
-    message.value = object.value ?? new Uint8Array();
+    message.value = object.value ?? new Uint8Array(0);
     return message;
   },
 };

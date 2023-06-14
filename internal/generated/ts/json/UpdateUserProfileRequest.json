@@ -965,7 +965,11 @@
                         "STRIPE_SUBSCRIPTION_STATUS_INCOMPLETE",
                         7,
                         "STRIPE_SUBSCRIPTION_STATUS_INCOMPLETE_EXPIRED",
-                        8
+                        8,
+                        "STRIPE_SUBSCRIPTION_STATUS_CREATED",
+                        9,
+                        "STRIPE_SUBSCRIPTION_STATUS_PAUSED",
+                        10
                     ],
                     "oneOf": [
                         {
@@ -984,6 +988,10 @@
                 "stripe_webhook_latest_timestamp": {
                     "type": "string",
                     "description": "stripe webhook latest timestamp"
+                },
+                "is_trialing": {
+                    "type": "boolean",
+                    "description": "wether the subscription is trialing"
                 }
             },
             "additionalProperties": true,

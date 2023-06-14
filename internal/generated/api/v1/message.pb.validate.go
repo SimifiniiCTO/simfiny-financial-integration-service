@@ -67,6 +67,8 @@ func (m *StripeSubscription) validate(all bool) error {
 
 	// no validation rules for StripeWebhookLatestTimestamp
 
+	// no validation rules for IsTrialing
+
 	if len(errors) > 0 {
 		return StripeSubscriptionMultiError(errors)
 	}

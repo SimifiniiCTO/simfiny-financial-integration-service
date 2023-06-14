@@ -4111,14 +4111,14 @@ export const StringRules = {
 
 function createBaseBytesRules(): BytesRules {
   return {
-    const: new Uint8Array(),
+    const: new Uint8Array(0),
     len: 0,
     minLen: 0,
     maxLen: 0,
     pattern: "",
-    prefix: new Uint8Array(),
-    suffix: new Uint8Array(),
-    contains: new Uint8Array(),
+    prefix: new Uint8Array(0),
+    suffix: new Uint8Array(0),
+    contains: new Uint8Array(0),
     in: [],
     notIn: [],
     ip: undefined,
@@ -4291,14 +4291,14 @@ export const BytesRules = {
 
   fromJSON(object: any): BytesRules {
     return {
-      const: isSet(object.const) ? bytesFromBase64(object.const) : new Uint8Array(),
+      const: isSet(object.const) ? bytesFromBase64(object.const) : new Uint8Array(0),
       len: isSet(object.len) ? Number(object.len) : 0,
       minLen: isSet(object.minLen) ? Number(object.minLen) : 0,
       maxLen: isSet(object.maxLen) ? Number(object.maxLen) : 0,
       pattern: isSet(object.pattern) ? String(object.pattern) : "",
-      prefix: isSet(object.prefix) ? bytesFromBase64(object.prefix) : new Uint8Array(),
-      suffix: isSet(object.suffix) ? bytesFromBase64(object.suffix) : new Uint8Array(),
-      contains: isSet(object.contains) ? bytesFromBase64(object.contains) : new Uint8Array(),
+      prefix: isSet(object.prefix) ? bytesFromBase64(object.prefix) : new Uint8Array(0),
+      suffix: isSet(object.suffix) ? bytesFromBase64(object.suffix) : new Uint8Array(0),
+      contains: isSet(object.contains) ? bytesFromBase64(object.contains) : new Uint8Array(0),
       in: Array.isArray(object?.in) ? object.in.map((e: any) => bytesFromBase64(e)) : [],
       notIn: Array.isArray(object?.notIn) ? object.notIn.map((e: any) => bytesFromBase64(e)) : [],
       ip: isSet(object.ip) ? Boolean(object.ip) : undefined,
@@ -4311,24 +4311,24 @@ export const BytesRules = {
   toJSON(message: BytesRules): unknown {
     const obj: any = {};
     message.const !== undefined &&
-      (obj.const = base64FromBytes(message.const !== undefined ? message.const : new Uint8Array()));
+      (obj.const = base64FromBytes(message.const !== undefined ? message.const : new Uint8Array(0)));
     message.len !== undefined && (obj.len = Math.round(message.len));
     message.minLen !== undefined && (obj.minLen = Math.round(message.minLen));
     message.maxLen !== undefined && (obj.maxLen = Math.round(message.maxLen));
     message.pattern !== undefined && (obj.pattern = message.pattern);
     message.prefix !== undefined &&
-      (obj.prefix = base64FromBytes(message.prefix !== undefined ? message.prefix : new Uint8Array()));
+      (obj.prefix = base64FromBytes(message.prefix !== undefined ? message.prefix : new Uint8Array(0)));
     message.suffix !== undefined &&
-      (obj.suffix = base64FromBytes(message.suffix !== undefined ? message.suffix : new Uint8Array()));
+      (obj.suffix = base64FromBytes(message.suffix !== undefined ? message.suffix : new Uint8Array(0)));
     message.contains !== undefined &&
-      (obj.contains = base64FromBytes(message.contains !== undefined ? message.contains : new Uint8Array()));
+      (obj.contains = base64FromBytes(message.contains !== undefined ? message.contains : new Uint8Array(0)));
     if (message.in) {
-      obj.in = message.in.map((e) => base64FromBytes(e !== undefined ? e : new Uint8Array()));
+      obj.in = message.in.map((e) => base64FromBytes(e !== undefined ? e : new Uint8Array(0)));
     } else {
       obj.in = [];
     }
     if (message.notIn) {
-      obj.notIn = message.notIn.map((e) => base64FromBytes(e !== undefined ? e : new Uint8Array()));
+      obj.notIn = message.notIn.map((e) => base64FromBytes(e !== undefined ? e : new Uint8Array(0)));
     } else {
       obj.notIn = [];
     }
@@ -4345,14 +4345,14 @@ export const BytesRules = {
 
   fromPartial<I extends Exact<DeepPartial<BytesRules>, I>>(object: I): BytesRules {
     const message = createBaseBytesRules();
-    message.const = object.const ?? new Uint8Array();
+    message.const = object.const ?? new Uint8Array(0);
     message.len = object.len ?? 0;
     message.minLen = object.minLen ?? 0;
     message.maxLen = object.maxLen ?? 0;
     message.pattern = object.pattern ?? "";
-    message.prefix = object.prefix ?? new Uint8Array();
-    message.suffix = object.suffix ?? new Uint8Array();
-    message.contains = object.contains ?? new Uint8Array();
+    message.prefix = object.prefix ?? new Uint8Array(0);
+    message.suffix = object.suffix ?? new Uint8Array(0);
+    message.contains = object.contains ?? new Uint8Array(0);
     message.in = object.in?.map((e) => e) || [];
     message.notIn = object.notIn?.map((e) => e) || [];
     message.ip = object.ip ?? undefined;

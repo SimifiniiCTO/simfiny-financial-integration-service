@@ -29,6 +29,7 @@ func newStripeSubscriptionORM(db *gorm.DB, opts ...gen.DOOption) stripeSubscript
 	tableName := _stripeSubscriptionORM.stripeSubscriptionORMDo.TableName()
 	_stripeSubscriptionORM.ALL = field.NewAsterisk(tableName)
 	_stripeSubscriptionORM.Id = field.NewUint64(tableName, "id")
+	_stripeSubscriptionORM.IsTrialing = field.NewBool(tableName, "is_trialing")
 	_stripeSubscriptionORM.StripeSubscriptionActiveUntil = field.NewString(tableName, "stripe_subscription_active_until")
 	_stripeSubscriptionORM.StripeSubscriptionId = field.NewString(tableName, "stripe_subscription_id")
 	_stripeSubscriptionORM.StripeSubscriptionStatus = field.NewString(tableName, "stripe_subscription_status")
@@ -45,6 +46,7 @@ type stripeSubscriptionORM struct {
 
 	ALL                           field.Asterisk
 	Id                            field.Uint64
+	IsTrialing                    field.Bool
 	StripeSubscriptionActiveUntil field.String
 	StripeSubscriptionId          field.String
 	StripeSubscriptionStatus      field.String
@@ -67,6 +69,7 @@ func (s stripeSubscriptionORM) As(alias string) *stripeSubscriptionORM {
 func (s *stripeSubscriptionORM) updateTableName(table string) *stripeSubscriptionORM {
 	s.ALL = field.NewAsterisk(table)
 	s.Id = field.NewUint64(table, "id")
+	s.IsTrialing = field.NewBool(table, "is_trialing")
 	s.StripeSubscriptionActiveUntil = field.NewString(table, "stripe_subscription_active_until")
 	s.StripeSubscriptionId = field.NewString(table, "stripe_subscription_id")
 	s.StripeSubscriptionStatus = field.NewString(table, "stripe_subscription_status")
@@ -88,8 +91,9 @@ func (s *stripeSubscriptionORM) GetFieldByName(fieldName string) (field.OrderExp
 }
 
 func (s *stripeSubscriptionORM) fillFieldMap() {
-	s.fieldMap = make(map[string]field.Expr, 6)
+	s.fieldMap = make(map[string]field.Expr, 7)
 	s.fieldMap["id"] = s.Id
+	s.fieldMap["is_trialing"] = s.IsTrialing
 	s.fieldMap["stripe_subscription_active_until"] = s.StripeSubscriptionActiveUntil
 	s.fieldMap["stripe_subscription_id"] = s.StripeSubscriptionId
 	s.fieldMap["stripe_subscription_status"] = s.StripeSubscriptionStatus

@@ -59,6 +59,8 @@ enum StripeSubscriptionStatus {
   STRIPE_SUBSCRIPTION_STATUS_COMPLETE = 6;
   STRIPE_SUBSCRIPTION_STATUS_INCOMPLETE = 7;
   STRIPE_SUBSCRIPTION_STATUS_INCOMPLETE_EXPIRED = 8;
+  STRIPE_SUBSCRIPTION_STATUS_CREATED = 9;
+   STRIPE_SUBSCRIPTION_STATUS_PAUSED = 10;
 }
 
 enum LinkStatus {
@@ -89,6 +91,8 @@ message StripeSubscription {
   string stripe_subscription_active_until = 4 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
   // stripe webhook latest timestamp 
   string stripe_webhook_latest_timestamp = 5 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  // wether the subscription is trialing
+  bool is_trialing = 6;
 }
 
 // UserProfile stores high level user profile details

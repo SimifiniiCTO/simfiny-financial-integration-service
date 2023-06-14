@@ -1,6 +1,7 @@
 package api
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -8,6 +9,7 @@ import (
 	"net/http"
 	"os"
 
+	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 	"github.com/stripe/stripe-go/v74"
 	"github.com/stripe/stripe-go/v74/subscription"
 	"github.com/stripe/stripe-go/v74/webhook"
@@ -29,6 +31,7 @@ func (s *Server) handleStripeWebhook(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	ctx := req.Context()
 	event := stripe.Event{}
 
 	if err := json.Unmarshal(payload, &event); err != nil {
@@ -63,37 +66,37 @@ func (s *Server) handleStripeWebhook(w http.ResponseWriter, req *http.Request) {
 	//  recur on regular billing intervals. We recommend listening for events with a webhook endpoint.
 	// Make sure that your integration properly handles the events. For example, you may want to email
 	//  a customer if a payment fails or revoke a customer’s access when a subscription is canceled.
-	case "customer.created":
-		// send when a customer is created
 	case "customer.subscription.created":
 		// 	Sent when the subscription is created. The subscription status might
 		// be incomplete if customer authentication is required to complete the payment
 		// or if you set payment_behavior to default_incomplete
 		// ref: https://stripe.com/docs/billing/subscriptions/overview#subscription-payment-behavior
-		var subscription stripe.Subscription
-		err := json.Unmarshal(event.Data.Raw, &subscription)
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "Error parsing webhook JSON: %v\n", err)
+		subscription, storedSubscription, shouldReturn := s.processSubscriptionEventAndQueryStoreSubscription(event, w, ctx)
+		if shouldReturn {
+			return
+		}
+
+		// update the subscription status in the database
+		storedSubscription.StripeSubscriptionStatus = schema.StripeSubscriptionStatus_STRIPE_SUBSCRIPTION_STATUS_CREATED
+		if err := s.conn.UpdateSubscription(ctx, &subscription.ID, storedSubscription); err != nil {
+			log.Println("Error updating subscription:", err)
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
-		log.Printf("Subscription created for %d.", subscription.ID)
-		// Then define and call a func to handle the successful attachment of a PaymentMethod.
-		// handleSubscriptionCreated(subscription)
-		handleSubscriptionCreated(&event)
 	case "customer.subscription.deleted":
 		// Sent when the subscription is deleted.
-		var subscription stripe.Subscription
-		err := json.Unmarshal(event.Data.Raw, &subscription)
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "Error parsing webhook JSON: %v\n", err)
+		subscription, storedSubscription, shouldReturn := s.processSubscriptionEventAndQueryStoreSubscription(event, w, ctx)
+		if shouldReturn {
+			return
+		}
+
+		// update the subscription status in the database
+		storedSubscription.StripeSubscriptionStatus = schema.StripeSubscriptionStatus_STRIPE_SUBSCRIPTION_STATUS_CANCELED
+		if err := s.conn.UpdateSubscription(ctx, &subscription.ID, storedSubscription); err != nil {
+			log.Println("Error updating subscription:", err)
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
-		log.Printf("Subscription deleted for %d.", subscription.ID)
-		// Then define and call a func to handle the deleted subscription.
-		// handleSubscriptionCanceled(subscription)
-
 	case "customer.subscription.paused":
 		// 	Sent when a subscription’s status changes to paused. For example,
 		// this is sent when a subscription is configured to pause when a free trial
@@ -103,9 +106,39 @@ func (s *Server) handleStripeWebhook(w http.ResponseWriter, req *http.Request) {
 		// ref: https://stripe.com/docs/api/subscriptions/resume
 		// ref: https://stripe.com/docs/billing/subscriptions/trials#create-free-trials-without-payment
 		// ref: https://stripe.com/docs/api/subscriptions/create#create_subscription-trial_settings-end_behavior-missing_payment_method
+
+		// TODO: Perform the below operations
+		// 2. We send an email to the user informing them that their subscription has been paused
+		subscription, storedSubscription, shouldReturn := s.processSubscriptionEventAndQueryStoreSubscription(event, w, ctx)
+		if shouldReturn {
+			return
+		}
+
+		// update the subscription status in the database
+		storedSubscription.StripeSubscriptionStatus = schema.StripeSubscriptionStatus_STRIPE_SUBSCRIPTION_STATUS_PAUSED
+		if err := s.conn.UpdateSubscription(ctx, &subscription.ID, storedSubscription); err != nil {
+			log.Println("Error updating subscription:", err)
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
 	case "customer.subscription.resumed":
 		// Sent when a subscription’s status changes to active after it has been paused.
 		// ref: https://stripe.com/docs/billing/subscriptions/pause#unpausing
+		// TODO: Perform the below operations
+		// 2. We send an email to the user informing them that their subscription has been resumed
+		subscription, storedSubscription, shouldReturn := s.processSubscriptionEventAndQueryStoreSubscription(event, w, ctx)
+		if shouldReturn {
+			return
+		}
+
+		// update the subscription status in the database
+		storedSubscription.StripeSubscriptionStatus = schema.StripeSubscriptionStatus_STRIPE_SUBSCRIPTION_STATUS_ACTIVE
+		if err := s.conn.UpdateSubscription(ctx, &subscription.ID, storedSubscription); err != nil {
+			log.Println("Error updating subscription:", err)
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
 	case "customer.subscription.trial_will_end":
 		// Sent three days before the trial period ends. If the trial is less than three days, this event is triggered.
 		var subscription stripe.Subscription
@@ -115,45 +148,11 @@ func (s *Server) handleStripeWebhook(w http.ResponseWriter, req *http.Request) {
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
-		log.Printf("Subscription trial will end for %d.", subscription.ID)
-		// Then define and call a func to handle the successful attachment of a PaymentMethod.
-		// handleSubscriptionTrialWillEnd(subscription)
+		// TODO: 2. We send an email to the user informing them that their subscription has been cancelled
 	case "customer.subscription.updated":
 		// Sent when the subscription is successfully started, after the payment is confirmed. Also sent whenever a
 		// subscription is changed. For example, adding a coupon, applying a discount, adding an invoice item,
 		// and changing plans all trigger this event.
-		var subscription stripe.Subscription
-		err := json.Unmarshal(event.Data.Raw, &subscription)
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "Error parsing webhook JSON: %v\n", err)
-			w.WriteHeader(http.StatusBadRequest)
-			return
-		}
-		log.Printf("Subscription updated for %d.", subscription.ID)
-		// Then define and call a func to handle the successful attachment of a PaymentMethod.
-		// handleSubscriptionUpdated(subscription)
-	case "invoice.created":
-		// Sent when an invoice is created for a new or renewing subscription. If Stripe fails to receive a successful
-		// response to invoice.created, then finalizing all invoices with automatic collection is delayed for up to 72 hours.
-		//  Read more about finalizing invoices.
-	case "invoice.finalized":
-		// Sent when an invoice is successfully finalized and ready to be paid.
-		// You can send the invoice to the customer. View invoice finalization to learn more.
-		// Depending on your settings, we automatically charge the default payment method or attempt collection.
-		// View emails after finalization to learn more.
-		// ref: https://stripe.com/docs/invoicing/integration/workflow-transitions#finalized
-		// ref: https://stripe.com/docs/invoicing/integration/workflow-transitions#emails
-	case "invoice.finalization_failed":
-		// The invoice couldn’t be finalized. Learn how to handle invoice finalization failures by reading the guide.
-		// Learn more about invoice finalization in the invoices overview guide.
-		// ref: https://stripe.com/docs/tax/customer-locations#finalizing-invoices-with-finalization-failures
-		// ref: https://stripe.com/docs/invoicing/integration/workflow-transitions#finalized
-		/*
-			Inspect the Invoice’s last_finalization_error to determine the cause of the error.
-			If you’re using Stripe Tax, check the Invoice object’s automatic_tax field.
-			If automatic_tax[status]=requires_location_inputs, the invoice can’t be finalized and payments can’t be collected. Notify your customer and collect the required customer location.
-			If automatic_tax[status]=failed, retry the request later.
-		*/
 	case "invoice.paid": // Sent each billing interval when a payment succeeds.
 		// Continue to provision the subscription as payments continue to be made.
 		// Store the status in your database and check when a user accesses your service.
@@ -161,9 +160,18 @@ func (s *Server) handleStripeWebhook(w http.ResponseWriter, req *http.Request) {
 		// Sent when the invoice is successfully paid. You can provision access to your product when you receive this event
 		// and the subscription status is active.
 		// TODO: just update the subscription status in the database
-	case "invoice.payment_action_required":
-		// Sent when the invoice requires customer authentication. Learn how to handle the subscription when the invoice requires action.
-		// ref: https://stripe.com/docs/billing/subscriptions/overview#requires-action
+		subscription, storedSubscription, shouldReturn := s.processSubscriptionEventAndQueryStoreSubscription(event, w, ctx)
+		if shouldReturn {
+			return
+		}
+
+		// update the subscription status in the database
+		storedSubscription.StripeSubscriptionStatus = schema.StripeSubscriptionStatus_STRIPE_SUBSCRIPTION_STATUS_ACTIVE
+		if err := s.conn.UpdateSubscription(ctx, &subscription.ID, storedSubscription); err != nil {
+			log.Println("Error updating subscription:", err)
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
 	case "invoice.payment_failed": // Sent each billing interval if there is an issue with your customer’s payment method.
 		// The payment failed or the customer does not have a valid payment method.
 		// The subscription becomes past_due. Notify your customer and send them to the
@@ -173,18 +181,22 @@ func (s *Server) handleStripeWebhook(w http.ResponseWriter, req *http.Request) {
 		// Notify the customer. Read about how you can configure subscription settings to enable Smart Retries and other revenue recovery features.
 		// If you’re using PaymentIntents, collect new payment information and confirm the PaymentIntent.
 		// Update the default payment method on the subscription.
+		subscription, storedSubscription, shouldReturn := s.processSubscriptionEventAndQueryStoreSubscription(event, w, ctx)
+		if shouldReturn {
+			return
+		}
+
+		// update the subscription status in the database
+		storedSubscription.StripeSubscriptionStatus = schema.StripeSubscriptionStatus_STRIPE_SUBSCRIPTION_STATUS_INCOMPLETE
+		if err := s.conn.UpdateSubscription(ctx, &subscription.ID, storedSubscription); err != nil {
+			log.Println("Error updating subscription:", err)
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
 	case "invoice.upcoming":
 		// Sent a few days prior to the renewal of the subscription. The number of days is based on the number set for Upcoming renewal
 		// events in the Dashboard. You can still add extra invoice items, if needed.
-	case "invoice.updated":
-		// Sent when a payment succeeds or fails. If payment is successful the paid attribute is set to true and the status is paid.
-		// If payment fails, paid is set to false and the status remains open. Payment failures also trigger a invoice.payment_failed event.
-	case "payment_intent.created":
-		// Sent when a new PaymentIntent is created.
-	case "charge.succeeded":
-		// handleChargeSucceeded(payload)
-	case "charge.failed":
-		// handleChargeFailed(payload)
+		// TODO: send an email to the user informing them that their subscription is about to be renewed
 	case "payment_intent.succeeded":
 		var paymentIntent stripe.PaymentIntent
 		err := json.Unmarshal(event.Data.Raw, &paymentIntent)
@@ -194,8 +206,6 @@ func (s *Server) handleStripeWebhook(w http.ResponseWriter, req *http.Request) {
 			return
 		}
 		log.Printf("Successful payment for %d.", paymentIntent.Amount)
-		// Then define and call a func to handle the successful payment intent.
-		// handlePaymentIntentSucceeded(paymentIntent) --> Update the subscription status in the database
 	case "payment_method.attached":
 		var paymentMethod stripe.PaymentMethod
 		err := json.Unmarshal(event.Data.Raw, &paymentMethod)
@@ -204,17 +214,34 @@ func (s *Server) handleStripeWebhook(w http.ResponseWriter, req *http.Request) {
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
-		// Then define and call a func to handle the successful attachment of a PaymentMethod.
-		// handlePaymentMethodAttached(paymentMethod)
-	case "checkout.session.completed": // Sent when a customer clicks the Pay or Subscribe button in Checkout, informing you of a new purchase.
-		// Payment is successful and the subscription is created.
-		// You should provision the subscription and save the customer ID to your database.
-		// handleCheckoutSessionCompleted(payload)
+	case "checkout.session.completed":
+	// Sent when a customer clicks the Pay or Subscribe button in Checkout, informing you of a new purchase.
+	// Payment is successful and the subscription is created.
+	// You should provision the subscription and save the customer ID to your database.
+	// handleCheckoutSessionCompleted(payload)
 	default:
 		fmt.Fprintf(os.Stderr, "Unhandled event type: %s\n", event.Type)
 	}
 
 	w.WriteHeader(http.StatusOK)
+}
+
+func (s *Server) processSubscriptionEventAndQueryStoreSubscription(event stripe.Event, w http.ResponseWriter, ctx context.Context) (stripe.Subscription, *schema.StripeSubscription, bool) {
+	var subscription stripe.Subscription
+	err := json.Unmarshal(event.Data.Raw, &subscription)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error parsing webhook JSON: %v\n", err)
+		w.WriteHeader(http.StatusBadRequest)
+		return stripe.Subscription{}, nil, true
+	}
+
+	storedSubscription, err := s.conn.GetSubscriptionBySubscriptionId(ctx, &subscription.ID)
+	if err != nil {
+		log.Println("Error retrieving subscription:", err)
+		w.WriteHeader(http.StatusBadRequest)
+		return stripe.Subscription{}, nil, true
+	}
+	return subscription, storedSubscription, false
 }
 
 func handleSubscriptionCreated(payload *stripe.Event) {

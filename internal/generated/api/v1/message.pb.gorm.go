@@ -13,6 +13,7 @@ import (
 
 type StripeSubscriptionORM struct {
 	Id                            uint64
+	IsTrialing                    bool
 	StripeSubscriptionActiveUntil string
 	StripeSubscriptionId          string
 	StripeSubscriptionStatus      string
@@ -40,6 +41,7 @@ func (m *StripeSubscription) ToORM(ctx context.Context) (StripeSubscriptionORM, 
 	to.StripeSubscriptionStatus = StripeSubscriptionStatus_name[int32(m.StripeSubscriptionStatus)]
 	to.StripeSubscriptionActiveUntil = m.StripeSubscriptionActiveUntil
 	to.StripeWebhookLatestTimestamp = m.StripeWebhookLatestTimestamp
+	to.IsTrialing = m.IsTrialing
 	if posthook, ok := interface{}(m).(StripeSubscriptionWithAfterToORM); ok {
 		err = posthook.AfterToORM(ctx, &to)
 	}
@@ -61,6 +63,7 @@ func (m *StripeSubscriptionORM) ToPB(ctx context.Context) (StripeSubscription, e
 	to.StripeSubscriptionStatus = StripeSubscriptionStatus(StripeSubscriptionStatus_value[m.StripeSubscriptionStatus])
 	to.StripeSubscriptionActiveUntil = m.StripeSubscriptionActiveUntil
 	to.StripeWebhookLatestTimestamp = m.StripeWebhookLatestTimestamp
+	to.IsTrialing = m.IsTrialing
 	if posthook, ok := interface{}(m).(StripeSubscriptionWithAfterToPB); ok {
 		err = posthook.AfterToPB(ctx, &to)
 	}
@@ -2632,6 +2635,10 @@ func DefaultApplyFieldMaskStripeSubscription(ctx context.Context, patchee *Strip
 		}
 		if f == prefix+"StripeWebhookLatestTimestamp" {
 			patchee.StripeWebhookLatestTimestamp = patcher.StripeWebhookLatestTimestamp
+			continue
+		}
+		if f == prefix+"IsTrialing" {
+			patchee.IsTrialing = patcher.IsTrialing
 			continue
 		}
 	}

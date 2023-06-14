@@ -4130,6 +4130,10 @@
         "stripeWebhookLatestTimestamp": {
           "type": "string",
           "title": "stripe webhook latest timestamp"
+        },
+        "isTrialing": {
+          "type": "boolean",
+          "title": "wether the subscription is trialing"
         }
       },
       "title": "StripeSubscription stores high level stripe subscription details of which the user profile has"
@@ -4145,7 +4149,9 @@
         "STRIPE_SUBSCRIPTION_STATUS_UNPAID",
         "STRIPE_SUBSCRIPTION_STATUS_COMPLETE",
         "STRIPE_SUBSCRIPTION_STATUS_INCOMPLETE",
-        "STRIPE_SUBSCRIPTION_STATUS_INCOMPLETE_EXPIRED"
+        "STRIPE_SUBSCRIPTION_STATUS_INCOMPLETE_EXPIRED",
+        "STRIPE_SUBSCRIPTION_STATUS_CREATED",
+        "STRIPE_SUBSCRIPTION_STATUS_PAUSED"
       ],
       "default": "STRIPE_SUBSCRIPTION_STATUS_UNSPECIFIED"
     },
