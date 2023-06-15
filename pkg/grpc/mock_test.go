@@ -12,10 +12,11 @@ import (
 	"testing"
 	"time"
 
-	clickhouseDatabase "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/clickhouse-database"
+	clickhousedatabase "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/clickhouse-database"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/secrets"
 	"github.com/alicebob/miniredis/v2"
 
+	"github.com/SimifiniiCTO/simfiny-core-lib/database/clickhouse"
 	postgresdb "github.com/SimifiniiCTO/simfiny-core-lib/database/postgres"
 
 	"go.uber.org/zap"
@@ -130,7 +131,17 @@ func NewMockServer(db *database.Db) {
 		log.Fatal(err)
 	}
 
-	clickhouseDb := clickhouseDatabase.NewMockInMemoryClickhouseDB()
+	clickhouseDb, err := clickhouse.NewInMemoryTestDbClient(schema.GetClickhouseSchemas()...)
+	if err != nil {
+		panic(fmt.Errorf("failed to create in memory test db client: %w", err))
+	}
+
+	clickhouseDatabase := &clickhousedatabase.Db{
+		Conn:                  clickhouseDb,
+		QueryOperator:         dal.Use(clickhouseDb.Engine),
+		Logger:                zap.NewNop(),
+		InstrumentationClient: &instrumentation.Client{},
+	}
 
 	redisDb := MockRedis()
 
@@ -146,7 +157,7 @@ func NewMockServer(db *database.Db) {
 		Db:                 DbConnHandler,
 		PlaidWrapper:       handler,
 		TransactionManager: nil,
-		ClickhouseDb:       clickhouseDb,
+		ClickhouseDb:       clickhouseDatabase,
 		RedisDb:            redisDb,
 		KeyManagement:      kms,
 	})

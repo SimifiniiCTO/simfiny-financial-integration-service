@@ -26,8 +26,8 @@ func NewTestDatabase() *Db {
 
 	return &Db{
 		Conn:                  client,
-		queryOperator:         dal.Use(client.Engine),
-		logger:                zap.NewNop(),
-		instrumentationClient: &instrumentation.Client{},
+		QueryOperator:         dal.Use(client.Engine),
+		Logger:                zap.NewNop(),
+		InstrumentationClient: &instrumentation.Client{},
 	}
 }

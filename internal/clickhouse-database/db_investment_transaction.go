@@ -42,7 +42,7 @@ func (db *Db) AddInvestmentTransactions(ctx context.Context, userId *uint64, txs
 		transactions = append(transactions, &record)
 	}
 
-	t := db.queryOperator.InvestmentTransactionORM
+	t := db.QueryOperator.InvestmentTransactionORM
 	if err := t.WithContext(ctx).Create(transactions...); err != nil {
 		return err
 	}
@@ -61,7 +61,7 @@ func (db *Db) DeleteInvestmentTransactions(ctx context.Context, txIds ...uint64)
 	}
 
 	// delete the investment transactions by id
-	t := db.queryOperator.InvestmentTransactionORM
+	t := db.QueryOperator.InvestmentTransactionORM
 	result, err := t.WithContext(ctx).Where(t.Id.In(txIds...)).Delete()
 	if err != nil {
 		return err
@@ -94,7 +94,7 @@ func (db *Db) GetInvestmentTransactions(ctx context.Context, userId *uint64, pag
 		nextPageNumber = pageNumber + 1
 	}
 
-	t := db.queryOperator.InvestmentTransactionORM
+	t := db.QueryOperator.InvestmentTransactionORM
 	var records []*schema.InvestmentTransactionORM
 	records, err := t.WithContext(ctx).
 		Where(t.UserId.Eq(*userId)).
@@ -126,7 +126,7 @@ func (db *Db) GetAllInvestmentTransactions(ctx context.Context, userId *uint64) 
 		return nil, fmt.Errorf("user ID is nil")
 	}
 
-	t := db.queryOperator.InvestmentTransactionORM
+	t := db.QueryOperator.InvestmentTransactionORM
 	var records []*schema.InvestmentTransactionORM
 	records, err := t.WithContext(ctx).
 		Where(t.UserId.Eq(*userId)).
@@ -174,7 +174,7 @@ func (db *Db) UpdateInvestmentTransactions(ctx context.Context, userId *uint64, 
 		txnsOrmRecords = append(txnsOrmRecords, &txnOrm)
 	}
 
-	t := db.queryOperator.InvestmentTransactionORM
+	t := db.QueryOperator.InvestmentTransactionORM
 	for _, tx := range txnsOrmRecords {
 		if tx.Id == 0 {
 			return fmt.Errorf("transaction ID must be 0 at creation time")
@@ -198,7 +198,7 @@ func (db *Db) GetInvestmentTransactionById(ctx context.Context, txId *uint64) (*
 		return nil, fmt.Errorf("InvestmentTransaction ID must be 0 at creation time")
 	}
 
-	t := db.queryOperator.InvestmentTransactionORM
+	t := db.QueryOperator.InvestmentTransactionORM
 	record, err := t.WithContext(ctx).Where(t.Id.Eq(*txId)).First()
 	if err != nil {
 		return nil, fmt.Errorf("transaction with id %d does not exist", txId)
@@ -222,7 +222,7 @@ func (db *Db) GetInvestmentTransactionsByPlaidTransactionIds(ctx context.Context
 	}
 
 	//	get the transacton by tx id
-	t := db.queryOperator.InvestmentTransactionORM
+	t := db.QueryOperator.InvestmentTransactionORM
 	// delete the transaction
 	result, err := t.WithContext(ctx).Where(t.InvestmentTransactionId.In(txIds...)).Find()
 	if err != nil {

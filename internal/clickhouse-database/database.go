@@ -71,20 +71,20 @@ type Db struct {
 	// `logger *zap.Logger` is defining a field named `logger` of type `*zap.Logger`. This field is used to
 	// store an instance of the `zap.Logger` struct, which is a popular logging library in the Go
 	// programming language. It is used to log messages and events during the execution of the code.
-	logger *zap.Logger
+	Logger *zap.Logger
 
 	// `instrumentationClient *instrumentation.Client` is defining a field named `instrumentationClient` of
 	// type `*instrumentation.Client`. This field is used to store an instance of the
 	// `instrumentation.Client` struct, which is used for collecting and reporting metrics and tracing data
 	// during the execution of the code. It is likely used to monitor the performance and behavior of the
 	// Clickhouse database operations.
-	instrumentationClient *instrumentation.Client
+	InstrumentationClient *instrumentation.Client
 
 	// `queryOperator *dal.Query` is defining a field named `queryOperator` of type `*dal.Query`. This
 	// field is used to store an instance of the `dal.Query` struct, which is a generated data access layer
 	// (DAL) that provides methods for interacting with a Clickhouse database. It is likely used to execute
 	// queries and retrieve data from the database.
-	queryOperator *dal.Query
+	QueryOperator *dal.Query
 }
 
 var _ ClickhouseDatabaseOperations = (*Db)(nil)
@@ -102,6 +102,7 @@ func New(ctx context.Context, uri string, opts ...Option) (*Db, error) {
 		return nil, err
 	}
 
+	// initialize the database connection
 	db, err := gorm.Open(clickhousebase.New(clickhousebase.Config{
 		DSN:                          uri,
 		Conn:                         database.Conn.Engine.ConnPool, // initialize with existing database conn
@@ -182,9 +183,9 @@ func (db *Db) performSchemaMigration() error {
 
 // startDatastoreSpan generates a datastore span
 func (db *Db) startDatastoreSpan(ctx context.Context, name string) *newrelic.DatastoreSegment {
-	if db.instrumentationClient != nil {
-		txn := db.instrumentationClient.GetTraceFromContext(ctx)
-		span := db.instrumentationClient.StartDatastoreSegment(txn, name)
+	if db.InstrumentationClient != nil {
+		txn := db.InstrumentationClient.GetTraceFromContext(ctx)
+		span := db.InstrumentationClient.StartDatastoreSegment(txn, name)
 		return span
 	}
 
@@ -199,8 +200,8 @@ func NewMockInMemoryClickhouseDB() *Db {
 
 	return &Db{
 		Conn:                  client,
-		queryOperator:         dal.Use(client.Engine),
-		logger:                zap.NewNop(),
-		instrumentationClient: &instrumentation.Client{},
+		QueryOperator:         dal.Use(client.Engine),
+		Logger:                zap.NewNop(),
+		InstrumentationClient: &instrumentation.Client{},
 	}
 }

@@ -13,21 +13,21 @@ type Option func(*Db)
 // WithDatabaseInstrumentation configures the database instrumentation
 func WithDatabaseInstrumentation(instrumentation *instrumentation.Client) Option {
 	return func(d *Db) {
-		d.instrumentationClient = instrumentation
+		d.InstrumentationClient = instrumentation
 	}
 }
 
 // WithDatabaseQueryOperator configures the database query operator
 func WithDatabaseQueryOperator(queryOperator *dal.Query) Option {
 	return func(d *Db) {
-		d.queryOperator = queryOperator
+		d.QueryOperator = queryOperator
 	}
 }
 
 // WithDatabaseLogger configures the database logger
 func WithDatabaseLogger(logger *zap.Logger) Option {
 	return func(d *Db) {
-		d.logger = logger
+		d.Logger = logger
 	}
 }
 
@@ -44,15 +44,15 @@ func (db *Db) Validate() error {
 		return service_errors.ErrInvalidDbObject
 	}
 
-	if db.logger == nil {
+	if db.Logger == nil {
 		return service_errors.ErrInvalidDbObject
 	}
 
-	if db.instrumentationClient == nil {
+	if db.InstrumentationClient == nil {
 		return service_errors.ErrInvalidDbObject
 	}
 
-	if db.queryOperator == nil {
+	if db.QueryOperator == nil {
 		return service_errors.ErrInvalidDbObject
 	}
 

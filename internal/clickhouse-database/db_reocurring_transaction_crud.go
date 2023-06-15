@@ -48,7 +48,7 @@ func (db *Db) AddReOccurringTransaction(ctx context.Context, userId *uint64, tx 
 	}
 
 	// create the transaction record
-	t := db.queryOperator.ReOccuringTransactionORM
+	t := db.QueryOperator.ReOccuringTransactionORM
 	if err := t.WithContext(ctx).Create(&record); err != nil {
 		return nil, err
 	}
@@ -99,7 +99,7 @@ func (db *Db) AddReOccurringTransactions(ctx context.Context, userId *uint64, tx
 		txRecords = append(txRecords, &record)
 	}
 
-	t := db.queryOperator.ReOccuringTransactionORM
+	t := db.QueryOperator.ReOccuringTransactionORM
 	if err := t.WithContext(ctx).Create(txRecords...); err != nil {
 		return err
 	}
@@ -118,7 +118,7 @@ func (db *Db) DeleteReOccuringTransaction(ctx context.Context, txId *uint64) err
 	}
 
 	//	get the transacton by tx id
-	t := db.queryOperator.ReOccuringTransactionORM
+	t := db.QueryOperator.ReOccuringTransactionORM
 	if _, err := db.GetTransactionById(ctx, txId); err != nil {
 		return err
 	}
@@ -147,7 +147,7 @@ func (db *Db) DeleteReOccurringTransactionsByIds(ctx context.Context, txIds []ui
 	}
 
 	//	get the transacton by tx id
-	t := db.queryOperator.ReOccuringTransactionORM
+	t := db.QueryOperator.ReOccuringTransactionORM
 	// delete the transaction
 	result, err := t.WithContext(ctx).Where(t.Id.In(txIds...)).Delete()
 	if err != nil {
@@ -172,7 +172,7 @@ func (db *Db) DeleteReOcurringTransactionsByLinkId(ctx context.Context, linkId *
 	}
 
 	//	get the transacton by tx id
-	t := db.queryOperator.ReOccuringTransactionORM
+	t := db.QueryOperator.ReOccuringTransactionORM
 	// delete all transactions matching this link id
 	result, err := t.WithContext(ctx).Where(t.LinkId.Eq(*linkId)).Delete()
 	if err != nil {
@@ -197,7 +197,7 @@ func (db *Db) DeleteUserReOcurringTransactons(ctx context.Context, userId *uint6
 	}
 
 	//	get the transacton by tx id
-	t := db.queryOperator.ReOccuringTransactionORM
+	t := db.QueryOperator.ReOccuringTransactionORM
 	// delete the transaction
 	result, err := t.WithContext(ctx).Where(t.UserId.Eq(*userId)).Delete()
 	if err != nil {
@@ -233,7 +233,7 @@ func (db *Db) GetReOcurringTransactions(ctx context.Context, userId *uint64, pag
 		nextPageNumber = pageNumber + 1
 	}
 
-	t := db.queryOperator.ReOccuringTransactionORM
+	t := db.QueryOperator.ReOccuringTransactionORM
 	txs, err := t.
 		WithContext(ctx).
 		Where(t.UserId.Eq(*userId)).
@@ -283,7 +283,7 @@ func (db *Db) UpdateReOccurringTransaction(ctx context.Context, userId *uint64, 
 	}
 
 	//	get the transacton by tx id
-	t := db.queryOperator.ReOccuringTransactionORM
+	t := db.QueryOperator.ReOccuringTransactionORM
 	if _, err := db.GetTransactionById(ctx, txId); err != nil {
 		return err
 	}
@@ -334,7 +334,7 @@ func (db *Db) UpdateReOccurringTransactions(ctx context.Context, userId *uint64,
 		txnsOrmRecords = append(txnsOrmRecords, &txnOrm)
 	}
 
-	t := db.queryOperator.ReOccuringTransactionORM
+	t := db.QueryOperator.ReOccuringTransactionORM
 	// perform the update operation
 	result, err := t.WithContext(ctx).Where(t.UserId.Eq(*userId)).Updates(txnsOrmRecords)
 	if err != nil {
@@ -358,7 +358,7 @@ func (db *Db) GetReOcurringTransactionById(ctx context.Context, txId *uint64) (*
 		return nil, fmt.Errorf("transaction ID must be 0 at creation time")
 	}
 
-	t := db.queryOperator.ReOccuringTransactionORM
+	t := db.QueryOperator.ReOccuringTransactionORM
 	record, err := t.WithContext(ctx).Where(t.Id.Eq(*txId)).First()
 	if err != nil {
 		return nil, fmt.Errorf("transaction with id %d does not exist", txId)
@@ -381,7 +381,7 @@ func (db *Db) GetUserReOccurringTransactions(ctx context.Context, userId *uint64
 		return nil, fmt.Errorf("userId must not be nil")
 	}
 
-	t := db.queryOperator.ReOccuringTransactionORM
+	t := db.QueryOperator.ReOccuringTransactionORM
 	txs, err := t.
 		WithContext(ctx).
 		Where(t.UserId.Eq(*userId)).

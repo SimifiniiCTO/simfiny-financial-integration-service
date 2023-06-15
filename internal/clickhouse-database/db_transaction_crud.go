@@ -39,7 +39,7 @@ func (db *Db) AddTransaction(ctx context.Context, userId *uint64, tx *schema.Tra
 		return nil, err
 	}
 
-	t := db.queryOperator.TransactionORM
+	t := db.QueryOperator.TransactionORM
 	if err := t.WithContext(ctx).Create(&record); err != nil {
 		return nil, err
 	}
@@ -83,7 +83,7 @@ func (db *Db) AddTransactions(ctx context.Context, userId *uint64, txs []*schema
 		txRecords = append(txRecords, &record)
 	}
 
-	t := db.queryOperator.TransactionORM
+	t := db.QueryOperator.TransactionORM
 	if err := t.WithContext(ctx).Create(txRecords...); err != nil {
 		return err
 	}
@@ -102,7 +102,7 @@ func (db *Db) DeleteTransaction(ctx context.Context, txId *uint64) error {
 	}
 
 	//	get the transacton by tx id
-	t := db.queryOperator.TransactionORM
+	t := db.QueryOperator.TransactionORM
 	if _, err := db.GetTransactionById(ctx, txId); err != nil {
 		return err
 	}
@@ -131,7 +131,7 @@ func (db *Db) DeleteTransactionsByIds(ctx context.Context, txIds []uint64) error
 	}
 
 	//	get the transacton by tx id
-	t := db.queryOperator.TransactionORM
+	t := db.QueryOperator.TransactionORM
 	// delete the transaction
 	result, err := t.WithContext(ctx).Where(t.Id.In(txIds...)).Delete()
 	if err != nil {
@@ -155,7 +155,7 @@ func (db *Db) DeleteTransactionsByLinkId(ctx context.Context, linkId *uint64) er
 	}
 
 	//	get the transacton by tx id
-	t := db.queryOperator.TransactionORM
+	t := db.QueryOperator.TransactionORM
 	// delete all transactions matching this link id
 	result, err := t.WithContext(ctx).Where(t.LinkId.Eq(*linkId)).Delete()
 	if err != nil {
@@ -180,7 +180,7 @@ func (db *Db) DeleteUserTransactons(ctx context.Context, userId *uint64) error {
 	}
 
 	//	get the transacton by tx id
-	t := db.queryOperator.TransactionORM
+	t := db.QueryOperator.TransactionORM
 	// delete the transaction
 	result, err := t.WithContext(ctx).Where(t.UserId.Eq(*userId)).Delete()
 	if err != nil {
@@ -216,7 +216,7 @@ func (db *Db) GetTransactions(ctx context.Context, userId *uint64, pagenumber in
 		nextPageNumber = pageNumber + 1
 	}
 
-	t := db.queryOperator.TransactionORM
+	t := db.QueryOperator.TransactionORM
 	txs, err := t.
 		WithContext(ctx).
 		Limit(int(pageSize)).Offset(int(pageSize * (pageNumber - 1))).
@@ -261,7 +261,7 @@ func (db *Db) UpdateTransaction(ctx context.Context, userId *uint64, txId *uint6
 	}
 
 	//	get the transacton by tx id
-	t := db.queryOperator.TransactionORM
+	t := db.QueryOperator.TransactionORM
 	if _, err := db.GetTransactionById(ctx, txId); err != nil {
 		return err
 	}
@@ -312,7 +312,7 @@ func (db *Db) UpdateTransactions(ctx context.Context, userId *uint64, txs []*sch
 		txnsOrmRecords = append(txnsOrmRecords, &txnOrm)
 	}
 
-	t := db.queryOperator.TransactionORM
+	t := db.QueryOperator.TransactionORM
 	// perform the update operation
 	result, err := t.WithContext(ctx).Where(t.UserId.Eq(*userId)).Updates(txnsOrmRecords)
 	if err != nil {
@@ -335,7 +335,7 @@ func (db *Db) GetTransactionById(ctx context.Context, txId *uint64) (*schema.Tra
 		return nil, fmt.Errorf("transaction ID must be 0 at creation time")
 	}
 
-	t := db.queryOperator.TransactionORM
+	t := db.QueryOperator.TransactionORM
 	record, err := t.WithContext(ctx).Where(t.Id.Eq(*txId)).First()
 	if err != nil {
 		return nil, fmt.Errorf("transaction with id %d does not exist", txId)
@@ -360,7 +360,7 @@ func (db *Db) GetTransactionsByPlaidTransactionIds(ctx context.Context, txIds []
 	}
 
 	//	get the transacton by tx id
-	t := db.queryOperator.TransactionORM
+	t := db.QueryOperator.TransactionORM
 	// delete the transaction
 	result, err := t.WithContext(ctx).Where(t.TransactionId.In(txIds...)).Find()
 	if err != nil {
