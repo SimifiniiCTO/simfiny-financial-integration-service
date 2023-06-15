@@ -16,23 +16,23 @@ import (
 )
 
 type SyncPlaidTaskPayload struct {
-	UserId          uint64 `json:"user_id"`
-	AccessToken     string `json:"access_token"`
-	PlaidLinkItemId string `json:"plaid_link_item_id"`
+	UserId      uint64 `json:"user_id"`
+	AccessToken string `json:"access_token"`
+	LinkId      uint64 `json:"plaid_link_item_id"`
 }
 
 func (t *SyncPlaidTaskPayload) String() *string {
-	str := fmt.Sprintf("user_id: %d, access_token: %s, plaid_link_item_id: %s", t.UserId, t.AccessToken, t.PlaidLinkItemId)
+	str := fmt.Sprintf("user_id: %d, access_token: %s, plaid_link_item_id: %s", t.UserId, t.AccessToken, t.LinkId)
 	return &str
 }
 
 // This function creates a new asynchronous task for syncing Plaid  with the provided user
 // ID and access token.
-func NewSyncPlaidTask(userId uint64, accessToken string, plaidLinkItemId string) (*asynq.Task, error) {
+func NewSyncPlaidTask(userId uint64, accessToken string, linkId uint64) (*asynq.Task, error) {
 	payload, err := json.Marshal(&SyncPlaidTaskPayload{
-		UserId:          userId,
-		AccessToken:     accessToken,
-		PlaidLinkItemId: plaidLinkItemId,
+		UserId:      userId,
+		AccessToken: accessToken,
+		LinkId:      linkId,
 	})
 
 	if err != nil {
@@ -104,7 +104,7 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, payload *SyncPl
 	)
 
 	// query the link from the database
-	link, err := postgresClient.GetLinkByItemId(ctx, payload.PlaidLinkItemId, false)
+	link, err := postgresClient.GetLink(ctx, payload.UserId, payload.LinkId, false)
 	if err != nil {
 		return nil, err
 	}
@@ -118,6 +118,183 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, payload *SyncPl
 	plaidBankAccounts, err := plaidClient.GetAccounts(ctx, payload.AccessToken, payload.UserId)
 	if err != nil {
 		return nil, err
+	}
+
+	// get the liability accounts
+	// TODO: need to figure out wether to update the existing investment account or add a new one
+	investmentAccounts, err := plaidClient.GetInvestmentAccount(ctx, payload.UserId, payload.AccessToken)
+	if err != nil {
+		return nil, err
+	}
+
+	if len(investmentAccounts) > 0 {
+		th.logger.Info("found investment accounts", zap.Int("count", len(investmentAccounts)))
+	}
+
+	// get the credit accounts
+	// TODO: need to figure out wether to update the existing credit account or add a new one
+	creditAccountsSet, err := plaidClient.GetPlaidLiabilityAccounts(ctx, &payload.AccessToken)
+	if err != nil {
+		return nil, err
+	}
+
+	if len(creditAccountsSet.CrediCardAccounts) > 0 {
+		syncedCreditAccounts := creditAccountsSet.CrediCardAccounts
+		currentCreditAccounts := link.GetCreditAccounts()
+
+		// iterate over the syncred credit accounts and cross reference them with the existing credit accounts
+		// if the synced credit account is not found in the existing credit accounts, then add it to the existing
+		// credit accounts
+		creditCardAccountsToUpdate := make([]*apiv1.CreditAccountORM, 0, len(syncedCreditAccounts))
+		creditCardAccountsToAdd := make([]*apiv1.CreditAccountORM, 0, len(syncedCreditAccounts))
+		for _, syncedCreditAccount := range syncedCreditAccounts {
+			found := false
+			for idx, currentCreditAccount := range currentCreditAccounts {
+				if syncedCreditAccount.PlaidAccountId == currentCreditAccount.PlaidAccountId {
+					found = true
+					break
+				} else if syncedCreditAccount.PlaidAccountId != currentCreditAccount.PlaidAccountId && idx == len(currentCreditAccounts)-1 {
+					acctOrm, err := syncedCreditAccount.ToORM(ctx)
+					if err != nil {
+						return nil, err
+					}
+
+					creditCardAccountsToAdd = append(creditCardAccountsToAdd, &acctOrm)
+				}
+			}
+
+			if found {
+				acctOrm, err := syncedCreditAccount.ToORM(ctx)
+				if err != nil {
+					return nil, err
+				}
+				creditCardAccountsToUpdate = append(creditCardAccountsToUpdate, &acctOrm)
+			}
+		}
+
+		l := th.postgresDb.QueryOperator.LinkORM
+		linkOrm, err := link.ToORM(ctx)
+		if err != nil {
+			return nil, err
+		}
+
+		// update the credit accounts in the database
+		if err := l.CreditAccounts.Model(&linkOrm).Replace(creditCardAccountsToUpdate...); err != nil {
+			return nil, err
+		}
+
+		// add the new credit accounts to the database
+		if err := l.CreditAccounts.Model(&linkOrm).Append(creditCardAccountsToAdd...); err != nil {
+			return nil, err
+		}
+
+		th.logger.Info("found credit accounts", zap.Int("count", len(creditAccountsSet.CrediCardAccounts)))
+	}
+
+	if len(creditAccountsSet.MortgageLoanAccts) > 0 {
+		syncedMortgageLoanAccounts := creditAccountsSet.MortgageLoanAccts
+		currentMortgageLoanAccounts := link.GetMortgageAccounts()
+
+		// iterate over the syncred credit accounts and cross reference them with the existing credit accounts
+		// if the synced credit account is not found in the existing credit accounts, then add it to the existing
+		// credit accounts
+		mortgageLoanAccountsToUpdate := make([]*apiv1.MortgageAccountORM, 0, len(syncedMortgageLoanAccounts))
+		mortgageLoanAccountsToAdd := make([]*apiv1.MortgageAccountORM, 0, len(syncedMortgageLoanAccounts))
+		for _, syncedCreditAccount := range syncedMortgageLoanAccounts {
+			found := false
+			for idx, currentCreditAccount := range currentMortgageLoanAccounts {
+				if syncedCreditAccount.PlaidAccountId == currentCreditAccount.PlaidAccountId {
+					found = true
+					break
+				} else if syncedCreditAccount.PlaidAccountId != currentCreditAccount.PlaidAccountId && idx == len(currentMortgageLoanAccounts)-1 {
+					acctOrm, err := syncedCreditAccount.ToORM(ctx)
+					if err != nil {
+						return nil, err
+					}
+
+					mortgageLoanAccountsToAdd = append(mortgageLoanAccountsToAdd, &acctOrm)
+				}
+			}
+
+			if found {
+				acctOrm, err := syncedCreditAccount.ToORM(ctx)
+				if err != nil {
+					return nil, err
+				}
+				mortgageLoanAccountsToUpdate = append(mortgageLoanAccountsToUpdate, &acctOrm)
+			}
+		}
+
+		l := th.postgresDb.QueryOperator.LinkORM
+		linkOrm, err := link.ToORM(ctx)
+		if err != nil {
+			return nil, err
+		}
+
+		// update the credit accounts in the database
+		if err := l.MortgageAccounts.Model(&linkOrm).Replace(mortgageLoanAccountsToUpdate...); err != nil {
+			return nil, err
+		}
+
+		// add the new credit accounts to the database
+		if err := l.MortgageAccounts.Model(&linkOrm).Append(mortgageLoanAccountsToAdd...); err != nil {
+			return nil, err
+		}
+
+		th.logger.Info("found mortgage accounts", zap.Int("count", len(creditAccountsSet.MortgageLoanAccts)))
+	}
+
+	if len(creditAccountsSet.StudentLoanAccts) > 0 {
+		syncedStudentLoanAccounts := creditAccountsSet.StudentLoanAccts
+		currentStudentLoanAccounts := link.GetStudentLoanAccounts()
+
+		// iterate over the syncred credit accounts and cross reference them with the existing credit accounts
+		// if the synced credit account is not found in the existing credit accounts, then add it to the existing
+		// credit accounts
+		studentLoanAccountsToUpdate := make([]*apiv1.StudentLoanAccountORM, 0, len(syncedStudentLoanAccounts))
+		studentLoanAccountsToAdd := make([]*apiv1.StudentLoanAccountORM, 0, len(syncedStudentLoanAccounts))
+		for _, syncedCreditAccount := range syncedStudentLoanAccounts {
+			found := false
+			for idx, currentCreditAccount := range currentStudentLoanAccounts {
+				if syncedCreditAccount.PlaidAccountId == currentCreditAccount.PlaidAccountId {
+					found = true
+					break
+				} else if syncedCreditAccount.PlaidAccountId != currentCreditAccount.PlaidAccountId && idx == len(currentStudentLoanAccounts)-1 {
+					acctOrm, err := syncedCreditAccount.ToORM(ctx)
+					if err != nil {
+						return nil, err
+					}
+
+					studentLoanAccountsToAdd = append(studentLoanAccountsToAdd, &acctOrm)
+				}
+			}
+
+			if found {
+				acctOrm, err := syncedCreditAccount.ToORM(ctx)
+				if err != nil {
+					return nil, err
+				}
+				studentLoanAccountsToUpdate = append(studentLoanAccountsToUpdate, &acctOrm)
+			}
+		}
+
+		l := th.postgresDb.QueryOperator.LinkORM
+		linkOrm, err := link.ToORM(ctx)
+		if err != nil {
+			return nil, err
+		}
+
+		// update the credit accounts in the database
+		if err := l.StudentLoanAccounts.Model(&linkOrm).Replace(studentLoanAccountsToUpdate...); err != nil {
+			return nil, err
+		}
+
+		// add the new credit accounts to the database
+		if err := l.StudentLoanAccounts.Model(&linkOrm).Append(studentLoanAccountsToAdd...); err != nil {
+			return nil, err
+		}
+
+		th.logger.Info("found student loan accounts", zap.Int("count", len(creditAccountsSet.StudentLoanAccts)))
 	}
 
 	if len(plaidBankAccounts) == 0 {

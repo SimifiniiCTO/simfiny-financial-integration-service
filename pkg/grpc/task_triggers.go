@@ -12,7 +12,7 @@ import (
 // It takes in a context, user ID, Plaid link item ID, and access token as parameters, creates a new
 // sync task using the taskhandler package, and enqueues the task using the taskprocessor. It also logs
 // information about the enqueued task using a logger.
-func (s *Server) DispatchPlaidSyncTask(ctx context.Context, userId uint64, linkItemId, accessToken string) error {
+func (s *Server) DispatchPlaidSyncTask(ctx context.Context, userId uint64, linkId uint64, accessToken string) error {
 	var (
 		tp = s.taskprocessor
 	)
@@ -24,7 +24,7 @@ func (s *Server) DispatchPlaidSyncTask(ctx context.Context, userId uint64, linkI
 	}
 
 	// create a task to sync the plaid item
-	task, err := taskhandler.NewSyncPlaidTask(userId, linkItemId, accessToken)
+	task, err := taskhandler.NewSyncPlaidTask(userId, accessToken, linkId)
 	if err != nil {
 		return err
 	}

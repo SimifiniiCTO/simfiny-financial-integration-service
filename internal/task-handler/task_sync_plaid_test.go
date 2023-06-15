@@ -30,7 +30,7 @@ func TestNewSyncPlaidTask(t *testing.T) {
 	type args struct {
 		userId          uint64
 		accessToken     string
-		plaidLinkItemId string
+		plaidLinkItemId uint64
 	}
 	tests := []struct {
 		name    string

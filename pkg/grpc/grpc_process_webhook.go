@@ -183,7 +183,6 @@ func (s *Server) processWebhook(ctx context.Context, req *proto.ProcessWebhookRe
 	}
 
 	userId := link.BankAccounts[0].UserId
-	plaidItemId := link.PlaidLink.ItemId
 
 	switch req.WebhookType {
 	case "INVESTMENTS_TRANSACTIONS":
@@ -235,7 +234,7 @@ func (s *Server) processWebhook(ctx context.Context, req *proto.ProcessWebhookRe
 		switch link.PlaidLink.UsePlaidSync {
 		case true:
 			// Trigger a background job to sync the plaid transactions
-			if err := s.DispatchPlaidSyncTask(ctx, userId, plaidItemId, *accessToken); err != nil {
+			if err := s.DispatchPlaidSyncTask(ctx, userId, link.Id, *accessToken); err != nil {
 				return err
 			}
 		default:
@@ -303,7 +302,7 @@ func (s *Server) processWebhook(ctx context.Context, req *proto.ProcessWebhookRe
 				*/
 			case "SYNC_UPDATES_AVAILABLE":
 				// Trigger a background job to sync the plaid transactions
-				if err := s.DispatchPlaidSyncTask(ctx, userId, plaidItemId, *accessToken); err != nil {
+				if err := s.DispatchPlaidSyncTask(ctx, userId, link.Id, *accessToken); err != nil {
 					return err
 				}
 			default:

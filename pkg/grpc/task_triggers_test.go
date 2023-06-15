@@ -10,7 +10,7 @@ func TestServer_DispatchPlaidSyncTask(t *testing.T) {
 	type args struct {
 		ctx         context.Context
 		userId      uint64
-		linkItemId  string
+		linkItemId  uint64
 		accessToken string
 	}
 	tests := []struct {

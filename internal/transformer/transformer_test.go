@@ -20,7 +20,7 @@ func Test_getAccountMetadata(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := getAccountMetadata(tt.args.accounts); !reflect.DeepEqual(got, tt.want) {
+			if got := GetAccountMetadata(tt.args.accounts); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("getAccountMetadata() = %v, want %v", got, tt.want)
 			}
 		})

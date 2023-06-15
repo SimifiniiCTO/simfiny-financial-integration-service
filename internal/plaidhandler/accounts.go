@@ -29,15 +29,20 @@ func (p *PlaidWrapper) GetAccounts(ctx context.Context, accessToken string, user
 	}
 
 	plaidAccounts := result.GetAccounts()
-	accounts := make([]*schema.BankAccount, len(plaidAccounts))
+	accounts := make([]*schema.BankAccount, 0)
 
 	// Once we have our data, convert all of the results from our request to our own bank account interface.
-	for i, plaidAccount := range plaidAccounts {
-		accounts[i], err = transformer.NewPlaidBankAccount(userId, plaidAccount)
-		if err != nil {
-			p.Logger.Error("failed to convert bank account", zap.Error(err))
-			return nil, err
+	for _, plaidAccount := range plaidAccounts {
+		if plaidAccount.Type == plaid.ACCOUNTTYPE_DEPOSITORY {
+			data, err := transformer.NewPlaidBankAccount(userId, plaidAccount)
+			if err != nil {
+				p.Logger.Error("failed to convert bank account", zap.Error(err))
+				return nil, err
+			}
+
+			accounts = append(accounts, data)
 		}
+
 	}
 
 	return accounts, nil

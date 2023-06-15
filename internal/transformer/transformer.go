@@ -15,7 +15,7 @@ type accountMetadata struct {
 	balanceLimit   uint64
 }
 
-func getAccountMetadata(accounts *[]plaid.AccountBase) map[string]*accountMetadata {
+func GetAccountMetadata(accounts *[]plaid.AccountBase) map[string]*accountMetadata {
 	acctIDtoAcctObj := make(map[string]*accountMetadata)
 	// iterate over account object and store account id as key and account subtype + type as value
 	for _, el := range *accounts {

@@ -163,7 +163,7 @@ func (s *Server) createAndStoreLink(ctx context.Context, userID uint64, meta *to
 	// TODO: kick off a background job to fetch the account transactions
 	if plaidLink.UsePlaidSync {
 		// kick off a background job to pull transactions by use of plaid sync
-		if err := s.DispatchPlaidSyncTask(ctx, userID, plaidLink.ItemId, accessToken); err != nil {
+		if err := s.DispatchPlaidSyncTask(ctx, userID, result.Id, accessToken); err != nil {
 			return nil, status.Error(codes.Internal, err.Error())
 		}
 	} else {
