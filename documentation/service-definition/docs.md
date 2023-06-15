@@ -293,7 +293,7 @@
 | amount | [double](#double) |  | @gotag: clickhouse:&#34;amount&#34; |
 | iso_currency_code | [string](#string) |  | @gotag: clickhouse:&#34;iso_currency_code&#34; |
 | unofficial_currency_code | [string](#string) |  | @gotag: clickhouse:&#34;unofficial_currency_code&#34; |
-| category | [string](#string) |  | @gotag: clickhouse:&#34;category&#34; |
+| category | [string](#string) | repeated | @gotag: clickhouse:&#34;category&#34; |
 | category_id | [string](#string) |  | @gotag: clickhouse:&#34;category_id&#34; |
 | check_number | [string](#string) |  | @gotag: clickhouse:&#34;check_number&#34; |
 | date | [string](#string) |  | @gotag: clickhouse:&#34;date&#34; |

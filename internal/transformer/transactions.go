@@ -1,8 +1,6 @@
 package transformer
 
 import (
-	"strings"
-
 	"github.com/plaid/plaid-go/v12/plaid"
 
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
@@ -10,13 +8,12 @@ import (
 
 // NewTransactionFromPlaid converts a Plaid transaction to our own transaction interface.
 func NewTransactionFromPlaid(input plaid.Transaction) (*schema.Transaction, error) {
-	flattenedCategories := strings.Join(input.GetCategory(), ",")
 	return &schema.Transaction{
 		AccountId:              input.GetAccountId(),
 		Amount:                 float64(input.Amount),
 		IsoCurrencyCode:        input.GetIsoCurrencyCode(),
 		UnofficialCurrencyCode: input.GetUnofficialCurrencyCode(),
-		Category:               flattenedCategories,
+		Category:               input.GetCategory(),
 		CategoryId:             input.GetCategoryId(),
 		CheckNumber:            input.GetCheckNumber(),
 		Date:                   input.GetDate(),

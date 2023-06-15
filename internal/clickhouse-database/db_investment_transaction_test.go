@@ -2,15 +2,11 @@ package clickhousedatabase
 
 import (
 	"context"
-	"reflect"
+	"fmt"
 	"testing"
 
-	clickhousedb "github.com/SimifiniiCTO/simfiny-core-lib/database/clickhouse"
-	"github.com/SimifiniiCTO/simfiny-core-lib/instrumentation"
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
-	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/dal"
 	"github.com/stretchr/testify/assert"
-	"go.uber.org/zap"
 )
 
 // TODO: need to extensively test the following functions:
@@ -204,40 +200,61 @@ func TestDb_GetInvestmentTransactions(t *testing.T) {
 }
 
 func TestDb_GetAllInvestmentTransactions(t *testing.T) {
-	type fields struct {
-		Conn                  *clickhousedb.Client
-		logger                *zap.Logger
-		instrumentationClient *instrumentation.Client
-		queryOperator         *dal.Query
-	}
 	type args struct {
-		ctx    context.Context
-		userId *uint64
+		ctx                       context.Context
+		userId                    *uint64
+		numInvestmentTransactions int
+		precondition              func(ctx context.Context, t *testing.T, arg *args)
 	}
 	tests := []struct {
 		name    string
-		fields  fields
 		args    args
-		want    []*schema.InvestmentTransaction
 		wantErr bool
 	}{
-		// TODO: Add test cases.
+		{
+			name: "[success] - get all transactions",
+			args: args{
+				ctx:                       context.Background(),
+				userId:                    generateRandomId(),
+				numInvestmentTransactions: 10,
+				precondition: func(ctx context.Context, t *testing.T, arg *args) {
+					txs := generateMultipleInvestmentTransaction(arg.numInvestmentTransactions)
+					if err := conn.AddInvestmentTransactions(ctx, arg.userId, txs); err != nil {
+						t.Errorf("conn.AddTransaction() error = %v", err)
+					}
+				},
+			},
+			wantErr: false,
+		},
+		{
+			name: "[failure] - get all transactions with nil user id",
+			args: args{
+				ctx:                       context.Background(),
+				userId:                    nil,
+				numInvestmentTransactions: 10,
+				precondition: func(ctx context.Context, t *testing.T, arg *args) {
+					userId := generateRandomId()
+					txs := generateMultipleInvestmentTransaction(arg.numInvestmentTransactions)
+					if err := conn.AddInvestmentTransactions(ctx, userId, txs); err != nil {
+						t.Errorf("conn.AddTransaction() error = %v", err)
+					}
+				},
+			},
+			wantErr: true,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			db := &Db{
-				Conn:                  tt.fields.Conn,
-				logger:                tt.fields.logger,
-				instrumentationClient: tt.fields.instrumentationClient,
-				queryOperator:         tt.fields.queryOperator,
-			}
-			got, err := db.GetAllInvestmentTransactions(tt.args.ctx, tt.args.userId)
+			// define precondition here
+			tt.args.precondition(tt.args.ctx, t, &tt.args)
+			got, err := conn.GetAllInvestmentTransactions(tt.args.ctx, tt.args.userId)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("Db.GetAllInvestmentTransactions() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("Db.GetAllInvestmentTransactions() = %v, want %v", got, tt.want)
+			// ensure that the number of transactions returned is equal to the number of transactions added
+			if !tt.wantErr {
+				assert.Equal(t, len(got), tt.args.numInvestmentTransactions)
 			}
 		})
 	}
@@ -245,22 +262,88 @@ func TestDb_GetAllInvestmentTransactions(t *testing.T) {
 
 func TestDb_UpdateInvestmentTransactions(t *testing.T) {
 	type args struct {
-		ctx    context.Context
-		userId *uint64
-		txs    []*schema.InvestmentTransaction
+		ctx          context.Context
+		userId       *uint64
+		txs          []*schema.InvestmentTransaction
+		precondition func(ctx context.Context, t *testing.T, arg *args) []*schema.InvestmentTransaction
 	}
 	tests := []struct {
 		name    string
-		db      *Db
 		args    args
 		wantErr bool
 	}{
-		// TODO: Add test cases.
+		{
+			name: "[success] - update transaction",
+			args: args{
+				ctx:    context.Background(),
+				userId: generateRandomId(),
+				txs:    generateMultipleInvestmentTransaction(10),
+				precondition: func(ctx context.Context, t *testing.T, arg *args) []*schema.InvestmentTransaction {
+					if err := conn.AddInvestmentTransactions(ctx, arg.userId, arg.txs); err != nil {
+						t.Errorf("conn.AddTransaction() error = %v", err)
+					}
+
+					txs, err := conn.GetAllInvestmentTransactions(ctx, arg.userId)
+					if err != nil {
+						t.Errorf("conn.GetAllTransactions() error = %v", err)
+					}
+
+					// update all the transaction merchant names
+					for _, tx := range txs {
+						tx.Name = fmt.Sprintf("updated_%s_%d", tx.Name, tx.Id)
+					}
+
+					return txs
+				},
+			},
+			wantErr: false,
+		},
+		{
+			name: "[failure] - update transaction with nil user id",
+			args: args{
+				ctx:    context.Background(),
+				userId: nil,
+				txs:    generateMultipleInvestmentTransaction(10),
+				precondition: func(ctx context.Context, t *testing.T, arg *args) []*schema.InvestmentTransaction {
+					userId := generateRandomId()
+					if err := conn.AddInvestmentTransactions(ctx, userId, arg.txs); err != nil {
+						t.Errorf("conn.AddTransaction() error = %v", err)
+					}
+
+					txs, err := conn.GetAllInvestmentTransactions(ctx, userId)
+					if err != nil {
+						t.Errorf("conn.GetAllTransactions() error = %v", err)
+					}
+
+					// update all the transaction merchant names
+					for _, tx := range txs {
+						tx.Name = fmt.Sprintf("updated_%s_%d", tx.Name, tx.Id)
+					}
+
+					return txs
+				},
+			},
+			wantErr: true,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if err := tt.db.UpdateInvestmentTransactions(tt.args.ctx, tt.args.userId, tt.args.txs); (err != nil) != tt.wantErr {
+			// call precondition
+			txs := tt.args.precondition(tt.args.ctx, t, &tt.args)
+			if err := conn.UpdateInvestmentTransactions(tt.args.ctx, tt.args.userId, txs); (err != nil) != tt.wantErr {
 				t.Errorf("Db.UpdateInvestmentTransactions() error = %v, wantErr %v", err, tt.wantErr)
+			}
+
+			// ensure that the transactions were updated
+			if !tt.wantErr {
+				updatedTxs, err := conn.GetAllInvestmentTransactions(tt.args.ctx, tt.args.userId)
+				if err != nil {
+					t.Errorf("conn.GetAllTransactions() error = %v", err)
+				}
+
+				for _, tx := range updatedTxs {
+					assert.Contains(t, tx.Name, "updated")
+				}
 			}
 		})
 	}
@@ -268,27 +351,51 @@ func TestDb_UpdateInvestmentTransactions(t *testing.T) {
 
 func TestDb_GetInvestmentTransactionById(t *testing.T) {
 	type args struct {
-		ctx  context.Context
-		txId *uint64
+		ctx          context.Context
+		userId       *uint64
+		precondition func(ctx context.Context, t *testing.T, arg *args) *uint64
 	}
 	tests := []struct {
 		name    string
-		db      *Db
 		args    args
 		want    *schema.InvestmentTransaction
 		wantErr bool
 	}{
-		// TODO: Add test cases.
+		{
+			name: "[success] - get transaction by id",
+			args: args{
+				ctx:    context.Background(),
+				userId: generateRandomId(),
+				precondition: func(ctx context.Context, t *testing.T, arg *args) *uint64 {
+					tx := generateRandomInvestmentTransaction()
+					if err := conn.AddInvestmentTransactions(ctx, arg.userId, []*schema.InvestmentTransaction{tx}); err != nil {
+						t.Errorf("conn.AddTransaction() error = %v", err)
+					}
+
+					// get all the transactions for the given userId
+					txs, err := conn.GetAllInvestmentTransactions(ctx, arg.userId)
+					if err != nil {
+						t.Errorf("conn.GetAllTransactions() error = %v", err)
+					}
+
+					return &txs[0].Id
+				},
+			},
+			wantErr: false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := tt.db.GetInvestmentTransactionById(tt.args.ctx, tt.args.txId)
+			txId := tt.args.precondition(tt.args.ctx, t, &tt.args)
+			got, err := conn.GetInvestmentTransactionById(tt.args.ctx, txId)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("Db.GetInvestmentTransactionById() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("Db.GetInvestmentTransactionById() = %v, want %v", got, tt.want)
+
+			if !tt.wantErr {
+				assert.NotNil(t, got)
+				assert.True(t, got.Id == *txId)
 			}
 		})
 	}
@@ -296,27 +403,56 @@ func TestDb_GetInvestmentTransactionById(t *testing.T) {
 
 func TestDb_GetInvestmentTransactionsByPlaidTransactionIds(t *testing.T) {
 	type args struct {
-		ctx   context.Context
-		txIds []string
+		ctx                     context.Context
+		numTransactionsToCreate int
+		precondition            func(ctx context.Context, t *testing.T, arg *args) []string
 	}
 	tests := []struct {
 		name    string
-		db      *Db
 		args    args
-		want    []*schema.InvestmentTransaction
 		wantErr bool
 	}{
-		// TODO: Add test cases.
+		{
+			name: "[success] - get transactions by plaid transaction ids",
+			args: args{
+				ctx:                     context.Background(),
+				numTransactionsToCreate: 10,
+				precondition: func(ctx context.Context, t *testing.T, arg *args) []string {
+					userId := generateRandomId()
+					txs := generateMultipleInvestmentTransaction(arg.numTransactionsToCreate)
+					if err := conn.AddInvestmentTransactions(ctx, userId, txs); err != nil {
+						t.Errorf("conn.AddTransaction() error = %v", err)
+					}
+
+					// get all the transactions for the given userId
+					txs, err := conn.GetAllInvestmentTransactions(ctx, userId)
+					if err != nil {
+						t.Errorf("conn.GetAllTransactions() error = %v", err)
+					}
+
+					txIds := make([]string, 0)
+					for _, tx := range txs {
+						txIds = append(txIds, tx.InvestmentTransactionId)
+					}
+
+					return txIds
+				},
+			},
+			wantErr: false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := tt.db.GetInvestmentTransactionsByPlaidTransactionIds(tt.args.ctx, tt.args.txIds)
+			txIds := tt.args.precondition(tt.args.ctx, t, &tt.args)
+			got, err := conn.GetInvestmentTransactionsByPlaidTransactionIds(tt.args.ctx, txIds)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("Db.GetInvestmentTransactionsByPlaidTransactionIds() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("Db.GetInvestmentTransactionsByPlaidTransactionIds() = %v, want %v", got, tt.want)
+
+			if !tt.wantErr {
+				assert.NotNil(t, got)
+				assert.Equal(t, len(got), len(txIds))
 			}
 		})
 	}

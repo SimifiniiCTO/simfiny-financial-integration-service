@@ -4345,7 +4345,10 @@
           "title": "@gotag: clickhouse:\"unofficial_currency_code\""
         },
         "category": {
-          "type": "string",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
           "title": "@gotag: clickhouse:\"category\""
         },
         "categoryId": {

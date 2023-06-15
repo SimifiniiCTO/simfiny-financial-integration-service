@@ -175,14 +175,15 @@ func (db *Db) UpdateInvestmentTransactions(ctx context.Context, userId *uint64, 
 	}
 
 	t := db.queryOperator.InvestmentTransactionORM
-	// perform the update operation
-	result, err := t.WithContext(ctx).Where(t.UserId.Eq(*userId)).Updates(txnsOrmRecords)
-	if err != nil {
-		return err
-	}
+	for _, tx := range txnsOrmRecords {
+		if tx.Id == 0 {
+			return fmt.Errorf("transaction ID must be 0 at creation time")
+		}
 
-	if result.RowsAffected == 0 {
-		return fmt.Errorf("no rows affected")
+		// update the transaction
+		if _, err := t.WithContext(ctx).Updates(tx); err != nil {
+			return err
+		}
 	}
 
 	return nil

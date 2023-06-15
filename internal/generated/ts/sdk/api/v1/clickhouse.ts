@@ -259,7 +259,7 @@ export interface Transaction {
   /** @gotag: clickhouse:"unofficial_currency_code" */
   unofficialCurrencyCode: string;
   /** @gotag: clickhouse:"category" */
-  category: string;
+  category: string[];
   /** @gotag: clickhouse:"category_id" */
   categoryId: string;
   /** @gotag: clickhouse:"check_number" */
@@ -1117,7 +1117,7 @@ function createBaseTransaction(): Transaction {
     amount: 0,
     isoCurrencyCode: "",
     unofficialCurrencyCode: "",
-    category: "",
+    category: [],
     categoryId: "",
     checkNumber: "",
     date: "",
@@ -1154,8 +1154,8 @@ export const Transaction = {
     if (message.unofficialCurrencyCode !== "") {
       writer.uint32(34).string(message.unofficialCurrencyCode);
     }
-    if (message.category !== "") {
-      writer.uint32(42).string(message.category);
+    for (const v of message.category) {
+      writer.uint32(42).string(v!);
     }
     if (message.categoryId !== "") {
       writer.uint32(50).string(message.categoryId);
@@ -1257,7 +1257,7 @@ export const Transaction = {
             break;
           }
 
-          message.category = reader.string();
+          message.category.push(reader.string());
           continue;
         case 6:
           if (tag !== 50) {
@@ -1407,7 +1407,7 @@ export const Transaction = {
       amount: isSet(object.amount) ? Number(object.amount) : 0,
       isoCurrencyCode: isSet(object.isoCurrencyCode) ? String(object.isoCurrencyCode) : "",
       unofficialCurrencyCode: isSet(object.unofficialCurrencyCode) ? String(object.unofficialCurrencyCode) : "",
-      category: isSet(object.category) ? String(object.category) : "",
+      category: Array.isArray(object?.category) ? object.category.map((e: any) => String(e)) : [],
       categoryId: isSet(object.categoryId) ? String(object.categoryId) : "",
       checkNumber: isSet(object.checkNumber) ? String(object.checkNumber) : "",
       date: isSet(object.date) ? String(object.date) : "",
@@ -1436,7 +1436,11 @@ export const Transaction = {
     message.amount !== undefined && (obj.amount = message.amount);
     message.isoCurrencyCode !== undefined && (obj.isoCurrencyCode = message.isoCurrencyCode);
     message.unofficialCurrencyCode !== undefined && (obj.unofficialCurrencyCode = message.unofficialCurrencyCode);
-    message.category !== undefined && (obj.category = message.category);
+    if (message.category) {
+      obj.category = message.category.map((e) => e);
+    } else {
+      obj.category = [];
+    }
     message.categoryId !== undefined && (obj.categoryId = message.categoryId);
     message.checkNumber !== undefined && (obj.checkNumber = message.checkNumber);
     message.date !== undefined && (obj.date = message.date);
@@ -1471,7 +1475,7 @@ export const Transaction = {
     message.amount = object.amount ?? 0;
     message.isoCurrencyCode = object.isoCurrencyCode ?? "";
     message.unofficialCurrencyCode = object.unofficialCurrencyCode ?? "";
-    message.category = object.category ?? "";
+    message.category = object.category?.map((e) => e) || [];
     message.categoryId = object.categoryId ?? "";
     message.checkNumber = object.checkNumber ?? "";
     message.date = object.date ?? "";

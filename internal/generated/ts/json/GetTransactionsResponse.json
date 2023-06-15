@@ -38,7 +38,10 @@
                     "description": "@gotag: clickhouse:\"unofficial_currency_code\""
                 },
                 "category": {
-                    "type": "string",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array",
                     "description": "@gotag: clickhouse:\"category\""
                 },
                 "category_id": {

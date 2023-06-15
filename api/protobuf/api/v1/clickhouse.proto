@@ -192,7 +192,7 @@ message Transaction {
     // @gotag: clickhouse:"unofficial_currency_code"
     string unofficial_currency_code = 4;
     // @gotag: clickhouse:"category"
-    string category = 5;
+    repeated string category = 5;
     // @gotag: clickhouse:"category_id"
     string category_id = 6;
     // @gotag: clickhouse:"check_number"

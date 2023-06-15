@@ -489,8 +489,6 @@ func (m *Transaction) validate(all bool) error {
 
 	// no validation rules for UnofficialCurrencyCode
 
-	// no validation rules for Category
-
 	// no validation rules for CategoryId
 
 	// no validation rules for CheckNumber

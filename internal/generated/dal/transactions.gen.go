@@ -34,7 +34,7 @@ func newTransactionORM(db *gorm.DB, opts ...gen.DOOption) transactionORM {
 	_transactionORM.Amount = field.NewFloat64(tableName, "amount")
 	_transactionORM.AuthorizedDate = field.NewString(tableName, "authorized_date")
 	_transactionORM.AuthorizedDatetime = field.NewString(tableName, "authorized_datetime")
-	_transactionORM.Category = field.NewString(tableName, "category")
+	_transactionORM.Category = field.NewField(tableName, "category")
 	_transactionORM.CategoryId = field.NewString(tableName, "category_id")
 	_transactionORM.CheckNumber = field.NewString(tableName, "check_number")
 	_transactionORM.Date = field.NewString(tableName, "date")
@@ -66,7 +66,7 @@ type transactionORM struct {
 	Amount                 field.Float64
 	AuthorizedDate         field.String
 	AuthorizedDatetime     field.String
-	Category               field.String
+	Category               field.Field
 	CategoryId             field.String
 	CheckNumber            field.String
 	Date                   field.String
@@ -104,7 +104,7 @@ func (t *transactionORM) updateTableName(table string) *transactionORM {
 	t.Amount = field.NewFloat64(table, "amount")
 	t.AuthorizedDate = field.NewString(table, "authorized_date")
 	t.AuthorizedDatetime = field.NewString(table, "authorized_datetime")
-	t.Category = field.NewString(table, "category")
+	t.Category = field.NewField(table, "category")
 	t.CategoryId = field.NewString(table, "category_id")
 	t.CheckNumber = field.NewString(table, "check_number")
 	t.Date = field.NewString(table, "date")

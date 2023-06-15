@@ -3,6 +3,7 @@ package clickhousedatabase
 import (
 	"context"
 	"fmt"
+	"time"
 
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 )
@@ -381,6 +382,12 @@ func (db *Db) GetTransactionsByPlaidTransactionIds(ctx context.Context, txIds []
 	}
 
 	return resultSet, nil
+}
+
+type MonthlyCategoryExpense struct {
+	Month       time.Time
+	Category    string
+	TotalAmount float64
 }
 
 // `sanitizePaginationParams` is a method of the `Db` struct in the `postgres` package.

@@ -132,7 +132,7 @@ type ReOccuringTransactionORM struct {
 	AccountId                       string
 	AverageAmount                   string
 	AverageAmountIsoCurrencyCode    string
-	Category                        pq.StringArray `gorm:"type:Array(string)"`
+	Category                        pq.StringArray `gorm:"type:Array(String)"`
 	CategoryId                      string
 	Description                     string
 	FirstDate                       string
@@ -149,7 +149,7 @@ type ReOccuringTransactionORM struct {
 	PersonalFinanceCategoryPrimary  string
 	Status                          string
 	StreamId                        string
-	TransactionIds                  pq.StringArray `gorm:"type:Array(string)"`
+	TransactionIds                  pq.StringArray `gorm:"type:Array(String)"`
 	UpdatedTime                     string
 	UserId                          uint64
 }
@@ -278,7 +278,7 @@ type TransactionORM struct {
 	Amount                 float64
 	AuthorizedDate         string
 	AuthorizedDatetime     string
-	Category               string
+	Category               pq.StringArray `gorm:"type:Array(String)"`
 	CategoryId             string
 	CheckNumber            string
 	Date                   string
@@ -316,7 +316,10 @@ func (m *Transaction) ToORM(ctx context.Context) (TransactionORM, error) {
 	to.Amount = m.Amount
 	to.IsoCurrencyCode = m.IsoCurrencyCode
 	to.UnofficialCurrencyCode = m.UnofficialCurrencyCode
-	to.Category = m.Category
+	if m.Category != nil {
+		to.Category = make(pq.StringArray, len(m.Category))
+		copy(to.Category, m.Category)
+	}
 	to.CategoryId = m.CategoryId
 	to.CheckNumber = m.CheckNumber
 	to.Date = m.Date
@@ -354,7 +357,10 @@ func (m *TransactionORM) ToPB(ctx context.Context) (Transaction, error) {
 	to.Amount = m.Amount
 	to.IsoCurrencyCode = m.IsoCurrencyCode
 	to.UnofficialCurrencyCode = m.UnofficialCurrencyCode
-	to.Category = m.Category
+	if m.Category != nil {
+		to.Category = make(pq.StringArray, len(m.Category))
+		copy(to.Category, m.Category)
+	}
 	to.CategoryId = m.CategoryId
 	to.CheckNumber = m.CheckNumber
 	to.Date = m.Date
