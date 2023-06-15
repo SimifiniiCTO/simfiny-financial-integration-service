@@ -6,9 +6,7 @@ import (
 	gorm1 "github.com/infobloxopen/atlas-app-toolkit/gorm"
 	errors "github.com/infobloxopen/protoc-gen-gorm/errors"
 	gorm "github.com/jinzhu/gorm"
-	pq "github.com/lib/pq"
 	field_mask "google.golang.org/genproto/protobuf/field_mask"
-	strings "strings"
 )
 
 type InvestmentTransactionORM struct {
@@ -135,7 +133,6 @@ type ReOccuringTransactionORM struct {
 	AccountId                       string
 	AverageAmount                   string
 	AverageAmountIsoCurrencyCode    string
-	Category                        pq.StringArray `gorm:"type:Array(String)"`
 	CategoryId                      string
 	Description                     string
 	FirstDate                       string
@@ -153,7 +150,7 @@ type ReOccuringTransactionORM struct {
 	Sign                            int32
 	Status                          string
 	StreamId                        string
-	TransactionIds                  pq.StringArray `gorm:"type:Array(String)"`
+	TransactionIds                  string
 	UpdatedTime                     string
 	UserId                          uint64
 }
@@ -175,10 +172,6 @@ func (m *ReOccuringTransaction) ToORM(ctx context.Context) (ReOccuringTransactio
 	}
 	to.AccountId = m.AccountId
 	to.StreamId = m.StreamId
-	if m.Category != nil {
-		to.Category = make(pq.StringArray, len(m.Category))
-		copy(to.Category, m.Category)
-	}
 	to.CategoryId = m.CategoryId
 	to.Description = m.Description
 	to.MerchantName = m.MerchantName
@@ -187,10 +180,7 @@ func (m *ReOccuringTransaction) ToORM(ctx context.Context) (ReOccuringTransactio
 	to.FirstDate = m.FirstDate
 	to.LastDate = m.LastDate
 	to.Frequency = ReOccuringTransactionsFrequency_name[int32(m.Frequency)]
-	if m.TransactionIds != nil {
-		to.TransactionIds = make(pq.StringArray, len(m.TransactionIds))
-		copy(to.TransactionIds, m.TransactionIds)
-	}
+	to.TransactionIds = m.TransactionIds
 	to.AverageAmount = m.AverageAmount
 	to.AverageAmountIsoCurrencyCode = m.AverageAmountIsoCurrencyCode
 	to.LastAmount = m.LastAmount
@@ -221,10 +211,6 @@ func (m *ReOccuringTransactionORM) ToPB(ctx context.Context) (ReOccuringTransact
 	}
 	to.AccountId = m.AccountId
 	to.StreamId = m.StreamId
-	if m.Category != nil {
-		to.Category = make(pq.StringArray, len(m.Category))
-		copy(to.Category, m.Category)
-	}
 	to.CategoryId = m.CategoryId
 	to.Description = m.Description
 	to.MerchantName = m.MerchantName
@@ -233,10 +219,7 @@ func (m *ReOccuringTransactionORM) ToPB(ctx context.Context) (ReOccuringTransact
 	to.FirstDate = m.FirstDate
 	to.LastDate = m.LastDate
 	to.Frequency = ReOccuringTransactionsFrequency(ReOccuringTransactionsFrequency_value[m.Frequency])
-	if m.TransactionIds != nil {
-		to.TransactionIds = make(pq.StringArray, len(m.TransactionIds))
-		copy(to.TransactionIds, m.TransactionIds)
-	}
+	to.TransactionIds = m.TransactionIds
 	to.AverageAmount = m.AverageAmount
 	to.AverageAmountIsoCurrencyCode = m.AverageAmountIsoCurrencyCode
 	to.LastAmount = m.LastAmount
@@ -279,29 +262,46 @@ type ReOccuringTransactionWithAfterToPB interface {
 }
 
 type TransactionORM struct {
-	AccountId              string
-	AccountOwner           string
-	Amount                 float64
-	AuthorizedDate         string
-	AuthorizedDatetime     string
-	Category               pq.StringArray `gorm:"type:Array(String)"`
-	CategoryId             string
-	CheckNumber            string
-	Date                   string
-	Datetime               string
-	Id                     uint64
-	IsoCurrencyCode        string
-	LinkId                 uint64
-	MerchantName           string
-	Name                   string
-	PaymentChannel         string
-	Pending                bool
-	PendingTransactionId   string
-	Sign                   int32
-	TransactionCode        string
-	TransactionId          string
-	UnofficialCurrencyCode string
-	UserId                 uint64
+	AccountId                       string
+	AccountOwner                    string
+	Amount                          float64
+	AuthorizedDate                  string
+	AuthorizedDatetime              string
+	CategoryId                      string
+	CheckNumber                     string
+	Date                            string
+	Datetime                        string
+	Id                              uint64
+	IsoCurrencyCode                 string
+	LinkId                          uint64
+	LocationAddress                 string
+	LocationCity                    string
+	LocationCountry                 string
+	LocationLat                     float64
+	LocationLon                     float64
+	LocationPostalCode              string
+	LocationRegion                  string
+	LocationStoreNumber             string
+	MerchantName                    string
+	Name                            string
+	PaymentChannel                  string
+	PaymentMetaByOrderOf            string
+	PaymentMetaPayee                string
+	PaymentMetaPayer                string
+	PaymentMetaPaymentMethod        string
+	PaymentMetaPaymentProcessor     string
+	PaymentMetaPpdId                string
+	PaymentMetaReason               string
+	PaymentMetaReferenceNumber      string
+	Pending                         bool
+	PendingTransactionId            string
+	PersonalFinanceCategoryDetailed string
+	PersonalFinanceCategoryPrimary  string
+	Sign                            int32
+	TransactionCode                 string
+	TransactionId                   string
+	UnofficialCurrencyCode          string
+	UserId                          uint64
 }
 
 // TableName overrides the default tablename generated by GORM
@@ -323,10 +323,6 @@ func (m *Transaction) ToORM(ctx context.Context) (TransactionORM, error) {
 	to.Amount = m.Amount
 	to.IsoCurrencyCode = m.IsoCurrencyCode
 	to.UnofficialCurrencyCode = m.UnofficialCurrencyCode
-	if m.Category != nil {
-		to.Category = make(pq.StringArray, len(m.Category))
-		copy(to.Category, m.Category)
-	}
 	to.CategoryId = m.CategoryId
 	to.CheckNumber = m.CheckNumber
 	to.Date = m.Date
@@ -345,6 +341,24 @@ func (m *Transaction) ToORM(ctx context.Context) (TransactionORM, error) {
 	to.UserId = m.UserId
 	to.LinkId = m.LinkId
 	to.Sign = m.Sign
+	to.PersonalFinanceCategoryPrimary = m.PersonalFinanceCategoryPrimary
+	to.PersonalFinanceCategoryDetailed = m.PersonalFinanceCategoryDetailed
+	to.LocationAddress = m.LocationAddress
+	to.LocationCity = m.LocationCity
+	to.LocationRegion = m.LocationRegion
+	to.LocationPostalCode = m.LocationPostalCode
+	to.LocationCountry = m.LocationCountry
+	to.LocationLat = m.LocationLat
+	to.LocationLon = m.LocationLon
+	to.LocationStoreNumber = m.LocationStoreNumber
+	to.PaymentMetaByOrderOf = m.PaymentMetaByOrderOf
+	to.PaymentMetaPayee = m.PaymentMetaPayee
+	to.PaymentMetaPayer = m.PaymentMetaPayer
+	to.PaymentMetaPaymentMethod = m.PaymentMetaPaymentMethod
+	to.PaymentMetaPaymentProcessor = m.PaymentMetaPaymentProcessor
+	to.PaymentMetaPpdId = m.PaymentMetaPpdId
+	to.PaymentMetaReason = m.PaymentMetaReason
+	to.PaymentMetaReferenceNumber = m.PaymentMetaReferenceNumber
 	if posthook, ok := interface{}(m).(TransactionWithAfterToORM); ok {
 		err = posthook.AfterToORM(ctx, &to)
 	}
@@ -365,10 +379,6 @@ func (m *TransactionORM) ToPB(ctx context.Context) (Transaction, error) {
 	to.Amount = m.Amount
 	to.IsoCurrencyCode = m.IsoCurrencyCode
 	to.UnofficialCurrencyCode = m.UnofficialCurrencyCode
-	if m.Category != nil {
-		to.Category = make(pq.StringArray, len(m.Category))
-		copy(to.Category, m.Category)
-	}
 	to.CategoryId = m.CategoryId
 	to.CheckNumber = m.CheckNumber
 	to.Date = m.Date
@@ -387,6 +397,24 @@ func (m *TransactionORM) ToPB(ctx context.Context) (Transaction, error) {
 	to.UserId = m.UserId
 	to.LinkId = m.LinkId
 	to.Sign = m.Sign
+	to.PersonalFinanceCategoryPrimary = m.PersonalFinanceCategoryPrimary
+	to.PersonalFinanceCategoryDetailed = m.PersonalFinanceCategoryDetailed
+	to.LocationAddress = m.LocationAddress
+	to.LocationCity = m.LocationCity
+	to.LocationRegion = m.LocationRegion
+	to.LocationPostalCode = m.LocationPostalCode
+	to.LocationCountry = m.LocationCountry
+	to.LocationLat = m.LocationLat
+	to.LocationLon = m.LocationLon
+	to.LocationStoreNumber = m.LocationStoreNumber
+	to.PaymentMetaByOrderOf = m.PaymentMetaByOrderOf
+	to.PaymentMetaPayee = m.PaymentMetaPayee
+	to.PaymentMetaPayer = m.PaymentMetaPayer
+	to.PaymentMetaPaymentMethod = m.PaymentMetaPaymentMethod
+	to.PaymentMetaPaymentProcessor = m.PaymentMetaPaymentProcessor
+	to.PaymentMetaPpdId = m.PaymentMetaPpdId
+	to.PaymentMetaReason = m.PaymentMetaReason
+	to.PaymentMetaReferenceNumber = m.PaymentMetaReferenceNumber
 	if posthook, ok := interface{}(m).(TransactionWithAfterToPB); ok {
 		err = posthook.AfterToPB(ctx, &to)
 	}
@@ -1120,10 +1148,6 @@ func DefaultApplyFieldMaskReOccuringTransaction(ctx context.Context, patchee *Re
 			patchee.StreamId = patcher.StreamId
 			continue
 		}
-		if f == prefix+"Category" {
-			patchee.Category = patcher.Category
-			continue
-		}
 		if f == prefix+"CategoryId" {
 			patchee.CategoryId = patcher.CategoryId
 			continue
@@ -1547,9 +1571,7 @@ func DefaultApplyFieldMaskTransaction(ctx context.Context, patchee *Transaction,
 		return nil, errors.NilArgumentError
 	}
 	var err error
-	var updatedLocation bool
-	var updatedPaymentMeta bool
-	for i, f := range updateMask.Paths {
+	for _, f := range updateMask.Paths {
 		if f == prefix+"AccountId" {
 			patchee.AccountId = patcher.AccountId
 			continue
@@ -1564,10 +1586,6 @@ func DefaultApplyFieldMaskTransaction(ctx context.Context, patchee *Transaction,
 		}
 		if f == prefix+"UnofficialCurrencyCode" {
 			patchee.UnofficialCurrencyCode = patcher.UnofficialCurrencyCode
-			continue
-		}
-		if f == prefix+"Category" {
-			patchee.Category = patcher.Category
 			continue
 		}
 		if f == prefix+"CategoryId" {
@@ -1594,58 +1612,12 @@ func DefaultApplyFieldMaskTransaction(ctx context.Context, patchee *Transaction,
 			patchee.AuthorizedDatetime = patcher.AuthorizedDatetime
 			continue
 		}
-		if !updatedLocation && strings.HasPrefix(f, prefix+"Location.") {
-			if patcher.Location == nil {
-				patchee.Location = nil
-				continue
-			}
-			if patchee.Location == nil {
-				patchee.Location = &Transaction_Location{}
-			}
-			childMask := &field_mask.FieldMask{}
-			for j := i; j < len(updateMask.Paths); j++ {
-				if trimPath := strings.TrimPrefix(updateMask.Paths[j], prefix+"Location."); trimPath != updateMask.Paths[j] {
-					childMask.Paths = append(childMask.Paths, trimPath)
-				}
-			}
-			if err := gorm1.MergeWithMask(patcher.Location, patchee.Location, childMask); err != nil {
-				return nil, nil
-			}
-		}
-		if f == prefix+"Location" {
-			updatedLocation = true
-			patchee.Location = patcher.Location
-			continue
-		}
 		if f == prefix+"Name" {
 			patchee.Name = patcher.Name
 			continue
 		}
 		if f == prefix+"MerchantName" {
 			patchee.MerchantName = patcher.MerchantName
-			continue
-		}
-		if !updatedPaymentMeta && strings.HasPrefix(f, prefix+"PaymentMeta.") {
-			if patcher.PaymentMeta == nil {
-				patchee.PaymentMeta = nil
-				continue
-			}
-			if patchee.PaymentMeta == nil {
-				patchee.PaymentMeta = &Transaction_PaymentMeta{}
-			}
-			childMask := &field_mask.FieldMask{}
-			for j := i; j < len(updateMask.Paths); j++ {
-				if trimPath := strings.TrimPrefix(updateMask.Paths[j], prefix+"PaymentMeta."); trimPath != updateMask.Paths[j] {
-					childMask.Paths = append(childMask.Paths, trimPath)
-				}
-			}
-			if err := gorm1.MergeWithMask(patcher.PaymentMeta, patchee.PaymentMeta, childMask); err != nil {
-				return nil, nil
-			}
-		}
-		if f == prefix+"PaymentMeta" {
-			updatedPaymentMeta = true
-			patchee.PaymentMeta = patcher.PaymentMeta
 			continue
 		}
 		if f == prefix+"PaymentChannel" {
@@ -1686,6 +1658,78 @@ func DefaultApplyFieldMaskTransaction(ctx context.Context, patchee *Transaction,
 		}
 		if f == prefix+"Sign" {
 			patchee.Sign = patcher.Sign
+			continue
+		}
+		if f == prefix+"PersonalFinanceCategoryPrimary" {
+			patchee.PersonalFinanceCategoryPrimary = patcher.PersonalFinanceCategoryPrimary
+			continue
+		}
+		if f == prefix+"PersonalFinanceCategoryDetailed" {
+			patchee.PersonalFinanceCategoryDetailed = patcher.PersonalFinanceCategoryDetailed
+			continue
+		}
+		if f == prefix+"LocationAddress" {
+			patchee.LocationAddress = patcher.LocationAddress
+			continue
+		}
+		if f == prefix+"LocationCity" {
+			patchee.LocationCity = patcher.LocationCity
+			continue
+		}
+		if f == prefix+"LocationRegion" {
+			patchee.LocationRegion = patcher.LocationRegion
+			continue
+		}
+		if f == prefix+"LocationPostalCode" {
+			patchee.LocationPostalCode = patcher.LocationPostalCode
+			continue
+		}
+		if f == prefix+"LocationCountry" {
+			patchee.LocationCountry = patcher.LocationCountry
+			continue
+		}
+		if f == prefix+"LocationLat" {
+			patchee.LocationLat = patcher.LocationLat
+			continue
+		}
+		if f == prefix+"LocationLon" {
+			patchee.LocationLon = patcher.LocationLon
+			continue
+		}
+		if f == prefix+"LocationStoreNumber" {
+			patchee.LocationStoreNumber = patcher.LocationStoreNumber
+			continue
+		}
+		if f == prefix+"PaymentMetaByOrderOf" {
+			patchee.PaymentMetaByOrderOf = patcher.PaymentMetaByOrderOf
+			continue
+		}
+		if f == prefix+"PaymentMetaPayee" {
+			patchee.PaymentMetaPayee = patcher.PaymentMetaPayee
+			continue
+		}
+		if f == prefix+"PaymentMetaPayer" {
+			patchee.PaymentMetaPayer = patcher.PaymentMetaPayer
+			continue
+		}
+		if f == prefix+"PaymentMetaPaymentMethod" {
+			patchee.PaymentMetaPaymentMethod = patcher.PaymentMetaPaymentMethod
+			continue
+		}
+		if f == prefix+"PaymentMetaPaymentProcessor" {
+			patchee.PaymentMetaPaymentProcessor = patcher.PaymentMetaPaymentProcessor
+			continue
+		}
+		if f == prefix+"PaymentMetaPpdId" {
+			patchee.PaymentMetaPpdId = patcher.PaymentMetaPpdId
+			continue
+		}
+		if f == prefix+"PaymentMetaReason" {
+			patchee.PaymentMetaReason = patcher.PaymentMetaReason
+			continue
+		}
+		if f == prefix+"PaymentMetaReferenceNumber" {
+			patchee.PaymentMetaReferenceNumber = patcher.PaymentMetaReferenceNumber
 			continue
 		}
 	}

@@ -6,173 +6,150 @@
             "properties": {
                 "account_id": {
                     "type": "string",
-                    "description": "@gotag: clickhouse:\"account_id\""
+                    "description": "@gotag: ch:\"account_id\""
                 },
                 "amount": {
                     "type": "number",
-                    "description": "@gotag: clickhouse:\"amount\""
+                    "description": "@gotag: ch:\"amount\""
                 },
                 "iso_currency_code": {
                     "type": "string",
-                    "description": "@gotag: clickhouse:\"iso_currency_code\""
+                    "description": "@gotag: ch:\"iso_currency_code\""
                 },
                 "unofficial_currency_code": {
                     "type": "string",
-                    "description": "@gotag: clickhouse:\"unofficial_currency_code\""
-                },
-                "category": {
-                    "items": {
-                        "type": "string"
-                    },
-                    "type": "array",
-                    "description": "@gotag: clickhouse:\"category\""
+                    "description": "@gotag: ch:\"unofficial_currency_code\""
                 },
                 "category_id": {
                     "type": "string",
-                    "description": "@gotag: clickhouse:\"category_id\""
+                    "description": "@gotag: ch:\"category_id\""
                 },
                 "check_number": {
                     "type": "string",
-                    "description": "@gotag: clickhouse:\"check_number\""
+                    "description": "@gotag: ch:\"check_number\""
                 },
                 "date": {
                     "type": "string",
-                    "description": "@gotag: clickhouse:\"date\""
+                    "description": "@gotag: ch:\"date\""
                 },
                 "datetime": {
                     "type": "string",
-                    "description": "@gotag: clickhouse:\"datetime\""
+                    "description": "@gotag: ch:\"datetime\""
                 },
                 "authorized_date": {
                     "type": "string",
-                    "description": "@gotag: clickhouse:\"authorized_date\""
+                    "description": "@gotag: ch:\"authorized_date\""
                 },
                 "authorized_datetime": {
                     "type": "string",
-                    "description": "@gotag: clickhouse:\"authorized_datetime\""
-                },
-                "location": {
-                    "$ref": "#/definitions/api.v1.Transaction.Location",
-                    "additionalProperties": true,
-                    "description": "@gotag: clickhouse:\"location\""
+                    "description": "@gotag: ch:\"authorized_datetime\""
                 },
                 "name": {
                     "type": "string",
-                    "description": "@gotag: clickhouse:\"name\""
+                    "description": "@gotag: ch:\"name\""
                 },
                 "merchant_name": {
                     "type": "string",
-                    "description": "@gotag: clickhouse:\"merchant_name\""
-                },
-                "payment_meta": {
-                    "$ref": "#/definitions/api.v1.Transaction.PaymentMeta",
-                    "additionalProperties": true,
-                    "description": "@gotag: clickhouse:\"payment_meta\""
+                    "description": "@gotag: ch:\"merchant_name\""
                 },
                 "payment_channel": {
                     "type": "string",
-                    "description": "@gotag: clickhouse:\"payment_channel\""
+                    "description": "@gotag: ch:\"payment_channel\""
                 },
                 "pending": {
                     "type": "boolean",
-                    "description": "@gotag: clickhouse:\"pending\""
+                    "description": "@gotag: ch:\"pending\""
                 },
                 "pending_transaction_id": {
                     "type": "string",
-                    "description": "@gotag: clickhouse:\"pending_transaction_id\""
+                    "description": "@gotag: ch:\"pending_transaction_id\""
                 },
                 "account_owner": {
                     "type": "string",
-                    "description": "@gotag: clickhouse:\"account_owner\""
+                    "description": "@gotag: ch:\"account_owner\""
                 },
                 "transaction_id": {
                     "type": "string",
-                    "description": "@gotag: clickhouse:\"transaction_id\""
+                    "description": "@gotag: ch:\"transaction_id\""
                 },
                 "transaction_code": {
                     "type": "string",
-                    "description": "@gotag: clickhouse:\"transaction_code\""
+                    "description": "@gotag: ch:\"transaction_code\""
                 },
                 "id": {
                     "type": "string"
                 },
                 "user_id": {
                     "type": "string",
-                    "description": "@gotag: clickhouse:\"user_id\""
+                    "description": "@gotag: ch:\"user_id\""
                 },
                 "link_id": {
                     "type": "string",
-                    "description": "@gotag: clickhouse:\"link_id\""
+                    "description": "@gotag: ch:\"link_id\""
                 },
                 "sign": {
                     "type": "integer"
+                },
+                "personal_finance_category_primary": {
+                    "type": "string",
+                    "description": "@gotag: ch:\"personal_finance_category_primary\""
+                },
+                "personal_finance_category_detailed": {
+                    "type": "string",
+                    "description": "@gotag: ch:\"personal_finance_category_detailed\""
+                },
+                "location_address": {
+                    "type": "string"
+                },
+                "location_city": {
+                    "type": "string"
+                },
+                "location_region": {
+                    "type": "string"
+                },
+                "location_postal_code": {
+                    "type": "string"
+                },
+                "location_country": {
+                    "type": "string"
+                },
+                "location_lat": {
+                    "type": "number"
+                },
+                "location_lon": {
+                    "type": "number"
+                },
+                "location_store_number": {
+                    "type": "string"
+                },
+                "payment_meta_by_order_of": {
+                    "type": "string"
+                },
+                "payment_meta_payee": {
+                    "type": "string"
+                },
+                "payment_meta_payer": {
+                    "type": "string"
+                },
+                "payment_meta_payment_method": {
+                    "type": "string"
+                },
+                "payment_meta_payment_processor": {
+                    "type": "string"
+                },
+                "payment_meta_ppd_id": {
+                    "type": "string"
+                },
+                "payment_meta_reason": {
+                    "type": "string"
+                },
+                "payment_meta_reference_number": {
+                    "type": "string"
                 }
             },
             "additionalProperties": true,
             "type": "object",
             "title": "Transaction"
-        },
-        "api.v1.Transaction.Location": {
-            "properties": {
-                "address": {
-                    "type": "string"
-                },
-                "city": {
-                    "type": "string"
-                },
-                "region": {
-                    "type": "string"
-                },
-                "postal_code": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string"
-                },
-                "lat": {
-                    "type": "number"
-                },
-                "lon": {
-                    "type": "number"
-                },
-                "store_number": {
-                    "type": "string"
-                }
-            },
-            "additionalProperties": true,
-            "type": "object",
-            "title": "Location"
-        },
-        "api.v1.Transaction.PaymentMeta": {
-            "properties": {
-                "by_order_of": {
-                    "type": "string"
-                },
-                "payee": {
-                    "type": "string"
-                },
-                "payer": {
-                    "type": "string"
-                },
-                "payment_method": {
-                    "type": "string"
-                },
-                "payment_processor": {
-                    "type": "string"
-                },
-                "ppd_id": {
-                    "type": "string"
-                },
-                "reason": {
-                    "type": "string"
-                },
-                "reference_number": {
-                    "type": "string"
-                }
-            },
-            "additionalProperties": true,
-            "type": "object",
-            "title": "Payment Meta"
         }
     }
 }

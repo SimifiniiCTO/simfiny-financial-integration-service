@@ -7,11 +7,8 @@
     - [AverageTransactionAmountByCategoryMetric](#api-v1-AverageTransactionAmountByCategoryMetric)
     - [InvestmentTransaction](#api-v1-InvestmentTransaction)
     - [MonthlyTransactionCountByCategoryMetric](#api-v1-MonthlyTransactionCountByCategoryMetric)
-    - [PersonalFinanceCategory](#api-v1-PersonalFinanceCategory)
     - [ReOccuringTransaction](#api-v1-ReOccuringTransaction)
     - [Transaction](#api-v1-Transaction)
-    - [Transaction.Location](#api-v1-Transaction-Location)
-    - [Transaction.PaymentMeta](#api-v1-Transaction-PaymentMeta)
     - [TransactionAmountByCountryMetric](#api-v1-TransactionAmountByCountryMetric)
     - [TransactionAmountDistributionByCategoryMetric](#api-v1-TransactionAmountDistributionByCategoryMetric)
     - [TransactionCountByMerchantPaymentChannelMetric](#api-v1-TransactionCountByMerchantPaymentChannelMetric)
@@ -187,23 +184,23 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| account_id | [string](#string) |  | @gotag: clickhouse:&#34;account_id&#34; |
-| ammount | [string](#string) |  | @gotag: clickhouse:&#34;amount&#34; |
-| investment_transaction_id | [string](#string) |  | @gotag: clickhouse:&#34;investment_transaction_id&#34; |
-| security_id | [string](#string) |  | @gotag: clickhouse:&#34;security_id&#34; |
-| date | [string](#string) |  | @gotag: clickhouse:&#34;date&#34; |
-| name | [string](#string) |  | @gotag: clickhouse:&#34;name&#34; |
-| quantity | [double](#double) |  | @gotag: clickhouse:&#34;quantity&#34; |
-| amount | [double](#double) |  | @gotag: clickhouse:&#34;amount&#34; |
-| price | [double](#double) |  | @gotag: clickhouse:&#34;price&#34; |
-| fees | [double](#double) |  | @gotag: clickhouse:&#34;fees&#34; |
-| type | [string](#string) |  | @gotag: clickhouse:&#34;type&#34; |
-| subtype | [string](#string) |  | @gotag: clickhouse:&#34;subtype&#34; |
-| iso_currency_code | [string](#string) |  | @gotag: clickhouse:&#34;iso_currency_code&#34; |
-| unofficial_currency_code | [string](#string) |  | @gotag: clickhouse:&#34;unofficial_currency_code&#34; |
-| link_id | [uint64](#uint64) |  | @gotag: clickhouse:&#34;link_id&#34; |
-| id | [uint64](#uint64) |  | @gotag: clickhouse:&#34;id&#34; |
-| user_id | [uint64](#uint64) |  | @gotag: clickhouse:&#34;user_id&#34; |
+| account_id | [string](#string) |  | @gotag: ch:&#34;account_id&#34; |
+| ammount | [string](#string) |  | @gotag: ch:&#34;amount&#34; |
+| investment_transaction_id | [string](#string) |  | @gotag: ch:&#34;investment_transaction_id&#34; |
+| security_id | [string](#string) |  | @gotag: ch:&#34;security_id&#34; |
+| date | [string](#string) |  | @gotag: ch:&#34;date&#34; |
+| name | [string](#string) |  | @gotag: ch:&#34;name&#34; |
+| quantity | [double](#double) |  | @gotag: ch:&#34;quantity&#34; |
+| amount | [double](#double) |  | @gotag: ch:&#34;amount&#34; |
+| price | [double](#double) |  | @gotag: ch:&#34;price&#34; |
+| fees | [double](#double) |  | @gotag: ch:&#34;fees&#34; |
+| type | [string](#string) |  | @gotag: ch:&#34;type&#34; |
+| subtype | [string](#string) |  | @gotag: ch:&#34;subtype&#34; |
+| iso_currency_code | [string](#string) |  | @gotag: ch:&#34;iso_currency_code&#34; |
+| unofficial_currency_code | [string](#string) |  | @gotag: ch:&#34;unofficial_currency_code&#34; |
+| link_id | [uint64](#uint64) |  | @gotag: ch:&#34;link_id&#34; |
+| id | [uint64](#uint64) |  | @gotag: ch:&#34;id&#34; |
+| user_id | [uint64](#uint64) |  | @gotag: ch:&#34;user_id&#34; |
 | created_at | [string](#string) |  |  |
 | sign | [int32](#int32) |  |  |
 
@@ -229,22 +226,6 @@
 
 
 
-<a name="api-v1-PersonalFinanceCategory"></a>
-
-### PersonalFinanceCategory
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| primary | [string](#string) |  |  |
-| detailed | [string](#string) |  |  |
-
-
-
-
-
-
 <a name="api-v1-ReOccuringTransaction"></a>
 
 ### ReOccuringTransaction
@@ -253,29 +234,28 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| account_id | [string](#string) |  | @gotag: clickhouse:&#34;account_id&#34; |
-| stream_id | [string](#string) |  | @gotag: clickhouse:&#34;stream_id&#34; |
-| category | [string](#string) | repeated | @gotag: clickhouse:&#34;category&#34; |
-| category_id | [string](#string) |  | @gotag: clickhouse:&#34;category_id&#34; |
-| description | [string](#string) |  | @gotag: clickhouse:&#34;description&#34; |
-| merchant_name | [string](#string) |  | @gotag: clickhouse:&#34;merchant_name&#34; |
-| personal_finance_category_primary | [string](#string) |  | @gotag: clickhouse:&#34;personal_finance_category_primary&#34; |
-| personal_finance_category_detailed | [string](#string) |  | @gotag: clickhouse:&#34;personal_finance_category_detailed&#34; |
-| first_date | [string](#string) |  | @gotag: clickhouse:&#34;first_date&#34; |
-| last_date | [string](#string) |  | @gotag: clickhouse:&#34;last_date&#34; |
-| frequency | [ReOccuringTransactionsFrequency](#api-v1-ReOccuringTransactionsFrequency) |  | @gotag: clickhouse:&#34;frequency&#34; |
-| transaction_ids | [string](#string) | repeated | @gotag: clickhouse:&#34;transaction_ids&#34; |
-| average_amount | [string](#string) |  | @gotag: clickhouse:&#34;average_amount&#34; |
-| average_amount_iso_currency_code | [string](#string) |  | @gotag: clickhouse:&#34;average_amount_iso_currency_code&#34; |
-| last_amount | [string](#string) |  | @gotag: clickhouse:&#34;last_amount&#34; |
-| last_amount_iso_currency_code | [string](#string) |  | @gotag: clickhouse:&#34;last_amount_iso_currency_code&#34; |
-| is_active | [bool](#bool) |  | @gotag: clickhouse:&#34;is_active&#34; |
-| status | [ReOccuringTransactionsStatus](#api-v1-ReOccuringTransactionsStatus) |  | @gotag: clickhouse:&#34;status&#34; |
-| updated_time | [string](#string) |  | @gotag: clickhouse:&#34;updated_time&#34; |
-| user_id | [uint64](#uint64) |  | @gotag: clickhouse:&#34;user_id&#34; |
-| link_id | [uint64](#uint64) |  | @gotag: clickhouse:&#34;link_id&#34; |
-| id | [uint64](#uint64) |  | @gotag: clickhouse:&#34;id&#34; |
-| flow | [ReCurringFlow](#api-v1-ReCurringFlow) |  | @gotag: clickhouse:&#34;flow&#34; |
+| account_id | [string](#string) |  | @gotag: ch:&#34;account_id&#34; |
+| stream_id | [string](#string) |  | @gotag: ch:&#34;stream_id&#34; |
+| category_id | [string](#string) |  | @gotag: ch:&#34;category_id&#34; |
+| description | [string](#string) |  | @gotag: ch:&#34;description&#34; |
+| merchant_name | [string](#string) |  | @gotag: ch:&#34;merchant_name&#34; |
+| personal_finance_category_primary | [string](#string) |  | @gotag: ch:&#34;personal_finance_category_primary&#34; |
+| personal_finance_category_detailed | [string](#string) |  | @gotag: ch:&#34;personal_finance_category_detailed&#34; |
+| first_date | [string](#string) |  | @gotag: ch:&#34;first_date&#34; |
+| last_date | [string](#string) |  | @gotag: ch:&#34;last_date&#34; |
+| frequency | [ReOccuringTransactionsFrequency](#api-v1-ReOccuringTransactionsFrequency) |  | @gotag: ch:&#34;frequency&#34; |
+| transaction_ids | [string](#string) |  | @gotag: ch:&#34;transaction_ids,array&#34; |
+| average_amount | [string](#string) |  | @gotag: ch:&#34;average_amount&#34; |
+| average_amount_iso_currency_code | [string](#string) |  | @gotag: ch:&#34;average_amount_iso_currency_code&#34; |
+| last_amount | [string](#string) |  | @gotag: ch:&#34;last_amount&#34; |
+| last_amount_iso_currency_code | [string](#string) |  | @gotag: ch:&#34;last_amount_iso_currency_code&#34; |
+| is_active | [bool](#bool) |  | @gotag: ch:&#34;is_active&#34; |
+| status | [ReOccuringTransactionsStatus](#api-v1-ReOccuringTransactionsStatus) |  | @gotag: ch:&#34;status&#34; |
+| updated_time | [string](#string) |  | @gotag: ch:&#34;updated_time&#34; |
+| user_id | [uint64](#uint64) |  | @gotag: ch:&#34;user_id&#34; |
+| link_id | [uint64](#uint64) |  | @gotag: ch:&#34;link_id&#34; |
+| id | [uint64](#uint64) |  | @gotag: ch:&#34;id&#34; |
+| flow | [ReCurringFlow](#api-v1-ReCurringFlow) |  | @gotag: ch:&#34;flow&#34; |
 | sign | [int32](#int32) |  |  |
 
 
@@ -291,75 +271,46 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| account_id | [string](#string) |  | @gotag: clickhouse:&#34;account_id&#34; |
-| amount | [double](#double) |  | @gotag: clickhouse:&#34;amount&#34; |
-| iso_currency_code | [string](#string) |  | @gotag: clickhouse:&#34;iso_currency_code&#34; |
-| unofficial_currency_code | [string](#string) |  | @gotag: clickhouse:&#34;unofficial_currency_code&#34; |
-| category | [string](#string) | repeated | @gotag: clickhouse:&#34;category&#34; |
-| category_id | [string](#string) |  | @gotag: clickhouse:&#34;category_id&#34; |
-| check_number | [string](#string) |  | @gotag: clickhouse:&#34;check_number&#34; |
-| date | [string](#string) |  | @gotag: clickhouse:&#34;date&#34; |
-| datetime | [string](#string) |  | @gotag: clickhouse:&#34;datetime&#34; |
-| authorized_date | [string](#string) |  | @gotag: clickhouse:&#34;authorized_date&#34; |
-| authorized_datetime | [string](#string) |  | @gotag: clickhouse:&#34;authorized_datetime&#34; |
-| location | [Transaction.Location](#api-v1-Transaction-Location) |  | @gotag: clickhouse:&#34;location&#34; |
-| name | [string](#string) |  | @gotag: clickhouse:&#34;name&#34; |
-| merchant_name | [string](#string) |  | @gotag: clickhouse:&#34;merchant_name&#34; |
-| payment_meta | [Transaction.PaymentMeta](#api-v1-Transaction-PaymentMeta) |  | @gotag: clickhouse:&#34;payment_meta&#34; |
-| payment_channel | [string](#string) |  | @gotag: clickhouse:&#34;payment_channel&#34; |
-| pending | [bool](#bool) |  | @gotag: clickhouse:&#34;pending&#34; |
-| pending_transaction_id | [string](#string) |  | @gotag: clickhouse:&#34;pending_transaction_id&#34; |
-| account_owner | [string](#string) |  | @gotag: clickhouse:&#34;account_owner&#34; |
-| transaction_id | [string](#string) |  | @gotag: clickhouse:&#34;transaction_id&#34; |
-| transaction_code | [string](#string) |  | @gotag: clickhouse:&#34;transaction_code&#34; |
+| account_id | [string](#string) |  | @gotag: ch:&#34;account_id&#34; |
+| amount | [double](#double) |  | @gotag: ch:&#34;amount&#34; |
+| iso_currency_code | [string](#string) |  | @gotag: ch:&#34;iso_currency_code&#34; |
+| unofficial_currency_code | [string](#string) |  | @gotag: ch:&#34;unofficial_currency_code&#34; |
+| category_id | [string](#string) |  | @gotag: ch:&#34;category_id&#34; |
+| check_number | [string](#string) |  | @gotag: ch:&#34;check_number&#34; |
+| date | [string](#string) |  | @gotag: ch:&#34;date&#34; |
+| datetime | [string](#string) |  | @gotag: ch:&#34;datetime&#34; |
+| authorized_date | [string](#string) |  | @gotag: ch:&#34;authorized_date&#34; |
+| authorized_datetime | [string](#string) |  | @gotag: ch:&#34;authorized_datetime&#34; |
+| name | [string](#string) |  | @gotag: ch:&#34;name&#34; |
+| merchant_name | [string](#string) |  | @gotag: ch:&#34;merchant_name&#34; |
+| payment_channel | [string](#string) |  | @gotag: ch:&#34;payment_channel&#34; |
+| pending | [bool](#bool) |  | @gotag: ch:&#34;pending&#34; |
+| pending_transaction_id | [string](#string) |  | @gotag: ch:&#34;pending_transaction_id&#34; |
+| account_owner | [string](#string) |  | @gotag: ch:&#34;account_owner&#34; |
+| transaction_id | [string](#string) |  | @gotag: ch:&#34;transaction_id&#34; |
+| transaction_code | [string](#string) |  | @gotag: ch:&#34;transaction_code&#34; |
 | id | [uint64](#uint64) |  |  |
-| user_id | [uint64](#uint64) |  | @gotag: clickhouse:&#34;user_id&#34; |
-| link_id | [uint64](#uint64) |  | @gotag: clickhouse:&#34;link_id&#34; |
+| user_id | [uint64](#uint64) |  | @gotag: ch:&#34;user_id&#34; |
+| link_id | [uint64](#uint64) |  | @gotag: ch:&#34;link_id&#34; |
 | sign | [int32](#int32) |  |  |
-
-
-
-
-
-
-<a name="api-v1-Transaction-Location"></a>
-
-### Transaction.Location
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| address | [string](#string) |  |  |
-| city | [string](#string) |  |  |
-| region | [string](#string) |  |  |
-| postal_code | [string](#string) |  |  |
-| country | [string](#string) |  |  |
-| lat | [double](#double) |  |  |
-| lon | [double](#double) |  |  |
-| store_number | [string](#string) |  |  |
-
-
-
-
-
-
-<a name="api-v1-Transaction-PaymentMeta"></a>
-
-### Transaction.PaymentMeta
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| by_order_of | [string](#string) |  |  |
-| payee | [string](#string) |  |  |
-| payer | [string](#string) |  |  |
-| payment_method | [string](#string) |  |  |
-| payment_processor | [string](#string) |  |  |
-| ppd_id | [string](#string) |  |  |
-| reason | [string](#string) |  |  |
-| reference_number | [string](#string) |  |  |
+| personal_finance_category_primary | [string](#string) |  | @gotag: ch:&#34;personal_finance_category_primary&#34; |
+| personal_finance_category_detailed | [string](#string) |  | @gotag: ch:&#34;personal_finance_category_detailed&#34; |
+| location_address | [string](#string) |  |  |
+| location_city | [string](#string) |  |  |
+| location_region | [string](#string) |  |  |
+| location_postal_code | [string](#string) |  |  |
+| location_country | [string](#string) |  |  |
+| location_lat | [double](#double) |  |  |
+| location_lon | [double](#double) |  |  |
+| location_store_number | [string](#string) |  |  |
+| payment_meta_by_order_of | [string](#string) |  |  |
+| payment_meta_payee | [string](#string) |  |  |
+| payment_meta_payer | [string](#string) |  |  |
+| payment_meta_payment_method | [string](#string) |  |  |
+| payment_meta_payment_processor | [string](#string) |  |  |
+| payment_meta_ppd_id | [string](#string) |  |  |
+| payment_meta_reason | [string](#string) |  |  |
+| payment_meta_reference_number | [string](#string) |  |  |
 
 
 

@@ -4,6 +4,7 @@ import (
 	"context"
 
 	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/helper"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -38,7 +39,7 @@ func (s *Server) GetReOcurringTransactions(ctx context.Context, req *proto.GetRe
 	txnIdSet := make([]string, 0)
 	txnIdToRecurringTxnIdMap := make(map[string]uint64, 0)
 	for _, txn := range reCurringTransactions {
-		for _, txid := range txn.TransactionIds {
+		for _, txid := range helper.CommaSeparatedStringToStringSlice(txn.TransactionIds) {
 			txnIdSet = append(txnIdSet, txid)
 			txnIdToRecurringTxnIdMap[txid] = txn.Id
 		}

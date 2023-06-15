@@ -7,6 +7,7 @@ import (
 	"time"
 
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/helper"
 	"github.com/plaid/plaid-go/v12/plaid"
 )
 
@@ -71,7 +72,6 @@ func transactionStreamToRecurringTransactions(userId, linkId *uint64, streams []
 		recurringTransactions = append(recurringTransactions, &schema.ReOccuringTransaction{
 			AccountId:                       stream.AccountId,
 			StreamId:                        stream.StreamId,
-			Category:                        stream.Category,
 			CategoryId:                      stream.CategoryId,
 			Description:                     stream.Description,
 			MerchantName:                    stream.GetMerchantName(),
@@ -80,7 +80,7 @@ func transactionStreamToRecurringTransactions(userId, linkId *uint64, streams []
 			FirstDate:                       stream.GetFirstDate(),
 			LastDate:                        stream.GetLastDate(),
 			Frequency:                       getFrequency(stream.Frequency),
-			TransactionIds:                  stream.TransactionIds,
+			TransactionIds:                  helper.SliceToCommaSeparatedString(stream.TransactionIds),
 			AverageAmount:                   fmt.Sprintf("%f", *stream.AverageAmount.Amount),
 			AverageAmountIsoCurrencyCode:    *stream.AverageAmount.IsoCurrencyCode.Get(),
 			LastAmount:                      fmt.Sprintf("%f", *stream.LastAmount.Amount),

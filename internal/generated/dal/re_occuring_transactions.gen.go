@@ -32,7 +32,6 @@ func newReOccuringTransactionORM(db *gorm.DB, opts ...gen.DOOption) reOccuringTr
 	_reOccuringTransactionORM.AccountId = field.NewString(tableName, "account_id")
 	_reOccuringTransactionORM.AverageAmount = field.NewString(tableName, "average_amount")
 	_reOccuringTransactionORM.AverageAmountIsoCurrencyCode = field.NewString(tableName, "average_amount_iso_currency_code")
-	_reOccuringTransactionORM.Category = field.NewField(tableName, "category")
 	_reOccuringTransactionORM.CategoryId = field.NewString(tableName, "category_id")
 	_reOccuringTransactionORM.Description = field.NewString(tableName, "description")
 	_reOccuringTransactionORM.FirstDate = field.NewString(tableName, "first_date")
@@ -50,7 +49,7 @@ func newReOccuringTransactionORM(db *gorm.DB, opts ...gen.DOOption) reOccuringTr
 	_reOccuringTransactionORM.Sign = field.NewInt32(tableName, "sign")
 	_reOccuringTransactionORM.Status = field.NewString(tableName, "status")
 	_reOccuringTransactionORM.StreamId = field.NewString(tableName, "stream_id")
-	_reOccuringTransactionORM.TransactionIds = field.NewField(tableName, "transaction_ids")
+	_reOccuringTransactionORM.TransactionIds = field.NewString(tableName, "transaction_ids")
 	_reOccuringTransactionORM.UpdatedTime = field.NewString(tableName, "updated_time")
 	_reOccuringTransactionORM.UserId = field.NewUint64(tableName, "user_id")
 
@@ -66,7 +65,6 @@ type reOccuringTransactionORM struct {
 	AccountId                       field.String
 	AverageAmount                   field.String
 	AverageAmountIsoCurrencyCode    field.String
-	Category                        field.Field
 	CategoryId                      field.String
 	Description                     field.String
 	FirstDate                       field.String
@@ -84,7 +82,7 @@ type reOccuringTransactionORM struct {
 	Sign                            field.Int32
 	Status                          field.String
 	StreamId                        field.String
-	TransactionIds                  field.Field
+	TransactionIds                  field.String
 	UpdatedTime                     field.String
 	UserId                          field.Uint64
 
@@ -106,7 +104,6 @@ func (r *reOccuringTransactionORM) updateTableName(table string) *reOccuringTran
 	r.AccountId = field.NewString(table, "account_id")
 	r.AverageAmount = field.NewString(table, "average_amount")
 	r.AverageAmountIsoCurrencyCode = field.NewString(table, "average_amount_iso_currency_code")
-	r.Category = field.NewField(table, "category")
 	r.CategoryId = field.NewString(table, "category_id")
 	r.Description = field.NewString(table, "description")
 	r.FirstDate = field.NewString(table, "first_date")
@@ -124,7 +121,7 @@ func (r *reOccuringTransactionORM) updateTableName(table string) *reOccuringTran
 	r.Sign = field.NewInt32(table, "sign")
 	r.Status = field.NewString(table, "status")
 	r.StreamId = field.NewString(table, "stream_id")
-	r.TransactionIds = field.NewField(table, "transaction_ids")
+	r.TransactionIds = field.NewString(table, "transaction_ids")
 	r.UpdatedTime = field.NewString(table, "updated_time")
 	r.UserId = field.NewUint64(table, "user_id")
 
@@ -143,11 +140,10 @@ func (r *reOccuringTransactionORM) GetFieldByName(fieldName string) (field.Order
 }
 
 func (r *reOccuringTransactionORM) fillFieldMap() {
-	r.fieldMap = make(map[string]field.Expr, 24)
+	r.fieldMap = make(map[string]field.Expr, 23)
 	r.fieldMap["account_id"] = r.AccountId
 	r.fieldMap["average_amount"] = r.AverageAmount
 	r.fieldMap["average_amount_iso_currency_code"] = r.AverageAmountIsoCurrencyCode
-	r.fieldMap["category"] = r.Category
 	r.fieldMap["category_id"] = r.CategoryId
 	r.fieldMap["description"] = r.Description
 	r.fieldMap["first_date"] = r.FirstDate

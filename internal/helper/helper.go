@@ -2,6 +2,7 @@ package helper
 
 import (
 	"math/rand"
+	"strings"
 	"time"
 	"unsafe"
 )
@@ -54,4 +55,8 @@ func SliceToCommaSeparatedString(slice []string) string {
 		result += slice[i] + ","
 	}
 	return result[:len(result)-1]
+}
+
+func CommaSeparatedStringToStringSlice(str string) []string {
+	return strings.Split(str, ",")
 }

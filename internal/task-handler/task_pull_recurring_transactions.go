@@ -155,7 +155,6 @@ func copyOldtxnToNewtxn(oldtxn *schema.ReOccuringTransaction, newtxn *schema.ReO
 	return &schema.ReOccuringTransaction{
 		AccountId:                       newtxn.AccountId,
 		StreamId:                        newtxn.StreamId,
-		Category:                        newtxn.Category,
 		CategoryId:                      newtxn.CategoryId,
 		Description:                     newtxn.CategoryId,
 		MerchantName:                    newtxn.MerchantName,

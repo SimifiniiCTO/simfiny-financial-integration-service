@@ -34,7 +34,6 @@ func newTransactionORM(db *gorm.DB, opts ...gen.DOOption) transactionORM {
 	_transactionORM.Amount = field.NewFloat64(tableName, "amount")
 	_transactionORM.AuthorizedDate = field.NewString(tableName, "authorized_date")
 	_transactionORM.AuthorizedDatetime = field.NewString(tableName, "authorized_datetime")
-	_transactionORM.Category = field.NewField(tableName, "category")
 	_transactionORM.CategoryId = field.NewString(tableName, "category_id")
 	_transactionORM.CheckNumber = field.NewString(tableName, "check_number")
 	_transactionORM.Date = field.NewString(tableName, "date")
@@ -42,11 +41,29 @@ func newTransactionORM(db *gorm.DB, opts ...gen.DOOption) transactionORM {
 	_transactionORM.Id = field.NewUint64(tableName, "id")
 	_transactionORM.IsoCurrencyCode = field.NewString(tableName, "iso_currency_code")
 	_transactionORM.LinkId = field.NewUint64(tableName, "link_id")
+	_transactionORM.LocationAddress = field.NewString(tableName, "location_address")
+	_transactionORM.LocationCity = field.NewString(tableName, "location_city")
+	_transactionORM.LocationCountry = field.NewString(tableName, "location_country")
+	_transactionORM.LocationLat = field.NewFloat64(tableName, "location_lat")
+	_transactionORM.LocationLon = field.NewFloat64(tableName, "location_lon")
+	_transactionORM.LocationPostalCode = field.NewString(tableName, "location_postal_code")
+	_transactionORM.LocationRegion = field.NewString(tableName, "location_region")
+	_transactionORM.LocationStoreNumber = field.NewString(tableName, "location_store_number")
 	_transactionORM.MerchantName = field.NewString(tableName, "merchant_name")
 	_transactionORM.Name = field.NewString(tableName, "name")
 	_transactionORM.PaymentChannel = field.NewString(tableName, "payment_channel")
+	_transactionORM.PaymentMetaByOrderOf = field.NewString(tableName, "payment_meta_by_order_of")
+	_transactionORM.PaymentMetaPayee = field.NewString(tableName, "payment_meta_payee")
+	_transactionORM.PaymentMetaPayer = field.NewString(tableName, "payment_meta_payer")
+	_transactionORM.PaymentMetaPaymentMethod = field.NewString(tableName, "payment_meta_payment_method")
+	_transactionORM.PaymentMetaPaymentProcessor = field.NewString(tableName, "payment_meta_payment_processor")
+	_transactionORM.PaymentMetaPpdId = field.NewString(tableName, "payment_meta_ppd_id")
+	_transactionORM.PaymentMetaReason = field.NewString(tableName, "payment_meta_reason")
+	_transactionORM.PaymentMetaReferenceNumber = field.NewString(tableName, "payment_meta_reference_number")
 	_transactionORM.Pending = field.NewBool(tableName, "pending")
 	_transactionORM.PendingTransactionId = field.NewString(tableName, "pending_transaction_id")
+	_transactionORM.PersonalFinanceCategoryDetailed = field.NewString(tableName, "personal_finance_category_detailed")
+	_transactionORM.PersonalFinanceCategoryPrimary = field.NewString(tableName, "personal_finance_category_primary")
 	_transactionORM.Sign = field.NewInt32(tableName, "sign")
 	_transactionORM.TransactionCode = field.NewString(tableName, "transaction_code")
 	_transactionORM.TransactionId = field.NewString(tableName, "transaction_id")
@@ -61,30 +78,47 @@ func newTransactionORM(db *gorm.DB, opts ...gen.DOOption) transactionORM {
 type transactionORM struct {
 	transactionORMDo
 
-	ALL                    field.Asterisk
-	AccountId              field.String
-	AccountOwner           field.String
-	Amount                 field.Float64
-	AuthorizedDate         field.String
-	AuthorizedDatetime     field.String
-	Category               field.Field
-	CategoryId             field.String
-	CheckNumber            field.String
-	Date                   field.String
-	Datetime               field.String
-	Id                     field.Uint64
-	IsoCurrencyCode        field.String
-	LinkId                 field.Uint64
-	MerchantName           field.String
-	Name                   field.String
-	PaymentChannel         field.String
-	Pending                field.Bool
-	PendingTransactionId   field.String
-	Sign                   field.Int32
-	TransactionCode        field.String
-	TransactionId          field.String
-	UnofficialCurrencyCode field.String
-	UserId                 field.Uint64
+	ALL                             field.Asterisk
+	AccountId                       field.String
+	AccountOwner                    field.String
+	Amount                          field.Float64
+	AuthorizedDate                  field.String
+	AuthorizedDatetime              field.String
+	CategoryId                      field.String
+	CheckNumber                     field.String
+	Date                            field.String
+	Datetime                        field.String
+	Id                              field.Uint64
+	IsoCurrencyCode                 field.String
+	LinkId                          field.Uint64
+	LocationAddress                 field.String
+	LocationCity                    field.String
+	LocationCountry                 field.String
+	LocationLat                     field.Float64
+	LocationLon                     field.Float64
+	LocationPostalCode              field.String
+	LocationRegion                  field.String
+	LocationStoreNumber             field.String
+	MerchantName                    field.String
+	Name                            field.String
+	PaymentChannel                  field.String
+	PaymentMetaByOrderOf            field.String
+	PaymentMetaPayee                field.String
+	PaymentMetaPayer                field.String
+	PaymentMetaPaymentMethod        field.String
+	PaymentMetaPaymentProcessor     field.String
+	PaymentMetaPpdId                field.String
+	PaymentMetaReason               field.String
+	PaymentMetaReferenceNumber      field.String
+	Pending                         field.Bool
+	PendingTransactionId            field.String
+	PersonalFinanceCategoryDetailed field.String
+	PersonalFinanceCategoryPrimary  field.String
+	Sign                            field.Int32
+	TransactionCode                 field.String
+	TransactionId                   field.String
+	UnofficialCurrencyCode          field.String
+	UserId                          field.Uint64
 
 	fieldMap map[string]field.Expr
 }
@@ -106,7 +140,6 @@ func (t *transactionORM) updateTableName(table string) *transactionORM {
 	t.Amount = field.NewFloat64(table, "amount")
 	t.AuthorizedDate = field.NewString(table, "authorized_date")
 	t.AuthorizedDatetime = field.NewString(table, "authorized_datetime")
-	t.Category = field.NewField(table, "category")
 	t.CategoryId = field.NewString(table, "category_id")
 	t.CheckNumber = field.NewString(table, "check_number")
 	t.Date = field.NewString(table, "date")
@@ -114,11 +147,29 @@ func (t *transactionORM) updateTableName(table string) *transactionORM {
 	t.Id = field.NewUint64(table, "id")
 	t.IsoCurrencyCode = field.NewString(table, "iso_currency_code")
 	t.LinkId = field.NewUint64(table, "link_id")
+	t.LocationAddress = field.NewString(table, "location_address")
+	t.LocationCity = field.NewString(table, "location_city")
+	t.LocationCountry = field.NewString(table, "location_country")
+	t.LocationLat = field.NewFloat64(table, "location_lat")
+	t.LocationLon = field.NewFloat64(table, "location_lon")
+	t.LocationPostalCode = field.NewString(table, "location_postal_code")
+	t.LocationRegion = field.NewString(table, "location_region")
+	t.LocationStoreNumber = field.NewString(table, "location_store_number")
 	t.MerchantName = field.NewString(table, "merchant_name")
 	t.Name = field.NewString(table, "name")
 	t.PaymentChannel = field.NewString(table, "payment_channel")
+	t.PaymentMetaByOrderOf = field.NewString(table, "payment_meta_by_order_of")
+	t.PaymentMetaPayee = field.NewString(table, "payment_meta_payee")
+	t.PaymentMetaPayer = field.NewString(table, "payment_meta_payer")
+	t.PaymentMetaPaymentMethod = field.NewString(table, "payment_meta_payment_method")
+	t.PaymentMetaPaymentProcessor = field.NewString(table, "payment_meta_payment_processor")
+	t.PaymentMetaPpdId = field.NewString(table, "payment_meta_ppd_id")
+	t.PaymentMetaReason = field.NewString(table, "payment_meta_reason")
+	t.PaymentMetaReferenceNumber = field.NewString(table, "payment_meta_reference_number")
 	t.Pending = field.NewBool(table, "pending")
 	t.PendingTransactionId = field.NewString(table, "pending_transaction_id")
+	t.PersonalFinanceCategoryDetailed = field.NewString(table, "personal_finance_category_detailed")
+	t.PersonalFinanceCategoryPrimary = field.NewString(table, "personal_finance_category_primary")
 	t.Sign = field.NewInt32(table, "sign")
 	t.TransactionCode = field.NewString(table, "transaction_code")
 	t.TransactionId = field.NewString(table, "transaction_id")
@@ -140,13 +191,12 @@ func (t *transactionORM) GetFieldByName(fieldName string) (field.OrderExpr, bool
 }
 
 func (t *transactionORM) fillFieldMap() {
-	t.fieldMap = make(map[string]field.Expr, 23)
+	t.fieldMap = make(map[string]field.Expr, 40)
 	t.fieldMap["account_id"] = t.AccountId
 	t.fieldMap["account_owner"] = t.AccountOwner
 	t.fieldMap["amount"] = t.Amount
 	t.fieldMap["authorized_date"] = t.AuthorizedDate
 	t.fieldMap["authorized_datetime"] = t.AuthorizedDatetime
-	t.fieldMap["category"] = t.Category
 	t.fieldMap["category_id"] = t.CategoryId
 	t.fieldMap["check_number"] = t.CheckNumber
 	t.fieldMap["date"] = t.Date
@@ -154,11 +204,29 @@ func (t *transactionORM) fillFieldMap() {
 	t.fieldMap["id"] = t.Id
 	t.fieldMap["iso_currency_code"] = t.IsoCurrencyCode
 	t.fieldMap["link_id"] = t.LinkId
+	t.fieldMap["location_address"] = t.LocationAddress
+	t.fieldMap["location_city"] = t.LocationCity
+	t.fieldMap["location_country"] = t.LocationCountry
+	t.fieldMap["location_lat"] = t.LocationLat
+	t.fieldMap["location_lon"] = t.LocationLon
+	t.fieldMap["location_postal_code"] = t.LocationPostalCode
+	t.fieldMap["location_region"] = t.LocationRegion
+	t.fieldMap["location_store_number"] = t.LocationStoreNumber
 	t.fieldMap["merchant_name"] = t.MerchantName
 	t.fieldMap["name"] = t.Name
 	t.fieldMap["payment_channel"] = t.PaymentChannel
+	t.fieldMap["payment_meta_by_order_of"] = t.PaymentMetaByOrderOf
+	t.fieldMap["payment_meta_payee"] = t.PaymentMetaPayee
+	t.fieldMap["payment_meta_payer"] = t.PaymentMetaPayer
+	t.fieldMap["payment_meta_payment_method"] = t.PaymentMetaPaymentMethod
+	t.fieldMap["payment_meta_payment_processor"] = t.PaymentMetaPaymentProcessor
+	t.fieldMap["payment_meta_ppd_id"] = t.PaymentMetaPpdId
+	t.fieldMap["payment_meta_reason"] = t.PaymentMetaReason
+	t.fieldMap["payment_meta_reference_number"] = t.PaymentMetaReferenceNumber
 	t.fieldMap["pending"] = t.Pending
 	t.fieldMap["pending_transaction_id"] = t.PendingTransactionId
+	t.fieldMap["personal_finance_category_detailed"] = t.PersonalFinanceCategoryDetailed
+	t.fieldMap["personal_finance_category_primary"] = t.PersonalFinanceCategoryPrimary
 	t.fieldMap["sign"] = t.Sign
 	t.fieldMap["transaction_code"] = t.TransactionCode
 	t.fieldMap["transaction_id"] = t.TransactionId

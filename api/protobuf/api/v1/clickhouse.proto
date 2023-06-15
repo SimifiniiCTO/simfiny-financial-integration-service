@@ -42,10 +42,6 @@ enum ReOccuringTransactionsStatus {
     RE_OCCURING_TRANSACTIONS_STATUS_TOMBSTONED = 3;
 }
 
-message PersonalFinanceCategory {
-    string primary = 1;
-    string detailed = 2;
-}
 
 enum ReCurringFlow {
     RE_CURRING_FLOW_UNSPECIFIED = 0;
@@ -54,44 +50,44 @@ enum ReCurringFlow {
 }
 
 message InvestmentTransaction {
-    // @gotag: clickhouse:"account_id"
+    // @gotag: ch:"account_id"
     string account_id = 1;
-    // @gotag: clickhouse:"amount"
+    // @gotag: ch:"amount"
     string ammount = 2;
-    // @gotag: clickhouse:"investment_transaction_id"
+    // @gotag: ch:"investment_transaction_id"
     string investment_transaction_id = 3;
-    // @gotag: clickhouse:"security_id"
+    // @gotag: ch:"security_id"
     string security_id = 4;
-    // @gotag: clickhouse:"date"
+    // @gotag: ch:"date"
     string date = 5;
-    // @gotag: clickhouse:"name"
+    // @gotag: ch:"name"
     string name = 6;
-    // @gotag: clickhouse:"quantity"
+    // @gotag: ch:"quantity"
     double quantity = 7;
-    // @gotag: clickhouse:"amount"
+    // @gotag: ch:"amount"
     double amount = 8;
-    // @gotag: clickhouse:"price"
+    // @gotag: ch:"price"
     double price = 9;
-    // @gotag: clickhouse:"fees"
+    // @gotag: ch:"fees"
     double fees = 10;
-    // @gotag: clickhouse:"type"
+    // @gotag: ch:"type"
     string type = 11;
-    // @gotag: clickhouse:"subtype"
+    // @gotag: ch:"subtype"
     string subtype = 12;
-    // @gotag: clickhouse:"iso_currency_code"
+    // @gotag: ch:"iso_currency_code"
     string iso_currency_code = 13;
-    // @gotag: clickhouse:"unofficial_currency_code"
+    // @gotag: ch:"unofficial_currency_code"
     string unofficial_currency_code = 14;
-     // @gotag: clickhouse:"link_id"
+     // @gotag: ch:"link_id"
     uint64 link_id = 15 [
         (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""},
         (validate.rules).uint64.gt = 0
     ];
-    // @gotag: clickhouse:"id"
+    // @gotag: ch:"id"
     uint64 id = 16 [
         (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}
     ];
-        // @gotag: clickhouse:"user_id"
+        // @gotag: ch:"user_id"
     uint64 user_id = 17 [
         (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""},
         (validate.rules).uint64.gt = 0
@@ -103,144 +99,134 @@ message InvestmentTransaction {
 }
 
 message ReOccuringTransaction {
-    // @gotag: clickhouse:"account_id"
+    // @gotag: ch:"account_id"
     string account_id = 1;
-    // @gotag: clickhouse:"stream_id"
+    // @gotag: ch:"stream_id"
     string stream_id = 2;
-    // @gotag: clickhouse:"category"
-    repeated string category = 3;
-    // @gotag: clickhouse:"category_id"
+    // @gotag: ch:"category_id"
     string category_id = 4;
-    // @gotag: clickhouse:"description"
+    // @gotag: ch:"description"
     string description = 5;
-    // @gotag: clickhouse:"merchant_name"
+    // @gotag: ch:"merchant_name"
     string merchant_name = 6;
-    // @gotag: clickhouse:"personal_finance_category_primary"
+    // @gotag: ch:"personal_finance_category_primary"
     string personal_finance_category_primary = 7;
-    // @gotag: clickhouse:"personal_finance_category_detailed"
+    // @gotag: ch:"personal_finance_category_detailed"
     string personal_finance_category_detailed = 8;
-    // @gotag: clickhouse:"first_date"
+    // @gotag: ch:"first_date"
     string first_date = 9;
-    // @gotag: clickhouse:"last_date"
+    // @gotag: ch:"last_date"
     string last_date = 10;
-    // @gotag: clickhouse:"frequency"
+    // @gotag: ch:"frequency"
     ReOccuringTransactionsFrequency frequency = 11;
-    // @gotag: clickhouse:"transaction_ids"
-    repeated string transaction_ids = 12;
-    // @gotag: clickhouse:"average_amount"
+    // @gotag: ch:"transaction_ids,array"
+    string transaction_ids = 12;
+    // @gotag: ch:"average_amount"
     string average_amount = 13;
-    // @gotag: clickhouse:"average_amount_iso_currency_code"
+    // @gotag: ch:"average_amount_iso_currency_code"
     string average_amount_iso_currency_code = 14;
-    // @gotag: clickhouse:"last_amount"
+    // @gotag: ch:"last_amount"
     string last_amount = 15;
-    // @gotag: clickhouse:"last_amount_iso_currency_code"
+    // @gotag: ch:"last_amount_iso_currency_code"
     string last_amount_iso_currency_code = 16;
-    // @gotag: clickhouse:"is_active"
+    // @gotag: ch:"is_active"
     bool is_active = 17;
-    // @gotag: clickhouse:"status"
+    // @gotag: ch:"status"
     ReOccuringTransactionsStatus status = 18;
-    // @gotag: clickhouse:"updated_time"
+    // @gotag: ch:"updated_time"
     string updated_time = 19;
-    // @gotag: clickhouse:"user_id"
+    // @gotag: ch:"user_id"
     uint64 user_id = 20 [
         (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""},
         (validate.rules).uint64.gt = 0
     ];
-    // @gotag: clickhouse:"link_id"
+    // @gotag: ch:"link_id"
     uint64 link_id = 21 [
         (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""},
         (validate.rules).uint64.gt = 0
     ];
-    // @gotag: clickhouse:"id"
+    // @gotag: ch:"id"
     uint64 id = 22 [
         (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}
     ];
-    // @gotag: clickhouse:"flow"
+    // @gotag: ch:"flow"
     ReCurringFlow flow = 23;
     option (gorm.opts) = {ormable: true};
     int32 sign = 24;
 }
 
 message Transaction {
-    message Location {
-        string address = 1;
-        string city = 2;
-        string region = 3;
-        string postal_code = 4;
-        string country = 5;
-        double lat = 6;
-        double lon = 7;
-        string store_number = 8;
-    }
-    
-    message PaymentMeta {
-        string by_order_of = 1;
-        string payee = 2;
-        string payer = 3;
-        string payment_method = 4;
-        string payment_processor = 5;
-        string ppd_id = 6;
-        string reason = 7;
-        string reference_number = 8;
-    }
-
     option (gorm.opts) = {ormable: true};
-    // @gotag: clickhouse:"account_id"
+    // @gotag: ch:"account_id"
     string account_id = 1;
-    // @gotag: clickhouse:"amount"
+    // @gotag: ch:"amount"
     double amount = 2;
-    // @gotag: clickhouse:"iso_currency_code"
+    // @gotag: ch:"iso_currency_code"
     string iso_currency_code = 3;
-    // @gotag: clickhouse:"unofficial_currency_code"
+    // @gotag: ch:"unofficial_currency_code"
     string unofficial_currency_code = 4;
-    // @gotag: clickhouse:"category"
-    repeated string category = 5;
-    // @gotag: clickhouse:"category_id"
+    // @gotag: ch:"category_id"
     string category_id = 6;
-    // @gotag: clickhouse:"check_number"
+    // @gotag: ch:"check_number"
     string check_number = 7;
-    // @gotag: clickhouse:"date"
+    // @gotag: ch:"date"
     string date = 8;
-    // @gotag: clickhouse:"datetime"
+    // @gotag: ch:"datetime"
     string datetime = 9;
-    // @gotag: clickhouse:"authorized_date"
+    // @gotag: ch:"authorized_date"
     string authorized_date = 10;
-    // @gotag: clickhouse:"authorized_datetime"
+    // @gotag: ch:"authorized_datetime"
     string authorized_datetime = 11;
-    // @gotag: clickhouse:"location"
-    Location location = 12;
-    // @gotag: clickhouse:"name"
+    // @gotag: ch:"name"
     string name = 13;
-    // @gotag: clickhouse:"merchant_name"
+    // @gotag: ch:"merchant_name"
     string merchant_name = 14;
-    // @gotag: clickhouse:"payment_meta"
-    PaymentMeta payment_meta = 15;
-    // @gotag: clickhouse:"payment_channel"
+    // @gotag: ch:"payment_channel"
     string payment_channel = 16;
-    // @gotag: clickhouse:"pending"
+    // @gotag: ch:"pending"
     bool pending = 17;
-    // @gotag: clickhouse:"pending_transaction_id"
+    // @gotag: ch:"pending_transaction_id"
     string pending_transaction_id = 18;
-    // @gotag: clickhouse:"account_owner"
+    // @gotag: ch:"account_owner"
     string account_owner = 19;
-    // @gotag: clickhouse:"transaction_id"
+    // @gotag: ch:"transaction_id"
     string transaction_id = 20;
-    // @gotag: clickhouse:"transaction_code"
+    // @gotag: ch:"transaction_code"
     string transaction_code = 21;
     uint64 id = 22 [
         (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}
     ];
-    // @gotag: clickhouse:"user_id"
+    // @gotag: ch:"user_id"
     uint64 user_id = 23 [
         (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""},
         (validate.rules).uint64.gt = 0
     ];
-    // @gotag: clickhouse:"link_id"
+    // @gotag: ch:"link_id"
     uint64 link_id = 24 [
         (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""},
         (validate.rules).uint64.gt = 0
     ];
     int32 sign = 25;
+        // @gotag: ch:"personal_finance_category_primary"
+    string personal_finance_category_primary = 26;
+    // @gotag: ch:"personal_finance_category_detailed"
+    string personal_finance_category_detailed = 27;
+    string location_address = 28;
+    string location_city = 29;
+    string location_region = 30;
+    string location_postal_code = 31;
+    string location_country = 32;
+    double location_lat = 33;
+    double location_lon = 34;
+    string location_store_number = 35;
+    string payment_meta_by_order_of = 36;
+    string payment_meta_payee = 37;
+    string payment_meta_payer = 38;
+    string payment_meta_payment_method = 39;
+    string payment_meta_payment_processor = 40;
+    string payment_meta_ppd_id = 41;
+    string payment_meta_reason = 42;
+    string payment_meta_reference_number = 43;
 }
 
 message TransactionAmountByCountryMetric {

@@ -35,112 +35,6 @@ var (
 	_ = sort.Sort
 )
 
-// Validate checks the field values on PersonalFinanceCategory with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, the first error encountered is returned, or nil if there are no violations.
-func (m *PersonalFinanceCategory) Validate() error {
-	return m.validate(false)
-}
-
-// ValidateAll checks the field values on PersonalFinanceCategory with the
-// rules defined in the proto definition for this message. If any rules are
-// violated, the result is a list of violation errors wrapped in
-// PersonalFinanceCategoryMultiError, or nil if none found.
-func (m *PersonalFinanceCategory) ValidateAll() error {
-	return m.validate(true)
-}
-
-func (m *PersonalFinanceCategory) validate(all bool) error {
-	if m == nil {
-		return nil
-	}
-
-	var errors []error
-
-	// no validation rules for Primary
-
-	// no validation rules for Detailed
-
-	if len(errors) > 0 {
-		return PersonalFinanceCategoryMultiError(errors)
-	}
-
-	return nil
-}
-
-// PersonalFinanceCategoryMultiError is an error wrapping multiple validation
-// errors returned by PersonalFinanceCategory.ValidateAll() if the designated
-// constraints aren't met.
-type PersonalFinanceCategoryMultiError []error
-
-// Error returns a concatenation of all the error messages it wraps.
-func (m PersonalFinanceCategoryMultiError) Error() string {
-	var msgs []string
-	for _, err := range m {
-		msgs = append(msgs, err.Error())
-	}
-	return strings.Join(msgs, "; ")
-}
-
-// AllErrors returns a list of validation violation errors.
-func (m PersonalFinanceCategoryMultiError) AllErrors() []error { return m }
-
-// PersonalFinanceCategoryValidationError is the validation error returned by
-// PersonalFinanceCategory.Validate if the designated constraints aren't met.
-type PersonalFinanceCategoryValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e PersonalFinanceCategoryValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e PersonalFinanceCategoryValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e PersonalFinanceCategoryValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e PersonalFinanceCategoryValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e PersonalFinanceCategoryValidationError) ErrorName() string {
-	return "PersonalFinanceCategoryValidationError"
-}
-
-// Error satisfies the builtin error interface
-func (e PersonalFinanceCategoryValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sPersonalFinanceCategory.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = PersonalFinanceCategoryValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = PersonalFinanceCategoryValidationError{}
-
 // Validate checks the field values on InvestmentTransaction with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
@@ -341,6 +235,8 @@ func (m *ReOccuringTransaction) validate(all bool) error {
 
 	// no validation rules for Frequency
 
+	// no validation rules for TransactionIds
+
 	// no validation rules for AverageAmount
 
 	// no validation rules for AverageAmountIsoCurrencyCode
@@ -505,67 +401,9 @@ func (m *Transaction) validate(all bool) error {
 
 	// no validation rules for AuthorizedDatetime
 
-	if all {
-		switch v := interface{}(m.GetLocation()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, TransactionValidationError{
-					field:  "Location",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, TransactionValidationError{
-					field:  "Location",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		}
-	} else if v, ok := interface{}(m.GetLocation()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return TransactionValidationError{
-				field:  "Location",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
-
 	// no validation rules for Name
 
 	// no validation rules for MerchantName
-
-	if all {
-		switch v := interface{}(m.GetPaymentMeta()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, TransactionValidationError{
-					field:  "PaymentMeta",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, TransactionValidationError{
-					field:  "PaymentMeta",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		}
-	} else if v, ok := interface{}(m.GetPaymentMeta()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return TransactionValidationError{
-				field:  "PaymentMeta",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
 
 	// no validation rules for PaymentChannel
 
@@ -604,6 +442,42 @@ func (m *Transaction) validate(all bool) error {
 	}
 
 	// no validation rules for Sign
+
+	// no validation rules for PersonalFinanceCategoryPrimary
+
+	// no validation rules for PersonalFinanceCategoryDetailed
+
+	// no validation rules for LocationAddress
+
+	// no validation rules for LocationCity
+
+	// no validation rules for LocationRegion
+
+	// no validation rules for LocationPostalCode
+
+	// no validation rules for LocationCountry
+
+	// no validation rules for LocationLat
+
+	// no validation rules for LocationLon
+
+	// no validation rules for LocationStoreNumber
+
+	// no validation rules for PaymentMetaByOrderOf
+
+	// no validation rules for PaymentMetaPayee
+
+	// no validation rules for PaymentMetaPayer
+
+	// no validation rules for PaymentMetaPaymentMethod
+
+	// no validation rules for PaymentMetaPaymentProcessor
+
+	// no validation rules for PaymentMetaPpdId
+
+	// no validation rules for PaymentMetaReason
+
+	// no validation rules for PaymentMetaReferenceNumber
 
 	if len(errors) > 0 {
 		return TransactionMultiError(errors)
@@ -1244,239 +1118,3 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = TransactionAmountDistributionByCategoryMetricValidationError{}
-
-// Validate checks the field values on Transaction_Location with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, the first error encountered is returned, or nil if there are no violations.
-func (m *Transaction_Location) Validate() error {
-	return m.validate(false)
-}
-
-// ValidateAll checks the field values on Transaction_Location with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, the result is a list of violation errors wrapped in
-// Transaction_LocationMultiError, or nil if none found.
-func (m *Transaction_Location) ValidateAll() error {
-	return m.validate(true)
-}
-
-func (m *Transaction_Location) validate(all bool) error {
-	if m == nil {
-		return nil
-	}
-
-	var errors []error
-
-	// no validation rules for Address
-
-	// no validation rules for City
-
-	// no validation rules for Region
-
-	// no validation rules for PostalCode
-
-	// no validation rules for Country
-
-	// no validation rules for Lat
-
-	// no validation rules for Lon
-
-	// no validation rules for StoreNumber
-
-	if len(errors) > 0 {
-		return Transaction_LocationMultiError(errors)
-	}
-
-	return nil
-}
-
-// Transaction_LocationMultiError is an error wrapping multiple validation
-// errors returned by Transaction_Location.ValidateAll() if the designated
-// constraints aren't met.
-type Transaction_LocationMultiError []error
-
-// Error returns a concatenation of all the error messages it wraps.
-func (m Transaction_LocationMultiError) Error() string {
-	var msgs []string
-	for _, err := range m {
-		msgs = append(msgs, err.Error())
-	}
-	return strings.Join(msgs, "; ")
-}
-
-// AllErrors returns a list of validation violation errors.
-func (m Transaction_LocationMultiError) AllErrors() []error { return m }
-
-// Transaction_LocationValidationError is the validation error returned by
-// Transaction_Location.Validate if the designated constraints aren't met.
-type Transaction_LocationValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e Transaction_LocationValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e Transaction_LocationValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e Transaction_LocationValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e Transaction_LocationValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e Transaction_LocationValidationError) ErrorName() string {
-	return "Transaction_LocationValidationError"
-}
-
-// Error satisfies the builtin error interface
-func (e Transaction_LocationValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sTransaction_Location.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = Transaction_LocationValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = Transaction_LocationValidationError{}
-
-// Validate checks the field values on Transaction_PaymentMeta with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, the first error encountered is returned, or nil if there are no violations.
-func (m *Transaction_PaymentMeta) Validate() error {
-	return m.validate(false)
-}
-
-// ValidateAll checks the field values on Transaction_PaymentMeta with the
-// rules defined in the proto definition for this message. If any rules are
-// violated, the result is a list of violation errors wrapped in
-// Transaction_PaymentMetaMultiError, or nil if none found.
-func (m *Transaction_PaymentMeta) ValidateAll() error {
-	return m.validate(true)
-}
-
-func (m *Transaction_PaymentMeta) validate(all bool) error {
-	if m == nil {
-		return nil
-	}
-
-	var errors []error
-
-	// no validation rules for ByOrderOf
-
-	// no validation rules for Payee
-
-	// no validation rules for Payer
-
-	// no validation rules for PaymentMethod
-
-	// no validation rules for PaymentProcessor
-
-	// no validation rules for PpdId
-
-	// no validation rules for Reason
-
-	// no validation rules for ReferenceNumber
-
-	if len(errors) > 0 {
-		return Transaction_PaymentMetaMultiError(errors)
-	}
-
-	return nil
-}
-
-// Transaction_PaymentMetaMultiError is an error wrapping multiple validation
-// errors returned by Transaction_PaymentMeta.ValidateAll() if the designated
-// constraints aren't met.
-type Transaction_PaymentMetaMultiError []error
-
-// Error returns a concatenation of all the error messages it wraps.
-func (m Transaction_PaymentMetaMultiError) Error() string {
-	var msgs []string
-	for _, err := range m {
-		msgs = append(msgs, err.Error())
-	}
-	return strings.Join(msgs, "; ")
-}
-
-// AllErrors returns a list of validation violation errors.
-func (m Transaction_PaymentMetaMultiError) AllErrors() []error { return m }
-
-// Transaction_PaymentMetaValidationError is the validation error returned by
-// Transaction_PaymentMeta.Validate if the designated constraints aren't met.
-type Transaction_PaymentMetaValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e Transaction_PaymentMetaValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e Transaction_PaymentMetaValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e Transaction_PaymentMetaValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e Transaction_PaymentMetaValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e Transaction_PaymentMetaValidationError) ErrorName() string {
-	return "Transaction_PaymentMetaValidationError"
-}
-
-// Error satisfies the builtin error interface
-func (e Transaction_PaymentMetaValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sTransaction_PaymentMeta.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = Transaction_PaymentMetaValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = Transaction_PaymentMetaValidationError{}
