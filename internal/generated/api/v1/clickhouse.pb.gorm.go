@@ -26,6 +26,7 @@ type InvestmentTransactionORM struct {
 	Price                   float64
 	Quantity                float64
 	SecurityId              string
+	Sign                    int32
 	Subtype                 string
 	Type                    string
 	UnofficialCurrencyCode  string
@@ -65,6 +66,7 @@ func (m *InvestmentTransaction) ToORM(ctx context.Context) (InvestmentTransactio
 	to.Id = m.Id
 	to.UserId = m.UserId
 	to.CreatedAt = m.CreatedAt
+	to.Sign = m.Sign
 	if posthook, ok := interface{}(m).(InvestmentTransactionWithAfterToORM); ok {
 		err = posthook.AfterToORM(ctx, &to)
 	}
@@ -99,6 +101,7 @@ func (m *InvestmentTransactionORM) ToPB(ctx context.Context) (InvestmentTransact
 	to.Id = m.Id
 	to.UserId = m.UserId
 	to.CreatedAt = m.CreatedAt
+	to.Sign = m.Sign
 	if posthook, ok := interface{}(m).(InvestmentTransactionWithAfterToPB); ok {
 		err = posthook.AfterToPB(ctx, &to)
 	}
@@ -147,6 +150,7 @@ type ReOccuringTransactionORM struct {
 	MerchantName                    string
 	PersonalFinanceCategoryDetailed string
 	PersonalFinanceCategoryPrimary  string
+	Sign                            int32
 	Status                          string
 	StreamId                        string
 	TransactionIds                  pq.StringArray `gorm:"type:Array(String)"`
@@ -198,6 +202,7 @@ func (m *ReOccuringTransaction) ToORM(ctx context.Context) (ReOccuringTransactio
 	to.LinkId = m.LinkId
 	to.Id = m.Id
 	to.Flow = ReCurringFlow_name[int32(m.Flow)]
+	to.Sign = m.Sign
 	if posthook, ok := interface{}(m).(ReOccuringTransactionWithAfterToORM); ok {
 		err = posthook.AfterToORM(ctx, &to)
 	}
@@ -243,6 +248,7 @@ func (m *ReOccuringTransactionORM) ToPB(ctx context.Context) (ReOccuringTransact
 	to.LinkId = m.LinkId
 	to.Id = m.Id
 	to.Flow = ReCurringFlow(ReCurringFlow_value[m.Flow])
+	to.Sign = m.Sign
 	if posthook, ok := interface{}(m).(ReOccuringTransactionWithAfterToPB); ok {
 		err = posthook.AfterToPB(ctx, &to)
 	}
@@ -291,6 +297,7 @@ type TransactionORM struct {
 	PaymentChannel         string
 	Pending                bool
 	PendingTransactionId   string
+	Sign                   int32
 	TransactionCode        string
 	TransactionId          string
 	UnofficialCurrencyCode string
@@ -337,6 +344,7 @@ func (m *Transaction) ToORM(ctx context.Context) (TransactionORM, error) {
 	to.Id = m.Id
 	to.UserId = m.UserId
 	to.LinkId = m.LinkId
+	to.Sign = m.Sign
 	if posthook, ok := interface{}(m).(TransactionWithAfterToORM); ok {
 		err = posthook.AfterToORM(ctx, &to)
 	}
@@ -378,6 +386,7 @@ func (m *TransactionORM) ToPB(ctx context.Context) (Transaction, error) {
 	to.Id = m.Id
 	to.UserId = m.UserId
 	to.LinkId = m.LinkId
+	to.Sign = m.Sign
 	if posthook, ok := interface{}(m).(TransactionWithAfterToPB); ok {
 		err = posthook.AfterToPB(ctx, &to)
 	}
@@ -757,6 +766,10 @@ func DefaultApplyFieldMaskInvestmentTransaction(ctx context.Context, patchee *In
 		}
 		if f == prefix+"CreatedAt" {
 			patchee.CreatedAt = patcher.CreatedAt
+			continue
+		}
+		if f == prefix+"Sign" {
+			patchee.Sign = patcher.Sign
 			continue
 		}
 	}
@@ -1189,6 +1202,10 @@ func DefaultApplyFieldMaskReOccuringTransaction(ctx context.Context, patchee *Re
 		}
 		if f == prefix+"Flow" {
 			patchee.Flow = patcher.Flow
+			continue
+		}
+		if f == prefix+"Sign" {
+			patchee.Sign = patcher.Sign
 			continue
 		}
 	}
@@ -1665,6 +1682,10 @@ func DefaultApplyFieldMaskTransaction(ctx context.Context, patchee *Transaction,
 		}
 		if f == prefix+"LinkId" {
 			patchee.LinkId = patcher.LinkId
+			continue
+		}
+		if f == prefix+"Sign" {
+			patchee.Sign = patcher.Sign
 			continue
 		}
 	}

@@ -62,7 +62,7 @@ func (th *TaskHandler) RunPullUpdatedReCurringTransactionsTask(ctx context.Conte
 	accountIds := payload.AccountIds
 
 	// query the link from the database
-	link, err := postgresClient.GetLink(ctx, userId, linkId)
+	link, err := postgresClient.GetLink(ctx, userId, linkId, false)
 	if err != nil {
 		return err
 	}

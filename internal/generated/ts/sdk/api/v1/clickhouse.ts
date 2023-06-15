@@ -198,6 +198,7 @@ export interface InvestmentTransaction {
   /** @gotag: clickhouse:"user_id" */
   userId: number;
   createdAt: string;
+  sign: number;
 }
 
 export interface ReOccuringTransaction {
@@ -247,6 +248,7 @@ export interface ReOccuringTransaction {
   id: number;
   /** @gotag: clickhouse:"flow" */
   flow: ReCurringFlow;
+  sign: number;
 }
 
 export interface Transaction {
@@ -301,6 +303,7 @@ export interface Transaction {
   userId: number;
   /** @gotag: clickhouse:"link_id" */
   linkId: number;
+  sign: number;
 }
 
 export interface Transaction_Location {
@@ -445,6 +448,7 @@ function createBaseInvestmentTransaction(): InvestmentTransaction {
     id: 0,
     userId: 0,
     createdAt: "",
+    sign: 0,
   };
 }
 
@@ -503,6 +507,9 @@ export const InvestmentTransaction = {
     }
     if (message.createdAt !== "") {
       writer.uint32(146).string(message.createdAt);
+    }
+    if (message.sign !== 0) {
+      writer.uint32(152).int32(message.sign);
     }
     return writer;
   },
@@ -640,6 +647,13 @@ export const InvestmentTransaction = {
 
           message.createdAt = reader.string();
           continue;
+        case 19:
+          if (tag !== 152) {
+            break;
+          }
+
+          message.sign = reader.int32();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -669,6 +683,7 @@ export const InvestmentTransaction = {
       id: isSet(object.id) ? Number(object.id) : 0,
       userId: isSet(object.userId) ? Number(object.userId) : 0,
       createdAt: isSet(object.createdAt) ? String(object.createdAt) : "",
+      sign: isSet(object.sign) ? Number(object.sign) : 0,
     };
   },
 
@@ -692,6 +707,7 @@ export const InvestmentTransaction = {
     message.id !== undefined && (obj.id = Math.round(message.id));
     message.userId !== undefined && (obj.userId = Math.round(message.userId));
     message.createdAt !== undefined && (obj.createdAt = message.createdAt);
+    message.sign !== undefined && (obj.sign = Math.round(message.sign));
     return obj;
   },
 
@@ -719,6 +735,7 @@ export const InvestmentTransaction = {
     message.id = object.id ?? 0;
     message.userId = object.userId ?? 0;
     message.createdAt = object.createdAt ?? "";
+    message.sign = object.sign ?? 0;
     return message;
   },
 };
@@ -748,6 +765,7 @@ function createBaseReOccuringTransaction(): ReOccuringTransaction {
     linkId: 0,
     id: 0,
     flow: 0,
+    sign: 0,
   };
 }
 
@@ -821,6 +839,9 @@ export const ReOccuringTransaction = {
     }
     if (message.flow !== 0) {
       writer.uint32(184).int32(message.flow);
+    }
+    if (message.sign !== 0) {
+      writer.uint32(192).int32(message.sign);
     }
     return writer;
   },
@@ -993,6 +1014,13 @@ export const ReOccuringTransaction = {
 
           message.flow = reader.int32() as any;
           continue;
+        case 24:
+          if (tag !== 192) {
+            break;
+          }
+
+          message.sign = reader.int32();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1035,6 +1063,7 @@ export const ReOccuringTransaction = {
       linkId: isSet(object.linkId) ? Number(object.linkId) : 0,
       id: isSet(object.id) ? Number(object.id) : 0,
       flow: isSet(object.flow) ? reCurringFlowFromJSON(object.flow) : 0,
+      sign: isSet(object.sign) ? Number(object.sign) : 0,
     };
   },
 
@@ -1075,6 +1104,7 @@ export const ReOccuringTransaction = {
     message.linkId !== undefined && (obj.linkId = Math.round(message.linkId));
     message.id !== undefined && (obj.id = Math.round(message.id));
     message.flow !== undefined && (obj.flow = reCurringFlowToJSON(message.flow));
+    message.sign !== undefined && (obj.sign = Math.round(message.sign));
     return obj;
   },
 
@@ -1107,6 +1137,7 @@ export const ReOccuringTransaction = {
     message.linkId = object.linkId ?? 0;
     message.id = object.id ?? 0;
     message.flow = object.flow ?? 0;
+    message.sign = object.sign ?? 0;
     return message;
   },
 };
@@ -1137,6 +1168,7 @@ function createBaseTransaction(): Transaction {
     id: 0,
     userId: 0,
     linkId: 0,
+    sign: 0,
   };
 }
 
@@ -1213,6 +1245,9 @@ export const Transaction = {
     }
     if (message.linkId !== 0) {
       writer.uint32(192).uint64(message.linkId);
+    }
+    if (message.sign !== 0) {
+      writer.uint32(200).int32(message.sign);
     }
     return writer;
   },
@@ -1392,6 +1427,13 @@ export const Transaction = {
 
           message.linkId = longToNumber(reader.uint64() as Long);
           continue;
+        case 25:
+          if (tag !== 200) {
+            break;
+          }
+
+          message.sign = reader.int32();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1427,6 +1469,7 @@ export const Transaction = {
       id: isSet(object.id) ? Number(object.id) : 0,
       userId: isSet(object.userId) ? Number(object.userId) : 0,
       linkId: isSet(object.linkId) ? Number(object.linkId) : 0,
+      sign: isSet(object.sign) ? Number(object.sign) : 0,
     };
   },
 
@@ -1462,6 +1505,7 @@ export const Transaction = {
     message.id !== undefined && (obj.id = Math.round(message.id));
     message.userId !== undefined && (obj.userId = Math.round(message.userId));
     message.linkId !== undefined && (obj.linkId = Math.round(message.linkId));
+    message.sign !== undefined && (obj.sign = Math.round(message.sign));
     return obj;
   },
 
@@ -1499,6 +1543,7 @@ export const Transaction = {
     message.id = object.id ?? 0;
     message.userId = object.userId ?? 0;
     message.linkId = object.linkId ?? 0;
+    message.sign = object.sign ?? 0;
     return message;
   },
 };

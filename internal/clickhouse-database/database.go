@@ -13,6 +13,7 @@ import (
 	"github.com/labstack/gommon/log"
 	"github.com/newrelic/go-agent/v3/newrelic"
 	"go.uber.org/zap"
+	clickhousebase "gorm.io/driver/clickhouse"
 	"gorm.io/gorm"
 )
 
@@ -89,7 +90,7 @@ type Db struct {
 var _ ClickhouseDatabaseOperations = (*Db)(nil)
 
 // New returns a new database object
-func New(ctx context.Context, opts ...Option) (*Db, error) {
+func New(ctx context.Context, uri string, opts ...Option) (*Db, error) {
 	database := &Db{}
 
 	for _, opt := range opts {
@@ -100,6 +101,26 @@ func New(ctx context.Context, opts ...Option) (*Db, error) {
 	if err := database.Validate(); err != nil {
 		return nil, err
 	}
+
+	db, err := gorm.Open(clickhousebase.New(clickhousebase.Config{
+		DSN:                          uri,
+		Conn:                         database.Conn.Engine.ConnPool, // initialize with existing database conn
+		DisableDatetimePrecision:     true,                          // disable datetime64 precision, not supported before clickhouse 20.4
+		DontSupportRenameColumn:      true,                          // rename column not supported before clickhouse 20.4
+		DontSupportEmptyDefaultValue: false,                         // do not consider empty strings as valid default values
+		SkipInitializeWithVersion:    false,                         // smart configure based on used version
+		DefaultGranularity:           3,                             // 1 granule = 8192 rows
+		DefaultCompression:           "LZ4",                         // default compression algorithm. LZ4 is lossless
+		DefaultIndexType:             "minmax",                      // index stores extremes of the expression
+		DefaultTableEngineOpts:       "ENGINE=MergeTree() ORDER BY tuple()",
+	}), &gorm.Config{})
+
+	if err != nil {
+		return nil, err
+	}
+
+	database.Conn.Engine = db
+
 	// ping the database
 	if err := database.pingDatabase(); err != nil {
 		return nil, err
@@ -145,8 +166,9 @@ func (db *Db) performSchemaMigration() error {
 	}
 
 	if len(models) > 0 {
-		// TODO: define table options here (engine should be one that support deduplication)
-		if err := engine.AutoMigrate(models...); err != nil {
+		// ref. https://kb.altinity.com/engines/mergetree-table-engine-family/collapsing-vs-replacing/
+		// ref. https://clickhouse.com/docs/en/guides/developer/deduplication
+		if err := engine.Set("gorm:table_options", "ENGINE=CollapsingMergeTree(sign)").AutoMigrate(models...); err != nil {
 			// TODO: emit failure metric here
 			log.Error(err.Error())
 			return err

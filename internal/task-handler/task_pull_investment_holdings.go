@@ -68,7 +68,7 @@ func (th *TaskHandler) RunPullInvestmentHoldingsTask(ctx context.Context, t *asy
 	}
 
 	// get all investment holdings from the database
-	link, err := postgresClient.GetLink(ctx, userId, linkId)
+	link, err := postgresClient.GetLink(ctx, userId, linkId, false)
 	if err != nil {
 		return err
 	}

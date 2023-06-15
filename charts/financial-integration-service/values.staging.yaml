@@ -25,6 +25,18 @@ faults:
   test_fail: false
   test_timeout: false
 
+clickhouse:
+  host: l77zn1po0n.us-east-1.aws.clickhouse.cloud
+  port: 8443
+  user: default
+  password: nnqMml.lfh2g9
+  maxConnectionAttempts: 4
+  maxConnectionRetries: 4
+  maxConnectionRetryTimeout: 500ms
+  maxConnectionRetrySleepInterval: 100ms
+  maxQueryTimeout: 500ms
+  uri: clickhouse://default:nnqMml.lfh2g9@l77zn1po0n.us-east-1.aws.clickhouse.cloud:8443/default?dial_timeout=10s&read_timeout=20s
+  
 database:
   host: db-postgresql-staging-environment-do-user-11446161-0.b.db.ondigitalocean.com
   port: 25061
@@ -37,6 +49,9 @@ database:
   maxConnectionRetryTimeout: 500ms
   maxConnectionRetrySleepInterval: 100ms
   maxQueryTimeout: 500ms
+  maxIdleConnections: 10
+  maxOpenConnections: 10
+  connectionMaxLifetime: 10h
 
 aws:
   # access key id for credentials provisioning
@@ -93,6 +108,7 @@ stripe:
   enabled: true
   # api key
   apiKey: sk_test_4eC39HqLyjWDarjtT1zdp7dc
+  endpointSigningKey: whsec_09exib1e5wYYlPJYUc8rNx28bM2Dwx0r
 
 newRelic:
   # wether or not to enable metrics and traces
@@ -192,6 +208,10 @@ autoscaling:
 
 # Redis address in the format <host>:<port>
 cache: ""
+
+cacheTTLInSeconds: 3600
+
+
 # Redis deployment
 redis:
   enabled: false
@@ -260,3 +280,5 @@ linkerd:
     prometheus.io/scrape: "true"
     prometheus.io/port: 4191"
     prometheus.io/path: "/metrics"
+
+taskProcessorWorkers: 5

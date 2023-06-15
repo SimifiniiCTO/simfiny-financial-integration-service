@@ -3985,6 +3985,10 @@
         "flow": {
           "$ref": "#/definitions/ReCurringFlow",
           "title": "@gotag: clickhouse:\"flow\""
+        },
+        "sign": {
+          "type": "integer",
+          "format": "int32"
         }
       }
     },
@@ -4428,6 +4432,10 @@
           "type": "string",
           "format": "uint64",
           "title": "@gotag: clickhouse:\"link_id\""
+        },
+        "sign": {
+          "type": "integer",
+          "format": "int32"
         }
       }
     },

@@ -413,20 +413,37 @@ func TestDb_UpdateTransaction(t *testing.T) {
 
 func TestDb_DeleteTransactionsByLinkId(t *testing.T) {
 	type args struct {
-		ctx    context.Context
-		linkId *uint64
+		ctx          context.Context
+		linkId       *uint64
+		precondition func(ctx context.Context, t *testing.T, arg *args) *uint64
 	}
 	tests := []struct {
 		name    string
-		db      *Db
 		args    args
 		wantErr bool
 	}{
-		// TODO: Add test cases.
+		{
+			"[success] - delete transaction",
+			args{
+				ctx:    context.Background(),
+				linkId: generateRandomId(),
+				precondition: func(ctx context.Context, t *testing.T, arg *args) *uint64 {
+					tx := generateRandomTransaction()
+					userId := generateRandomId()
+					txId, err := conn.AddTransaction(ctx, userId, tx)
+					if err != nil {
+						t.Errorf("conn.AddTransaction() error = %v", err)
+					}
+
+					return txId
+				},
+			},
+			false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if err := tt.db.DeleteTransactionsByLinkId(tt.args.ctx, tt.args.linkId); (err != nil) != tt.wantErr {
+			if err := conn.DeleteTransactionsByLinkId(tt.args.ctx, tt.args.linkId); (err != nil) != tt.wantErr {
 				t.Errorf("Db.DeleteTransactionsByLinkId() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})

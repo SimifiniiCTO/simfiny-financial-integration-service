@@ -192,6 +192,9 @@
                         }
                     ],
                     "title": "Re Curring Flow"
+                },
+                "sign": {
+                    "type": "integer"
                 }
             },
             "additionalProperties": true,
@@ -299,6 +302,9 @@
                 "link_id": {
                     "type": "string",
                     "description": "@gotag: clickhouse:\"link_id\""
+                },
+                "sign": {
+                    "type": "integer"
                 }
             },
             "additionalProperties": true,

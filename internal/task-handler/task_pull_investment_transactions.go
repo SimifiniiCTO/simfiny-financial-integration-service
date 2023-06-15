@@ -63,7 +63,7 @@ func (th *TaskHandler) RunPullInvestmentTransactionsTask(ctx context.Context, t 
 	accountIds := payload.AccountIds
 
 	// get link
-	link, err := postgresClient.GetLink(ctx, userId, linkId)
+	link, err := postgresClient.GetLink(ctx, userId, linkId, false)
 	if err != nil {
 		return err
 	}

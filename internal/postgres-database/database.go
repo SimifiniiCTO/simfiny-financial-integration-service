@@ -96,15 +96,15 @@ type DatabaseOperations interface {
 	// or plaid authentication events against an account. For example, a user can connect their
 	// chase account via a link and authorize simfiny access to their checking and deposit accounts
 	// all of which will be linked to link object
-	CreateLink(ctx context.Context, userID uint64, link *schema.Link) (*schema.Link, error)
+	CreateLink(ctx context.Context, userID uint64, link *schema.Link, clearAccessToken bool) (*schema.Link, error)
 	// DeleteLink deletes a link by id as well as all associations
 	DeleteLink(ctx context.Context, userID uint64, linkID uint64) error
 	// GetLink retrieves a link by id
-	GetLink(ctx context.Context, userID uint64, linkID uint64) (*schema.Link, error)
+	GetLink(ctx context.Context, userID uint64, linkID uint64, clearAccessToken bool) (*schema.Link, error)
 	// LinkExistsForItem checks if a link exists for a given item id (plaid itemID)
 	LinkExistsForItem(ctx context.Context, userID uint64, itemID string) (bool, error)
 	// GetLinkByItemId retrieves a link by item id
-	GetLinkByItemId(ctx context.Context, itemId string) (*schema.Link, error)
+	GetLinkByItemId(ctx context.Context, itemId string, clearAccessToken bool) (*schema.Link, error)
 
 	// Plaid syncing
 	GetLastPlaidSync(ctx context.Context, userId, linkId uint64) (*schema.PlaidSync, error)

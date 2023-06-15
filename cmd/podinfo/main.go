@@ -416,7 +416,7 @@ func configureClickhouseConn(ctx context.Context, logger *zap.Logger, instrument
 		clickhouseDatabase.WithDatabaseQueryOperator(queryOperator),
 	}
 
-	db, err := clickhouseDatabase.New(ctx, databaseOpts...)
+	db, err := clickhouseDatabase.New(ctx, host, databaseOpts...)
 	if err != nil {
 		return nil, err
 	}

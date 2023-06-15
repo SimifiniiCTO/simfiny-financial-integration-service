@@ -53,7 +53,7 @@ func (th *TaskHandler) RunDeleteTransactionsTask(ctx context.Context, task *asyn
 	}
 
 	// query the link from the database
-	link, err := postgresClient.GetLink(ctx, payload.UserId, payload.LinkId)
+	link, err := postgresClient.GetLink(ctx, payload.UserId, payload.LinkId, false)
 	if err != nil {
 		return err
 	}

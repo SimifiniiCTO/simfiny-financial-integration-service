@@ -48,7 +48,7 @@ func (th *TaskHandler) RunDeleteLinkTask(ctx context.Context, task *asynq.Task) 
 	}
 
 	// query the link from the database
-	link, err := postgresClient.GetLinkByItemId(ctx, payload.PlaidLinkItemId)
+	link, err := postgresClient.GetLinkByItemId(ctx, payload.PlaidLinkItemId, false)
 	if err != nil {
 		return err
 	}

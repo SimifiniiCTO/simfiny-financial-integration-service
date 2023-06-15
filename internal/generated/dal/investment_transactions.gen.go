@@ -43,6 +43,7 @@ func newInvestmentTransactionORM(db *gorm.DB, opts ...gen.DOOption) investmentTr
 	_investmentTransactionORM.Price = field.NewFloat64(tableName, "price")
 	_investmentTransactionORM.Quantity = field.NewFloat64(tableName, "quantity")
 	_investmentTransactionORM.SecurityId = field.NewString(tableName, "security_id")
+	_investmentTransactionORM.Sign = field.NewInt32(tableName, "sign")
 	_investmentTransactionORM.Subtype = field.NewString(tableName, "subtype")
 	_investmentTransactionORM.Type = field.NewString(tableName, "type")
 	_investmentTransactionORM.UnofficialCurrencyCode = field.NewString(tableName, "unofficial_currency_code")
@@ -71,6 +72,7 @@ type investmentTransactionORM struct {
 	Price                   field.Float64
 	Quantity                field.Float64
 	SecurityId              field.String
+	Sign                    field.Int32
 	Subtype                 field.String
 	Type                    field.String
 	UnofficialCurrencyCode  field.String
@@ -105,6 +107,7 @@ func (i *investmentTransactionORM) updateTableName(table string) *investmentTran
 	i.Price = field.NewFloat64(table, "price")
 	i.Quantity = field.NewFloat64(table, "quantity")
 	i.SecurityId = field.NewString(table, "security_id")
+	i.Sign = field.NewInt32(table, "sign")
 	i.Subtype = field.NewString(table, "subtype")
 	i.Type = field.NewString(table, "type")
 	i.UnofficialCurrencyCode = field.NewString(table, "unofficial_currency_code")
@@ -125,7 +128,7 @@ func (i *investmentTransactionORM) GetFieldByName(fieldName string) (field.Order
 }
 
 func (i *investmentTransactionORM) fillFieldMap() {
-	i.fieldMap = make(map[string]field.Expr, 18)
+	i.fieldMap = make(map[string]field.Expr, 19)
 	i.fieldMap["account_id"] = i.AccountId
 	i.fieldMap["ammount"] = i.Ammount
 	i.fieldMap["amount"] = i.Amount
@@ -140,6 +143,7 @@ func (i *investmentTransactionORM) fillFieldMap() {
 	i.fieldMap["price"] = i.Price
 	i.fieldMap["quantity"] = i.Quantity
 	i.fieldMap["security_id"] = i.SecurityId
+	i.fieldMap["sign"] = i.Sign
 	i.fieldMap["subtype"] = i.Subtype
 	i.fieldMap["type"] = i.Type
 	i.fieldMap["unofficial_currency_code"] = i.UnofficialCurrencyCode

@@ -217,6 +217,8 @@ func (m *InvestmentTransaction) validate(all bool) error {
 
 	// no validation rules for CreatedAt
 
+	// no validation rules for Sign
+
 	if len(errors) > 0 {
 		return InvestmentTransactionMultiError(errors)
 	}
@@ -378,6 +380,8 @@ func (m *ReOccuringTransaction) validate(all bool) error {
 	// no validation rules for Id
 
 	// no validation rules for Flow
+
+	// no validation rules for Sign
 
 	if len(errors) > 0 {
 		return ReOccuringTransactionMultiError(errors)
@@ -598,6 +602,8 @@ func (m *Transaction) validate(all bool) error {
 		}
 		errors = append(errors, err)
 	}
+
+	// no validation rules for Sign
 
 	if len(errors) > 0 {
 		return TransactionMultiError(errors)

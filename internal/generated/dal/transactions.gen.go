@@ -47,6 +47,7 @@ func newTransactionORM(db *gorm.DB, opts ...gen.DOOption) transactionORM {
 	_transactionORM.PaymentChannel = field.NewString(tableName, "payment_channel")
 	_transactionORM.Pending = field.NewBool(tableName, "pending")
 	_transactionORM.PendingTransactionId = field.NewString(tableName, "pending_transaction_id")
+	_transactionORM.Sign = field.NewInt32(tableName, "sign")
 	_transactionORM.TransactionCode = field.NewString(tableName, "transaction_code")
 	_transactionORM.TransactionId = field.NewString(tableName, "transaction_id")
 	_transactionORM.UnofficialCurrencyCode = field.NewString(tableName, "unofficial_currency_code")
@@ -79,6 +80,7 @@ type transactionORM struct {
 	PaymentChannel         field.String
 	Pending                field.Bool
 	PendingTransactionId   field.String
+	Sign                   field.Int32
 	TransactionCode        field.String
 	TransactionId          field.String
 	UnofficialCurrencyCode field.String
@@ -117,6 +119,7 @@ func (t *transactionORM) updateTableName(table string) *transactionORM {
 	t.PaymentChannel = field.NewString(table, "payment_channel")
 	t.Pending = field.NewBool(table, "pending")
 	t.PendingTransactionId = field.NewString(table, "pending_transaction_id")
+	t.Sign = field.NewInt32(table, "sign")
 	t.TransactionCode = field.NewString(table, "transaction_code")
 	t.TransactionId = field.NewString(table, "transaction_id")
 	t.UnofficialCurrencyCode = field.NewString(table, "unofficial_currency_code")
@@ -137,7 +140,7 @@ func (t *transactionORM) GetFieldByName(fieldName string) (field.OrderExpr, bool
 }
 
 func (t *transactionORM) fillFieldMap() {
-	t.fieldMap = make(map[string]field.Expr, 22)
+	t.fieldMap = make(map[string]field.Expr, 23)
 	t.fieldMap["account_id"] = t.AccountId
 	t.fieldMap["account_owner"] = t.AccountOwner
 	t.fieldMap["amount"] = t.Amount
@@ -156,6 +159,7 @@ func (t *transactionORM) fillFieldMap() {
 	t.fieldMap["payment_channel"] = t.PaymentChannel
 	t.fieldMap["pending"] = t.Pending
 	t.fieldMap["pending_transaction_id"] = t.PendingTransactionId
+	t.fieldMap["sign"] = t.Sign
 	t.fieldMap["transaction_code"] = t.TransactionCode
 	t.fieldMap["transaction_id"] = t.TransactionId
 	t.fieldMap["unofficial_currency_code"] = t.UnofficialCurrencyCode

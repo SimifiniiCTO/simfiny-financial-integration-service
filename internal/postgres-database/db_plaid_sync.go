@@ -14,7 +14,7 @@ func (db *Db) GetLastPlaidSync(ctx context.Context, userId, linkId uint64) (*sch
 		defer span.End()
 	}
 
-	link, err := db.GetLink(ctx, userId, linkId)
+	link, err := db.GetLink(ctx, userId, linkId, false)
 	if err != nil {
 		return nil, err
 	}
@@ -29,7 +29,7 @@ func (db *Db) RecordPlaidSync(ctx context.Context, userId, plaidLinkId uint64, t
 	}
 
 	// ensure the link exists
-	link, err := db.GetLink(ctx, userId, plaidLinkId)
+	link, err := db.GetLink(ctx, userId, plaidLinkId, false)
 	if err != nil {
 		return err
 	}

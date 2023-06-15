@@ -99,6 +99,7 @@ message InvestmentTransaction {
 
     string created_at = 18;
     option (gorm.opts) = {ormable: true};
+    int32 sign = 19;
 }
 
 message ReOccuringTransaction {
@@ -157,6 +158,7 @@ message ReOccuringTransaction {
     // @gotag: clickhouse:"flow"
     ReCurringFlow flow = 23;
     option (gorm.opts) = {ormable: true};
+    int32 sign = 24;
 }
 
 message Transaction {
@@ -238,6 +240,7 @@ message Transaction {
         (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""},
         (validate.rules).uint64.gt = 0
     ];
+    int32 sign = 25;
 }
 
 message TransactionAmountByCountryMetric {

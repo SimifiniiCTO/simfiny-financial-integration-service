@@ -47,6 +47,7 @@ func newReOccuringTransactionORM(db *gorm.DB, opts ...gen.DOOption) reOccuringTr
 	_reOccuringTransactionORM.MerchantName = field.NewString(tableName, "merchant_name")
 	_reOccuringTransactionORM.PersonalFinanceCategoryDetailed = field.NewString(tableName, "personal_finance_category_detailed")
 	_reOccuringTransactionORM.PersonalFinanceCategoryPrimary = field.NewString(tableName, "personal_finance_category_primary")
+	_reOccuringTransactionORM.Sign = field.NewInt32(tableName, "sign")
 	_reOccuringTransactionORM.Status = field.NewString(tableName, "status")
 	_reOccuringTransactionORM.StreamId = field.NewString(tableName, "stream_id")
 	_reOccuringTransactionORM.TransactionIds = field.NewField(tableName, "transaction_ids")
@@ -80,6 +81,7 @@ type reOccuringTransactionORM struct {
 	MerchantName                    field.String
 	PersonalFinanceCategoryDetailed field.String
 	PersonalFinanceCategoryPrimary  field.String
+	Sign                            field.Int32
 	Status                          field.String
 	StreamId                        field.String
 	TransactionIds                  field.Field
@@ -119,6 +121,7 @@ func (r *reOccuringTransactionORM) updateTableName(table string) *reOccuringTran
 	r.MerchantName = field.NewString(table, "merchant_name")
 	r.PersonalFinanceCategoryDetailed = field.NewString(table, "personal_finance_category_detailed")
 	r.PersonalFinanceCategoryPrimary = field.NewString(table, "personal_finance_category_primary")
+	r.Sign = field.NewInt32(table, "sign")
 	r.Status = field.NewString(table, "status")
 	r.StreamId = field.NewString(table, "stream_id")
 	r.TransactionIds = field.NewField(table, "transaction_ids")
@@ -140,7 +143,7 @@ func (r *reOccuringTransactionORM) GetFieldByName(fieldName string) (field.Order
 }
 
 func (r *reOccuringTransactionORM) fillFieldMap() {
-	r.fieldMap = make(map[string]field.Expr, 23)
+	r.fieldMap = make(map[string]field.Expr, 24)
 	r.fieldMap["account_id"] = r.AccountId
 	r.fieldMap["average_amount"] = r.AverageAmount
 	r.fieldMap["average_amount_iso_currency_code"] = r.AverageAmountIsoCurrencyCode
@@ -159,6 +162,7 @@ func (r *reOccuringTransactionORM) fillFieldMap() {
 	r.fieldMap["merchant_name"] = r.MerchantName
 	r.fieldMap["personal_finance_category_detailed"] = r.PersonalFinanceCategoryDetailed
 	r.fieldMap["personal_finance_category_primary"] = r.PersonalFinanceCategoryPrimary
+	r.fieldMap["sign"] = r.Sign
 	r.fieldMap["status"] = r.Status
 	r.fieldMap["stream_id"] = r.StreamId
 	r.fieldMap["transaction_ids"] = r.TransactionIds

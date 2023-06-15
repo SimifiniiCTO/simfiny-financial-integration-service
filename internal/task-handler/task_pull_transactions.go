@@ -56,7 +56,7 @@ func (th *TaskHandler) RunPullTransactionsTask(ctx context.Context, task *asynq.
 	endTime := payload.End
 
 	// query the link from the database
-	link, err := postgresClient.GetLink(ctx, userId, linkId)
+	link, err := postgresClient.GetLink(ctx, userId, linkId, false)
 	if err != nil {
 		return err
 	}

@@ -34,7 +34,7 @@ func TestDb_GetLastPlaidSync(t *testing.T) {
 					assert.Nil(t, err)
 
 					// create a "plaid" link for the given user
-					link, err := conn.CreateLink(ctx, userId, helper.GenerateLink(schema.LinkType_LINK_TYPE_PLAID))
+					link, err := conn.CreateLink(ctx, userId, helper.GenerateLink(schema.LinkType_LINK_TYPE_PLAID), false)
 					assert.Nil(t, err)
 
 					err = conn.RecordPlaidSync(ctx, userId, link.GetId(), "test", "", 0, 0, 0)

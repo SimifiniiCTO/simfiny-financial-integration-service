@@ -52,7 +52,7 @@ func (s *Server) CreateManualLink(ctx context.Context, req *proto.CreateManualLi
 	manualLink.BankAccounts = []*proto.BankAccount{manualAcct}
 
 	// create the required manual link
-	link, err := s.conn.CreateLink(ctx, req.UserId, req.ManualAccountLink)
+	link, err := s.conn.CreateLink(ctx, req.UserId, req.ManualAccountLink, true)
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}

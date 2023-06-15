@@ -40,7 +40,7 @@ func (db *Db) LinkExistsForItem(ctx context.Context, userID uint64, itemID strin
 // GetLink takes as input the userID and linkID of interest and returns the associated link
 // if the link exists and is owned by the user. As part of this operation, we ensure all the associations
 // a link returns are also populated
-func (db *Db) GetLink(ctx context.Context, userID uint64, linkID uint64) (*schema.Link, error) {
+func (db *Db) GetLink(ctx context.Context, userID uint64, linkID uint64, clearAccessToken bool) (*schema.Link, error) {
 	// instrument operation
 	if span := db.startDatastoreSpan(ctx, "dbtxn-get-link"); span != nil {
 		defer span.End()
@@ -86,6 +86,10 @@ func (db *Db) GetLink(ctx context.Context, userID uint64, linkID uint64) (*schem
 	res, err := link.ToPB(ctx)
 	if err != nil {
 		return nil, err
+	}
+
+	if clearAccessToken {
+		res.Token = nil
 	}
 
 	// return the link
@@ -139,7 +143,7 @@ func (db *Db) DeleteLink(ctx context.Context, userID uint64, linkID uint64) erro
 }
 
 // CreateLink takes as input the userID and link of interest and creates the associated link
-func (db *Db) CreateLink(ctx context.Context, userID uint64, link *schema.Link) (*schema.Link, error) {
+func (db *Db) CreateLink(ctx context.Context, userID uint64, link *schema.Link, clearAccessToken bool) (*schema.Link, error) {
 	// instrument operation
 	if span := db.startDatastoreSpan(ctx, "dbtxn-create-link"); span != nil {
 		defer span.End()
@@ -198,6 +202,10 @@ func (db *Db) CreateLink(ctx context.Context, userID uint64, link *schema.Link) 
 		return nil, err
 	}
 
+	if clearAccessToken {
+		createdLink.Token = nil
+	}
+
 	return &createdLink, nil
 }
 
@@ -205,7 +213,7 @@ func (db *Db) CreateLink(ctx context.Context, userID uint64, link *schema.Link) 
 // it exists. It first starts a datastore span to instrument the operation. It then queries the
 // PlaidLinkORM to find the link with the given item ID. If the link exists, it converts it to a
 // protobuf object and returns it. If the link does not exist, it returns an error.
-func (db *Db) GetLinkByItemId(ctx context.Context, itemId string) (*schema.Link, error) {
+func (db *Db) GetLinkByItemId(ctx context.Context, itemId string, clearAccessToken bool) (*schema.Link, error) {
 	// instrument operation
 	if span := db.startDatastoreSpan(ctx, "dbtxn-get-link"); span != nil {
 		defer span.End()
@@ -242,6 +250,10 @@ func (db *Db) GetLinkByItemId(ctx context.Context, itemId string) (*schema.Link,
 	res, err := link.ToPB(ctx)
 	if err != nil {
 		return nil, err
+	}
+
+	if clearAccessToken {
+		res.Token = nil
 	}
 
 	// return the link

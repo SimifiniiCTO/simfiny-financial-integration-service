@@ -155,7 +155,7 @@ func (s *Server) createAndStoreLink(ctx context.Context, userID uint64, meta *to
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	result, err := s.conn.CreateLink(ctx, userID, link)
+	result, err := s.conn.CreateLink(ctx, userID, link, false)
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}

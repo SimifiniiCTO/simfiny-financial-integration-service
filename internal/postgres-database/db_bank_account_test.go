@@ -66,7 +66,7 @@ func TestDb_CreateBankAccount(t *testing.T) {
 				assert.Nil(t, err)
 
 				// create a link for the given user
-				link, err := conn.CreateLink(tt.args.ctx, tt.args.userID, helper.GenerateLink(schema.LinkType_LINK_TYPE_PLAID))
+				link, err := conn.CreateLink(tt.args.ctx, tt.args.userID, helper.GenerateLink(schema.LinkType_LINK_TYPE_PLAID), false)
 				assert.Nil(t, err)
 
 				tt.args.linkID = link.Id
@@ -131,7 +131,7 @@ func TestDb_DeleteBankAccount(t *testing.T) {
 				assert.Nil(t, err)
 
 				// create a link for the given user
-				link, err := conn.CreateLink(tt.args.ctx, tt.args.userID, helper.GenerateLink(schema.LinkType_LINK_TYPE_PLAID))
+				link, err := conn.CreateLink(tt.args.ctx, tt.args.userID, helper.GenerateLink(schema.LinkType_LINK_TYPE_PLAID), false)
 				assert.Nil(t, err)
 
 				newAcct, err := conn.CreateBankAccount(tt.args.ctx, link.Id, tt.args.bankAccount)
@@ -196,7 +196,7 @@ func TestDb_GetBankAccount(t *testing.T) {
 				assert.Nil(t, err)
 
 				// create a link for the given user
-				link, err := conn.CreateLink(tt.args.ctx, tt.args.userID, helper.GenerateLink(schema.LinkType_LINK_TYPE_PLAID))
+				link, err := conn.CreateLink(tt.args.ctx, tt.args.userID, helper.GenerateLink(schema.LinkType_LINK_TYPE_PLAID), false)
 				assert.Nil(t, err)
 
 				acct, err := conn.CreateBankAccount(tt.args.ctx, link.Id, tt.args.bankAccount)
@@ -264,7 +264,7 @@ func TestDb_UpdateBankAccount(t *testing.T) {
 				assert.Nil(t, err)
 
 				// create a link for the given user
-				link, err := conn.CreateLink(tt.args.ctx, tt.args.userID, helper.GenerateLink(schema.LinkType_LINK_TYPE_PLAID))
+				link, err := conn.CreateLink(tt.args.ctx, tt.args.userID, helper.GenerateLink(schema.LinkType_LINK_TYPE_PLAID), false)
 				assert.Nil(t, err)
 
 				acct, err := conn.CreateBankAccount(tt.args.ctx, link.Id, tt.args.bankAccount)

@@ -205,6 +205,7 @@
 | id | [uint64](#uint64) |  | @gotag: clickhouse:&#34;id&#34; |
 | user_id | [uint64](#uint64) |  | @gotag: clickhouse:&#34;user_id&#34; |
 | created_at | [string](#string) |  |  |
+| sign | [int32](#int32) |  |  |
 
 
 
@@ -275,6 +276,7 @@
 | link_id | [uint64](#uint64) |  | @gotag: clickhouse:&#34;link_id&#34; |
 | id | [uint64](#uint64) |  | @gotag: clickhouse:&#34;id&#34; |
 | flow | [ReCurringFlow](#api-v1-ReCurringFlow) |  | @gotag: clickhouse:&#34;flow&#34; |
+| sign | [int32](#int32) |  |  |
 
 
 
@@ -313,6 +315,7 @@
 | id | [uint64](#uint64) |  |  |
 | user_id | [uint64](#uint64) |  | @gotag: clickhouse:&#34;user_id&#34; |
 | link_id | [uint64](#uint64) |  | @gotag: clickhouse:&#34;link_id&#34; |
+| sign | [int32](#int32) |  |  |
 
 
 

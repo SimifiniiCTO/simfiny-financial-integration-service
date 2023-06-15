@@ -166,7 +166,7 @@ func (s *Server) processWebhook(ctx context.Context, req *proto.ProcessWebhookRe
 	}
 
 	// get the link fro the respective item
-	link, err := s.conn.GetLinkByItemId(ctx, req.GetItemId())
+	link, err := s.conn.GetLinkByItemId(ctx, req.GetItemId(), false)
 	if err != nil {
 		return err
 	}

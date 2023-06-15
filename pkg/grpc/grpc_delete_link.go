@@ -31,7 +31,7 @@ func (s *Server) DeleteLink(ctx context.Context, req *proto.DeleteLinkRequest) (
 	}
 
 	// get the link by id
-	link, err := s.conn.GetLink(ctx, req.UserId, req.LinkId)
+	link, err := s.conn.GetLink(ctx, req.UserId, req.LinkId, true)
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}

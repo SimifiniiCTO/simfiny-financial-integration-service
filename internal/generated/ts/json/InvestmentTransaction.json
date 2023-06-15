@@ -74,6 +74,9 @@
                 },
                 "created_at": {
                     "type": "string"
+                },
+                "sign": {
+                    "type": "integer"
                 }
             },
             "additionalProperties": true,

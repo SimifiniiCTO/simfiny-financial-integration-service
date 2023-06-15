@@ -120,6 +120,9 @@
                 "link_id": {
                     "type": "string",
                     "description": "@gotag: clickhouse:\"link_id\""
+                },
+                "sign": {
+                    "type": "integer"
                 }
             },
             "additionalProperties": true,
