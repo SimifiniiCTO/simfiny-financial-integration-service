@@ -12,7 +12,9 @@ import (
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/transformer"
 )
 
-// GetAllTransactions implements PlaidWrapperImpl
+// GetAllTransactions is used to retrieve all transactions for
+// a given set of account IDs within a specified date range. It takes in the `accessToken` for the
+// Plaid API, the start and end dates for the transaction search, and an array of account IDs.
 func (p *PlaidWrapper) GetAllTransactions(ctx context.Context, accessToken string, start time.Time, end time.Time, accountIds []string) ([]*schema.Transaction, error) {
 	var perPage int32 = 500
 	var offset int32 = 0
@@ -36,6 +38,17 @@ func (p *PlaidWrapper) GetAllTransactions(ctx context.Context, accessToken strin
 	return transactions, nil
 }
 
+// GetTransactions is used to retrieve transactions from the Plaid API for a given set of account IDs
+// within a specified date range.
+//
+// It takes in the `accessToken` for the Plaid API, the start and end
+// dates for the transaction search, an optional count and offset for pagination, and an array of
+// account IDs. It constructs a `TransactionsGetRequest` using the Plaid API client and sends the
+// request to retrieve the transactions.
+//
+// It then transforms the retrieved transactions from the Plaid
+// format to the schema format using the `transformer.NewTransactionFromPlaid` function and returns
+// them as an array of `schema.Transaction` objects.
 func (p *PlaidWrapper) GetTransactions(ctx context.Context, accessToken string, start, end time.Time, count, offset int32, bankAccountIds []string) ([]*schema.Transaction, error) {
 	opts := &plaid.TransactionsGetRequestOptions{
 		Count:                              &count,

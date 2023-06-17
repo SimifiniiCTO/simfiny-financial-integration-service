@@ -10,7 +10,7 @@ import (
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/transformer"
 )
 
-// GetAccounts implements PlaidWrapperImpl
+// GetAccounts is used to retrieve accounts from the Plaid API for a given access token.
 func (p *PlaidWrapper) GetAccounts(ctx context.Context, accessToken string, userId uint64) ([]*schema.BankAccount, error) {
 	// Build the get accounts request.
 	request := p.client.PlaidApi.

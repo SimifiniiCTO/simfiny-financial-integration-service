@@ -199,3 +199,10 @@ flux -n default delete helmrelease podinfo
 If you wish to manage the lifecycle of your applications in a **GitOps** manner, check out
 this [workflow example](https://github.com/fluxcd/flux2-kustomize-helm-example)
 for multi-env deployments with Flux, Kustomize and Helm.
+
+## Webhooks Endpoints (From Context Of Api - Gateway)
+The below set of endpoints are availabe in the context of the api gateway and will
+be the way in which this service consumes event updates from plaid and stripe
+
+Plaid: https://simfiny.dev/v1/gateway/service/financials/plaid/webhooks
+Stripe: https://simfiny.dev/v1/gateway/service/financials/stripe/webhooks

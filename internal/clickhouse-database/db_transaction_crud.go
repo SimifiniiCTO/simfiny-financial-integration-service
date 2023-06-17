@@ -8,7 +8,7 @@ import (
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 )
 
-// AddTransaction implements ClickhouseDatabaseOperations.
+// AddTransaction adds a single transaction to the Clickhouse database.
 func (db *Db) AddTransaction(ctx context.Context, userId *uint64, tx *schema.Transaction) (*uint64, error) {
 	if span := db.startDatastoreSpan(ctx, "dbtxn-add-transaction"); span != nil {
 		defer span.End()
@@ -47,7 +47,7 @@ func (db *Db) AddTransaction(ctx context.Context, userId *uint64, tx *schema.Tra
 	return &record.Id, nil
 }
 
-// AddTransactions implements ClickhouseDatabaseOperations.
+// AddTransactions adds transactions to the Clickhouse database.
 func (db *Db) AddTransactions(ctx context.Context, userId *uint64, txs []*schema.Transaction) error {
 	if span := db.startDatastoreSpan(ctx, "dbtxn-add-transactions"); span != nil {
 		defer span.End()
@@ -91,7 +91,7 @@ func (db *Db) AddTransactions(ctx context.Context, userId *uint64, txs []*schema
 	return nil
 }
 
-// DeleteTransaction implements ClickhouseDatabaseOperations.
+// DeleteTransaction deletes a single transaction.
 func (db *Db) DeleteTransaction(ctx context.Context, txId *uint64) error {
 	if span := db.startDatastoreSpan(ctx, "dbtxn-delete-transaction"); span != nil {
 		defer span.End()
@@ -120,7 +120,7 @@ func (db *Db) DeleteTransaction(ctx context.Context, txId *uint64) error {
 	return nil
 }
 
-// DeleteTransactionsByIds implements ClickhouseDatabaseOperations.
+// DeleteTransactionsByIds deletes transactions by ids.
 func (db *Db) DeleteTransactionsByIds(ctx context.Context, txIds []uint64) error {
 	if span := db.startDatastoreSpan(ctx, "dbtxn-delete-transactions-by-ids"); span != nil {
 		defer span.End()
@@ -145,6 +145,7 @@ func (db *Db) DeleteTransactionsByIds(ctx context.Context, txIds []uint64) error
 	return nil
 }
 
+// DeleteTransactionsByLinkId deletes all transactions for a given link id.
 func (db *Db) DeleteTransactionsByLinkId(ctx context.Context, linkId *uint64) error {
 	if span := db.startDatastoreSpan(ctx, "dbtxn-delete-transactions-by-ids"); span != nil {
 		defer span.End()
@@ -169,7 +170,7 @@ func (db *Db) DeleteTransactionsByLinkId(ctx context.Context, linkId *uint64) er
 	return nil
 }
 
-// DeleteUserTransactons implements ClickhouseDatabaseOperations.
+// DeleteUserTransactons deletes all transactions for a given user.
 func (db *Db) DeleteUserTransactons(ctx context.Context, userId *uint64) error {
 	if span := db.startDatastoreSpan(ctx, "dbtxn-delete-transaction"); span != nil {
 		defer span.End()
@@ -194,7 +195,7 @@ func (db *Db) DeleteUserTransactons(ctx context.Context, userId *uint64) error {
 	return nil
 }
 
-// GetTransactions implements ClickhouseDatabaseOperations.
+// GetTransactions gets a set of transactions in a paginated fashion.
 func (db *Db) GetTransactions(ctx context.Context, userId *uint64, pagenumber int64, limit int64) ([]*schema.Transaction, int64, error) {
 	var (
 		nextPageNumber int64
@@ -237,7 +238,7 @@ func (db *Db) GetTransactions(ctx context.Context, userId *uint64, pagenumber in
 	return results, nextPageNumber, nil
 }
 
-// UpdateTransaction implements ClickhouseDatabaseOperations.
+// UpdateTransaction updates a single transaction.
 func (db *Db) UpdateTransaction(ctx context.Context, userId *uint64, txId *uint64, tx *schema.Transaction) error {
 	if span := db.startDatastoreSpan(ctx, "dbtxn-update-transaction"); span != nil {
 		defer span.End()
@@ -285,7 +286,7 @@ func (db *Db) UpdateTransaction(ctx context.Context, userId *uint64, txId *uint6
 	return nil
 }
 
-// UpdateTransaction implements ClickhouseDatabaseOperations.
+// UpdateTransactions updates transactions.
 func (db *Db) UpdateTransactions(ctx context.Context, userId *uint64, txs []*schema.Transaction) error {
 	if span := db.startDatastoreSpan(ctx, "dbtxn-update-transaction"); span != nil {
 		defer span.End()
@@ -329,6 +330,7 @@ func (db *Db) UpdateTransactions(ctx context.Context, userId *uint64, txs []*sch
 	return nil
 }
 
+// GetTransactionById Gets a transaction by ID.
 func (db *Db) GetTransactionById(ctx context.Context, txId *uint64) (*schema.Transaction, error) {
 	if span := db.startDatastoreSpan(ctx, "dbtxn-get-transaction-by-id"); span != nil {
 		defer span.End()
@@ -352,7 +354,7 @@ func (db *Db) GetTransactionById(ctx context.Context, txId *uint64) (*schema.Tra
 	return &tx, nil
 }
 
-// DeleteTransactionsByIds implements ClickhouseDatabaseOperations.
+// GetTransactionsByPlaidTransactionIds gets transactions by plaid transaction ids.
 func (db *Db) GetTransactionsByPlaidTransactionIds(ctx context.Context, txIds []string) ([]*schema.Transaction, error) {
 	if span := db.startDatastoreSpan(ctx, "dbtxn-delete-transactions-by-ids"); span != nil {
 		defer span.End()

@@ -7,6 +7,13 @@ import (
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 )
 
+// AddInvestmentTransactions is adding investment transactions to the Clickhouse database. It takes in a context, a
+// user ID, and a slice of InvestmentTransaction objects. It first checks that the user ID is not nil
+// and that the length of the transactions slice is greater than 0. It then creates a slice of
+// InvestmentTransactionORM objects from the InvestmentTransaction objects, associates the user ID with
+// each transaction, validates each transaction, and checks that the transaction ID is 0 at creation
+// time. Finally, it uses the QueryOperator to create the transactions in the database and returns an
+// error if there is one.
 func (db *Db) AddInvestmentTransactions(ctx context.Context, userId *uint64, txs []*schema.InvestmentTransaction) error {
 	if span := db.startDatastoreSpan(ctx, "dbtxn-investment-add-transactions"); span != nil {
 		defer span.End()
@@ -50,7 +57,10 @@ func (db *Db) AddInvestmentTransactions(ctx context.Context, userId *uint64, txs
 	return nil
 }
 
-// DeleteTransaction implements ClickhouseDatabaseOperations.
+// DeleteInvestmentTransactions is deleting investment transactions from the Clickhouse database. It takes in a context
+// and a variable number of transaction IDs as uint64 values. It first checks that the length of the
+// transaction IDs slice is greater than 0. It then uses the QueryOperator to delete the transactions
+// from the database and returns an error if there is one.
 func (db *Db) DeleteInvestmentTransactions(ctx context.Context, txIds ...uint64) error {
 	if span := db.startDatastoreSpan(ctx, "dbtxn-delete-investment-transaction"); span != nil {
 		defer span.End()
@@ -74,6 +84,7 @@ func (db *Db) DeleteInvestmentTransactions(ctx context.Context, txIds ...uint64)
 	return nil
 }
 
+// GetInvestmentTransactions is retrieving investment transactions from the Clickhouse database in a paginated manner.
 func (db *Db) GetInvestmentTransactions(ctx context.Context, userId *uint64, pageSize int64, pageNumber int64) ([]*schema.InvestmentTransaction, int64, error) {
 	var (
 		nextPageNumber int64
@@ -121,6 +132,7 @@ func (db *Db) GetInvestmentTransactions(ctx context.Context, userId *uint64, pag
 	return txs, nextPageNumber, nil
 }
 
+// GetAllInvestmentTransactions is retrieving all investment transactions from the Clickhouse database.
 func (db *Db) GetAllInvestmentTransactions(ctx context.Context, userId *uint64) ([]*schema.InvestmentTransaction, error) {
 	if span := db.startDatastoreSpan(ctx, "dbtxn-get-investment-transactions"); span != nil {
 		defer span.End()
@@ -152,7 +164,7 @@ func (db *Db) GetAllInvestmentTransactions(ctx context.Context, userId *uint64) 
 	return txs, nil
 }
 
-// UpdateTransaction implements ClickhouseDatabaseOperations.
+// UpdateInvestmentTransactions is updating investment transactions in the Clickhouse database.
 func (db *Db) UpdateInvestmentTransactions(ctx context.Context, userId *uint64, txs []*schema.InvestmentTransaction) error {
 	if span := db.startDatastoreSpan(ctx, "dbtxn-update-transaction"); span != nil {
 		defer span.End()
@@ -193,6 +205,7 @@ func (db *Db) UpdateInvestmentTransactions(ctx context.Context, userId *uint64, 
 	return nil
 }
 
+// GetInvestmentTransactionById is retrieving investment transactions from the Clickhouse database by ID.
 func (db *Db) GetInvestmentTransactionById(ctx context.Context, txId *uint64) (*schema.InvestmentTransaction, error) {
 	if span := db.startDatastoreSpan(ctx, "dbtxn-get-InvestmentTransaction-by-id"); span != nil {
 		defer span.End()
@@ -216,6 +229,7 @@ func (db *Db) GetInvestmentTransactionById(ctx context.Context, txId *uint64) (*
 	return &tx, nil
 }
 
+// GetInvestmentTransactionsByPlaidTransactionIds is retrieving investment transactions from the Clickhouse database by Plaid transaction IDs.
 func (db *Db) GetInvestmentTransactionsByPlaidTransactionIds(ctx context.Context, txIds []string) ([]*schema.InvestmentTransaction, error) {
 	if span := db.startDatastoreSpan(ctx, "dbtxn-delete-transactions-by-ids"); span != nil {
 		defer span.End()

@@ -5,12 +5,13 @@ import (
 )
 
 const (
-	DEPOSITORY  = "depository"
-	CREDIT      = "credit"
-	LOAN        = "loan"
-	INVESTMENTS = "investment"
+	DEPOSITORY  = string(plaid.ACCOUNTTYPE_DEPOSITORY)
+	CREDIT      = string(plaid.ACCOUNTTYPE_CREDIT)
+	LOAN        = string(plaid.ACCOUNTTYPE_LOAN)
+	INVESTMENTS = string(plaid.ACCOUNTTYPE_INVESTMENT)
 )
 
+// filterAccounts filters accounts of a type
 func filterAccounts(accts []plaid.AccountBase, acctType string) []plaid.AccountBase {
 	result := make([]plaid.AccountBase, 0)
 
@@ -23,6 +24,7 @@ func filterAccounts(accts []plaid.AccountBase, acctType string) []plaid.AccountB
 	return result
 }
 
+// filterAccountsOfTwoType filters accounts of two types
 func filterAccountsOfTwoType(accts []plaid.AccountBase, acctType1, acctType2 string) []plaid.AccountBase {
 	result := make([]plaid.AccountBase, 0)
 

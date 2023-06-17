@@ -9,12 +9,27 @@ import (
 	"github.com/plaid/plaid-go/v12/plaid"
 )
 
+// The CreditAccountSet type contains slices of different types of accounts, including credit card,
+// mortgage, and student loan accounts.
+// @property {[]*schema.CreditAccount} CrediCardAccounts - This is a slice of pointers to
+// `schema.CreditAccount` objects, representing a set of credit card accounts. Each
+// `schema.CreditAccount` object contains information about a single credit card account, such as the
+// account holder's name, account number, balance, and credit limit.
+// @property {[]*schema.MortgageAccount} MortgageLoanAccts - The `MortgageLoanAccts` property is a
+// slice of pointers to `schema.MortgageAccount` structs. It is a part of the `CreditAccountSet`
+// struct, which is used to group together different types of credit accounts. The `MortgageLoanAccts`
+// slice
+// @property {[]*schema.StudentLoanAccount} StudentLoanAccts - `StudentLoanAccts` is a slice of
+// pointers to `schema.StudentLoanAccount` structs. It is a property of the `CreditAccountSet` struct,
+// which is used to group together different types of credit accounts. This particular slice contains
+// information about student loan accounts.
 type CreditAccountSet struct {
 	CrediCardAccounts []*schema.CreditAccount
 	MortgageLoanAccts []*schema.MortgageAccount
 	StudentLoanAccts  []*schema.StudentLoanAccount
 }
 
+// GetPlaidLiabilityAccounts is used to retrieve liability accounts from the Plaid API for a given set of account IDs
 func (p *PlaidWrapper) GetPlaidLiabilityAccounts(ctx context.Context, accessToken *string, accountIds ...string) (*CreditAccountSet, error) {
 	var (
 		err                  error

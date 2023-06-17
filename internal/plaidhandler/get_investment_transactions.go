@@ -11,6 +11,7 @@ import (
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 )
 
+// GetInvestmentTransactions is used to retrieve investment transactions from the Plaid API for a given set of account IDs and access token
 func (p *PlaidWrapper) GetInvestmentTransactions(ctx context.Context, accessToken *string, userId *uint64, link *schema.Link, startDate, endDate string, accountIds []string, numTransactionsToFetch int32, offset int32) ([]*schema.InvestmentTransaction, error) {
 	if accessToken == nil {
 		return nil, errors.New("invalid input argument. access token cannot be empty")
