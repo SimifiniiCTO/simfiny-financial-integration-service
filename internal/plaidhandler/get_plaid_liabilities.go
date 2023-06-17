@@ -15,7 +15,7 @@ type CreditAccountSet struct {
 	StudentLoanAccts  []*schema.StudentLoanAccount
 }
 
-func (p *PlaidWrapper) GetPlaidLiabilityAccounts(ctx context.Context, accessToken *string) (*CreditAccountSet, error) {
+func (p *PlaidWrapper) GetPlaidLiabilityAccounts(ctx context.Context, accessToken *string, accountIds ...string) (*CreditAccountSet, error) {
 	var (
 		err                  error
 		creditCardAccounts   []*schema.CreditAccount
@@ -30,6 +30,13 @@ func (p *PlaidWrapper) GetPlaidLiabilityAccounts(ctx context.Context, accessToke
 	request := plaid.NewLiabilitiesGetRequest(*accessToken)
 	request.SetClientId(p.ClientID)
 	request.SetSecret(p.SecretKey)
+
+	if len(accountIds) > 0 {
+		request.SetOptions(
+			plaid.LiabilitiesGetRequestOptions{
+				AccountIds: &accountIds,
+			})
+	}
 
 	resp, _, err := p.client.PlaidApi.LiabilitiesGet(ctx).LiabilitiesGetRequest(*request).Execute()
 	if err != nil {

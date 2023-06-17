@@ -226,7 +226,13 @@ func (s *Server) processWebhook(ctx context.Context, req *proto.ProcessWebhookRe
 		// Liabilities webhooks are sent to indicate that new loans or updated loan fields for existing accounts are available.
 		// will be fired when new or updated liabilities have been detected on a liabilities item
 		case "DEFAULT_UPDATE":
-			// Trigger a background job to sync the plaid liabilities
+			// get account ids for all new liabilities
+			accountIds := append(req.AccountIdsWithNewLiabilities, req.AccountIdsWithUpdatedLiabilities...)
+			// sync any existing/updated liability account as well as save any new liability accounts
+			// to datastore layer
+			if err := s.DispatchSyncLiabilityAccountsTask(ctx, userId, link.Id, *accessToken, accountIds); err != nil {
+				return err
+			}
 		default:
 			s.logger.Error("Plaid webhook will not be handled, it is not implemented.")
 		}

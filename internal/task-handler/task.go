@@ -32,6 +32,7 @@ const (
 	TaskPullUpdatedRecurringTransactions TaskType = "transactions:pull:updated-recurring"
 	TaskPullInvestmentTransactions       TaskType = "transactions:pull:investment"
 	TaskPullInvestmentHoldings           TaskType = "holdings:pull:investment"
+	TaskSyncNewLiabilityAccounts         TaskType = "accounts:sync:new-liability"
 )
 
 func (t TaskType) String() string {
@@ -146,6 +147,9 @@ func (th *TaskHandler) RegisterTaskHandler() *asynq.ServeMux {
 	mux.HandleFunc(TaskDeleteTransactions.String(), th.RunDeleteTransactionsTask)
 	mux.HandleFunc(TaskPullTransactions.String(), th.RunPullTransactionsTask)
 	mux.HandleFunc(TaskPullUpdatedRecurringTransactions.String(), th.RunPullUpdatedReCurringTransactionsTask)
+	mux.HandleFunc(TaskPullInvestmentTransactions.String(), th.RunPullInvestmentTransactionsTask)
+	mux.HandleFunc(TaskPullInvestmentHoldings.String(), th.RunPullInvestmentHoldingsTask)
+	mux.HandleFunc(TaskSyncNewLiabilityAccounts.String(), th.RunSyncNewLiabilityAccountsTask)
 	return mux
 }
 

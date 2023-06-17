@@ -162,3 +162,35 @@ func (s *Server) DispatchPullInvestmentHoldingsTask(ctx context.Context, userId,
 
 	return nil
 }
+
+func (s *Server) DispatchSyncLiabilityAccountsTask(ctx context.Context, userId, linkId uint64, accessToken string, accountIds []string) error {
+	var (
+		tp = s.taskprocessor
+	)
+
+	if s.instrumentation != nil {
+		txn := s.instrumentation.GetTraceFromContext(ctx)
+		span := s.instrumentation.StartDatastoreSegment(txn, "trigger-sync-new-liaibility-accounts")
+		defer span.End()
+	}
+
+	if len(accountIds) == 0 {
+		s.logger.Error("no account ids found in webhook")
+		return nil
+	}
+
+	task, err := taskhandler.NewSyncNewLiabilityAccountsTask(userId, accessToken, linkId, accountIds)
+	if err != nil {
+		return err
+	}
+
+	// enqueue the task
+	taskInfo, err := tp.EnqueueTask(ctx, task)
+	if err != nil {
+		return err
+	}
+
+	s.logger.Info("enqueue task", zap.Any("task", taskInfo))
+
+	return nil
+}
