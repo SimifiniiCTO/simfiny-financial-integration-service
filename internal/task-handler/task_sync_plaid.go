@@ -22,7 +22,7 @@ type SyncPlaidTaskPayload struct {
 }
 
 func (t *SyncPlaidTaskPayload) String() *string {
-	str := fmt.Sprintf("user_id: %d, access_token: %s, plaid_link_item_id: %s", t.UserId, t.AccessToken, t.LinkId)
+	str := fmt.Sprintf("user_id: %d, access_token: %s, plaid_link_item_id: %d", t.UserId, t.AccessToken, t.LinkId)
 	return &str
 }
 
