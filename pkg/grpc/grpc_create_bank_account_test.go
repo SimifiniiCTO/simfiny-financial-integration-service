@@ -6,10 +6,9 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
-
 	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/helper"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestServer_CreateBankAccount(t *testing.T) {
@@ -108,6 +107,23 @@ func TestServer_defaultPockets(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := tt.s.DefaultPockets(); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("Server.defaultPockets() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestServer_DefaultPockets(t *testing.T) {
+	tests := []struct {
+		name string
+		s    *Server
+		want []*proto.Pocket
+	}{
+		// TODO: Add test cases.
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := tt.s.DefaultPockets(); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("Server.DefaultPockets() = %v, want %v", got, tt.want)
 			}
 		})
 	}

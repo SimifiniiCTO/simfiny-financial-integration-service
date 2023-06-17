@@ -7,6 +7,7 @@ import (
 	"google.golang.org/grpc/status"
 
 	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
+	encryptdecrypt "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/encrypt_decrypt"
 )
 
 func (s *Server) DeleteLink(ctx context.Context, req *proto.DeleteLinkRequest) (*proto.DeleteLinkResponse, error) {
@@ -31,7 +32,7 @@ func (s *Server) DeleteLink(ctx context.Context, req *proto.DeleteLinkRequest) (
 	}
 
 	// get the link by id
-	link, err := s.conn.GetLink(ctx, req.UserId, req.LinkId)
+	link, err := s.conn.GetLink(ctx, req.UserId, req.LinkId, true)
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
@@ -43,7 +44,7 @@ func (s *Server) DeleteLink(ctx context.Context, req *proto.DeleteLinkRequest) (
 
 	// TODO: implement this as a workflow
 	// decrypt the link token
-	accessToken, err := s.DecryptUserAccessToken(ctx, link.Token)
+	accessToken, err := encryptdecrypt.DecryptUserAccessToken(ctx, link.Token, s.kms, s.logger)
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}

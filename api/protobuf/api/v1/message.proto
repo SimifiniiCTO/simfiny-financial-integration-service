@@ -10,6 +10,12 @@ import "google/api/field_behavior.proto";
 
 option go_package = "github.com/SimifiniiCTO/simfiny-financial-integration-service/generate/api/v1";
 
+enum BankAccountStatus {
+  BANK_ACCOUNT_STATUS_UNSPECIFIED = 0;
+  BANK_ACCOUNT_STATUS_ACTIVE = 1;
+  BANK_ACCOUNT_STATUS_INACTIVE = 2;
+}
+
 enum GoalStatus {
   GOAL_STATUS_UNSPECIFIED = 0;
   GOAL_STATUS_ACTIVE = 1;
@@ -51,6 +57,10 @@ enum StripeSubscriptionStatus {
   STRIPE_SUBSCRIPTION_STATUS_CANCELED = 4;
   STRIPE_SUBSCRIPTION_STATUS_UNPAID = 5;
   STRIPE_SUBSCRIPTION_STATUS_COMPLETE = 6;
+  STRIPE_SUBSCRIPTION_STATUS_INCOMPLETE = 7;
+  STRIPE_SUBSCRIPTION_STATUS_INCOMPLETE_EXPIRED = 8;
+  STRIPE_SUBSCRIPTION_STATUS_CREATED = 9;
+   STRIPE_SUBSCRIPTION_STATUS_PAUSED = 10;
 }
 
 enum LinkStatus {
@@ -81,6 +91,8 @@ message StripeSubscription {
   string stripe_subscription_active_until = 4 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
   // stripe webhook latest timestamp 
   string stripe_webhook_latest_timestamp = 5 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  // wether the subscription is trialing
+  bool is_trialing = 6;
 }
 
 // UserProfile stores high level user profile details
@@ -153,6 +165,27 @@ message Link {
   string plaid_institution_id = 18 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
   // the type of link this is ... can be either a manual or plaid link type
   LinkType link_type = 19 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}]; 
+  string error_code = 20 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  string updated_at = 21 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  bool new_accounts_available = 22 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  PlaidSync plaid_sync = 2 [
+    (gorm.field).has_one = {disable_association_autocreate: false disable_association_autoupdate: false preload: true},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}
+  ];
+}
+
+message PlaidSync {
+   option (gorm.opts) = {ormable: true};
+    // id
+    uint64 id = 1 [
+      (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}
+    ];
+    string time_stamp = 3;
+    string trigger = 4;
+    string next_cursor = 5;
+    int64 added = 6;
+    int64 removed = 7;
+    int64 modified = 8;
 }
 
 message Token {
@@ -410,6 +443,8 @@ message BankAccount {
   // account subtype
   string subtype = 14;
 
+  // the bank account status
+  BankAccountStatus status = 15;
 }
 
 // Pocket is an abstraction of a over a bank account. A user can has at most 4 pockets per connected account

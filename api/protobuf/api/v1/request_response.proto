@@ -3,10 +3,25 @@ syntax = "proto3";
 package api.v1;
 
 import "api/v1/message.proto";
+import "api/v1/clickhouse.proto";
 option go_package = "github.com/SimifiniiCTO/simfiny-financial-integration-service/generate/api/v1";
 import "validate/validate.proto";
 import "google/api/field_behavior.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
+import "google/protobuf/any.proto";
+import "gogoproto/gogo.proto";
+
+option (gogoproto.gostring_all) = true;
+option (gogoproto.equal_all) = true;
+option (gogoproto.verbose_equal_all) = true;
+option (gogoproto.goproto_stringer_all) = false;
+option (gogoproto.stringer_all) =  true;
+option (gogoproto.populate_all) = true;
+option (gogoproto.testgen_all) = true;
+option (gogoproto.benchgen_all) = true;
+option (gogoproto.marshaler_all) = true;
+option (gogoproto.sizer_all) = true;
+option (gogoproto.unmarshaler_all) = true;
 
 
 // CreateUserProfileRequest: Represents the request object invoked against the user
@@ -706,4 +721,130 @@ message DeleteLinkRequest {
 message DeleteLinkResponse {
   // The link's id
   uint64 link_id = 1;
+}
+
+message GetReCurringTransactionsRequest {
+  // The user id
+  // Validations:
+  // - user_id must be greater than 0
+  uint64 user_id = 2 [
+    (validate.rules).uint64.gt = 0,
+    (google.api.field_behavior) = REQUIRED
+  ];
+}
+
+message GetReCurringTransactionsResponse {
+  message ParticipantReCurringTransactions {
+  // The participant id
+  uint64 reocurring_transaction_id = 1;
+  // The transactions
+  repeated Transaction transactions = 2;
+}
+  // The re-occuring transactions
+  repeated ReOccuringTransaction re_ccuring_transactions = 1;
+  repeated ParticipantReCurringTransactions participant_re_ccuring_transactions = 2;
+}
+
+message GetTransactionsRequest {
+  // The user id
+  // Validations:
+  // - user_id must be greater than 0
+  uint64 user_id = 2 [
+    (validate.rules).uint64.gt = 0,
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  uint64 page_number = 3;
+  uint64 page_size = 4;  
+}
+
+message GetTransactionsResponse {
+  // The transactions
+  repeated Transaction transactions = 1;
+  uint64 next_page_number = 2;
+}
+
+message ProcessWebhookRequest {
+  string webhook_type = 1 [
+    (validate.rules).string.min_len = 1,
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  string webhook_code = 2 [
+    (validate.rules).string.min_len = 1,
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  // The item_id of the Item associated with this webhook, warning, or error
+  string item_id = 3;
+
+  // Indicates if initial pull information is available.
+  bool initial_update_complete = 4;
+
+  // Indicates if historical pull information is available.
+  string historical_update_complete = 5;
+
+  // The Plaid environment the webhook was sent from
+  string environment = 6;
+
+  // The number of new, unfetched transactions available
+  repeated string new_transactions = 7;
+
+  // An array of transaction_ids corresponding to the removed transactions
+  repeated string removed_transactions = 8;
+  
+  // We use standard HTTP response codes for success and failure notifications, 
+  // and our errors are further classified by error_type. In general, 200 HTTP codes 
+  // correspond to success, 40X codes are for developer- or user-related failures, and 
+  // 50X codes are for Plaid-related issues. An Item with a non-null error object will 
+  // only be part of an API response when calling /item/get to view Item status. Otherwise, 
+  // error fields will be null if no error has occurred; if an error has occurred, an error 
+  // code will be returned instead.
+  map<string, google.protobuf.Any> error = 9;
+
+  // A list of account_ids for accounts that have new or updated recurring transactions data.
+  repeated string account_ids = 10;
+
+  // The time at which the user's access_token will expire. This field will only be present
+  string consent_expiration_time = 11;
+
+  // An array of account_id's for accounts that contain new liabilities.'
+  repeated string account_ids_with_new_liabilities = 12;
+
+  // An object with keys of account_id's that are mapped to their respective liabilities fields that changed.
+  repeated string account_ids_with_updated_liabilities = 13;
+
+  // The number of new holdings reported since the last time this webhook was fired.
+  uint64 new_holdings = 14;
+
+  // The number of updated holdings reported since the last time this webhook was fired.
+  // @gotag: json:"updated_holdings"
+  uint64 updated_holdings = 15;
+}
+
+message ProcessWebhookResponse{}
+
+message StripeWebhookRequest{
+  string body = 1;
+  string signature = 2;
+}
+
+message StripeWebhookResponse{
+  string message = 1;
+}
+
+message CreateSubscriptionRequest {
+  uint64 user_id = 1 [
+    (validate.rules).uint64.gt = 0,
+    (google.api.field_behavior) = REQUIRED
+  ];
+  string price_id = 2[
+    (validate.rules).string.min_len = 1,
+    (google.api.field_behavior) = REQUIRED
+  ];
+}
+
+message CreateSubscriptionResponse {
+  string subscription_id = 1;
+  string payment_intent_client_secret = 2;
 }

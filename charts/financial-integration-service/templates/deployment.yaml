@@ -127,6 +127,10 @@ spec:
             - --max-db-retry-timeout={{ .Values.database.maxConnectionRetryTimeout }}
             - --max-db-retry-sleep-interval={{ .Values.database.maxConnectionRetrySleepInterval }}
             - --max-query-timeout={{ .Values.database.maxQueryTimeout }}
+            - --max-db-idle-connections={{ .Values.database.maxIdleConnections }}
+            - --max-db-open-connections={{ .Values.database.maxOpenConnections }}
+            - --max-db-connection-lifetime={{ .Values.database.connectionMaxLifetime }}
+            - --cache-ttl-in-seconds={{ .Values.cacheTTLInSeconds }}
             {{- if .Values.plaid.enabled }}
             - --plaid-client-id={{ .Values.plaid.clientID }}
             - --plaid-secret-key={{ .Values.plaid.secretKey }}
@@ -140,12 +144,13 @@ spec:
             {{- if .Values.stripe.enabled }}
             - --stripe-api-key={{ .Values.stripe.apiKey }}
             - --stripe-enabled={{ .Values.stripe.enabled }}
+            - --stripe-endpoint-signing-key={{ .Values.stripe.endpointSigningKey }}
             {{- end }}
             {{- if .Values.newRelic.enabled}}
             - --newrelic-api-key={{ .Values.newRelic.apiKey }}
             - --metrics-reporting-enabled={{ .Values.newRelic.enabled }}
             {{- end }}
-            - --service-environment={{ .Values.service.env }}
+            - --service-environment={{ .Values.service.environment }}
             - --aws-access-key-id={{ .Values.aws.accessKeyID }}
             - --aws-secret-access-key={{ .Values.aws.secretAccessKey }}
             - --aws-region={{ .Values.aws.region }}
@@ -165,6 +170,8 @@ spec:
             - --workflow-task-timeout={{ .Values.dependencies.temporal.config.workflowTaskTimeout }}
             - --workflow-run-timeout={{ .Values.dependencies.temporal.config.workflowRunTimeout }}
             {{- end }}
+            - --task-processor-workers={{ .Values.taskProcessorWorkers }}
+            - --clickhouse-connection-uri={{ .Values.clickhouse.uri }}
           env:
           {{- if .Values.ui.message }}
           - name: fis_UI_MESSAGE

@@ -3,11 +3,18 @@ package plaidhandler
 import (
 	"context"
 	"fmt"
-	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/pointer"
-	"github.com/plaid/plaid-go/plaid"
-	"go.uber.org/zap"
 	"io/ioutil"
+
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/pointer"
+	"github.com/plaid/plaid-go/v12/plaid"
+	"go.uber.org/zap"
 )
+
+func (p *PlaidWrapper) TriggerWebhookForTest(ctx context.Context, clientId, secret, accesstoken, webhookCode string) error {
+	req := plaid.NewSandboxItemFireWebhookRequest(accesstoken, webhookCode)
+	_, _, err := p.client.PlaidApi.SandboxItemFireWebhook(ctx).SandboxItemFireWebhookRequest(*req).Execute()
+	return err
+}
 
 func (p *PlaidWrapper) CreateLinkToken(ctx context.Context, options *LinkTokenOptions) (LinkToken, error) {
 	var redirectUri *string
@@ -42,10 +49,11 @@ func (p *PlaidWrapper) CreateLinkToken(ctx context.Context, options *LinkTokenOp
 		ClientUserId:             options.ClientUserID,
 		LegalName:                &options.LegalName,
 		PhoneNumber:              options.PhoneNumber,
-		PhoneNumberVerifiedTime:  options.PhoneNumberVerifiedTime,
+		PhoneNumberVerifiedTime:  *plaid.NewNullableTime(options.PhoneNumberVerifiedTime),
 		EmailAddress:             &options.EmailAddress,
-		EmailAddressVerifiedTime: options.EmailAddressVerifiedTime,
+		EmailAddressVerifiedTime: *plaid.NewNullableTime(options.EmailAddressVerifiedTime),
 	}
+
 	request := plaid.NewLinkTokenCreateRequest(
 		PlaidClientName,
 		PlaidLanguage,
@@ -73,15 +81,15 @@ func (p *PlaidWrapper) CreateLinkToken(ctx context.Context, options *LinkTokenOp
 
 func (p *PlaidWrapper) ExchangePublicToken(ctx context.Context, publicToken string) (*ItemToken, error) {
 	if p.Environment == plaid.Sandbox {
-		accessToken, err := p.getAccessTokenForSandboxAcct()
+		res, err := p.getAccessTokenForSandboxAcct()
 		if err != nil {
 			p.Logger.Error("failed to create link token with Plaid", zap.Error(err))
 			return nil, err
 		}
 
 		return &ItemToken{
-			AccessToken: accessToken,
-			ItemId:      "",
+			AccessToken: res.AccessToken,
+			ItemId:      res.ItemId,
 		}, nil
 	}
 
@@ -114,13 +122,13 @@ func (p *PlaidWrapper) ExchangePublicToken(ctx context.Context, publicToken stri
 	return &token, nil
 }
 
-func (p *PlaidWrapper) getAccessTokenForSandboxAcct() (string, error) {
+func (p *PlaidWrapper) getAccessTokenForSandboxAcct() (*plaid.ItemPublicTokenExchangeResponse, error) {
 	ctx := context.Background()
 
 	// If not testing in Sandbox, remove these four lines and instead use a publicToken obtained from Link
 	result, err := p.getPlublicTokenForSandboxAcct(ctx)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
 	req := plaid.NewItemPublicTokenExchangeRequest(result.GetPublicToken())
@@ -134,10 +142,10 @@ func (p *PlaidWrapper) getAccessTokenForSandboxAcct() (string, error) {
 		Execute()
 
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
-	return resp.GetAccessToken(), nil
+	return &resp, nil
 }
 
 func (p *PlaidWrapper) getPlublicTokenForSandboxAcct(ctx context.Context) (plaid.SandboxPublicTokenCreateResponse, error) {
@@ -156,6 +164,11 @@ func (p *PlaidWrapper) getPlublicTokenForSandboxAcct(ctx context.Context) (plaid
 		sandboxInstitution,
 		testProducts,
 	)
+
+	webhookUrl := p.GetWebhooksURL()
+	req.Options = &plaid.SandboxPublicTokenCreateRequestOptions{
+		Webhook: &webhookUrl,
+	}
 
 	resp, _, err := p.
 		client.

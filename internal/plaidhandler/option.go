@@ -3,10 +3,10 @@ package plaidhandler
 import (
 	"fmt"
 
-	"github.com/plaid/plaid-go/plaid"
+	"github.com/plaid/plaid-go/v12/plaid"
 	"go.uber.org/zap"
 
-	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/instrumentation"
+	"github.com/SimifiniiCTO/simfiny-core-lib/instrumentation"
 )
 
 type Option func(*PlaidWrapper)
@@ -18,7 +18,7 @@ var environments = map[string]plaid.Environment{
 }
 
 // WithInstrumentation is a functional option to set the instrumentation service
-func WithInstrumentation(instrumentation *instrumentation.ServiceTelemetry) Option {
+func WithInstrumentation(instrumentation *instrumentation.Client) Option {
 	return func(p *PlaidWrapper) {
 		p.InstrumentationSdk = instrumentation
 	}

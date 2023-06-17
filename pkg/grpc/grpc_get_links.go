@@ -37,6 +37,11 @@ func (s *Server) GetLinks(ctx context.Context, req *proto.GetLinksRequest) (*pro
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
+	// remove the access token from the response
+	for _, link := range user.Link {
+		NullifyAccessToken(link)
+	}
+
 	return &proto.GetLinksResponse{
 		Links: user.Link,
 	}, nil

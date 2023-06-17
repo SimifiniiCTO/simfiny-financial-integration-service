@@ -103,6 +103,25 @@
                 "subtype": {
                     "type": "string",
                     "description": "account subtype"
+                },
+                "status": {
+                    "enum": [
+                        "BANK_ACCOUNT_STATUS_UNSPECIFIED",
+                        0,
+                        "BANK_ACCOUNT_STATUS_ACTIVE",
+                        1,
+                        "BANK_ACCOUNT_STATUS_INACTIVE",
+                        2
+                    ],
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "integer"
+                        }
+                    ],
+                    "title": "Bank Account Status"
                 }
             },
             "additionalProperties": true,
@@ -566,6 +585,19 @@
                         }
                     ],
                     "title": "Link Type"
+                },
+                "error_code": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "new_accounts_available": {
+                    "type": "boolean"
+                },
+                "plaid_sync": {
+                    "$ref": "#/definitions/api.v1.PlaidSync",
+                    "additionalProperties": true
                 }
             },
             "additionalProperties": true,
@@ -588,6 +620,7 @@
                     "description": "The description of the miletone Validations: - must be at least 3 characters long"
                 },
                 "target_date": {
+                    "minLength": 10,
                     "type": "string",
                     "description": "the target date of the milestone Validations: - must be at least 3 characters long"
                 },
@@ -744,6 +777,35 @@
             "additionalProperties": true,
             "type": "object",
             "title": "Plaid Link"
+        },
+        "api.v1.PlaidSync": {
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "id"
+                },
+                "time_stamp": {
+                    "type": "string"
+                },
+                "trigger": {
+                    "type": "string"
+                },
+                "next_cursor": {
+                    "type": "string"
+                },
+                "added": {
+                    "type": "string"
+                },
+                "removed": {
+                    "type": "string"
+                },
+                "modified": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Plaid Sync"
         },
         "api.v1.Pocket": {
             "properties": {

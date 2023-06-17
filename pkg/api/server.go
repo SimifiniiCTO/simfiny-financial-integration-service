@@ -11,11 +11,12 @@ import (
 	"sync/atomic"
 	"time"
 
+	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
+
 	"github.com/gomodule/redigo/redis"
 	"github.com/gorilla/mux"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
-	"github.com/newrelic/go-agent/v3/newrelic"
-	"github.com/plaid/plaid-go/plaid"
+	"github.com/plaid/plaid-go/v12/plaid"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/spf13/viper"
 	httpSwagger "github.com/swaggo/http-swagger"
@@ -25,11 +26,13 @@ import (
 	"golang.org/x/net/http2/h2c"
 	"google.golang.org/grpc"
 
-	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/database"
-	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/instrumentation"
+	"github.com/SimifiniiCTO/simfiny-core-lib/instrumentation"
+	taskprocessor "github.com/SimifiniiCTO/simfiny-core-lib/task-processor"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/plaidhandler"
+	database "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/postgres-database"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/secrets"
 	_ "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/api/docs"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/fscache"
-	"github.com/SimifiniiCTO/simfiny-financial-integration-service/proto"
 )
 
 // @title FIS-Service API
@@ -53,110 +56,145 @@ var (
 )
 
 type Config struct {
-	HttpClientTimeout         time.Duration `mapstructure:"http-client-timeout"`
-	HttpServerTimeout         time.Duration `mapstructure:"http-server-timeout"`
-	HttpServerShutdownTimeout time.Duration `mapstructure:"http-server-shutdown-timeout"`
-	BackendURL                []string      `mapstructure:"backend-url"`
-	UILogo                    string        `mapstructure:"ui-logo"`
-	UIMessage                 string        `mapstructure:"ui-message"`
-	UIColor                   string        `mapstructure:"ui-color"`
-	UIPath                    string        `mapstructure:"ui-path"`
-	DataPath                  string        `mapstructure:"data-path"`
-	ConfigPath                string        `mapstructure:"config-path"`
-	CertPath                  string        `mapstructure:"cert-path"`
-	Host                      string        `mapstructure:"host"`
-	Port                      string        `mapstructure:"port"`
-	SecurePort                string        `mapstructure:"secure-port"`
-	PortMetrics               int           `mapstructure:"port-metrics"`
-	Hostname                  string        `mapstructure:"hostname"`
-	H2C                       bool          `mapstructure:"h2c"`
-	RandomDelay               bool          `mapstructure:"random-delay"`
-	RandomDelayUnit           string        `mapstructure:"random-delay-unit"`
-	RandomDelayMin            int           `mapstructure:"random-delay-min"`
-	RandomDelayMax            int           `mapstructure:"random-delay-max"`
-	RandomError               bool          `mapstructure:"random-error"`
-	Unhealthy                 bool          `mapstructure:"unhealthy"`
-	Unready                   bool          `mapstructure:"unready"`
-	JWTSecret                 string        `mapstructure:"jwt-secret"`
-	CacheServer               string        `mapstructure:"cache-server"`
-	GrpcServiceEndpoint       string        `mapstructure:"grpc-service-endpoint"`
+	HttpClientTimeout              time.Duration `mapstructure:"http-client-timeout"`
+	HttpServerTimeout              time.Duration `mapstructure:"http-server-timeout"`
+	HttpServerShutdownTimeout      time.Duration `mapstructure:"http-server-shutdown-timeout"`
+	BackendURL                     []string      `mapstructure:"backend-url"`
+	UILogo                         string        `mapstructure:"ui-logo"`
+	UIMessage                      string        `mapstructure:"ui-message"`
+	UIColor                        string        `mapstructure:"ui-color"`
+	UIPath                         string        `mapstructure:"ui-path"`
+	DataPath                       string        `mapstructure:"data-path"`
+	ConfigPath                     string        `mapstructure:"config-path"`
+	CertPath                       string        `mapstructure:"cert-path"`
+	Host                           string        `mapstructure:"host"`
+	Port                           string        `mapstructure:"port"`
+	SecurePort                     string        `mapstructure:"secure-port"`
+	PortMetrics                    int           `mapstructure:"port-metrics"`
+	Hostname                       string        `mapstructure:"hostname"`
+	H2C                            bool          `mapstructure:"h2c"`
+	RandomDelay                    bool          `mapstructure:"random-delay"`
+	RandomDelayUnit                string        `mapstructure:"random-delay-unit"`
+	RandomDelayMin                 int           `mapstructure:"random-delay-min"`
+	RandomDelayMax                 int           `mapstructure:"random-delay-max"`
+	RandomError                    bool          `mapstructure:"random-error"`
+	Unhealthy                      bool          `mapstructure:"unhealthy"`
+	Unready                        bool          `mapstructure:"unready"`
+	JWTSecret                      string        `mapstructure:"jwt-secret"`
+	CacheServer                    string        `mapstructure:"cache-server"`
+	GrpcServiceEndpoint            string        `mapstructure:"grpc-service-endpoint"`
+	StripeEndpointSigningSecretKey string        `mapstructure:"stripe-endpoint-signing-key"`
+	Environment                    string        `mapstructure:"service-environment"`
+	RpcTimeout                     time.Duration `mapstructure:"rpc-timeout"`
+	StripeApiKey                   string        `mapstructure:"stripe-api-key"`
+	PlaidClientID                  string        `mapstructure:"plaid-client-id"`
+	PlaidSecretKey                 string        `mapstructure:"plaid-secret-key"`
+	PlaidEnv                       string        `mapstructure:"plaid-env"`
+	PlaidOauthDomain               string        `mapstructure:"plaid-oauth-domain"`
+	PlaidWebhooksEnabled           bool          `mapstructure:"plaid-webhooks-enabled"`
+	PlaidWebhookOauthDomain        string        `mapstructure:"plaid-webhook-oauth-domain"`
+	AwsAccessKeyID                 string        `mapstructure:"aws-access-key-id"`
+	AwsRegion                      string        `mapstructure:"aws-region"`
+	AwsSecretAccessKey             string        `mapstructure:"aws-secret-access-key"`
+	AwsKmsKeyID                    string        `mapstructure:"aws-kms-key-id"`
+	MaxPlaidLinks                  int           `mapstructure:"max-plaid-links"`
+	BillingEnabled                 bool          `mapstructure:"stripe-enabled"`
 }
 
 type Server struct {
-	router          *mux.Router
-	logger          *zap.Logger
-	config          *Config
-	pool            *redis.Pool
-	handler         http.Handler
-	instrumentation *instrumentation.ServiceTelemetry
-	conn            *database.Db
-	plaidClient     *plaid.APIClient
-	grpcGw          *runtime.ServeMux
+	router                      *mux.Router
+	logger                      *zap.Logger
+	config                      *Config
+	pool                        *redis.Pool
+	handler                     http.Handler
+	instrumentation             *instrumentation.Client
+	plaidWrapper                *plaidhandler.PlaidWrapper
+	inMemoryWebhookVerification plaidhandler.WebhookVerification
+	conn                        *database.Db
+	plaidClient                 *plaid.APIClient
+	grpcGw                      *runtime.ServeMux
+	kms                         secrets.KeyManagement
+	taskprocessor               *taskprocessor.TaskProcessor
 }
 
-func NewServer(config *Config, logger *zap.Logger, telemetry *instrumentation.ServiceTelemetry, db *database.Db) (*Server, error) {
+func NewServer(config *Config, logger *zap.Logger, telemetry *instrumentation.Client, db *database.Db, router *mux.Router, plaidClient *plaidhandler.PlaidWrapper, kmsClient secrets.KeyManagement, tp *taskprocessor.TaskProcessor) (*Server, error) {
 	opts := []grpc.DialOption{grpc.WithInsecure()}
 	gw := runtime.NewServeMux()
 	ctx := context.Background()
-	if err := proto.RegisterFinancialIntegrationServiceHandlerFromEndpoint(ctx, gw, config.GrpcServiceEndpoint, opts); err != nil {
+	if err := proto.RegisterFinancialServiceHandlerFromEndpoint(ctx, gw, config.GrpcServiceEndpoint, opts); err != nil {
 		return nil, err
 	}
 
+	var muxRouter *mux.Router
+	if router != nil {
+		muxRouter = router
+	} else {
+		muxRouter = mux.NewRouter()
+	}
+
 	srv := &Server{
-		router:          mux.NewRouter(),
-		logger:          logger,
-		config:          config,
-		instrumentation: telemetry,
-		conn:            db,
-		grpcGw:          gw,
+		router:                      muxRouter,
+		logger:                      logger,
+		config:                      config,
+		instrumentation:             telemetry,
+		conn:                        db,
+		grpcGw:                      gw,
+		plaidWrapper:                plaidClient,
+		inMemoryWebhookVerification: plaidhandler.NewInMemoryWebhookVerification(5*time.Minute, logger, plaidClient),
+		kms:                         kmsClient,
+		taskprocessor:               tp,
 	}
 
 	return srv, nil
 }
 
-func (s *Server) registerHandlers() {
+// RegisterHandlers registers all the handlers for the server
+func (s *Server) RegisterHandlers() {
 	s.router.Handle("/grpc-gateway", s.grpcGw)
 	s.router.Handle("/metrics", promhttp.Handler())
 	s.router.PathPrefix("/debug/pprof/").Handler(http.DefaultServeMux)
-	s.router.HandleFunc(newrelic.WrapHandleFunc(s.instrumentation.NewrelicSdk, "/", s.indexHandler)).HeadersRegexp("User-Agent", "^Mozilla.*").Methods("GET")
-	s.router.HandleFunc(newrelic.WrapHandleFunc(s.instrumentation.NewrelicSdk, "/", s.infoHandler)).Methods("GET")
-	s.router.HandleFunc(newrelic.WrapHandleFunc(s.instrumentation.NewrelicSdk, "/version", s.versionHandler)).Methods("GET")
-	s.router.HandleFunc(newrelic.WrapHandleFunc(s.instrumentation.NewrelicSdk, "/echo", s.echoHandler)).Methods("POST")
-	s.router.HandleFunc(newrelic.WrapHandleFunc(s.instrumentation.NewrelicSdk, "/env", s.envHandler)).Methods("GET", "POST")
-	s.router.HandleFunc(newrelic.WrapHandleFunc(s.instrumentation.NewrelicSdk, "/headers", s.echoHeadersHandler)).Methods("GET", "POST")
-	s.router.HandleFunc(newrelic.WrapHandleFunc(s.instrumentation.NewrelicSdk, "/delay/{wait:[0-9]+}", s.delayHandler)).Methods("GET").Name("delay")
-	s.router.HandleFunc(newrelic.WrapHandleFunc(s.instrumentation.NewrelicSdk, "/healthz", s.healthzHandler)).Methods("GET")
-	s.router.HandleFunc(newrelic.WrapHandleFunc(s.instrumentation.NewrelicSdk, "/readyz", s.readyzHandler)).Methods("GET")
-	s.router.HandleFunc(newrelic.WrapHandleFunc(s.instrumentation.NewrelicSdk, "/readyz/enable", s.enableReadyHandler)).Methods("POST")
-	s.router.HandleFunc(newrelic.WrapHandleFunc(s.instrumentation.NewrelicSdk, "/readyz/disable", s.disableReadyHandler)).Methods("POST")
-	s.router.HandleFunc(newrelic.WrapHandleFunc(s.instrumentation.NewrelicSdk, "/panic", s.panicHandler)).Methods("GET")
-	s.router.HandleFunc(newrelic.WrapHandleFunc(s.instrumentation.NewrelicSdk, "/status/{code:[0-9]+}", s.statusHandler)).Methods("GET", "POST", "PUT").Name("status")
-	s.router.HandleFunc(newrelic.WrapHandleFunc(s.instrumentation.NewrelicSdk, "/store", s.storeWriteHandler)).Methods("POST", "PUT")
-	s.router.HandleFunc(newrelic.WrapHandleFunc(s.instrumentation.NewrelicSdk, "/store/{hash}", s.storeReadHandler)).Methods("GET").Name("store")
-	s.router.HandleFunc(newrelic.WrapHandleFunc(s.instrumentation.NewrelicSdk, "/cache/{key}", s.cacheWriteHandler)).Methods("POST", "PUT")
-	s.router.HandleFunc(newrelic.WrapHandleFunc(s.instrumentation.NewrelicSdk, "/cache/{key}", s.cacheDeleteHandler)).Methods("DELETE")
-	s.router.HandleFunc(newrelic.WrapHandleFunc(s.instrumentation.NewrelicSdk, "/cache/{key}", s.cacheReadHandler)).Methods("GET").Name("cache")
-	s.router.HandleFunc(newrelic.WrapHandleFunc(s.instrumentation.NewrelicSdk, "/configs", s.configReadHandler)).Methods("GET")
-	s.router.HandleFunc(newrelic.WrapHandleFunc(s.instrumentation.NewrelicSdk, "/token", s.tokenGenerateHandler)).Methods("POST")
-	s.router.HandleFunc(newrelic.WrapHandleFunc(s.instrumentation.NewrelicSdk, "/token/validate", s.tokenValidateHandler)).Methods("GET")
-	s.router.HandleFunc(newrelic.WrapHandleFunc(s.instrumentation.NewrelicSdk, "/api/info", s.infoHandler)).Methods("GET")
-	s.router.HandleFunc(newrelic.WrapHandleFunc(s.instrumentation.NewrelicSdk, "/api/echo", s.echoHandler)).Methods("POST")
-	s.router.HandleFunc(newrelic.WrapHandleFunc(s.instrumentation.NewrelicSdk, "/ws/echo", s.echoWsHandler))
-	s.router.HandleFunc(newrelic.WrapHandleFunc(s.instrumentation.NewrelicSdk, "/chunked", s.chunkedHandler))
-	s.router.HandleFunc(newrelic.WrapHandleFunc(s.instrumentation.NewrelicSdk, "/chunked/{wait:[0-9]+}", s.chunkedHandler))
+	s.router.HandleFunc("/", s.indexHandler).HeadersRegexp("User-Agent", "^Mozilla.*").Methods("GET")
+	s.router.HandleFunc("/", s.infoHandler).Methods("GET")
+	s.router.HandleFunc("/version", s.versionHandler).Methods("GET")
+	s.router.HandleFunc("/echo", s.echoHandler).Methods("POST")
+	s.router.HandleFunc("/env", s.envHandler).Methods("GET", "POST")
+	s.router.HandleFunc("/headers", s.echoHeadersHandler).Methods("GET", "POST")
+	s.router.HandleFunc("/delay/{wait:[0-9]+}", s.delayHandler).Methods("GET").Name("delay")
+	s.router.HandleFunc("/healthz", s.healthzHandler).Methods("GET")
+	s.router.HandleFunc("/readyz", s.readyzHandler).Methods("GET")
+	s.router.HandleFunc("/readyz/enable", s.enableReadyHandler).Methods("POST")
+	s.router.HandleFunc("/readyz/disable", s.disableReadyHandler).Methods("POST")
+	s.router.HandleFunc("/panic", s.panicHandler).Methods("GET")
+	s.router.HandleFunc("/status/{code:[0-9]+}", s.statusHandler).Methods("GET", "POST", "PUT").Name("status")
+	s.router.HandleFunc("/store", s.storeWriteHandler).Methods("POST", "PUT")
+	s.router.HandleFunc("/store/{hash}", s.storeReadHandler).Methods("GET").Name("store")
+	s.router.HandleFunc("/cache/{key}", s.cacheWriteHandler).Methods("POST", "PUT")
+	s.router.HandleFunc("/cache/{key}", s.cacheDeleteHandler).Methods("DELETE")
+	s.router.HandleFunc("/cache/{key}", s.cacheReadHandler).Methods("GET").Name("cache")
+	s.router.HandleFunc("/configs", s.configReadHandler).Methods("GET")
+	s.router.HandleFunc("/token", s.tokenGenerateHandler).Methods("POST")
+	s.router.HandleFunc("/token/validate", s.tokenValidateHandler).Methods("GET")
+	s.router.HandleFunc("/api/info", s.infoHandler).Methods("GET")
+	s.router.HandleFunc("/api/echo", s.echoHandler).Methods("POST")
+	s.router.HandleFunc("/ws/echo", s.echoWsHandler)
+	s.router.HandleFunc("/chunked", s.chunkedHandler)
+	s.router.HandleFunc("/chunked/{wait:[0-9]+}", s.chunkedHandler)
+	s.router.HandleFunc("/stripe/webhook", s.handleStripeWebhook).Methods("POST")
+	s.router.HandleFunc("/plaid/webhook", s.handlerPlaidWebhook).Methods("POST")
+
 	s.router.PathPrefix("/swagger/").Handler(httpSwagger.Handler(
 		httpSwagger.URL("/swagger/doc.json"),
 	))
-	s.router.HandleFunc(newrelic.WrapHandleFunc(s.instrumentation.NewrelicSdk, "/swagger.json", func(w http.ResponseWriter, r *http.Request) {
+	s.router.HandleFunc("/swagger.json", func(w http.ResponseWriter, r *http.Request) {
 		doc, err := swag.ReadDoc()
 		if err != nil {
 			s.logger.Error("swagger error", zap.Error(err), zap.String("path", "/swagger.json"))
 		}
 		w.Write([]byte(doc))
-	}))
+	})
 }
 
-func (s *Server) registerMiddlewares() {
+func (s *Server) RegisterMiddlewares() {
 	prom := NewPrometheusMiddleware()
 	s.router.Use(prom.Handler)
 	httpLogger := NewLoggingMiddleware(s.logger)
@@ -171,11 +209,11 @@ func (s *Server) registerMiddlewares() {
 	}
 }
 
-func (s *Server) ListenAndServe(stopCh <-chan struct{}) {
+func (s *Server) ListenAndServe() (*http.Server, *http.Server) {
 	go s.startMetricsServer()
 
-	s.registerHandlers()
-	s.registerMiddlewares()
+	s.RegisterHandlers()
+	s.RegisterMiddlewares()
 
 	if s.config.H2C {
 		s.handler = h2c.NewHandler(s.router, &http2.Server{})
@@ -183,7 +221,7 @@ func (s *Server) ListenAndServe(stopCh <-chan struct{}) {
 		s.handler = s.router
 	}
 
-	//s.printRoutes()
+	s.printRoutes()
 
 	// load configs in memory and start watching for changes in the config dir
 	if stat, err := os.Stat(s.config.ConfigPath); err == nil && stat.IsDir() {
@@ -198,10 +236,10 @@ func (s *Server) ListenAndServe(stopCh <-chan struct{}) {
 
 	// start redis connection pool
 	ticker := time.NewTicker(30 * time.Second)
-	s.startCachePool(ticker, stopCh)
+	s.startCachePool(ticker)
 
 	// create the http server
-	srv := s.startServer()
+	srv := s.StartServer()
 
 	// create the secure server
 	secureSrv := s.startSecureServer()
@@ -214,11 +252,10 @@ func (s *Server) ListenAndServe(stopCh <-chan struct{}) {
 		atomic.StoreInt32(&ready, 1)
 	}
 
-	// wait for SIGTERM or SIGINT
-	<-stopCh
-	ctx, cancel := context.WithTimeout(context.Background(), s.config.HttpServerShutdownTimeout)
-	defer cancel()
+	return srv, secureSrv
+}
 
+func (s *Server) Shutdown(ctx context.Context, srv *http.Server, secureSrv *http.Server) {
 	// all calls to /healthz and /readyz will fail from now on
 	atomic.StoreInt32(&healthy, 0)
 	atomic.StoreInt32(&ready, 0)
@@ -251,14 +288,15 @@ func (s *Server) ListenAndServe(stopCh <-chan struct{}) {
 	}
 }
 
-func (s *Server) startServer() *http.Server {
+func (s *Server) StartServer() *http.Server {
 
 	// determine if the port is specified
 	if s.config.Port == "0" {
-
 		// move on immediately
 		return nil
 	}
+
+	s.logger.Info("Starting HTTP Server.", zap.String("addr", s.config.Host+":"+s.config.Port))
 
 	srv := &http.Server{
 		Addr:         s.config.Host + ":" + s.config.Port,

@@ -22,7 +22,17 @@ func GetDatabaseSchemas() []interface{} {
 		InvesmentHoldingORM{},
 		InvestmentSecurityORM{},
 		AprORM{},
+		PlaidSyncORM{},
 	}
 
+	return models
+}
+
+func GetClickhouseSchemas() []interface{} {
+	var models = []interface{}{
+		TransactionORM{},
+		ReOccuringTransactionORM{},
+		InvestmentTransactionORM{},
+	}
 	return models
 }

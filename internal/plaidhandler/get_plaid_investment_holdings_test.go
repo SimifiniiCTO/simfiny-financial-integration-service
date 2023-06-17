@@ -5,7 +5,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/plaid/plaid-go/plaid"
+	"github.com/plaid/plaid-go/v12/plaid"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -18,17 +18,12 @@ type plaidInvestmentScenarios struct {
 
 // getPlaidInvesmentScenarios returns a set of scenarios to test plaid integration
 func getPlaidInvesmentScenarios() ([]plaidInvestmentScenarios, *PlaidWrapper, error) {
-	accessToken, err := plaidTestClient.getAccessTokenForSandboxAcct()
-	if err != nil {
-		return nil, nil, err
-	}
-
 	return []plaidInvestmentScenarios{
 		{
 			// success condition: valid access token
 			scenarioName:     "[success condition]: get an account deposits with valid access token",
 			shouldErrorOccur: false,
-			accessToken:      &accessToken,
+			accessToken:      &testAccessToken,
 		},
 		{
 			// failure condition: access token is invalid
@@ -45,7 +40,7 @@ func TestGetPlaidInvestmentsAccountsOperation(t *testing.T) {
 	assert.Nil(t, err)
 
 	for _, scenario := range scenarios {
-		investments, err := p.getPlaidInvestmentHoldings(context.Background(), scenario.accessToken)
+		investments, err := p.GetPlaidInvestmentHoldings(context.Background(), scenario.accessToken, nil)
 		if err != nil {
 			if scenario.shouldErrorOccur {
 				assert.Equal(t, err, scenario.expectedError)

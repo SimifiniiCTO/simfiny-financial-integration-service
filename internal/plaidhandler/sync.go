@@ -3,7 +3,7 @@ package plaidhandler
 import (
 	"context"
 
-	"github.com/plaid/plaid-go/plaid"
+	"github.com/plaid/plaid-go/v12/plaid"
 	"go.uber.org/zap"
 
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
@@ -34,25 +34,29 @@ func (p *PlaidWrapper) Sync(ctx context.Context, cursor, accessToken *string) (*
 		return nil, err
 	}
 
-	added := make([]*schema.Transaction, len(result.Added))
-	for i, transaction := range result.Added {
-		added[i], err = transformer.NewTransactionFromPlaid(transaction)
+	added := make([]*schema.Transaction, 0, len(result.Added))
+	for _, transaction := range result.Added {
+		newTx, err := transformer.NewTransactionFromPlaid(&transaction)
 		if err != nil {
 			return nil, err
 		}
+
+		added = append(added, newTx)
 	}
 
-	modified := make([]*schema.Transaction, len(result.Modified))
-	for i, transaction := range result.Modified {
-		modified[i], err = transformer.NewTransactionFromPlaid(transaction)
+	modified := make([]*schema.Transaction, 0, len(result.Modified))
+	for _, transaction := range result.Modified {
+		modifiedTx, err := transformer.NewTransactionFromPlaid(&transaction)
 		if err != nil {
 			return nil, err
 		}
+
+		modified = append(modified, modifiedTx)
 	}
 
 	removed := make([]string, len(result.Removed))
-	for i, transaction := range result.Removed {
-		removed[i] = transaction.GetTransactionId()
+	for _, transaction := range result.Removed {
+		removed = append(removed, transaction.GetTransactionId())
 	}
 
 	if len(added)+len(modified)+len(removed) == 0 {

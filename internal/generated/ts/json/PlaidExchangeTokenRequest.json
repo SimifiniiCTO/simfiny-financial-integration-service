@@ -9,14 +9,17 @@
                     "description": "The user id Validations: - user_id must be greater than 0"
                 },
                 "public_token": {
+                    "minLength": 1,
                     "type": "string",
                     "description": "The public token Validations: - cannot be nil hence required"
                 },
                 "institution_id": {
+                    "minLength": 1,
                     "type": "string",
                     "description": "The institution id"
                 },
                 "institution_name": {
+                    "minLength": 1,
                     "type": "string",
                     "description": "The institution name"
                 }

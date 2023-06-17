@@ -4,17 +4,21 @@ import (
 	"errors"
 	"time"
 
-	"github.com/plaid/plaid-go/plaid"
+	"github.com/plaid/plaid-go/v12/plaid"
 	"github.com/stripe/stripe-go/v74/client"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 
 	telemetry "github.com/SimifiniiCTO/core/core-telemetry"
-	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/database"
+	"github.com/SimifiniiCTO/simfiny-core-lib/database/redis"
+	"github.com/SimifiniiCTO/simfiny-core-lib/instrumentation"
+	taskprocessor "github.com/SimifiniiCTO/simfiny-core-lib/task-processor"
+	clickhousedatabase "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/clickhouse-database"
 	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
-	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/instrumentation"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/plaidhandler"
+	database "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/postgres-database"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/secrets"
+	taskhandler "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/task-handler"
 	transactionmanager "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/transaction_manager"
 )
 
@@ -22,15 +26,19 @@ import (
 type Server struct {
 	proto.UnimplementedFinancialServiceServer
 	// proto.UnimplementedFinancialServiceServer
-	logger             *zap.Logger
-	config             *Config
-	instrumentation    *instrumentation.ServiceTelemetry
-	conn               *database.Db
-	plaidClient        *plaidhandler.PlaidWrapper
-	MetricsEngine      *telemetry.MetricsEngine
-	stripeClient       *client.API
-	kms                secrets.KeyManagement
-	TransactionManager *transactionmanager.TransactionManager
+	logger                      *zap.Logger
+	config                      *Config
+	instrumentation             *instrumentation.Client
+	conn                        *database.Db
+	clickhouseConn              *clickhousedatabase.Db
+	plaidClient                 *plaidhandler.PlaidWrapper
+	MetricsEngine               *telemetry.MetricsEngine
+	stripeClient                *client.API
+	kms                         secrets.KeyManagement
+	TransactionManager          *transactionmanager.TransactionManager
+	InMemoryWebhookVerification plaidhandler.WebhookVerification
+	redisDb                     *redis.Client
+	Taskprocessor               *taskprocessor.TaskProcessor
 }
 
 // Config is the config for the grpc server initialization
@@ -58,6 +66,7 @@ type Config struct {
 	WorkflowExecutionTimeout time.Duration    `mapstructure:"workflow-execution-timeout"`
 	WorkflowTaskTimeout      time.Duration    `mapstructure:"workflow-task-timeout"`
 	WorkflowRunTimeout       time.Duration    `mapstructure:"workflow-run-timeout"`
+	TaskProcessorWorkers     int              `mapstructure:"task-processor-workers"`
 }
 
 var _ proto.FinancialServiceServer = (*Server)(nil)
@@ -66,11 +75,13 @@ var _ proto.FinancialServiceServer = (*Server)(nil)
 type Params struct {
 	Config             *Config
 	Logger             *zap.Logger
-	Instrumentation    *instrumentation.ServiceTelemetry
+	Instrumentation    *instrumentation.Client
 	Db                 *database.Db
 	KeyManagement      secrets.KeyManagement
 	PlaidWrapper       *plaidhandler.PlaidWrapper
 	TransactionManager *transactionmanager.TransactionManager
+	ClickhouseDb       *clickhousedatabase.Db
+	RedisDb            *redis.Client
 }
 
 // RegisterGrpcServer registers the grpc server object
@@ -95,23 +106,56 @@ func (p *Params) Validate() error {
 	return nil
 }
 
+func configureTaskHandler(param *Params) *taskhandler.TaskHandler {
+	opts := []taskhandler.Option{
+		taskhandler.WithLogger(param.Logger),
+		taskhandler.WithInstrumentationClient(param.Instrumentation),
+		taskhandler.WithClickhouseDb(param.ClickhouseDb),
+		taskhandler.WithPostgresDb(param.Db),
+		taskhandler.WithPlaidClient(param.PlaidWrapper),
+	}
+
+	return taskhandler.NewTaskHandler(opts...)
+}
+
 // NewServer creates a new grpc server
 func NewServer(param *Params) (*Server, error) {
 	if param.Validate() != nil {
 		return nil, errors.New("invalid param")
 	}
 
+	// initialize a stripe connection for the user
 	sc := &client.API{}
 	sc.Init(param.Config.StripeApiKey, nil)
 
-	return &Server{
-		logger:             param.Logger,
-		config:             param.Config,
-		conn:               param.Db,
-		plaidClient:        param.PlaidWrapper,
-		instrumentation:    param.Instrumentation,
-		stripeClient:       sc,
-		kms:                param.KeyManagement,
-		TransactionManager: param.TransactionManager,
-	}, nil
+	th := configureTaskHandler(param)
+	// generatee task procerssor
+	opts := []taskprocessor.Option{
+		taskprocessor.WithLoggerOpt(param.Logger),
+		taskprocessor.WithInstrumentationClientOpt(param.Instrumentation),
+		taskprocessor.WithRedisAddressOpt(param.RedisDb.URI),
+		taskprocessor.WithConcurrencyFactorOpt(&param.Config.TaskProcessorWorkers),
+		taskprocessor.WithTaskHandlerOpt(th),
+	}
+
+	tp, err := taskprocessor.NewTaskProcessor(opts...)
+	if err != nil {
+		return nil, err
+	}
+
+	srv := &Server{
+		logger:                      param.Logger,
+		config:                      param.Config,
+		conn:                        param.Db,
+		plaidClient:                 param.PlaidWrapper,
+		instrumentation:             param.Instrumentation,
+		stripeClient:                sc,
+		kms:                         param.KeyManagement,
+		TransactionManager:          param.TransactionManager,
+		InMemoryWebhookVerification: plaidhandler.NewInMemoryWebhookVerification(5*time.Minute, param.Logger, param.PlaidWrapper),
+		clickhouseConn:              param.ClickhouseDb,
+		redisDb:                     param.RedisDb,
+		Taskprocessor:               tp,
+	}
+	return srv, nil
 }

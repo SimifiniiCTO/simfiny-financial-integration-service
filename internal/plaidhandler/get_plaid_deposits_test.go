@@ -5,7 +5,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/plaid/plaid-go/plaid"
+	"github.com/plaid/plaid-go/v12/plaid"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -18,17 +18,12 @@ type plaidDepositScenarios struct {
 
 // findAccountByIdScenarios returns a set of scenarios to test the account's existence based on provided email
 func getPlaidDepositScenarios() ([]plaidDepositScenarios, *PlaidWrapper, error) {
-	accessToken, err := plaidTestClient.getAccessTokenForSandboxAcct()
-	if err != nil {
-		return nil, nil, err
-	}
-
 	return []plaidDepositScenarios{
 		{
 			// success condition: valid access token
 			scenarioName:     "[success condition]: get an account deposits with valid access token",
 			shouldErrorOccur: false,
-			accessToken:      &accessToken,
+			accessToken:      &testAccessToken,
 		},
 		{
 			// failure condition: access token is invalid

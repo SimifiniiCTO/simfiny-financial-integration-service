@@ -17,7 +17,9 @@ GOTEST=$(GOCMD) test
 GOVET=$(GOCMD) vet
 EXPORT_RESULT ?= false
 TEMPORAL_DC=./compose/temporal/docker-compose.yml
-DC=docker-compose -f docker-compose.yaml -f $(TEMPORAL_DC)
+CLICKHOUSE_DC=./compose/docker-compose.clickhouse.yaml
+NGROK_DC=./compose/docker-compose-ngrok.yaml
+DC=docker-compose -f docker-compose.yaml -f $(TEMPORAL_DC) -f $(CLICKHOUSE_DC) -f $(NGROK_DC)
 
 .PHONY: help
 .DEFAULT_GOAL := help
@@ -204,11 +206,20 @@ kill.docker.desktop:
 start.docker.desktop:
 	./integration-test/docker-desktop.sh
 
+
 gen:
 	cd api && make && cd ..
 	./generate.sh
+	
 
 lint:
 	golangci-lint run
 
 precommit: fmt test.unit
+
+ngrok:
+	docker run --rm --detach \
+	-e NGROK_AUTHTOKEN=2JwfMUzmEbQBW2iH599MuX9bAeq_6MqUZtf6kCEkcjPci7SH9 \
+	--name ngrok \
+	ngrok/ngrok:alpine \
+	http nginx:80

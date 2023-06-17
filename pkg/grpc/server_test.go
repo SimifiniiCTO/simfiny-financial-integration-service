@@ -4,6 +4,7 @@ import (
 	"reflect"
 	"testing"
 
+	taskhandler "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/task-handler"
 	"google.golang.org/grpc"
 )
 
@@ -37,6 +38,26 @@ func TestParams_Validate(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			if err := tt.p.Validate(); (err != nil) != tt.wantErr {
 				t.Errorf("Params.Validate() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}
+
+func Test_configureTaskHandler(t *testing.T) {
+	type args struct {
+		param *Params
+	}
+	tests := []struct {
+		name string
+		args args
+		want *taskhandler.TaskHandler
+	}{
+		// TODO: Add test cases.
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := configureTaskHandler(tt.args.param); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("configureTaskHandler() = %v, want %v", got, tt.want)
 			}
 		})
 	}

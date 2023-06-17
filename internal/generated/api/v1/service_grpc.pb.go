@@ -55,6 +55,11 @@ const (
 	FinancialService_GetLink_FullMethodName                    = "/api.v1.FinancialService/GetLink"
 	FinancialService_GetLinks_FullMethodName                   = "/api.v1.FinancialService/GetLinks"
 	FinancialService_DeleteLink_FullMethodName                 = "/api.v1.FinancialService/DeleteLink"
+	FinancialService_GetReCurringTransactions_FullMethodName   = "/api.v1.FinancialService/GetReCurringTransactions"
+	FinancialService_GetTransactions_FullMethodName            = "/api.v1.FinancialService/GetTransactions"
+	FinancialService_ProcessWebhook_FullMethodName             = "/api.v1.FinancialService/ProcessWebhook"
+	FinancialService_StripeWebhook_FullMethodName              = "/api.v1.FinancialService/StripeWebhook"
+	FinancialService_CreateSubscription_FullMethodName         = "/api.v1.FinancialService/CreateSubscription"
 )
 
 // FinancialServiceClient is the client API for FinancialService service.
@@ -97,6 +102,11 @@ type FinancialServiceClient interface {
 	GetLink(ctx context.Context, in *GetLinkRequest, opts ...grpc.CallOption) (*GetLinkResponse, error)
 	GetLinks(ctx context.Context, in *GetLinksRequest, opts ...grpc.CallOption) (*GetLinksResponse, error)
 	DeleteLink(ctx context.Context, in *DeleteLinkRequest, opts ...grpc.CallOption) (*DeleteLinkResponse, error)
+	GetReCurringTransactions(ctx context.Context, in *GetReCurringTransactionsRequest, opts ...grpc.CallOption) (*GetReCurringTransactionsResponse, error)
+	GetTransactions(ctx context.Context, in *GetTransactionsRequest, opts ...grpc.CallOption) (*GetTransactionsResponse, error)
+	ProcessWebhook(ctx context.Context, in *ProcessWebhookRequest, opts ...grpc.CallOption) (*ProcessWebhookResponse, error)
+	StripeWebhook(ctx context.Context, in *StripeWebhookRequest, opts ...grpc.CallOption) (*StripeWebhookResponse, error)
+	CreateSubscription(ctx context.Context, in *CreateSubscriptionRequest, opts ...grpc.CallOption) (*CreateSubscriptionResponse, error)
 }
 
 type financialServiceClient struct {
@@ -431,6 +441,51 @@ func (c *financialServiceClient) DeleteLink(ctx context.Context, in *DeleteLinkR
 	return out, nil
 }
 
+func (c *financialServiceClient) GetReCurringTransactions(ctx context.Context, in *GetReCurringTransactionsRequest, opts ...grpc.CallOption) (*GetReCurringTransactionsResponse, error) {
+	out := new(GetReCurringTransactionsResponse)
+	err := c.cc.Invoke(ctx, FinancialService_GetReCurringTransactions_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *financialServiceClient) GetTransactions(ctx context.Context, in *GetTransactionsRequest, opts ...grpc.CallOption) (*GetTransactionsResponse, error) {
+	out := new(GetTransactionsResponse)
+	err := c.cc.Invoke(ctx, FinancialService_GetTransactions_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *financialServiceClient) ProcessWebhook(ctx context.Context, in *ProcessWebhookRequest, opts ...grpc.CallOption) (*ProcessWebhookResponse, error) {
+	out := new(ProcessWebhookResponse)
+	err := c.cc.Invoke(ctx, FinancialService_ProcessWebhook_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *financialServiceClient) StripeWebhook(ctx context.Context, in *StripeWebhookRequest, opts ...grpc.CallOption) (*StripeWebhookResponse, error) {
+	out := new(StripeWebhookResponse)
+	err := c.cc.Invoke(ctx, FinancialService_StripeWebhook_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *financialServiceClient) CreateSubscription(ctx context.Context, in *CreateSubscriptionRequest, opts ...grpc.CallOption) (*CreateSubscriptionResponse, error) {
+	out := new(CreateSubscriptionResponse)
+	err := c.cc.Invoke(ctx, FinancialService_CreateSubscription_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // FinancialServiceServer is the server API for FinancialService service.
 // All implementations must embed UnimplementedFinancialServiceServer
 // for forward compatibility
@@ -471,6 +526,11 @@ type FinancialServiceServer interface {
 	GetLink(context.Context, *GetLinkRequest) (*GetLinkResponse, error)
 	GetLinks(context.Context, *GetLinksRequest) (*GetLinksResponse, error)
 	DeleteLink(context.Context, *DeleteLinkRequest) (*DeleteLinkResponse, error)
+	GetReCurringTransactions(context.Context, *GetReCurringTransactionsRequest) (*GetReCurringTransactionsResponse, error)
+	GetTransactions(context.Context, *GetTransactionsRequest) (*GetTransactionsResponse, error)
+	ProcessWebhook(context.Context, *ProcessWebhookRequest) (*ProcessWebhookResponse, error)
+	StripeWebhook(context.Context, *StripeWebhookRequest) (*StripeWebhookResponse, error)
+	CreateSubscription(context.Context, *CreateSubscriptionRequest) (*CreateSubscriptionResponse, error)
 	mustEmbedUnimplementedFinancialServiceServer()
 }
 
@@ -585,6 +645,21 @@ func (UnimplementedFinancialServiceServer) GetLinks(context.Context, *GetLinksRe
 }
 func (UnimplementedFinancialServiceServer) DeleteLink(context.Context, *DeleteLinkRequest) (*DeleteLinkResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteLink not implemented")
+}
+func (UnimplementedFinancialServiceServer) GetReCurringTransactions(context.Context, *GetReCurringTransactionsRequest) (*GetReCurringTransactionsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetReCurringTransactions not implemented")
+}
+func (UnimplementedFinancialServiceServer) GetTransactions(context.Context, *GetTransactionsRequest) (*GetTransactionsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetTransactions not implemented")
+}
+func (UnimplementedFinancialServiceServer) ProcessWebhook(context.Context, *ProcessWebhookRequest) (*ProcessWebhookResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ProcessWebhook not implemented")
+}
+func (UnimplementedFinancialServiceServer) StripeWebhook(context.Context, *StripeWebhookRequest) (*StripeWebhookResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method StripeWebhook not implemented")
+}
+func (UnimplementedFinancialServiceServer) CreateSubscription(context.Context, *CreateSubscriptionRequest) (*CreateSubscriptionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateSubscription not implemented")
 }
 func (UnimplementedFinancialServiceServer) mustEmbedUnimplementedFinancialServiceServer() {}
 
@@ -1247,6 +1322,96 @@ func _FinancialService_DeleteLink_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _FinancialService_GetReCurringTransactions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetReCurringTransactionsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FinancialServiceServer).GetReCurringTransactions(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FinancialService_GetReCurringTransactions_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FinancialServiceServer).GetReCurringTransactions(ctx, req.(*GetReCurringTransactionsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FinancialService_GetTransactions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetTransactionsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FinancialServiceServer).GetTransactions(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FinancialService_GetTransactions_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FinancialServiceServer).GetTransactions(ctx, req.(*GetTransactionsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FinancialService_ProcessWebhook_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ProcessWebhookRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FinancialServiceServer).ProcessWebhook(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FinancialService_ProcessWebhook_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FinancialServiceServer).ProcessWebhook(ctx, req.(*ProcessWebhookRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FinancialService_StripeWebhook_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(StripeWebhookRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FinancialServiceServer).StripeWebhook(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FinancialService_StripeWebhook_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FinancialServiceServer).StripeWebhook(ctx, req.(*StripeWebhookRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FinancialService_CreateSubscription_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateSubscriptionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FinancialServiceServer).CreateSubscription(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FinancialService_CreateSubscription_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FinancialServiceServer).CreateSubscription(ctx, req.(*CreateSubscriptionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // FinancialService_ServiceDesc is the grpc.ServiceDesc for FinancialService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1397,6 +1562,26 @@ var FinancialService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteLink",
 			Handler:    _FinancialService_DeleteLink_Handler,
+		},
+		{
+			MethodName: "GetReCurringTransactions",
+			Handler:    _FinancialService_GetReCurringTransactions_Handler,
+		},
+		{
+			MethodName: "GetTransactions",
+			Handler:    _FinancialService_GetTransactions_Handler,
+		},
+		{
+			MethodName: "ProcessWebhook",
+			Handler:    _FinancialService_ProcessWebhook_Handler,
+		},
+		{
+			MethodName: "StripeWebhook",
+			Handler:    _FinancialService_StripeWebhook_Handler,
+		},
+		{
+			MethodName: "CreateSubscription",
+			Handler:    _FinancialService_CreateSubscription_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

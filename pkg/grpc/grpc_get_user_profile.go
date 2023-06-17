@@ -38,6 +38,11 @@ func (s *Server) GetUserProfile(ctx context.Context, req *proto.GetUserProfileRe
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
+	// remove the access token from the response
+	for _, link := range record.Link {
+		NullifyAccessToken(link)
+	}
+
 	return &proto.GetUserProfileResponse{
 		Profile: record,
 	}, nil

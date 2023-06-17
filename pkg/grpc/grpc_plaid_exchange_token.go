@@ -10,9 +10,11 @@ import (
 
 	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/plaidhandler"
+	taskhandler "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/task-handler"
+	encryptdecrypt "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/encrypt_decrypt"
 )
 
-type accessTokenMeta struct {
+type AccessTokenMeta struct {
 	accessToken string
 	keyID       string
 	version     string
@@ -116,16 +118,16 @@ func (s *Server) createAndStoreLink(ctx context.Context, userID uint64, meta *to
 	s.logger.Info("about to cryptographically encrypt token", zap.Any("user_id", userID))
 
 	// cryptographically hash the access token before storing it
-	res, err := s.EncryptAccessToken(ctx, accessToken)
+	res, err := encryptdecrypt.EncryptAccessToken(ctx, accessToken, s.kms, s.logger)
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
 	token := &proto.Token{
 		ItemId:      *meta.item_id,
-		KeyId:       res.keyID,
-		AccessToken: res.accessToken,
-		Version:     res.version,
+		KeyId:       res.KeyID,
+		AccessToken: res.AccessToken,
+		Version:     res.Version,
 	}
 
 	plaidLink := &proto.PlaidLink{
@@ -155,17 +157,36 @@ func (s *Server) createAndStoreLink(ctx context.Context, userID uint64, meta *to
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	result, err := s.conn.CreateLink(ctx, userID, link)
+	result, err := s.conn.CreateLink(ctx, userID, link, false)
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
 	// TODO: kick off a background job to fetch the account transactions
-	/*if plaidLink.UsePlaidSync {
+	if plaidLink.UsePlaidSync {
 		// kick off a background job to pull transactions by use of plaid sync
+		if err := taskhandler.DispatchPlaidSyncTask(ctx, s.Taskprocessor, s.instrumentation, s.logger, userID, result.Id, accessToken); err != nil {
+			return nil, status.Error(codes.Internal, err.Error())
+		}
 	} else {
+		linkId := result.Id
+		start := time.Now().Add(-30 * 24 * time.Hour) // Last 30 days.
+		end := time.Now()
 		// kick off background job to pull transactions
-	}*/
+		if err := taskhandler.DispatchPullTransactionsTask(
+			ctx,
+			s.Taskprocessor,
+			s.instrumentation,
+			s.logger,
+			userID,
+			linkId,
+			accessToken,
+			start,
+			end,
+		); err != nil {
+			return nil, status.Error(codes.Internal, err.Error())
+		}
+	}
 
 	return &result.Id, nil
 }

@@ -18,6 +18,12 @@ spec:
       protocol: TCP
       name: grpc
     {{- end }}
+    {{- if .Values.service.httpPort }}
+    - port: {{ .Values.service.httpPort }}
+      targetPort: http
+      protocol: TCP
+      name: http
+    {{- end }}
   selector:
     {{- include "fis.selectorLabels" . | nindent 4 }}
 {{- end }}

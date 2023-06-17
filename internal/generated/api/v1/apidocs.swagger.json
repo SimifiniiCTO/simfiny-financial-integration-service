@@ -20,7 +20,8 @@
     }
   ],
   "schemes": [
-    "http"
+    "http",
+    "https"
   ],
   "consumes": [
     "application/json"
@@ -1449,6 +1450,58 @@
         ]
       }
     },
+    "/api/v1/plaid/webhook": {
+      "post": {
+        "summary": "Processes a webhook obtained from plaid",
+        "description": "This endpoint enabled simfiny to process triggered webhooks",
+        "operationId": "ProcessWebhook",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ProcessWebhookResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ProcessWebhookRequest"
+            }
+          }
+        ],
+        "tags": [
+          "webhook"
+        ]
+      }
+    },
     "/api/v1/pocket/{pocketId}": {
       "get": {
         "summary": "get a pocket",
@@ -1952,6 +2005,228 @@
           "smart goals"
         ]
       }
+    },
+    "/api/v1/stripe/subscription": {
+      "post": {
+        "summary": "Creates a new subscription for a given customer against stripe",
+        "description": "This endpoint enabled a user to create a new subscription against stripe",
+        "operationId": "CreateSubscription",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/CreateSubscriptionResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateSubscriptionRequest"
+            }
+          }
+        ],
+        "tags": [
+          "payment"
+        ]
+      }
+    },
+    "/api/v1/stripe/webhook": {
+      "post": {
+        "summary": "Processes a webhook obtained from stripe",
+        "description": "This endpoint enabled simfiny to process triggered webhooks from stripe",
+        "operationId": "ProcessStripeWebhook",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/StripeWebhookResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/StripeWebhookRequest"
+            }
+          }
+        ],
+        "tags": [
+          "webhook"
+        ]
+      }
+    },
+    "/api/v1/transactions/recurring-transactions/{userId}": {
+      "get": {
+        "summary": "get recurring transactions",
+        "description": "This endpoint returns the recurring transactions for a given user id",
+        "operationId": "GetRecurringTransactions",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": ".api.v1.GetRecurringTransactionsResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "description": "The user id\nValidations:\n- user_id must be greater than 0",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "recurring transactions"
+        ]
+      }
+    },
+    "/api/v1/transactions/{userId}/pageNumber/{pageNumber}/pageSize/{pageSize}": {
+      "get": {
+        "summary": "get transactions",
+        "description": "This endpoint returns the transactions for a given user id",
+        "operationId": "GetTransactions",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/GetTransactionsResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": "#/definitions/ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": "#/definitions/PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "description": "The user id\nValidations:\n- user_id must be greater than 0",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "pageNumber",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "pageSize",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "transactions"
+        ]
+      }
     }
   },
   "definitions": {
@@ -1959,10 +2234,12 @@
       "type": "object",
       "properties": {
         "@type": {
-          "type": "string"
+          "type": "string",
+          "description": "A URL/resource name that uniquely identifies the type of the serialized\nprotocol buffer message. This string must contain at least\none \"/\" character. The last segment of the URL's path must represent\nthe fully qualified name of the type (as in\n`path/google.protobuf.Duration`). The name should be in a canonical form\n(e.g., leading \".\" is not accepted).\n\nIn practice, teams usually precompile into the binary all types that they\nexpect it to use in the context of Any. However, for URLs which use the\nscheme `http`, `https`, or no scheme, one can optionally set up a type\nserver that maps type URLs to message definitions as follows:\n\n* If no scheme is provided, `https` is assumed.\n* An HTTP GET on the URL must yield a [google.protobuf.Type][]\n  value in binary format, or produce an error.\n* Applications are allowed to cache lookup results based on the\n  URL, or have them precompiled into a binary to avoid any\n  lookup. Therefore, binary compatibility needs to be preserved\n  on changes to types. (Use versioned type names to manage\n  breaking changes.)\n\nNote: this functionality is not currently available in the official\nprotobuf release, and it is not used for type URLs beginning with\ntype.googleapis.com.\n\nSchemes other than `http`, `https` (or the empty scheme) might be\nused with implementation specific semantics."
         }
       },
-      "additionalProperties": {}
+      "additionalProperties": {},
+      "description": "`Any` contains an arbitrary serialized protocol buffer message along with a\nURL that describes the type of the serialized message.\n\nProtobuf library provides support to pack/unpack Any values in the form\nof utility functions or additional generated methods of the Any type.\n\nExample 1: Pack and unpack a message in C++.\n\n    Foo foo = ...;\n    Any any;\n    any.PackFrom(foo);\n    ...\n    if (any.UnpackTo(\u0026foo)) {\n      ...\n    }\n\nExample 2: Pack and unpack a message in Java.\n\n    Foo foo = ...;\n    Any any = Any.pack(foo);\n    ...\n    if (any.is(Foo.class)) {\n      foo = any.unpack(Foo.class);\n    }\n\nExample 3: Pack and unpack a message in Python.\n\n    foo = Foo(...)\n    any = Any()\n    any.Pack(foo)\n    ...\n    if any.Is(Foo.DESCRIPTOR):\n      any.Unpack(foo)\n      ...\n\nExample 4: Pack and unpack a message in Go\n\n     foo := \u0026pb.Foo{...}\n     any, err := anypb.New(foo)\n     if err != nil {\n       ...\n     }\n     ...\n     foo := \u0026pb.Foo{}\n     if err := any.UnmarshalTo(foo); err != nil {\n       ...\n     }\n\nThe pack methods provided by protobuf library will by default use\n'type.googleapis.com/full.type.name' as the type URL and the unpack\nmethods only use the fully qualified type name after the last '/'\nin the type URL, for example \"foo.bar.com/x/y.z\" will yield type\nname \"y.z\".\n\n\nJSON\n\nThe JSON representation of an `Any` value uses the regular\nrepresentation of the deserialized, embedded message, with an\nadditional field `@type` which contains the type URL. Example:\n\n    package google.profile;\n    message Person {\n      string first_name = 1;\n      string last_name = 2;\n    }\n\n    {\n      \"@type\": \"type.googleapis.com/google.profile.Person\",\n      \"firstName\": \u003cstring\u003e,\n      \"lastName\": \u003cstring\u003e\n    }\n\nIf the embedded message type is well-known and has a custom JSON\nrepresentation, that representation will be embedded adding a field\n`value` which holds the custom JSON in addition to the `@type`\nfield. Example (for message [google.protobuf.Duration][]):\n\n    {\n      \"@type\": \"type.googleapis.com/google.protobuf.Duration\",\n      \"value\": \"1.212s\"\n    }"
     },
     "Apr": {
       "type": "object",
@@ -2044,6 +2321,10 @@
         "subtype": {
           "type": "string",
           "title": "account subtype"
+        },
+        "status": {
+          "$ref": "#/definitions/BankAccountStatus",
+          "title": "the bank account status"
         }
       },
       "required": [
@@ -2054,6 +2335,15 @@
         "currency",
         "currentFunds"
       ]
+    },
+    "BankAccountStatus": {
+      "type": "string",
+      "enum": [
+        "BANK_ACCOUNT_STATUS_UNSPECIFIED",
+        "BANK_ACCOUNT_STATUS_ACTIVE",
+        "BANK_ACCOUNT_STATUS_INACTIVE"
+      ],
+      "default": "BANK_ACCOUNT_STATUS_UNSPECIFIED"
     },
     "BankAccountType": {
       "type": "string",
@@ -2246,6 +2536,33 @@
           "type": "string",
           "format": "uint64",
           "title": "The smart goal id"
+        }
+      }
+    },
+    "CreateSubscriptionRequest": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "priceId": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "userId",
+        "priceId"
+      ]
+    },
+    "CreateSubscriptionResponse": {
+      "type": "object",
+      "properties": {
+        "subscriptionId": {
+          "type": "string"
+        },
+        "paymentIntentClientSecret": {
+          "type": "string"
         }
       }
     },
@@ -2628,6 +2945,24 @@
         }
       }
     },
+    "GetReCurringTransactionsResponse": {
+      "type": "object",
+      "properties": {
+        "reCcuringTransactions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ReOccuringTransaction"
+          },
+          "title": "The re-occuring transactions"
+        },
+        "participantReCcuringTransactions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ParticipantReCurringTransactions"
+          }
+        }
+      }
+    },
     "GetSmartGoalsByPocketIdResponse": {
       "type": "object",
       "properties": {
@@ -2646,6 +2981,22 @@
         "studentLoanAccount": {
           "$ref": "#/definitions/StudentLoanAccount",
           "title": "The student loan account"
+        }
+      }
+    },
+    "GetTransactionsResponse": {
+      "type": "object",
+      "properties": {
+        "transactions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Transaction"
+          },
+          "title": "The transactions"
+        },
+        "nextPageNumber": {
+          "type": "string",
+          "format": "uint64"
         }
       }
     },
@@ -2988,6 +3339,18 @@
         "linkType": {
           "$ref": "#/definitions/LinkType",
           "title": "the type of link this is ... can be either a manual or plaid link type"
+        },
+        "errorCode": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "string"
+        },
+        "newAccountsAvailable": {
+          "type": "boolean"
+        },
+        "plaidSync": {
+          "$ref": "#/definitions/PlaidSync"
         }
       },
       "description": "A Link represents a login at a financial institution. A single end-user of your application might have accounts at different financial\ninstitutions, which means they would have multiple different Items. An Item is not the same as a financial institution account,\nalthough every account will be associated with an Item. For example, if a user has one login at their bank that allows them to access\nboth their checking account and their savings account, a single Item would be associated with both of those accounts. Each Item \nlinked within your application will have a corresponding access_token, which is a token that you can use to make API requests related\nto that specific Item.\nTwo Items created for the same set of credentials at the same institution will be considered different and not share the same item_id."
@@ -3179,6 +3542,23 @@
       ],
       "default": "no_not_found_error"
     },
+    "ParticipantReCurringTransactions": {
+      "type": "object",
+      "properties": {
+        "reocurringTransactionId": {
+          "type": "string",
+          "format": "uint64",
+          "title": "The participant id"
+        },
+        "transactions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Transaction"
+          },
+          "title": "The transactions"
+        }
+      }
+    },
     "PathUnknownErrorMessageResponse": {
       "type": "object",
       "example": {
@@ -3307,6 +3687,37 @@
         }
       }
     },
+    "PlaidSync": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uint64",
+          "title": "id"
+        },
+        "timeStamp": {
+          "type": "string"
+        },
+        "trigger": {
+          "type": "string"
+        },
+        "nextCursor": {
+          "type": "string"
+        },
+        "added": {
+          "type": "string",
+          "format": "int64"
+        },
+        "removed": {
+          "type": "string",
+          "format": "int64"
+        },
+        "modified": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
     "Pocket": {
       "type": "object",
       "properties": {
@@ -3342,6 +3753,228 @@
         "POCKET_TYPE_LONG_TERM_SAVINGS"
       ],
       "default": "POCKET_TYPE_UNSPECIFIED"
+    },
+    "ProcessWebhookRequest": {
+      "type": "object",
+      "properties": {
+        "webhookType": {
+          "type": "string"
+        },
+        "webhookCode": {
+          "type": "string"
+        },
+        "itemId": {
+          "type": "string",
+          "title": "The item_id of the Item associated with this webhook, warning, or error"
+        },
+        "initialUpdateComplete": {
+          "type": "boolean",
+          "description": "Indicates if initial pull information is available."
+        },
+        "historicalUpdateComplete": {
+          "type": "string",
+          "description": "Indicates if historical pull information is available."
+        },
+        "environment": {
+          "type": "string",
+          "title": "The Plaid environment the webhook was sent from"
+        },
+        "newTransactions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "The number of new, unfetched transactions available"
+        },
+        "removedTransactions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "An array of transaction_ids corresponding to the removed transactions"
+        },
+        "error": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/Any"
+          },
+          "description": "We use standard HTTP response codes for success and failure notifications, \nand our errors are further classified by error_type. In general, 200 HTTP codes \ncorrespond to success, 40X codes are for developer- or user-related failures, and \n50X codes are for Plaid-related issues. An Item with a non-null error object will \nonly be part of an API response when calling /item/get to view Item status. Otherwise, \nerror fields will be null if no error has occurred; if an error has occurred, an error \ncode will be returned instead."
+        },
+        "accountIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "A list of account_ids for accounts that have new or updated recurring transactions data."
+        },
+        "consentExpirationTime": {
+          "type": "string",
+          "title": "The time at which the user's access_token will expire. This field will only be present"
+        },
+        "accountIdsWithNewLiabilities": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "An array of account_id's for accounts that contain new liabilities.'"
+        },
+        "accountIdsWithUpdatedLiabilities": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "An object with keys of account_id's that are mapped to their respective liabilities fields that changed."
+        },
+        "newHoldings": {
+          "type": "string",
+          "format": "uint64",
+          "description": "The number of new holdings reported since the last time this webhook was fired."
+        },
+        "updatedHoldings": {
+          "type": "string",
+          "format": "uint64",
+          "title": "The number of updated holdings reported since the last time this webhook was fired.\n@gotag: json:\"updated_holdings\""
+        }
+      },
+      "required": [
+        "webhookType",
+        "webhookCode"
+      ]
+    },
+    "ProcessWebhookResponse": {
+      "type": "object"
+    },
+    "ReCurringFlow": {
+      "type": "string",
+      "enum": [
+        "RE_CURRING_FLOW_UNSPECIFIED",
+        "RE_CURRING_FLOW_INFLOW",
+        "RE_CURRING_FLOW_OUTFLOW"
+      ],
+      "default": "RE_CURRING_FLOW_UNSPECIFIED"
+    },
+    "ReOccuringTransaction": {
+      "type": "object",
+      "properties": {
+        "accountId": {
+          "type": "string",
+          "title": "@gotag: ch:\"account_id\""
+        },
+        "streamId": {
+          "type": "string",
+          "title": "@gotag: ch:\"stream_id\""
+        },
+        "categoryId": {
+          "type": "string",
+          "title": "@gotag: ch:\"category_id\""
+        },
+        "description": {
+          "type": "string",
+          "title": "@gotag: ch:\"description\""
+        },
+        "merchantName": {
+          "type": "string",
+          "title": "@gotag: ch:\"merchant_name\""
+        },
+        "personalFinanceCategoryPrimary": {
+          "type": "string",
+          "title": "@gotag: ch:\"personal_finance_category_primary\""
+        },
+        "personalFinanceCategoryDetailed": {
+          "type": "string",
+          "title": "@gotag: ch:\"personal_finance_category_detailed\""
+        },
+        "firstDate": {
+          "type": "string",
+          "title": "@gotag: ch:\"first_date\""
+        },
+        "lastDate": {
+          "type": "string",
+          "title": "@gotag: ch:\"last_date\""
+        },
+        "frequency": {
+          "$ref": "#/definitions/ReOccuringTransactionsFrequency",
+          "title": "@gotag: ch:\"frequency\""
+        },
+        "transactionIds": {
+          "type": "string",
+          "title": "@gotag: ch:\"transaction_ids,array\""
+        },
+        "averageAmount": {
+          "type": "string",
+          "title": "@gotag: ch:\"average_amount\""
+        },
+        "averageAmountIsoCurrencyCode": {
+          "type": "string",
+          "title": "@gotag: ch:\"average_amount_iso_currency_code\""
+        },
+        "lastAmount": {
+          "type": "string",
+          "title": "@gotag: ch:\"last_amount\""
+        },
+        "lastAmountIsoCurrencyCode": {
+          "type": "string",
+          "title": "@gotag: ch:\"last_amount_iso_currency_code\""
+        },
+        "isActive": {
+          "type": "boolean",
+          "title": "@gotag: ch:\"is_active\""
+        },
+        "status": {
+          "$ref": "#/definitions/ReOccuringTransactionsStatus",
+          "title": "@gotag: ch:\"status\""
+        },
+        "updatedTime": {
+          "type": "string",
+          "title": "@gotag: ch:\"updated_time\""
+        },
+        "userId": {
+          "type": "string",
+          "format": "uint64",
+          "title": "@gotag: ch:\"user_id\""
+        },
+        "linkId": {
+          "type": "string",
+          "format": "uint64",
+          "title": "@gotag: ch:\"link_id\""
+        },
+        "id": {
+          "type": "string",
+          "format": "uint64",
+          "title": "@gotag: ch:\"id\""
+        },
+        "flow": {
+          "$ref": "#/definitions/ReCurringFlow",
+          "title": "@gotag: ch:\"flow\""
+        },
+        "sign": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "ReOccuringTransactionsFrequency": {
+      "type": "string",
+      "enum": [
+        "RE_OCCURING_TRANSACTIONS_FREQUENCY_UNSPECIFIED",
+        "RE_OCCURING_TRANSACTIONS_FREQUENCY_WEEKLY",
+        "RE_OCCURING_TRANSACTIONS_FREQUENCY_BIWEEKLY",
+        "RE_OCCURING_TRANSACTIONS_FREQUENCY_SEMI_MONTHLY",
+        "RE_OCCURING_TRANSACTIONS_FREQUENCY_MONTHLY",
+        "RE_OCCURING_TRANSACTIONS_FREQUENCY_ANNUALLY"
+      ],
+      "default": "RE_OCCURING_TRANSACTIONS_FREQUENCY_UNSPECIFIED"
+    },
+    "ReOccuringTransactionsStatus": {
+      "type": "string",
+      "enum": [
+        "RE_OCCURING_TRANSACTIONS_STATUS_UNSPECIFIED",
+        "RE_OCCURING_TRANSACTIONS_STATUS_MATURE",
+        "RE_OCCURING_TRANSACTIONS_STATUS_EARLY_DETECTION",
+        "RE_OCCURING_TRANSACTIONS_STATUS_TOMBSTONED"
+      ],
+      "default": "RE_OCCURING_TRANSACTIONS_STATUS_UNSPECIFIED",
+      "description": " - RE_OCCURING_TRANSACTIONS_STATUS_MATURE: A MATURE recurring stream should have at least 3 transactions and happen\n on a regular cadence (For Annual recurring stream, we will mark it MATURE after 2 instances).\n - RE_OCCURING_TRANSACTIONS_STATUS_EARLY_DETECTION: When a recurring transaction first appears in the transaction history and before it fulfills\nthe requirement of a mature stream, the status will be EARLY_DETECTION.\n - RE_OCCURING_TRANSACTIONS_STATUS_TOMBSTONED: A stream that was previously in the EARLY_DETECTION status will move to the TOMBSTONED\nstatus when no further transactions were found at the next expected date."
     },
     "ReadynessCheckResponse": {
       "type": "object",
@@ -3462,6 +4095,10 @@
         "stripeWebhookLatestTimestamp": {
           "type": "string",
           "title": "stripe webhook latest timestamp"
+        },
+        "isTrialing": {
+          "type": "boolean",
+          "title": "wether the subscription is trialing"
         }
       },
       "title": "StripeSubscription stores high level stripe subscription details of which the user profile has"
@@ -3475,9 +4112,32 @@
         "STRIPE_SUBSCRIPTION_STATUS_PAST_DUE",
         "STRIPE_SUBSCRIPTION_STATUS_CANCELED",
         "STRIPE_SUBSCRIPTION_STATUS_UNPAID",
-        "STRIPE_SUBSCRIPTION_STATUS_COMPLETE"
+        "STRIPE_SUBSCRIPTION_STATUS_COMPLETE",
+        "STRIPE_SUBSCRIPTION_STATUS_INCOMPLETE",
+        "STRIPE_SUBSCRIPTION_STATUS_INCOMPLETE_EXPIRED",
+        "STRIPE_SUBSCRIPTION_STATUS_CREATED",
+        "STRIPE_SUBSCRIPTION_STATUS_PAUSED"
       ],
       "default": "STRIPE_SUBSCRIPTION_STATUS_UNSPECIFIED"
+    },
+    "StripeWebhookRequest": {
+      "type": "object",
+      "properties": {
+        "body": {
+          "type": "string"
+        },
+        "signature": {
+          "type": "string"
+        }
+      }
+    },
+    "StripeWebhookResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
+        }
+      }
     },
     "StudentLoanAccount": {
       "type": "object",
@@ -3625,6 +4285,160 @@
           "type": "string"
         },
         "version": {
+          "type": "string"
+        }
+      }
+    },
+    "Transaction": {
+      "type": "object",
+      "properties": {
+        "accountId": {
+          "type": "string",
+          "title": "@gotag: ch:\"account_id\""
+        },
+        "amount": {
+          "type": "number",
+          "format": "double",
+          "title": "@gotag: ch:\"amount\""
+        },
+        "isoCurrencyCode": {
+          "type": "string",
+          "title": "@gotag: ch:\"iso_currency_code\""
+        },
+        "unofficialCurrencyCode": {
+          "type": "string",
+          "title": "@gotag: ch:\"unofficial_currency_code\""
+        },
+        "categoryId": {
+          "type": "string",
+          "title": "@gotag: ch:\"category_id\""
+        },
+        "checkNumber": {
+          "type": "string",
+          "title": "@gotag: ch:\"check_number\""
+        },
+        "date": {
+          "type": "string",
+          "title": "@gotag: ch:\"date\""
+        },
+        "datetime": {
+          "type": "string",
+          "title": "@gotag: ch:\"datetime\""
+        },
+        "authorizedDate": {
+          "type": "string",
+          "title": "@gotag: ch:\"authorized_date\""
+        },
+        "authorizedDatetime": {
+          "type": "string",
+          "title": "@gotag: ch:\"authorized_datetime\""
+        },
+        "name": {
+          "type": "string",
+          "title": "@gotag: ch:\"name\""
+        },
+        "merchantName": {
+          "type": "string",
+          "title": "@gotag: ch:\"merchant_name\""
+        },
+        "paymentChannel": {
+          "type": "string",
+          "title": "@gotag: ch:\"payment_channel\""
+        },
+        "pending": {
+          "type": "boolean",
+          "title": "@gotag: ch:\"pending\""
+        },
+        "pendingTransactionId": {
+          "type": "string",
+          "title": "@gotag: ch:\"pending_transaction_id\""
+        },
+        "accountOwner": {
+          "type": "string",
+          "title": "@gotag: ch:\"account_owner\""
+        },
+        "transactionId": {
+          "type": "string",
+          "title": "@gotag: ch:\"transaction_id\""
+        },
+        "transactionCode": {
+          "type": "string",
+          "title": "@gotag: ch:\"transaction_code\""
+        },
+        "id": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "userId": {
+          "type": "string",
+          "format": "uint64",
+          "title": "@gotag: ch:\"user_id\""
+        },
+        "linkId": {
+          "type": "string",
+          "format": "uint64",
+          "title": "@gotag: ch:\"link_id\""
+        },
+        "sign": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "personalFinanceCategoryPrimary": {
+          "type": "string",
+          "title": "@gotag: ch:\"personal_finance_category_primary\""
+        },
+        "personalFinanceCategoryDetailed": {
+          "type": "string",
+          "title": "@gotag: ch:\"personal_finance_category_detailed\""
+        },
+        "locationAddress": {
+          "type": "string"
+        },
+        "locationCity": {
+          "type": "string"
+        },
+        "locationRegion": {
+          "type": "string"
+        },
+        "locationPostalCode": {
+          "type": "string"
+        },
+        "locationCountry": {
+          "type": "string"
+        },
+        "locationLat": {
+          "type": "number",
+          "format": "double"
+        },
+        "locationLon": {
+          "type": "number",
+          "format": "double"
+        },
+        "locationStoreNumber": {
+          "type": "string"
+        },
+        "paymentMetaByOrderOf": {
+          "type": "string"
+        },
+        "paymentMetaPayee": {
+          "type": "string"
+        },
+        "paymentMetaPayer": {
+          "type": "string"
+        },
+        "paymentMetaPaymentMethod": {
+          "type": "string"
+        },
+        "paymentMetaPaymentProcessor": {
+          "type": "string"
+        },
+        "paymentMetaPpdId": {
+          "type": "string"
+        },
+        "paymentMetaReason": {
+          "type": "string"
+        },
+        "paymentMetaReferenceNumber": {
           "type": "string"
         }
       }

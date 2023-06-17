@@ -1,11 +1,10 @@
 package plaidhandler
 
 import (
-	"github.com/newrelic/go-agent/v3/newrelic"
-	"github.com/plaid/plaid-go/plaid"
+	"github.com/plaid/plaid-go/v12/plaid"
 	"go.uber.org/zap"
 
-	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/instrumentation"
+	"github.com/SimifiniiCTO/simfiny-core-lib/instrumentation"
 )
 
 var (
@@ -15,6 +14,7 @@ var (
 	SERVICE_TEST_UTILS          = "test"
 	TEST_ACCESSTOKEN            = ""
 	plaidTestClient             *PlaidWrapper
+	PLAID_WEBHOOKS_DOMAIN       = "d30b-50-35-101-189.ngrok-free.app"
 )
 
 func NewMockPlaidClient() *plaid.APIClient {
@@ -25,27 +25,16 @@ func NewMockPlaidClient() *plaid.APIClient {
 	return plaid.NewAPIClient(configuration)
 }
 
-// NewNewRelicClient configures the new relic sdk with metadata specific to this service
-func newNewRelicClient(logger *zap.Logger) (*newrelic.Application, error) {
-	return newrelic.NewApplication()
-}
-
-func newLogger() *zap.Logger {
-	return zap.L()
-}
-
 func GetPlaidWrapperForTest() (*PlaidWrapper, error) {
-	l := newLogger()
-
 	return &PlaidWrapper{
 		client:             NewMockPlaidClient(),
-		InstrumentationSdk: &instrumentation.ServiceTelemetry{},
-		Logger:             l,
+		InstrumentationSdk: &instrumentation.Client{},
+		Logger:             zap.L(),
 		Environment:        plaid.Sandbox,
 		ClientID:           PLAID_CLIENT_ID_TEST_UTILS,
 		SecretKey:          PLAID_SECRET_KEY_TEST_UTILS,
 		OAuthDomain:        "",
-		WebhooksDomain:     "",
+		WebhooksDomain:     PLAID_WEBHOOKS_DOMAIN,
 		WebhooksEnabled:    false,
 	}, nil
 }

@@ -1,6 +1,8 @@
 /* eslint-disable */
 import * as Long from "long";
 import * as _m0 from "protobufjs/minimal";
+import { Any } from "../../google/protobuf/any";
+import { ReOccuringTransaction, Transaction } from "./clickhouse";
 import {
   BankAccount,
   Budget,
@@ -666,6 +668,114 @@ export interface DeleteLinkResponse {
   linkId: number;
 }
 
+export interface GetReCurringTransactionsRequest {
+  /**
+   * The user id
+   * Validations:
+   * - user_id must be greater than 0
+   */
+  userId: number;
+}
+
+export interface GetReCurringTransactionsResponse {
+  /** The re-occuring transactions */
+  reCcuringTransactions: ReOccuringTransaction[];
+  participantReCcuringTransactions: GetReCurringTransactionsResponse_ParticipantReCurringTransactions[];
+}
+
+export interface GetReCurringTransactionsResponse_ParticipantReCurringTransactions {
+  /** The participant id */
+  reocurringTransactionId: number;
+  /** The transactions */
+  transactions: Transaction[];
+}
+
+export interface GetTransactionsRequest {
+  /**
+   * The user id
+   * Validations:
+   * - user_id must be greater than 0
+   */
+  userId: number;
+  pageNumber: number;
+  pageSize: number;
+}
+
+export interface GetTransactionsResponse {
+  /** The transactions */
+  transactions: Transaction[];
+  nextPageNumber: number;
+}
+
+export interface ProcessWebhookRequest {
+  webhookType: string;
+  webhookCode: string;
+  /** The item_id of the Item associated with this webhook, warning, or error */
+  itemId: string;
+  /** Indicates if initial pull information is available. */
+  initialUpdateComplete: boolean;
+  /** Indicates if historical pull information is available. */
+  historicalUpdateComplete: string;
+  /** The Plaid environment the webhook was sent from */
+  environment: string;
+  /** The number of new, unfetched transactions available */
+  newTransactions: string[];
+  /** An array of transaction_ids corresponding to the removed transactions */
+  removedTransactions: string[];
+  /**
+   * We use standard HTTP response codes for success and failure notifications,
+   * and our errors are further classified by error_type. In general, 200 HTTP codes
+   * correspond to success, 40X codes are for developer- or user-related failures, and
+   * 50X codes are for Plaid-related issues. An Item with a non-null error object will
+   * only be part of an API response when calling /item/get to view Item status. Otherwise,
+   * error fields will be null if no error has occurred; if an error has occurred, an error
+   * code will be returned instead.
+   */
+  error: { [key: string]: Any };
+  /** A list of account_ids for accounts that have new or updated recurring transactions data. */
+  accountIds: string[];
+  /** The time at which the user's access_token will expire. This field will only be present */
+  consentExpirationTime: string;
+  /** An array of account_id's for accounts that contain new liabilities.' */
+  accountIdsWithNewLiabilities: string[];
+  /** An object with keys of account_id's that are mapped to their respective liabilities fields that changed. */
+  accountIdsWithUpdatedLiabilities: string[];
+  /** The number of new holdings reported since the last time this webhook was fired. */
+  newHoldings: number;
+  /**
+   * The number of updated holdings reported since the last time this webhook was fired.
+   * @gotag: json:"updated_holdings"
+   */
+  updatedHoldings: number;
+}
+
+export interface ProcessWebhookRequest_ErrorEntry {
+  key: string;
+  value: Any | undefined;
+}
+
+export interface ProcessWebhookResponse {
+}
+
+export interface StripeWebhookRequest {
+  body: string;
+  signature: string;
+}
+
+export interface StripeWebhookResponse {
+  message: string;
+}
+
+export interface CreateSubscriptionRequest {
+  userId: number;
+  priceId: string;
+}
+
+export interface CreateSubscriptionResponse {
+  subscriptionId: string;
+  paymentIntentClientSecret: string;
+}
+
 function createBaseCreateUserProfileRequest(): CreateUserProfileRequest {
   return { profile: undefined, email: "" };
 }
@@ -689,21 +799,21 @@ export const CreateUserProfileRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 10) {
+          if (tag !== 10) {
             break;
           }
 
           message.profile = UserProfile.decode(reader, reader.uint32());
           continue;
         case 2:
-          if (tag != 18) {
+          if (tag !== 18) {
             break;
           }
 
           message.email = reader.string();
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -759,14 +869,14 @@ export const CreateUserProfileResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 8) {
+          if (tag !== 8) {
             break;
           }
 
           message.userId = longToNumber(reader.uint64() as Long);
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -815,14 +925,14 @@ export const GetUserProfileRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 8) {
+          if (tag !== 8) {
             break;
           }
 
           message.userId = longToNumber(reader.uint64() as Long);
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -871,14 +981,14 @@ export const GetUserProfileResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 10) {
+          if (tag !== 10) {
             break;
           }
 
           message.profile = UserProfile.decode(reader, reader.uint32());
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -929,14 +1039,14 @@ export const DeleteUserProfileRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 8) {
+          if (tag !== 8) {
             break;
           }
 
           message.userId = longToNumber(reader.uint64() as Long);
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -985,14 +1095,14 @@ export const DeleteUserProfileResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 8) {
+          if (tag !== 8) {
             break;
           }
 
           message.profileDeleted = reader.bool();
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -1041,14 +1151,14 @@ export const UpdateUserProfileRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 10) {
+          if (tag !== 10) {
             break;
           }
 
           message.profile = UserProfile.decode(reader, reader.uint32());
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -1102,21 +1212,21 @@ export const UpdateUserProfileResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 8) {
+          if (tag !== 8) {
             break;
           }
 
           message.profileUpdated = reader.bool();
           continue;
         case 2:
-          if (tag != 18) {
+          if (tag !== 18) {
             break;
           }
 
           message.profile = UserProfile.decode(reader, reader.uint32());
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -1175,21 +1285,21 @@ export const CreateBankAccountRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 8) {
+          if (tag !== 8) {
             break;
           }
 
           message.userId = longToNumber(reader.uint64() as Long);
           continue;
         case 2:
-          if (tag != 18) {
+          if (tag !== 18) {
             break;
           }
 
           message.bankAccount = BankAccount.decode(reader, reader.uint32());
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -1246,14 +1356,14 @@ export const CreateBankAccountResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 8) {
+          if (tag !== 8) {
             break;
           }
 
           message.bankAccountId = longToNumber(reader.uint64() as Long);
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -1302,14 +1412,14 @@ export const GetBankAccountRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 8) {
+          if (tag !== 8) {
             break;
           }
 
           message.bankAccountId = longToNumber(reader.uint64() as Long);
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -1358,14 +1468,14 @@ export const GetBankAccountResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 10) {
+          if (tag !== 10) {
             break;
           }
 
           message.bankAccount = BankAccount.decode(reader, reader.uint32());
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -1420,21 +1530,21 @@ export const DeleteBankAccountRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 8) {
+          if (tag !== 8) {
             break;
           }
 
           message.userId = longToNumber(reader.uint64() as Long);
           continue;
         case 2:
-          if (tag != 16) {
+          if (tag !== 16) {
             break;
           }
 
           message.bankAccountId = longToNumber(reader.uint64() as Long);
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -1488,14 +1598,14 @@ export const DeleteBankAccountResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 8) {
+          if (tag !== 8) {
             break;
           }
 
           message.deleted = reader.bool();
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -1544,14 +1654,14 @@ export const UpdateBankAccountRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 3:
-          if (tag != 26) {
+          if (tag !== 26) {
             break;
           }
 
           message.bankAccount = BankAccount.decode(reader, reader.uint32());
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -1606,21 +1716,21 @@ export const UpdateBankAccountResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 8) {
+          if (tag !== 8) {
             break;
           }
 
           message.updated = reader.bool();
           continue;
         case 2:
-          if (tag != 18) {
+          if (tag !== 18) {
             break;
           }
 
           message.bankAccount = BankAccount.decode(reader, reader.uint32());
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -1677,14 +1787,14 @@ export const GetPocketRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 2:
-          if (tag != 16) {
+          if (tag !== 16) {
             break;
           }
 
           message.pocketId = longToNumber(reader.uint64() as Long);
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -1733,14 +1843,14 @@ export const GetPocketResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 10) {
+          if (tag !== 10) {
             break;
           }
 
           message.pocket = Pocket.decode(reader, reader.uint32());
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -1791,14 +1901,14 @@ export const GetSmartGoalsByPocketIdRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 2:
-          if (tag != 16) {
+          if (tag !== 16) {
             break;
           }
 
           message.pocketId = longToNumber(reader.uint64() as Long);
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -1849,14 +1959,14 @@ export const GetSmartGoalsByPocketIdResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 10) {
+          if (tag !== 10) {
             break;
           }
 
           message.smartGoals.push(SmartGoal.decode(reader, reader.uint32()));
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -1916,21 +2026,21 @@ export const CreateSmartGoalRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 2:
-          if (tag != 16) {
+          if (tag !== 16) {
             break;
           }
 
           message.pocketId = longToNumber(reader.uint64() as Long);
           continue;
         case 3:
-          if (tag != 26) {
+          if (tag !== 26) {
             break;
           }
 
           message.smartGoal = SmartGoal.decode(reader, reader.uint32());
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -1987,14 +2097,14 @@ export const CreateSmartGoalResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 8) {
+          if (tag !== 8) {
             break;
           }
 
           message.smartGoalId = longToNumber(reader.uint64() as Long);
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -2043,14 +2153,14 @@ export const UpdateSmartGoalRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 3:
-          if (tag != 26) {
+          if (tag !== 26) {
             break;
           }
 
           message.smartGoal = SmartGoal.decode(reader, reader.uint32());
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -2102,14 +2212,14 @@ export const UpdateSmartGoalResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 8) {
+          if (tag !== 8) {
             break;
           }
 
           message.smartGoalId = longToNumber(reader.uint64() as Long);
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -2158,14 +2268,14 @@ export const DeleteSmartGoalRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 2:
-          if (tag != 16) {
+          if (tag !== 16) {
             break;
           }
 
           message.smartGoalId = longToNumber(reader.uint64() as Long);
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -2214,14 +2324,14 @@ export const DeleteSmartGoalResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 8) {
+          if (tag !== 8) {
             break;
           }
 
           message.deleted = reader.bool();
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -2273,21 +2383,21 @@ export const CreateMilestoneRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 8) {
+          if (tag !== 8) {
             break;
           }
 
           message.smartGoalId = longToNumber(reader.uint64() as Long);
           continue;
         case 2:
-          if (tag != 18) {
+          if (tag !== 18) {
             break;
           }
 
           message.milestone = Milestone.decode(reader, reader.uint32());
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -2344,14 +2454,14 @@ export const CreateMilestoneResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 8) {
+          if (tag !== 8) {
             break;
           }
 
           message.milestoneId = longToNumber(reader.uint64() as Long);
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -2400,14 +2510,14 @@ export const DeleteMilestoneRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 2:
-          if (tag != 16) {
+          if (tag !== 16) {
             break;
           }
 
           message.milestoneId = longToNumber(reader.uint64() as Long);
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -2456,14 +2566,14 @@ export const DeleteMilestoneResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 8) {
+          if (tag !== 8) {
             break;
           }
 
           message.deleted = reader.bool();
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -2512,14 +2622,14 @@ export const UpdateMilestoneRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 2:
-          if (tag != 18) {
+          if (tag !== 18) {
             break;
           }
 
           message.milestone = Milestone.decode(reader, reader.uint32());
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -2571,14 +2681,14 @@ export const UpdateMilestoneResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 10) {
+          if (tag !== 10) {
             break;
           }
 
           message.milestone = Milestone.decode(reader, reader.uint32());
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -2630,14 +2740,14 @@ export const GetMilestonesBySmartGoalIdRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 8) {
+          if (tag !== 8) {
             break;
           }
 
           message.smartGoalId = longToNumber(reader.uint64() as Long);
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -2690,14 +2800,14 @@ export const GetMilestonesBySmartGoalIdResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 10) {
+          if (tag !== 10) {
             break;
           }
 
           message.milestones.push(Milestone.decode(reader, reader.uint32()));
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -2756,14 +2866,14 @@ export const GetMilestoneRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 2:
-          if (tag != 16) {
+          if (tag !== 16) {
             break;
           }
 
           message.milestoneId = longToNumber(reader.uint64() as Long);
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -2812,14 +2922,14 @@ export const GetMilestoneResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 10) {
+          if (tag !== 10) {
             break;
           }
 
           message.milestone = Milestone.decode(reader, reader.uint32());
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -2871,14 +2981,14 @@ export const GetForecastRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 8) {
+          if (tag !== 8) {
             break;
           }
 
           message.smartGoalId = longToNumber(reader.uint64() as Long);
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -2927,14 +3037,14 @@ export const GetForecastResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 10) {
+          if (tag !== 10) {
             break;
           }
 
           message.forecast = Forecast.decode(reader, reader.uint32());
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -2988,21 +3098,21 @@ export const CreateBudgetRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 2:
-          if (tag != 16) {
+          if (tag !== 16) {
             break;
           }
 
           message.milestroneId = longToNumber(reader.uint64() as Long);
           continue;
         case 3:
-          if (tag != 26) {
+          if (tag !== 26) {
             break;
           }
 
           message.budget = Budget.decode(reader, reader.uint32());
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -3058,14 +3168,14 @@ export const CreateBudgetResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 8) {
+          if (tag !== 8) {
             break;
           }
 
           message.budgetId = longToNumber(reader.uint64() as Long);
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -3114,14 +3224,14 @@ export const UpdateBudgetRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 2:
-          if (tag != 18) {
+          if (tag !== 18) {
             break;
           }
 
           message.budget = Budget.decode(reader, reader.uint32());
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -3172,14 +3282,14 @@ export const UpdateBudgetResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 10) {
+          if (tag !== 10) {
             break;
           }
 
           message.budget = Budget.decode(reader, reader.uint32());
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -3230,14 +3340,14 @@ export const DeleteBudgetRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 2:
-          if (tag != 16) {
+          if (tag !== 16) {
             break;
           }
 
           message.budgetId = longToNumber(reader.uint64() as Long);
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -3286,14 +3396,14 @@ export const DeleteBudgetResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 8) {
+          if (tag !== 8) {
             break;
           }
 
           message.deleted = reader.bool();
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -3342,14 +3452,14 @@ export const GetBudgetRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 8) {
+          if (tag !== 8) {
             break;
           }
 
           message.budgetId = longToNumber(reader.uint64() as Long);
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -3398,14 +3508,14 @@ export const GetBudgetResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 10) {
+          if (tag !== 10) {
             break;
           }
 
           message.budget = Budget.decode(reader, reader.uint32());
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -3462,28 +3572,28 @@ export const GetAllBudgetsRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 8) {
+          if (tag !== 8) {
             break;
           }
 
           message.pocketId = longToNumber(reader.uint64() as Long);
           continue;
         case 2:
-          if (tag != 16) {
+          if (tag !== 16) {
             break;
           }
 
           message.smartGoalId = longToNumber(reader.uint64() as Long);
           continue;
         case 3:
-          if (tag != 24) {
+          if (tag !== 24) {
             break;
           }
 
           message.milestoneId = longToNumber(reader.uint64() as Long);
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -3540,14 +3650,14 @@ export const GetAllBudgetsResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 10) {
+          if (tag !== 10) {
             break;
           }
 
           message.budgets.push(Budget.decode(reader, reader.uint32()));
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -3597,7 +3707,7 @@ export const HealthCheckRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -3644,14 +3754,14 @@ export const HealthCheckResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 8) {
+          if (tag !== 8) {
             break;
           }
 
           message.healthy = reader.bool();
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -3697,7 +3807,7 @@ export const ReadynessCheckRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -3744,14 +3854,14 @@ export const ReadynessCheckResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 8) {
+          if (tag !== 8) {
             break;
           }
 
           message.healthy = reader.bool();
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -3809,35 +3919,35 @@ export const PlaidInitiateTokenExchangeRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 8) {
+          if (tag !== 8) {
             break;
           }
 
           message.userId = longToNumber(reader.uint64() as Long);
           continue;
         case 2:
-          if (tag != 18) {
+          if (tag !== 18) {
             break;
           }
 
           message.fullName = reader.string();
           continue;
         case 3:
-          if (tag != 26) {
+          if (tag !== 26) {
             break;
           }
 
           message.email = reader.string();
           continue;
         case 4:
-          if (tag != 34) {
+          if (tag !== 34) {
             break;
           }
 
           message.phoneNumber = reader.string();
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -3907,28 +4017,28 @@ export const PlaidInitiateTokenExchangeResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 10) {
+          if (tag !== 10) {
             break;
           }
 
           message.linkToken = reader.string();
           continue;
         case 2:
-          if (tag != 18) {
+          if (tag !== 18) {
             break;
           }
 
           message.expiration = reader.string();
           continue;
         case 3:
-          if (tag != 26) {
+          if (tag !== 26) {
             break;
           }
 
           message.plaidRequestId = reader.string();
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -3998,35 +4108,35 @@ export const PlaidExchangeTokenRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 8) {
+          if (tag !== 8) {
             break;
           }
 
           message.userId = longToNumber(reader.uint64() as Long);
           continue;
         case 2:
-          if (tag != 18) {
+          if (tag !== 18) {
             break;
           }
 
           message.publicToken = reader.string();
           continue;
         case 3:
-          if (tag != 26) {
+          if (tag !== 26) {
             break;
           }
 
           message.institutionId = reader.string();
           continue;
         case 4:
-          if (tag != 34) {
+          if (tag !== 34) {
             break;
           }
 
           message.institutionName = reader.string();
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -4086,14 +4196,14 @@ export const PlaidExchangeTokenResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 8) {
+          if (tag !== 8) {
             break;
           }
 
           message.success = reader.bool();
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -4145,21 +4255,21 @@ export const GetInvestmentAcccountRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 8) {
+          if (tag !== 8) {
             break;
           }
 
           message.userId = longToNumber(reader.uint64() as Long);
           continue;
         case 2:
-          if (tag != 16) {
+          if (tag !== 16) {
             break;
           }
 
           message.investmentAccountId = longToNumber(reader.uint64() as Long);
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -4213,14 +4323,14 @@ export const GetInvestmentAcccountResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 10) {
+          if (tag !== 10) {
             break;
           }
 
           message.investmentAccount = InvestmentAccount.decode(reader, reader.uint32());
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -4282,21 +4392,21 @@ export const GetMortgageAccountRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 8) {
+          if (tag !== 8) {
             break;
           }
 
           message.userId = longToNumber(reader.uint64() as Long);
           continue;
         case 2:
-          if (tag != 16) {
+          if (tag !== 16) {
             break;
           }
 
           message.mortgageAccountId = longToNumber(reader.uint64() as Long);
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -4350,14 +4460,14 @@ export const GetMortgageAccountResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 10) {
+          if (tag !== 10) {
             break;
           }
 
           message.mortageAccount = MortgageAccount.decode(reader, reader.uint32());
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -4414,21 +4524,21 @@ export const GetLiabilityAccountRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 8) {
+          if (tag !== 8) {
             break;
           }
 
           message.userId = longToNumber(reader.uint64() as Long);
           continue;
         case 2:
-          if (tag != 16) {
+          if (tag !== 16) {
             break;
           }
 
           message.liabilityAccountId = longToNumber(reader.uint64() as Long);
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -4482,14 +4592,14 @@ export const GetLiabilityAccountResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 10) {
+          if (tag !== 10) {
             break;
           }
 
           message.liabilityAccount = CreditAccount.decode(reader, reader.uint32());
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -4546,21 +4656,21 @@ export const GetStudentLoanAccountRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 8) {
+          if (tag !== 8) {
             break;
           }
 
           message.userId = longToNumber(reader.uint64() as Long);
           continue;
         case 2:
-          if (tag != 16) {
+          if (tag !== 16) {
             break;
           }
 
           message.studentLoanAccountId = longToNumber(reader.uint64() as Long);
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -4614,14 +4724,14 @@ export const GetStudentLoanAccountResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 10) {
+          if (tag !== 10) {
             break;
           }
 
           message.studentLoanAccount = StudentLoanAccount.decode(reader, reader.uint32());
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -4683,21 +4793,21 @@ export const CreateManualLinkRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 8) {
+          if (tag !== 8) {
             break;
           }
 
           message.userId = longToNumber(reader.uint64() as Long);
           continue;
         case 2:
-          if (tag != 18) {
+          if (tag !== 18) {
             break;
           }
 
           message.manualAccountLink = Link.decode(reader, reader.uint32());
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -4754,14 +4864,14 @@ export const CreateManualLinkResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 8) {
+          if (tag !== 8) {
             break;
           }
 
           message.linkId = longToNumber(reader.uint64() as Long);
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -4813,21 +4923,21 @@ export const GetLinkRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 8) {
+          if (tag !== 8) {
             break;
           }
 
           message.userId = longToNumber(reader.uint64() as Long);
           continue;
         case 2:
-          if (tag != 16) {
+          if (tag !== 16) {
             break;
           }
 
           message.linkId = longToNumber(reader.uint64() as Long);
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -4881,14 +4991,14 @@ export const GetLinkResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 10) {
+          if (tag !== 10) {
             break;
           }
 
           message.link = Link.decode(reader, reader.uint32());
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -4937,14 +5047,14 @@ export const GetLinksRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 8) {
+          if (tag !== 8) {
             break;
           }
 
           message.userId = longToNumber(reader.uint64() as Long);
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -4993,14 +5103,14 @@ export const GetLinksResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 10) {
+          if (tag !== 10) {
             break;
           }
 
           message.links.push(Link.decode(reader, reader.uint32()));
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -5056,21 +5166,21 @@ export const DeleteLinkRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 8) {
+          if (tag !== 8) {
             break;
           }
 
           message.userId = longToNumber(reader.uint64() as Long);
           continue;
         case 2:
-          if (tag != 16) {
+          if (tag !== 16) {
             break;
           }
 
           message.linkId = longToNumber(reader.uint64() as Long);
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -5124,14 +5234,14 @@ export const DeleteLinkResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag != 8) {
+          if (tag !== 8) {
             break;
           }
 
           message.linkId = longToNumber(reader.uint64() as Long);
           continue;
       }
-      if ((tag & 7) == 4 || tag == 0) {
+      if ((tag & 7) === 4 || tag === 0) {
         break;
       }
       reader.skipType(tag & 7);
@@ -5156,6 +5266,1103 @@ export const DeleteLinkResponse = {
   fromPartial<I extends Exact<DeepPartial<DeleteLinkResponse>, I>>(object: I): DeleteLinkResponse {
     const message = createBaseDeleteLinkResponse();
     message.linkId = object.linkId ?? 0;
+    return message;
+  },
+};
+
+function createBaseGetReCurringTransactionsRequest(): GetReCurringTransactionsRequest {
+  return { userId: 0 };
+}
+
+export const GetReCurringTransactionsRequest = {
+  encode(message: GetReCurringTransactionsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.userId !== 0) {
+      writer.uint32(16).uint64(message.userId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetReCurringTransactionsRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetReCurringTransactionsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.userId = longToNumber(reader.uint64() as Long);
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetReCurringTransactionsRequest {
+    return { userId: isSet(object.userId) ? Number(object.userId) : 0 };
+  },
+
+  toJSON(message: GetReCurringTransactionsRequest): unknown {
+    const obj: any = {};
+    message.userId !== undefined && (obj.userId = Math.round(message.userId));
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetReCurringTransactionsRequest>, I>>(base?: I): GetReCurringTransactionsRequest {
+    return GetReCurringTransactionsRequest.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<GetReCurringTransactionsRequest>, I>>(
+    object: I,
+  ): GetReCurringTransactionsRequest {
+    const message = createBaseGetReCurringTransactionsRequest();
+    message.userId = object.userId ?? 0;
+    return message;
+  },
+};
+
+function createBaseGetReCurringTransactionsResponse(): GetReCurringTransactionsResponse {
+  return { reCcuringTransactions: [], participantReCcuringTransactions: [] };
+}
+
+export const GetReCurringTransactionsResponse = {
+  encode(message: GetReCurringTransactionsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.reCcuringTransactions) {
+      ReOccuringTransaction.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    for (const v of message.participantReCcuringTransactions) {
+      GetReCurringTransactionsResponse_ParticipantReCurringTransactions.encode(v!, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetReCurringTransactionsResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetReCurringTransactionsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.reCcuringTransactions.push(ReOccuringTransaction.decode(reader, reader.uint32()));
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.participantReCcuringTransactions.push(
+            GetReCurringTransactionsResponse_ParticipantReCurringTransactions.decode(reader, reader.uint32()),
+          );
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetReCurringTransactionsResponse {
+    return {
+      reCcuringTransactions: Array.isArray(object?.reCcuringTransactions)
+        ? object.reCcuringTransactions.map((e: any) => ReOccuringTransaction.fromJSON(e))
+        : [],
+      participantReCcuringTransactions: Array.isArray(object?.participantReCcuringTransactions)
+        ? object.participantReCcuringTransactions.map((e: any) =>
+          GetReCurringTransactionsResponse_ParticipantReCurringTransactions.fromJSON(e)
+        )
+        : [],
+    };
+  },
+
+  toJSON(message: GetReCurringTransactionsResponse): unknown {
+    const obj: any = {};
+    if (message.reCcuringTransactions) {
+      obj.reCcuringTransactions = message.reCcuringTransactions.map((e) =>
+        e ? ReOccuringTransaction.toJSON(e) : undefined
+      );
+    } else {
+      obj.reCcuringTransactions = [];
+    }
+    if (message.participantReCcuringTransactions) {
+      obj.participantReCcuringTransactions = message.participantReCcuringTransactions.map((e) =>
+        e ? GetReCurringTransactionsResponse_ParticipantReCurringTransactions.toJSON(e) : undefined
+      );
+    } else {
+      obj.participantReCcuringTransactions = [];
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetReCurringTransactionsResponse>, I>>(
+    base?: I,
+  ): GetReCurringTransactionsResponse {
+    return GetReCurringTransactionsResponse.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<GetReCurringTransactionsResponse>, I>>(
+    object: I,
+  ): GetReCurringTransactionsResponse {
+    const message = createBaseGetReCurringTransactionsResponse();
+    message.reCcuringTransactions = object.reCcuringTransactions?.map((e) => ReOccuringTransaction.fromPartial(e)) ||
+      [];
+    message.participantReCcuringTransactions =
+      object.participantReCcuringTransactions?.map((e) =>
+        GetReCurringTransactionsResponse_ParticipantReCurringTransactions.fromPartial(e)
+      ) || [];
+    return message;
+  },
+};
+
+function createBaseGetReCurringTransactionsResponse_ParticipantReCurringTransactions(): GetReCurringTransactionsResponse_ParticipantReCurringTransactions {
+  return { reocurringTransactionId: 0, transactions: [] };
+}
+
+export const GetReCurringTransactionsResponse_ParticipantReCurringTransactions = {
+  encode(
+    message: GetReCurringTransactionsResponse_ParticipantReCurringTransactions,
+    writer: _m0.Writer = _m0.Writer.create(),
+  ): _m0.Writer {
+    if (message.reocurringTransactionId !== 0) {
+      writer.uint32(8).uint64(message.reocurringTransactionId);
+    }
+    for (const v of message.transactions) {
+      Transaction.encode(v!, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number,
+  ): GetReCurringTransactionsResponse_ParticipantReCurringTransactions {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetReCurringTransactionsResponse_ParticipantReCurringTransactions();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.reocurringTransactionId = longToNumber(reader.uint64() as Long);
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.transactions.push(Transaction.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetReCurringTransactionsResponse_ParticipantReCurringTransactions {
+    return {
+      reocurringTransactionId: isSet(object.reocurringTransactionId) ? Number(object.reocurringTransactionId) : 0,
+      transactions: Array.isArray(object?.transactions)
+        ? object.transactions.map((e: any) => Transaction.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: GetReCurringTransactionsResponse_ParticipantReCurringTransactions): unknown {
+    const obj: any = {};
+    message.reocurringTransactionId !== undefined &&
+      (obj.reocurringTransactionId = Math.round(message.reocurringTransactionId));
+    if (message.transactions) {
+      obj.transactions = message.transactions.map((e) => e ? Transaction.toJSON(e) : undefined);
+    } else {
+      obj.transactions = [];
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetReCurringTransactionsResponse_ParticipantReCurringTransactions>, I>>(
+    base?: I,
+  ): GetReCurringTransactionsResponse_ParticipantReCurringTransactions {
+    return GetReCurringTransactionsResponse_ParticipantReCurringTransactions.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<GetReCurringTransactionsResponse_ParticipantReCurringTransactions>, I>>(
+    object: I,
+  ): GetReCurringTransactionsResponse_ParticipantReCurringTransactions {
+    const message = createBaseGetReCurringTransactionsResponse_ParticipantReCurringTransactions();
+    message.reocurringTransactionId = object.reocurringTransactionId ?? 0;
+    message.transactions = object.transactions?.map((e) => Transaction.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseGetTransactionsRequest(): GetTransactionsRequest {
+  return { userId: 0, pageNumber: 0, pageSize: 0 };
+}
+
+export const GetTransactionsRequest = {
+  encode(message: GetTransactionsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.userId !== 0) {
+      writer.uint32(16).uint64(message.userId);
+    }
+    if (message.pageNumber !== 0) {
+      writer.uint32(24).uint64(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      writer.uint32(32).uint64(message.pageSize);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetTransactionsRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetTransactionsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.userId = longToNumber(reader.uint64() as Long);
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.pageNumber = longToNumber(reader.uint64() as Long);
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.pageSize = longToNumber(reader.uint64() as Long);
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetTransactionsRequest {
+    return {
+      userId: isSet(object.userId) ? Number(object.userId) : 0,
+      pageNumber: isSet(object.pageNumber) ? Number(object.pageNumber) : 0,
+      pageSize: isSet(object.pageSize) ? Number(object.pageSize) : 0,
+    };
+  },
+
+  toJSON(message: GetTransactionsRequest): unknown {
+    const obj: any = {};
+    message.userId !== undefined && (obj.userId = Math.round(message.userId));
+    message.pageNumber !== undefined && (obj.pageNumber = Math.round(message.pageNumber));
+    message.pageSize !== undefined && (obj.pageSize = Math.round(message.pageSize));
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetTransactionsRequest>, I>>(base?: I): GetTransactionsRequest {
+    return GetTransactionsRequest.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<GetTransactionsRequest>, I>>(object: I): GetTransactionsRequest {
+    const message = createBaseGetTransactionsRequest();
+    message.userId = object.userId ?? 0;
+    message.pageNumber = object.pageNumber ?? 0;
+    message.pageSize = object.pageSize ?? 0;
+    return message;
+  },
+};
+
+function createBaseGetTransactionsResponse(): GetTransactionsResponse {
+  return { transactions: [], nextPageNumber: 0 };
+}
+
+export const GetTransactionsResponse = {
+  encode(message: GetTransactionsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.transactions) {
+      Transaction.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.nextPageNumber !== 0) {
+      writer.uint32(16).uint64(message.nextPageNumber);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetTransactionsResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetTransactionsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.transactions.push(Transaction.decode(reader, reader.uint32()));
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.nextPageNumber = longToNumber(reader.uint64() as Long);
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetTransactionsResponse {
+    return {
+      transactions: Array.isArray(object?.transactions)
+        ? object.transactions.map((e: any) => Transaction.fromJSON(e))
+        : [],
+      nextPageNumber: isSet(object.nextPageNumber) ? Number(object.nextPageNumber) : 0,
+    };
+  },
+
+  toJSON(message: GetTransactionsResponse): unknown {
+    const obj: any = {};
+    if (message.transactions) {
+      obj.transactions = message.transactions.map((e) => e ? Transaction.toJSON(e) : undefined);
+    } else {
+      obj.transactions = [];
+    }
+    message.nextPageNumber !== undefined && (obj.nextPageNumber = Math.round(message.nextPageNumber));
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetTransactionsResponse>, I>>(base?: I): GetTransactionsResponse {
+    return GetTransactionsResponse.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<GetTransactionsResponse>, I>>(object: I): GetTransactionsResponse {
+    const message = createBaseGetTransactionsResponse();
+    message.transactions = object.transactions?.map((e) => Transaction.fromPartial(e)) || [];
+    message.nextPageNumber = object.nextPageNumber ?? 0;
+    return message;
+  },
+};
+
+function createBaseProcessWebhookRequest(): ProcessWebhookRequest {
+  return {
+    webhookType: "",
+    webhookCode: "",
+    itemId: "",
+    initialUpdateComplete: false,
+    historicalUpdateComplete: "",
+    environment: "",
+    newTransactions: [],
+    removedTransactions: [],
+    error: {},
+    accountIds: [],
+    consentExpirationTime: "",
+    accountIdsWithNewLiabilities: [],
+    accountIdsWithUpdatedLiabilities: [],
+    newHoldings: 0,
+    updatedHoldings: 0,
+  };
+}
+
+export const ProcessWebhookRequest = {
+  encode(message: ProcessWebhookRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.webhookType !== "") {
+      writer.uint32(10).string(message.webhookType);
+    }
+    if (message.webhookCode !== "") {
+      writer.uint32(18).string(message.webhookCode);
+    }
+    if (message.itemId !== "") {
+      writer.uint32(26).string(message.itemId);
+    }
+    if (message.initialUpdateComplete === true) {
+      writer.uint32(32).bool(message.initialUpdateComplete);
+    }
+    if (message.historicalUpdateComplete !== "") {
+      writer.uint32(42).string(message.historicalUpdateComplete);
+    }
+    if (message.environment !== "") {
+      writer.uint32(50).string(message.environment);
+    }
+    for (const v of message.newTransactions) {
+      writer.uint32(58).string(v!);
+    }
+    for (const v of message.removedTransactions) {
+      writer.uint32(66).string(v!);
+    }
+    Object.entries(message.error).forEach(([key, value]) => {
+      ProcessWebhookRequest_ErrorEntry.encode({ key: key as any, value }, writer.uint32(74).fork()).ldelim();
+    });
+    for (const v of message.accountIds) {
+      writer.uint32(82).string(v!);
+    }
+    if (message.consentExpirationTime !== "") {
+      writer.uint32(90).string(message.consentExpirationTime);
+    }
+    for (const v of message.accountIdsWithNewLiabilities) {
+      writer.uint32(98).string(v!);
+    }
+    for (const v of message.accountIdsWithUpdatedLiabilities) {
+      writer.uint32(106).string(v!);
+    }
+    if (message.newHoldings !== 0) {
+      writer.uint32(112).uint64(message.newHoldings);
+    }
+    if (message.updatedHoldings !== 0) {
+      writer.uint32(120).uint64(message.updatedHoldings);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ProcessWebhookRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseProcessWebhookRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.webhookType = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.webhookCode = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.itemId = reader.string();
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.initialUpdateComplete = reader.bool();
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.historicalUpdateComplete = reader.string();
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.environment = reader.string();
+          continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.newTransactions.push(reader.string());
+          continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.removedTransactions.push(reader.string());
+          continue;
+        case 9:
+          if (tag !== 74) {
+            break;
+          }
+
+          const entry9 = ProcessWebhookRequest_ErrorEntry.decode(reader, reader.uint32());
+          if (entry9.value !== undefined) {
+            message.error[entry9.key] = entry9.value;
+          }
+          continue;
+        case 10:
+          if (tag !== 82) {
+            break;
+          }
+
+          message.accountIds.push(reader.string());
+          continue;
+        case 11:
+          if (tag !== 90) {
+            break;
+          }
+
+          message.consentExpirationTime = reader.string();
+          continue;
+        case 12:
+          if (tag !== 98) {
+            break;
+          }
+
+          message.accountIdsWithNewLiabilities.push(reader.string());
+          continue;
+        case 13:
+          if (tag !== 106) {
+            break;
+          }
+
+          message.accountIdsWithUpdatedLiabilities.push(reader.string());
+          continue;
+        case 14:
+          if (tag !== 112) {
+            break;
+          }
+
+          message.newHoldings = longToNumber(reader.uint64() as Long);
+          continue;
+        case 15:
+          if (tag !== 120) {
+            break;
+          }
+
+          message.updatedHoldings = longToNumber(reader.uint64() as Long);
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ProcessWebhookRequest {
+    return {
+      webhookType: isSet(object.webhookType) ? String(object.webhookType) : "",
+      webhookCode: isSet(object.webhookCode) ? String(object.webhookCode) : "",
+      itemId: isSet(object.itemId) ? String(object.itemId) : "",
+      initialUpdateComplete: isSet(object.initialUpdateComplete) ? Boolean(object.initialUpdateComplete) : false,
+      historicalUpdateComplete: isSet(object.historicalUpdateComplete) ? String(object.historicalUpdateComplete) : "",
+      environment: isSet(object.environment) ? String(object.environment) : "",
+      newTransactions: Array.isArray(object?.newTransactions) ? object.newTransactions.map((e: any) => String(e)) : [],
+      removedTransactions: Array.isArray(object?.removedTransactions)
+        ? object.removedTransactions.map((e: any) => String(e))
+        : [],
+      error: isObject(object.error)
+        ? Object.entries(object.error).reduce<{ [key: string]: Any }>((acc, [key, value]) => {
+          acc[key] = Any.fromJSON(value);
+          return acc;
+        }, {})
+        : {},
+      accountIds: Array.isArray(object?.accountIds) ? object.accountIds.map((e: any) => String(e)) : [],
+      consentExpirationTime: isSet(object.consentExpirationTime) ? String(object.consentExpirationTime) : "",
+      accountIdsWithNewLiabilities: Array.isArray(object?.accountIdsWithNewLiabilities)
+        ? object.accountIdsWithNewLiabilities.map((e: any) => String(e))
+        : [],
+      accountIdsWithUpdatedLiabilities: Array.isArray(object?.accountIdsWithUpdatedLiabilities)
+        ? object.accountIdsWithUpdatedLiabilities.map((e: any) => String(e))
+        : [],
+      newHoldings: isSet(object.newHoldings) ? Number(object.newHoldings) : 0,
+      updatedHoldings: isSet(object.updatedHoldings) ? Number(object.updatedHoldings) : 0,
+    };
+  },
+
+  toJSON(message: ProcessWebhookRequest): unknown {
+    const obj: any = {};
+    message.webhookType !== undefined && (obj.webhookType = message.webhookType);
+    message.webhookCode !== undefined && (obj.webhookCode = message.webhookCode);
+    message.itemId !== undefined && (obj.itemId = message.itemId);
+    message.initialUpdateComplete !== undefined && (obj.initialUpdateComplete = message.initialUpdateComplete);
+    message.historicalUpdateComplete !== undefined && (obj.historicalUpdateComplete = message.historicalUpdateComplete);
+    message.environment !== undefined && (obj.environment = message.environment);
+    if (message.newTransactions) {
+      obj.newTransactions = message.newTransactions.map((e) => e);
+    } else {
+      obj.newTransactions = [];
+    }
+    if (message.removedTransactions) {
+      obj.removedTransactions = message.removedTransactions.map((e) => e);
+    } else {
+      obj.removedTransactions = [];
+    }
+    obj.error = {};
+    if (message.error) {
+      Object.entries(message.error).forEach(([k, v]) => {
+        obj.error[k] = Any.toJSON(v);
+      });
+    }
+    if (message.accountIds) {
+      obj.accountIds = message.accountIds.map((e) => e);
+    } else {
+      obj.accountIds = [];
+    }
+    message.consentExpirationTime !== undefined && (obj.consentExpirationTime = message.consentExpirationTime);
+    if (message.accountIdsWithNewLiabilities) {
+      obj.accountIdsWithNewLiabilities = message.accountIdsWithNewLiabilities.map((e) => e);
+    } else {
+      obj.accountIdsWithNewLiabilities = [];
+    }
+    if (message.accountIdsWithUpdatedLiabilities) {
+      obj.accountIdsWithUpdatedLiabilities = message.accountIdsWithUpdatedLiabilities.map((e) => e);
+    } else {
+      obj.accountIdsWithUpdatedLiabilities = [];
+    }
+    message.newHoldings !== undefined && (obj.newHoldings = Math.round(message.newHoldings));
+    message.updatedHoldings !== undefined && (obj.updatedHoldings = Math.round(message.updatedHoldings));
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ProcessWebhookRequest>, I>>(base?: I): ProcessWebhookRequest {
+    return ProcessWebhookRequest.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ProcessWebhookRequest>, I>>(object: I): ProcessWebhookRequest {
+    const message = createBaseProcessWebhookRequest();
+    message.webhookType = object.webhookType ?? "";
+    message.webhookCode = object.webhookCode ?? "";
+    message.itemId = object.itemId ?? "";
+    message.initialUpdateComplete = object.initialUpdateComplete ?? false;
+    message.historicalUpdateComplete = object.historicalUpdateComplete ?? "";
+    message.environment = object.environment ?? "";
+    message.newTransactions = object.newTransactions?.map((e) => e) || [];
+    message.removedTransactions = object.removedTransactions?.map((e) => e) || [];
+    message.error = Object.entries(object.error ?? {}).reduce<{ [key: string]: Any }>((acc, [key, value]) => {
+      if (value !== undefined) {
+        acc[key] = Any.fromPartial(value);
+      }
+      return acc;
+    }, {});
+    message.accountIds = object.accountIds?.map((e) => e) || [];
+    message.consentExpirationTime = object.consentExpirationTime ?? "";
+    message.accountIdsWithNewLiabilities = object.accountIdsWithNewLiabilities?.map((e) => e) || [];
+    message.accountIdsWithUpdatedLiabilities = object.accountIdsWithUpdatedLiabilities?.map((e) => e) || [];
+    message.newHoldings = object.newHoldings ?? 0;
+    message.updatedHoldings = object.updatedHoldings ?? 0;
+    return message;
+  },
+};
+
+function createBaseProcessWebhookRequest_ErrorEntry(): ProcessWebhookRequest_ErrorEntry {
+  return { key: "", value: undefined };
+}
+
+export const ProcessWebhookRequest_ErrorEntry = {
+  encode(message: ProcessWebhookRequest_ErrorEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.key !== "") {
+      writer.uint32(10).string(message.key);
+    }
+    if (message.value !== undefined) {
+      Any.encode(message.value, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ProcessWebhookRequest_ErrorEntry {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseProcessWebhookRequest_ErrorEntry();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.key = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.value = Any.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ProcessWebhookRequest_ErrorEntry {
+    return {
+      key: isSet(object.key) ? String(object.key) : "",
+      value: isSet(object.value) ? Any.fromJSON(object.value) : undefined,
+    };
+  },
+
+  toJSON(message: ProcessWebhookRequest_ErrorEntry): unknown {
+    const obj: any = {};
+    message.key !== undefined && (obj.key = message.key);
+    message.value !== undefined && (obj.value = message.value ? Any.toJSON(message.value) : undefined);
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ProcessWebhookRequest_ErrorEntry>, I>>(
+    base?: I,
+  ): ProcessWebhookRequest_ErrorEntry {
+    return ProcessWebhookRequest_ErrorEntry.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ProcessWebhookRequest_ErrorEntry>, I>>(
+    object: I,
+  ): ProcessWebhookRequest_ErrorEntry {
+    const message = createBaseProcessWebhookRequest_ErrorEntry();
+    message.key = object.key ?? "";
+    message.value = (object.value !== undefined && object.value !== null) ? Any.fromPartial(object.value) : undefined;
+    return message;
+  },
+};
+
+function createBaseProcessWebhookResponse(): ProcessWebhookResponse {
+  return {};
+}
+
+export const ProcessWebhookResponse = {
+  encode(_: ProcessWebhookResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ProcessWebhookResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseProcessWebhookResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(_: any): ProcessWebhookResponse {
+    return {};
+  },
+
+  toJSON(_: ProcessWebhookResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ProcessWebhookResponse>, I>>(base?: I): ProcessWebhookResponse {
+    return ProcessWebhookResponse.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ProcessWebhookResponse>, I>>(_: I): ProcessWebhookResponse {
+    const message = createBaseProcessWebhookResponse();
+    return message;
+  },
+};
+
+function createBaseStripeWebhookRequest(): StripeWebhookRequest {
+  return { body: "", signature: "" };
+}
+
+export const StripeWebhookRequest = {
+  encode(message: StripeWebhookRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.body !== "") {
+      writer.uint32(10).string(message.body);
+    }
+    if (message.signature !== "") {
+      writer.uint32(18).string(message.signature);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): StripeWebhookRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseStripeWebhookRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.body = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.signature = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): StripeWebhookRequest {
+    return {
+      body: isSet(object.body) ? String(object.body) : "",
+      signature: isSet(object.signature) ? String(object.signature) : "",
+    };
+  },
+
+  toJSON(message: StripeWebhookRequest): unknown {
+    const obj: any = {};
+    message.body !== undefined && (obj.body = message.body);
+    message.signature !== undefined && (obj.signature = message.signature);
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<StripeWebhookRequest>, I>>(base?: I): StripeWebhookRequest {
+    return StripeWebhookRequest.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<StripeWebhookRequest>, I>>(object: I): StripeWebhookRequest {
+    const message = createBaseStripeWebhookRequest();
+    message.body = object.body ?? "";
+    message.signature = object.signature ?? "";
+    return message;
+  },
+};
+
+function createBaseStripeWebhookResponse(): StripeWebhookResponse {
+  return { message: "" };
+}
+
+export const StripeWebhookResponse = {
+  encode(message: StripeWebhookResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.message !== "") {
+      writer.uint32(10).string(message.message);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): StripeWebhookResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseStripeWebhookResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.message = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): StripeWebhookResponse {
+    return { message: isSet(object.message) ? String(object.message) : "" };
+  },
+
+  toJSON(message: StripeWebhookResponse): unknown {
+    const obj: any = {};
+    message.message !== undefined && (obj.message = message.message);
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<StripeWebhookResponse>, I>>(base?: I): StripeWebhookResponse {
+    return StripeWebhookResponse.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<StripeWebhookResponse>, I>>(object: I): StripeWebhookResponse {
+    const message = createBaseStripeWebhookResponse();
+    message.message = object.message ?? "";
+    return message;
+  },
+};
+
+function createBaseCreateSubscriptionRequest(): CreateSubscriptionRequest {
+  return { userId: 0, priceId: "" };
+}
+
+export const CreateSubscriptionRequest = {
+  encode(message: CreateSubscriptionRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.userId !== 0) {
+      writer.uint32(8).uint64(message.userId);
+    }
+    if (message.priceId !== "") {
+      writer.uint32(18).string(message.priceId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): CreateSubscriptionRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCreateSubscriptionRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.userId = longToNumber(reader.uint64() as Long);
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.priceId = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateSubscriptionRequest {
+    return {
+      userId: isSet(object.userId) ? Number(object.userId) : 0,
+      priceId: isSet(object.priceId) ? String(object.priceId) : "",
+    };
+  },
+
+  toJSON(message: CreateSubscriptionRequest): unknown {
+    const obj: any = {};
+    message.userId !== undefined && (obj.userId = Math.round(message.userId));
+    message.priceId !== undefined && (obj.priceId = message.priceId);
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CreateSubscriptionRequest>, I>>(base?: I): CreateSubscriptionRequest {
+    return CreateSubscriptionRequest.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<CreateSubscriptionRequest>, I>>(object: I): CreateSubscriptionRequest {
+    const message = createBaseCreateSubscriptionRequest();
+    message.userId = object.userId ?? 0;
+    message.priceId = object.priceId ?? "";
+    return message;
+  },
+};
+
+function createBaseCreateSubscriptionResponse(): CreateSubscriptionResponse {
+  return { subscriptionId: "", paymentIntentClientSecret: "" };
+}
+
+export const CreateSubscriptionResponse = {
+  encode(message: CreateSubscriptionResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.subscriptionId !== "") {
+      writer.uint32(10).string(message.subscriptionId);
+    }
+    if (message.paymentIntentClientSecret !== "") {
+      writer.uint32(18).string(message.paymentIntentClientSecret);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): CreateSubscriptionResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCreateSubscriptionResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.subscriptionId = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.paymentIntentClientSecret = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateSubscriptionResponse {
+    return {
+      subscriptionId: isSet(object.subscriptionId) ? String(object.subscriptionId) : "",
+      paymentIntentClientSecret: isSet(object.paymentIntentClientSecret)
+        ? String(object.paymentIntentClientSecret)
+        : "",
+    };
+  },
+
+  toJSON(message: CreateSubscriptionResponse): unknown {
+    const obj: any = {};
+    message.subscriptionId !== undefined && (obj.subscriptionId = message.subscriptionId);
+    message.paymentIntentClientSecret !== undefined &&
+      (obj.paymentIntentClientSecret = message.paymentIntentClientSecret);
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CreateSubscriptionResponse>, I>>(base?: I): CreateSubscriptionResponse {
+    return CreateSubscriptionResponse.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<CreateSubscriptionResponse>, I>>(object: I): CreateSubscriptionResponse {
+    const message = createBaseCreateSubscriptionResponse();
+    message.subscriptionId = object.subscriptionId ?? "";
+    message.paymentIntentClientSecret = object.paymentIntentClientSecret ?? "";
     return message;
   },
 };
@@ -5202,6 +6409,10 @@ function longToNumber(long: Long): number {
 if (_m0.util.Long !== Long) {
   _m0.util.Long = Long as any;
   _m0.configure();
+}
+
+function isObject(value: any): boolean {
+  return typeof value === "object" && value !== null;
 }
 
 function isSet(value: any): boolean {

@@ -48,6 +48,11 @@ func Float32P(value float32) *float32 {
 	return &value
 }
 
+// Float64P returns a pointer to the float64 value passed in.
+func Float64P(value float64) *float64 {
+	return &value
+}
+
 // Int32P returns a pointer to the int32 value passed in.
 func Int32P(value int32) *int32 {
 	return &value

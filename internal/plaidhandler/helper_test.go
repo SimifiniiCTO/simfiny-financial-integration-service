@@ -1,10 +1,11 @@
 package plaidhandler
 
 import (
-	"context"
 	"errors"
+	"reflect"
 	"testing"
 
+	"github.com/plaid/plaid-go/v12/plaid"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -17,17 +18,12 @@ type PopulateAccountTestScenario struct {
 
 // findAccountByIdScenarios returns a set of scenarios to test the account's existence based on provided email
 func getPopulateAccountTestScenarios() ([]PopulateAccountTestScenario, *PlaidWrapper, error) {
-	accessToken, err := plaidTestClient.getAccessTokenForSandboxAcct()
-	if err != nil {
-		return nil, nil, err
-	}
-
 	return []PopulateAccountTestScenario{
 		{
 			// success condition: valid access token
 			scenarioName:     "[success condition]: get an account deposits with valid access token",
 			shouldErrorOccur: false,
-			accessToken:      &accessToken,
+			accessToken:      &testAccessToken,
 		},
 		{
 			// failure condition: access token is invalid
@@ -39,31 +35,6 @@ func getPopulateAccountTestScenarios() ([]PopulateAccountTestScenario, *PlaidWra
 	}, plaidTestClient, nil
 }
 
-func TestPopulateAcountFromPlaidOperation(t *testing.T) {
-	scenarios, p, err := getPopulateAccountTestScenarios()
-	assert.Nil(t, err)
-
-	for _, scenario := range scenarios {
-		deposits, err := p.getPlaidDeposit(context.Background(), scenario.accessToken)
-		processError(err, scenario, t)
-
-		liabilities, err := p.getPlaidLiabilities(context.Background(), scenario.accessToken)
-		processError(err, scenario, t)
-
-		investments, err := p.getPlaidInvestmentHoldings(context.Background(), scenario.accessToken)
-		processError(err, scenario, t)
-
-		vAcct, err := p.populateVirtualAccount(context.Background(), liabilities, investments, deposits)
-		if scenario.shouldErrorOccur && err == nil {
-			t.Errorf("expected error to occur but none did")
-		}
-
-		if !scenario.shouldErrorOccur {
-			assert.NotNil(t, vAcct)
-		}
-	}
-}
-
 func processError(err error, scenario PopulateAccountTestScenario, t *testing.T) {
 	if err != nil {
 		if scenario.shouldErrorOccur {
@@ -71,5 +42,48 @@ func processError(err error, scenario PopulateAccountTestScenario, t *testing.T)
 		} else {
 			t.Errorf("obtained error but not expected - %s", err.Error())
 		}
+	}
+}
+
+func Test_filterAccounts(t *testing.T) {
+	type args struct {
+		accts    []plaid.AccountBase
+		acctType string
+	}
+	tests := []struct {
+		name string
+		args args
+		want []plaid.AccountBase
+	}{
+		// TODO: Add test cases.
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := filterAccounts(tt.args.accts, tt.args.acctType); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("filterAccounts() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_filterAccountsOfTwoType(t *testing.T) {
+	type args struct {
+		accts     []plaid.AccountBase
+		acctType1 string
+		acctType2 string
+	}
+	tests := []struct {
+		name string
+		args args
+		want []plaid.AccountBase
+	}{
+		// TODO: Add test cases.
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := filterAccountsOfTwoType(tt.args.accts, tt.args.acctType1, tt.args.acctType2); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("filterAccountsOfTwoType() = %v, want %v", got, tt.want)
+			}
+		})
 	}
 }

@@ -2,6 +2,7 @@ package helper
 
 import (
 	"math/rand"
+	"strings"
 	"time"
 	"unsafe"
 )
@@ -46,4 +47,16 @@ func GenerateRandomString(n int) string {
 func GenerateRandomId(min, max int) int {
 	rand.Seed(time.Now().UnixNano())
 	return rand.Intn(max-min+1) + min
+}
+
+func SliceToCommaSeparatedString(slice []string) string {
+	var result string
+	for i := 0; i < len(slice); i++ {
+		result += slice[i] + ","
+	}
+	return result[:len(result)-1]
+}
+
+func CommaSeparatedStringToStringSlice(str string) []string {
+	return strings.Split(str, ",")
 }

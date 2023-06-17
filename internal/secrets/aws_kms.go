@@ -7,6 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/kms"
+	"github.com/aws/aws-sdk-go/service/kms/kmsiface"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 )
@@ -27,6 +28,10 @@ type AWSKMSConfig struct {
 	KmsKeyID string
 }
 
+// `func (c *AWSKMSConfig) Validate() error` is a method defined on the `AWSKMSConfig` struct. It
+// validates that all the required fields in the `AWSKMSConfig` struct are present and returns an error
+// if any of them are missing. This method is called when creating a new instance of the `AWSKMS`
+// struct to ensure that the configuration is valid.
 func (c *AWSKMSConfig) Validate() error {
 	if c.Log == nil {
 		return errors.New("log is required")
@@ -58,7 +63,7 @@ type AWSKMS struct {
 	// config is the configuration for this implementation
 	config AWSKMSConfig
 	// client is the AWS KMS client to use for this implementation
-	client *kms.KMS
+	client kmsiface.KMSAPI
 }
 
 // NewAWSKMS creates a new AWS KMS implementation of the KeyManagement interface

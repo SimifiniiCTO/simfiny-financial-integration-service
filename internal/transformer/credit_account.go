@@ -3,15 +3,23 @@ package transformer
 import (
 	"fmt"
 
-	"github.com/plaid/plaid-go/plaid"
+	"github.com/plaid/plaid-go/v12/plaid"
 
-	"github.com/SimifiniiCTO/simfiny-financial-integration-service/proto"
+	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 )
 
 // NewCreditAccount transforms plaid credit account objects to internal plaid credit account representation
-func NewCreditAccount(userID uint64, input *plaid.CreditCardLiability, acct *plaid.AccountBase) (*proto.CreditAccount, error) {
+func NewCreditAccount(userID uint64, input *plaid.CreditCardLiability, acct *plaid.AccountBase) (*schema.CreditAccount, error) {
 	if input == nil {
 		return nil, fmt.Errorf("invalid input argument. credit card liability cannot be nil")
+	}
+
+	if acct == nil {
+		return nil, fmt.Errorf("invalid input argument. account base cannot be nil")
+	}
+
+	if acct.Type != plaid.ACCOUNTTYPE_CREDIT {
+		return nil, fmt.Errorf("invalid input argument. account base must be of type credit")
 	}
 
 	aprs, err := NewAPR(&input.Aprs)
@@ -19,40 +27,43 @@ func NewCreditAccount(userID uint64, input *plaid.CreditCardLiability, acct *pla
 		return nil, err
 	}
 
-	return &proto.CreditAccount{
-		Id:                     userID,
-		PlaidAccountID:         input.GetAccountId(),
-		AccountSubtype:         string(acct.GetSubtype()),
-		AccountType:            string(acct.GetSubtype()),
+	return &schema.CreditAccount{
+		Id:                     0,
+		UserId:                 userID,
+		Name:                   acct.Name,
+		Number:                 *acct.Mask.Get(),
+		Type:                   string(acct.Type),
+		Balance:                float32(acct.Balances.GetAvailable()),
+		CurrentFunds:           float64(acct.Balances.GetCurrent()),
+		BalanceLimit:           uint64(acct.Balances.GetLimit()),
+		PlaidAccountId:         acct.AccountId,
+		Subtype:                string(acct.GetSubtype()),
 		IsOverdue:              input.GetIsOverdue(),
-		LastPaymentAmount:      float64(input.LastPaymentAmount),
+		LastPaymentAmount:      float64(*input.LastPaymentAmount.Get()),
 		LastPaymentDate:        input.GetLastPaymentDate(),
-		LastStatementIssueDate: input.LastStatementIssueDate,
+		LastStatementIssueDate: *input.LastStatementIssueDate.Get(),
+		MinimumAmountDueDate:   0,
+		NextPaymentDate:        *input.NextPaymentDueDate.Get(),
+		Aprs:                   aprs,
+		LastStatementBalance:   float64(*input.LastStatementBalance.Get()),
 		MinimumPaymentAmount:   float64(input.GetMinimumPaymentAmount()),
 		NextPaymentDueDate:     input.GetNextPaymentDueDate(),
-		Aprs:                   aprs,
-		BalanceID: &proto.Balance{
-			AvailableFunds: float64(acct.Balances.GetAvailable()),
-			CurrentFunds:   float64(acct.Balances.GetCurrent()),
-			CurrencyCode:   acct.Balances.GetIsoCurrencyCode(),
-			BalanceLimit:   uint64(acct.Balances.GetLimit()),
-		},
-		AccountName: acct.GetName(),
 	}, nil
 }
 
 // NewAPR transforms plaid APR objects to internal plaid APR representation
-func NewAPR(plaidAPR *[]plaid.APR) ([]*proto.APR, error) {
+func NewAPR(plaidAPR *[]plaid.APR) ([]*schema.Apr, error) {
 	if plaidAPR == nil {
 		return nil, fmt.Errorf("invalid input argument. apr cannot be nil")
 	}
 
-	aprs := make([]*proto.APR, 0)
+	aprs := make([]*schema.Apr, 0)
 	for _, element := range *plaidAPR {
-		transformedApr := &proto.APR{
-			APRPercentage:        float64(element.GetAprPercentage()),
-			APRType:              element.GetAprType(),
-			BalanceSubjectToAPR:  float64(element.GetBalanceSubjectToApr()),
+		transformedApr := &schema.Apr{
+			Id:                   0,
+			Percentage:           element.AprPercentage,
+			Type:                 string(element.AprType),
+			BalanceSubjectToApr:  float64(element.GetBalanceSubjectToApr()),
 			InterestChargeAmount: float64(element.GetInterestChargeAmount()),
 		}
 

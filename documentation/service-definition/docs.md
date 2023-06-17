@@ -3,6 +3,20 @@
 
 ## Table of Contents
 
+- [api/v1/clickhouse.proto](#api_v1_clickhouse-proto)
+    - [AverageTransactionAmountByCategoryMetric](#api-v1-AverageTransactionAmountByCategoryMetric)
+    - [InvestmentTransaction](#api-v1-InvestmentTransaction)
+    - [MonthlyTransactionCountByCategoryMetric](#api-v1-MonthlyTransactionCountByCategoryMetric)
+    - [ReOccuringTransaction](#api-v1-ReOccuringTransaction)
+    - [Transaction](#api-v1-Transaction)
+    - [TransactionAmountByCountryMetric](#api-v1-TransactionAmountByCountryMetric)
+    - [TransactionAmountDistributionByCategoryMetric](#api-v1-TransactionAmountDistributionByCategoryMetric)
+    - [TransactionCountByMerchantPaymentChannelMetric](#api-v1-TransactionCountByMerchantPaymentChannelMetric)
+  
+    - [ReCurringFlow](#api-v1-ReCurringFlow)
+    - [ReOccuringTransactionsFrequency](#api-v1-ReOccuringTransactionsFrequency)
+    - [ReOccuringTransactionsStatus](#api-v1-ReOccuringTransactionsStatus)
+  
 - [api/v1/errors_ignore.proto](#api_v1_errors_ignore-proto)
     - [ErrorMessageRequest](#api-v1-ErrorMessageRequest)
     - [InternalErrorMessageResponse](#api-v1-InternalErrorMessageResponse)
@@ -28,6 +42,7 @@
     - [Milestone](#api-v1-Milestone)
     - [MortgageAccount](#api-v1-MortgageAccount)
     - [PlaidLink](#api-v1-PlaidLink)
+    - [PlaidSync](#api-v1-PlaidSync)
     - [Pocket](#api-v1-Pocket)
     - [SmartGoal](#api-v1-SmartGoal)
     - [StripeSubscription](#api-v1-StripeSubscription)
@@ -35,6 +50,7 @@
     - [Token](#api-v1-Token)
     - [UserProfile](#api-v1-UserProfile)
   
+    - [BankAccountStatus](#api-v1-BankAccountStatus)
     - [BankAccountType](#api-v1-BankAccountType)
     - [GoalStatus](#api-v1-GoalStatus)
     - [GoalType](#api-v1-GoalType)
@@ -42,11 +58,6 @@
     - [LinkType](#api-v1-LinkType)
     - [PocketType](#api-v1-PocketType)
     - [StripeSubscriptionStatus](#api-v1-StripeSubscriptionStatus)
-  
-- [api/v1/mongo.proto](#api_v1_mongo-proto)
-    - [PaymentMeta](#api-v1-PaymentMeta)
-    - [Transaction](#api-v1-Transaction)
-    - [TransactionLocation](#api-v1-TransactionLocation)
   
 - [api/v1/openapi.proto](#api_v1_openapi-proto)
 - [api/v1/request_response.proto](#api_v1_request_response-proto)
@@ -60,6 +71,8 @@
     - [CreateMilestoneResponse](#api-v1-CreateMilestoneResponse)
     - [CreateSmartGoalRequest](#api-v1-CreateSmartGoalRequest)
     - [CreateSmartGoalResponse](#api-v1-CreateSmartGoalResponse)
+    - [CreateSubscriptionRequest](#api-v1-CreateSubscriptionRequest)
+    - [CreateSubscriptionResponse](#api-v1-CreateSubscriptionResponse)
     - [CreateUserProfileRequest](#api-v1-CreateUserProfileRequest)
     - [CreateUserProfileResponse](#api-v1-CreateUserProfileResponse)
     - [DeleteBankAccountRequest](#api-v1-DeleteBankAccountRequest)
@@ -98,10 +111,15 @@
     - [GetMortgageAccountResponse](#api-v1-GetMortgageAccountResponse)
     - [GetPocketRequest](#api-v1-GetPocketRequest)
     - [GetPocketResponse](#api-v1-GetPocketResponse)
+    - [GetReCurringTransactionsRequest](#api-v1-GetReCurringTransactionsRequest)
+    - [GetReCurringTransactionsResponse](#api-v1-GetReCurringTransactionsResponse)
+    - [GetReCurringTransactionsResponse.ParticipantReCurringTransactions](#api-v1-GetReCurringTransactionsResponse-ParticipantReCurringTransactions)
     - [GetSmartGoalsByPocketIdRequest](#api-v1-GetSmartGoalsByPocketIdRequest)
     - [GetSmartGoalsByPocketIdResponse](#api-v1-GetSmartGoalsByPocketIdResponse)
     - [GetStudentLoanAccountRequest](#api-v1-GetStudentLoanAccountRequest)
     - [GetStudentLoanAccountResponse](#api-v1-GetStudentLoanAccountResponse)
+    - [GetTransactionsRequest](#api-v1-GetTransactionsRequest)
+    - [GetTransactionsResponse](#api-v1-GetTransactionsResponse)
     - [GetUserProfileRequest](#api-v1-GetUserProfileRequest)
     - [GetUserProfileResponse](#api-v1-GetUserProfileResponse)
     - [HealthCheckRequest](#api-v1-HealthCheckRequest)
@@ -110,8 +128,13 @@
     - [PlaidExchangeTokenResponse](#api-v1-PlaidExchangeTokenResponse)
     - [PlaidInitiateTokenExchangeRequest](#api-v1-PlaidInitiateTokenExchangeRequest)
     - [PlaidInitiateTokenExchangeResponse](#api-v1-PlaidInitiateTokenExchangeResponse)
+    - [ProcessWebhookRequest](#api-v1-ProcessWebhookRequest)
+    - [ProcessWebhookRequest.ErrorEntry](#api-v1-ProcessWebhookRequest-ErrorEntry)
+    - [ProcessWebhookResponse](#api-v1-ProcessWebhookResponse)
     - [ReadynessCheckRequest](#api-v1-ReadynessCheckRequest)
     - [ReadynessCheckResponse](#api-v1-ReadynessCheckResponse)
+    - [StripeWebhookRequest](#api-v1-StripeWebhookRequest)
+    - [StripeWebhookResponse](#api-v1-StripeWebhookResponse)
     - [UpdateBankAccountRequest](#api-v1-UpdateBankAccountRequest)
     - [UpdateBankAccountResponse](#api-v1-UpdateBankAccountResponse)
     - [UpdateBudgetRequest](#api-v1-UpdateBudgetRequest)
@@ -127,6 +150,273 @@
     - [FinancialService](#api-v1-FinancialService)
   
 - [Scalar Value Types](#scalar-value-types)
+
+
+
+<a name="api_v1_clickhouse-proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## api/v1/clickhouse.proto
+
+
+
+<a name="api-v1-AverageTransactionAmountByCategoryMetric"></a>
+
+### AverageTransactionAmountByCategoryMetric
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| category | [string](#string) |  |  |
+| amount | [double](#double) |  |  |
+
+
+
+
+
+
+<a name="api-v1-InvestmentTransaction"></a>
+
+### InvestmentTransaction
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| account_id | [string](#string) |  | @gotag: ch:&#34;account_id&#34; |
+| ammount | [string](#string) |  | @gotag: ch:&#34;amount&#34; |
+| investment_transaction_id | [string](#string) |  | @gotag: ch:&#34;investment_transaction_id&#34; |
+| security_id | [string](#string) |  | @gotag: ch:&#34;security_id&#34; |
+| date | [string](#string) |  | @gotag: ch:&#34;date&#34; |
+| name | [string](#string) |  | @gotag: ch:&#34;name&#34; |
+| quantity | [double](#double) |  | @gotag: ch:&#34;quantity&#34; |
+| amount | [double](#double) |  | @gotag: ch:&#34;amount&#34; |
+| price | [double](#double) |  | @gotag: ch:&#34;price&#34; |
+| fees | [double](#double) |  | @gotag: ch:&#34;fees&#34; |
+| type | [string](#string) |  | @gotag: ch:&#34;type&#34; |
+| subtype | [string](#string) |  | @gotag: ch:&#34;subtype&#34; |
+| iso_currency_code | [string](#string) |  | @gotag: ch:&#34;iso_currency_code&#34; |
+| unofficial_currency_code | [string](#string) |  | @gotag: ch:&#34;unofficial_currency_code&#34; |
+| link_id | [uint64](#uint64) |  | @gotag: ch:&#34;link_id&#34; |
+| id | [uint64](#uint64) |  | @gotag: ch:&#34;id&#34; |
+| user_id | [uint64](#uint64) |  | @gotag: ch:&#34;user_id&#34; |
+| created_at | [string](#string) |  |  |
+| sign | [int32](#int32) |  |  |
+
+
+
+
+
+
+<a name="api-v1-MonthlyTransactionCountByCategoryMetric"></a>
+
+### MonthlyTransactionCountByCategoryMetric
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| category | [string](#string) |  |  |
+| count | [uint32](#uint32) |  |  |
+| month | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="api-v1-ReOccuringTransaction"></a>
+
+### ReOccuringTransaction
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| account_id | [string](#string) |  | @gotag: ch:&#34;account_id&#34; |
+| stream_id | [string](#string) |  | @gotag: ch:&#34;stream_id&#34; |
+| category_id | [string](#string) |  | @gotag: ch:&#34;category_id&#34; |
+| description | [string](#string) |  | @gotag: ch:&#34;description&#34; |
+| merchant_name | [string](#string) |  | @gotag: ch:&#34;merchant_name&#34; |
+| personal_finance_category_primary | [string](#string) |  | @gotag: ch:&#34;personal_finance_category_primary&#34; |
+| personal_finance_category_detailed | [string](#string) |  | @gotag: ch:&#34;personal_finance_category_detailed&#34; |
+| first_date | [string](#string) |  | @gotag: ch:&#34;first_date&#34; |
+| last_date | [string](#string) |  | @gotag: ch:&#34;last_date&#34; |
+| frequency | [ReOccuringTransactionsFrequency](#api-v1-ReOccuringTransactionsFrequency) |  | @gotag: ch:&#34;frequency&#34; |
+| transaction_ids | [string](#string) |  | @gotag: ch:&#34;transaction_ids,array&#34; |
+| average_amount | [string](#string) |  | @gotag: ch:&#34;average_amount&#34; |
+| average_amount_iso_currency_code | [string](#string) |  | @gotag: ch:&#34;average_amount_iso_currency_code&#34; |
+| last_amount | [string](#string) |  | @gotag: ch:&#34;last_amount&#34; |
+| last_amount_iso_currency_code | [string](#string) |  | @gotag: ch:&#34;last_amount_iso_currency_code&#34; |
+| is_active | [bool](#bool) |  | @gotag: ch:&#34;is_active&#34; |
+| status | [ReOccuringTransactionsStatus](#api-v1-ReOccuringTransactionsStatus) |  | @gotag: ch:&#34;status&#34; |
+| updated_time | [string](#string) |  | @gotag: ch:&#34;updated_time&#34; |
+| user_id | [uint64](#uint64) |  | @gotag: ch:&#34;user_id&#34; |
+| link_id | [uint64](#uint64) |  | @gotag: ch:&#34;link_id&#34; |
+| id | [uint64](#uint64) |  | @gotag: ch:&#34;id&#34; |
+| flow | [ReCurringFlow](#api-v1-ReCurringFlow) |  | @gotag: ch:&#34;flow&#34; |
+| sign | [int32](#int32) |  |  |
+
+
+
+
+
+
+<a name="api-v1-Transaction"></a>
+
+### Transaction
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| account_id | [string](#string) |  | @gotag: ch:&#34;account_id&#34; |
+| amount | [double](#double) |  | @gotag: ch:&#34;amount&#34; |
+| iso_currency_code | [string](#string) |  | @gotag: ch:&#34;iso_currency_code&#34; |
+| unofficial_currency_code | [string](#string) |  | @gotag: ch:&#34;unofficial_currency_code&#34; |
+| category_id | [string](#string) |  | @gotag: ch:&#34;category_id&#34; |
+| check_number | [string](#string) |  | @gotag: ch:&#34;check_number&#34; |
+| date | [string](#string) |  | @gotag: ch:&#34;date&#34; |
+| datetime | [string](#string) |  | @gotag: ch:&#34;datetime&#34; |
+| authorized_date | [string](#string) |  | @gotag: ch:&#34;authorized_date&#34; |
+| authorized_datetime | [string](#string) |  | @gotag: ch:&#34;authorized_datetime&#34; |
+| name | [string](#string) |  | @gotag: ch:&#34;name&#34; |
+| merchant_name | [string](#string) |  | @gotag: ch:&#34;merchant_name&#34; |
+| payment_channel | [string](#string) |  | @gotag: ch:&#34;payment_channel&#34; |
+| pending | [bool](#bool) |  | @gotag: ch:&#34;pending&#34; |
+| pending_transaction_id | [string](#string) |  | @gotag: ch:&#34;pending_transaction_id&#34; |
+| account_owner | [string](#string) |  | @gotag: ch:&#34;account_owner&#34; |
+| transaction_id | [string](#string) |  | @gotag: ch:&#34;transaction_id&#34; |
+| transaction_code | [string](#string) |  | @gotag: ch:&#34;transaction_code&#34; |
+| id | [uint64](#uint64) |  |  |
+| user_id | [uint64](#uint64) |  | @gotag: ch:&#34;user_id&#34; |
+| link_id | [uint64](#uint64) |  | @gotag: ch:&#34;link_id&#34; |
+| sign | [int32](#int32) |  |  |
+| personal_finance_category_primary | [string](#string) |  | @gotag: ch:&#34;personal_finance_category_primary&#34; |
+| personal_finance_category_detailed | [string](#string) |  | @gotag: ch:&#34;personal_finance_category_detailed&#34; |
+| location_address | [string](#string) |  |  |
+| location_city | [string](#string) |  |  |
+| location_region | [string](#string) |  |  |
+| location_postal_code | [string](#string) |  |  |
+| location_country | [string](#string) |  |  |
+| location_lat | [double](#double) |  |  |
+| location_lon | [double](#double) |  |  |
+| location_store_number | [string](#string) |  |  |
+| payment_meta_by_order_of | [string](#string) |  |  |
+| payment_meta_payee | [string](#string) |  |  |
+| payment_meta_payer | [string](#string) |  |  |
+| payment_meta_payment_method | [string](#string) |  |  |
+| payment_meta_payment_processor | [string](#string) |  |  |
+| payment_meta_ppd_id | [string](#string) |  |  |
+| payment_meta_reason | [string](#string) |  |  |
+| payment_meta_reference_number | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="api-v1-TransactionAmountByCountryMetric"></a>
+
+### TransactionAmountByCountryMetric
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| country | [string](#string) |  |  |
+| amount | [double](#double) |  |  |
+
+
+
+
+
+
+<a name="api-v1-TransactionAmountDistributionByCategoryMetric"></a>
+
+### TransactionAmountDistributionByCategoryMetric
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| category | [string](#string) |  |  |
+| mean | [double](#double) |  |  |
+| median | [double](#double) |  |  |
+| standard_deviation | [double](#double) |  |  |
+
+
+
+
+
+
+<a name="api-v1-TransactionCountByMerchantPaymentChannelMetric"></a>
+
+### TransactionCountByMerchantPaymentChannelMetric
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| merchant_name | [string](#string) |  |  |
+| payment_channel | [string](#string) |  |  |
+| transaction_count | [uint32](#uint32) |  |  |
+
+
+
+
+
+ 
+
+
+<a name="api-v1-ReCurringFlow"></a>
+
+### ReCurringFlow
+
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| RE_CURRING_FLOW_UNSPECIFIED | 0 |  |
+| RE_CURRING_FLOW_INFLOW | 1 |  |
+| RE_CURRING_FLOW_OUTFLOW | 2 |  |
+
+
+
+<a name="api-v1-ReOccuringTransactionsFrequency"></a>
+
+### ReOccuringTransactionsFrequency
+
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| RE_OCCURING_TRANSACTIONS_FREQUENCY_UNSPECIFIED | 0 |  |
+| RE_OCCURING_TRANSACTIONS_FREQUENCY_WEEKLY | 1 |  |
+| RE_OCCURING_TRANSACTIONS_FREQUENCY_BIWEEKLY | 2 |  |
+| RE_OCCURING_TRANSACTIONS_FREQUENCY_SEMI_MONTHLY | 3 |  |
+| RE_OCCURING_TRANSACTIONS_FREQUENCY_MONTHLY | 4 |  |
+| RE_OCCURING_TRANSACTIONS_FREQUENCY_ANNUALLY | 5 |  |
+
+
+
+<a name="api-v1-ReOccuringTransactionsStatus"></a>
+
+### ReOccuringTransactionsStatus
+
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| RE_OCCURING_TRANSACTIONS_STATUS_UNSPECIFIED | 0 |  |
+| RE_OCCURING_TRANSACTIONS_STATUS_MATURE | 1 | A MATURE recurring stream should have at least 3 transactions and happen on a regular cadence (For Annual recurring stream, we will mark it MATURE after 2 instances). |
+| RE_OCCURING_TRANSACTIONS_STATUS_EARLY_DETECTION | 2 | When a recurring transaction first appears in the transaction history and before it fulfills the requirement of a mature stream, the status will be EARLY_DETECTION. |
+| RE_OCCURING_TRANSACTIONS_STATUS_TOMBSTONED | 3 | A stream that was previously in the EARLY_DETECTION status will move to the TOMBSTONED status when no further transactions were found at the next expected date. |
+
+
+ 
+
+ 
+
+ 
 
 
 
@@ -361,6 +651,7 @@
 | pockets | [Pocket](#api-v1-Pocket) | repeated | the set of &#34;virtualized accounts this user witholds&#34; NOTE: these pockets are automatically created by the system when a user connects a bank account |
 | plaid_account_id | [string](#string) |  | plaid account id mapped to this bank account |
 | subtype | [string](#string) |  | account subtype |
+| status | [BankAccountStatus](#api-v1-BankAccountStatus) |  | the bank account status |
 
 
 
@@ -580,6 +871,10 @@ Two Items created for the same set of credentials at the same institution will b
 | student_loan_accounts | [StudentLoanAccount](#api-v1-StudentLoanAccount) | repeated | student loan accounts tied to a link |
 | plaid_institution_id | [string](#string) |  | the id of the institution this link is tied to and against |
 | link_type | [LinkType](#api-v1-LinkType) |  | the type of link this is ... can be either a manual or plaid link type |
+| error_code | [string](#string) |  |  |
+| updated_at | [string](#string) |  |  |
+| new_accounts_available | [bool](#bool) |  |  |
+| plaid_sync | [PlaidSync](#api-v1-PlaidSync) |  |  |
 
 
 
@@ -675,6 +970,27 @@ and achievable. A milestone is a sub goal of a goal and is tied to a goal by the
 
 
 
+<a name="api-v1-PlaidSync"></a>
+
+### PlaidSync
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [uint64](#uint64) |  | id |
+| time_stamp | [string](#string) |  |  |
+| trigger | [string](#string) |  |  |
+| next_cursor | [string](#string) |  |  |
+| added | [int64](#int64) |  |  |
+| removed | [int64](#int64) |  |  |
+| modified | [int64](#int64) |  |  |
+
+
+
+
+
+
 <a name="api-v1-Pocket"></a>
 
 ### Pocket
@@ -743,6 +1059,7 @@ StripeSubscription stores high level stripe subscription details of which the us
 | stripe_subscription_status | [StripeSubscriptionStatus](#api-v1-StripeSubscriptionStatus) |  | stripe subscription status |
 | stripe_subscription_active_until | [string](#string) |  | stripe subscription active until |
 | stripe_webhook_latest_timestamp | [string](#string) |  | stripe webhook latest timestamp |
+| is_trialing | [bool](#bool) |  | wether the subscription is trialing |
 
 
 
@@ -837,6 +1154,19 @@ such as the id, user_id tied to the profile, and many more
 
 
  
+
+
+<a name="api-v1-BankAccountStatus"></a>
+
+### BankAccountStatus
+
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| BANK_ACCOUNT_STATUS_UNSPECIFIED | 0 |  |
+| BANK_ACCOUNT_STATUS_ACTIVE | 1 |  |
+| BANK_ACCOUNT_STATUS_INACTIVE | 2 |  |
+
 
 
 <a name="api-v1-BankAccountType"></a>
@@ -944,102 +1274,11 @@ such as the id, user_id tied to the profile, and many more
 | STRIPE_SUBSCRIPTION_STATUS_CANCELED | 4 |  |
 | STRIPE_SUBSCRIPTION_STATUS_UNPAID | 5 |  |
 | STRIPE_SUBSCRIPTION_STATUS_COMPLETE | 6 |  |
+| STRIPE_SUBSCRIPTION_STATUS_INCOMPLETE | 7 |  |
+| STRIPE_SUBSCRIPTION_STATUS_INCOMPLETE_EXPIRED | 8 |  |
+| STRIPE_SUBSCRIPTION_STATUS_CREATED | 9 |  |
+| STRIPE_SUBSCRIPTION_STATUS_PAUSED | 10 |  |
 
-
- 
-
- 
-
- 
-
-
-
-<a name="api_v1_mongo-proto"></a>
-<p align="right"><a href="#top">Top</a></p>
-
-## api/v1/mongo.proto
-
-
-
-<a name="api-v1-PaymentMeta"></a>
-
-### PaymentMeta
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| by_order_of | [string](#string) |  |  |
-| payee | [string](#string) |  |  |
-| payer | [string](#string) |  |  |
-| payment_method | [string](#string) |  |  |
-| payment_processor | [string](#string) |  |  |
-| ppd_id | [string](#string) |  |  |
-| reason | [string](#string) |  |  |
-| reference_number | [string](#string) |  |  |
-
-
-
-
-
-
-<a name="api-v1-Transaction"></a>
-
-### Transaction
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| account_id | [string](#string) |  |  |
-| amount | [double](#double) |  |  |
-| iso_currency_code | [string](#string) |  |  |
-| unofficial_currency_code | [string](#string) |  |  |
-| category | [string](#string) | repeated |  |
-| category_id | [string](#string) |  |  |
-| check_number | [string](#string) |  |  |
-| date | [string](#string) |  |  |
-| datetime | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
-| authorized_date | [string](#string) |  |  |
-| authorized_datetime | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
-| location | [TransactionLocation](#api-v1-TransactionLocation) |  |  |
-| name | [string](#string) |  |  |
-| merchant_name | [string](#string) |  |  |
-| payment_meta | [PaymentMeta](#api-v1-PaymentMeta) |  |  |
-| payment_channel | [string](#string) |  |  |
-| pending | [bool](#bool) |  |  |
-| pending_transaction_id | [string](#string) |  |  |
-| account_owner | [string](#string) |  |  |
-| transaction_id | [string](#string) |  |  |
-| transaction_code | [string](#string) |  |  |
-
-
-
-
-
-
-<a name="api-v1-TransactionLocation"></a>
-
-### TransactionLocation
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| address | [string](#string) |  |  |
-| city | [string](#string) |  |  |
-| region | [string](#string) |  |  |
-| postal_code | [string](#string) |  |  |
-| country | [string](#string) |  |  |
-| lat | [double](#double) |  |  |
-| lon | [double](#double) |  |  |
-| store_number | [string](#string) |  |  |
-
-
-
-
-
- 
 
  
 
@@ -1223,6 +1462,38 @@ the `create bank account` request
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | smart_goal_id | [uint64](#uint64) |  | The smart goal id |
+
+
+
+
+
+
+<a name="api-v1-CreateSubscriptionRequest"></a>
+
+### CreateSubscriptionRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| user_id | [uint64](#uint64) |  |  |
+| price_id | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="api-v1-CreateSubscriptionResponse"></a>
+
+### CreateSubscriptionResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| subscription_id | [string](#string) |  |  |
+| payment_intent_client_secret | [string](#string) |  |  |
 
 
 
@@ -1814,6 +2085,53 @@ the `get bank account` request
 
 
 
+<a name="api-v1-GetReCurringTransactionsRequest"></a>
+
+### GetReCurringTransactionsRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| user_id | [uint64](#uint64) |  | The user id Validations: - user_id must be greater than 0 |
+
+
+
+
+
+
+<a name="api-v1-GetReCurringTransactionsResponse"></a>
+
+### GetReCurringTransactionsResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| re_ccuring_transactions | [ReOccuringTransaction](#api-v1-ReOccuringTransaction) | repeated | The re-occuring transactions |
+| participant_re_ccuring_transactions | [GetReCurringTransactionsResponse.ParticipantReCurringTransactions](#api-v1-GetReCurringTransactionsResponse-ParticipantReCurringTransactions) | repeated |  |
+
+
+
+
+
+
+<a name="api-v1-GetReCurringTransactionsResponse-ParticipantReCurringTransactions"></a>
+
+### GetReCurringTransactionsResponse.ParticipantReCurringTransactions
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| reocurring_transaction_id | [uint64](#uint64) |  | The participant id |
+| transactions | [Transaction](#api-v1-Transaction) | repeated | The transactions |
+
+
+
+
+
+
 <a name="api-v1-GetSmartGoalsByPocketIdRequest"></a>
 
 ### GetSmartGoalsByPocketIdRequest
@@ -1869,6 +2187,39 @@ the `get bank account` request
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | student_loan_account | [StudentLoanAccount](#api-v1-StudentLoanAccount) |  | The student loan account |
+
+
+
+
+
+
+<a name="api-v1-GetTransactionsRequest"></a>
+
+### GetTransactionsRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| user_id | [uint64](#uint64) |  | The user id Validations: - user_id must be greater than 0 |
+| page_number | [uint64](#uint64) |  |  |
+| page_size | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="api-v1-GetTransactionsResponse"></a>
+
+### GetTransactionsResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| transactions | [Transaction](#api-v1-Transaction) | repeated | The transactions |
+| next_page_number | [uint64](#uint64) |  |  |
 
 
 
@@ -2000,6 +2351,61 @@ the `get user profile` request
 
 
 
+<a name="api-v1-ProcessWebhookRequest"></a>
+
+### ProcessWebhookRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| webhook_type | [string](#string) |  |  |
+| webhook_code | [string](#string) |  |  |
+| item_id | [string](#string) |  | The item_id of the Item associated with this webhook, warning, or error |
+| initial_update_complete | [bool](#bool) |  | Indicates if initial pull information is available. |
+| historical_update_complete | [string](#string) |  | Indicates if historical pull information is available. |
+| environment | [string](#string) |  | The Plaid environment the webhook was sent from |
+| new_transactions | [string](#string) | repeated | The number of new, unfetched transactions available |
+| removed_transactions | [string](#string) | repeated | An array of transaction_ids corresponding to the removed transactions |
+| error | [ProcessWebhookRequest.ErrorEntry](#api-v1-ProcessWebhookRequest-ErrorEntry) | repeated | We use standard HTTP response codes for success and failure notifications, and our errors are further classified by error_type. In general, 200 HTTP codes correspond to success, 40X codes are for developer- or user-related failures, and 50X codes are for Plaid-related issues. An Item with a non-null error object will only be part of an API response when calling /item/get to view Item status. Otherwise, error fields will be null if no error has occurred; if an error has occurred, an error code will be returned instead. |
+| account_ids | [string](#string) | repeated | A list of account_ids for accounts that have new or updated recurring transactions data. |
+| consent_expiration_time | [string](#string) |  | The time at which the user&#39;s access_token will expire. This field will only be present |
+| account_ids_with_new_liabilities | [string](#string) | repeated | An array of account_id&#39;s for accounts that contain new liabilities.&#39; |
+| account_ids_with_updated_liabilities | [string](#string) | repeated | An object with keys of account_id&#39;s that are mapped to their respective liabilities fields that changed. |
+| new_holdings | [uint64](#uint64) |  | The number of new holdings reported since the last time this webhook was fired. |
+| updated_holdings | [uint64](#uint64) |  | The number of updated holdings reported since the last time this webhook was fired. @gotag: json:&#34;updated_holdings&#34; |
+
+
+
+
+
+
+<a name="api-v1-ProcessWebhookRequest-ErrorEntry"></a>
+
+### ProcessWebhookRequest.ErrorEntry
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| key | [string](#string) |  |  |
+| value | [google.protobuf.Any](#google-protobuf-Any) |  |  |
+
+
+
+
+
+
+<a name="api-v1-ProcessWebhookResponse"></a>
+
+### ProcessWebhookResponse
+
+
+
+
+
+
+
 <a name="api-v1-ReadynessCheckRequest"></a>
 
 ### ReadynessCheckRequest
@@ -2019,6 +2425,37 @@ the `get user profile` request
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | healthy | [bool](#bool) |  |  |
+
+
+
+
+
+
+<a name="api-v1-StripeWebhookRequest"></a>
+
+### StripeWebhookRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| body | [string](#string) |  |  |
+| signature | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="api-v1-StripeWebhookResponse"></a>
+
+### StripeWebhookResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| message | [string](#string) |  |  |
 
 
 
@@ -2244,6 +2681,11 @@ FinancialService API.
 | GetLink | [GetLinkRequest](#api-v1-GetLinkRequest) | [GetLinkResponse](#api-v1-GetLinkResponse) |  |
 | GetLinks | [GetLinksRequest](#api-v1-GetLinksRequest) | [GetLinksResponse](#api-v1-GetLinksResponse) |  |
 | DeleteLink | [DeleteLinkRequest](#api-v1-DeleteLinkRequest) | [DeleteLinkResponse](#api-v1-DeleteLinkResponse) |  |
+| GetReCurringTransactions | [GetReCurringTransactionsRequest](#api-v1-GetReCurringTransactionsRequest) | [GetReCurringTransactionsResponse](#api-v1-GetReCurringTransactionsResponse) |  |
+| GetTransactions | [GetTransactionsRequest](#api-v1-GetTransactionsRequest) | [GetTransactionsResponse](#api-v1-GetTransactionsResponse) |  |
+| ProcessWebhook | [ProcessWebhookRequest](#api-v1-ProcessWebhookRequest) | [ProcessWebhookResponse](#api-v1-ProcessWebhookResponse) |  |
+| StripeWebhook | [StripeWebhookRequest](#api-v1-StripeWebhookRequest) | [StripeWebhookResponse](#api-v1-StripeWebhookResponse) |  |
+| CreateSubscription | [CreateSubscriptionRequest](#api-v1-CreateSubscriptionRequest) | [CreateSubscriptionResponse](#api-v1-CreateSubscriptionResponse) |  |
 
  
 

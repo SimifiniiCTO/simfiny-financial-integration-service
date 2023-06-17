@@ -1,0 +1,87 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/InvestmentTransaction",
+    "definitions": {
+        "InvestmentTransaction": {
+            "properties": {
+                "account_id": {
+                    "type": "string",
+                    "description": "@gotag: ch:\"account_id\""
+                },
+                "ammount": {
+                    "type": "string",
+                    "description": "@gotag: ch:\"amount\""
+                },
+                "investment_transaction_id": {
+                    "type": "string",
+                    "description": "@gotag: ch:\"investment_transaction_id\""
+                },
+                "security_id": {
+                    "type": "string",
+                    "description": "@gotag: ch:\"security_id\""
+                },
+                "date": {
+                    "type": "string",
+                    "description": "@gotag: ch:\"date\""
+                },
+                "name": {
+                    "type": "string",
+                    "description": "@gotag: ch:\"name\""
+                },
+                "quantity": {
+                    "type": "number",
+                    "description": "@gotag: ch:\"quantity\""
+                },
+                "amount": {
+                    "type": "number",
+                    "description": "@gotag: ch:\"amount\""
+                },
+                "price": {
+                    "type": "number",
+                    "description": "@gotag: ch:\"price\""
+                },
+                "fees": {
+                    "type": "number",
+                    "description": "@gotag: ch:\"fees\""
+                },
+                "type": {
+                    "type": "string",
+                    "description": "@gotag: ch:\"type\""
+                },
+                "subtype": {
+                    "type": "string",
+                    "description": "@gotag: ch:\"subtype\""
+                },
+                "iso_currency_code": {
+                    "type": "string",
+                    "description": "@gotag: ch:\"iso_currency_code\""
+                },
+                "unofficial_currency_code": {
+                    "type": "string",
+                    "description": "@gotag: ch:\"unofficial_currency_code\""
+                },
+                "link_id": {
+                    "type": "string",
+                    "description": "@gotag: ch:\"link_id\""
+                },
+                "id": {
+                    "type": "string",
+                    "description": "@gotag: ch:\"id\""
+                },
+                "user_id": {
+                    "type": "string",
+                    "description": "@gotag: ch:\"user_id\""
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "sign": {
+                    "type": "integer"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Investment Transaction"
+        }
+    }
+}

@@ -18,7 +18,7 @@ import (
 
 // ReadEnvVars reads environment variables and flags
 func ReadEnvVars() {
-	// flags definition
+	// environment flags definition
 	fs := pflag.NewFlagSet("default", pflag.ContinueOnError)
 	fs.String("host", "", "Host to bind service to")
 	fs.Int("port", 9898, "HTTP port to bind service to")
@@ -50,20 +50,25 @@ func ReadEnvVars() {
 	fs.Bool("unready", false, "when set, ready state is never reached")
 	fs.Int("stress-cpu", 0, "number of CPU cores with 100 load")
 	fs.Int("stress-memory", 0, "MB of data to load into memory")
-	fs.String("cache-server", "", "Redis address in the format <host>:<port>")
+	fs.String("cache-server", "redis://:@redis_db:6379", "Redis address in the format <host>:<port>")
 	fs.String("newrelic-api-key", "62fd721c712d5863a4e75b8f547b7c1ea884NRAL", "new relic license key")
 	// database connection environment variables
-	fs.String("dbhost", "db", "database host string")
+	fs.String("dbhost", "service_db", "database host string")
 	fs.Int("dbport", 5432, "database port")
-	fs.String("dbuser", "postgres", "database user string")
-	fs.String("dbpassword", "postgres", "database password string")
-	fs.String("dbname", "postgres", "database name")
+	fs.String("dbuser", "service_db", "database user string")
+	fs.String("dbpassword", "service_db", "database password string")
+	fs.String("dbname", "service_db", "database name")
 	fs.String("dbsslmode", "disable", "wether tls connection is enabled")
 	fs.Int("max-db-conn-attempts", 1, "max database connection attempts")
 	fs.Int("max-db-conn-retries", 1, "max database connection attempts")
 	fs.Duration("max-db-retry-timeout", 500*time.Millisecond, "max time until a db connection request is seen as timing out")
 	fs.Duration("max-db-retry-sleep-interval", 100*time.Millisecond, "max time to sleep in between db connection attempts")
 	fs.Duration("max-query-timeout", 500*time.Millisecond, "max time until a db query is seen as timing out")
+	fs.Int("cache-ttl-in-seconds", 3600, "time data lives in the cache")
+
+	fs.String("max-db-idle-connections", "10", "max number of idle connections to the database")            // exists
+	fs.String("max-db-open-connections", "10", "max number of open connections to the database")            // exists
+	fs.Duration("max-db-connection-lifetime", 10*time.Hour, "max lifetime of a connection to the database") // exists
 
 	// plaid specific keys
 	fs.String("plaid-client-id", "61eb5d49ea3b4700127560d1", "plaid client id")
@@ -73,8 +78,8 @@ func ReadEnvVars() {
 	fs.String("plaid-secret-key", "465686056e8fd1b87db3d993d096d8", "plaid secret key")
 	fs.String("plaid-env", "sandbox", "plaid environment")
 	fs.StringSlice("plaid-products", []string{"investments", "liabilities"}, "plaid products to enable")
-	fs.String("plaid-oauth-domain", "localhost:9896/v1", "plaid oauth domain")
-	fs.String("plaid-webhook-oauth-domain", "localhost:9896/v1", "plaid webhook oauth domain")
+	fs.String("plaid-oauth-domain", "1d8d-209-122-236-129.ngrok-free.app/api/v1", "plaid oauth domain")
+	fs.String("plaid-webhook-oauth-domain", "1d8d-209-122-236-129.ngrok-free.app/api/v1", "plaid webhook oauth domain")
 	fs.Bool("plaid-webhook-enabled", true, "enable plaid webhook")
 	fs.Uint64("max-plaid-links", 5, "plaid link limit")
 
@@ -84,7 +89,8 @@ func ReadEnvVars() {
 	fs.String("service-environment", "dev", "environment in which service is running")
 	fs.String("service-documentation", "https://github.com/SimifiniiCTO/simfinii/blob/main/src/backend/services/simfiny-financial-integration-service/documentation/setup.md", "location of service docs")
 	fs.String("point-of-contact", "yoanyomba", "service point of contact")
-	fs.Bool("metrics-reporting-enabled", true, "enable metrics reporting")
+	// TODO: METRICS REPORTING MUST BE DISABLED WHEN RUNNING LOCALLY
+	fs.Bool("metrics-reporting-enabled", false, "enable metrics reporting")
 
 	// aws configs
 	// to access aws credentials, ref the following link
@@ -97,6 +103,7 @@ func ReadEnvVars() {
 	// billing configs
 	fs.Bool("stripe-enabled", true, "enable billing")
 	fs.String("stripe-api-key", "sk_test_51M1F1pBV97V9M33e3Ki1k5OqkdhfdDUBNTwDFzUtRmsSYbHf7qE3d1kkFCYRxfS70bJKBOKR5Zbv103sqvNd0gnm00lMyRDWEh", "")
+	fs.String("stripe-endpoint-signing-key", "whsec_09exib1e5wYYlPJYUc8rNx28bM2Dwx0r", "stripe endpoint signing key")
 
 	// temporal configurations
 	fs.String("temporal-cluster-endpoint", "temporal:7233", "base endpoint of the temporal cluster")
@@ -112,6 +119,9 @@ func ReadEnvVars() {
 	fs.Duration("workflow-execution-timeout", 1*time.Second, "e timeout for duration of workflow execution. It includes retries and continue as new. Use WorkflowRunTimeout to limit execution time of a single workflow run.")
 	fs.Duration("workflow-task-timeout", 1*time.Second, "The timeout for processing workflow task from the time the worker pulled this task. If a workflow task is lost, it is retried after this timeout. The resolution is seconds.")
 	fs.Duration("workflow-run-timeout", 1*time.Second, "The timeout for duration of a single workflow run. The resolution is seconds. Optional: defaulted to WorkflowExecutionTimeout.")
+
+	fs.String("clickhouse-connection-uri", "clickhouse://gorm:gorm@clickhouse-database:9000/gorm?dial_timeout=10s&read_timeout=20s", "clickhouse-connection-uri")
+	fs.Int("task-processor-workers", 5, "task-processor-workers")
 	defaultLogger := zap.L()
 
 	// parse flags
@@ -147,6 +157,7 @@ func parseFlags(fs *pflag.FlagSet) {
 	viper.AutomaticEnv()
 }
 
+// loadEnvVariables loads environment variables
 func loadEnvVariables(fs *pflag.FlagSet) {
 	viper.AddConfigPath("/go/src/github.com/SimifiniiCTO/simfiny-financial-integration-service")
 	viper.BindPFlags(fs)
@@ -162,6 +173,7 @@ func loadEnvVariables(fs *pflag.FlagSet) {
 	viper.Set("revision", version.REVISION)
 	viper.AutomaticEnv()
 
+	// read config file
 	err := viper.ReadInConfig()
 	if err != nil {
 		log.Error(err.Error())
@@ -169,6 +181,7 @@ func loadEnvVariables(fs *pflag.FlagSet) {
 	}
 }
 
+// validateEnvConfigs validates environment configurations
 func validateEnvConfigs(fs *pflag.FlagSet) error {
 	// validate port
 	if _, err := strconv.Atoi(viper.GetString("port")); err != nil {
@@ -199,12 +212,14 @@ func validateEnvConfigs(fs *pflag.FlagSet) error {
 	return nil
 }
 
+// startStressTestsIfEnabled starts stress tests if enabled
 func startStressTestsIfEnabled() {
 	// start stress tests if any
 	beginStressTest(viper.GetInt("stress-cpu"), viper.GetInt("stress-memory"), zap.L())
 
 }
 
+// beginStressTest begins stress tests
 func beginStressTest(cpus int, mem int, logger *zap.Logger) {
 	done := make(chan int)
 	if cpus > 0 {

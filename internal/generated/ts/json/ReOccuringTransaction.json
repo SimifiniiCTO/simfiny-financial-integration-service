@@ -1,0 +1,157 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/ReOccuringTransaction",
+    "definitions": {
+        "ReOccuringTransaction": {
+            "properties": {
+                "account_id": {
+                    "type": "string",
+                    "description": "@gotag: ch:\"account_id\""
+                },
+                "stream_id": {
+                    "type": "string",
+                    "description": "@gotag: ch:\"stream_id\""
+                },
+                "category_id": {
+                    "type": "string",
+                    "description": "@gotag: ch:\"category_id\""
+                },
+                "description": {
+                    "type": "string",
+                    "description": "@gotag: ch:\"description\""
+                },
+                "merchant_name": {
+                    "type": "string",
+                    "description": "@gotag: ch:\"merchant_name\""
+                },
+                "personal_finance_category_primary": {
+                    "type": "string",
+                    "description": "@gotag: ch:\"personal_finance_category_primary\""
+                },
+                "personal_finance_category_detailed": {
+                    "type": "string",
+                    "description": "@gotag: ch:\"personal_finance_category_detailed\""
+                },
+                "first_date": {
+                    "type": "string",
+                    "description": "@gotag: ch:\"first_date\""
+                },
+                "last_date": {
+                    "type": "string",
+                    "description": "@gotag: ch:\"last_date\""
+                },
+                "frequency": {
+                    "enum": [
+                        "RE_OCCURING_TRANSACTIONS_FREQUENCY_UNSPECIFIED",
+                        0,
+                        "RE_OCCURING_TRANSACTIONS_FREQUENCY_WEEKLY",
+                        1,
+                        "RE_OCCURING_TRANSACTIONS_FREQUENCY_BIWEEKLY",
+                        2,
+                        "RE_OCCURING_TRANSACTIONS_FREQUENCY_SEMI_MONTHLY",
+                        3,
+                        "RE_OCCURING_TRANSACTIONS_FREQUENCY_MONTHLY",
+                        4,
+                        "RE_OCCURING_TRANSACTIONS_FREQUENCY_ANNUALLY",
+                        5
+                    ],
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "integer"
+                        }
+                    ],
+                    "title": "Re Occuring Transactions Frequency"
+                },
+                "transaction_ids": {
+                    "type": "string",
+                    "description": "@gotag: ch:\"transaction_ids,array\""
+                },
+                "average_amount": {
+                    "type": "string",
+                    "description": "@gotag: ch:\"average_amount\""
+                },
+                "average_amount_iso_currency_code": {
+                    "type": "string",
+                    "description": "@gotag: ch:\"average_amount_iso_currency_code\""
+                },
+                "last_amount": {
+                    "type": "string",
+                    "description": "@gotag: ch:\"last_amount\""
+                },
+                "last_amount_iso_currency_code": {
+                    "type": "string",
+                    "description": "@gotag: ch:\"last_amount_iso_currency_code\""
+                },
+                "is_active": {
+                    "type": "boolean",
+                    "description": "@gotag: ch:\"is_active\""
+                },
+                "status": {
+                    "enum": [
+                        "RE_OCCURING_TRANSACTIONS_STATUS_UNSPECIFIED",
+                        0,
+                        "RE_OCCURING_TRANSACTIONS_STATUS_MATURE",
+                        1,
+                        "RE_OCCURING_TRANSACTIONS_STATUS_EARLY_DETECTION",
+                        2,
+                        "RE_OCCURING_TRANSACTIONS_STATUS_TOMBSTONED",
+                        3
+                    ],
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "integer"
+                        }
+                    ],
+                    "title": "Re Occuring Transactions Status"
+                },
+                "updated_time": {
+                    "type": "string",
+                    "description": "@gotag: ch:\"updated_time\""
+                },
+                "user_id": {
+                    "type": "string",
+                    "description": "@gotag: ch:\"user_id\""
+                },
+                "link_id": {
+                    "type": "string",
+                    "description": "@gotag: ch:\"link_id\""
+                },
+                "id": {
+                    "type": "string",
+                    "description": "@gotag: ch:\"id\""
+                },
+                "flow": {
+                    "enum": [
+                        "RE_CURRING_FLOW_UNSPECIFIED",
+                        0,
+                        "RE_CURRING_FLOW_INFLOW",
+                        1,
+                        "RE_CURRING_FLOW_OUTFLOW",
+                        2
+                    ],
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "integer"
+                        }
+                    ],
+                    "title": "Re Curring Flow"
+                },
+                "sign": {
+                    "type": "integer"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Re Occuring Transaction"
+        }
+    }
+}

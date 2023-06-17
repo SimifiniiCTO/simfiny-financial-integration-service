@@ -32,12 +32,19 @@ func (s *Server) GetLink(ctx context.Context, req *proto.GetLinkRequest) (*proto
 
 	// get the required link
 	// NOTE: accesstoken will still be encrypted even here
-	link, err := s.conn.GetLink(ctx, req.UserId, req.LinkId)
+	link, err := s.conn.GetLink(ctx, req.UserId, req.LinkId, true)
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
+	// remove the access token from the response
+	NullifyAccessToken(link)
+
 	return &proto.GetLinkResponse{
 		Link: link,
 	}, nil
+}
+
+func NullifyAccessToken(link *proto.Link) {
+	link.Token = nil
 }
