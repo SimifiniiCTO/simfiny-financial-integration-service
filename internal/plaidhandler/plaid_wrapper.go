@@ -68,7 +68,9 @@ func (p *PlaidWrapper) GetWebhookVerificationKey(ctx context.Context, keyId stri
 	request := p.client.PlaidApi.
 		WebhookVerificationKeyGet(ctx).
 		WebhookVerificationKeyGetRequest(plaid.WebhookVerificationKeyGetRequest{
-			KeyId: keyId,
+			ClientId: &p.ClientID,
+			Secret:   &p.SecretKey,
+			KeyId:    keyId,
 		})
 
 	result, _, err := request.Execute()

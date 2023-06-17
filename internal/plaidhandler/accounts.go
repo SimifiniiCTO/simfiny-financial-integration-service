@@ -34,7 +34,8 @@ func (p *PlaidWrapper) GetAccounts(ctx context.Context, accessToken string, user
 	// Once we have our data, convert all of the results from our request to our own bank account interface.
 	for _, plaidAccount := range plaidAccounts {
 		if plaidAccount.Type == plaid.ACCOUNTTYPE_DEPOSITORY {
-			data, err := transformer.NewPlaidBankAccount(userId, plaidAccount)
+			acct := plaidAccount
+			data, err := transformer.NewPlaidBankAccount(userId, &acct)
 			if err != nil {
 				p.Logger.Error("failed to convert bank account", zap.Error(err))
 				return nil, err

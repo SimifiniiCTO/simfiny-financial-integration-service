@@ -2,7 +2,6 @@ package plaidhandler
 
 import (
 	"context"
-	"reflect"
 	"testing"
 )
 
@@ -16,10 +15,18 @@ func TestPlaidWrapper_Sync(t *testing.T) {
 		name    string
 		p       *PlaidWrapper
 		args    args
-		want    *SyncResult
 		wantErr bool
 	}{
-		// TODO: Add test cases.
+		{
+			name: "test",
+			p:    plaidTestClient,
+			args: args{
+				ctx:         context.Background(),
+				cursor:      nil,
+				accessToken: &testAccessToken,
+			},
+			wantErr: false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -28,8 +35,12 @@ func TestPlaidWrapper_Sync(t *testing.T) {
 				t.Errorf("PlaidWrapper.Sync() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("PlaidWrapper.Sync() = %v, want %v", got, tt.want)
+
+			if !tt.wantErr {
+				if len(got.New) == 0 && len(got.Updated) == 0 && len(got.Deleted) == 0 {
+					t.Errorf("PlaidWrapper.Sync() error = %v, wantErr %v", err, tt.wantErr)
+					return
+				}
 			}
 		})
 	}

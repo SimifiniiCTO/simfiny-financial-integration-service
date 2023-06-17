@@ -16,7 +16,14 @@ func TestPlaidWrapper_DeleteItem(t *testing.T) {
 		args    args
 		wantErr bool
 	}{
-		// TODO: Add test cases.
+		{
+			name: "delete item",
+			p:    plaidTestClient,
+			args: args{
+				ctx:         context.Background(),
+				accessToken: &testAccessToken,
+			},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

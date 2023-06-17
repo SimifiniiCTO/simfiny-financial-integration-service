@@ -336,13 +336,15 @@ func (db *Db) UpdateReOccurringTransactions(ctx context.Context, userId *uint64,
 
 	t := db.QueryOperator.ReOccuringTransactionORM
 	// perform the update operation
-	result, err := t.WithContext(ctx).Where(t.UserId.Eq(*userId)).Updates(txnsOrmRecords)
-	if err != nil {
-		return err
-	}
+	for _, tx := range txnsOrmRecords {
+		result, err := t.WithContext(ctx).Where(t.Id.Eq(tx.Id)).Updates(tx)
+		if err != nil {
+			return err
+		}
 
-	if result.RowsAffected == 0 {
-		return fmt.Errorf("no rows affected")
+		if result.RowsAffected == 0 {
+			return fmt.Errorf("no rows affected")
+		}
 	}
 
 	return nil

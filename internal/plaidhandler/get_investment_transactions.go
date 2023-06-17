@@ -30,13 +30,23 @@ func (p *PlaidWrapper) GetInvestmentTransactions(ctx context.Context, accessToke
 		opts.Offset = &offset
 	}
 
+	if link == nil {
+		return nil, errors.New("invalid input argument. link cannot be empty")
+	}
+
 	investmentAccountIds := make([]string, 0, len(link.InvestmentAccounts))
 	for _, acct := range link.InvestmentAccounts {
 		investmentAccountIds = append(investmentAccountIds, acct.PlaidAccountId)
 	}
 
-	// get transactions for specific investment account ids
-	opts.AccountIds = &investmentAccountIds
+	if len(investmentAccountIds) > 0 {
+		if opts.AccountIds == nil {
+			opts.AccountIds = &investmentAccountIds
+		} else {
+			ids := append(*opts.AccountIds, investmentAccountIds...)
+			opts.AccountIds = &ids
+		}
+	}
 
 	request := plaid.InvestmentsTransactionsGetRequest{
 		AccessToken: *accessToken,
@@ -57,34 +67,33 @@ func (p *PlaidWrapper) getInvestmentTransactions(ctx context.Context, req *plaid
 		return nil, err
 	}
 
-	// transform transactions
-	return toInvestmentTransactions(resp.GetInvestmentTransactions(), link.Id, *userId), nil
-}
+	results := make([]*schema.InvestmentTransaction, 0, len(resp.GetInvestmentTransactions()))
+	for _, t := range resp.GetInvestmentTransactions() {
 
-func toInvestmentTransactions(tx []plaid.InvestmentTransaction, linkId, userId uint64) []*schema.InvestmentTransaction {
-	res := make([]*schema.InvestmentTransaction, 0, len(tx))
-	for _, t := range tx {
-		res = append(res, &schema.InvestmentTransaction{
-			AccountId:               t.AccountId,
+		newTx := &schema.InvestmentTransaction{
+			AccountId:               t.GetAccountId(),
 			Ammount:                 fmt.Sprintf("%f", t.GetAmount()),
-			InvestmentTransactionId: t.InvestmentTransactionId,
-			SecurityId:              *t.SecurityId.Get(),
-			Date:                    t.Date,
-			Name:                    t.Name,
-			Quantity:                t.Quantity,
-			Amount:                  t.Amount,
-			Price:                   t.Price,
-			Fees:                    *t.Fees.Get(),
+			InvestmentTransactionId: t.GetInvestmentTransactionId(),
+			SecurityId:              t.GetSecurityId(),
+			Date:                    t.GetDate(),
+			Name:                    t.GetName(),
+			Quantity:                t.GetQuantity(),
+			Amount:                  t.GetAmount(),
+			Price:                   t.GetPrice(),
+			Fees:                    t.GetFees(),
 			Type:                    string(t.GetType()),
-			Subtype:                 string(t.Subtype),
+			Subtype:                 string(t.GetSubtype()),
 			IsoCurrencyCode:         t.GetIsoCurrencyCode(),
-			UnofficialCurrencyCode:  *t.UnofficialCurrencyCode.Get(),
-			LinkId:                  linkId,
+			LinkId:                  link.Id,
 			Id:                      0,
-			UserId:                  userId,
+			UserId:                  *userId,
 			CreatedAt:               time.Now().String(),
-		})
+			UnofficialCurrencyCode:  t.GetUnofficialCurrencyCode(),
+		}
+
+		results = append(results, newTx)
 	}
 
-	return res
+	// transform transactions
+	return results, nil
 }

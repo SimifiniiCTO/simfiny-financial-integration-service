@@ -8,20 +8,15 @@ import (
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 )
 
-// transformMortgageObject transforms a plaid mortgage loan liabilities object to the internal mortgage account object
-func TransformMortgageAccount(mortgageLoan *[]plaid.MortgageLiability, acctIDToTypeMap map[string]*accountMetadata) ([]*schema.
+// TransformMortgageAccount transforms a Plaid mortgage loan liability into a schema MortgageAccount.
+func TransformMortgageAccount(mortgageLoan *[]plaid.MortgageLiability) ([]*schema.
 	MortgageAccount, error) {
 	if mortgageLoan == nil {
 		return nil, errors.New("invalid input argument. mortgage loan liability cannot be nil")
 	}
 
-	if acctIDToTypeMap == nil {
-		return nil, errors.New("invalid input argument. account id to type map is nil")
-	}
-
 	accts := make([]*schema.MortgageAccount, 0)
 	for _, element := range *mortgageLoan {
-		//metadata := acctIDToTypeMap[element.AccountId]
 		interest := element.GetInterestRate()
 		mortgageAcct := &schema.MortgageAccount{
 			Id:                          0,
@@ -39,7 +34,7 @@ func TransformMortgageAccount(mortgageLoan *[]plaid.MortgageLiability, acctIDToT
 			NextMonthlyPayment:          float64(element.GetNextMonthlyPayment()),
 			NextPaymentDueDate:          element.GetNextPaymentDueDate(),
 			OriginalPrincipalBalance:    float64(element.GetOriginationPrincipalAmount()),
-			OriginalPropertyValue:       0,
+			OriginalPropertyValue:       float64(element.GetOriginationPrincipalAmount()),
 			OutstandingPrincipalBalance: 0,
 			PaymentAmount:               element.GetLastPaymentAmount(),
 			PaymentDate:                 element.GetLastPaymentDate(),

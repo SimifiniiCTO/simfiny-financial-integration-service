@@ -314,13 +314,16 @@ func (db *Db) UpdateTransactions(ctx context.Context, userId *uint64, txs []*sch
 
 	t := db.QueryOperator.TransactionORM
 	// perform the update operation
-	result, err := t.WithContext(ctx).Where(t.UserId.Eq(*userId)).Updates(txnsOrmRecords)
-	if err != nil {
-		return err
-	}
 
-	if result.RowsAffected == 0 {
-		return fmt.Errorf("no rows affected")
+	for _, tx := range txnsOrmRecords {
+		result, err := t.WithContext(ctx).Where(t.UserId.Eq(*userId)).Updates(tx)
+		if err != nil {
+			return err
+		}
+
+		if result.RowsAffected == 0 {
+			return fmt.Errorf("no rows affected")
+		}
 	}
 
 	return nil

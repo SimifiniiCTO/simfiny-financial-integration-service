@@ -13,11 +13,11 @@ func (db *Db) AddInvestmentTransactions(ctx context.Context, userId *uint64, txs
 	}
 
 	if userId == nil {
-		return nil
+		return fmt.Errorf("user ID cannot be nil")
 	}
 
-	if txs == nil {
-		return nil
+	if len(txs) == 0 {
+		return fmt.Errorf("transactions length must be greater than 0")
 	}
 
 	transactions := make([]*schema.InvestmentTransactionORM, 0, len(txs))
@@ -102,6 +102,10 @@ func (db *Db) GetInvestmentTransactions(ctx context.Context, userId *uint64, pag
 		Find()
 	if err != nil {
 		return nil, 0, err
+	}
+
+	if len(records) == 0 {
+		return nil, 0, fmt.Errorf("no records found")
 	}
 
 	txs := make([]*schema.InvestmentTransaction, 0, len(records))

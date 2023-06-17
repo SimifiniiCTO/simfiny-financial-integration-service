@@ -51,7 +51,7 @@ func (p *PlaidWrapper) GetPlaidLiabilityAccounts(ctx context.Context, accessToke
 	}
 
 	if len(mortgageLoanLiabilities) > 0 {
-		mortgageLoanAccounts, err = transformer.TransformMortgageAccount(&mortgageLoanLiabilities, acctMetadata)
+		mortgageLoanAccounts, err = transformer.TransformMortgageAccount(&mortgageLoanLiabilities)
 		if err != nil {
 			return nil, err
 		}

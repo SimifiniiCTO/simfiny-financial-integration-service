@@ -1,35 +1,45 @@
 package plaidhandler
 
 import (
-	"errors"
+	"context"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
-type plaidLiabilityScenarios struct {
-	scenarioName     string
-	shouldErrorOccur bool
-	accessToken      *string
-	expectedError    error
-}
+func TestPlaidWrapper_GetPlaidLiabilityAccounts(t *testing.T) {
 
-func getplaidLiabilityScenarios() ([]plaidLiabilityScenarios, *PlaidWrapper, error) {
-	accessToken, err := plaidTestClient.getAccessTokenForSandboxAcct()
-	if err != nil {
-		return nil, nil, err
+	type args struct {
+		ctx         context.Context
+		accessToken *string
 	}
+	tests := []struct {
+		name    string
+		p       *PlaidWrapper
+		args    args
+		wantErr bool
+	}{
+		{
+			name: "get plaid liability accounts",
+			p:    plaidTestClient,
+			args: args{
+				ctx:         context.Background(),
+				accessToken: &testAccessToken,
+			},
+			wantErr: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := tt.p.GetPlaidLiabilityAccounts(tt.args.ctx, tt.args.accessToken)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("PlaidWrapper.GetPlaidLiabilityAccounts() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
 
-	return []plaidLiabilityScenarios{
-		{
-			// success condition: valid access token
-			scenarioName:     "[success condition]: get an account deposits with valid access token",
-			shouldErrorOccur: false,
-			accessToken:      &accessToken,
-		},
-		{
-			// failure condition: access token is invalid
-			scenarioName:     "[failure condition]: get an account deposits with invalid access token",
-			shouldErrorOccur: true,
-			expectedError:    errors.New("invalid input argument. access token cannot be empty"),
-			accessToken:      nil,
-		},
-	}, plaidTestClient, nil
+			if !tt.wantErr {
+				assert.NotNil(t, got)
+			}
+		})
+	}
 }

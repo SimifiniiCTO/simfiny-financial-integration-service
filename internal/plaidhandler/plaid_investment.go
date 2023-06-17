@@ -30,17 +30,25 @@ func (p *PlaidWrapper) GetInvestmentAccount(ctx context.Context, userID uint64, 
 	accountIDToAccountMap := hashmap.New()
 	if resp.GetAccounts() != nil {
 		for _, account := range resp.GetAccounts() {
-			// populate hashmap with key as the accountID (plaid acct id) and the value a hashset of investment holding structs
-			if _, ok := accountIDToAccountMap.Get(account.GetAccountId()); !ok {
-				accountIDToAccountMap.Put(account.GetAccountId(), transformer.NewInvestmentAccount(userID, &account))
+			if account.Type == plaid.ACCOUNTTYPE_INVESTMENT {
+				// populate hashmap with key as the accountID (plaid acct id) and the value a hashset of investment holding structs
+				if _, ok := accountIDToAccountMap.Get(account.GetAccountId()); !ok {
+					investmentAcct, err := transformer.NewInvestmentAccount(userID, &account)
+					if err != nil {
+						return nil, err
+					}
+
+					accountIDToAccountMap.Put(account.GetAccountId(), investmentAcct)
+				}
 			}
-			// NOTE: this should be duplicate free by this point
 		}
 	}
 
 	// populate a hashmap comprised of all the holdings per account id
 	accountIDToInvesmentHoldingMap := hashmap.New()
 	securityIDToInvestmentHoldingMap := hashmap.New()
+	securityIDToSecurityMap := hashmap.New()
+
 	if resp.GetHoldings() != nil {
 		for _, holding := range resp.GetHoldings() {
 			holdingRecord := transformer.NewInvestmentHolding(&holding)
@@ -51,7 +59,7 @@ func (p *PlaidWrapper) GetInvestmentAccount(ctx context.Context, userID uint64, 
 				accountIDToInvesmentHoldingMap.Put(holding.AccountId, v)
 			} else {
 				res, _ := accountIDToInvesmentHoldingMap.Get(holding.AccountId)
-				value := res.(hashset.Set)
+				value := res.(*hashset.Set)
 				value.Add(holdingRecord)
 				accountIDToInvesmentHoldingMap.Put(holding.AccountId, value)
 			}
@@ -59,6 +67,15 @@ func (p *PlaidWrapper) GetInvestmentAccount(ctx context.Context, userID uint64, 
 			// securities and holding retain a one to one mapping to one another
 			if _, ok := securityIDToInvestmentHoldingMap.Get(holding.SecurityId); !ok {
 				securityIDToInvestmentHoldingMap.Put(holding.SecurityId, holdingRecord)
+			}
+		}
+
+		// populate a hashmap comprised of all the securities per security id
+		for _, security := range resp.GetSecurities() {
+			securityRecord := transformer.TransformSinglePlaidInvestmentSecurity(security)
+			// populate hashmap with key as the accountID (plaid acct id) and the value a hashset of investment holding structs
+			if _, ok := securityIDToSecurityMap.Get(security.SecurityId); !ok {
+				securityIDToSecurityMap.Put(security.SecurityId, securityRecord)
 			}
 		}
 	}
@@ -70,7 +87,7 @@ func (p *PlaidWrapper) GetInvestmentAccount(ctx context.Context, userID uint64, 
 		account := res.(*schema.InvestmentAccount)
 		// populate the holdings
 		if holdings, ok := accountIDToInvesmentHoldingMap.Get(accountID); ok {
-			value, ok := holdings.(hashset.Set)
+			value, ok := holdings.(*hashset.Set)
 			if !ok {
 				return nil, fmt.Errorf("could not convert value to hashset.Set")
 			}
@@ -83,12 +100,19 @@ func (p *PlaidWrapper) GetInvestmentAccount(ctx context.Context, userID uint64, 
 
 			// get all the securities tied to this holding for this given account
 			for _, holding := range data {
-				if security, ok := securityIDToInvestmentHoldingMap.Get(holding.SecurityId); ok {
-					data, ok := security.(*schema.InvestmentSecurity)
+				if currentHolding, ok := securityIDToInvestmentHoldingMap.Get(holding.SecurityId); ok {
+					presentHolding, ok := currentHolding.(*schema.InvesmentHolding)
 					if !ok {
 						return nil, fmt.Errorf("could not convert value to *schema.InvestmentSecurity")
 					}
-					account.Securities = append(account.Securities, data)
+
+					if security, ok := securityIDToSecurityMap.Get(presentHolding.SecurityId); ok {
+						presentSecurity, ok := security.(*schema.InvestmentSecurity)
+						if !ok {
+							return nil, fmt.Errorf("could not convert value to *schema.InvestmentSecurity")
+						}
+						account.Securities = append(account.Securities, presentSecurity)
+					}
 				}
 			}
 		}

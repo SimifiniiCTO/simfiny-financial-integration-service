@@ -1,14 +1,16 @@
 package transformer
 
 import (
-	"reflect"
 	"testing"
 
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 	"github.com/plaid/plaid-go/v12/plaid"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestTransformStudentloanAccount(t *testing.T) {
+	studentLoanAccts, acctMeta := generateManyPlaidStudentLoanAndAccountMetadata(10)
+
 	type args struct {
 		studentLoans    *[]plaid.StudentLoan
 		acctIDToTypeMap map[string]*accountMetadata
@@ -19,7 +21,14 @@ func TestTransformStudentloanAccount(t *testing.T) {
 		want    []*schema.StudentLoanAccount
 		wantErr bool
 	}{
-		// TODO: Add test cases.
+		{
+			name: "valid student loan liability",
+			args: args{
+				studentLoans:    &studentLoanAccts,
+				acctIDToTypeMap: acctMeta,
+			},
+			wantErr: false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -28,8 +37,9 @@ func TestTransformStudentloanAccount(t *testing.T) {
 				t.Errorf("TransformStudentloanAccount() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("TransformStudentloanAccount() = %v, want %v", got, tt.want)
+
+			if !tt.wantErr {
+				assert.NotNil(t, got)
 			}
 		})
 	}

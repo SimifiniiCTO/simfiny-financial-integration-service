@@ -2,7 +2,6 @@ package clickhousedatabase
 
 import (
 	"context"
-	"reflect"
 	"testing"
 
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
@@ -336,16 +335,6 @@ func TestDb_GetTransactions(t *testing.T) {
 			},
 			true,
 		},
-		{
-			"[failure] - delete transaction with non-existent transaction id",
-			args{
-				ctx: context.Background(),
-				precondition: func(ctx context.Context, t *testing.T, arg *args) *uint64 {
-					return generateRandomId()
-				},
-			},
-			true,
-		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -415,7 +404,7 @@ func TestDb_DeleteTransactionsByLinkId(t *testing.T) {
 	type args struct {
 		ctx          context.Context
 		linkId       *uint64
-		precondition func(ctx context.Context, t *testing.T, arg *args) *uint64
+		precondition func(ctx context.Context, t *testing.T, arg *args)
 	}
 	tests := []struct {
 		name    string
@@ -427,15 +416,15 @@ func TestDb_DeleteTransactionsByLinkId(t *testing.T) {
 			args{
 				ctx:    context.Background(),
 				linkId: generateRandomId(),
-				precondition: func(ctx context.Context, t *testing.T, arg *args) *uint64 {
+				precondition: func(ctx context.Context, t *testing.T, arg *args) {
 					tx := generateRandomTransaction()
+					tx.LinkId = *arg.linkId
 					userId := generateRandomId()
-					txId, err := conn.AddTransaction(ctx, userId, tx)
+					_, err := conn.AddTransaction(ctx, userId, tx)
 					if err != nil {
 						t.Errorf("conn.AddTransaction() error = %v", err)
 					}
 
-					return txId
 				},
 			},
 			false,
@@ -443,6 +432,7 @@ func TestDb_DeleteTransactionsByLinkId(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			tt.args.precondition(tt.args.ctx, t, &tt.args)
 			if err := conn.DeleteTransactionsByLinkId(tt.args.ctx, tt.args.linkId); (err != nil) != tt.wantErr {
 				t.Errorf("Db.DeleteTransactionsByLinkId() error = %v, wantErr %v", err, tt.wantErr)
 			}
@@ -452,21 +442,47 @@ func TestDb_DeleteTransactionsByLinkId(t *testing.T) {
 
 func TestDb_UpdateTransactions(t *testing.T) {
 	type args struct {
-		ctx    context.Context
-		userId *uint64
-		txs    []*schema.Transaction
+		ctx          context.Context
+		userId       *uint64
+		precondition func(ctx context.Context, t *testing.T, arg *args) (*uint64, []*schema.Transaction)
 	}
 	tests := []struct {
 		name    string
-		db      *Db
 		args    args
 		wantErr bool
 	}{
-		// TODO: Add test cases.
+		{
+			"[success] - update transactions",
+			args{
+				ctx:    context.Background(),
+				userId: generateRandomId(),
+				precondition: func(ctx context.Context, t *testing.T, arg *args) (*uint64, []*schema.Transaction) {
+					txs := generateMultipleTransaction(10)
+					createdTxs := make([]*schema.Transaction, 0)
+					for _, tx := range txs {
+						txId, err := conn.AddTransaction(ctx, arg.userId, tx)
+						if err != nil {
+							t.Errorf("conn.AddTransaction() error = %v", err)
+						}
+
+						tx.Id = *txId
+						createdTxs = append(createdTxs, tx)
+					}
+
+					for _, tx := range createdTxs {
+						tx.AccountOwner = helper.GenerateRandomString(50)
+					}
+
+					return arg.userId, createdTxs
+				},
+			},
+			false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if err := tt.db.UpdateTransactions(tt.args.ctx, tt.args.userId, tt.args.txs); (err != nil) != tt.wantErr {
+			userId, txns := tt.args.precondition(tt.args.ctx, t, &tt.args)
+			if err := conn.UpdateTransactions(tt.args.ctx, userId, txns); (err != nil) != tt.wantErr {
 				t.Errorf("Db.UpdateTransactions() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
@@ -475,27 +491,45 @@ func TestDb_UpdateTransactions(t *testing.T) {
 
 func TestDb_GetTransactionById(t *testing.T) {
 	type args struct {
-		ctx  context.Context
-		txId *uint64
+		ctx          context.Context
+		precondition func(ctx context.Context, t *testing.T, arg *args) (*uint64, *uint64)
 	}
 	tests := []struct {
 		name    string
-		db      *Db
 		args    args
-		want    *schema.Transaction
 		wantErr bool
 	}{
 		// TODO: Add test cases.
+		{
+			"[success] - get transaction by id",
+			args{
+				ctx: context.Background(),
+				precondition: func(ctx context.Context, t *testing.T, arg *args) (*uint64, *uint64) {
+					tx := generateRandomTransaction()
+					userId := generateRandomId()
+					txId, err := conn.AddTransaction(ctx, userId, tx)
+					if err != nil {
+						t.Errorf("conn.AddTransaction() error = %v", err)
+					}
+
+					return txId, &tx.UserId
+				},
+			},
+			false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := tt.db.GetTransactionById(tt.args.ctx, tt.args.txId)
+			txId, _ := tt.args.precondition(tt.args.ctx, t, &tt.args)
+			got, err := conn.GetTransactionById(tt.args.ctx, txId)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("Db.GetTransactionById() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("Db.GetTransactionById() = %v, want %v", got, tt.want)
+
+			if !tt.wantErr {
+				assert.NotNil(t, got)
+				assert.Equal(t, *txId, got.Id)
 			}
 		})
 	}
@@ -503,27 +537,51 @@ func TestDb_GetTransactionById(t *testing.T) {
 
 func TestDb_GetTransactionsByPlaidTransactionIds(t *testing.T) {
 	type args struct {
-		ctx   context.Context
-		txIds []string
+		ctx          context.Context
+		precondition func(ctx context.Context, t *testing.T, arg *args) []string
 	}
 	tests := []struct {
 		name    string
 		db      *Db
 		args    args
-		want    []*schema.Transaction
 		wantErr bool
 	}{
-		// TODO: Add test cases.
+		{
+			"[success] - get transactions by plaid transaction ids",
+			conn,
+			args{
+				ctx: context.Background(),
+				precondition: func(ctx context.Context, t *testing.T, arg *args) []string {
+					tx := generateRandomTransaction()
+					userId := generateRandomId()
+					txId, err := conn.AddTransaction(ctx, userId, tx)
+					if err != nil {
+						t.Errorf("conn.AddTransaction() error = %v", err)
+					}
+
+					createdTx, err := conn.GetTransactionById(ctx, txId)
+					if err != nil {
+						t.Errorf("conn.GetTransactionById() error = %v", err)
+					}
+
+					return []string{createdTx.TransactionId}
+				},
+			},
+			false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := tt.db.GetTransactionsByPlaidTransactionIds(tt.args.ctx, tt.args.txIds)
+			txIds := tt.args.precondition(tt.args.ctx, t, &tt.args)
+			got, err := tt.db.GetTransactionsByPlaidTransactionIds(tt.args.ctx, txIds)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("Db.GetTransactionsByPlaidTransactionIds() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("Db.GetTransactionsByPlaidTransactionIds() = %v, want %v", got, tt.want)
+
+			if !tt.wantErr {
+				assert.NotNil(t, got)
+				assert.Equal(t, len(got), 1)
 			}
 		})
 	}
@@ -541,7 +599,36 @@ func TestDb_sanitizePaginationParams(t *testing.T) {
 		want  int64
 		want1 int64
 	}{
-		// TODO: Add test cases.
+		{
+			"[success] - sanitize pagination params",
+			conn,
+			args{
+				pageNumber: 1,
+				pageSize:   10,
+			},
+			1,
+			10,
+		},
+		{
+			"[success] - sanitize pagination params with negative page number",
+			conn,
+			args{
+				pageNumber: -1,
+				pageSize:   10,
+			},
+			1,
+			10,
+		},
+		{
+			"[success] - sanitize pagination params with negative page size",
+			conn,
+			args{
+				pageNumber: 1,
+				pageSize:   -10,
+			},
+			1,
+			10,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

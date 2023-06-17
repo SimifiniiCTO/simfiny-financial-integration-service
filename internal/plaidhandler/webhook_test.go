@@ -1,13 +1,13 @@
 package plaidhandler
 
 import (
-	"context"
-	"reflect"
 	"testing"
 	"time"
 
-	"github.com/MicahParks/keyfunc"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/helper"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/pointer"
 	"github.com/plaid/plaid-go/v12/plaid"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestNewWebhookVerificationKeyFromPlaid(t *testing.T) {
@@ -17,10 +17,25 @@ func TestNewWebhookVerificationKeyFromPlaid(t *testing.T) {
 	tests := []struct {
 		name    string
 		args    args
-		want    WebhookVerificationKey
 		wantErr bool
 	}{
-		// TODO: Add test cases.
+		{
+			name: "valid input",
+			args: args{
+				input: plaid.JWKPublicKey{
+					Alg:       "alg",
+					Crv:       "crv",
+					Kid:       "kid",
+					Kty:       "kty",
+					Use:       "use",
+					X:         "x",
+					Y:         "y",
+					CreatedAt: int32(helper.GenerateRandomId(100, 10000)),
+					ExpiredAt: *plaid.NewNullableInt32(pointer.Int32P(int32(helper.GenerateRandomId(100, 10000)))),
+				},
+			},
+			wantErr: false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -29,8 +44,9 @@ func TestNewWebhookVerificationKeyFromPlaid(t *testing.T) {
 				t.Errorf("NewWebhookVerificationKeyFromPlaid() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("NewWebhookVerificationKeyFromPlaid() = %v, want %v", got, tt.want)
+
+			if !tt.wantErr {
+				assert.NotNil(t, got)
 			}
 		})
 	}
@@ -41,89 +57,23 @@ func TestNewInMemoryWebhookVerification(t *testing.T) {
 		cleanupInterval time.Duration
 	}
 	tests := []struct {
-		name string
-		args args
-		want WebhookVerification
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := NewInMemoryWebhookVerification(tt.args.cleanupInterval); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("NewInMemoryWebhookVerification() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
-
-func Test_memoryWebhookVerification_GetVerificationKey(t *testing.T) {
-	type args struct {
-		ctx   context.Context
-		keyId string
-	}
-	tests := []struct {
 		name    string
-		m       *memoryWebhookVerification
 		args    args
-		want    *keyfunc.JWKS
 		wantErr bool
 	}{
-		// TODO: Add test cases.
+		{
+			name: "valid input",
+			args: args{
+				cleanupInterval: time.Second * 1,
+			},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := tt.m.GetVerificationKey(tt.args.ctx, tt.args.keyId)
-			if (err != nil) != tt.wantErr {
-				t.Errorf("memoryWebhookVerification.GetVerificationKey() error = %v, wantErr %v", err, tt.wantErr)
+			got := NewInMemoryWebhookVerification(tt.args.cleanupInterval)
+			if (got == nil) != tt.wantErr {
+				t.Errorf("NewInMemoryWebhookVerification() error = %v, wantErr %v", got, tt.wantErr)
 				return
-			}
-			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("memoryWebhookVerification.GetVerificationKey() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
-
-func Test_memoryWebhookVerification_cacheWorker(t *testing.T) {
-	tests := []struct {
-		name string
-		m    *memoryWebhookVerification
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			tt.m.cacheWorker()
-		})
-	}
-}
-
-func Test_memoryWebhookVerification_cleanup(t *testing.T) {
-	tests := []struct {
-		name string
-		m    *memoryWebhookVerification
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			tt.m.cleanup()
-		})
-	}
-}
-
-func Test_memoryWebhookVerification_Close(t *testing.T) {
-	tests := []struct {
-		name    string
-		m       *memoryWebhookVerification
-		wantErr bool
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if err := tt.m.Close(); (err != nil) != tt.wantErr {
-				t.Errorf("memoryWebhookVerification.Close() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
 	}

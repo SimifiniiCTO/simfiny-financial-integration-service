@@ -1,11 +1,10 @@
 package transformer
 
 import (
-	"reflect"
 	"testing"
 
-	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 	"github.com/plaid/plaid-go/v12/plaid"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestNewInvestmentAccount(t *testing.T) {
@@ -14,16 +13,37 @@ func TestNewInvestmentAccount(t *testing.T) {
 		input  *plaid.AccountBase
 	}
 	tests := []struct {
-		name string
-		args args
-		want *schema.InvestmentAccount
+		name    string
+		args    args
+		wantErr bool
 	}{
-		// TODO: Add test cases.
+		{
+			name: "valid investment account",
+			args: args{
+				userID: 1,
+				input:  generateSinglePlaidAccountBase(plaid.ACCOUNTTYPE_INVESTMENT),
+			},
+			wantErr: false,
+		},
+		{
+			name: "invalid investment account",
+			args: args{
+				userID: 1,
+				input:  generateSinglePlaidAccountBase(plaid.ACCOUNTTYPE_BROKERAGE),
+			},
+			wantErr: true,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := NewInvestmentAccount(tt.args.userID, tt.args.input); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("NewInvestmentAccount() = %v, want %v", got, tt.want)
+			got, err := NewInvestmentAccount(tt.args.userID, tt.args.input)
+			if err != nil && !tt.wantErr {
+				t.Errorf("NewInvestmentAccount() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+
+			if !tt.wantErr {
+				assert.NotNil(t, got)
 			}
 		})
 	}
@@ -34,16 +54,23 @@ func TestNewInvestmentHolding(t *testing.T) {
 		input *plaid.Holding
 	}
 	tests := []struct {
-		name string
-		args args
-		want *schema.InvesmentHolding
+		name      string
+		args      args
+		wantError bool
 	}{
-		// TODO: Add test cases.
+		{
+			name: "valid investment holding",
+			args: args{
+				input: generateInvestmentHolding(),
+			},
+			wantError: false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := NewInvestmentHolding(tt.args.input); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("NewInvestmentHolding() = %v, want %v", got, tt.want)
+			got := NewInvestmentHolding(tt.args.input)
+			if got != nil && tt.wantError {
+				t.Errorf("NewInvestmentHolding() = %v, want %v", got, tt.wantError)
 			}
 		})
 	}

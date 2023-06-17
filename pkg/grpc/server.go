@@ -15,7 +15,6 @@ import (
 	taskprocessor "github.com/SimifiniiCTO/simfiny-core-lib/task-processor"
 	clickhousedatabase "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/clickhouse-database"
 	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
-	inmemoryverifier "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/in-memory-verifier"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/plaidhandler"
 	database "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/postgres-database"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/secrets"
@@ -37,7 +36,7 @@ type Server struct {
 	stripeClient                *client.API
 	kms                         secrets.KeyManagement
 	TransactionManager          *transactionmanager.TransactionManager
-	InMemoryWebhookVerification inmemoryverifier.WebhookVerification
+	InMemoryWebhookVerification plaidhandler.WebhookVerification
 	redisDb                     *redis.Client
 	taskprocessor               *taskprocessor.TaskProcessor
 }
@@ -153,7 +152,7 @@ func NewServer(param *Params) (*Server, error) {
 		stripeClient:                sc,
 		kms:                         param.KeyManagement,
 		TransactionManager:          param.TransactionManager,
-		InMemoryWebhookVerification: inmemoryverifier.NewInMemoryWebhookVerification(param.Logger, param.PlaidWrapper, 5*time.Minute),
+		InMemoryWebhookVerification: plaidhandler.NewInMemoryWebhookVerification(5 * time.Minute),
 		clickhouseConn:              param.ClickhouseDb,
 		redisDb:                     param.RedisDb,
 		taskprocessor:               tp,

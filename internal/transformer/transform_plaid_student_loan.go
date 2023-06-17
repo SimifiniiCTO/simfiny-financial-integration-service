@@ -7,7 +7,8 @@ import (
 	"github.com/plaid/plaid-go/v12/plaid"
 )
 
-// transformStudentloanObject transforms a plaid student loan liabilities object to the internal mortgage account object
+// TransformStudentloanAccount transforms a list of Plaid student loan objects and a map of account metadata into a
+// list of schema StudentLoanAccount objects.
 func TransformStudentloanAccount(studentLoans *[]plaid.StudentLoan, acctIDToTypeMap map[string]*accountMetadata) ([]*schema.
 	StudentLoanAccount, error) {
 	if studentLoans == nil {
@@ -20,7 +21,10 @@ func TransformStudentloanAccount(studentLoans *[]plaid.StudentLoan, acctIDToType
 
 	accts := make([]*schema.StudentLoanAccount, 0)
 	for _, element := range *studentLoans {
-		metadata := acctIDToTypeMap[element.GetAccountId()]
+		metadata, ok := acctIDToTypeMap[element.GetAccountId()]
+		if !ok {
+			return nil, errors.New("invalid input argument. account id to type map does not contain account id")
+		}
 
 		repaymentPlan := element.GetRepaymentPlan()
 		servisorAddress := element.GetServicerAddress()

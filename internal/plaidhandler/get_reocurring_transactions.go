@@ -16,6 +16,18 @@ func (p *PlaidWrapper) GetRecurringTransactionsForAccounts(ctx context.Context, 
 		return nil, errors.New("invalid input argument. access token cannot be empty")
 	}
 
+	if userId == nil {
+		return nil, errors.New("invalid input argument. user id cannot be empty")
+	}
+
+	if linkId == nil {
+		return nil, errors.New("invalid input argument. link id cannot be empty")
+	}
+
+	if len(plaidAccountIds) == 0 {
+		return nil, errors.New("invalid input argument. plaid account ids cannot be empty")
+	}
+
 	includePersonalFinanceCategory := true
 	request := plaid.TransactionsRecurringGetRequest{
 		AccessToken: *accessToken,
@@ -34,6 +46,14 @@ func (p *PlaidWrapper) GetRecurringTransactionsForAccounts(ctx context.Context, 
 func (p *PlaidWrapper) GetRecurringTransactions(ctx context.Context, accessToken *string, userId *uint64, linkId *uint64) ([]*schema.ReOccuringTransaction, error) {
 	if accessToken == nil {
 		return nil, errors.New("invalid input argument. access token cannot be empty")
+	}
+
+	if userId == nil {
+		return nil, errors.New("invalid input argument. user id cannot be empty")
+	}
+
+	if linkId == nil {
+		return nil, errors.New("invalid input argument. link id cannot be empty")
 	}
 
 	includePersonalFinanceCategory := true
@@ -70,23 +90,23 @@ func transactionStreamToRecurringTransactions(userId, linkId *uint64, streams []
 	recurringTransactions := make([]*schema.ReOccuringTransaction, 0, len(streams))
 	for _, stream := range streams {
 		recurringTransactions = append(recurringTransactions, &schema.ReOccuringTransaction{
-			AccountId:                       stream.AccountId,
-			StreamId:                        stream.StreamId,
-			CategoryId:                      stream.CategoryId,
-			Description:                     stream.Description,
+			AccountId:                       stream.GetAccountId(),
+			StreamId:                        stream.GetStreamId(),
+			CategoryId:                      stream.GetCategoryId(),
+			Description:                     stream.GetDescription(),
 			MerchantName:                    stream.GetMerchantName(),
 			PersonalFinanceCategoryPrimary:  stream.GetPersonalFinanceCategory().Primary,
 			PersonalFinanceCategoryDetailed: stream.GetPersonalFinanceCategory().Detailed,
 			FirstDate:                       stream.GetFirstDate(),
 			LastDate:                        stream.GetLastDate(),
-			Frequency:                       getFrequency(stream.Frequency),
-			TransactionIds:                  helper.SliceToCommaSeparatedString(stream.TransactionIds),
-			AverageAmount:                   fmt.Sprintf("%f", *stream.AverageAmount.Amount),
-			AverageAmountIsoCurrencyCode:    *stream.AverageAmount.IsoCurrencyCode.Get(),
+			Frequency:                       getFrequency(stream.GetFrequency()),
+			TransactionIds:                  helper.SliceToCommaSeparatedString(stream.GetTransactionIds()),
+			AverageAmount:                   fmt.Sprintf("%f", *stream.GetAverageAmount().Amount),
+			AverageAmountIsoCurrencyCode:    *stream.GetAverageAmount().IsoCurrencyCode.Get(),
 			LastAmount:                      fmt.Sprintf("%f", *stream.LastAmount.Amount),
-			LastAmountIsoCurrencyCode:       *stream.LastAmount.IsoCurrencyCode.Get(),
-			IsActive:                        stream.IsActive,
-			Status:                          getStatus(stream.Status),
+			LastAmountIsoCurrencyCode:       *stream.GetLastAmount().IsoCurrencyCode.Get(),
+			IsActive:                        stream.GetIsActive(),
+			Status:                          getStatus(stream.GetStatus()),
 			UpdatedTime:                     time.Now().String(),
 			UserId:                          *userId,
 			LinkId:                          *linkId,

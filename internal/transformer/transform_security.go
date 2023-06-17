@@ -7,6 +7,7 @@ import (
 	"github.com/plaid/plaid-go/v12/plaid"
 )
 
+// TransformPlaidInvestmentSecurity transforms a slice of Plaid securities into a slice of InvestmentSecurity structs.
 func TransformPlaidInvestmentSecurity(securities []plaid.Security) ([]*schema.InvestmentSecurity, error) {
 	if len(securities) == 0 {
 		return nil, errors.New("invalid input argument. securities cannot be empty")
@@ -22,6 +23,8 @@ func TransformPlaidInvestmentSecurity(securities []plaid.Security) ([]*schema.In
 	return securitySet, nil
 }
 
+// TransformSinglePlaidInvestmentSecurity transforms a single Plaid investment security object into a schema investment security
+// object.
 func TransformSinglePlaidInvestmentSecurity(security plaid.Security) *schema.InvestmentSecurity {
 	return &schema.InvestmentSecurity{
 		ClosePrice:             security.GetClosePrice(),

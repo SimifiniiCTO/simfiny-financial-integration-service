@@ -1,24 +1,28 @@
 package transformer
 
 import (
-	"reflect"
 	"testing"
 
-	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 	"github.com/plaid/plaid-go/v12/plaid"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestNewTransactionFromPlaid(t *testing.T) {
 	type args struct {
-		input plaid.Transaction
+		input *plaid.Transaction
 	}
 	tests := []struct {
 		name    string
 		args    args
-		want    *schema.Transaction
 		wantErr bool
 	}{
-		// TODO: Add test cases.
+		{
+			name: "valid transaction",
+			args: args{
+				input: generatePlaidTransaction(),
+			},
+			wantErr: false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -27,8 +31,9 @@ func TestNewTransactionFromPlaid(t *testing.T) {
 				t.Errorf("NewTransactionFromPlaid() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("NewTransactionFromPlaid() = %v, want %v", got, tt.want)
+
+			if !tt.wantErr {
+				assert.NotNil(t, got)
 			}
 		})
 	}

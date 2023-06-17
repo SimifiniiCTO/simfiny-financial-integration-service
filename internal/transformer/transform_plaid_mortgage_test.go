@@ -1,17 +1,18 @@
 package transformer
 
 import (
-	"reflect"
 	"testing"
 
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 	"github.com/plaid/plaid-go/v12/plaid"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestTransformMortgageAccount(t *testing.T) {
+	mortgageLiabilities, _ := generateManyPlaidMortgageLiabilityAndAccountMetadata(10)
+
 	type args struct {
-		mortgageLoan    *[]plaid.MortgageLiability
-		acctIDToTypeMap map[string]*accountMetadata
+		mortgageLoan *[]plaid.MortgageLiability
 	}
 	tests := []struct {
 		name    string
@@ -19,18 +20,26 @@ func TestTransformMortgageAccount(t *testing.T) {
 		want    []*schema.MortgageAccount
 		wantErr bool
 	}{
-		// TODO: Add test cases.
+		{
+			name: "valid mortgage loan liability",
+			args: args{
+				mortgageLoan: &mortgageLiabilities,
+			},
+			wantErr: false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := TransformMortgageAccount(tt.args.mortgageLoan, tt.args.acctIDToTypeMap)
+			got, err := TransformMortgageAccount(tt.args.mortgageLoan)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("TransformMortgageAccount() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("TransformMortgageAccount() = %v, want %v", got, tt.want)
+
+			if !tt.wantErr {
+				assert.NotNil(t, got)
 			}
+
 		})
 	}
 }

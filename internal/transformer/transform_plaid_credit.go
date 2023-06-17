@@ -7,7 +7,8 @@ import (
 	"github.com/plaid/plaid-go/v12/plaid"
 )
 
-// transformPlaidCreditObject transforms a plaid credit card liabilities object to the internal credit account object
+// TransformPlaidCredit transforms Plaid credit card liabilities into a list of credit accounts with associated
+// metadata.
 func TransformPlaidCredit(creditCardliabilities *[]plaid.CreditCardLiability, acctIDToTypeMap map[string]*accountMetadata) ([]*schema.
 	CreditAccount, error) {
 	if creditCardliabilities == nil {
@@ -21,12 +22,22 @@ func TransformPlaidCredit(creditCardliabilities *[]plaid.CreditCardLiability, ac
 	accts := make([]*schema.CreditAccount, 0)
 	for _, liability := range *creditCardliabilities {
 		creditAcctId := *liability.AccountId.Get()
-		metadata := acctIDToTypeMap[creditAcctId]
+
+		metadata, ok := acctIDToTypeMap[creditAcctId]
+		if !ok {
+			return nil, errors.New("invalid input argument. account id to type map does not contain liability account id")
+		}
+
+		aprs, err := NewAPR(&liability.Aprs)
+		if err != nil {
+			return nil, err
+		}
+
 		creditAcct := &schema.CreditAccount{
 			Id:                     0,
 			UserId:                 0,
 			Name:                   metadata.accountName,
-			Number:                 "",
+			Number:                 metadata.accountNumber,
 			Type:                   metadata.accountType,
 			Balance:                float32(metadata.balanceLimit),
 			CurrentFunds:           metadata.currentFunds,
@@ -39,7 +50,7 @@ func TransformPlaidCredit(creditCardliabilities *[]plaid.CreditCardLiability, ac
 			LastStatementIssueDate: liability.GetLastStatementIssueDate(),
 			MinimumAmountDueDate:   0,
 			NextPaymentDate:        liability.GetNextPaymentDueDate(),
-			Aprs:                   transformPlaidApr(liability.Aprs),
+			Aprs:                   aprs,
 			LastStatementBalance:   liability.GetLastStatementBalance(),
 			MinimumPaymentAmount:   liability.GetMinimumPaymentAmount(),
 			NextPaymentDueDate:     liability.GetNextPaymentDueDate(),
@@ -49,26 +60,4 @@ func TransformPlaidCredit(creditCardliabilities *[]plaid.CreditCardLiability, ac
 	}
 
 	return accts, nil
-}
-
-// transformPlaidApr transforms plaid APR objects to internal plaid APR representation
-func transformPlaidApr(plaidAPR []plaid.APR) []*schema.Apr {
-	if plaidAPR == nil {
-		return []*schema.Apr{}
-	}
-
-	aprs := make([]*schema.Apr, 0)
-	for _, apr := range plaidAPR {
-		transformedApr := &schema.Apr{
-			Id:                   0,
-			Percentage:           apr.AprPercentage,
-			Type:                 apr.AprType,
-			BalanceSubjectToApr:  *apr.BalanceSubjectToApr.Get(),
-			InterestChargeAmount: float64(apr.GetInterestChargeAmount()),
-		}
-
-		aprs = append(aprs, transformedApr)
-	}
-
-	return aprs
 }

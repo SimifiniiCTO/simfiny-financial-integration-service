@@ -1,16 +1,26 @@
 package transformer
 
 import (
+	"fmt"
+
 	"github.com/plaid/plaid-go/v12/plaid"
 
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 )
 
 // NewTransactionFromPlaid converts a Plaid transaction to our own transaction interface.
-func NewTransactionFromPlaid(input plaid.Transaction) (*schema.Transaction, error) {
-	return &schema.Transaction{
+func NewTransactionFromPlaid(input *plaid.Transaction) (*schema.Transaction, error) {
+	if input == nil {
+		return nil, fmt.Errorf("invalid input argument. transaction cannot be nil")
+	}
+
+	location := input.GetLocation()
+	paymentMeta := input.GetPaymentMeta()
+	personalFinanceCategory := input.GetPersonalFinanceCategory()
+
+	tx := &schema.Transaction{
 		AccountId:                       input.GetAccountId(),
-		Amount:                          float64(input.Amount),
+		Amount:                          float64(input.GetAmount()),
 		IsoCurrencyCode:                 input.GetIsoCurrencyCode(),
 		UnofficialCurrencyCode:          input.GetUnofficialCurrencyCode(),
 		CategoryId:                      input.GetCategoryId(),
@@ -31,23 +41,25 @@ func NewTransactionFromPlaid(input plaid.Transaction) (*schema.Transaction, erro
 		UserId:                          0,
 		LinkId:                          0,
 		Sign:                            0,
-		PersonalFinanceCategoryPrimary:  input.PersonalFinanceCategory.Get().Primary,
-		PersonalFinanceCategoryDetailed: input.PersonalFinanceCategory.Get().Detailed,
-		LocationAddress:                 *input.GetLocation().Address.Get(),
-		LocationCity:                    *input.GetLocation().City.Get(),
-		LocationRegion:                  *input.GetLocation().Region.Get(),
-		LocationPostalCode:              *input.GetLocation().PostalCode.Get(),
-		LocationCountry:                 *input.GetLocation().Country.Get(),
-		LocationLat:                     *input.GetLocation().Lat.Get(),
-		LocationLon:                     *input.GetLocation().Lon.Get(),
-		LocationStoreNumber:             *input.GetLocation().StoreNumber.Get(),
-		PaymentMetaByOrderOf:            *input.GetPaymentMeta().ByOrderOf.Get(),
-		PaymentMetaPayee:                *input.GetPaymentMeta().Payee.Get(),
-		PaymentMetaPayer:                *input.GetPaymentMeta().Payer.Get(),
-		PaymentMetaPaymentMethod:        *input.GetPaymentMeta().PaymentMethod.Get(),
-		PaymentMetaPaymentProcessor:     *input.GetPaymentMeta().PaymentProcessor.Get(),
-		PaymentMetaPpdId:                *input.GetPaymentMeta().PpdId.Get(),
-		PaymentMetaReason:               *input.GetPaymentMeta().Reason.Get(),
-		PaymentMetaReferenceNumber:      *input.GetPaymentMeta().ReferenceNumber.Get(),
-	}, nil
+		LocationAddress:                 location.GetAddress(),
+		LocationCity:                    location.GetCity(),
+		LocationRegion:                  location.GetRegion(),
+		LocationPostalCode:              location.GetPostalCode(),
+		LocationCountry:                 location.GetCountry(),
+		LocationLat:                     location.GetLat(),
+		LocationLon:                     location.GetLon(),
+		LocationStoreNumber:             location.GetStoreNumber(),
+		PaymentMetaByOrderOf:            paymentMeta.GetByOrderOf(),
+		PaymentMetaPayee:                paymentMeta.GetPayee(),
+		PaymentMetaPayer:                paymentMeta.GetPayer(),
+		PaymentMetaPaymentMethod:        paymentMeta.GetPaymentMethod(),
+		PaymentMetaPaymentProcessor:     paymentMeta.GetPaymentProcessor(),
+		PaymentMetaPpdId:                paymentMeta.GetPpdId(),
+		PaymentMetaReason:               paymentMeta.GetReason(),
+		PaymentMetaReferenceNumber:      paymentMeta.GetReferenceNumber(),
+		PersonalFinanceCategoryPrimary:  personalFinanceCategory.GetPrimary(),
+		PersonalFinanceCategoryDetailed: personalFinanceCategory.GetDetailed(),
+	}
+
+	return tx, nil
 }

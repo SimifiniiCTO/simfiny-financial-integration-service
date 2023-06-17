@@ -7,6 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/kms"
+	"github.com/aws/aws-sdk-go/service/kms/kmsiface"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 )
@@ -62,7 +63,7 @@ type AWSKMS struct {
 	// config is the configuration for this implementation
 	config AWSKMSConfig
 	// client is the AWS KMS client to use for this implementation
-	client *kms.KMS
+	client kmsiface.KMSAPI
 }
 
 // NewAWSKMS creates a new AWS KMS implementation of the KeyManagement interface

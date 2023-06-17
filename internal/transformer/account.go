@@ -1,13 +1,22 @@
 package transformer
 
 import (
+	"fmt"
+
 	"github.com/plaid/plaid-go/v12/plaid"
 
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 )
 
 // NewPlaidBankAccount converts a Plaid account to our own bank account interface.
-func NewPlaidBankAccount(userID uint64, bankAccount plaid.AccountBase) (*schema.BankAccount, error) {
+func NewPlaidBankAccount(userID uint64, bankAccount *plaid.AccountBase) (*schema.BankAccount, error) {
+	if bankAccount == nil {
+		return nil, fmt.Errorf("invalid input argument. bank account cannot be nil")
+	}
+
+	if bankAccount.Type != plaid.ACCOUNTTYPE_DEPOSITORY {
+		return nil, fmt.Errorf("invalid input argument. bank account must be of type depository")
+	}
 
 	return &schema.BankAccount{
 		Id:             0,

@@ -2,10 +2,10 @@ package plaidhandler
 
 import (
 	"context"
-	"reflect"
 	"testing"
 
-	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/helper"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestPlaidWrapper_GetInvestmentAccount(t *testing.T) {
@@ -18,10 +18,17 @@ func TestPlaidWrapper_GetInvestmentAccount(t *testing.T) {
 		name    string
 		p       *PlaidWrapper
 		args    args
-		want    []*schema.InvestmentAccount
 		wantErr bool
 	}{
-		// TODO: Add test cases.
+		{
+			name: "get investment account",
+			p:    plaidTestClient,
+			args: args{
+				ctx:         context.Background(),
+				userID:      uint64(helper.GenerateRandomId(1000, 100000)),
+				accessToken: testAccessToken,
+			},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -30,8 +37,9 @@ func TestPlaidWrapper_GetInvestmentAccount(t *testing.T) {
 				t.Errorf("PlaidWrapper.GetInvestmentAccount() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("PlaidWrapper.GetInvestmentAccount() = %v, want %v", got, tt.want)
+
+			if !tt.wantErr {
+				assert.NotNil(t, got)
 			}
 		})
 	}

@@ -1,252 +1,279 @@
 package pointer
 
 import (
+	"fmt"
 	"reflect"
 	"testing"
 	"time"
 )
 
-func TestBoolP(t *testing.T) {
-	type args struct {
-		val bool
-	}
-	tests := []struct {
-		name string
-		args args
-		want *bool
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := BoolP(tt.args.val); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("BoolP() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
-
-func TestCoalesceStrings(t *testing.T) {
-	type args struct {
-		str []string
-	}
-	tests := []struct {
-		name string
-		args args
-		want string
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := CoalesceStrings(tt.args.str...); got != tt.want {
-				t.Errorf("CoalesceStrings() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
-
-func TestCoalesceInts(t *testing.T) {
-	type args struct {
-		i []int
-	}
-	tests := []struct {
-		name string
-		args args
-		want int
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := CoalesceInts(tt.args.i...); got != tt.want {
-				t.Errorf("CoalesceInts() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
-
-func TestFloat32P(t *testing.T) {
-	type args struct {
-		value float32
-	}
-	tests := []struct {
-		name string
-		args args
-		want *float32
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := Float32P(tt.args.value); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("Float32P() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
-
-func TestInt32P(t *testing.T) {
-	type args struct {
-		value int32
-	}
-	tests := []struct {
-		name string
-		args args
-		want *int32
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := Int32P(tt.args.value); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("Int32P() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
-
-func TestStringP(t *testing.T) {
-	type args struct {
-		input string
-	}
-	tests := []struct {
-		name string
-		args args
-		want *string
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := StringP(tt.args.input); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("StringP() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
-
-func TestStringDefault(t *testing.T) {
-	type args struct {
-		input        *string
-		defaultValue string
-	}
-	tests := []struct {
-		name string
-		args args
-		want string
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := StringDefault(tt.args.input, tt.args.defaultValue); got != tt.want {
-				t.Errorf("StringDefault() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
-
 func TestSliceContains(t *testing.T) {
-	type args struct {
-		slice []string
-		item  string
+	slice := []string{"apple", "banana", "cherry"}
+
+	// Test when the item is present in the slice
+	result := SliceContains(slice, "banana")
+	if !result {
+		t.Errorf("Expected true, but got false")
 	}
-	tests := []struct {
-		name string
-		args args
-		want bool
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := SliceContains(tt.args.slice, tt.args.item); got != tt.want {
-				t.Errorf("SliceContains() = %v, want %v", got, tt.want)
-			}
-		})
+
+	// Test when the item is not present in the slice
+	result = SliceContains(slice, "pear")
+	if result {
+		t.Errorf("Expected false, but got true")
 	}
 }
 
 func TestStringPEqual(t *testing.T) {
-	type args struct {
-		a *string
-		b *string
+	str1 := "Hello"
+	str2 := "Hello"
+	result := StringPEqual(StringP(str1), StringP(str2))
+	expected := true
+	if result != expected {
+		t.Errorf("Unexpected result. Got: %t, want: %t", result, expected)
 	}
-	tests := []struct {
-		name string
-		args args
-		want bool
-	}{
-		// TODO: Add test cases.
+
+	str3 := "World"
+	result = StringPEqual(StringP(str1), StringP(str3))
+	expected = false
+	if result != expected {
+		t.Errorf("Unexpected result. Got: %t, want: %t", result, expected)
 	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := StringPEqual(tt.args.a, tt.args.b); got != tt.want {
-				t.Errorf("StringPEqual() = %v, want %v", got, tt.want)
-			}
-		})
+
+	result = StringPEqual(StringP(str1), nil)
+	expected = false
+	if result != expected {
+		t.Errorf("Unexpected result. Got: %t, want: %t", result, expected)
+	}
+
+	result = StringPEqual(nil, StringP(str1))
+	expected = false
+	if result != expected {
+		t.Errorf("Unexpected result. Got: %t, want: %t", result, expected)
+	}
+
+	result = StringPEqual(nil, nil)
+	expected = true
+	if result != expected {
+		t.Errorf("Unexpected result. Got: %t, want: %t", result, expected)
 	}
 }
 
 func TestTimeP(t *testing.T) {
-	type args struct {
-		input time.Time
+	input := time.Date(2023, time.January, 1, 0, 0, 0, 0, time.UTC)
+	result := TimeP(input)
+
+	// Check if the pointer is not nil
+	if result == nil {
+		t.Error("Unexpected nil pointer")
 	}
-	tests := []struct {
-		name string
-		args args
-		want *time.Time
-	}{
-		// TODO: Add test cases.
+
+	// Check if the pointer points to the correct time.Time value
+	if *result != input {
+		t.Errorf("Unexpected result. Got: %v, want: %v", *result, input)
 	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := TimeP(tt.args.input); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("TimeP() = %v, want %v", got, tt.want)
-			}
-		})
+}
+
+func TestCoalesceStrings(t *testing.T) {
+	result := CoalesceStrings("", "foo", "bar")
+	expected := "foo"
+	if result != expected {
+		t.Errorf("Unexpected result. Got: %s, want: %s", result, expected)
+	}
+}
+
+func TestCoalesceInts(t *testing.T) {
+	result := CoalesceInts(0, -10, 20)
+	expected := 20
+	if result != expected {
+		t.Errorf("Unexpected result. Got: %d, want: %d", result, expected)
+	}
+}
+
+func TestStringDefault(t *testing.T) {
+	input := StringP("Hello")
+	result := StringDefault(input, "Default")
+	expected := "Hello"
+	if result != expected {
+		t.Errorf("Unexpected result. Got: %s, want: %s", result, expected)
+	}
+
+	input = nil
+	result = StringDefault(input, "Default")
+	expected = "Default"
+	if result != expected {
+		t.Errorf("Unexpected result. Got: %s, want: %s", result, expected)
 	}
 }
 
 func TestTimesPEqual(t *testing.T) {
-	type args struct {
-		a *time.Time
-		b *time.Time
+	t1 := time.Date(2023, time.January, 1, 0, 0, 0, 0, time.UTC)
+	t2 := time.Date(2023, time.January, 1, 0, 0, 0, 0, time.UTC)
+	result := TimesPEqual(TimeP(t1), TimeP(t2))
+	expected := true
+	if result != expected {
+		t.Errorf("Unexpected result. Got: %t, want: %t", result, expected)
 	}
-	tests := []struct {
-		name string
-		args args
-		want bool
-	}{
-		// TODO: Add test cases.
+
+	result = TimesPEqual(TimeP(t1), nil)
+	expected = false
+	if result != expected {
+		t.Errorf("Unexpected result. Got: %t, want: %t", result, expected)
 	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := TimesPEqual(tt.args.a, tt.args.b); got != tt.want {
-				t.Errorf("TimesPEqual() = %v, want %v", got, tt.want)
-			}
-		})
+}
+
+func TestToSliceOf(t *testing.T) {
+	input := []interface{}{1, 2, 3, 4, 5}
+	result, err := ToSliceOf[int](input)
+	if err != nil {
+		t.Errorf("Unexpected error: %v", err)
+	}
+
+	expected := []int{1, 2, 3, 4, 5}
+	if !reflect.DeepEqual(result, expected) {
+		t.Errorf("Unexpected result. Got: %v, want: %v", result, expected)
+	}
+
+	_, err = ToSliceOf[string](input)
+	if err == nil {
+		t.Errorf("Expected an error but got nil")
+	}
+}
+
+func TestBoolP(t *testing.T) {
+	result := BoolP(true)
+	expected := true
+	if *result != expected {
+		t.Errorf("Unexpected result. Got: %t, want: %t", *result, expected)
+	}
+
+	result = BoolP(false)
+	expected = false
+	if *result != expected {
+		t.Errorf("Unexpected result. Got: %t, want: %t", *result, expected)
+	}
+}
+
+func TestMap(t *testing.T) {
+	items := []int{1, 2, 3, 4, 5}
+	callback := func(arg int) string {
+		return fmt.Sprintf("Item: %d", arg)
+	}
+
+	result := Map(items, callback)
+	expected := []string{"Item: 1", "Item: 2", "Item: 3", "Item: 4", "Item: 5"}
+	if !reflect.DeepEqual(result, expected) {
+		t.Errorf("Unexpected result. Got: %v, want: %v", result, expected)
+	}
+}
+
+func TestFloat32P(t *testing.T) {
+	result := Float32P(3.14)
+	expected := float32(3.14)
+	if *result != expected {
+		t.Errorf("Unexpected result. Got: %f, want: %f", *result, expected)
+	}
+
+	result = Float32P(0.0)
+	expected = float32(0.0)
+	if *result != expected {
+		t.Errorf("Unexpected result. Got: %f, want: %f", *result, expected)
+	}
+}
+
+func TestFloat64P(t *testing.T) {
+	result := Float64P(3.14159)
+	expected := 3.14159
+	if *result != expected {
+		t.Errorf("Unexpected result. Got: %f, want: %f", *result, expected)
+	}
+
+	result = Float64P(0.0)
+	expected = 0.0
+	if *result != expected {
+		t.Errorf("Unexpected result. Got: %f, want: %f", *result, expected)
+	}
+}
+
+func TestInt32P(t *testing.T) {
+	result := Int32P(42)
+	expected := int32(42)
+	if *result != expected {
+		t.Errorf("Unexpected result. Got: %d, want: %d", *result, expected)
+	}
+
+	result = Int32P(0)
+	expected = int32(0)
+	if *result != expected {
+		t.Errorf("Unexpected result. Got: %d, want: %d", *result, expected)
+	}
+}
+
+func TestMax(t *testing.T) {
+	result := Max(10, 20)
+	expected := 20
+	if result != expected {
+		t.Errorf("Unexpected result. Got: %d, want: %d", result, expected)
+	}
+
+	result = Max(-5, -10)
+	expected = -5
+	if result != expected {
+		t.Errorf("Unexpected result. Got: %d, want: %d", result, expected)
+	}
+
+	result = Max(0, 0)
+	expected = 0
+	if result != expected {
+		t.Errorf("Unexpected result. Got: %d, want: %d", result, expected)
+	}
+}
+
+func TestMin(t *testing.T) {
+	result := Min(10, 20)
+	expected := 10
+	if result != expected {
+		t.Errorf("Unexpected result. Got: %d, want: %d", result, expected)
+	}
+
+	result = Min(-5, -10)
+	expected = -10
+	if result != expected {
+		t.Errorf("Unexpected result. Got: %d, want: %d", result, expected)
+	}
+
+	result = Min(0, 0)
+	expected = 0
+	if result != expected {
+		t.Errorf("Unexpected result. Got: %d, want: %d", result, expected)
+	}
+}
+
+func TestStringP(t *testing.T) {
+	result := StringP("Hello")
+	expected := "Hello"
+	if *result != expected {
+		t.Errorf("Unexpected result. Got: %s, want: %s", *result, expected)
+	}
+
+	result = StringP("")
+	expected = ""
+	if *result != expected {
+		t.Errorf("Unexpected result. Got: %s, want: %s", *result, expected)
 	}
 }
 
 func TestMaxTime(t *testing.T) {
-	type args struct {
-		a time.Time
-		b time.Time
+	t1 := time.Date(2023, time.January, 1, 0, 0, 0, 0, time.UTC)
+	t2 := time.Date(2023, time.February, 1, 0, 0, 0, 0, time.UTC)
+	result := MaxTime(t1, t2)
+	expected := t2
+	if result != expected {
+		t.Errorf("Unexpected result. Got: %v, want: %v", result, expected)
 	}
-	tests := []struct {
-		name string
-		args args
-		want time.Time
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := MaxTime(tt.args.a, tt.args.b); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("MaxTime() = %v, want %v", got, tt.want)
-			}
-		})
+
+	result = MaxTime(t1, t1)
+	expected = t1
+	if result != expected {
+		t.Errorf("Unexpected result. Got: %v, want: %v", result, expected)
 	}
 }

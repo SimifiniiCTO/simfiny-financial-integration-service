@@ -2,10 +2,10 @@ package clickhousedatabase
 
 import (
 	"context"
-	"reflect"
 	"testing"
 
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/helper"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -362,10 +362,18 @@ func TestDb_AddReOccurringTransaction(t *testing.T) {
 		name    string
 		db      *Db
 		args    args
-		want    *uint64
 		wantErr bool
 	}{
-		// TODO: Add test cases.
+		{
+			"[success] - add transaction",
+			conn,
+			args{
+				ctx:    context.Background(),
+				userId: generateRandomId(),
+				tx:     generateRandomReOccurringTransaction(),
+			},
+			false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -374,8 +382,11 @@ func TestDb_AddReOccurringTransaction(t *testing.T) {
 				t.Errorf("Db.AddReOccurringTransaction() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("Db.AddReOccurringTransaction() = %v, want %v", got, tt.want)
+
+			if !tt.wantErr {
+				if _, err := tt.db.GetReOcurringTransactionById(tt.args.ctx, got); err != nil {
+					t.Errorf("Db.GetReOcurringTransactionById() error = %v", err)
+				}
 			}
 		})
 	}
@@ -383,8 +394,8 @@ func TestDb_AddReOccurringTransaction(t *testing.T) {
 
 func TestDb_DeleteReOccuringTransaction(t *testing.T) {
 	type args struct {
-		ctx  context.Context
-		txId *uint64
+		ctx          context.Context
+		precondition func(ctx context.Context, t *testing.T, arg *args) *uint64
 	}
 	tests := []struct {
 		name    string
@@ -392,11 +403,29 @@ func TestDb_DeleteReOccuringTransaction(t *testing.T) {
 		args    args
 		wantErr bool
 	}{
-		// TODO: Add test cases.
+		{
+			"[success] - delete transaction",
+			conn,
+			args{
+				ctx: context.Background(),
+				precondition: func(ctx context.Context, t *testing.T, arg *args) *uint64 {
+					tx := generateRandomReOccurringTransaction()
+					userId := generateRandomId()
+					txId, err := conn.AddReOccurringTransaction(ctx, userId, tx)
+					if err != nil {
+						t.Errorf("conn.AddTransaction() error = %v", err)
+					}
+
+					return txId
+				},
+			},
+			false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if err := tt.db.DeleteReOccuringTransaction(tt.args.ctx, tt.args.txId); (err != nil) != tt.wantErr {
+			txId := tt.args.precondition(tt.args.ctx, t, &tt.args)
+			if err := tt.db.DeleteReOccuringTransaction(tt.args.ctx, txId); (err != nil) != tt.wantErr {
 				t.Errorf("Db.DeleteReOccuringTransaction() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
@@ -405,8 +434,8 @@ func TestDb_DeleteReOccuringTransaction(t *testing.T) {
 
 func TestDb_DeleteReOccurringTransactionsByIds(t *testing.T) {
 	type args struct {
-		ctx   context.Context
-		txIds []uint64
+		ctx          context.Context
+		precondition func(ctx context.Context, t *testing.T, arg *args) []uint64
 	}
 	tests := []struct {
 		name    string
@@ -414,11 +443,35 @@ func TestDb_DeleteReOccurringTransactionsByIds(t *testing.T) {
 		args    args
 		wantErr bool
 	}{
-		// TODO: Add test cases.
+		{
+			"[success] - delete transaction",
+			conn,
+			args{
+				ctx: context.Background(),
+				precondition: func(ctx context.Context, t *testing.T, arg *args) []uint64 {
+					userId := generateRandomId()
+					idset := make([]uint64, 0)
+
+					for i := 0; i < 10; i++ {
+						tx := generateRandomReOccurringTransaction()
+						txId, err := conn.AddReOccurringTransaction(ctx, userId, tx)
+						if err != nil {
+							t.Errorf("conn.AddTransaction() error = %v", err)
+						}
+
+						idset = append(idset, *txId)
+					}
+
+					return idset
+				},
+			},
+			false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if err := tt.db.DeleteReOccurringTransactionsByIds(tt.args.ctx, tt.args.txIds); (err != nil) != tt.wantErr {
+			txIds := tt.args.precondition(tt.args.ctx, t, &tt.args)
+			if err := tt.db.DeleteReOccurringTransactionsByIds(tt.args.ctx, txIds); (err != nil) != tt.wantErr {
 				t.Errorf("Db.DeleteReOccurringTransactionsByIds() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
@@ -427,8 +480,8 @@ func TestDb_DeleteReOccurringTransactionsByIds(t *testing.T) {
 
 func TestDb_DeleteReOcurringTransactionsByLinkId(t *testing.T) {
 	type args struct {
-		ctx    context.Context
-		linkId *uint64
+		ctx          context.Context
+		precondition func(ctx context.Context, t *testing.T, arg *args) *uint64
 	}
 	tests := []struct {
 		name    string
@@ -436,11 +489,29 @@ func TestDb_DeleteReOcurringTransactionsByLinkId(t *testing.T) {
 		args    args
 		wantErr bool
 	}{
-		// TODO: Add test cases.
+		{
+			"[success] - delete transaction",
+			conn,
+			args{
+				ctx: context.Background(),
+				precondition: func(ctx context.Context, t *testing.T, arg *args) *uint64 {
+					tx := generateRandomReOccurringTransaction()
+					userId := generateRandomId()
+					_, err := conn.AddReOccurringTransaction(ctx, userId, tx)
+					if err != nil {
+						t.Errorf("conn.AddTransaction() error = %v", err)
+					}
+
+					return &tx.LinkId
+				},
+			},
+			false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if err := tt.db.DeleteReOcurringTransactionsByLinkId(tt.args.ctx, tt.args.linkId); (err != nil) != tt.wantErr {
+			linkId := tt.args.precondition(tt.args.ctx, t, &tt.args)
+			if err := tt.db.DeleteReOcurringTransactionsByLinkId(tt.args.ctx, linkId); (err != nil) != tt.wantErr {
 				t.Errorf("Db.DeleteReOcurringTransactionsByLinkId() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
@@ -449,8 +520,9 @@ func TestDb_DeleteReOcurringTransactionsByLinkId(t *testing.T) {
 
 func TestDb_DeleteUserReOcurringTransactons(t *testing.T) {
 	type args struct {
-		ctx    context.Context
-		userId *uint64
+		ctx          context.Context
+		userId       *uint64
+		precondition func(ctx context.Context, t *testing.T, arg *args)
 	}
 	tests := []struct {
 		name    string
@@ -458,10 +530,28 @@ func TestDb_DeleteUserReOcurringTransactons(t *testing.T) {
 		args    args
 		wantErr bool
 	}{
-		// TODO: Add test cases.
+		{
+			"[success] - delete transaction",
+			conn,
+			args{
+				ctx:    context.Background(),
+				userId: generateRandomId(),
+				precondition: func(ctx context.Context, t *testing.T, arg *args) {
+					for i := 0; i < 10; i++ {
+						tx := generateRandomReOccurringTransaction()
+						_, err := conn.AddReOccurringTransaction(ctx, arg.userId, tx)
+						if err != nil {
+							t.Errorf("conn.AddTransaction() error = %v", err)
+						}
+					}
+				},
+			},
+			false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			tt.args.precondition(tt.args.ctx, t, &tt.args)
 			if err := tt.db.DeleteUserReOcurringTransactons(tt.args.ctx, tt.args.userId); (err != nil) != tt.wantErr {
 				t.Errorf("Db.DeleteUserReOcurringTransactons() error = %v, wantErr %v", err, tt.wantErr)
 			}
@@ -471,9 +561,9 @@ func TestDb_DeleteUserReOcurringTransactons(t *testing.T) {
 
 func TestDb_UpdateReOccurringTransactions(t *testing.T) {
 	type args struct {
-		ctx    context.Context
-		userId *uint64
-		txs    []*schema.ReOccuringTransaction
+		ctx          context.Context
+		userId       *uint64
+		precondition func(ctx context.Context, t *testing.T, arg *args) []*schema.ReOccuringTransaction
 	}
 	tests := []struct {
 		name    string
@@ -481,11 +571,43 @@ func TestDb_UpdateReOccurringTransactions(t *testing.T) {
 		args    args
 		wantErr bool
 	}{
-		// TODO: Add test cases.
+		{
+			"[success] - update transaction",
+			conn,
+			args{
+				ctx:    context.Background(),
+				userId: generateRandomId(),
+				precondition: func(ctx context.Context, t *testing.T, arg *args) []*schema.ReOccuringTransaction {
+					txs := make([]*schema.ReOccuringTransaction, 0)
+					for i := 0; i < 10; i++ {
+						tx := generateRandomReOccurringTransaction()
+						txId, err := conn.AddReOccurringTransaction(ctx, arg.userId, tx)
+						if err != nil {
+							t.Errorf("conn.AddTransaction() error = %v", err)
+						}
+
+						tx, err = conn.GetReOcurringTransactionById(ctx, txId)
+						if err != nil {
+							t.Errorf("conn.GetTransaction() error = %v", err)
+						}
+
+						txs = append(txs, tx)
+					}
+
+					for _, tx := range txs {
+						tx.AverageAmount = helper.GenerateRandomString(20)
+					}
+
+					return txs
+				},
+			},
+			false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if err := tt.db.UpdateReOccurringTransactions(tt.args.ctx, tt.args.userId, tt.args.txs); (err != nil) != tt.wantErr {
+			txs := tt.args.precondition(tt.args.ctx, t, &tt.args)
+			if err := tt.db.UpdateReOccurringTransactions(tt.args.ctx, tt.args.userId, txs); (err != nil) != tt.wantErr {
 				t.Errorf("Db.UpdateReOccurringTransactions() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
@@ -494,27 +616,45 @@ func TestDb_UpdateReOccurringTransactions(t *testing.T) {
 
 func TestDb_GetReOcurringTransactionById(t *testing.T) {
 	type args struct {
-		ctx  context.Context
-		txId *uint64
+		ctx          context.Context
+		precondition func(ctx context.Context, t *testing.T, arg *args) *uint64
 	}
 	tests := []struct {
 		name    string
 		db      *Db
 		args    args
-		want    *schema.ReOccuringTransaction
 		wantErr bool
 	}{
-		// TODO: Add test cases.
+		{
+			"[success] - get transaction",
+			conn,
+			args{
+				ctx: context.Background(),
+				precondition: func(ctx context.Context, t *testing.T, arg *args) *uint64 {
+					tx := generateRandomReOccurringTransaction()
+					userId := generateRandomId()
+					txId, err := conn.AddReOccurringTransaction(ctx, userId, tx)
+					if err != nil {
+						t.Errorf("conn.AddTransaction() error = %v", err)
+					}
+
+					return txId
+				},
+			},
+			false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := tt.db.GetReOcurringTransactionById(tt.args.ctx, tt.args.txId)
+			txId := tt.args.precondition(tt.args.ctx, t, &tt.args)
+			got, err := tt.db.GetReOcurringTransactionById(tt.args.ctx, txId)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("Db.GetReOcurringTransactionById() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("Db.GetReOcurringTransactionById() = %v, want %v", got, tt.want)
+
+			if !tt.wantErr {
+				assert.NotNil(t, got)
 			}
 		})
 	}
@@ -522,27 +662,46 @@ func TestDb_GetReOcurringTransactionById(t *testing.T) {
 
 func TestDb_GetUserReOccurringTransactions(t *testing.T) {
 	type args struct {
-		ctx    context.Context
-		userId *uint64
+		ctx          context.Context
+		userId       *uint64
+		precondition func(ctx context.Context, t *testing.T, arg *args)
 	}
 	tests := []struct {
 		name    string
 		db      *Db
 		args    args
-		want    []*schema.ReOccuringTransaction
 		wantErr bool
 	}{
-		// TODO: Add test cases.
+		{
+			"[success] - get transaction",
+			conn,
+			args{
+				ctx:    context.Background(),
+				userId: generateRandomId(),
+				precondition: func(ctx context.Context, t *testing.T, arg *args) {
+					for i := 0; i < 10; i++ {
+						tx := generateRandomReOccurringTransaction()
+						_, err := conn.AddReOccurringTransaction(ctx, arg.userId, tx)
+						if err != nil {
+							t.Errorf("conn.AddTransaction() error = %v", err)
+						}
+					}
+				},
+			},
+			false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			tt.args.precondition(tt.args.ctx, t, &tt.args)
 			got, err := tt.db.GetUserReOccurringTransactions(tt.args.ctx, tt.args.userId)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("Db.GetUserReOccurringTransactions() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("Db.GetUserReOccurringTransactions() = %v, want %v", got, tt.want)
+
+			if !tt.wantErr {
+				assert.NotNil(t, got)
 			}
 		})
 	}
