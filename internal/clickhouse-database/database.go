@@ -171,6 +171,7 @@ func (db *Db) startDatastoreSpan(ctx context.Context, name string) *newrelic.Dat
 	return nil
 }
 
+// NewMockInMemoryClickhouseDB returns a new mock in memory clickhouse database
 func NewMockInMemoryClickhouseDB() *Db {
 	client, err := clickhouse.NewInMemoryTestDbClient(schema.GetClickhouseSchemas()...)
 	if err != nil {

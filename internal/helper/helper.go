@@ -49,6 +49,7 @@ func GenerateRandomId(min, max int) int {
 	return rand.Intn(max-min+1) + min
 }
 
+// SliceToCommaSeparatedString converts a slice of strings to a comma separated string
 func SliceToCommaSeparatedString(slice []string) string {
 	var result string
 	for i := 0; i < len(slice); i++ {
@@ -57,6 +58,7 @@ func SliceToCommaSeparatedString(slice []string) string {
 	return result[:len(result)-1]
 }
 
+// CommaSeparatedStringToStringSlice converts a comma separated string to a slice of strings
 func CommaSeparatedStringToStringSlice(str string) []string {
 	return strings.Split(str, ",")
 }

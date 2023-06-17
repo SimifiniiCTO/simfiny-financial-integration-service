@@ -11,6 +11,7 @@ import (
 	"github.com/plaid/plaid-go/v12/plaid"
 )
 
+// GetRecurringTransactionsForAccounts is used to retrieve recurring transactions from the Plaid API for a given set of account IDs
 func (p *PlaidWrapper) GetRecurringTransactionsForAccounts(ctx context.Context, accessToken *string, userId *uint64, linkId *uint64, plaidAccountIds []string) ([]*schema.ReOccuringTransaction, error) {
 	if accessToken == nil {
 		return nil, errors.New("invalid input argument. access token cannot be empty")
@@ -43,6 +44,7 @@ func (p *PlaidWrapper) GetRecurringTransactionsForAccounts(ctx context.Context, 
 
 }
 
+// GetRecurringTransactions is used to retrieve recurring transactions from the Plaid API for a userId and linkId
 func (p *PlaidWrapper) GetRecurringTransactions(ctx context.Context, accessToken *string, userId *uint64, linkId *uint64) ([]*schema.ReOccuringTransaction, error) {
 	if accessToken == nil {
 		return nil, errors.New("invalid input argument. access token cannot be empty")

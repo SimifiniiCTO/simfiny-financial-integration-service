@@ -10,12 +10,19 @@ import (
 	"go.uber.org/zap"
 )
 
+// TriggerWebhookForTest triggers a webhook for a given webhook code
 func (p *PlaidWrapper) TriggerWebhookForTest(ctx context.Context, clientId, secret, accesstoken, webhookCode string) error {
 	req := plaid.NewSandboxItemFireWebhookRequest(accesstoken, webhookCode)
 	_, _, err := p.client.PlaidApi.SandboxItemFireWebhook(ctx).SandboxItemFireWebhookRequest(*req).Execute()
 	return err
 }
 
+// CreateLinkToken creates a link token for the Plaid API. It takes in a `LinkTokenOptions` object
+// which contains the client user ID, legal name, phone number, email address, and the date and time
+// that the phone number and email address were verified.
+//
+// It constructs a `LinkTokenCreateRequest` using the Plaid API client and sends the request to
+// create the link token. It then returns the link token and the expiration date and time.
 func (p *PlaidWrapper) CreateLinkToken(ctx context.Context, options *LinkTokenOptions) (LinkToken, error) {
 	var redirectUri *string
 	if p.OAuthDomain != "" {
@@ -79,6 +86,10 @@ func (p *PlaidWrapper) CreateLinkToken(ctx context.Context, options *LinkTokenOp
 	}, nil
 }
 
+// ExchangePublicToken exchanges a public token for an access token and item ID. It takes in a
+// public token and constructs an `ItemPublicTokenExchangeRequest` using the Plaid API client and
+// sends the request to exchange the public token for an access token and item ID. It then returns
+// the access token and item ID.
 func (p *PlaidWrapper) ExchangePublicToken(ctx context.Context, publicToken string) (*ItemToken, error) {
 	if p.Environment == plaid.Sandbox {
 		res, err := p.getAccessTokenForSandboxAcct()
@@ -122,6 +133,10 @@ func (p *PlaidWrapper) ExchangePublicToken(ctx context.Context, publicToken stri
 	return &token, nil
 }
 
+// getAccessTokenForSandboxAcct exchanges a public token for an access token and item ID. It takes in a
+// public token and constructs an `ItemPublicTokenExchangeRequest` using the Plaid API client and
+// sends the request to exchange the public token for an access token and item ID. It then returns
+// the access token and item ID.
 func (p *PlaidWrapper) getAccessTokenForSandboxAcct() (*plaid.ItemPublicTokenExchangeResponse, error) {
 	ctx := context.Background()
 
@@ -148,6 +163,10 @@ func (p *PlaidWrapper) getAccessTokenForSandboxAcct() (*plaid.ItemPublicTokenExc
 	return &resp, nil
 }
 
+// getPlublicTokenForSandboxAcct exchanges a public token for an access token and item ID. It takes in a
+// public token and constructs an `ItemPublicTokenExchangeRequest` using the Plaid API client and
+// sends the request to exchange the public token for an access token and item ID. It then returns
+// the access token and item ID.
 func (p *PlaidWrapper) getPlublicTokenForSandboxAcct(ctx context.Context) (plaid.SandboxPublicTokenCreateResponse, error) {
 	const (
 		sandboxInstitution = "ins_109508"

@@ -13,7 +13,10 @@ import (
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/transformer"
 )
 
-// TODO: severely refactor this
+// GetInvestmentAccount is used to retrieve investment accounts from the Plaid API for a given set of account IDs
+// and transform them into the schema format using the `transformer.NewInvestmentAccount` function and returns
+// them as an array of `schema.InvestmentAccount` objects.
+// TODO: refactor
 func (p *PlaidWrapper) GetInvestmentAccount(ctx context.Context, userID uint64, accessToken string) ([]*schema.InvestmentAccount, error) {
 	request := plaid.NewInvestmentsHoldingsGetRequest(accessToken)
 	options := plaid.NewInvestmentHoldingsGetRequestOptions()

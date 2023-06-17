@@ -137,6 +137,7 @@ func ReadEnvVars() {
 	startStressTestsIfEnabled()
 }
 
+// parseFlags parses flags
 func parseFlags(fs *pflag.FlagSet) {
 	versionFlag := fs.BoolP("version", "v", false, "get version number")
 

@@ -1,3 +1,23 @@
+## Plaid Webhooks
+To properly test plaid webhooks, you must ensure that the service and all dependencies are running locally. 
+Additionally, you must ensure that you can access our ngrok account [here](https://dashboard.ngrok.com/user/settings)
+with the following credentials
+```bash
+email: yoan@simfinii.com
+password: Granada123!
+```
+Once you are able to access the ngrok account, on the left panel, you should see a sub-tab called tunnels. 
+Click on that and that should enable you to see the active agents. From the active agents tab, you can clik and copy the tunnel of interest. 
+
+Semantically, it should follow the below configuration
+```bash
+https://d30b-50-35-101-189.ngrok-free.app
+```
+
+Now, copy the following host defintion "d30b-50-35-101-189.ngrok-free.app" into the file `/internal/plaidhandler/testutils.go` in the `var` definitions at the top of the file `ex: var PLAID_WEBHOOKS_DOMAIN       = "d30b-50-35-101-189.ngrok-free.app"`
+
+Now, place a breakpoint in the test present in the file `/internal/plaidhandler/token_test.go` in the function named `TestPlaidWrapper_TriggerWebhookForTest`. This should trigger the plaid webhook endpoint enabling you to properly test its functionality.
+
 ## Stripe Payments
 To properly test Stripe payments webhooks, you must ensure that the service and all dependencies are running locally. Additionally, you need to set up and run the Stripe CLI on your local machine. Below are the instructions you need to follow to perform extensive integration tests of the Stripe webhook implementations:
 
@@ -39,3 +59,4 @@ To properly test Stripe payments webhooks, you must ensure that the service and 
    - Validate that your webhook endpoint correctly processes the events, such as updating your application's data or triggering any necessary actions.
 
 By following these instructions, you can extensively test your Stripe webhook implementations by simulating various events and ensuring your local server handles them correctly. This approach allows you to verify the integration between your web service and the Stripe API without relying on the production environment or making live charges.
+

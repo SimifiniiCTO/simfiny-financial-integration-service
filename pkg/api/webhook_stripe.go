@@ -15,11 +15,21 @@ import (
 	"github.com/stripe/stripe-go/v74/webhook"
 )
 
+// The type SubscriptionData contains a single field for customer ID represented as a string in JSON
+// format.
+// @property {string} CustomerID - The CustomerID property is a string that represents the unique
+// identifier of a customer who has subscribed to a service or product. It is tagged with
+// `json:"customer"` which indicates that when this struct is serialized to JSON, the property name
+// will be "customer".
 type SubscriptionData struct {
 	CustomerID string `json:"customer"`
 }
 
-// handleStripeWebhook handles the stripe webhook
+// handleStripeWebhook handles Stripe webhook events. It reads the request
+// body, verifies the signature of the event, and processes the event based on its type. The function
+// updates the subscription status in the database based on the event type, and sends emails to the
+// user informing them of changes to their subscription status. The function also returns appropriate
+// HTTP status codes based on the success or failure of the event processing.
 func (s *Server) handleStripeWebhook(w http.ResponseWriter, req *http.Request) {
 	// ref: https://github.com/kazamori/stripe-webhook-sample/blob/main/handler/webhook.go
 
@@ -227,6 +237,13 @@ func (s *Server) handleStripeWebhook(w http.ResponseWriter, req *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }
 
+// The processSubscriptionEventAndQueryStoreSubscription function  processes a Stripe subscription event and queries
+// the database to retrieve the corresponding stored subscription. It takes in the Stripe event, a HTTP
+// response writer, and a context as parameters. It first unmarshals the event data into a Stripe
+// subscription object, and then queries the database using the subscription ID to retrieve the stored
+// subscription. If there is an error in either of these steps, it returns an error response. The
+// function returns the Stripe subscription object, the stored subscription object, and a boolean
+// indicating whether there was an error.
 func (s *Server) processSubscriptionEventAndQueryStoreSubscription(event stripe.Event, w http.ResponseWriter, ctx context.Context) (stripe.Subscription, *schema.StripeSubscription, bool) {
 	var subscription stripe.Subscription
 	err := json.Unmarshal(event.Data.Raw, &subscription)
@@ -245,6 +262,8 @@ func (s *Server) processSubscriptionEventAndQueryStoreSubscription(event stripe.
 	return subscription, storedSubscription, false
 }
 
+// handleSubscriptionCreated handles a Stripe event for a new subscription creation and retrieves the latest
+// subscription for a customer.
 func handleSubscriptionCreated(payload *stripe.Event) {
 	var data SubscriptionData
 	err := json.Unmarshal(payload.Data.Raw, &data)
@@ -265,6 +284,8 @@ func handleSubscriptionCreated(payload *stripe.Event) {
 	fmt.Println("Subscription ID:", subscription.ID)
 }
 
+// retrieveLatestSubscription retrieves the latest active subscription for a given customer ID using the Stripe API
+// in Go.
 func retrieveLatestSubscription(customerID string) (*stripe.Subscription, error) {
 	activeSubscription := string(stripe.SubscriptionStatusActive)
 	subscriptionListParams := &stripe.SubscriptionListParams{

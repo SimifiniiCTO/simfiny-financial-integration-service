@@ -17,6 +17,7 @@ var (
 	PLAID_WEBHOOKS_DOMAIN       = "d30b-50-35-101-189.ngrok-free.app"
 )
 
+// NewMockPlaidClient returns a mock Plaid client for testing
 func NewMockPlaidClient() *plaid.APIClient {
 	configuration := plaid.NewConfiguration()
 	configuration.AddDefaultHeader("PLAID-CLIENT-ID", PLAID_CLIENT_ID_TEST_UTILS)
@@ -25,6 +26,7 @@ func NewMockPlaidClient() *plaid.APIClient {
 	return plaid.NewAPIClient(configuration)
 }
 
+// GetPlaidWrapperForTest returns a PlaidWrapper for testing
 func GetPlaidWrapperForTest() (*PlaidWrapper, error) {
 	return &PlaidWrapper{
 		client:             NewMockPlaidClient(),
