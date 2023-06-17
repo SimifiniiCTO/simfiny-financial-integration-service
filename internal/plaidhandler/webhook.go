@@ -55,13 +55,15 @@ var (
 	_ WebhookVerification = &memoryWebhookVerification{}
 )
 
-func NewInMemoryWebhookVerification(cleanupInterval time.Duration) WebhookVerification {
+func NewInMemoryWebhookVerification(cleanupInterval time.Duration, logger *zap.Logger, plaidWrapper *PlaidWrapper) WebhookVerification {
 	verification := &memoryWebhookVerification{
 		closed:        0,
+		log:           logger,
 		lock:          sync.Mutex{},
 		cache:         map[string]*keyCacheItem{},
 		cleanupTicker: time.NewTicker(cleanupInterval),
 		closer:        make(chan chan error, 1),
+		plaid:         plaidWrapper,
 	}
 	go verification.cacheWorker() // Start the background worker.
 
@@ -101,8 +103,6 @@ func (m *memoryWebhookVerification) GetVerificationKey(ctx context.Context, keyI
 		m.log.Info("jwk function present in cache, but is expired; the cached function will be removed and a new one will be retrieved")
 		delete(m.cache, keyId)
 	}
-
-	m.log.Info("retrieving jwk from plaid")
 
 	result, err := m.plaid.GetWebhookVerificationKey(ctx, keyId)
 	if err != nil {

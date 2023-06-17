@@ -19,6 +19,7 @@ type SubscriptionData struct {
 	CustomerID string `json:"customer"`
 }
 
+// handleStripeWebhook handles the stripe webhook
 func (s *Server) handleStripeWebhook(w http.ResponseWriter, req *http.Request) {
 	// ref: https://github.com/kazamori/stripe-webhook-sample/blob/main/handler/webhook.go
 

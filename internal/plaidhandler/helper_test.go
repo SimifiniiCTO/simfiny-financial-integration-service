@@ -18,17 +18,12 @@ type PopulateAccountTestScenario struct {
 
 // findAccountByIdScenarios returns a set of scenarios to test the account's existence based on provided email
 func getPopulateAccountTestScenarios() ([]PopulateAccountTestScenario, *PlaidWrapper, error) {
-	accessToken, err := plaidTestClient.getAccessTokenForSandboxAcct()
-	if err != nil {
-		return nil, nil, err
-	}
-
 	return []PopulateAccountTestScenario{
 		{
 			// success condition: valid access token
 			scenarioName:     "[success condition]: get an account deposits with valid access token",
 			shouldErrorOccur: false,
-			accessToken:      &accessToken,
+			accessToken:      &testAccessToken,
 		},
 		{
 			// failure condition: access token is invalid

@@ -38,7 +38,7 @@ type Server struct {
 	TransactionManager          *transactionmanager.TransactionManager
 	InMemoryWebhookVerification plaidhandler.WebhookVerification
 	redisDb                     *redis.Client
-	taskprocessor               *taskprocessor.TaskProcessor
+	Taskprocessor               *taskprocessor.TaskProcessor
 }
 
 // Config is the config for the grpc server initialization
@@ -152,10 +152,10 @@ func NewServer(param *Params) (*Server, error) {
 		stripeClient:                sc,
 		kms:                         param.KeyManagement,
 		TransactionManager:          param.TransactionManager,
-		InMemoryWebhookVerification: plaidhandler.NewInMemoryWebhookVerification(5 * time.Minute),
+		InMemoryWebhookVerification: plaidhandler.NewInMemoryWebhookVerification(5*time.Minute, param.Logger, param.PlaidWrapper),
 		clickhouseConn:              param.ClickhouseDb,
 		redisDb:                     param.RedisDb,
-		taskprocessor:               tp,
+		Taskprocessor:               tp,
 	}
 	return srv, nil
 }

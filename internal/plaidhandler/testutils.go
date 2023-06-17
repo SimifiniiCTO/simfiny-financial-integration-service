@@ -14,6 +14,7 @@ var (
 	SERVICE_TEST_UTILS          = "test"
 	TEST_ACCESSTOKEN            = ""
 	plaidTestClient             *PlaidWrapper
+	PLAID_WEBHOOKS_DOMAIN       = "d30b-50-35-101-189.ngrok-free.app"
 )
 
 func NewMockPlaidClient() *plaid.APIClient {
@@ -33,7 +34,7 @@ func GetPlaidWrapperForTest() (*PlaidWrapper, error) {
 		ClientID:           PLAID_CLIENT_ID_TEST_UTILS,
 		SecretKey:          PLAID_SECRET_KEY_TEST_UTILS,
 		OAuthDomain:        "",
-		WebhooksDomain:     "",
+		WebhooksDomain:     PLAID_WEBHOOKS_DOMAIN,
 		WebhooksEnabled:    false,
 	}, nil
 }

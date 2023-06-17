@@ -8,6 +8,7 @@ import (
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/pointer"
 	"github.com/plaid/plaid-go/v12/plaid"
 	"github.com/stretchr/testify/assert"
+	"go.uber.org/zap"
 )
 
 func TestNewWebhookVerificationKeyFromPlaid(t *testing.T) {
@@ -70,7 +71,7 @@ func TestNewInMemoryWebhookVerification(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := NewInMemoryWebhookVerification(tt.args.cleanupInterval)
+			got := NewInMemoryWebhookVerification(tt.args.cleanupInterval, zap.L(), plaidTestClient)
 			if (got == nil) != tt.wantErr {
 				t.Errorf("NewInMemoryWebhookVerification() error = %v, wantErr %v", got, tt.wantErr)
 				return

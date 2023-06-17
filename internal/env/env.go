@@ -157,6 +157,7 @@ func parseFlags(fs *pflag.FlagSet) {
 	viper.AutomaticEnv()
 }
 
+// loadEnvVariables loads environment variables
 func loadEnvVariables(fs *pflag.FlagSet) {
 	viper.AddConfigPath("/go/src/github.com/SimifiniiCTO/simfiny-financial-integration-service")
 	viper.BindPFlags(fs)
@@ -172,6 +173,7 @@ func loadEnvVariables(fs *pflag.FlagSet) {
 	viper.Set("revision", version.REVISION)
 	viper.AutomaticEnv()
 
+	// read config file
 	err := viper.ReadInConfig()
 	if err != nil {
 		log.Error(err.Error())
@@ -179,6 +181,7 @@ func loadEnvVariables(fs *pflag.FlagSet) {
 	}
 }
 
+// validateEnvConfigs validates environment configurations
 func validateEnvConfigs(fs *pflag.FlagSet) error {
 	// validate port
 	if _, err := strconv.Atoi(viper.GetString("port")); err != nil {
@@ -209,12 +212,14 @@ func validateEnvConfigs(fs *pflag.FlagSet) error {
 	return nil
 }
 
+// startStressTestsIfEnabled starts stress tests if enabled
 func startStressTestsIfEnabled() {
 	// start stress tests if any
 	beginStressTest(viper.GetInt("stress-cpu"), viper.GetInt("stress-memory"), zap.L())
 
 }
 
+// beginStressTest begins stress tests
 func beginStressTest(cpus int, mem int, logger *zap.Logger) {
 	done := make(chan int)
 	if cpus > 0 {

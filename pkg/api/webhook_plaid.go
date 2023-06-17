@@ -1,20 +1,45 @@
-package grpc
+package api
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
+	"net/http"
+	"os"
 	"strings"
 	"time"
 
 	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
+	taskhandler "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/task-handler"
+
+	encryptdecrypt "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/encrypt_decrypt"
+	"github.com/gogo/status"
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/labstack/gommon/log"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/metadata"
-	"google.golang.org/grpc/status"
 )
+
+type PlaidWebhook struct {
+	WebhookType                      string                 `json:"webhook_type"`
+	WebhookCode                      string                 `json:"webhook_code"`
+	ItemId                           string                 `json:"item_id"`
+	Error                            map[string]interface{} `json:"error"`
+	NewWebhookURL                    string                 `json:"new_webhook_url"`
+	NewTransactions                  int64                  `json:"new_transactions"`
+	RemovedTransactions              []string               `json:"removed_transactions"`
+	ConsentExpirationTime            *time.Time             `json:"consent_expiration_time"`
+	InitialUpdateComplete            bool                   `json:"initial_update_complete"`
+	HistoricalUpdateComplete         string                 `json:"historical_update_complete"`
+	Environment                      string                 `json:"environment"`
+	AccountIds                       []string               `json:"account_ids"`
+	AccountIdsWithNewLiabilities     []string               `json:"account_ids_with_new_liabilities"`
+	AccountIdsWithUpdatedLiabilities []string               `json:"account_ids_with_updated_liabilities"`
+	NewHoldings                      uint64                 `json:"new_holdings"`
+	UpdatedHoldings                  uint64                 `json:"updated_holdings"`
+}
 
 type PlaidClaims struct {
 	jwt.StandardClaims
@@ -53,18 +78,18 @@ func (c PlaidClaims) Valid() error {
 	return vErr
 }
 
-// ProcessWebhook processes a webhook from Plaid
-func (s *Server) ProcessWebhook(ctx context.Context, req *proto.ProcessWebhookRequest) (*proto.ProcessWebhookResponse, error) {
-	// perform validations
-	if req == nil {
-		return nil, status.Error(codes.InvalidArgument, "missing request")
+func (s *Server) handlerPlaidWebhook(w http.ResponseWriter, req *http.Request) {
+	const MaxBodyBytes = int64(65536)
+	req.Body = http.MaxBytesReader(w, req.Body, MaxBodyBytes)
+	payload, err := ioutil.ReadAll(req.Body)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error reading request body: %v\n", err)
+		w.WriteHeader(http.StatusServiceUnavailable)
+		return
 	}
+	defer req.Body.Close()
 
-	s.logger.Info("processing webhook request", zap.Any("request", req))
-
-	if err := req.ValidateAll(); err != nil {
-		return nil, status.Error(codes.InvalidArgument, err.Error())
-	}
+	ctx := req.Context()
 
 	// ensure operation finished in time
 	ctx, cancel := context.WithTimeout(ctx, s.config.RpcTimeout)
@@ -72,20 +97,14 @@ func (s *Server) ProcessWebhook(ctx context.Context, req *proto.ProcessWebhookRe
 
 	if s.instrumentation != nil {
 		txn := s.instrumentation.GetTraceFromContext(ctx)
-		span := s.instrumentation.StartSegment(txn, "grpc-process-webhook-request")
+		span := s.instrumentation.StartSegment(txn, "grpc-process-plaid-webhook-request")
 		defer span.End()
 	}
 
-	md, ok := metadata.FromIncomingContext(ctx)
-	if !ok {
-		err := status.Errorf(codes.Unauthenticated, "missing metadata")
-		return nil, status.Errorf(codes.Internal, err.Error())
-	}
-
-	verification := md.Get("Plaid-Verification")[0]
+	verification := req.Header.Get("Plaid-Verification")
 	if strings.TrimSpace(verification) == "" {
-		err := status.Errorf(codes.Unauthenticated, "unauthorized")
-		return nil, status.Errorf(codes.Unauthenticated, err.Error())
+		w.WriteHeader(http.StatusUnauthorized)
+		return
 	}
 
 	var kid string
@@ -117,9 +136,11 @@ func (s *Server) ProcessWebhook(ctx context.Context, req *proto.ProcessWebhookRe
 			return nil, errors.Errorf("malformed JWT token, empty data")
 		}
 
+		s.logger.Info("about to get verification key from in-memory-cache", zap.String("kid", kid), zap.Any("verification", s.inMemoryWebhookVerification))
 		// exchange the kid for a public key and try to obtain the verification key function
-		keyFunction, err := s.InMemoryWebhookVerification.GetVerificationKey(ctx, kid)
+		keyFunction, err := s.inMemoryWebhookVerification.GetVerificationKey(ctx, kid)
 		if err != nil {
+			s.logger.Info("failed to get veririfaction key")
 			return nil, errors.Wrap(err, "failed to get verification key for webhook")
 		}
 
@@ -127,27 +148,31 @@ func (s *Server) ProcessWebhook(ctx context.Context, req *proto.ProcessWebhookRe
 	})
 
 	if err != nil {
-		return nil, status.Errorf(codes.Internal, err.Error())
+		s.ErrorResponse(w, req, err.Error(), http.StatusBadRequest)
+		return
 	}
 
 	if !result.Valid {
-		return nil, status.Errorf(codes.Unauthenticated, "invalid token")
+		s.ErrorResponse(w, req, err.Error(), http.StatusUnauthorized)
+		return
 	}
 
-	if err := s.processWebhook(ctx, req); err != nil {
-		return nil, err
+	var hook = PlaidWebhook{}
+	if err := json.Unmarshal(payload, &hook); err != nil {
+		fmt.Fprintf(os.Stderr, "⚠️  Webhook error while parsing basic request. %v\n", err.Error())
+		w.WriteHeader(http.StatusBadRequest)
+		return
 	}
 
-	return &proto.ProcessWebhookResponse{}, nil
+	if err := s.processWebhookRequest(ctx, &hook); err != nil {
+		s.ErrorResponse(w, req, err.Error(), http.StatusInternalServerError)
+		return
+	}
 }
 
-func (s *Server) processWebhook(ctx context.Context, req *proto.ProcessWebhookRequest) error {
+func (s *Server) processWebhookRequest(ctx context.Context, req *PlaidWebhook) error {
 	if req == nil {
 		return status.Error(codes.InvalidArgument, "missing request")
-	}
-
-	if err := req.ValidateAll(); err != nil {
-		return status.Error(codes.InvalidArgument, err.Error())
 	}
 
 	{
@@ -166,13 +191,13 @@ func (s *Server) processWebhook(ctx context.Context, req *proto.ProcessWebhookRe
 	}
 
 	// get the link fro the respective item
-	link, err := s.conn.GetLinkByItemId(ctx, req.GetItemId(), false)
+	link, err := s.conn.GetLinkByItemId(ctx, req.ItemId, false)
 	if err != nil {
 		return err
 	}
 
 	// decript the access token
-	accessToken, err := s.DecryptUserAccessToken(ctx, link.Token)
+	accessToken, err := encryptdecrypt.DecryptUserAccessToken(ctx, link.Token, s.kms, s.logger)
 	if err != nil {
 		return err
 	}
@@ -198,7 +223,7 @@ func (s *Server) processWebhook(ctx context.Context, req *proto.ProcessWebhookRe
 				accountIds = append(accountIds, acct.PlaidAccountId)
 			}
 
-			if err := s.DispatchPullInvestmentTransactionsTask(ctx, userId, link.Id, *accessToken, accountIds); err != nil {
+			if err := taskhandler.DispatchPullInvestmentTransactionsTask(ctx, s.taskprocessor, s.instrumentation, s.logger, userId, link.Id, *accessToken, accountIds); err != nil {
 				return err
 			}
 		default:
@@ -215,7 +240,7 @@ func (s *Server) processWebhook(ctx context.Context, req *proto.ProcessWebhookRe
 				accountIds = append(accountIds, acct.PlaidAccountId)
 			}
 			// Trigger a background job to sync the plaid holdings
-			if err := s.DispatchPullInvestmentHoldingsTask(ctx, userId, link.Id, *accessToken, accountIds); err != nil {
+			if err := taskhandler.DispatchPullInvestmentHoldingsTask(ctx, s.taskprocessor, s.instrumentation, s.logger, userId, link.Id, *accessToken, accountIds); err != nil {
 				return err
 			}
 		default:
@@ -230,7 +255,7 @@ func (s *Server) processWebhook(ctx context.Context, req *proto.ProcessWebhookRe
 			accountIds := append(req.AccountIdsWithNewLiabilities, req.AccountIdsWithUpdatedLiabilities...)
 			// sync any existing/updated liability account as well as save any new liability accounts
 			// to datastore layer
-			if err := s.DispatchSyncLiabilityAccountsTask(ctx, userId, link.Id, *accessToken, accountIds); err != nil {
+			if err := taskhandler.DispatchSyncLiabilityAccountsTask(ctx, s.taskprocessor, s.instrumentation, s.logger, userId, link.Id, *accessToken, accountIds); err != nil {
 				return err
 			}
 		default:
@@ -240,7 +265,7 @@ func (s *Server) processWebhook(ctx context.Context, req *proto.ProcessWebhookRe
 		switch link.PlaidLink.UsePlaidSync {
 		case true:
 			// Trigger a background job to sync the plaid transactions
-			if err := s.DispatchPlaidSyncTask(ctx, userId, link.Id, *accessToken); err != nil {
+			if err := taskhandler.DispatchPlaidSyncTask(ctx, s.taskprocessor, s.instrumentation, s.logger, userId, link.Id, *accessToken); err != nil {
 				return err
 			}
 		default:
@@ -270,7 +295,7 @@ func (s *Server) processWebhook(ctx context.Context, req *proto.ProcessWebhookRe
 			case "RECURRING_TRANSACTIONS_UPDATE":
 				// DISPATCH task to pull the recurring transactions for the given account ids and update the database
 				// with the new recurring transactions
-				if err := s.DispatchPullUpdatedReCurringTransactionsTask(ctx, userId, link.Id, *accessToken, req.AccountIds); err != nil {
+				if err := taskhandler.DispatchPullUpdatedReCurringTransactionsTask(ctx, s.taskprocessor, s.instrumentation, s.logger, userId, link.Id, *accessToken, req.AccountIds); err != nil {
 					return err
 				}
 
@@ -308,7 +333,7 @@ func (s *Server) processWebhook(ctx context.Context, req *proto.ProcessWebhookRe
 				*/
 			case "SYNC_UPDATES_AVAILABLE":
 				// Trigger a background job to sync the plaid transactions
-				if err := s.DispatchPlaidSyncTask(ctx, userId, link.Id, *accessToken); err != nil {
+				if err := taskhandler.DispatchPlaidSyncTask(ctx, s.taskprocessor, s.instrumentation, s.logger, userId, link.Id, *accessToken); err != nil {
 					return err
 				}
 			default:
@@ -328,7 +353,7 @@ func (s *Server) processWebhook(ctx context.Context, req *proto.ProcessWebhookRe
 			}
 
 			link.LinkStatus = proto.LinkStatus_LINK_STATUS_ERROR
-			link.ErrorCode = code.String()
+			link.ErrorCode = fmt.Sprintf("%v", code)
 			log.Warn("link is in an error state, updating")
 			if err := s.conn.UpdateLink(ctx, link); err != nil {
 				return err
@@ -338,7 +363,7 @@ func (s *Server) processWebhook(ctx context.Context, req *proto.ProcessWebhookRe
 		// by having the user go through Link’s update mode.
 		case "PENDING_EXPIRATION":
 			link.LinkStatus = proto.LinkStatus_LINK_STATUS_PENDING_EXPIRATION
-			link.ExpirationDate = req.ConsentExpirationTime
+			link.ExpirationDate = req.ConsentExpirationTime.String()
 			log.Warn("link is pending expiration")
 			if err := s.conn.UpdateLink(ctx, link); err != nil {
 				return err
@@ -350,7 +375,7 @@ func (s *Server) processWebhook(ctx context.Context, req *proto.ProcessWebhookRe
 		case "USER_PERMISSION_REVOKED":
 			code := req.Error["error_code"]
 			link.LinkStatus = proto.LinkStatus_LINK_STATUS_REVOKED
-			link.ErrorCode = code.String()
+			link.ErrorCode = fmt.Sprintf("%v", code)
 			if err := s.conn.UpdateLink(ctx, link); err != nil {
 				return err
 			}

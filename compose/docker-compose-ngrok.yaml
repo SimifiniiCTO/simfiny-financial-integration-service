@@ -4,12 +4,14 @@ services:
     image: ngrok/ngrok:alpine
     environment:
       - NGROK_AUTHTOKEN=2JwfMUzmEbQBW2iH599MuX9bAeq_6MqUZtf6kCEkcjPci7SH9
-    command: http service:9896
+    command: http service:9898
     ports:
       - 4040:4040
     networks:
       - service-network
-
+    depends_on:
+      - service
+      
 networks:
   service-network:
     driver: bridge

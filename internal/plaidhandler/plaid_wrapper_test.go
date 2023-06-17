@@ -8,6 +8,8 @@ import (
 
 var (
 	testAccessToken string
+	testClientId    string
+	testItemId      string
 )
 
 // setup sets up a database connection to the test db node
@@ -18,10 +20,13 @@ func setup() {
 		log.Fatal(err)
 	}
 
-	testAccessToken, err = plaidTestClient.getAccessTokenForSandboxAcct()
+	res, err := plaidTestClient.getAccessTokenForSandboxAcct()
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	testAccessToken = res.AccessToken
+	testItemId = res.ItemId
 }
 
 func TestMain(m *testing.M) {

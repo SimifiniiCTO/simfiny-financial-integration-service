@@ -57,7 +57,7 @@ type PlaidWrapperImpl interface {
 	// DeleteItem deletes the item for the given access token
 	DeleteItem(ctx context.Context, accessToken *string) error
 	// GetAccessTokenForSandboxAcct returns the access token for the sandbox account
-	getAccessTokenForSandboxAcct() (string, error)
+	getAccessTokenForSandboxAcct() (*plaid.ItemPublicTokenExchangeResponse, error)
 	// GetPlublicTokenForSandboxAcct returns the public token for the sandbox account
 	getPlublicTokenForSandboxAcct(ctx context.Context) (plaid.SandboxPublicTokenCreateResponse, error)
 }
@@ -65,6 +65,8 @@ type PlaidWrapperImpl interface {
 var _ PlaidWrapperImpl = &PlaidWrapper{}
 
 func (p *PlaidWrapper) GetWebhookVerificationKey(ctx context.Context, keyId string) (*WebhookVerificationKey, error) {
+	p.Logger.Info("data", zap.Any("details", p))
+
 	request := p.client.PlaidApi.
 		WebhookVerificationKeyGet(ctx).
 		WebhookVerificationKeyGetRequest(plaid.WebhookVerificationKeyGetRequest{

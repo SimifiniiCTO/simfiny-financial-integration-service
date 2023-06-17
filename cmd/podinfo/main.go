@@ -164,7 +164,8 @@ func main() {
 		zap.String("port", srvCfg.Port),
 	)
 
-	srv, err := api.NewServer(&httpCfg, logger, instrumentation, db, nil)
+	// TODO: clean this up
+	srv, err := api.NewServer(&httpCfg, logger, instrumentation, db, nil, plaidWrapper, keyManagement, grpcSrv.Taskprocessor)
 	if err != nil {
 		logger.Panic(err.Error())
 	}

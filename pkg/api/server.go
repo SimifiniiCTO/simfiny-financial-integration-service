@@ -11,6 +11,8 @@ import (
 	"sync/atomic"
 	"time"
 
+	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
+
 	"github.com/gomodule/redigo/redis"
 	"github.com/gorilla/mux"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
@@ -25,10 +27,12 @@ import (
 	"google.golang.org/grpc"
 
 	"github.com/SimifiniiCTO/simfiny-core-lib/instrumentation"
+	taskprocessor "github.com/SimifiniiCTO/simfiny-core-lib/task-processor"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/plaidhandler"
 	database "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/postgres-database"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/secrets"
 	_ "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/api/docs"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/fscache"
-	"github.com/SimifiniiCTO/simfiny-financial-integration-service/proto"
 )
 
 // @title FIS-Service API
@@ -81,25 +85,43 @@ type Config struct {
 	GrpcServiceEndpoint            string        `mapstructure:"grpc-service-endpoint"`
 	StripeEndpointSigningSecretKey string        `mapstructure:"stripe-endpoint-signing-key"`
 	Environment                    string        `mapstructure:"service-environment"`
+	RpcTimeout                     time.Duration `mapstructure:"rpc-timeout"`
+	StripeApiKey                   string        `mapstructure:"stripe-api-key"`
+	PlaidClientID                  string        `mapstructure:"plaid-client-id"`
+	PlaidSecretKey                 string        `mapstructure:"plaid-secret-key"`
+	PlaidEnv                       string        `mapstructure:"plaid-env"`
+	PlaidOauthDomain               string        `mapstructure:"plaid-oauth-domain"`
+	PlaidWebhooksEnabled           bool          `mapstructure:"plaid-webhooks-enabled"`
+	PlaidWebhookOauthDomain        string        `mapstructure:"plaid-webhook-oauth-domain"`
+	AwsAccessKeyID                 string        `mapstructure:"aws-access-key-id"`
+	AwsRegion                      string        `mapstructure:"aws-region"`
+	AwsSecretAccessKey             string        `mapstructure:"aws-secret-access-key"`
+	AwsKmsKeyID                    string        `mapstructure:"aws-kms-key-id"`
+	MaxPlaidLinks                  int           `mapstructure:"max-plaid-links"`
+	BillingEnabled                 bool          `mapstructure:"stripe-enabled"`
 }
 
 type Server struct {
-	router          *mux.Router
-	logger          *zap.Logger
-	config          *Config
-	pool            *redis.Pool
-	handler         http.Handler
-	instrumentation *instrumentation.Client
-	conn            *database.Db
-	plaidClient     *plaid.APIClient
-	grpcGw          *runtime.ServeMux
+	router                      *mux.Router
+	logger                      *zap.Logger
+	config                      *Config
+	pool                        *redis.Pool
+	handler                     http.Handler
+	instrumentation             *instrumentation.Client
+	plaidWrapper                *plaidhandler.PlaidWrapper
+	inMemoryWebhookVerification plaidhandler.WebhookVerification
+	conn                        *database.Db
+	plaidClient                 *plaid.APIClient
+	grpcGw                      *runtime.ServeMux
+	kms                         secrets.KeyManagement
+	taskprocessor               *taskprocessor.TaskProcessor
 }
 
-func NewServer(config *Config, logger *zap.Logger, telemetry *instrumentation.Client, db *database.Db, router *mux.Router) (*Server, error) {
+func NewServer(config *Config, logger *zap.Logger, telemetry *instrumentation.Client, db *database.Db, router *mux.Router, plaidClient *plaidhandler.PlaidWrapper, kmsClient secrets.KeyManagement, tp *taskprocessor.TaskProcessor) (*Server, error) {
 	opts := []grpc.DialOption{grpc.WithInsecure()}
 	gw := runtime.NewServeMux()
 	ctx := context.Background()
-	if err := proto.RegisterFinancialIntegrationServiceHandlerFromEndpoint(ctx, gw, config.GrpcServiceEndpoint, opts); err != nil {
+	if err := proto.RegisterFinancialServiceHandlerFromEndpoint(ctx, gw, config.GrpcServiceEndpoint, opts); err != nil {
 		return nil, err
 	}
 
@@ -111,17 +133,22 @@ func NewServer(config *Config, logger *zap.Logger, telemetry *instrumentation.Cl
 	}
 
 	srv := &Server{
-		router:          muxRouter,
-		logger:          logger,
-		config:          config,
-		instrumentation: telemetry,
-		conn:            db,
-		grpcGw:          gw,
+		router:                      muxRouter,
+		logger:                      logger,
+		config:                      config,
+		instrumentation:             telemetry,
+		conn:                        db,
+		grpcGw:                      gw,
+		plaidWrapper:                plaidClient,
+		inMemoryWebhookVerification: plaidhandler.NewInMemoryWebhookVerification(5*time.Minute, logger, plaidClient),
+		kms:                         kmsClient,
+		taskprocessor:               tp,
 	}
 
 	return srv, nil
 }
 
+// RegisterHandlers registers all the handlers for the server
 func (s *Server) RegisterHandlers() {
 	s.router.Handle("/grpc-gateway", s.grpcGw)
 	s.router.Handle("/metrics", promhttp.Handler())
@@ -152,7 +179,8 @@ func (s *Server) RegisterHandlers() {
 	s.router.HandleFunc("/ws/echo", s.echoWsHandler)
 	s.router.HandleFunc("/chunked", s.chunkedHandler)
 	s.router.HandleFunc("/chunked/{wait:[0-9]+}", s.chunkedHandler)
-	s.router.HandleFunc("/webhook", s.handleStripeWebhook).Methods("POST")
+	s.router.HandleFunc("/stripe/webhook", s.handleStripeWebhook).Methods("POST")
+	s.router.HandleFunc("/plaid/webhook", s.handlerPlaidWebhook).Methods("POST")
 
 	s.router.PathPrefix("/swagger/").Handler(httpSwagger.Handler(
 		httpSwagger.URL("/swagger/doc.json"),

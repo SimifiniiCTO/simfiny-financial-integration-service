@@ -21,7 +21,6 @@ services:
       - service_db
       - temporal
       - clickhouse-database
-      - ngrok
     networks:
       - service-network
     env_file:

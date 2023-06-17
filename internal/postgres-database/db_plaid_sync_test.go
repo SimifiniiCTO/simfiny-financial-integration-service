@@ -62,8 +62,7 @@ func TestDb_GetLastPlaidSync(t *testing.T) {
 }
 
 func TestDb_RecordPlaidSync(t *testing.T) {
-	type args struct {
-		ctx         context.Context
+	type funcArgs struct {
 		userId      uint64
 		plaidLinkId uint64
 		trigger     string
@@ -72,17 +71,53 @@ func TestDb_RecordPlaidSync(t *testing.T) {
 		modified    int64
 		removed     int64
 	}
+
+	type args struct {
+		ctx          context.Context
+		precondition func(ctx context.Context, t *testing.T) funcArgs
+	}
 	tests := []struct {
 		name    string
 		db      *Db
 		args    args
 		wantErr bool
 	}{
-		// TODO: Add test cases.
+		{
+			name: "[success] - record plaid sync",
+			db:   conn,
+			args: args{
+				ctx: context.Background(),
+				precondition: func(ctx context.Context, t *testing.T) funcArgs {
+					userId := uint64(helper.GenerateRandomId(10000, 3000000))
+
+					// create a user account
+					_, err := conn.CreateUserProfile(ctx, &schema.UserProfile{
+						UserId: userId,
+					})
+					assert.Nil(t, err)
+
+					// create a "plaid" link for the given user
+					link, err := conn.CreateLink(ctx, userId, helper.GenerateLink(schema.LinkType_LINK_TYPE_PLAID), false)
+					assert.Nil(t, err)
+
+					return funcArgs{
+						userId:      userId,
+						plaidLinkId: link.Id,
+						trigger:     "test",
+						nextCursor:  "",
+						added:       int64(helper.GenerateRandomId(100, 1000)),
+						modified:    int64(helper.GenerateRandomId(100, 1000)),
+						removed:     int64(helper.GenerateRandomId(100, 1000)),
+					}
+				},
+			},
+			wantErr: false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if err := tt.db.RecordPlaidSync(tt.args.ctx, tt.args.userId, tt.args.plaidLinkId, tt.args.trigger, tt.args.nextCursor, tt.args.added, tt.args.modified, tt.args.removed); (err != nil) != tt.wantErr {
+			res := tt.args.precondition(tt.args.ctx, t)
+			if err := tt.db.RecordPlaidSync(tt.args.ctx, res.userId, res.plaidLinkId, res.trigger, res.nextCursor, res.added, res.modified, res.removed); (err != nil) != tt.wantErr {
 				t.Errorf("Db.RecordPlaidSync() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
