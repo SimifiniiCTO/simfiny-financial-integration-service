@@ -148,54 +148,6 @@ func (db *Db) performSchemaMigration() error {
 	if len(models) > 0 {
 		// ref. https://kb.altinity.com/engines/mergetree-table-engine-family/collapsing-vs-replacing/
 		// ref. https://clickhouse.com/docs/en/guides/developer/deduplication
-		// TODO: add support for collapsing merge tree. May need to actually explicitly define the table definitions
-		/*
-			ref:
-				Certainly! When working with GORM, you can define a struct that represents your table and its columns. Here's an example of how you can create a CollapsingMergeTree table using GORM with a struct:
-
-				go
-				Copy code
-				package main
-
-				import (
-					"fmt"
-					"log"
-					"time"
-
-					"gorm.io/driver/mysql"
-					"gorm.io/gorm"
-				)
-
-				type MyData struct {
-					ID   int       `gorm:"primaryKey"`
-					Name string    `gorm:"size:255"`
-					Date time.Time `gorm:"index"`
-					Sign int       `gorm:"-"`
-				}
-
-				func main() {
-					// Connect to the database
-					dsn := "user:password@tcp(localhost:3306)/database_name?parseTime=True"
-					db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
-					if err != nil {
-						log.Fatal(err)
-					}
-
-					// Auto-migrate the struct to create the table
-					err = db.AutoMigrate(&MyData{})
-					if err != nil {
-						log.Fatal(err)
-					}
-
-					// Add the CollapsingMergeTree engine to the table
-					err = db.Exec("ALTER TABLE my_datas ENGINE = CollapsingMergeTree(Date, (ID, Date), 8192, Sign)").Error
-					if err != nil {
-						log.Fatal(err)
-					}
-
-					fmt.Println("Table created successfully")
-		*/
-
 		if err := engine.Set("gorm:table_options", "ENGINE = CollapsingMergeTree(Time, (Id, Time), 8192, Sign)").AutoMigrate(models...); err != nil {
 			// TODO: emit failure metric here
 			log.Error(err.Error())
