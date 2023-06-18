@@ -5,7 +5,7 @@ import (
 	"reflect"
 	"testing"
 
-	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
+	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/api/v1"
 )
 
 func TestDb_AddInvestmentHoldings(t *testing.T) {

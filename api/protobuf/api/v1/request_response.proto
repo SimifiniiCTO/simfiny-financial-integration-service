@@ -4,7 +4,7 @@ package api.v1;
 
 import "api/v1/message.proto";
 import "api/v1/clickhouse.proto";
-option go_package = "github.com/SimifiniiCTO/simfiny-financial-integration-service/generate/api/v1";
+option go_package = "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/api/v1";
 import "validate/validate.proto";
 import "google/api/field_behavior.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";

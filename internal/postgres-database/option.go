@@ -7,8 +7,8 @@ import (
 	"go.uber.org/zap"
 
 	"github.com/SimifiniiCTO/simfiny-core-lib/instrumentation"
-	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/dal"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/secrets"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/dal"
 )
 
 // Option is a function that configures a Db

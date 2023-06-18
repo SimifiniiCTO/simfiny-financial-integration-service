@@ -7,10 +7,10 @@ import (
 
 	telemetry "github.com/SimifiniiCTO/core/core-telemetry"
 	"github.com/SimifiniiCTO/simfiny-core-lib/instrumentation"
-	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/plaidhandler"
 	database "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/postgres-database"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/secrets"
+	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/api/v1"
 	"github.com/stripe/stripe-go/v74/client"
 	"go.uber.org/zap"
 )

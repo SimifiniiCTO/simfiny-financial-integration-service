@@ -38,7 +38,7 @@ grpc-install: buf-install api-linter-install
 buf-generate:
 	printf $(COLOR) "Run buf generate..."
 	(cd $(PROTO_ROOT) && buf generate)
-	find ../internal/generated/api/v1 -type f -name "*.pb.go" -exec protoc-go-inject-tag -input="{}" \;
+	find ../pkg/generated/api/v1 -type f -name "*.pb.go" -exec protoc-go-inject-tag -input="{}" \;
 
 ##### Plugins & tools #####
 api-linter-install:

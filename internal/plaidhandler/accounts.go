@@ -6,8 +6,8 @@ import (
 	"github.com/plaid/plaid-go/v12/plaid"
 	"go.uber.org/zap"
 
-	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/transformer"
+	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/api/v1"
 )
 
 // GetAccounts is used to retrieve accounts from the Plaid API for a given access token.

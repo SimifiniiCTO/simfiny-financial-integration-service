@@ -10,10 +10,10 @@ import (
 
 	postgresdb "github.com/SimifiniiCTO/simfiny-core-lib/database/postgres"
 	"github.com/SimifiniiCTO/simfiny-core-lib/instrumentation"
-	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
-	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/dal"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/secrets"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/service_errors"
+	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/api/v1"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/dal"
 )
 
 // DatabaseOperations provides an interface which any database tied to this service should implement

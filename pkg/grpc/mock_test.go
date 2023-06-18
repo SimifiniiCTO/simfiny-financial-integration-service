@@ -24,10 +24,10 @@ import (
 	"google.golang.org/grpc/test/bufconn"
 
 	"github.com/SimifiniiCTO/simfiny-core-lib/instrumentation"
-	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
-	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/dal"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/plaidhandler"
 	database "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/postgres-database"
+	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/api/v1"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/dal"
 
 	redisDatabase "github.com/SimifiniiCTO/simfiny-core-lib/database/redis"
 )

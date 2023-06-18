@@ -19,10 +19,10 @@ import (
 	"github.com/SimifiniiCTO/simfiny-core-lib/instrumentation"
 	clickhouseDatabase "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/clickhouse-database"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/env"
-	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
-	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/dal"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/plaidhandler"
 	database "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/postgres-database"
+	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/api/v1"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/dal"
 
 	"github.com/SimifiniiCTO/simfiny-core-lib/database/redis"
 	"github.com/SimifiniiCTO/simfiny-core-lib/signals"
@@ -142,8 +142,6 @@ func main() {
 
 	// TODO: add grpc interceptor middleware to emit metrics on various gRPC calls
 	// Bootstrap
-
-	logger.Info("successfully initialized mux router .... ")
 
 	// ensure we can optimatelly close the transaction manager and all associated resources
 	defer grpcSrv.TransactionManager.Close()

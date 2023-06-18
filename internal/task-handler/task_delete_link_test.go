@@ -6,21 +6,33 @@ import (
 	"testing"
 
 	"github.com/SimifiniiCTO/asynq"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/helper"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestTaskDeleteLinkPayload_String(t *testing.T) {
 	tests := []struct {
-		name string
-		tr   *TaskDeleteLinkPayload
-		want *string
+		name    string
+		tr      *TaskDeleteLinkPayload
+		wantErr bool
 	}{
-		// TODO: Add test cases.
+		{
+			name: "delete link payload",
+			tr: &TaskDeleteLinkPayload{
+				UserId:          uint64(helper.GenerateRandomId(1000, 10000)),
+				PlaidLinkItemId: helper.GenerateRandomString(10),
+				AccessToken:     helper.GenerateRandomString(10),
+			},
+			wantErr: false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := tt.tr.String(); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("TaskDeleteLinkPayload.String() = %v, want %v", got, tt.want)
+			got := tt.tr.String()
+			if !tt.wantErr {
+				assert.NotNil(t, got)
 			}
+
 		})
 	}
 }

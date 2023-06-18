@@ -11,7 +11,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
+	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/api/v1"
 
 	"github.com/gomodule/redigo/redis"
 	"github.com/gorilla/mux"

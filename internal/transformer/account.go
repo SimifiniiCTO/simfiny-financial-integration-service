@@ -5,7 +5,7 @@ import (
 
 	"github.com/plaid/plaid-go/v12/plaid"
 
-	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
+	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/api/v1"
 )
 
 // NewPlaidBankAccount converts a Plaid account to our own bank account interface.

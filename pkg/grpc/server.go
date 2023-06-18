@@ -14,12 +14,12 @@ import (
 	"github.com/SimifiniiCTO/simfiny-core-lib/instrumentation"
 	taskprocessor "github.com/SimifiniiCTO/simfiny-core-lib/task-processor"
 	clickhousedatabase "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/clickhouse-database"
-	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/plaidhandler"
 	database "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/postgres-database"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/secrets"
 	taskhandler "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/task-handler"
 	transactionmanager "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/transaction_manager"
+	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/api/v1"
 )
 
 // Server is the grpc server object
