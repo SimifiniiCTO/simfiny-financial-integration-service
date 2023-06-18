@@ -4,8 +4,8 @@ import (
 	"context"
 	"encoding/hex"
 
-	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/secrets"
+	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/api/v1"
 	"github.com/aws/aws-sdk-go/aws/awserr"
 	"github.com/aws/aws-sdk-go/service/kms"
 	"github.com/pkg/errors"

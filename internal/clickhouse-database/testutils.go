@@ -1,8 +1,8 @@
 package clickhousedatabase
 
 import (
-	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/helper"
+	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/api/v1"
 )
 
 func generateRandomInvestmentTransaction() *schema.InvestmentTransaction {

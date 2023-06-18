@@ -6,8 +6,8 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 	encryptdecrypt "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/encrypt_decrypt"
+	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/api/v1"
 )
 
 func (s *Server) DeleteLink(ctx context.Context, req *proto.DeleteLinkRequest) (*proto.DeleteLinkResponse, error) {

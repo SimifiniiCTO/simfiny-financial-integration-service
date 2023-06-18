@@ -20,11 +20,11 @@ func (t *TaskDeleteLinkPayload) String() *string {
 	return &str
 }
 
-func NewDeleteLinkTask(userId uint64, plaidLinkItemId, accessToke string) (*asynq.Task, error) {
+func NewDeleteLinkTask(userId uint64, plaidLinkItemId, accessToken string) (*asynq.Task, error) {
 	rec := &TaskDeleteLinkPayload{
 		UserId:          userId,
 		PlaidLinkItemId: plaidLinkItemId,
-		AccessToken:     accessToke,
+		AccessToken:     accessToken,
 	}
 
 	payload, err := json.Marshal(rec)

@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
+	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/api/v1"
 )
 
 // AddInvestmentTransactions is adding investment transactions to the Clickhouse database. It takes in a context, a

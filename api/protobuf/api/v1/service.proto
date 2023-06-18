@@ -9,7 +9,7 @@ import "protoc-gen-openapiv2/options/annotations.proto";
 // import "google/api/field_behavior.proto";
 // import "google/protobuf/timestamp.proto";
 // import "google/protobuf/wrappers.proto";
-option go_package = "github.com/SimifiniiCTO/simfiny-financial-integration-service/generate/api/v1";
+option go_package = "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/api/v1";
 
 // FinancialService API.
 service FinancialService {

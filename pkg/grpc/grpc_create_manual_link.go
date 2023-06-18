@@ -9,7 +9,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
+	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/api/v1"
 )
 
 // CreateManualLink implements apiv1.FinancialServiceServer

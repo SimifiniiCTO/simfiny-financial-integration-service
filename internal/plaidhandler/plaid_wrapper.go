@@ -10,8 +10,8 @@ import (
 	"go.uber.org/zap"
 
 	"github.com/SimifiniiCTO/simfiny-core-lib/instrumentation"
-	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/pointer"
+	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/api/v1"
 )
 
 // The PlaidWrapper type is a struct that contains various fields related to the Plaid API client,

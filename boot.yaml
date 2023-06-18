@@ -65,7 +65,7 @@ grpc:
       enabled: true # Optional, Enable RK TV
     sw:
       enabled: true # Optional, Enable Swagger UI
-      jsonPath: "internal/generated/api/v1" # Boot will look for swagger config files from this folder
+      jsonPath: "pkg/generated/api/v1" # Boot will look for swagger config files from this folder
     gwMappingFilePaths:
       - "proto/gw_mapping.yaml" # Boot will look for gateway mapping files and load information into memory
     docs:

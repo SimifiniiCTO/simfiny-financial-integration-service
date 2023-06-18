@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
+	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/api/v1"
 )
 
 // AddTransaction adds a single transaction to the Clickhouse database.

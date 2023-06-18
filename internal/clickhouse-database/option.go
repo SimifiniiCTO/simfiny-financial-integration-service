@@ -3,8 +3,8 @@ package clickhousedatabase
 import (
 	clickhousedb "github.com/SimifiniiCTO/simfiny-core-lib/database/clickhouse"
 	"github.com/SimifiniiCTO/simfiny-core-lib/instrumentation"
-	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/dal"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/service_errors"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/dal"
 	"go.uber.org/zap"
 )
 

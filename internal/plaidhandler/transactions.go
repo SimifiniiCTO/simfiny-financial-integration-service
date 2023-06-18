@@ -7,9 +7,9 @@ import (
 	"github.com/plaid/plaid-go/v12/plaid"
 	"go.uber.org/zap"
 
-	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/pointer"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/transformer"
+	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/api/v1"
 )
 
 // GetAllTransactions is used to retrieve all transactions for

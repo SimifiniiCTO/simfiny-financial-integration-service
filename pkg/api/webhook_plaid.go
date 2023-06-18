@@ -10,8 +10,8 @@ import (
 	"strings"
 	"time"
 
-	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
 	taskhandler "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/task-handler"
+	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/api/v1"
 
 	encryptdecrypt "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/encrypt_decrypt"
 	"github.com/gogo/status"

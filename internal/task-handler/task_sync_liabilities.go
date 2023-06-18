@@ -6,7 +6,7 @@ import (
 	"fmt"
 
 	"github.com/SimifiniiCTO/asynq"
-	apiv1 "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
+	apiv1 "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/api/v1"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 )

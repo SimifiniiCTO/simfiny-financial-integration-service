@@ -10,8 +10,8 @@ import (
 
 	postgresdb "github.com/SimifiniiCTO/simfiny-core-lib/database/postgres"
 	"github.com/SimifiniiCTO/simfiny-core-lib/instrumentation"
-	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/api/v1"
-	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/generated/dal"
+	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/api/v1"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/dal"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
 )
