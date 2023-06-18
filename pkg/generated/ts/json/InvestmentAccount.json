@@ -44,14 +44,14 @@
                 },
                 "holdings": {
                     "items": {
-                        "$ref": "#/definitions/api.v1.InvesmentHolding"
+                        "$ref": "#/definitions/financial_integration_service_api.v1.InvesmentHolding"
                     },
                     "type": "array",
                     "description": "invesment holding is the set of securities this account witholds"
                 },
                 "securities": {
                     "items": {
-                        "$ref": "#/definitions/api.v1.InvestmentSecurity"
+                        "$ref": "#/definitions/financial_integration_service_api.v1.InvestmentSecurity"
                     },
                     "type": "array",
                     "description": "the set of securities this account witholds"
@@ -61,7 +61,7 @@
             "type": "object",
             "title": "Investment Account"
         },
-        "api.v1.InvesmentHolding": {
+        "financial_integration_service_api.v1.InvesmentHolding": {
             "properties": {
                 "id": {
                     "type": "string",
@@ -107,7 +107,7 @@
             "type": "object",
             "title": "Invesment Holding"
         },
-        "api.v1.InvestmentSecurity": {
+        "financial_integration_service_api.v1.InvestmentSecurity": {
             "properties": {
                 "id": {
                     "type": "string",

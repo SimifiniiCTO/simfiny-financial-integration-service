@@ -3,164 +3,164 @@
 
 ## Table of Contents
 
-- [api/v1/clickhouse_financial_service.proto](#api_v1_clickhouse_financial_service-proto)
-    - [AverageTransactionAmountByCategoryMetric](#api-v1-AverageTransactionAmountByCategoryMetric)
-    - [InvestmentTransaction](#api-v1-InvestmentTransaction)
-    - [MonthlyTransactionCountByCategoryMetric](#api-v1-MonthlyTransactionCountByCategoryMetric)
-    - [ReOccuringTransaction](#api-v1-ReOccuringTransaction)
-    - [Transaction](#api-v1-Transaction)
-    - [TransactionAmountByCountryMetric](#api-v1-TransactionAmountByCountryMetric)
-    - [TransactionAmountDistributionByCategoryMetric](#api-v1-TransactionAmountDistributionByCategoryMetric)
-    - [TransactionCountByMerchantPaymentChannelMetric](#api-v1-TransactionCountByMerchantPaymentChannelMetric)
+- [financial_integration_service_api/v1/clickhouse_financial_service.proto](#financial_integration_service_api_v1_clickhouse_financial_service-proto)
+    - [AverageTransactionAmountByCategoryMetric](#financial_integration_service_api-v1-AverageTransactionAmountByCategoryMetric)
+    - [InvestmentTransaction](#financial_integration_service_api-v1-InvestmentTransaction)
+    - [MonthlyTransactionCountByCategoryMetric](#financial_integration_service_api-v1-MonthlyTransactionCountByCategoryMetric)
+    - [ReOccuringTransaction](#financial_integration_service_api-v1-ReOccuringTransaction)
+    - [Transaction](#financial_integration_service_api-v1-Transaction)
+    - [TransactionAmountByCountryMetric](#financial_integration_service_api-v1-TransactionAmountByCountryMetric)
+    - [TransactionAmountDistributionByCategoryMetric](#financial_integration_service_api-v1-TransactionAmountDistributionByCategoryMetric)
+    - [TransactionCountByMerchantPaymentChannelMetric](#financial_integration_service_api-v1-TransactionCountByMerchantPaymentChannelMetric)
   
-    - [ReCurringFlow](#api-v1-ReCurringFlow)
-    - [ReOccuringTransactionsFrequency](#api-v1-ReOccuringTransactionsFrequency)
-    - [ReOccuringTransactionsStatus](#api-v1-ReOccuringTransactionsStatus)
+    - [ReCurringFlow](#financial_integration_service_api-v1-ReCurringFlow)
+    - [ReOccuringTransactionsFrequency](#financial_integration_service_api-v1-ReOccuringTransactionsFrequency)
+    - [ReOccuringTransactionsStatus](#financial_integration_service_api-v1-ReOccuringTransactionsStatus)
   
-- [api/v1/errors_ignore_financial_service.proto](#api_v1_errors_ignore_financial_service-proto)
-    - [ErrorMessageRequest](#api-v1-ErrorMessageRequest)
-    - [InternalErrorMessageResponse](#api-v1-InternalErrorMessageResponse)
-    - [PathUnknownErrorMessageResponse](#api-v1-PathUnknownErrorMessageResponse)
-    - [ValidationErrorMessageResponse](#api-v1-ValidationErrorMessageResponse)
+- [financial_integration_service_api/v1/errors_ignore_financial_service.proto](#financial_integration_service_api_v1_errors_ignore_financial_service-proto)
+    - [ErrorMessageRequest](#financial_integration_service_api-v1-ErrorMessageRequest)
+    - [InternalErrorMessageResponse](#financial_integration_service_api-v1-InternalErrorMessageResponse)
+    - [PathUnknownErrorMessageResponse](#financial_integration_service_api-v1-PathUnknownErrorMessageResponse)
+    - [ValidationErrorMessageResponse](#financial_integration_service_api-v1-ValidationErrorMessageResponse)
   
-    - [AuthErrorCode](#api-v1-AuthErrorCode)
-    - [ErrorCode](#api-v1-ErrorCode)
-    - [InternalErrorCode](#api-v1-InternalErrorCode)
-    - [NotFoundErrorCode](#api-v1-NotFoundErrorCode)
+    - [AuthErrorCode](#financial_integration_service_api-v1-AuthErrorCode)
+    - [ErrorCode](#financial_integration_service_api-v1-ErrorCode)
+    - [InternalErrorCode](#financial_integration_service_api-v1-InternalErrorCode)
+    - [NotFoundErrorCode](#financial_integration_service_api-v1-NotFoundErrorCode)
   
-- [api/v1/message_financial_service.proto](#api_v1_message_financial_service-proto)
-    - [Apr](#api-v1-Apr)
-    - [BankAccount](#api-v1-BankAccount)
-    - [Budget](#api-v1-Budget)
-    - [Category](#api-v1-Category)
-    - [CreditAccount](#api-v1-CreditAccount)
-    - [Forecast](#api-v1-Forecast)
-    - [InvesmentHolding](#api-v1-InvesmentHolding)
-    - [InvestmentAccount](#api-v1-InvestmentAccount)
-    - [InvestmentSecurity](#api-v1-InvestmentSecurity)
-    - [Link](#api-v1-Link)
-    - [Milestone](#api-v1-Milestone)
-    - [MortgageAccount](#api-v1-MortgageAccount)
-    - [PlaidLink](#api-v1-PlaidLink)
-    - [PlaidSync](#api-v1-PlaidSync)
-    - [Pocket](#api-v1-Pocket)
-    - [SmartGoal](#api-v1-SmartGoal)
-    - [StripeSubscription](#api-v1-StripeSubscription)
-    - [StudentLoanAccount](#api-v1-StudentLoanAccount)
-    - [Token](#api-v1-Token)
-    - [UserProfile](#api-v1-UserProfile)
+- [financial_integration_service_api/v1/message_financial_service.proto](#financial_integration_service_api_v1_message_financial_service-proto)
+    - [Apr](#financial_integration_service_api-v1-Apr)
+    - [BankAccount](#financial_integration_service_api-v1-BankAccount)
+    - [Budget](#financial_integration_service_api-v1-Budget)
+    - [Category](#financial_integration_service_api-v1-Category)
+    - [CreditAccount](#financial_integration_service_api-v1-CreditAccount)
+    - [Forecast](#financial_integration_service_api-v1-Forecast)
+    - [InvesmentHolding](#financial_integration_service_api-v1-InvesmentHolding)
+    - [InvestmentAccount](#financial_integration_service_api-v1-InvestmentAccount)
+    - [InvestmentSecurity](#financial_integration_service_api-v1-InvestmentSecurity)
+    - [Link](#financial_integration_service_api-v1-Link)
+    - [Milestone](#financial_integration_service_api-v1-Milestone)
+    - [MortgageAccount](#financial_integration_service_api-v1-MortgageAccount)
+    - [PlaidLink](#financial_integration_service_api-v1-PlaidLink)
+    - [PlaidSync](#financial_integration_service_api-v1-PlaidSync)
+    - [Pocket](#financial_integration_service_api-v1-Pocket)
+    - [SmartGoal](#financial_integration_service_api-v1-SmartGoal)
+    - [StripeSubscription](#financial_integration_service_api-v1-StripeSubscription)
+    - [StudentLoanAccount](#financial_integration_service_api-v1-StudentLoanAccount)
+    - [Token](#financial_integration_service_api-v1-Token)
+    - [UserProfile](#financial_integration_service_api-v1-UserProfile)
   
-    - [BankAccountStatus](#api-v1-BankAccountStatus)
-    - [BankAccountType](#api-v1-BankAccountType)
-    - [GoalStatus](#api-v1-GoalStatus)
-    - [GoalType](#api-v1-GoalType)
-    - [LinkStatus](#api-v1-LinkStatus)
-    - [LinkType](#api-v1-LinkType)
-    - [PocketType](#api-v1-PocketType)
-    - [StripeSubscriptionStatus](#api-v1-StripeSubscriptionStatus)
+    - [BankAccountStatus](#financial_integration_service_api-v1-BankAccountStatus)
+    - [BankAccountType](#financial_integration_service_api-v1-BankAccountType)
+    - [GoalStatus](#financial_integration_service_api-v1-GoalStatus)
+    - [GoalType](#financial_integration_service_api-v1-GoalType)
+    - [LinkStatus](#financial_integration_service_api-v1-LinkStatus)
+    - [LinkType](#financial_integration_service_api-v1-LinkType)
+    - [PocketType](#financial_integration_service_api-v1-PocketType)
+    - [StripeSubscriptionStatus](#financial_integration_service_api-v1-StripeSubscriptionStatus)
   
-- [api/v1/openapi_financial_service.proto](#api_v1_openapi_financial_service-proto)
-- [api/v1/request_response_financial_service.proto](#api_v1_request_response_financial_service-proto)
-    - [CreateBankAccountRequest](#api-v1-CreateBankAccountRequest)
-    - [CreateBankAccountResponse](#api-v1-CreateBankAccountResponse)
-    - [CreateBudgetRequest](#api-v1-CreateBudgetRequest)
-    - [CreateBudgetResponse](#api-v1-CreateBudgetResponse)
-    - [CreateManualLinkRequest](#api-v1-CreateManualLinkRequest)
-    - [CreateManualLinkResponse](#api-v1-CreateManualLinkResponse)
-    - [CreateMilestoneRequest](#api-v1-CreateMilestoneRequest)
-    - [CreateMilestoneResponse](#api-v1-CreateMilestoneResponse)
-    - [CreateSmartGoalRequest](#api-v1-CreateSmartGoalRequest)
-    - [CreateSmartGoalResponse](#api-v1-CreateSmartGoalResponse)
-    - [CreateSubscriptionRequest](#api-v1-CreateSubscriptionRequest)
-    - [CreateSubscriptionResponse](#api-v1-CreateSubscriptionResponse)
-    - [CreateUserProfileRequest](#api-v1-CreateUserProfileRequest)
-    - [CreateUserProfileResponse](#api-v1-CreateUserProfileResponse)
-    - [DeleteBankAccountRequest](#api-v1-DeleteBankAccountRequest)
-    - [DeleteBankAccountResponse](#api-v1-DeleteBankAccountResponse)
-    - [DeleteBudgetRequest](#api-v1-DeleteBudgetRequest)
-    - [DeleteBudgetResponse](#api-v1-DeleteBudgetResponse)
-    - [DeleteLinkRequest](#api-v1-DeleteLinkRequest)
-    - [DeleteLinkResponse](#api-v1-DeleteLinkResponse)
-    - [DeleteMilestoneRequest](#api-v1-DeleteMilestoneRequest)
-    - [DeleteMilestoneResponse](#api-v1-DeleteMilestoneResponse)
-    - [DeleteSmartGoalRequest](#api-v1-DeleteSmartGoalRequest)
-    - [DeleteSmartGoalResponse](#api-v1-DeleteSmartGoalResponse)
-    - [DeleteUserProfileRequest](#api-v1-DeleteUserProfileRequest)
-    - [DeleteUserProfileResponse](#api-v1-DeleteUserProfileResponse)
-    - [GetAllBudgetsRequest](#api-v1-GetAllBudgetsRequest)
-    - [GetAllBudgetsResponse](#api-v1-GetAllBudgetsResponse)
-    - [GetBankAccountRequest](#api-v1-GetBankAccountRequest)
-    - [GetBankAccountResponse](#api-v1-GetBankAccountResponse)
-    - [GetBudgetRequest](#api-v1-GetBudgetRequest)
-    - [GetBudgetResponse](#api-v1-GetBudgetResponse)
-    - [GetForecastRequest](#api-v1-GetForecastRequest)
-    - [GetForecastResponse](#api-v1-GetForecastResponse)
-    - [GetInvestmentAcccountRequest](#api-v1-GetInvestmentAcccountRequest)
-    - [GetInvestmentAcccountResponse](#api-v1-GetInvestmentAcccountResponse)
-    - [GetLiabilityAccountRequest](#api-v1-GetLiabilityAccountRequest)
-    - [GetLiabilityAccountResponse](#api-v1-GetLiabilityAccountResponse)
-    - [GetLinkRequest](#api-v1-GetLinkRequest)
-    - [GetLinkResponse](#api-v1-GetLinkResponse)
-    - [GetLinksRequest](#api-v1-GetLinksRequest)
-    - [GetLinksResponse](#api-v1-GetLinksResponse)
-    - [GetMilestoneRequest](#api-v1-GetMilestoneRequest)
-    - [GetMilestoneResponse](#api-v1-GetMilestoneResponse)
-    - [GetMilestonesBySmartGoalIdRequest](#api-v1-GetMilestonesBySmartGoalIdRequest)
-    - [GetMilestonesBySmartGoalIdResponse](#api-v1-GetMilestonesBySmartGoalIdResponse)
-    - [GetMortgageAccountRequest](#api-v1-GetMortgageAccountRequest)
-    - [GetMortgageAccountResponse](#api-v1-GetMortgageAccountResponse)
-    - [GetPocketRequest](#api-v1-GetPocketRequest)
-    - [GetPocketResponse](#api-v1-GetPocketResponse)
-    - [GetReCurringTransactionsRequest](#api-v1-GetReCurringTransactionsRequest)
-    - [GetReCurringTransactionsResponse](#api-v1-GetReCurringTransactionsResponse)
-    - [GetReCurringTransactionsResponse.ParticipantReCurringTransactions](#api-v1-GetReCurringTransactionsResponse-ParticipantReCurringTransactions)
-    - [GetSmartGoalsByPocketIdRequest](#api-v1-GetSmartGoalsByPocketIdRequest)
-    - [GetSmartGoalsByPocketIdResponse](#api-v1-GetSmartGoalsByPocketIdResponse)
-    - [GetStudentLoanAccountRequest](#api-v1-GetStudentLoanAccountRequest)
-    - [GetStudentLoanAccountResponse](#api-v1-GetStudentLoanAccountResponse)
-    - [GetTransactionsRequest](#api-v1-GetTransactionsRequest)
-    - [GetTransactionsResponse](#api-v1-GetTransactionsResponse)
-    - [GetUserProfileRequest](#api-v1-GetUserProfileRequest)
-    - [GetUserProfileResponse](#api-v1-GetUserProfileResponse)
-    - [HealthCheckRequest](#api-v1-HealthCheckRequest)
-    - [HealthCheckResponse](#api-v1-HealthCheckResponse)
-    - [PlaidExchangeTokenRequest](#api-v1-PlaidExchangeTokenRequest)
-    - [PlaidExchangeTokenResponse](#api-v1-PlaidExchangeTokenResponse)
-    - [PlaidInitiateTokenExchangeRequest](#api-v1-PlaidInitiateTokenExchangeRequest)
-    - [PlaidInitiateTokenExchangeResponse](#api-v1-PlaidInitiateTokenExchangeResponse)
-    - [ProcessWebhookRequest](#api-v1-ProcessWebhookRequest)
-    - [ProcessWebhookRequest.ErrorEntry](#api-v1-ProcessWebhookRequest-ErrorEntry)
-    - [ProcessWebhookResponse](#api-v1-ProcessWebhookResponse)
-    - [ReadynessCheckRequest](#api-v1-ReadynessCheckRequest)
-    - [ReadynessCheckResponse](#api-v1-ReadynessCheckResponse)
-    - [StripeWebhookRequest](#api-v1-StripeWebhookRequest)
-    - [StripeWebhookResponse](#api-v1-StripeWebhookResponse)
-    - [UpdateBankAccountRequest](#api-v1-UpdateBankAccountRequest)
-    - [UpdateBankAccountResponse](#api-v1-UpdateBankAccountResponse)
-    - [UpdateBudgetRequest](#api-v1-UpdateBudgetRequest)
-    - [UpdateBudgetResponse](#api-v1-UpdateBudgetResponse)
-    - [UpdateMilestoneRequest](#api-v1-UpdateMilestoneRequest)
-    - [UpdateMilestoneResponse](#api-v1-UpdateMilestoneResponse)
-    - [UpdateSmartGoalRequest](#api-v1-UpdateSmartGoalRequest)
-    - [UpdateSmartGoalResponse](#api-v1-UpdateSmartGoalResponse)
-    - [UpdateUserProfileRequest](#api-v1-UpdateUserProfileRequest)
-    - [UpdateUserProfileResponse](#api-v1-UpdateUserProfileResponse)
+- [financial_integration_service_api/v1/openapi_financial_service.proto](#financial_integration_service_api_v1_openapi_financial_service-proto)
+- [financial_integration_service_api/v1/request_response_financial_service.proto](#financial_integration_service_api_v1_request_response_financial_service-proto)
+    - [CreateBankAccountRequest](#financial_integration_service_api-v1-CreateBankAccountRequest)
+    - [CreateBankAccountResponse](#financial_integration_service_api-v1-CreateBankAccountResponse)
+    - [CreateBudgetRequest](#financial_integration_service_api-v1-CreateBudgetRequest)
+    - [CreateBudgetResponse](#financial_integration_service_api-v1-CreateBudgetResponse)
+    - [CreateManualLinkRequest](#financial_integration_service_api-v1-CreateManualLinkRequest)
+    - [CreateManualLinkResponse](#financial_integration_service_api-v1-CreateManualLinkResponse)
+    - [CreateMilestoneRequest](#financial_integration_service_api-v1-CreateMilestoneRequest)
+    - [CreateMilestoneResponse](#financial_integration_service_api-v1-CreateMilestoneResponse)
+    - [CreateSmartGoalRequest](#financial_integration_service_api-v1-CreateSmartGoalRequest)
+    - [CreateSmartGoalResponse](#financial_integration_service_api-v1-CreateSmartGoalResponse)
+    - [CreateSubscriptionRequest](#financial_integration_service_api-v1-CreateSubscriptionRequest)
+    - [CreateSubscriptionResponse](#financial_integration_service_api-v1-CreateSubscriptionResponse)
+    - [CreateUserProfileRequest](#financial_integration_service_api-v1-CreateUserProfileRequest)
+    - [CreateUserProfileResponse](#financial_integration_service_api-v1-CreateUserProfileResponse)
+    - [DeleteBankAccountRequest](#financial_integration_service_api-v1-DeleteBankAccountRequest)
+    - [DeleteBankAccountResponse](#financial_integration_service_api-v1-DeleteBankAccountResponse)
+    - [DeleteBudgetRequest](#financial_integration_service_api-v1-DeleteBudgetRequest)
+    - [DeleteBudgetResponse](#financial_integration_service_api-v1-DeleteBudgetResponse)
+    - [DeleteLinkRequest](#financial_integration_service_api-v1-DeleteLinkRequest)
+    - [DeleteLinkResponse](#financial_integration_service_api-v1-DeleteLinkResponse)
+    - [DeleteMilestoneRequest](#financial_integration_service_api-v1-DeleteMilestoneRequest)
+    - [DeleteMilestoneResponse](#financial_integration_service_api-v1-DeleteMilestoneResponse)
+    - [DeleteSmartGoalRequest](#financial_integration_service_api-v1-DeleteSmartGoalRequest)
+    - [DeleteSmartGoalResponse](#financial_integration_service_api-v1-DeleteSmartGoalResponse)
+    - [DeleteUserProfileRequest](#financial_integration_service_api-v1-DeleteUserProfileRequest)
+    - [DeleteUserProfileResponse](#financial_integration_service_api-v1-DeleteUserProfileResponse)
+    - [GetAllBudgetsRequest](#financial_integration_service_api-v1-GetAllBudgetsRequest)
+    - [GetAllBudgetsResponse](#financial_integration_service_api-v1-GetAllBudgetsResponse)
+    - [GetBankAccountRequest](#financial_integration_service_api-v1-GetBankAccountRequest)
+    - [GetBankAccountResponse](#financial_integration_service_api-v1-GetBankAccountResponse)
+    - [GetBudgetRequest](#financial_integration_service_api-v1-GetBudgetRequest)
+    - [GetBudgetResponse](#financial_integration_service_api-v1-GetBudgetResponse)
+    - [GetForecastRequest](#financial_integration_service_api-v1-GetForecastRequest)
+    - [GetForecastResponse](#financial_integration_service_api-v1-GetForecastResponse)
+    - [GetInvestmentAcccountRequest](#financial_integration_service_api-v1-GetInvestmentAcccountRequest)
+    - [GetInvestmentAcccountResponse](#financial_integration_service_api-v1-GetInvestmentAcccountResponse)
+    - [GetLiabilityAccountRequest](#financial_integration_service_api-v1-GetLiabilityAccountRequest)
+    - [GetLiabilityAccountResponse](#financial_integration_service_api-v1-GetLiabilityAccountResponse)
+    - [GetLinkRequest](#financial_integration_service_api-v1-GetLinkRequest)
+    - [GetLinkResponse](#financial_integration_service_api-v1-GetLinkResponse)
+    - [GetLinksRequest](#financial_integration_service_api-v1-GetLinksRequest)
+    - [GetLinksResponse](#financial_integration_service_api-v1-GetLinksResponse)
+    - [GetMilestoneRequest](#financial_integration_service_api-v1-GetMilestoneRequest)
+    - [GetMilestoneResponse](#financial_integration_service_api-v1-GetMilestoneResponse)
+    - [GetMilestonesBySmartGoalIdRequest](#financial_integration_service_api-v1-GetMilestonesBySmartGoalIdRequest)
+    - [GetMilestonesBySmartGoalIdResponse](#financial_integration_service_api-v1-GetMilestonesBySmartGoalIdResponse)
+    - [GetMortgageAccountRequest](#financial_integration_service_api-v1-GetMortgageAccountRequest)
+    - [GetMortgageAccountResponse](#financial_integration_service_api-v1-GetMortgageAccountResponse)
+    - [GetPocketRequest](#financial_integration_service_api-v1-GetPocketRequest)
+    - [GetPocketResponse](#financial_integration_service_api-v1-GetPocketResponse)
+    - [GetReCurringTransactionsRequest](#financial_integration_service_api-v1-GetReCurringTransactionsRequest)
+    - [GetReCurringTransactionsResponse](#financial_integration_service_api-v1-GetReCurringTransactionsResponse)
+    - [GetReCurringTransactionsResponse.ParticipantReCurringTransactions](#financial_integration_service_api-v1-GetReCurringTransactionsResponse-ParticipantReCurringTransactions)
+    - [GetSmartGoalsByPocketIdRequest](#financial_integration_service_api-v1-GetSmartGoalsByPocketIdRequest)
+    - [GetSmartGoalsByPocketIdResponse](#financial_integration_service_api-v1-GetSmartGoalsByPocketIdResponse)
+    - [GetStudentLoanAccountRequest](#financial_integration_service_api-v1-GetStudentLoanAccountRequest)
+    - [GetStudentLoanAccountResponse](#financial_integration_service_api-v1-GetStudentLoanAccountResponse)
+    - [GetTransactionsRequest](#financial_integration_service_api-v1-GetTransactionsRequest)
+    - [GetTransactionsResponse](#financial_integration_service_api-v1-GetTransactionsResponse)
+    - [GetUserProfileRequest](#financial_integration_service_api-v1-GetUserProfileRequest)
+    - [GetUserProfileResponse](#financial_integration_service_api-v1-GetUserProfileResponse)
+    - [HealthCheckRequest](#financial_integration_service_api-v1-HealthCheckRequest)
+    - [HealthCheckResponse](#financial_integration_service_api-v1-HealthCheckResponse)
+    - [PlaidExchangeTokenRequest](#financial_integration_service_api-v1-PlaidExchangeTokenRequest)
+    - [PlaidExchangeTokenResponse](#financial_integration_service_api-v1-PlaidExchangeTokenResponse)
+    - [PlaidInitiateTokenExchangeRequest](#financial_integration_service_api-v1-PlaidInitiateTokenExchangeRequest)
+    - [PlaidInitiateTokenExchangeResponse](#financial_integration_service_api-v1-PlaidInitiateTokenExchangeResponse)
+    - [ProcessWebhookRequest](#financial_integration_service_api-v1-ProcessWebhookRequest)
+    - [ProcessWebhookRequest.ErrorEntry](#financial_integration_service_api-v1-ProcessWebhookRequest-ErrorEntry)
+    - [ProcessWebhookResponse](#financial_integration_service_api-v1-ProcessWebhookResponse)
+    - [ReadynessCheckRequest](#financial_integration_service_api-v1-ReadynessCheckRequest)
+    - [ReadynessCheckResponse](#financial_integration_service_api-v1-ReadynessCheckResponse)
+    - [StripeWebhookRequest](#financial_integration_service_api-v1-StripeWebhookRequest)
+    - [StripeWebhookResponse](#financial_integration_service_api-v1-StripeWebhookResponse)
+    - [UpdateBankAccountRequest](#financial_integration_service_api-v1-UpdateBankAccountRequest)
+    - [UpdateBankAccountResponse](#financial_integration_service_api-v1-UpdateBankAccountResponse)
+    - [UpdateBudgetRequest](#financial_integration_service_api-v1-UpdateBudgetRequest)
+    - [UpdateBudgetResponse](#financial_integration_service_api-v1-UpdateBudgetResponse)
+    - [UpdateMilestoneRequest](#financial_integration_service_api-v1-UpdateMilestoneRequest)
+    - [UpdateMilestoneResponse](#financial_integration_service_api-v1-UpdateMilestoneResponse)
+    - [UpdateSmartGoalRequest](#financial_integration_service_api-v1-UpdateSmartGoalRequest)
+    - [UpdateSmartGoalResponse](#financial_integration_service_api-v1-UpdateSmartGoalResponse)
+    - [UpdateUserProfileRequest](#financial_integration_service_api-v1-UpdateUserProfileRequest)
+    - [UpdateUserProfileResponse](#financial_integration_service_api-v1-UpdateUserProfileResponse)
   
-- [api/v1/service_financial_service.proto](#api_v1_service_financial_service-proto)
-    - [FinancialService](#api-v1-FinancialService)
+- [financial_integration_service_api/v1/service_financial_service.proto](#financial_integration_service_api_v1_service_financial_service-proto)
+    - [FinancialService](#financial_integration_service_api-v1-FinancialService)
   
 - [Scalar Value Types](#scalar-value-types)
 
 
 
-<a name="api_v1_clickhouse_financial_service-proto"></a>
+<a name="financial_integration_service_api_v1_clickhouse_financial_service-proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
-## api/v1/clickhouse_financial_service.proto
+## financial_integration_service_api/v1/clickhouse_financial_service.proto
 
 
 
-<a name="api-v1-AverageTransactionAmountByCategoryMetric"></a>
+<a name="financial_integration_service_api-v1-AverageTransactionAmountByCategoryMetric"></a>
 
 ### AverageTransactionAmountByCategoryMetric
 
@@ -176,7 +176,7 @@
 
 
 
-<a name="api-v1-InvestmentTransaction"></a>
+<a name="financial_integration_service_api-v1-InvestmentTransaction"></a>
 
 ### InvestmentTransaction
 
@@ -209,7 +209,7 @@
 
 
 
-<a name="api-v1-MonthlyTransactionCountByCategoryMetric"></a>
+<a name="financial_integration_service_api-v1-MonthlyTransactionCountByCategoryMetric"></a>
 
 ### MonthlyTransactionCountByCategoryMetric
 
@@ -226,7 +226,7 @@
 
 
 
-<a name="api-v1-ReOccuringTransaction"></a>
+<a name="financial_integration_service_api-v1-ReOccuringTransaction"></a>
 
 ### ReOccuringTransaction
 
@@ -243,19 +243,19 @@
 | personal_finance_category_detailed | [string](#string) |  | @gotag: ch:&#34;personal_finance_category_detailed&#34; |
 | first_date | [string](#string) |  | @gotag: ch:&#34;first_date&#34; |
 | last_date | [string](#string) |  | @gotag: ch:&#34;last_date&#34; |
-| frequency | [ReOccuringTransactionsFrequency](#api-v1-ReOccuringTransactionsFrequency) |  | @gotag: ch:&#34;frequency&#34; |
+| frequency | [ReOccuringTransactionsFrequency](#financial_integration_service_api-v1-ReOccuringTransactionsFrequency) |  | @gotag: ch:&#34;frequency&#34; |
 | transaction_ids | [string](#string) |  | @gotag: ch:&#34;transaction_ids,array&#34; |
 | average_amount | [string](#string) |  | @gotag: ch:&#34;average_amount&#34; |
 | average_amount_iso_currency_code | [string](#string) |  | @gotag: ch:&#34;average_amount_iso_currency_code&#34; |
 | last_amount | [string](#string) |  | @gotag: ch:&#34;last_amount&#34; |
 | last_amount_iso_currency_code | [string](#string) |  | @gotag: ch:&#34;last_amount_iso_currency_code&#34; |
 | is_active | [bool](#bool) |  | @gotag: ch:&#34;is_active&#34; |
-| status | [ReOccuringTransactionsStatus](#api-v1-ReOccuringTransactionsStatus) |  | @gotag: ch:&#34;status&#34; |
+| status | [ReOccuringTransactionsStatus](#financial_integration_service_api-v1-ReOccuringTransactionsStatus) |  | @gotag: ch:&#34;status&#34; |
 | updated_time | [string](#string) |  | @gotag: ch:&#34;updated_time&#34; |
 | user_id | [uint64](#uint64) |  | @gotag: ch:&#34;user_id&#34; |
 | link_id | [uint64](#uint64) |  | @gotag: ch:&#34;link_id&#34; |
 | id | [uint64](#uint64) |  | @gotag: ch:&#34;id&#34; |
-| flow | [ReCurringFlow](#api-v1-ReCurringFlow) |  | @gotag: ch:&#34;flow&#34; |
+| flow | [ReCurringFlow](#financial_integration_service_api-v1-ReCurringFlow) |  | @gotag: ch:&#34;flow&#34; |
 | sign | [int32](#int32) |  |  |
 
 
@@ -263,7 +263,7 @@
 
 
 
-<a name="api-v1-Transaction"></a>
+<a name="financial_integration_service_api-v1-Transaction"></a>
 
 ### Transaction
 
@@ -317,7 +317,7 @@
 
 
 
-<a name="api-v1-TransactionAmountByCountryMetric"></a>
+<a name="financial_integration_service_api-v1-TransactionAmountByCountryMetric"></a>
 
 ### TransactionAmountByCountryMetric
 
@@ -333,7 +333,7 @@
 
 
 
-<a name="api-v1-TransactionAmountDistributionByCategoryMetric"></a>
+<a name="financial_integration_service_api-v1-TransactionAmountDistributionByCategoryMetric"></a>
 
 ### TransactionAmountDistributionByCategoryMetric
 
@@ -351,7 +351,7 @@
 
 
 
-<a name="api-v1-TransactionCountByMerchantPaymentChannelMetric"></a>
+<a name="financial_integration_service_api-v1-TransactionCountByMerchantPaymentChannelMetric"></a>
 
 ### TransactionCountByMerchantPaymentChannelMetric
 
@@ -370,7 +370,7 @@
  
 
 
-<a name="api-v1-ReCurringFlow"></a>
+<a name="financial_integration_service_api-v1-ReCurringFlow"></a>
 
 ### ReCurringFlow
 
@@ -383,7 +383,7 @@
 
 
 
-<a name="api-v1-ReOccuringTransactionsFrequency"></a>
+<a name="financial_integration_service_api-v1-ReOccuringTransactionsFrequency"></a>
 
 ### ReOccuringTransactionsFrequency
 
@@ -399,7 +399,7 @@
 
 
 
-<a name="api-v1-ReOccuringTransactionsStatus"></a>
+<a name="financial_integration_service_api-v1-ReOccuringTransactionsStatus"></a>
 
 ### ReOccuringTransactionsStatus
 
@@ -420,14 +420,14 @@
 
 
 
-<a name="api_v1_errors_ignore_financial_service-proto"></a>
+<a name="financial_integration_service_api_v1_errors_ignore_financial_service-proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
-## api/v1/errors_ignore_financial_service.proto
+## financial_integration_service_api/v1/errors_ignore_financial_service.proto
 
 
 
-<a name="api-v1-ErrorMessageRequest"></a>
+<a name="financial_integration_service_api-v1-ErrorMessageRequest"></a>
 
 ### ErrorMessageRequest
 
@@ -437,7 +437,7 @@
 
 
 
-<a name="api-v1-InternalErrorMessageResponse"></a>
+<a name="financial_integration_service_api-v1-InternalErrorMessageResponse"></a>
 
 ### InternalErrorMessageResponse
 
@@ -445,7 +445,7 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| code | [InternalErrorCode](#api-v1-InternalErrorCode) |  |  |
+| code | [InternalErrorCode](#financial_integration_service_api-v1-InternalErrorCode) |  |  |
 | message | [string](#string) |  |  |
 
 
@@ -453,7 +453,7 @@
 
 
 
-<a name="api-v1-PathUnknownErrorMessageResponse"></a>
+<a name="financial_integration_service_api-v1-PathUnknownErrorMessageResponse"></a>
 
 ### PathUnknownErrorMessageResponse
 
@@ -461,7 +461,7 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| code | [NotFoundErrorCode](#api-v1-NotFoundErrorCode) |  |  |
+| code | [NotFoundErrorCode](#financial_integration_service_api-v1-NotFoundErrorCode) |  |  |
 | message | [string](#string) |  |  |
 
 
@@ -469,7 +469,7 @@
 
 
 
-<a name="api-v1-ValidationErrorMessageResponse"></a>
+<a name="financial_integration_service_api-v1-ValidationErrorMessageResponse"></a>
 
 ### ValidationErrorMessageResponse
 
@@ -477,7 +477,7 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| code | [ErrorCode](#api-v1-ErrorCode) |  |  |
+| code | [ErrorCode](#financial_integration_service_api-v1-ErrorCode) |  |  |
 | message | [string](#string) |  |  |
 
 
@@ -487,7 +487,7 @@
  
 
 
-<a name="api-v1-AuthErrorCode"></a>
+<a name="financial_integration_service_api-v1-AuthErrorCode"></a>
 
 ### AuthErrorCode
 
@@ -505,7 +505,7 @@
 
 
 
-<a name="api-v1-ErrorCode"></a>
+<a name="financial_integration_service_api-v1-ErrorCode"></a>
 
 ### ErrorCode
 
@@ -563,7 +563,7 @@
 
 
 
-<a name="api-v1-InternalErrorCode"></a>
+<a name="financial_integration_service_api-v1-InternalErrorCode"></a>
 
 ### InternalErrorCode
 
@@ -584,7 +584,7 @@
 
 
 
-<a name="api-v1-NotFoundErrorCode"></a>
+<a name="financial_integration_service_api-v1-NotFoundErrorCode"></a>
 
 ### NotFoundErrorCode
 
@@ -605,14 +605,14 @@
 
 
 
-<a name="api_v1_message_financial_service-proto"></a>
+<a name="financial_integration_service_api_v1_message_financial_service-proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
-## api/v1/message_financial_service.proto
+## financial_integration_service_api/v1/message_financial_service.proto
 
 
 
-<a name="api-v1-Apr"></a>
+<a name="financial_integration_service_api-v1-Apr"></a>
 
 ### Apr
 
@@ -631,7 +631,7 @@
 
 
 
-<a name="api-v1-BankAccount"></a>
+<a name="financial_integration_service_api-v1-BankAccount"></a>
 
 ### BankAccount
 
@@ -643,22 +643,22 @@
 | user_id | [uint64](#uint64) |  | the user id to which this bank account is tied to |
 | name | [string](#string) |  | the bank account name |
 | number | [string](#string) |  | the bank account number |
-| type | [BankAccountType](#api-v1-BankAccountType) |  | the bank account type |
+| type | [BankAccountType](#financial_integration_service_api-v1-BankAccountType) |  | the bank account type |
 | balance | [float](#float) |  | the bank account balance |
 | currency | [string](#string) |  | the bank account currency |
 | current_funds | [double](#double) |  |  |
 | balance_limit | [uint64](#uint64) |  |  |
-| pockets | [Pocket](#api-v1-Pocket) | repeated | the set of &#34;virtualized accounts this user witholds&#34; NOTE: these pockets are automatically created by the system when a user connects a bank account |
+| pockets | [Pocket](#financial_integration_service_api-v1-Pocket) | repeated | the set of &#34;virtualized accounts this user witholds&#34; NOTE: these pockets are automatically created by the system when a user connects a bank account |
 | plaid_account_id | [string](#string) |  | plaid account id mapped to this bank account |
 | subtype | [string](#string) |  | account subtype |
-| status | [BankAccountStatus](#api-v1-BankAccountStatus) |  | the bank account status |
+| status | [BankAccountStatus](#financial_integration_service_api-v1-BankAccountStatus) |  | the bank account status |
 
 
 
 
 
 
-<a name="api-v1-Budget"></a>
+<a name="financial_integration_service_api-v1-Budget"></a>
 
 ### Budget
 The Budgets table stores information about each budget created by the user,
@@ -672,14 +672,14 @@ including the name of the budget, the start and end dates, and the user ID.
 | description | [string](#string) |  |  |
 | start_date | [string](#string) |  | the time the goal was created |
 | end_date | [string](#string) |  | the time the goal was updated |
-| category | [Category](#api-v1-Category) |  | category associated with the goal |
+| category | [Category](#financial_integration_service_api-v1-Category) |  | category associated with the goal |
 
 
 
 
 
 
-<a name="api-v1-Category"></a>
+<a name="financial_integration_service_api-v1-Category"></a>
 
 ### Category
 The Categories table stores information about the different categories of expenses or income,
@@ -701,7 +701,7 @@ For example, the &#34;Housing&#34; category might have subcategories for &#34;Re
 
 
 
-<a name="api-v1-CreditAccount"></a>
+<a name="financial_integration_service_api-v1-CreditAccount"></a>
 
 ### CreditAccount
 
@@ -725,7 +725,7 @@ For example, the &#34;Housing&#34; category might have subcategories for &#34;Re
 | last_statement_issue_date | [string](#string) |  | the last statement issue date |
 | minimum_amount_due_date | [double](#double) |  | the minimum amount due date |
 | next_payment_date | [string](#string) |  | the next payment date |
-| aprs | [Apr](#api-v1-Apr) | repeated | the aprs |
+| aprs | [Apr](#financial_integration_service_api-v1-Apr) | repeated | the aprs |
 | last_statement_balance | [double](#double) |  | the last statement balance |
 | minimum_payment_amount | [double](#double) |  | the minimum payment amount |
 | next_payment_due_date | [string](#string) |  | the next payment due date |
@@ -735,7 +735,7 @@ For example, the &#34;Housing&#34; category might have subcategories for &#34;Re
 
 
 
-<a name="api-v1-Forecast"></a>
+<a name="financial_integration_service_api-v1-Forecast"></a>
 
 ### Forecast
 The Forecast table stores information about each forecast generated for a particular goal,
@@ -756,7 +756,7 @@ This allows the user to track how well they are progressing towards their goal a
 
 
 
-<a name="api-v1-InvesmentHolding"></a>
+<a name="financial_integration_service_api-v1-InvesmentHolding"></a>
 
 ### InvesmentHolding
 
@@ -782,7 +782,7 @@ This allows the user to track how well they are progressing towards their goal a
 
 
 
-<a name="api-v1-InvestmentAccount"></a>
+<a name="financial_integration_service_api-v1-InvestmentAccount"></a>
 
 ### InvestmentAccount
 
@@ -800,15 +800,15 @@ This allows the user to track how well they are progressing towards their goal a
 | balance_limit | [uint64](#uint64) |  |  |
 | plaid_account_id | [string](#string) |  | plaid account id mapped to this bank account |
 | subtype | [string](#string) |  | accoint subtype |
-| holdings | [InvesmentHolding](#api-v1-InvesmentHolding) | repeated | invesment holding is the set of securities this account witholds |
-| securities | [InvestmentSecurity](#api-v1-InvestmentSecurity) | repeated | the set of securities this account witholds |
+| holdings | [InvesmentHolding](#financial_integration_service_api-v1-InvesmentHolding) | repeated | invesment holding is the set of securities this account witholds |
+| securities | [InvestmentSecurity](#financial_integration_service_api-v1-InvestmentSecurity) | repeated | the set of securities this account witholds |
 
 
 
 
 
 
-<a name="api-v1-InvestmentSecurity"></a>
+<a name="financial_integration_service_api-v1-InvestmentSecurity"></a>
 
 ### InvestmentSecurity
 
@@ -839,7 +839,7 @@ This allows the user to track how well they are progressing towards their goal a
 
 
 
-<a name="api-v1-Link"></a>
+<a name="financial_integration_service_api-v1-Link"></a>
 
 ### Link
 A Link represents a login at a financial institution. A single end-user of your application might have accounts at different financial
@@ -854,8 +854,8 @@ Two Items created for the same set of credentials at the same institution will b
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | id | [uint64](#uint64) |  | id |
-| link_status | [LinkStatus](#api-v1-LinkStatus) |  |  |
-| plaid_link | [PlaidLink](#api-v1-PlaidLink) |  |  |
+| link_status | [LinkStatus](#financial_integration_service_api-v1-LinkStatus) |  |  |
+| plaid_link | [PlaidLink](#financial_integration_service_api-v1-PlaidLink) |  |  |
 | plaid_new_accounts_available | [bool](#bool) |  |  |
 | expiration_date | [string](#string) |  |  |
 | institution_name | [string](#string) |  |  |
@@ -863,25 +863,25 @@ Two Items created for the same set of credentials at the same institution will b
 | description | [string](#string) |  |  |
 | last_manual_sync | [string](#string) |  |  |
 | last_successful_update | [string](#string) |  |  |
-| token | [Token](#api-v1-Token) |  | token object witholds an access token which is a token used to make API requests related to a specific Item. You will typically obtain an access_token by calling /item/public_token/exchange. For more details, see the Token exchange flow. An access_token does not expire, although it may require updating, such as when a user changes their password, or when working with European institutions that comply with PSD2&#39;s 90-day consent window. For more information, see When to use update mode. Access tokens should always be stored securely, and associated with the user whose data they represent. If compromised, an access_token can be rotated via /item/access_token/invalidate. If no longer needed, it can be revoked via /item/remove.(gorm.field).has_one = {disable_association_autocreate: false disable_association_autoupdate: false preload: true}]; |
-| bank_accounts | [BankAccount](#api-v1-BankAccount) | repeated | a link event - or client login event can have many connected bank accounts for example a log in link against one instition like chase can have many account (checking and savings) it is important though to ensure that if a link against an instition already exists, we dont fascilitate duplicated |
-| investment_accounts | [InvestmentAccount](#api-v1-InvestmentAccount) | repeated | a link event - or client login event can have many connected investment accounts for example a log in link against one instition like fidelity can have many accounts (401k and investment account) it is important though to ensure that if a link against an instition already exists, we dont fascilitate duplicated |
-| credit_accounts | [CreditAccount](#api-v1-CreditAccount) | repeated | credit accounts tied to a user |
-| mortgage_accounts | [MortgageAccount](#api-v1-MortgageAccount) | repeated | mortgage accounts tied to a user |
-| student_loan_accounts | [StudentLoanAccount](#api-v1-StudentLoanAccount) | repeated | student loan accounts tied to a link |
+| token | [Token](#financial_integration_service_api-v1-Token) |  | token object witholds an access token which is a token used to make API requests related to a specific Item. You will typically obtain an access_token by calling /item/public_token/exchange. For more details, see the Token exchange flow. An access_token does not expire, although it may require updating, such as when a user changes their password, or when working with European institutions that comply with PSD2&#39;s 90-day consent window. For more information, see When to use update mode. Access tokens should always be stored securely, and associated with the user whose data they represent. If compromised, an access_token can be rotated via /item/access_token/invalidate. If no longer needed, it can be revoked via /item/remove.(gorm.field).has_one = {disable_association_autocreate: false disable_association_autoupdate: false preload: true}]; |
+| bank_accounts | [BankAccount](#financial_integration_service_api-v1-BankAccount) | repeated | a link event - or client login event can have many connected bank accounts for example a log in link against one instition like chase can have many account (checking and savings) it is important though to ensure that if a link against an instition already exists, we dont fascilitate duplicated |
+| investment_accounts | [InvestmentAccount](#financial_integration_service_api-v1-InvestmentAccount) | repeated | a link event - or client login event can have many connected investment accounts for example a log in link against one instition like fidelity can have many accounts (401k and investment account) it is important though to ensure that if a link against an instition already exists, we dont fascilitate duplicated |
+| credit_accounts | [CreditAccount](#financial_integration_service_api-v1-CreditAccount) | repeated | credit accounts tied to a user |
+| mortgage_accounts | [MortgageAccount](#financial_integration_service_api-v1-MortgageAccount) | repeated | mortgage accounts tied to a user |
+| student_loan_accounts | [StudentLoanAccount](#financial_integration_service_api-v1-StudentLoanAccount) | repeated | student loan accounts tied to a link |
 | plaid_institution_id | [string](#string) |  | the id of the institution this link is tied to and against |
-| link_type | [LinkType](#api-v1-LinkType) |  | the type of link this is ... can be either a manual or plaid link type |
+| link_type | [LinkType](#financial_integration_service_api-v1-LinkType) |  | the type of link this is ... can be either a manual or plaid link type |
 | error_code | [string](#string) |  |  |
 | updated_at | [string](#string) |  |  |
 | new_accounts_available | [bool](#bool) |  |  |
-| plaid_sync | [PlaidSync](#api-v1-PlaidSync) |  |  |
+| plaid_sync | [PlaidSync](#financial_integration_service_api-v1-PlaidSync) |  |  |
 
 
 
 
 
 
-<a name="api-v1-Milestone"></a>
+<a name="financial_integration_service_api-v1-Milestone"></a>
 
 ### Milestone
 Milestone: represents a milestone in the context of simfinni. A financial milestone that is both smart
@@ -896,14 +896,14 @@ and achievable. A milestone is a sub goal of a goal and is tied to a goal by the
 | target_date | [string](#string) |  | the target date of the milestone Validations: - must be at least 3 characters long |
 | target_amount | [string](#string) |  | the target amount of the milestone |
 | is_completed | [bool](#bool) |  | wethe milestone is completed or not |
-| budget | [Budget](#api-v1-Budget) |  | the budget associated with the milestone |
+| budget | [Budget](#financial_integration_service_api-v1-Budget) |  | the budget associated with the milestone |
 
 
 
 
 
 
-<a name="api-v1-MortgageAccount"></a>
+<a name="financial_integration_service_api-v1-MortgageAccount"></a>
 
 ### MortgageAccount
 
@@ -949,7 +949,7 @@ and achievable. A milestone is a sub goal of a goal and is tied to a goal by the
 
 
 
-<a name="api-v1-PlaidLink"></a>
+<a name="financial_integration_service_api-v1-PlaidLink"></a>
 
 ### PlaidLink
 
@@ -970,7 +970,7 @@ and achievable. A milestone is a sub goal of a goal and is tied to a goal by the
 
 
 
-<a name="api-v1-PlaidSync"></a>
+<a name="financial_integration_service_api-v1-PlaidSync"></a>
 
 ### PlaidSync
 
@@ -991,7 +991,7 @@ and achievable. A milestone is a sub goal of a goal and is tied to a goal by the
 
 
 
-<a name="api-v1-Pocket"></a>
+<a name="financial_integration_service_api-v1-Pocket"></a>
 
 ### Pocket
 Pocket is an abstraction of a over a bank account. A user can has at most 4 pockets per connected account
@@ -1005,15 +1005,15 @@ by any client. The only operations that can be performed against a pocket are:
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | id | [uint64](#uint64) |  | id |
-| goals | [SmartGoal](#api-v1-SmartGoal) | repeated | the set of smart goals this user witholds |
-| type | [PocketType](#api-v1-PocketType) |  | The type of the pocket |
+| goals | [SmartGoal](#financial_integration_service_api-v1-SmartGoal) | repeated | the set of smart goals this user witholds |
+| type | [PocketType](#financial_integration_service_api-v1-PocketType) |  | The type of the pocket |
 
 
 
 
 
 
-<a name="api-v1-SmartGoal"></a>
+<a name="financial_integration_service_api-v1-SmartGoal"></a>
 
 ### SmartGoal
 SmartGoal: The Goals table stores information about each financial goal, including the name of the goal,
@@ -1032,21 +1032,21 @@ more they need to save or invest to reach their target amount.
 | name | [string](#string) |  | The name of the goal Validations: - must be at least 3 characters long |
 | description | [string](#string) |  | The description of the goal Validations: - must be at least 3 characters long |
 | is_completed | [bool](#bool) |  | wether the goal has been achieved or not |
-| goal_type | [GoalType](#api-v1-GoalType) |  | The type of the goal |
+| goal_type | [GoalType](#financial_integration_service_api-v1-GoalType) |  | The type of the goal |
 | duration | [string](#string) |  | The duration of the goal |
 | start_date | [string](#string) |  | the start date of the goal |
 | end_date | [string](#string) |  | the end date of the goal |
 | target_amount | [string](#string) |  | the target amount of the goal amount of money the user wants to save or invest |
 | current_amount | [string](#string) |  | the current amount of the goal current amount of money saved or invested towards the goal |
-| milestones | [Milestone](#api-v1-Milestone) | repeated | Milestones associated with the goal |
-| forecasts | [Forecast](#api-v1-Forecast) |  | Forecasts associated with the goal |
+| milestones | [Milestone](#financial_integration_service_api-v1-Milestone) | repeated | Milestones associated with the goal |
+| forecasts | [Forecast](#financial_integration_service_api-v1-Forecast) |  | Forecasts associated with the goal |
 
 
 
 
 
 
-<a name="api-v1-StripeSubscription"></a>
+<a name="financial_integration_service_api-v1-StripeSubscription"></a>
 
 ### StripeSubscription
 StripeSubscription stores high level stripe subscription details of which the user profile has
@@ -1056,7 +1056,7 @@ StripeSubscription stores high level stripe subscription details of which the us
 | ----- | ---- | ----- | ----------- |
 | id | [uint64](#uint64) |  |  |
 | stripe_subscription_id | [string](#string) |  | stripe subscription id tied to the customer |
-| stripe_subscription_status | [StripeSubscriptionStatus](#api-v1-StripeSubscriptionStatus) |  | stripe subscription status |
+| stripe_subscription_status | [StripeSubscriptionStatus](#financial_integration_service_api-v1-StripeSubscriptionStatus) |  | stripe subscription status |
 | stripe_subscription_active_until | [string](#string) |  | stripe subscription active until |
 | stripe_webhook_latest_timestamp | [string](#string) |  | stripe webhook latest timestamp |
 | is_trialing | [bool](#bool) |  | wether the subscription is trialing |
@@ -1066,7 +1066,7 @@ StripeSubscription stores high level stripe subscription details of which the us
 
 
 
-<a name="api-v1-StudentLoanAccount"></a>
+<a name="financial_integration_service_api-v1-StudentLoanAccount"></a>
 
 ### StudentLoanAccount
 
@@ -1115,7 +1115,7 @@ StripeSubscription stores high level stripe subscription details of which the us
 
 
 
-<a name="api-v1-Token"></a>
+<a name="financial_integration_service_api-v1-Token"></a>
 
 ### Token
 
@@ -1134,7 +1134,7 @@ StripeSubscription stores high level stripe subscription details of which the us
 
 
 
-<a name="api-v1-UserProfile"></a>
+<a name="financial_integration_service_api-v1-UserProfile"></a>
 
 ### UserProfile
 UserProfile stores high level user profile details
@@ -1146,8 +1146,8 @@ such as the id, user_id tied to the profile, and many more
 | id | [uint64](#uint64) |  | id |
 | user_id | [uint64](#uint64) |  | the user id tied to the profile |
 | stripe_customer_id | [string](#string) |  |  |
-| stripe_subscriptions | [StripeSubscription](#api-v1-StripeSubscription) |  | the stripe subscriptions the user profile actively maintains |
-| link | [Link](#api-v1-Link) | repeated | a user profile can have many links (connected institutions) of which finanical accounts are tied to (checking, savings, etc) |
+| stripe_subscriptions | [StripeSubscription](#financial_integration_service_api-v1-StripeSubscription) |  | the stripe subscriptions the user profile actively maintains |
+| link | [Link](#financial_integration_service_api-v1-Link) | repeated | a user profile can have many links (connected institutions) of which finanical accounts are tied to (checking, savings, etc) |
 
 
 
@@ -1156,7 +1156,7 @@ such as the id, user_id tied to the profile, and many more
  
 
 
-<a name="api-v1-BankAccountStatus"></a>
+<a name="financial_integration_service_api-v1-BankAccountStatus"></a>
 
 ### BankAccountStatus
 
@@ -1169,7 +1169,7 @@ such as the id, user_id tied to the profile, and many more
 
 
 
-<a name="api-v1-BankAccountType"></a>
+<a name="financial_integration_service_api-v1-BankAccountType"></a>
 
 ### BankAccountType
 
@@ -1182,7 +1182,7 @@ such as the id, user_id tied to the profile, and many more
 
 
 
-<a name="api-v1-GoalStatus"></a>
+<a name="financial_integration_service_api-v1-GoalStatus"></a>
 
 ### GoalStatus
 
@@ -1197,7 +1197,7 @@ such as the id, user_id tied to the profile, and many more
 
 
 
-<a name="api-v1-GoalType"></a>
+<a name="financial_integration_service_api-v1-GoalType"></a>
 
 ### GoalType
 
@@ -1212,7 +1212,7 @@ such as the id, user_id tied to the profile, and many more
 
 
 
-<a name="api-v1-LinkStatus"></a>
+<a name="financial_integration_service_api-v1-LinkStatus"></a>
 
 ### LinkStatus
 
@@ -1229,7 +1229,7 @@ such as the id, user_id tied to the profile, and many more
 
 
 
-<a name="api-v1-LinkType"></a>
+<a name="financial_integration_service_api-v1-LinkType"></a>
 
 ### LinkType
 
@@ -1242,7 +1242,7 @@ such as the id, user_id tied to the profile, and many more
 
 
 
-<a name="api-v1-PocketType"></a>
+<a name="financial_integration_service_api-v1-PocketType"></a>
 
 ### PocketType
 
@@ -1260,7 +1260,7 @@ such as the id, user_id tied to the profile, and many more
 
 
 
-<a name="api-v1-StripeSubscriptionStatus"></a>
+<a name="financial_integration_service_api-v1-StripeSubscriptionStatus"></a>
 
 ### StripeSubscriptionStatus
 
@@ -1288,10 +1288,10 @@ such as the id, user_id tied to the profile, and many more
 
 
 
-<a name="api_v1_openapi_financial_service-proto"></a>
+<a name="financial_integration_service_api_v1_openapi_financial_service-proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
-## api/v1/openapi_financial_service.proto
+## financial_integration_service_api/v1/openapi_financial_service.proto
 
 
  
@@ -1304,14 +1304,14 @@ such as the id, user_id tied to the profile, and many more
 
 
 
-<a name="api_v1_request_response_financial_service-proto"></a>
+<a name="financial_integration_service_api_v1_request_response_financial_service-proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
-## api/v1/request_response_financial_service.proto
+## financial_integration_service_api/v1/request_response_financial_service.proto
 
 
 
-<a name="api-v1-CreateBankAccountRequest"></a>
+<a name="financial_integration_service_api-v1-CreateBankAccountRequest"></a>
 
 ### CreateBankAccountRequest
 CreateBankAccountRequest: Represents the request object invoked against the financial
@@ -1321,14 +1321,14 @@ service to create a bank account for a given user
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | user_id | [uint64](#uint64) |  | The account ID associated with the user Validations: - user_id must be greater than 0 |
-| bank_account | [BankAccount](#api-v1-BankAccount) |  | The bank account to create Validations: - cannot be nil hence required |
+| bank_account | [BankAccount](#financial_integration_service_api-v1-BankAccount) |  | The bank account to create Validations: - cannot be nil hence required |
 
 
 
 
 
 
-<a name="api-v1-CreateBankAccountResponse"></a>
+<a name="financial_integration_service_api-v1-CreateBankAccountResponse"></a>
 
 ### CreateBankAccountResponse
 CreateBankAccountResponse: Represents the response object returned as a response to
@@ -1344,7 +1344,7 @@ the `create bank account` request
 
 
 
-<a name="api-v1-CreateBudgetRequest"></a>
+<a name="financial_integration_service_api-v1-CreateBudgetRequest"></a>
 
 ### CreateBudgetRequest
 
@@ -1353,14 +1353,14 @@ the `create bank account` request
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | milestrone_id | [uint64](#uint64) |  | The milestone to associate this budget with |
-| budget | [Budget](#api-v1-Budget) |  | The budget to create Validations: - cannot be nil hence required |
+| budget | [Budget](#financial_integration_service_api-v1-Budget) |  | The budget to create Validations: - cannot be nil hence required |
 
 
 
 
 
 
-<a name="api-v1-CreateBudgetResponse"></a>
+<a name="financial_integration_service_api-v1-CreateBudgetResponse"></a>
 
 ### CreateBudgetResponse
 
@@ -1375,7 +1375,7 @@ the `create bank account` request
 
 
 
-<a name="api-v1-CreateManualLinkRequest"></a>
+<a name="financial_integration_service_api-v1-CreateManualLinkRequest"></a>
 
 ### CreateManualLinkRequest
 
@@ -1384,14 +1384,14 @@ the `create bank account` request
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | user_id | [uint64](#uint64) |  | The user id Validations: - user_id must be greater than 0 |
-| manual_account_link | [Link](#api-v1-Link) |  | The manual account link |
+| manual_account_link | [Link](#financial_integration_service_api-v1-Link) |  | The manual account link |
 
 
 
 
 
 
-<a name="api-v1-CreateManualLinkResponse"></a>
+<a name="financial_integration_service_api-v1-CreateManualLinkResponse"></a>
 
 ### CreateManualLinkResponse
 
@@ -1406,7 +1406,7 @@ the `create bank account` request
 
 
 
-<a name="api-v1-CreateMilestoneRequest"></a>
+<a name="financial_integration_service_api-v1-CreateMilestoneRequest"></a>
 
 ### CreateMilestoneRequest
 
@@ -1415,14 +1415,14 @@ the `create bank account` request
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | smart_goal_id | [uint64](#uint64) |  | The smart goal id Validations: - smart_goal_id must be greater than 0 |
-| milestone | [Milestone](#api-v1-Milestone) |  | The milestone to create Validations: - cannot be nil hence required |
+| milestone | [Milestone](#financial_integration_service_api-v1-Milestone) |  | The milestone to create Validations: - cannot be nil hence required |
 
 
 
 
 
 
-<a name="api-v1-CreateMilestoneResponse"></a>
+<a name="financial_integration_service_api-v1-CreateMilestoneResponse"></a>
 
 ### CreateMilestoneResponse
 
@@ -1437,7 +1437,7 @@ the `create bank account` request
 
 
 
-<a name="api-v1-CreateSmartGoalRequest"></a>
+<a name="financial_integration_service_api-v1-CreateSmartGoalRequest"></a>
 
 ### CreateSmartGoalRequest
 
@@ -1446,14 +1446,14 @@ the `create bank account` request
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | pocket_id | [uint64](#uint64) |  | The pocket account id Validations: - pocket_account_id must be greater than 0 |
-| smart_goal | [SmartGoal](#api-v1-SmartGoal) |  | The smart goal to create Validations: - cannot be nil hence required |
+| smart_goal | [SmartGoal](#financial_integration_service_api-v1-SmartGoal) |  | The smart goal to create Validations: - cannot be nil hence required |
 
 
 
 
 
 
-<a name="api-v1-CreateSmartGoalResponse"></a>
+<a name="financial_integration_service_api-v1-CreateSmartGoalResponse"></a>
 
 ### CreateSmartGoalResponse
 
@@ -1468,7 +1468,7 @@ the `create bank account` request
 
 
 
-<a name="api-v1-CreateSubscriptionRequest"></a>
+<a name="financial_integration_service_api-v1-CreateSubscriptionRequest"></a>
 
 ### CreateSubscriptionRequest
 
@@ -1484,7 +1484,7 @@ the `create bank account` request
 
 
 
-<a name="api-v1-CreateSubscriptionResponse"></a>
+<a name="financial_integration_service_api-v1-CreateSubscriptionResponse"></a>
 
 ### CreateSubscriptionResponse
 
@@ -1500,7 +1500,7 @@ the `create bank account` request
 
 
 
-<a name="api-v1-CreateUserProfileRequest"></a>
+<a name="financial_integration_service_api-v1-CreateUserProfileRequest"></a>
 
 ### CreateUserProfileRequest
 CreateUserProfileRequest: Represents the request object invoked against the user
@@ -1509,7 +1509,7 @@ service to create a user profile
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| profile | [UserProfile](#api-v1-UserProfile) |  | User profile to create Validations: - cannot be nil hence required |
+| profile | [UserProfile](#financial_integration_service_api-v1-UserProfile) |  | User profile to create Validations: - cannot be nil hence required |
 | email | [string](#string) |  | the email of the account to create |
 
 
@@ -1517,7 +1517,7 @@ service to create a user profile
 
 
 
-<a name="api-v1-CreateUserProfileResponse"></a>
+<a name="financial_integration_service_api-v1-CreateUserProfileResponse"></a>
 
 ### CreateUserProfileResponse
 CreateUserProfileResponse: Represents the response object returned as a response to
@@ -1533,7 +1533,7 @@ the `create user profile` request
 
 
 
-<a name="api-v1-DeleteBankAccountRequest"></a>
+<a name="financial_integration_service_api-v1-DeleteBankAccountRequest"></a>
 
 ### DeleteBankAccountRequest
 
@@ -1549,7 +1549,7 @@ the `create user profile` request
 
 
 
-<a name="api-v1-DeleteBankAccountResponse"></a>
+<a name="financial_integration_service_api-v1-DeleteBankAccountResponse"></a>
 
 ### DeleteBankAccountResponse
 
@@ -1564,7 +1564,7 @@ the `create user profile` request
 
 
 
-<a name="api-v1-DeleteBudgetRequest"></a>
+<a name="financial_integration_service_api-v1-DeleteBudgetRequest"></a>
 
 ### DeleteBudgetRequest
 
@@ -1579,7 +1579,7 @@ the `create user profile` request
 
 
 
-<a name="api-v1-DeleteBudgetResponse"></a>
+<a name="financial_integration_service_api-v1-DeleteBudgetResponse"></a>
 
 ### DeleteBudgetResponse
 
@@ -1594,7 +1594,7 @@ the `create user profile` request
 
 
 
-<a name="api-v1-DeleteLinkRequest"></a>
+<a name="financial_integration_service_api-v1-DeleteLinkRequest"></a>
 
 ### DeleteLinkRequest
 
@@ -1610,7 +1610,7 @@ the `create user profile` request
 
 
 
-<a name="api-v1-DeleteLinkResponse"></a>
+<a name="financial_integration_service_api-v1-DeleteLinkResponse"></a>
 
 ### DeleteLinkResponse
 
@@ -1625,7 +1625,7 @@ the `create user profile` request
 
 
 
-<a name="api-v1-DeleteMilestoneRequest"></a>
+<a name="financial_integration_service_api-v1-DeleteMilestoneRequest"></a>
 
 ### DeleteMilestoneRequest
 
@@ -1640,7 +1640,7 @@ the `create user profile` request
 
 
 
-<a name="api-v1-DeleteMilestoneResponse"></a>
+<a name="financial_integration_service_api-v1-DeleteMilestoneResponse"></a>
 
 ### DeleteMilestoneResponse
 
@@ -1655,7 +1655,7 @@ the `create user profile` request
 
 
 
-<a name="api-v1-DeleteSmartGoalRequest"></a>
+<a name="financial_integration_service_api-v1-DeleteSmartGoalRequest"></a>
 
 ### DeleteSmartGoalRequest
 
@@ -1670,7 +1670,7 @@ the `create user profile` request
 
 
 
-<a name="api-v1-DeleteSmartGoalResponse"></a>
+<a name="financial_integration_service_api-v1-DeleteSmartGoalResponse"></a>
 
 ### DeleteSmartGoalResponse
 
@@ -1685,7 +1685,7 @@ the `create user profile` request
 
 
 
-<a name="api-v1-DeleteUserProfileRequest"></a>
+<a name="financial_integration_service_api-v1-DeleteUserProfileRequest"></a>
 
 ### DeleteUserProfileRequest
 teUserProfileRequest: Represents the request object invoked against the user
@@ -1701,7 +1701,7 @@ service to delete a user profile
 
 
 
-<a name="api-v1-DeleteUserProfileResponse"></a>
+<a name="financial_integration_service_api-v1-DeleteUserProfileResponse"></a>
 
 ### DeleteUserProfileResponse
 DeleteUserProfileResponse: Represents the response object returned as a response to
@@ -1717,7 +1717,7 @@ the `delete user profile` request
 
 
 
-<a name="api-v1-GetAllBudgetsRequest"></a>
+<a name="financial_integration_service_api-v1-GetAllBudgetsRequest"></a>
 
 ### GetAllBudgetsRequest
 
@@ -1734,7 +1734,7 @@ the `delete user profile` request
 
 
 
-<a name="api-v1-GetAllBudgetsResponse"></a>
+<a name="financial_integration_service_api-v1-GetAllBudgetsResponse"></a>
 
 ### GetAllBudgetsResponse
 
@@ -1742,14 +1742,14 @@ the `delete user profile` request
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| budgets | [Budget](#api-v1-Budget) | repeated | The budgets |
+| budgets | [Budget](#financial_integration_service_api-v1-Budget) | repeated | The budgets |
 
 
 
 
 
 
-<a name="api-v1-GetBankAccountRequest"></a>
+<a name="financial_integration_service_api-v1-GetBankAccountRequest"></a>
 
 ### GetBankAccountRequest
 GetBankAccountRequest: Represents the request object invoked against the financial
@@ -1765,7 +1765,7 @@ service to get a bank account for a given user and bank account id
 
 
 
-<a name="api-v1-GetBankAccountResponse"></a>
+<a name="financial_integration_service_api-v1-GetBankAccountResponse"></a>
 
 ### GetBankAccountResponse
 GetBankAccountResponse: Represents the response object returned as a response to
@@ -1774,14 +1774,14 @@ the `get bank account` request
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| bank_account | [BankAccount](#api-v1-BankAccount) |  | The bank account |
+| bank_account | [BankAccount](#financial_integration_service_api-v1-BankAccount) |  | The bank account |
 
 
 
 
 
 
-<a name="api-v1-GetBudgetRequest"></a>
+<a name="financial_integration_service_api-v1-GetBudgetRequest"></a>
 
 ### GetBudgetRequest
 
@@ -1796,7 +1796,7 @@ the `get bank account` request
 
 
 
-<a name="api-v1-GetBudgetResponse"></a>
+<a name="financial_integration_service_api-v1-GetBudgetResponse"></a>
 
 ### GetBudgetResponse
 
@@ -1804,14 +1804,14 @@ the `get bank account` request
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| budget | [Budget](#api-v1-Budget) |  | The budget |
+| budget | [Budget](#financial_integration_service_api-v1-Budget) |  | The budget |
 
 
 
 
 
 
-<a name="api-v1-GetForecastRequest"></a>
+<a name="financial_integration_service_api-v1-GetForecastRequest"></a>
 
 ### GetForecastRequest
 
@@ -1826,7 +1826,7 @@ the `get bank account` request
 
 
 
-<a name="api-v1-GetForecastResponse"></a>
+<a name="financial_integration_service_api-v1-GetForecastResponse"></a>
 
 ### GetForecastResponse
 
@@ -1834,14 +1834,14 @@ the `get bank account` request
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| forecast | [Forecast](#api-v1-Forecast) |  | The forecast |
+| forecast | [Forecast](#financial_integration_service_api-v1-Forecast) |  | The forecast |
 
 
 
 
 
 
-<a name="api-v1-GetInvestmentAcccountRequest"></a>
+<a name="financial_integration_service_api-v1-GetInvestmentAcccountRequest"></a>
 
 ### GetInvestmentAcccountRequest
 
@@ -1857,7 +1857,7 @@ the `get bank account` request
 
 
 
-<a name="api-v1-GetInvestmentAcccountResponse"></a>
+<a name="financial_integration_service_api-v1-GetInvestmentAcccountResponse"></a>
 
 ### GetInvestmentAcccountResponse
 
@@ -1865,14 +1865,14 @@ the `get bank account` request
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| investment_account | [InvestmentAccount](#api-v1-InvestmentAccount) |  | The investment account |
+| investment_account | [InvestmentAccount](#financial_integration_service_api-v1-InvestmentAccount) |  | The investment account |
 
 
 
 
 
 
-<a name="api-v1-GetLiabilityAccountRequest"></a>
+<a name="financial_integration_service_api-v1-GetLiabilityAccountRequest"></a>
 
 ### GetLiabilityAccountRequest
 
@@ -1888,7 +1888,7 @@ the `get bank account` request
 
 
 
-<a name="api-v1-GetLiabilityAccountResponse"></a>
+<a name="financial_integration_service_api-v1-GetLiabilityAccountResponse"></a>
 
 ### GetLiabilityAccountResponse
 
@@ -1896,14 +1896,14 @@ the `get bank account` request
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| liability_account | [CreditAccount](#api-v1-CreditAccount) |  | The liability account |
+| liability_account | [CreditAccount](#financial_integration_service_api-v1-CreditAccount) |  | The liability account |
 
 
 
 
 
 
-<a name="api-v1-GetLinkRequest"></a>
+<a name="financial_integration_service_api-v1-GetLinkRequest"></a>
 
 ### GetLinkRequest
 
@@ -1919,7 +1919,7 @@ the `get bank account` request
 
 
 
-<a name="api-v1-GetLinkResponse"></a>
+<a name="financial_integration_service_api-v1-GetLinkResponse"></a>
 
 ### GetLinkResponse
 
@@ -1927,14 +1927,14 @@ the `get bank account` request
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| link | [Link](#api-v1-Link) |  | The link |
+| link | [Link](#financial_integration_service_api-v1-Link) |  | The link |
 
 
 
 
 
 
-<a name="api-v1-GetLinksRequest"></a>
+<a name="financial_integration_service_api-v1-GetLinksRequest"></a>
 
 ### GetLinksRequest
 
@@ -1949,7 +1949,7 @@ the `get bank account` request
 
 
 
-<a name="api-v1-GetLinksResponse"></a>
+<a name="financial_integration_service_api-v1-GetLinksResponse"></a>
 
 ### GetLinksResponse
 
@@ -1957,14 +1957,14 @@ the `get bank account` request
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| links | [Link](#api-v1-Link) | repeated | The links |
+| links | [Link](#financial_integration_service_api-v1-Link) | repeated | The links |
 
 
 
 
 
 
-<a name="api-v1-GetMilestoneRequest"></a>
+<a name="financial_integration_service_api-v1-GetMilestoneRequest"></a>
 
 ### GetMilestoneRequest
 
@@ -1979,7 +1979,7 @@ the `get bank account` request
 
 
 
-<a name="api-v1-GetMilestoneResponse"></a>
+<a name="financial_integration_service_api-v1-GetMilestoneResponse"></a>
 
 ### GetMilestoneResponse
 
@@ -1987,14 +1987,14 @@ the `get bank account` request
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| milestone | [Milestone](#api-v1-Milestone) |  | The milestone |
+| milestone | [Milestone](#financial_integration_service_api-v1-Milestone) |  | The milestone |
 
 
 
 
 
 
-<a name="api-v1-GetMilestonesBySmartGoalIdRequest"></a>
+<a name="financial_integration_service_api-v1-GetMilestonesBySmartGoalIdRequest"></a>
 
 ### GetMilestonesBySmartGoalIdRequest
 
@@ -2009,7 +2009,7 @@ the `get bank account` request
 
 
 
-<a name="api-v1-GetMilestonesBySmartGoalIdResponse"></a>
+<a name="financial_integration_service_api-v1-GetMilestonesBySmartGoalIdResponse"></a>
 
 ### GetMilestonesBySmartGoalIdResponse
 
@@ -2017,14 +2017,14 @@ the `get bank account` request
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| milestones | [Milestone](#api-v1-Milestone) | repeated | The milestones |
+| milestones | [Milestone](#financial_integration_service_api-v1-Milestone) | repeated | The milestones |
 
 
 
 
 
 
-<a name="api-v1-GetMortgageAccountRequest"></a>
+<a name="financial_integration_service_api-v1-GetMortgageAccountRequest"></a>
 
 ### GetMortgageAccountRequest
 
@@ -2040,7 +2040,7 @@ the `get bank account` request
 
 
 
-<a name="api-v1-GetMortgageAccountResponse"></a>
+<a name="financial_integration_service_api-v1-GetMortgageAccountResponse"></a>
 
 ### GetMortgageAccountResponse
 
@@ -2048,14 +2048,14 @@ the `get bank account` request
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| mortage_account | [MortgageAccount](#api-v1-MortgageAccount) |  | The mortage account |
+| mortage_account | [MortgageAccount](#financial_integration_service_api-v1-MortgageAccount) |  | The mortage account |
 
 
 
 
 
 
-<a name="api-v1-GetPocketRequest"></a>
+<a name="financial_integration_service_api-v1-GetPocketRequest"></a>
 
 ### GetPocketRequest
 
@@ -2070,7 +2070,7 @@ the `get bank account` request
 
 
 
-<a name="api-v1-GetPocketResponse"></a>
+<a name="financial_integration_service_api-v1-GetPocketResponse"></a>
 
 ### GetPocketResponse
 
@@ -2078,14 +2078,14 @@ the `get bank account` request
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| pocket | [Pocket](#api-v1-Pocket) |  | The pocket account |
+| pocket | [Pocket](#financial_integration_service_api-v1-Pocket) |  | The pocket account |
 
 
 
 
 
 
-<a name="api-v1-GetReCurringTransactionsRequest"></a>
+<a name="financial_integration_service_api-v1-GetReCurringTransactionsRequest"></a>
 
 ### GetReCurringTransactionsRequest
 
@@ -2100,7 +2100,7 @@ the `get bank account` request
 
 
 
-<a name="api-v1-GetReCurringTransactionsResponse"></a>
+<a name="financial_integration_service_api-v1-GetReCurringTransactionsResponse"></a>
 
 ### GetReCurringTransactionsResponse
 
@@ -2108,15 +2108,15 @@ the `get bank account` request
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| re_ccuring_transactions | [ReOccuringTransaction](#api-v1-ReOccuringTransaction) | repeated | The re-occuring transactions |
-| participant_re_ccuring_transactions | [GetReCurringTransactionsResponse.ParticipantReCurringTransactions](#api-v1-GetReCurringTransactionsResponse-ParticipantReCurringTransactions) | repeated |  |
+| re_ccuring_transactions | [ReOccuringTransaction](#financial_integration_service_api-v1-ReOccuringTransaction) | repeated | The re-occuring transactions |
+| participant_re_ccuring_transactions | [GetReCurringTransactionsResponse.ParticipantReCurringTransactions](#financial_integration_service_api-v1-GetReCurringTransactionsResponse-ParticipantReCurringTransactions) | repeated |  |
 
 
 
 
 
 
-<a name="api-v1-GetReCurringTransactionsResponse-ParticipantReCurringTransactions"></a>
+<a name="financial_integration_service_api-v1-GetReCurringTransactionsResponse-ParticipantReCurringTransactions"></a>
 
 ### GetReCurringTransactionsResponse.ParticipantReCurringTransactions
 
@@ -2125,14 +2125,14 @@ the `get bank account` request
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | reocurring_transaction_id | [uint64](#uint64) |  | The participant id |
-| transactions | [Transaction](#api-v1-Transaction) | repeated | The transactions |
+| transactions | [Transaction](#financial_integration_service_api-v1-Transaction) | repeated | The transactions |
 
 
 
 
 
 
-<a name="api-v1-GetSmartGoalsByPocketIdRequest"></a>
+<a name="financial_integration_service_api-v1-GetSmartGoalsByPocketIdRequest"></a>
 
 ### GetSmartGoalsByPocketIdRequest
 
@@ -2147,7 +2147,7 @@ the `get bank account` request
 
 
 
-<a name="api-v1-GetSmartGoalsByPocketIdResponse"></a>
+<a name="financial_integration_service_api-v1-GetSmartGoalsByPocketIdResponse"></a>
 
 ### GetSmartGoalsByPocketIdResponse
 
@@ -2155,14 +2155,14 @@ the `get bank account` request
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| smart_goals | [SmartGoal](#api-v1-SmartGoal) | repeated | The smart goals |
+| smart_goals | [SmartGoal](#financial_integration_service_api-v1-SmartGoal) | repeated | The smart goals |
 
 
 
 
 
 
-<a name="api-v1-GetStudentLoanAccountRequest"></a>
+<a name="financial_integration_service_api-v1-GetStudentLoanAccountRequest"></a>
 
 ### GetStudentLoanAccountRequest
 
@@ -2178,7 +2178,7 @@ the `get bank account` request
 
 
 
-<a name="api-v1-GetStudentLoanAccountResponse"></a>
+<a name="financial_integration_service_api-v1-GetStudentLoanAccountResponse"></a>
 
 ### GetStudentLoanAccountResponse
 
@@ -2186,14 +2186,14 @@ the `get bank account` request
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| student_loan_account | [StudentLoanAccount](#api-v1-StudentLoanAccount) |  | The student loan account |
+| student_loan_account | [StudentLoanAccount](#financial_integration_service_api-v1-StudentLoanAccount) |  | The student loan account |
 
 
 
 
 
 
-<a name="api-v1-GetTransactionsRequest"></a>
+<a name="financial_integration_service_api-v1-GetTransactionsRequest"></a>
 
 ### GetTransactionsRequest
 
@@ -2210,7 +2210,7 @@ the `get bank account` request
 
 
 
-<a name="api-v1-GetTransactionsResponse"></a>
+<a name="financial_integration_service_api-v1-GetTransactionsResponse"></a>
 
 ### GetTransactionsResponse
 
@@ -2218,7 +2218,7 @@ the `get bank account` request
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| transactions | [Transaction](#api-v1-Transaction) | repeated | The transactions |
+| transactions | [Transaction](#financial_integration_service_api-v1-Transaction) | repeated | The transactions |
 | next_page_number | [uint64](#uint64) |  |  |
 
 
@@ -2226,7 +2226,7 @@ the `get bank account` request
 
 
 
-<a name="api-v1-GetUserProfileRequest"></a>
+<a name="financial_integration_service_api-v1-GetUserProfileRequest"></a>
 
 ### GetUserProfileRequest
 GetUserProfileRequest: Represents the request object invoked against the user
@@ -2242,7 +2242,7 @@ service to get a user profile
 
 
 
-<a name="api-v1-GetUserProfileResponse"></a>
+<a name="financial_integration_service_api-v1-GetUserProfileResponse"></a>
 
 ### GetUserProfileResponse
 GetUserProfileResponse: Represents the response object returned as a response to
@@ -2251,14 +2251,14 @@ the `get user profile` request
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| profile | [UserProfile](#api-v1-UserProfile) |  |  |
+| profile | [UserProfile](#financial_integration_service_api-v1-UserProfile) |  |  |
 
 
 
 
 
 
-<a name="api-v1-HealthCheckRequest"></a>
+<a name="financial_integration_service_api-v1-HealthCheckRequest"></a>
 
 ### HealthCheckRequest
 
@@ -2268,7 +2268,7 @@ the `get user profile` request
 
 
 
-<a name="api-v1-HealthCheckResponse"></a>
+<a name="financial_integration_service_api-v1-HealthCheckResponse"></a>
 
 ### HealthCheckResponse
 
@@ -2283,7 +2283,7 @@ the `get user profile` request
 
 
 
-<a name="api-v1-PlaidExchangeTokenRequest"></a>
+<a name="financial_integration_service_api-v1-PlaidExchangeTokenRequest"></a>
 
 ### PlaidExchangeTokenRequest
 
@@ -2301,7 +2301,7 @@ the `get user profile` request
 
 
 
-<a name="api-v1-PlaidExchangeTokenResponse"></a>
+<a name="financial_integration_service_api-v1-PlaidExchangeTokenResponse"></a>
 
 ### PlaidExchangeTokenResponse
 
@@ -2316,7 +2316,7 @@ the `get user profile` request
 
 
 
-<a name="api-v1-PlaidInitiateTokenExchangeRequest"></a>
+<a name="financial_integration_service_api-v1-PlaidInitiateTokenExchangeRequest"></a>
 
 ### PlaidInitiateTokenExchangeRequest
 
@@ -2334,7 +2334,7 @@ the `get user profile` request
 
 
 
-<a name="api-v1-PlaidInitiateTokenExchangeResponse"></a>
+<a name="financial_integration_service_api-v1-PlaidInitiateTokenExchangeResponse"></a>
 
 ### PlaidInitiateTokenExchangeResponse
 
@@ -2351,7 +2351,7 @@ the `get user profile` request
 
 
 
-<a name="api-v1-ProcessWebhookRequest"></a>
+<a name="financial_integration_service_api-v1-ProcessWebhookRequest"></a>
 
 ### ProcessWebhookRequest
 
@@ -2367,7 +2367,7 @@ the `get user profile` request
 | environment | [string](#string) |  | The Plaid environment the webhook was sent from |
 | new_transactions | [string](#string) | repeated | The number of new, unfetched transactions available |
 | removed_transactions | [string](#string) | repeated | An array of transaction_ids corresponding to the removed transactions |
-| error | [ProcessWebhookRequest.ErrorEntry](#api-v1-ProcessWebhookRequest-ErrorEntry) | repeated | We use standard HTTP response codes for success and failure notifications, and our errors are further classified by error_type. In general, 200 HTTP codes correspond to success, 40X codes are for developer- or user-related failures, and 50X codes are for Plaid-related issues. An Item with a non-null error object will only be part of an API response when calling /item/get to view Item status. Otherwise, error fields will be null if no error has occurred; if an error has occurred, an error code will be returned instead. |
+| error | [ProcessWebhookRequest.ErrorEntry](#financial_integration_service_api-v1-ProcessWebhookRequest-ErrorEntry) | repeated | We use standard HTTP response codes for success and failure notifications, and our errors are further classified by error_type. In general, 200 HTTP codes correspond to success, 40X codes are for developer- or user-related failures, and 50X codes are for Plaid-related issues. An Item with a non-null error object will only be part of an API response when calling /item/get to view Item status. Otherwise, error fields will be null if no error has occurred; if an error has occurred, an error code will be returned instead. |
 | account_ids | [string](#string) | repeated | A list of account_ids for accounts that have new or updated recurring transactions data. |
 | consent_expiration_time | [string](#string) |  | The time at which the user&#39;s access_token will expire. This field will only be present |
 | account_ids_with_new_liabilities | [string](#string) | repeated | An array of account_id&#39;s for accounts that contain new liabilities.&#39; |
@@ -2380,7 +2380,7 @@ the `get user profile` request
 
 
 
-<a name="api-v1-ProcessWebhookRequest-ErrorEntry"></a>
+<a name="financial_integration_service_api-v1-ProcessWebhookRequest-ErrorEntry"></a>
 
 ### ProcessWebhookRequest.ErrorEntry
 
@@ -2396,7 +2396,7 @@ the `get user profile` request
 
 
 
-<a name="api-v1-ProcessWebhookResponse"></a>
+<a name="financial_integration_service_api-v1-ProcessWebhookResponse"></a>
 
 ### ProcessWebhookResponse
 
@@ -2406,7 +2406,7 @@ the `get user profile` request
 
 
 
-<a name="api-v1-ReadynessCheckRequest"></a>
+<a name="financial_integration_service_api-v1-ReadynessCheckRequest"></a>
 
 ### ReadynessCheckRequest
 
@@ -2416,7 +2416,7 @@ the `get user profile` request
 
 
 
-<a name="api-v1-ReadynessCheckResponse"></a>
+<a name="financial_integration_service_api-v1-ReadynessCheckResponse"></a>
 
 ### ReadynessCheckResponse
 
@@ -2431,7 +2431,7 @@ the `get user profile` request
 
 
 
-<a name="api-v1-StripeWebhookRequest"></a>
+<a name="financial_integration_service_api-v1-StripeWebhookRequest"></a>
 
 ### StripeWebhookRequest
 
@@ -2447,7 +2447,7 @@ the `get user profile` request
 
 
 
-<a name="api-v1-StripeWebhookResponse"></a>
+<a name="financial_integration_service_api-v1-StripeWebhookResponse"></a>
 
 ### StripeWebhookResponse
 
@@ -2462,7 +2462,7 @@ the `get user profile` request
 
 
 
-<a name="api-v1-UpdateBankAccountRequest"></a>
+<a name="financial_integration_service_api-v1-UpdateBankAccountRequest"></a>
 
 ### UpdateBankAccountRequest
 
@@ -2470,14 +2470,14 @@ the `get user profile` request
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| bank_account | [BankAccount](#api-v1-BankAccount) |  | The bank account to update Validations: - cannot be nil hence required |
+| bank_account | [BankAccount](#financial_integration_service_api-v1-BankAccount) |  | The bank account to update Validations: - cannot be nil hence required |
 
 
 
 
 
 
-<a name="api-v1-UpdateBankAccountResponse"></a>
+<a name="financial_integration_service_api-v1-UpdateBankAccountResponse"></a>
 
 ### UpdateBankAccountResponse
 
@@ -2486,14 +2486,14 @@ the `get user profile` request
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | updated | [bool](#bool) |  | The bank account id |
-| bank_account | [BankAccount](#api-v1-BankAccount) |  | The bank account |
+| bank_account | [BankAccount](#financial_integration_service_api-v1-BankAccount) |  | The bank account |
 
 
 
 
 
 
-<a name="api-v1-UpdateBudgetRequest"></a>
+<a name="financial_integration_service_api-v1-UpdateBudgetRequest"></a>
 
 ### UpdateBudgetRequest
 
@@ -2501,14 +2501,14 @@ the `get user profile` request
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| budget | [Budget](#api-v1-Budget) |  | The budget to update Validations: - cannot be nil hence required |
+| budget | [Budget](#financial_integration_service_api-v1-Budget) |  | The budget to update Validations: - cannot be nil hence required |
 
 
 
 
 
 
-<a name="api-v1-UpdateBudgetResponse"></a>
+<a name="financial_integration_service_api-v1-UpdateBudgetResponse"></a>
 
 ### UpdateBudgetResponse
 
@@ -2516,14 +2516,14 @@ the `get user profile` request
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| budget | [Budget](#api-v1-Budget) |  | The budget id |
+| budget | [Budget](#financial_integration_service_api-v1-Budget) |  | The budget id |
 
 
 
 
 
 
-<a name="api-v1-UpdateMilestoneRequest"></a>
+<a name="financial_integration_service_api-v1-UpdateMilestoneRequest"></a>
 
 ### UpdateMilestoneRequest
 
@@ -2531,14 +2531,14 @@ the `get user profile` request
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| milestone | [Milestone](#api-v1-Milestone) |  | The milestone to update Validations: - cannot be nil hence required |
+| milestone | [Milestone](#financial_integration_service_api-v1-Milestone) |  | The milestone to update Validations: - cannot be nil hence required |
 
 
 
 
 
 
-<a name="api-v1-UpdateMilestoneResponse"></a>
+<a name="financial_integration_service_api-v1-UpdateMilestoneResponse"></a>
 
 ### UpdateMilestoneResponse
 
@@ -2546,14 +2546,14 @@ the `get user profile` request
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| milestone | [Milestone](#api-v1-Milestone) |  | The milestone id |
+| milestone | [Milestone](#financial_integration_service_api-v1-Milestone) |  | The milestone id |
 
 
 
 
 
 
-<a name="api-v1-UpdateSmartGoalRequest"></a>
+<a name="financial_integration_service_api-v1-UpdateSmartGoalRequest"></a>
 
 ### UpdateSmartGoalRequest
 
@@ -2561,14 +2561,14 @@ the `get user profile` request
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| smart_goal | [SmartGoal](#api-v1-SmartGoal) |  | The smart goal to update Validations: - cannot be nil hence required |
+| smart_goal | [SmartGoal](#financial_integration_service_api-v1-SmartGoal) |  | The smart goal to update Validations: - cannot be nil hence required |
 
 
 
 
 
 
-<a name="api-v1-UpdateSmartGoalResponse"></a>
+<a name="financial_integration_service_api-v1-UpdateSmartGoalResponse"></a>
 
 ### UpdateSmartGoalResponse
 
@@ -2583,7 +2583,7 @@ the `get user profile` request
 
 
 
-<a name="api-v1-UpdateUserProfileRequest"></a>
+<a name="financial_integration_service_api-v1-UpdateUserProfileRequest"></a>
 
 ### UpdateUserProfileRequest
 UpdateUserProfileRequest: Represents the request object invoked against the user
@@ -2592,14 +2592,14 @@ service to update a user profile
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| profile | [UserProfile](#api-v1-UserProfile) |  | User profile to update Validation: - cannot nil hence required |
+| profile | [UserProfile](#financial_integration_service_api-v1-UserProfile) |  | User profile to update Validation: - cannot nil hence required |
 
 
 
 
 
 
-<a name="api-v1-UpdateUserProfileResponse"></a>
+<a name="financial_integration_service_api-v1-UpdateUserProfileResponse"></a>
 
 ### UpdateUserProfileResponse
 UpdateUserProfileResponse: Represents the response object returned as a response to
@@ -2609,7 +2609,7 @@ the `update user profile` request
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | profile_updated | [bool](#bool) |  |  |
-| profile | [UserProfile](#api-v1-UserProfile) |  |  |
+| profile | [UserProfile](#financial_integration_service_api-v1-UserProfile) |  |  |
 
 
 
@@ -2625,10 +2625,10 @@ the `update user profile` request
 
 
 
-<a name="api_v1_service_financial_service-proto"></a>
+<a name="financial_integration_service_api_v1_service_financial_service-proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
-## api/v1/service_financial_service.proto
+## financial_integration_service_api/v1/service_financial_service.proto
 
 
  
@@ -2638,54 +2638,54 @@ the `update user profile` request
  
 
 
-<a name="api-v1-FinancialService"></a>
+<a name="financial_integration_service_api-v1-FinancialService"></a>
 
 ### FinancialService
 FinancialService API.
 
 | Method Name | Request Type | Response Type | Description |
 | ----------- | ------------ | ------------- | ------------|
-| PlaidInitiateTokenExchange | [PlaidInitiateTokenExchangeRequest](#api-v1-PlaidInitiateTokenExchangeRequest) | [PlaidInitiateTokenExchangeResponse](#api-v1-PlaidInitiateTokenExchangeResponse) |  |
-| PlaidExchangeToken | [PlaidExchangeTokenRequest](#api-v1-PlaidExchangeTokenRequest) | [PlaidExchangeTokenResponse](#api-v1-PlaidExchangeTokenResponse) |  |
-| CreateUserProfile | [CreateUserProfileRequest](#api-v1-CreateUserProfileRequest) | [CreateUserProfileResponse](#api-v1-CreateUserProfileResponse) |  |
-| GetUserProfile | [GetUserProfileRequest](#api-v1-GetUserProfileRequest) | [GetUserProfileResponse](#api-v1-GetUserProfileResponse) |  |
-| DeleteUserProfile | [DeleteUserProfileRequest](#api-v1-DeleteUserProfileRequest) | [DeleteUserProfileResponse](#api-v1-DeleteUserProfileResponse) |  |
-| UpdateUserProfile | [UpdateUserProfileRequest](#api-v1-UpdateUserProfileRequest) | [UpdateUserProfileResponse](#api-v1-UpdateUserProfileResponse) |  |
-| CreateBankAccount | [CreateBankAccountRequest](#api-v1-CreateBankAccountRequest) | [CreateBankAccountResponse](#api-v1-CreateBankAccountResponse) |  |
-| GetBankAccount | [GetBankAccountRequest](#api-v1-GetBankAccountRequest) | [GetBankAccountResponse](#api-v1-GetBankAccountResponse) |  |
-| UpdateBankAccount | [UpdateBankAccountRequest](#api-v1-UpdateBankAccountRequest) | [UpdateBankAccountResponse](#api-v1-UpdateBankAccountResponse) |  |
-| DeleteBankAccount | [DeleteBankAccountRequest](#api-v1-DeleteBankAccountRequest) | [DeleteBankAccountResponse](#api-v1-DeleteBankAccountResponse) |  |
-| GetPocket | [GetPocketRequest](#api-v1-GetPocketRequest) | [GetPocketResponse](#api-v1-GetPocketResponse) |  |
-| GetSmartGoalsByPocketId | [GetSmartGoalsByPocketIdRequest](#api-v1-GetSmartGoalsByPocketIdRequest) | [GetSmartGoalsByPocketIdResponse](#api-v1-GetSmartGoalsByPocketIdResponse) |  |
-| CreateSmartGoal | [CreateSmartGoalRequest](#api-v1-CreateSmartGoalRequest) | [CreateSmartGoalResponse](#api-v1-CreateSmartGoalResponse) |  |
-| UpdateSmartGoal | [UpdateSmartGoalRequest](#api-v1-UpdateSmartGoalRequest) | [UpdateSmartGoalResponse](#api-v1-UpdateSmartGoalResponse) |  |
-| DeleteSmartGoal | [DeleteSmartGoalRequest](#api-v1-DeleteSmartGoalRequest) | [DeleteSmartGoalResponse](#api-v1-DeleteSmartGoalResponse) |  |
-| CreateMilestone | [CreateMilestoneRequest](#api-v1-CreateMilestoneRequest) | [CreateMilestoneResponse](#api-v1-CreateMilestoneResponse) |  |
-| DeleteMilestone | [DeleteMilestoneRequest](#api-v1-DeleteMilestoneRequest) | [DeleteMilestoneResponse](#api-v1-DeleteMilestoneResponse) |  |
-| UpdateMilestone | [UpdateMilestoneRequest](#api-v1-UpdateMilestoneRequest) | [UpdateMilestoneResponse](#api-v1-UpdateMilestoneResponse) |  |
-| GetMilestone | [GetMilestoneRequest](#api-v1-GetMilestoneRequest) | [GetMilestoneResponse](#api-v1-GetMilestoneResponse) |  |
-| GetMilestonesBySmartGoalId | [GetMilestonesBySmartGoalIdRequest](#api-v1-GetMilestonesBySmartGoalIdRequest) | [GetMilestonesBySmartGoalIdResponse](#api-v1-GetMilestonesBySmartGoalIdResponse) |  |
-| GetForecast | [GetForecastRequest](#api-v1-GetForecastRequest) | [GetForecastResponse](#api-v1-GetForecastResponse) |  |
-| CreateBudget | [CreateBudgetRequest](#api-v1-CreateBudgetRequest) | [CreateBudgetResponse](#api-v1-CreateBudgetResponse) |  |
-| UpdateBudget | [UpdateBudgetRequest](#api-v1-UpdateBudgetRequest) | [UpdateBudgetResponse](#api-v1-UpdateBudgetResponse) |  |
-| DeleteBudget | [DeleteBudgetRequest](#api-v1-DeleteBudgetRequest) | [DeleteBudgetResponse](#api-v1-DeleteBudgetResponse) |  |
-| GetBudget | [GetBudgetRequest](#api-v1-GetBudgetRequest) | [GetBudgetResponse](#api-v1-GetBudgetResponse) |  |
-| GetAllBudgets | [GetAllBudgetsRequest](#api-v1-GetAllBudgetsRequest) | [GetAllBudgetsResponse](#api-v1-GetAllBudgetsResponse) |  |
-| HealthCheck | [HealthCheckRequest](#api-v1-HealthCheckRequest) | [HealthCheckResponse](#api-v1-HealthCheckResponse) |  |
-| ReadynessCheck | [ReadynessCheckRequest](#api-v1-ReadynessCheckRequest) | [ReadynessCheckResponse](#api-v1-ReadynessCheckResponse) |  |
-| GetInvestmentAcccount | [GetInvestmentAcccountRequest](#api-v1-GetInvestmentAcccountRequest) | [GetInvestmentAcccountResponse](#api-v1-GetInvestmentAcccountResponse) |  |
-| GetMortgageAccount | [GetMortgageAccountRequest](#api-v1-GetMortgageAccountRequest) | [GetMortgageAccountResponse](#api-v1-GetMortgageAccountResponse) |  |
-| GetLiabilityAccount | [GetLiabilityAccountRequest](#api-v1-GetLiabilityAccountRequest) | [GetLiabilityAccountResponse](#api-v1-GetLiabilityAccountResponse) |  |
-| GetStudentLoanAccount | [GetStudentLoanAccountRequest](#api-v1-GetStudentLoanAccountRequest) | [GetStudentLoanAccountResponse](#api-v1-GetStudentLoanAccountResponse) |  |
-| CreateManualLink | [CreateManualLinkRequest](#api-v1-CreateManualLinkRequest) | [CreateManualLinkResponse](#api-v1-CreateManualLinkResponse) |  |
-| GetLink | [GetLinkRequest](#api-v1-GetLinkRequest) | [GetLinkResponse](#api-v1-GetLinkResponse) |  |
-| GetLinks | [GetLinksRequest](#api-v1-GetLinksRequest) | [GetLinksResponse](#api-v1-GetLinksResponse) |  |
-| DeleteLink | [DeleteLinkRequest](#api-v1-DeleteLinkRequest) | [DeleteLinkResponse](#api-v1-DeleteLinkResponse) |  |
-| GetReCurringTransactions | [GetReCurringTransactionsRequest](#api-v1-GetReCurringTransactionsRequest) | [GetReCurringTransactionsResponse](#api-v1-GetReCurringTransactionsResponse) |  |
-| GetTransactions | [GetTransactionsRequest](#api-v1-GetTransactionsRequest) | [GetTransactionsResponse](#api-v1-GetTransactionsResponse) |  |
-| ProcessWebhook | [ProcessWebhookRequest](#api-v1-ProcessWebhookRequest) | [ProcessWebhookResponse](#api-v1-ProcessWebhookResponse) |  |
-| StripeWebhook | [StripeWebhookRequest](#api-v1-StripeWebhookRequest) | [StripeWebhookResponse](#api-v1-StripeWebhookResponse) |  |
-| CreateSubscription | [CreateSubscriptionRequest](#api-v1-CreateSubscriptionRequest) | [CreateSubscriptionResponse](#api-v1-CreateSubscriptionResponse) |  |
+| PlaidInitiateTokenExchange | [PlaidInitiateTokenExchangeRequest](#financial_integration_service_api-v1-PlaidInitiateTokenExchangeRequest) | [PlaidInitiateTokenExchangeResponse](#financial_integration_service_api-v1-PlaidInitiateTokenExchangeResponse) |  |
+| PlaidExchangeToken | [PlaidExchangeTokenRequest](#financial_integration_service_api-v1-PlaidExchangeTokenRequest) | [PlaidExchangeTokenResponse](#financial_integration_service_api-v1-PlaidExchangeTokenResponse) |  |
+| CreateUserProfile | [CreateUserProfileRequest](#financial_integration_service_api-v1-CreateUserProfileRequest) | [CreateUserProfileResponse](#financial_integration_service_api-v1-CreateUserProfileResponse) |  |
+| GetUserProfile | [GetUserProfileRequest](#financial_integration_service_api-v1-GetUserProfileRequest) | [GetUserProfileResponse](#financial_integration_service_api-v1-GetUserProfileResponse) |  |
+| DeleteUserProfile | [DeleteUserProfileRequest](#financial_integration_service_api-v1-DeleteUserProfileRequest) | [DeleteUserProfileResponse](#financial_integration_service_api-v1-DeleteUserProfileResponse) |  |
+| UpdateUserProfile | [UpdateUserProfileRequest](#financial_integration_service_api-v1-UpdateUserProfileRequest) | [UpdateUserProfileResponse](#financial_integration_service_api-v1-UpdateUserProfileResponse) |  |
+| CreateBankAccount | [CreateBankAccountRequest](#financial_integration_service_api-v1-CreateBankAccountRequest) | [CreateBankAccountResponse](#financial_integration_service_api-v1-CreateBankAccountResponse) |  |
+| GetBankAccount | [GetBankAccountRequest](#financial_integration_service_api-v1-GetBankAccountRequest) | [GetBankAccountResponse](#financial_integration_service_api-v1-GetBankAccountResponse) |  |
+| UpdateBankAccount | [UpdateBankAccountRequest](#financial_integration_service_api-v1-UpdateBankAccountRequest) | [UpdateBankAccountResponse](#financial_integration_service_api-v1-UpdateBankAccountResponse) |  |
+| DeleteBankAccount | [DeleteBankAccountRequest](#financial_integration_service_api-v1-DeleteBankAccountRequest) | [DeleteBankAccountResponse](#financial_integration_service_api-v1-DeleteBankAccountResponse) |  |
+| GetPocket | [GetPocketRequest](#financial_integration_service_api-v1-GetPocketRequest) | [GetPocketResponse](#financial_integration_service_api-v1-GetPocketResponse) |  |
+| GetSmartGoalsByPocketId | [GetSmartGoalsByPocketIdRequest](#financial_integration_service_api-v1-GetSmartGoalsByPocketIdRequest) | [GetSmartGoalsByPocketIdResponse](#financial_integration_service_api-v1-GetSmartGoalsByPocketIdResponse) |  |
+| CreateSmartGoal | [CreateSmartGoalRequest](#financial_integration_service_api-v1-CreateSmartGoalRequest) | [CreateSmartGoalResponse](#financial_integration_service_api-v1-CreateSmartGoalResponse) |  |
+| UpdateSmartGoal | [UpdateSmartGoalRequest](#financial_integration_service_api-v1-UpdateSmartGoalRequest) | [UpdateSmartGoalResponse](#financial_integration_service_api-v1-UpdateSmartGoalResponse) |  |
+| DeleteSmartGoal | [DeleteSmartGoalRequest](#financial_integration_service_api-v1-DeleteSmartGoalRequest) | [DeleteSmartGoalResponse](#financial_integration_service_api-v1-DeleteSmartGoalResponse) |  |
+| CreateMilestone | [CreateMilestoneRequest](#financial_integration_service_api-v1-CreateMilestoneRequest) | [CreateMilestoneResponse](#financial_integration_service_api-v1-CreateMilestoneResponse) |  |
+| DeleteMilestone | [DeleteMilestoneRequest](#financial_integration_service_api-v1-DeleteMilestoneRequest) | [DeleteMilestoneResponse](#financial_integration_service_api-v1-DeleteMilestoneResponse) |  |
+| UpdateMilestone | [UpdateMilestoneRequest](#financial_integration_service_api-v1-UpdateMilestoneRequest) | [UpdateMilestoneResponse](#financial_integration_service_api-v1-UpdateMilestoneResponse) |  |
+| GetMilestone | [GetMilestoneRequest](#financial_integration_service_api-v1-GetMilestoneRequest) | [GetMilestoneResponse](#financial_integration_service_api-v1-GetMilestoneResponse) |  |
+| GetMilestonesBySmartGoalId | [GetMilestonesBySmartGoalIdRequest](#financial_integration_service_api-v1-GetMilestonesBySmartGoalIdRequest) | [GetMilestonesBySmartGoalIdResponse](#financial_integration_service_api-v1-GetMilestonesBySmartGoalIdResponse) |  |
+| GetForecast | [GetForecastRequest](#financial_integration_service_api-v1-GetForecastRequest) | [GetForecastResponse](#financial_integration_service_api-v1-GetForecastResponse) |  |
+| CreateBudget | [CreateBudgetRequest](#financial_integration_service_api-v1-CreateBudgetRequest) | [CreateBudgetResponse](#financial_integration_service_api-v1-CreateBudgetResponse) |  |
+| UpdateBudget | [UpdateBudgetRequest](#financial_integration_service_api-v1-UpdateBudgetRequest) | [UpdateBudgetResponse](#financial_integration_service_api-v1-UpdateBudgetResponse) |  |
+| DeleteBudget | [DeleteBudgetRequest](#financial_integration_service_api-v1-DeleteBudgetRequest) | [DeleteBudgetResponse](#financial_integration_service_api-v1-DeleteBudgetResponse) |  |
+| GetBudget | [GetBudgetRequest](#financial_integration_service_api-v1-GetBudgetRequest) | [GetBudgetResponse](#financial_integration_service_api-v1-GetBudgetResponse) |  |
+| GetAllBudgets | [GetAllBudgetsRequest](#financial_integration_service_api-v1-GetAllBudgetsRequest) | [GetAllBudgetsResponse](#financial_integration_service_api-v1-GetAllBudgetsResponse) |  |
+| HealthCheck | [HealthCheckRequest](#financial_integration_service_api-v1-HealthCheckRequest) | [HealthCheckResponse](#financial_integration_service_api-v1-HealthCheckResponse) |  |
+| ReadynessCheck | [ReadynessCheckRequest](#financial_integration_service_api-v1-ReadynessCheckRequest) | [ReadynessCheckResponse](#financial_integration_service_api-v1-ReadynessCheckResponse) |  |
+| GetInvestmentAcccount | [GetInvestmentAcccountRequest](#financial_integration_service_api-v1-GetInvestmentAcccountRequest) | [GetInvestmentAcccountResponse](#financial_integration_service_api-v1-GetInvestmentAcccountResponse) |  |
+| GetMortgageAccount | [GetMortgageAccountRequest](#financial_integration_service_api-v1-GetMortgageAccountRequest) | [GetMortgageAccountResponse](#financial_integration_service_api-v1-GetMortgageAccountResponse) |  |
+| GetLiabilityAccount | [GetLiabilityAccountRequest](#financial_integration_service_api-v1-GetLiabilityAccountRequest) | [GetLiabilityAccountResponse](#financial_integration_service_api-v1-GetLiabilityAccountResponse) |  |
+| GetStudentLoanAccount | [GetStudentLoanAccountRequest](#financial_integration_service_api-v1-GetStudentLoanAccountRequest) | [GetStudentLoanAccountResponse](#financial_integration_service_api-v1-GetStudentLoanAccountResponse) |  |
+| CreateManualLink | [CreateManualLinkRequest](#financial_integration_service_api-v1-CreateManualLinkRequest) | [CreateManualLinkResponse](#financial_integration_service_api-v1-CreateManualLinkResponse) |  |
+| GetLink | [GetLinkRequest](#financial_integration_service_api-v1-GetLinkRequest) | [GetLinkResponse](#financial_integration_service_api-v1-GetLinkResponse) |  |
+| GetLinks | [GetLinksRequest](#financial_integration_service_api-v1-GetLinksRequest) | [GetLinksResponse](#financial_integration_service_api-v1-GetLinksResponse) |  |
+| DeleteLink | [DeleteLinkRequest](#financial_integration_service_api-v1-DeleteLinkRequest) | [DeleteLinkResponse](#financial_integration_service_api-v1-DeleteLinkResponse) |  |
+| GetReCurringTransactions | [GetReCurringTransactionsRequest](#financial_integration_service_api-v1-GetReCurringTransactionsRequest) | [GetReCurringTransactionsResponse](#financial_integration_service_api-v1-GetReCurringTransactionsResponse) |  |
+| GetTransactions | [GetTransactionsRequest](#financial_integration_service_api-v1-GetTransactionsRequest) | [GetTransactionsResponse](#financial_integration_service_api-v1-GetTransactionsResponse) |  |
+| ProcessWebhook | [ProcessWebhookRequest](#financial_integration_service_api-v1-ProcessWebhookRequest) | [ProcessWebhookResponse](#financial_integration_service_api-v1-ProcessWebhookResponse) |  |
+| StripeWebhook | [StripeWebhookRequest](#financial_integration_service_api-v1-StripeWebhookRequest) | [StripeWebhookResponse](#financial_integration_service_api-v1-StripeWebhookResponse) |  |
+| CreateSubscription | [CreateSubscriptionRequest](#financial_integration_service_api-v1-CreateSubscriptionRequest) | [CreateSubscriptionResponse](#financial_integration_service_api-v1-CreateSubscriptionResponse) |  |
 
  
 

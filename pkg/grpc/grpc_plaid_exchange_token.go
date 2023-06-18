@@ -11,7 +11,7 @@ import (
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/plaidhandler"
 	taskhandler "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/task-handler"
 	encryptdecrypt "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/encrypt_decrypt"
-	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/api/v1"
+	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 )
 
 type AccessTokenMeta struct {

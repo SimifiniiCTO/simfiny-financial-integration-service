@@ -8,8 +8,8 @@ import (
 	clickhousedb "github.com/SimifiniiCTO/simfiny-core-lib/database/clickhouse"
 	"github.com/SimifiniiCTO/simfiny-core-lib/instrumentation"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/service_errors"
-	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/api/v1"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/dal"
+	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 	"github.com/labstack/gommon/log"
 	"github.com/newrelic/go-agent/v3/newrelic"
 	"go.uber.org/zap"
@@ -148,7 +148,54 @@ func (db *Db) performSchemaMigration() error {
 	if len(models) > 0 {
 		// ref. https://kb.altinity.com/engines/mergetree-table-engine-family/collapsing-vs-replacing/
 		// ref. https://clickhouse.com/docs/en/guides/developer/deduplication
-		if err := engine.Set("gorm:table_options", "ENGINE=ENGINE=CollapsingMergeTree(sign)").AutoMigrate(models...); err != nil {
+		// TODO: add support for collapsing merge tree. May need to actually explicitly define the table definitions
+		/*
+			ref:
+				Certainly! When working with GORM, you can define a struct that represents your table and its columns. Here's an example of how you can create a CollapsingMergeTree table using GORM with a struct:
+
+				go
+				Copy code
+				package main
+
+				import (
+					"fmt"
+					"log"
+					"time"
+
+					"gorm.io/driver/mysql"
+					"gorm.io/gorm"
+				)
+
+				type MyData struct {
+					ID   int       `gorm:"primaryKey"`
+					Name string    `gorm:"size:255"`
+					Date time.Time `gorm:"index"`
+					Sign int       `gorm:"-"`
+				}
+
+				func main() {
+					// Connect to the database
+					dsn := "user:password@tcp(localhost:3306)/database_name?parseTime=True"
+					db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+					if err != nil {
+						log.Fatal(err)
+					}
+
+					// Auto-migrate the struct to create the table
+					err = db.AutoMigrate(&MyData{})
+					if err != nil {
+						log.Fatal(err)
+					}
+
+					// Add the CollapsingMergeTree engine to the table
+					err = db.Exec("ALTER TABLE my_datas ENGINE = CollapsingMergeTree(Date, (ID, Date), 8192, Sign)").Error
+					if err != nil {
+						log.Fatal(err)
+					}
+
+					fmt.Println("Table created successfully")
+		*/
+		if err := engine.AutoMigrate(models...); err != nil {
 			// TODO: emit failure metric here
 			log.Error(err.Error())
 			return err

@@ -11,7 +11,7 @@ import (
 
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/plaidhandler"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/pointer"
-	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/api/v1"
+	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 )
 
 // PlaidInitiateTokenExchange implements apiv1.FinancialServiceServer

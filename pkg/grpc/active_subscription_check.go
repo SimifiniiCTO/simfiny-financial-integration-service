@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/api/v1"
+	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 )
 
 func (s *Server) UserHasActiveSubscription(ctx context.Context, userId *uint64) (bool, error) {

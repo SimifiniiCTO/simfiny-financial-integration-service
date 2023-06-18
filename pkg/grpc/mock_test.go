@@ -26,8 +26,8 @@ import (
 	"github.com/SimifiniiCTO/simfiny-core-lib/instrumentation"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/plaidhandler"
 	database "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/postgres-database"
-	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/api/v1"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/dal"
+	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 
 	redisDatabase "github.com/SimifiniiCTO/simfiny-core-lib/database/redis"
 )

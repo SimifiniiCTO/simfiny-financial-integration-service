@@ -18,7 +18,7 @@ import (
 
 	"gorm.io/plugin/dbresolver"
 
-	apiv1 "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/api/v1"
+	apiv1 "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 )
 
 func newReOccuringTransactionORM(db *gorm.DB, opts ...gen.DOOption) reOccuringTransactionORM {

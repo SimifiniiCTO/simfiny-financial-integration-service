@@ -5,7 +5,7 @@
         "GetLiabilityAccountResponse": {
             "properties": {
                 "liability_account": {
-                    "$ref": "#/definitions/api.v1.CreditAccount",
+                    "$ref": "#/definitions/financial_integration_service_api.v1.CreditAccount",
                     "additionalProperties": true,
                     "description": "The liability account"
                 }
@@ -14,7 +14,7 @@
             "type": "object",
             "title": "Get Liability Account Response"
         },
-        "api.v1.Apr": {
+        "financial_integration_service_api.v1.Apr": {
             "properties": {
                 "id": {
                     "type": "string"
@@ -36,7 +36,7 @@
             "type": "object",
             "title": "Apr"
         },
-        "api.v1.CreditAccount": {
+        "financial_integration_service_api.v1.CreditAccount": {
             "properties": {
                 "id": {
                     "type": "string",
@@ -104,7 +104,7 @@
                 },
                 "aprs": {
                     "items": {
-                        "$ref": "#/definitions/api.v1.Apr"
+                        "$ref": "#/definitions/financial_integration_service_api.v1.Apr"
                     },
                     "type": "array",
                     "description": "the aprs"

@@ -11,7 +11,7 @@ import (
 
 	"github.com/SimifiniiCTO/simfiny-core-lib/instrumentation"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/pointer"
-	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/api/v1"
+	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 )
 
 // The PlaidWrapper type is a struct that contains various fields related to the Plaid API client,

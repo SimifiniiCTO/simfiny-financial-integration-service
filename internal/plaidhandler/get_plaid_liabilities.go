@@ -5,7 +5,7 @@ import (
 	"errors"
 
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/transformer"
-	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/api/v1"
+	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 	"github.com/plaid/plaid-go/v12/plaid"
 )
 

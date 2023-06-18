@@ -6,14 +6,14 @@
             "properties": {
                 "re_ccuring_transactions": {
                     "items": {
-                        "$ref": "#/definitions/api.v1.ReOccuringTransaction"
+                        "$ref": "#/definitions/financial_integration_service_api.v1.ReOccuringTransaction"
                     },
                     "type": "array",
                     "description": "The re-occuring transactions"
                 },
                 "participant_re_ccuring_transactions": {
                     "items": {
-                        "$ref": "#/definitions/api.v1.GetReCurringTransactionsResponse.ParticipantReCurringTransactions"
+                        "$ref": "#/definitions/financial_integration_service_api.v1.GetReCurringTransactionsResponse.ParticipantReCurringTransactions"
                     },
                     "type": "array"
                 }
@@ -22,7 +22,7 @@
             "type": "object",
             "title": "Get Re Curring Transactions Response"
         },
-        "api.v1.GetReCurringTransactionsResponse.ParticipantReCurringTransactions": {
+        "financial_integration_service_api.v1.GetReCurringTransactionsResponse.ParticipantReCurringTransactions": {
             "properties": {
                 "reocurring_transaction_id": {
                     "type": "string",
@@ -30,7 +30,7 @@
                 },
                 "transactions": {
                     "items": {
-                        "$ref": "#/definitions/api.v1.Transaction"
+                        "$ref": "#/definitions/financial_integration_service_api.v1.Transaction"
                     },
                     "type": "array",
                     "description": "The transactions"
@@ -40,7 +40,7 @@
             "type": "object",
             "title": "Participant Re Curring Transactions"
         },
-        "api.v1.ReOccuringTransaction": {
+        "financial_integration_service_api.v1.ReOccuringTransaction": {
             "properties": {
                 "account_id": {
                     "type": "string",
@@ -191,7 +191,7 @@
             "type": "object",
             "title": "Re Occuring Transaction"
         },
-        "api.v1.Transaction": {
+        "financial_integration_service_api.v1.Transaction": {
             "properties": {
                 "account_id": {
                     "type": "string",

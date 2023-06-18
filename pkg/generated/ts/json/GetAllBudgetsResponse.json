@@ -6,7 +6,7 @@
             "properties": {
                 "budgets": {
                     "items": {
-                        "$ref": "#/definitions/api.v1.Budget"
+                        "$ref": "#/definitions/financial_integration_service_api.v1.Budget"
                     },
                     "type": "array",
                     "description": "The budgets"
@@ -16,7 +16,7 @@
             "type": "object",
             "title": "Get All Budgets Response"
         },
-        "api.v1.Budget": {
+        "financial_integration_service_api.v1.Budget": {
             "properties": {
                 "id": {
                     "type": "string",
@@ -38,7 +38,7 @@
                     "description": "the time the goal was updated"
                 },
                 "category": {
-                    "$ref": "#/definitions/api.v1.Category",
+                    "$ref": "#/definitions/financial_integration_service_api.v1.Category",
                     "additionalProperties": true,
                     "description": "category associated with the goal"
                 }
@@ -48,7 +48,7 @@
             "title": "Budget",
             "description": "The Budgets table stores information about each budget created by the user, including the name of the budget, the start and end dates, and the user ID."
         },
-        "api.v1.Category": {
+        "financial_integration_service_api.v1.Category": {
             "properties": {
                 "id": {
                     "type": "string",

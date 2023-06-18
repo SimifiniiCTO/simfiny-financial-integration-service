@@ -8,7 +8,7 @@ import (
 	"context"
 	"strings"
 
-	apiv1 "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/api/v1"
+	apiv1 "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 	"gorm.io/gorm/schema"

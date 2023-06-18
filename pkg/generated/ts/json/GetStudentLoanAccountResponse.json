@@ -5,7 +5,7 @@
         "GetStudentLoanAccountResponse": {
             "properties": {
                 "student_loan_account": {
-                    "$ref": "#/definitions/api.v1.StudentLoanAccount",
+                    "$ref": "#/definitions/financial_integration_service_api.v1.StudentLoanAccount",
                     "additionalProperties": true,
                     "description": "The student loan account"
                 }
@@ -14,7 +14,7 @@
             "type": "object",
             "title": "Get Student Loan Account Response"
         },
-        "api.v1.StudentLoanAccount": {
+        "financial_integration_service_api.v1.StudentLoanAccount": {
             "properties": {
                 "id": {
                     "type": "string",

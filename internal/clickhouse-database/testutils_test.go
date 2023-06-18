@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/api/v1"
+	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 )
 
 func Test_generateRandomInvestmentTransaction(t *testing.T) {

@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/helper"
-	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/api/v1"
+	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 )
 
 func TestServer_DeleteUserProfile(t *testing.T) {

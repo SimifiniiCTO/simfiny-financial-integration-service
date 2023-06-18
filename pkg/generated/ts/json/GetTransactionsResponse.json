@@ -6,7 +6,7 @@
             "properties": {
                 "transactions": {
                     "items": {
-                        "$ref": "#/definitions/api.v1.Transaction"
+                        "$ref": "#/definitions/financial_integration_service_api.v1.Transaction"
                     },
                     "type": "array",
                     "description": "The transactions"
@@ -19,7 +19,7 @@
             "type": "object",
             "title": "Get Transactions Response"
         },
-        "api.v1.Transaction": {
+        "financial_integration_service_api.v1.Transaction": {
             "properties": {
                 "account_id": {
                     "type": "string",

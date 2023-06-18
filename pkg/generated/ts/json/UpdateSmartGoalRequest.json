@@ -5,7 +5,7 @@
         "UpdateSmartGoalRequest": {
             "properties": {
                 "smart_goal": {
-                    "$ref": "#/definitions/api.v1.SmartGoal",
+                    "$ref": "#/definitions/financial_integration_service_api.v1.SmartGoal",
                     "additionalProperties": true,
                     "description": "The smart goal to update Validations: - cannot be nil hence required"
                 }
@@ -14,7 +14,7 @@
             "type": "object",
             "title": "Update Smart Goal Request"
         },
-        "api.v1.Budget": {
+        "financial_integration_service_api.v1.Budget": {
             "properties": {
                 "id": {
                     "type": "string",
@@ -36,7 +36,7 @@
                     "description": "the time the goal was updated"
                 },
                 "category": {
-                    "$ref": "#/definitions/api.v1.Category",
+                    "$ref": "#/definitions/financial_integration_service_api.v1.Category",
                     "additionalProperties": true,
                     "description": "category associated with the goal"
                 }
@@ -46,7 +46,7 @@
             "title": "Budget",
             "description": "The Budgets table stores information about each budget created by the user, including the name of the budget, the start and end dates, and the user ID."
         },
-        "api.v1.Category": {
+        "financial_integration_service_api.v1.Category": {
             "properties": {
                 "id": {
                     "type": "string",
@@ -73,7 +73,7 @@
             "title": "Category",
             "description": "The Categories table stores information about the different categories of expenses or income, such as \"Housing\", \"Food\", \"Transportation\", and \"Entertainment\". Each category has one or more subcategories, which are stored in the Subcategories table. For example, the \"Housing\" category might have subcategories for \"Rent\", \"Utilities\", and \"Home Maintenance\"."
         },
-        "api.v1.Forecast": {
+        "financial_integration_service_api.v1.Forecast": {
             "properties": {
                 "id": {
                     "type": "string",
@@ -97,7 +97,7 @@
             "title": "Forecast",
             "description": "The Forecast table stores information about each forecast generated for a particular goal, including the forecast date, the forecasted amount of money saved or invested for the goal by the target date, and the variance between the forecasted and target amounts. This allows the user to track how well they are progressing towards their goal and make adjustments as needed."
         },
-        "api.v1.Milestone": {
+        "financial_integration_service_api.v1.Milestone": {
             "properties": {
                 "id": {
                     "type": "string",
@@ -125,7 +125,7 @@
                     "description": "wethe milestone is completed or not"
                 },
                 "budget": {
-                    "$ref": "#/definitions/api.v1.Budget",
+                    "$ref": "#/definitions/financial_integration_service_api.v1.Budget",
                     "additionalProperties": true,
                     "description": "the budget associated with the milestone"
                 }
@@ -135,7 +135,7 @@
             "title": "Milestone",
             "description": "Milestone: represents a milestone in the context of simfinni. A financial milestone that is both smart and achievable. A milestone is a sub goal of a goal and is tied to a goal by the goal id"
         },
-        "api.v1.SmartGoal": {
+        "financial_integration_service_api.v1.SmartGoal": {
             "properties": {
                 "id": {
                     "type": "string",
@@ -202,13 +202,13 @@
                 },
                 "milestones": {
                     "items": {
-                        "$ref": "#/definitions/api.v1.Milestone"
+                        "$ref": "#/definitions/financial_integration_service_api.v1.Milestone"
                     },
                     "type": "array",
                     "description": "Milestones associated with the goal"
                 },
                 "forecasts": {
-                    "$ref": "#/definitions/api.v1.Forecast",
+                    "$ref": "#/definitions/financial_integration_service_api.v1.Forecast",
                     "additionalProperties": true,
                     "description": "Forecasts associated with the goal"
                 }

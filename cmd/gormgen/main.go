@@ -3,7 +3,7 @@ package main
 import (
 	"gorm.io/gen"
 
-	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/api/v1"
+	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 )
 
 // Querier is the interface of added queries that the various

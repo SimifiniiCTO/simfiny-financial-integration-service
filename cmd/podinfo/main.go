@@ -21,8 +21,8 @@ import (
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/env"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/plaidhandler"
 	database "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/postgres-database"
-	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/api/v1"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/dal"
+	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 
 	"github.com/SimifiniiCTO/simfiny-core-lib/database/redis"
 	"github.com/SimifiniiCTO/simfiny-core-lib/signals"

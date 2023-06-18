@@ -11,7 +11,7 @@ import (
 	"time"
 
 	taskhandler "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/task-handler"
-	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/api/v1"
+	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 
 	encryptdecrypt "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/encrypt_decrypt"
 	"github.com/gogo/status"

@@ -12,8 +12,8 @@ import (
 	"github.com/SimifiniiCTO/simfiny-core-lib/instrumentation"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/secrets"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/service_errors"
-	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/api/v1"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/dal"
+	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 )
 
 // DatabaseOperations provides an interface which any database tied to this service should implement

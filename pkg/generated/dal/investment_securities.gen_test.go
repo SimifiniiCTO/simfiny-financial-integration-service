@@ -10,7 +10,7 @@ import (
 	"strconv"
 	"testing"
 
-	apiv1 "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/api/v1"
+	apiv1 "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 	"gorm.io/gen"
 	"gorm.io/gen/field"
 	"gorm.io/gorm/clause"

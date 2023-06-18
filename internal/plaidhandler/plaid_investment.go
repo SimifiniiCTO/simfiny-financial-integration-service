@@ -10,7 +10,7 @@ import (
 
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/pointer"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/transformer"
-	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/api/v1"
+	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 )
 
 // GetInvestmentAccount is used to retrieve investment accounts from the Plaid API for a given set of account IDs

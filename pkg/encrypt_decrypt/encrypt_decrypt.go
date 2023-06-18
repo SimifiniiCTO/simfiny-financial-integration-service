@@ -5,7 +5,7 @@ import (
 	"encoding/hex"
 
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/secrets"
-	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/api/v1"
+	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 	"github.com/aws/aws-sdk-go/aws/awserr"
 	"github.com/aws/aws-sdk-go/service/kms"
 	"github.com/pkg/errors"

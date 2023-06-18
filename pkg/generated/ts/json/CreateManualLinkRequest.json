@@ -9,7 +9,7 @@
                     "description": "The user id Validations: - user_id must be greater than 0"
                 },
                 "manual_account_link": {
-                    "$ref": "#/definitions/api.v1.Link",
+                    "$ref": "#/definitions/financial_integration_service_api.v1.Link",
                     "additionalProperties": true,
                     "description": "The manual account link"
                 }
@@ -18,7 +18,7 @@
             "type": "object",
             "title": "Create Manual Link Request"
         },
-        "api.v1.Apr": {
+        "financial_integration_service_api.v1.Apr": {
             "properties": {
                 "id": {
                     "type": "string"
@@ -40,7 +40,7 @@
             "type": "object",
             "title": "Apr"
         },
-        "api.v1.BankAccount": {
+        "financial_integration_service_api.v1.BankAccount": {
             "properties": {
                 "id": {
                     "type": "string",
@@ -93,7 +93,7 @@
                 },
                 "pockets": {
                     "items": {
-                        "$ref": "#/definitions/api.v1.Pocket"
+                        "$ref": "#/definitions/financial_integration_service_api.v1.Pocket"
                     },
                     "type": "array",
                     "description": "the set of \"virtualized accounts this user witholds\" NOTE: these pockets are automatically created by the system when a user connects a bank account"
@@ -130,7 +130,7 @@
             "type": "object",
             "title": "Bank Account"
         },
-        "api.v1.Budget": {
+        "financial_integration_service_api.v1.Budget": {
             "properties": {
                 "id": {
                     "type": "string",
@@ -152,7 +152,7 @@
                     "description": "the time the goal was updated"
                 },
                 "category": {
-                    "$ref": "#/definitions/api.v1.Category",
+                    "$ref": "#/definitions/financial_integration_service_api.v1.Category",
                     "additionalProperties": true,
                     "description": "category associated with the goal"
                 }
@@ -162,7 +162,7 @@
             "title": "Budget",
             "description": "The Budgets table stores information about each budget created by the user, including the name of the budget, the start and end dates, and the user ID."
         },
-        "api.v1.Category": {
+        "financial_integration_service_api.v1.Category": {
             "properties": {
                 "id": {
                     "type": "string",
@@ -189,7 +189,7 @@
             "title": "Category",
             "description": "The Categories table stores information about the different categories of expenses or income, such as \"Housing\", \"Food\", \"Transportation\", and \"Entertainment\". Each category has one or more subcategories, which are stored in the Subcategories table. For example, the \"Housing\" category might have subcategories for \"Rent\", \"Utilities\", and \"Home Maintenance\"."
         },
-        "api.v1.CreditAccount": {
+        "financial_integration_service_api.v1.CreditAccount": {
             "properties": {
                 "id": {
                     "type": "string",
@@ -257,7 +257,7 @@
                 },
                 "aprs": {
                     "items": {
-                        "$ref": "#/definitions/api.v1.Apr"
+                        "$ref": "#/definitions/financial_integration_service_api.v1.Apr"
                     },
                     "type": "array",
                     "description": "the aprs"
@@ -279,7 +279,7 @@
             "type": "object",
             "title": "Credit Account"
         },
-        "api.v1.Forecast": {
+        "financial_integration_service_api.v1.Forecast": {
             "properties": {
                 "id": {
                     "type": "string",
@@ -303,7 +303,7 @@
             "title": "Forecast",
             "description": "The Forecast table stores information about each forecast generated for a particular goal, including the forecast date, the forecasted amount of money saved or invested for the goal by the target date, and the variance between the forecasted and target amounts. This allows the user to track how well they are progressing towards their goal and make adjustments as needed."
         },
-        "api.v1.InvesmentHolding": {
+        "financial_integration_service_api.v1.InvesmentHolding": {
             "properties": {
                 "id": {
                     "type": "string",
@@ -349,7 +349,7 @@
             "type": "object",
             "title": "Invesment Holding"
         },
-        "api.v1.InvestmentAccount": {
+        "financial_integration_service_api.v1.InvestmentAccount": {
             "properties": {
                 "id": {
                     "type": "string",
@@ -391,14 +391,14 @@
                 },
                 "holdings": {
                     "items": {
-                        "$ref": "#/definitions/api.v1.InvesmentHolding"
+                        "$ref": "#/definitions/financial_integration_service_api.v1.InvesmentHolding"
                     },
                     "type": "array",
                     "description": "invesment holding is the set of securities this account witholds"
                 },
                 "securities": {
                     "items": {
-                        "$ref": "#/definitions/api.v1.InvestmentSecurity"
+                        "$ref": "#/definitions/financial_integration_service_api.v1.InvestmentSecurity"
                     },
                     "type": "array",
                     "description": "the set of securities this account witholds"
@@ -408,7 +408,7 @@
             "type": "object",
             "title": "Investment Account"
         },
-        "api.v1.InvestmentSecurity": {
+        "financial_integration_service_api.v1.InvestmentSecurity": {
             "properties": {
                 "id": {
                     "type": "string",
@@ -467,7 +467,7 @@
             "type": "object",
             "title": "Investment Security"
         },
-        "api.v1.Link": {
+        "financial_integration_service_api.v1.Link": {
             "properties": {
                 "id": {
                     "type": "string",
@@ -501,7 +501,7 @@
                     "title": "Link Status"
                 },
                 "plaid_link": {
-                    "$ref": "#/definitions/api.v1.PlaidLink",
+                    "$ref": "#/definitions/financial_integration_service_api.v1.PlaidLink",
                     "additionalProperties": true
                 },
                 "plaid_new_accounts_available": {
@@ -526,41 +526,41 @@
                     "type": "string"
                 },
                 "token": {
-                    "$ref": "#/definitions/api.v1.Token",
+                    "$ref": "#/definitions/financial_integration_service_api.v1.Token",
                     "additionalProperties": true,
                     "description": "token object witholds an access token which is a token used to make API requests related to a specific Item. You will typically obtain an access_token by calling /item/public_token/exchange. For more details, see the Token exchange flow. An access_token does not expire, although it may require updating, such as when a user changes their password, or when working with European institutions that comply with PSD2's 90-day consent window. For more information, see When to use update mode.  Access tokens should always be stored securely, and associated with the user whose data they represent.  If compromised, an access_token can be rotated via /item/access_token/invalidate. If no longer needed,  it can be revoked via /item/remove.(gorm.field).has_one = {disable_association_autocreate: false disable_association_autoupdate: false preload: true}];"
                 },
                 "bank_accounts": {
                     "items": {
-                        "$ref": "#/definitions/api.v1.BankAccount"
+                        "$ref": "#/definitions/financial_integration_service_api.v1.BankAccount"
                     },
                     "type": "array",
                     "description": "a link event - or client login event can have many connected bank accounts for example a log in link against one instition like chase can have many account (checking and savings) it is important though to ensure that if a link against an instition already exists, we dont fascilitate duplicated"
                 },
                 "investment_accounts": {
                     "items": {
-                        "$ref": "#/definitions/api.v1.InvestmentAccount"
+                        "$ref": "#/definitions/financial_integration_service_api.v1.InvestmentAccount"
                     },
                     "type": "array",
                     "description": "a link event - or client login event can have many connected investment accounts for example a log in link against one instition like fidelity can have many accounts (401k and investment account) it is important though to ensure that if a link against an instition already exists, we dont fascilitate duplicated"
                 },
                 "credit_accounts": {
                     "items": {
-                        "$ref": "#/definitions/api.v1.CreditAccount"
+                        "$ref": "#/definitions/financial_integration_service_api.v1.CreditAccount"
                     },
                     "type": "array",
                     "description": "credit accounts tied to a user"
                 },
                 "mortgage_accounts": {
                     "items": {
-                        "$ref": "#/definitions/api.v1.MortgageAccount"
+                        "$ref": "#/definitions/financial_integration_service_api.v1.MortgageAccount"
                     },
                     "type": "array",
                     "description": "mortgage accounts tied to a user"
                 },
                 "student_loan_accounts": {
                     "items": {
-                        "$ref": "#/definitions/api.v1.StudentLoanAccount"
+                        "$ref": "#/definitions/financial_integration_service_api.v1.StudentLoanAccount"
                     },
                     "type": "array",
                     "description": "student loan accounts tied to a link"
@@ -598,7 +598,7 @@
                     "type": "boolean"
                 },
                 "plaid_sync": {
-                    "$ref": "#/definitions/api.v1.PlaidSync",
+                    "$ref": "#/definitions/financial_integration_service_api.v1.PlaidSync",
                     "additionalProperties": true
                 }
             },
@@ -607,7 +607,7 @@
             "title": "Link",
             "description": "A Link represents a login at a financial institution. A single end-user of your application might have accounts at different financial institutions, which means they would have multiple different Items. An Item is not the same as a financial institution account, although every account will be associated with an Item. For example, if a user has one login at their bank that allows them to access both their checking account and their savings account, a single Item would be associated with both of those accounts. Each Item  linked within your application will have a corresponding access_token, which is a token that you can use to make API requests related to that specific Item. Two Items created for the same set of credentials at the same institution will be considered different and not share the same item_id."
         },
-        "api.v1.Milestone": {
+        "financial_integration_service_api.v1.Milestone": {
             "properties": {
                 "id": {
                     "type": "string",
@@ -635,7 +635,7 @@
                     "description": "wethe milestone is completed or not"
                 },
                 "budget": {
-                    "$ref": "#/definitions/api.v1.Budget",
+                    "$ref": "#/definitions/financial_integration_service_api.v1.Budget",
                     "additionalProperties": true,
                     "description": "the budget associated with the milestone"
                 }
@@ -645,7 +645,7 @@
             "title": "Milestone",
             "description": "Milestone: represents a milestone in the context of simfinni. A financial milestone that is both smart and achievable. A milestone is a sub goal of a goal and is tied to a goal by the goal id"
         },
-        "api.v1.MortgageAccount": {
+        "financial_integration_service_api.v1.MortgageAccount": {
             "properties": {
                 "id": {
                     "type": "string"
@@ -748,7 +748,7 @@
             "type": "object",
             "title": "Mortgage Account"
         },
-        "api.v1.PlaidLink": {
+        "financial_integration_service_api.v1.PlaidLink": {
             "properties": {
                 "id": {
                     "type": "string",
@@ -780,7 +780,7 @@
             "type": "object",
             "title": "Plaid Link"
         },
-        "api.v1.PlaidSync": {
+        "financial_integration_service_api.v1.PlaidSync": {
             "properties": {
                 "id": {
                     "type": "string",
@@ -809,7 +809,7 @@
             "type": "object",
             "title": "Plaid Sync"
         },
-        "api.v1.Pocket": {
+        "financial_integration_service_api.v1.Pocket": {
             "properties": {
                 "id": {
                     "type": "string",
@@ -817,7 +817,7 @@
                 },
                 "goals": {
                     "items": {
-                        "$ref": "#/definitions/api.v1.SmartGoal"
+                        "$ref": "#/definitions/financial_integration_service_api.v1.SmartGoal"
                     },
                     "type": "array",
                     "description": "the set of smart goals this user witholds"
@@ -857,7 +857,7 @@
             "title": "Pocket",
             "description": "Pocket is an abstraction of a over a bank account. A user can has at most 4 pockets per connected account NOTE: these pockets are automatically created by the system and should not be exposed for mutation by any client. The only operations that can be performed against a pocket are: 1. Get the pocket 2. Get the pocket's smart goals 3. Adding a smart goal to the pocket"
         },
-        "api.v1.SmartGoal": {
+        "financial_integration_service_api.v1.SmartGoal": {
             "properties": {
                 "id": {
                     "type": "string",
@@ -924,13 +924,13 @@
                 },
                 "milestones": {
                     "items": {
-                        "$ref": "#/definitions/api.v1.Milestone"
+                        "$ref": "#/definitions/financial_integration_service_api.v1.Milestone"
                     },
                     "type": "array",
                     "description": "Milestones associated with the goal"
                 },
                 "forecasts": {
-                    "$ref": "#/definitions/api.v1.Forecast",
+                    "$ref": "#/definitions/financial_integration_service_api.v1.Forecast",
                     "additionalProperties": true,
                     "description": "Forecasts associated with the goal"
                 }
@@ -940,7 +940,7 @@
             "title": "Smart Goal",
             "description": "SmartGoal: The Goals table stores information about each financial goal, including the name of the goal, its description, the target amount of money the user wants to save or invest, and the expected date of completion. The Goals table also includes columns for the start date of the goal, the current amount of money saved or invested towards the goal, and a boolean flag indicating whether the goal has been achieved. These additional columns allow the user to track their progress towards the goal and see how much more they need to save or invest to reach their target amount."
         },
-        "api.v1.StudentLoanAccount": {
+        "financial_integration_service_api.v1.StudentLoanAccount": {
             "properties": {
                 "id": {
                     "type": "string",
@@ -1058,7 +1058,7 @@
             "type": "object",
             "title": "Student Loan Account"
         },
-        "api.v1.Token": {
+        "financial_integration_service_api.v1.Token": {
             "properties": {
                 "id": {
                     "type": "string",

@@ -6,7 +6,7 @@
             "properties": {
                 "milestones": {
                     "items": {
-                        "$ref": "#/definitions/api.v1.Milestone"
+                        "$ref": "#/definitions/financial_integration_service_api.v1.Milestone"
                     },
                     "type": "array",
                     "description": "The milestones"
@@ -16,7 +16,7 @@
             "type": "object",
             "title": "Get Milestones By Smart Goal Id Response"
         },
-        "api.v1.Budget": {
+        "financial_integration_service_api.v1.Budget": {
             "properties": {
                 "id": {
                     "type": "string",
@@ -38,7 +38,7 @@
                     "description": "the time the goal was updated"
                 },
                 "category": {
-                    "$ref": "#/definitions/api.v1.Category",
+                    "$ref": "#/definitions/financial_integration_service_api.v1.Category",
                     "additionalProperties": true,
                     "description": "category associated with the goal"
                 }
@@ -48,7 +48,7 @@
             "title": "Budget",
             "description": "The Budgets table stores information about each budget created by the user, including the name of the budget, the start and end dates, and the user ID."
         },
-        "api.v1.Category": {
+        "financial_integration_service_api.v1.Category": {
             "properties": {
                 "id": {
                     "type": "string",
@@ -75,7 +75,7 @@
             "title": "Category",
             "description": "The Categories table stores information about the different categories of expenses or income, such as \"Housing\", \"Food\", \"Transportation\", and \"Entertainment\". Each category has one or more subcategories, which are stored in the Subcategories table. For example, the \"Housing\" category might have subcategories for \"Rent\", \"Utilities\", and \"Home Maintenance\"."
         },
-        "api.v1.Milestone": {
+        "financial_integration_service_api.v1.Milestone": {
             "properties": {
                 "id": {
                     "type": "string",
@@ -103,7 +103,7 @@
                     "description": "wethe milestone is completed or not"
                 },
                 "budget": {
-                    "$ref": "#/definitions/api.v1.Budget",
+                    "$ref": "#/definitions/financial_integration_service_api.v1.Budget",
                     "additionalProperties": true,
                     "description": "the budget associated with the milestone"
                 }

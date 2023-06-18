@@ -5,7 +5,7 @@
         "GetMortgageAccountResponse": {
             "properties": {
                 "mortage_account": {
-                    "$ref": "#/definitions/api.v1.MortgageAccount",
+                    "$ref": "#/definitions/financial_integration_service_api.v1.MortgageAccount",
                     "additionalProperties": true,
                     "description": "The mortage account"
                 }
@@ -14,7 +14,7 @@
             "type": "object",
             "title": "Get Mortgage Account Response"
         },
-        "api.v1.MortgageAccount": {
+        "financial_integration_service_api.v1.MortgageAccount": {
             "properties": {
                 "id": {
                     "type": "string"

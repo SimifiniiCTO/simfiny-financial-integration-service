@@ -19,7 +19,7 @@ import (
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/secrets"
 	taskhandler "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/task-handler"
 	transactionmanager "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/transaction_manager"
-	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/api/v1"
+	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 )
 
 // Server is the grpc server object

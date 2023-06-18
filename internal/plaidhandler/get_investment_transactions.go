@@ -8,7 +8,7 @@ import (
 
 	"github.com/plaid/plaid-go/v12/plaid"
 
-	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/api/v1"
+	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 )
 
 // GetInvestmentTransactions is used to retrieve investment transactions from the Plaid API for a given set of account IDs and access token

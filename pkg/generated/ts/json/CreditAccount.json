@@ -70,7 +70,7 @@
                 },
                 "aprs": {
                     "items": {
-                        "$ref": "#/definitions/api.v1.Apr"
+                        "$ref": "#/definitions/financial_integration_service_api.v1.Apr"
                     },
                     "type": "array",
                     "description": "the aprs"
@@ -92,7 +92,7 @@
             "type": "object",
             "title": "Credit Account"
         },
-        "api.v1.Apr": {
+        "financial_integration_service_api.v1.Apr": {
             "properties": {
                 "id": {
                     "type": "string"

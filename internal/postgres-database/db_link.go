@@ -6,7 +6,7 @@ import (
 
 	"gorm.io/gen/field"
 
-	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/api/v1"
+	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 )
 
 // LinkExistsForItem returns true if a link exists for the given item and user id

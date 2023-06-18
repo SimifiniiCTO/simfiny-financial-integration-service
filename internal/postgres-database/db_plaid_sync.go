@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/api/v1"
+	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 )
 
 func (db *Db) GetLastPlaidSync(ctx context.Context, userId, linkId uint64) (*schema.PlaidSync, error) {

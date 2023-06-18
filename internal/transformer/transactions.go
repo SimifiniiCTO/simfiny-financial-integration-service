@@ -5,7 +5,7 @@ import (
 
 	"github.com/plaid/plaid-go/v12/plaid"
 
-	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/api/v1"
+	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 )
 
 // NewTransactionFromPlaid converts a Plaid transaction to our own transaction interface.

@@ -5,7 +5,7 @@
         "GetForecastResponse": {
             "properties": {
                 "forecast": {
-                    "$ref": "#/definitions/api.v1.Forecast",
+                    "$ref": "#/definitions/financial_integration_service_api.v1.Forecast",
                     "additionalProperties": true,
                     "description": "The forecast"
                 }
@@ -14,7 +14,7 @@
             "type": "object",
             "title": "Get Forecast Response"
         },
-        "api.v1.Forecast": {
+        "financial_integration_service_api.v1.Forecast": {
             "properties": {
                 "id": {
                     "type": "string",
