@@ -3,7 +3,7 @@
 
 ## Table of Contents
 
-- [api/v1/clickhouse.proto](#api_v1_clickhouse-proto)
+- [api/v1/clickhouse_financial_service.proto](#api_v1_clickhouse_financial_service-proto)
     - [AverageTransactionAmountByCategoryMetric](#api-v1-AverageTransactionAmountByCategoryMetric)
     - [InvestmentTransaction](#api-v1-InvestmentTransaction)
     - [MonthlyTransactionCountByCategoryMetric](#api-v1-MonthlyTransactionCountByCategoryMetric)
@@ -17,7 +17,7 @@
     - [ReOccuringTransactionsFrequency](#api-v1-ReOccuringTransactionsFrequency)
     - [ReOccuringTransactionsStatus](#api-v1-ReOccuringTransactionsStatus)
   
-- [api/v1/errors_ignore.proto](#api_v1_errors_ignore-proto)
+- [api/v1/errors_ignore_financial_service.proto](#api_v1_errors_ignore_financial_service-proto)
     - [ErrorMessageRequest](#api-v1-ErrorMessageRequest)
     - [InternalErrorMessageResponse](#api-v1-InternalErrorMessageResponse)
     - [PathUnknownErrorMessageResponse](#api-v1-PathUnknownErrorMessageResponse)
@@ -28,7 +28,7 @@
     - [InternalErrorCode](#api-v1-InternalErrorCode)
     - [NotFoundErrorCode](#api-v1-NotFoundErrorCode)
   
-- [api/v1/message.proto](#api_v1_message-proto)
+- [api/v1/message_financial_service.proto](#api_v1_message_financial_service-proto)
     - [Apr](#api-v1-Apr)
     - [BankAccount](#api-v1-BankAccount)
     - [Budget](#api-v1-Budget)
@@ -59,8 +59,8 @@
     - [PocketType](#api-v1-PocketType)
     - [StripeSubscriptionStatus](#api-v1-StripeSubscriptionStatus)
   
-- [api/v1/openapi.proto](#api_v1_openapi-proto)
-- [api/v1/request_response.proto](#api_v1_request_response-proto)
+- [api/v1/openapi_financial_service.proto](#api_v1_openapi_financial_service-proto)
+- [api/v1/request_response_financial_service.proto](#api_v1_request_response_financial_service-proto)
     - [CreateBankAccountRequest](#api-v1-CreateBankAccountRequest)
     - [CreateBankAccountResponse](#api-v1-CreateBankAccountResponse)
     - [CreateBudgetRequest](#api-v1-CreateBudgetRequest)
@@ -146,17 +146,17 @@
     - [UpdateUserProfileRequest](#api-v1-UpdateUserProfileRequest)
     - [UpdateUserProfileResponse](#api-v1-UpdateUserProfileResponse)
   
-- [api/v1/service.proto](#api_v1_service-proto)
+- [api/v1/service_financial_service.proto](#api_v1_service_financial_service-proto)
     - [FinancialService](#api-v1-FinancialService)
   
 - [Scalar Value Types](#scalar-value-types)
 
 
 
-<a name="api_v1_clickhouse-proto"></a>
+<a name="api_v1_clickhouse_financial_service-proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
-## api/v1/clickhouse.proto
+## api/v1/clickhouse_financial_service.proto
 
 
 
@@ -420,10 +420,10 @@
 
 
 
-<a name="api_v1_errors_ignore-proto"></a>
+<a name="api_v1_errors_ignore_financial_service-proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
-## api/v1/errors_ignore.proto
+## api/v1/errors_ignore_financial_service.proto
 
 
 
@@ -605,10 +605,10 @@
 
 
 
-<a name="api_v1_message-proto"></a>
+<a name="api_v1_message_financial_service-proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
-## api/v1/message.proto
+## api/v1/message_financial_service.proto
 
 
 
@@ -1288,10 +1288,10 @@ such as the id, user_id tied to the profile, and many more
 
 
 
-<a name="api_v1_openapi-proto"></a>
+<a name="api_v1_openapi_financial_service-proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
-## api/v1/openapi.proto
+## api/v1/openapi_financial_service.proto
 
 
  
@@ -1304,10 +1304,10 @@ such as the id, user_id tied to the profile, and many more
 
 
 
-<a name="api_v1_request_response-proto"></a>
+<a name="api_v1_request_response_financial_service-proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
-## api/v1/request_response.proto
+## api/v1/request_response_financial_service.proto
 
 
 
@@ -2625,10 +2625,10 @@ the `update user profile` request
 
 
 
-<a name="api_v1_service-proto"></a>
+<a name="api_v1_service_financial_service-proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
-## api/v1/service.proto
+## api/v1/service_financial_service.proto
 
 
  

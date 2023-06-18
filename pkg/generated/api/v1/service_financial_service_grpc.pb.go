@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.3.0
 // - protoc             (unknown)
-// source: api/v1/service.proto
+// source: api/v1/service_financial_service.proto
 
 package apiv1
 
@@ -1585,5 +1585,5 @@ var FinancialService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "api/v1/service.proto",
+	Metadata: "api/v1/service_financial_service.proto",
 }

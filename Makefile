@@ -210,7 +210,6 @@ start.docker.desktop:
 gen:
 	cd api && make && cd ..
 	./generate.sh
-	
 
 lint:
 	golangci-lint run
