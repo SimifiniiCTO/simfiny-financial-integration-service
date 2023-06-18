@@ -148,7 +148,7 @@ func (db *Db) performSchemaMigration() error {
 	if len(models) > 0 {
 		// ref. https://kb.altinity.com/engines/mergetree-table-engine-family/collapsing-vs-replacing/
 		// ref. https://clickhouse.com/docs/en/guides/developer/deduplication
-		if err := engine.Set("gorm:table_options", "ENGINE=CollapsingMergeTree(sign)").AutoMigrate(models...); err != nil {
+		if err := engine.Set("gorm:table_options", "ENGINE=ENGINE=CollapsingMergeTree(sign)").AutoMigrate(models...); err != nil {
 			// TODO: emit failure metric here
 			log.Error(err.Error())
 			return err

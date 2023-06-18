@@ -2,8 +2,8 @@ syntax = "proto3";
 
 package api.v1;
 
-import "api/v1/message.proto";
-import "api/v1/clickhouse.proto";
+import "api/v1/message_financial_service.proto";
+import "api/v1/clickhouse_financial_service.proto";
 option go_package = "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/api/v1";
 import "validate/validate.proto";
 import "google/api/field_behavior.proto";
