@@ -319,7 +319,6 @@ func TestDb_GetTransactions(t *testing.T) {
 					if _, err := conn.AddTransaction(ctx, userId, tx); err != nil {
 						t.Errorf("conn.AddTransaction() error = %v", err)
 					}
-
 					return &tx.UserId
 				},
 			},

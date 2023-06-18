@@ -534,15 +534,9 @@ message PlaidExchangeTokenRequest {
   ];
 
   // The institution id
-  string institution_id = 3 [
-    (validate.rules).string.min_len = 1,
-    (google.api.field_behavior) = REQUIRED
-  ];
+  string institution_id = 3;
   // The institution name
-  string institution_name = 4 [
-    (validate.rules).string.min_len = 1,
-    (google.api.field_behavior) = REQUIRED
-  ];
+  string institution_name = 4;
 }
 
 message PlaidExchangeTokenResponse {

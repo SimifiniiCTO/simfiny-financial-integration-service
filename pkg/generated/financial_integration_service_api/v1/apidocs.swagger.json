@@ -3486,9 +3486,7 @@
       },
       "required": [
         "userId",
-        "publicToken",
-        "institutionId",
-        "institutionName"
+        "publicToken"
       ]
     },
     "PlaidExchangeTokenResponse": {
