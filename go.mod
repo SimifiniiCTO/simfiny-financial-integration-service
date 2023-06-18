@@ -1,6 +1,6 @@
 module github.com/SimifiniiCTO/simfiny-financial-integration-service
 
-go 1.19
+go 1.20
 
 require (
 	github.com/MicahParks/keyfunc v1.9.0
@@ -51,9 +51,9 @@ require (
 	google.golang.org/genproto v0.0.0-20230410155749-daa745c078e1
 	google.golang.org/grpc v1.55.0
 	google.golang.org/protobuf v1.30.0
-	gorm.io/driver/sqlite v1.5.0
+	gorm.io/driver/sqlite v1.5.2
 	gorm.io/gen v0.3.21
-	gorm.io/gorm v1.25.1
+	gorm.io/gorm v1.25.2-0.20230530020048-26663ab9bf55
 	gorm.io/plugin/dbresolver v1.4.1
 )
 
@@ -122,7 +122,7 @@ require (
 	github.com/markbates/pkger v0.17.1 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.17 // indirect
-	github.com/mattn/go-sqlite3 v1.14.16 // indirect
+	github.com/mattn/go-sqlite3 v1.14.17 // indirect
 	github.com/matttproud/golang_protobuf_extensions v1.0.2-0.20181231171920-c182affec369 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/newrelic/newrelic-telemetry-sdk-go v0.8.1 // indirect

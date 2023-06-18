@@ -3,10 +3,15 @@ package financial_integration_service_apiv1
 import (
 	context "context"
 	fmt "fmt"
+	strings "strings"
+	time "time"
+
 	gorm1 "github.com/infobloxopen/atlas-app-toolkit/gorm"
 	errors "github.com/infobloxopen/protoc-gen-gorm/errors"
 	gorm "github.com/jinzhu/gorm"
 	field_mask "google.golang.org/genproto/protobuf/field_mask"
+	anypb "google.golang.org/protobuf/types/known/anypb"
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 )
 
 type InvestmentTransactionORM struct {
@@ -26,6 +31,7 @@ type InvestmentTransactionORM struct {
 	SecurityId              string
 	Sign                    int32
 	Subtype                 string
+	Time                    *time.Time
 	Type                    string
 	UnofficialCurrencyCode  string
 	UserId                  uint64
@@ -65,6 +71,9 @@ func (m *InvestmentTransaction) ToORM(ctx context.Context) (InvestmentTransactio
 	to.UserId = m.UserId
 	to.CreatedAt = m.CreatedAt
 	to.Sign = m.Sign
+	if m.Time != nil {
+		*to.Time = m.Time.AsTime()
+	}
 	if posthook, ok := interface{}(m).(InvestmentTransactionWithAfterToORM); ok {
 		err = posthook.AfterToORM(ctx, &to)
 	}
@@ -100,6 +109,9 @@ func (m *InvestmentTransactionORM) ToPB(ctx context.Context) (InvestmentTransact
 	to.UserId = m.UserId
 	to.CreatedAt = m.CreatedAt
 	to.Sign = m.Sign
+	if m.Time != nil {
+		to.Time = timestamppb.New(*m.Time)
+	}
 	if posthook, ok := interface{}(m).(InvestmentTransactionWithAfterToPB); ok {
 		err = posthook.AfterToPB(ctx, &to)
 	}
@@ -150,6 +162,7 @@ type ReOccuringTransactionORM struct {
 	Sign                            int32
 	Status                          string
 	StreamId                        string
+	Time                            *time.Time
 	TransactionIds                  string
 	UpdatedTime                     string
 	UserId                          uint64
@@ -193,6 +206,9 @@ func (m *ReOccuringTransaction) ToORM(ctx context.Context) (ReOccuringTransactio
 	to.Id = m.Id
 	to.Flow = ReCurringFlow_name[int32(m.Flow)]
 	to.Sign = m.Sign
+	if m.Time != nil {
+		*to.Time = m.Time.AsTime()
+	}
 	if posthook, ok := interface{}(m).(ReOccuringTransactionWithAfterToORM); ok {
 		err = posthook.AfterToORM(ctx, &to)
 	}
@@ -232,6 +248,9 @@ func (m *ReOccuringTransactionORM) ToPB(ctx context.Context) (ReOccuringTransact
 	to.Id = m.Id
 	to.Flow = ReCurringFlow(ReCurringFlow_value[m.Flow])
 	to.Sign = m.Sign
+	if m.Time != nil {
+		to.Time = timestamppb.New(*m.Time)
+	}
 	if posthook, ok := interface{}(m).(ReOccuringTransactionWithAfterToPB); ok {
 		err = posthook.AfterToPB(ctx, &to)
 	}
@@ -298,6 +317,7 @@ type TransactionORM struct {
 	PersonalFinanceCategoryDetailed string
 	PersonalFinanceCategoryPrimary  string
 	Sign                            int32
+	Time                            *time.Time
 	TransactionCode                 string
 	TransactionId                   string
 	UnofficialCurrencyCode          string
@@ -359,6 +379,9 @@ func (m *Transaction) ToORM(ctx context.Context) (TransactionORM, error) {
 	to.PaymentMetaPpdId = m.PaymentMetaPpdId
 	to.PaymentMetaReason = m.PaymentMetaReason
 	to.PaymentMetaReferenceNumber = m.PaymentMetaReferenceNumber
+	if m.Time != nil {
+		*to.Time = m.Time.AsTime()
+	}
 	if posthook, ok := interface{}(m).(TransactionWithAfterToORM); ok {
 		err = posthook.AfterToORM(ctx, &to)
 	}
@@ -415,6 +438,9 @@ func (m *TransactionORM) ToPB(ctx context.Context) (Transaction, error) {
 	to.PaymentMetaPpdId = m.PaymentMetaPpdId
 	to.PaymentMetaReason = m.PaymentMetaReason
 	to.PaymentMetaReferenceNumber = m.PaymentMetaReferenceNumber
+	if m.Time != nil {
+		to.Time = timestamppb.New(*m.Time)
+	}
 	if posthook, ok := interface{}(m).(TransactionWithAfterToPB); ok {
 		err = posthook.AfterToPB(ctx, &to)
 	}
@@ -723,7 +749,9 @@ func DefaultApplyFieldMaskInvestmentTransaction(ctx context.Context, patchee *In
 		return nil, errors.NilArgumentError
 	}
 	var err error
-	for _, f := range updateMask.Paths {
+	var updatedTime bool
+	var updatedAdditionalProperties bool
+	for i, f := range updateMask.Paths {
 		if f == prefix+"AccountId" {
 			patchee.AccountId = patcher.AccountId
 			continue
@@ -798,6 +826,52 @@ func DefaultApplyFieldMaskInvestmentTransaction(ctx context.Context, patchee *In
 		}
 		if f == prefix+"Sign" {
 			patchee.Sign = patcher.Sign
+			continue
+		}
+		if !updatedTime && strings.HasPrefix(f, prefix+"Time.") {
+			if patcher.Time == nil {
+				patchee.Time = nil
+				continue
+			}
+			if patchee.Time == nil {
+				patchee.Time = &timestamppb.Timestamp{}
+			}
+			childMask := &field_mask.FieldMask{}
+			for j := i; j < len(updateMask.Paths); j++ {
+				if trimPath := strings.TrimPrefix(updateMask.Paths[j], prefix+"Time."); trimPath != updateMask.Paths[j] {
+					childMask.Paths = append(childMask.Paths, trimPath)
+				}
+			}
+			if err := gorm1.MergeWithMask(patcher.Time, patchee.Time, childMask); err != nil {
+				return nil, nil
+			}
+		}
+		if f == prefix+"Time" {
+			updatedTime = true
+			patchee.Time = patcher.Time
+			continue
+		}
+		if !updatedAdditionalProperties && strings.HasPrefix(f, prefix+"AdditionalProperties.") {
+			if patcher.AdditionalProperties == nil {
+				patchee.AdditionalProperties = nil
+				continue
+			}
+			if patchee.AdditionalProperties == nil {
+				patchee.AdditionalProperties = &anypb.Any{}
+			}
+			childMask := &field_mask.FieldMask{}
+			for j := i; j < len(updateMask.Paths); j++ {
+				if trimPath := strings.TrimPrefix(updateMask.Paths[j], prefix+"AdditionalProperties."); trimPath != updateMask.Paths[j] {
+					childMask.Paths = append(childMask.Paths, trimPath)
+				}
+			}
+			if err := gorm1.MergeWithMask(patcher.AdditionalProperties, patchee.AdditionalProperties, childMask); err != nil {
+				return nil, nil
+			}
+		}
+		if f == prefix+"AdditionalProperties" {
+			updatedAdditionalProperties = true
+			patchee.AdditionalProperties = patcher.AdditionalProperties
 			continue
 		}
 	}
@@ -1139,7 +1213,9 @@ func DefaultApplyFieldMaskReOccuringTransaction(ctx context.Context, patchee *Re
 		return nil, errors.NilArgumentError
 	}
 	var err error
-	for _, f := range updateMask.Paths {
+	var updatedTime bool
+	var updatedAdditionalProperties bool
+	for i, f := range updateMask.Paths {
 		if f == prefix+"AccountId" {
 			patchee.AccountId = patcher.AccountId
 			continue
@@ -1230,6 +1306,52 @@ func DefaultApplyFieldMaskReOccuringTransaction(ctx context.Context, patchee *Re
 		}
 		if f == prefix+"Sign" {
 			patchee.Sign = patcher.Sign
+			continue
+		}
+		if !updatedTime && strings.HasPrefix(f, prefix+"Time.") {
+			if patcher.Time == nil {
+				patchee.Time = nil
+				continue
+			}
+			if patchee.Time == nil {
+				patchee.Time = &timestamppb.Timestamp{}
+			}
+			childMask := &field_mask.FieldMask{}
+			for j := i; j < len(updateMask.Paths); j++ {
+				if trimPath := strings.TrimPrefix(updateMask.Paths[j], prefix+"Time."); trimPath != updateMask.Paths[j] {
+					childMask.Paths = append(childMask.Paths, trimPath)
+				}
+			}
+			if err := gorm1.MergeWithMask(patcher.Time, patchee.Time, childMask); err != nil {
+				return nil, nil
+			}
+		}
+		if f == prefix+"Time" {
+			updatedTime = true
+			patchee.Time = patcher.Time
+			continue
+		}
+		if !updatedAdditionalProperties && strings.HasPrefix(f, prefix+"AdditionalProperties.") {
+			if patcher.AdditionalProperties == nil {
+				patchee.AdditionalProperties = nil
+				continue
+			}
+			if patchee.AdditionalProperties == nil {
+				patchee.AdditionalProperties = &anypb.Any{}
+			}
+			childMask := &field_mask.FieldMask{}
+			for j := i; j < len(updateMask.Paths); j++ {
+				if trimPath := strings.TrimPrefix(updateMask.Paths[j], prefix+"AdditionalProperties."); trimPath != updateMask.Paths[j] {
+					childMask.Paths = append(childMask.Paths, trimPath)
+				}
+			}
+			if err := gorm1.MergeWithMask(patcher.AdditionalProperties, patchee.AdditionalProperties, childMask); err != nil {
+				return nil, nil
+			}
+		}
+		if f == prefix+"AdditionalProperties" {
+			updatedAdditionalProperties = true
+			patchee.AdditionalProperties = patcher.AdditionalProperties
 			continue
 		}
 	}
@@ -1571,7 +1693,9 @@ func DefaultApplyFieldMaskTransaction(ctx context.Context, patchee *Transaction,
 		return nil, errors.NilArgumentError
 	}
 	var err error
-	for _, f := range updateMask.Paths {
+	var updatedTime bool
+	var updatedAdditionalProperties bool
+	for i, f := range updateMask.Paths {
 		if f == prefix+"AccountId" {
 			patchee.AccountId = patcher.AccountId
 			continue
@@ -1730,6 +1854,52 @@ func DefaultApplyFieldMaskTransaction(ctx context.Context, patchee *Transaction,
 		}
 		if f == prefix+"PaymentMetaReferenceNumber" {
 			patchee.PaymentMetaReferenceNumber = patcher.PaymentMetaReferenceNumber
+			continue
+		}
+		if !updatedTime && strings.HasPrefix(f, prefix+"Time.") {
+			if patcher.Time == nil {
+				patchee.Time = nil
+				continue
+			}
+			if patchee.Time == nil {
+				patchee.Time = &timestamppb.Timestamp{}
+			}
+			childMask := &field_mask.FieldMask{}
+			for j := i; j < len(updateMask.Paths); j++ {
+				if trimPath := strings.TrimPrefix(updateMask.Paths[j], prefix+"Time."); trimPath != updateMask.Paths[j] {
+					childMask.Paths = append(childMask.Paths, trimPath)
+				}
+			}
+			if err := gorm1.MergeWithMask(patcher.Time, patchee.Time, childMask); err != nil {
+				return nil, nil
+			}
+		}
+		if f == prefix+"Time" {
+			updatedTime = true
+			patchee.Time = patcher.Time
+			continue
+		}
+		if !updatedAdditionalProperties && strings.HasPrefix(f, prefix+"AdditionalProperties.") {
+			if patcher.AdditionalProperties == nil {
+				patchee.AdditionalProperties = nil
+				continue
+			}
+			if patchee.AdditionalProperties == nil {
+				patchee.AdditionalProperties = &anypb.Any{}
+			}
+			childMask := &field_mask.FieldMask{}
+			for j := i; j < len(updateMask.Paths); j++ {
+				if trimPath := strings.TrimPrefix(updateMask.Paths[j], prefix+"AdditionalProperties."); trimPath != updateMask.Paths[j] {
+					childMask.Paths = append(childMask.Paths, trimPath)
+				}
+			}
+			if err := gorm1.MergeWithMask(patcher.AdditionalProperties, patchee.AdditionalProperties, childMask); err != nil {
+				return nil, nil
+			}
+		}
+		if f == prefix+"AdditionalProperties" {
+			updatedAdditionalProperties = true
+			patchee.AdditionalProperties = patcher.AdditionalProperties
 			continue
 		}
 	}

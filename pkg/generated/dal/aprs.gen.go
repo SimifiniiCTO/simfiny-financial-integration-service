@@ -8,7 +8,7 @@ import (
 	"context"
 	"strings"
 
-	apiv1 "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
+	financial_integration_service_apiv1 "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 	"gorm.io/gorm/schema"
@@ -24,7 +24,7 @@ func newAprORM(db *gorm.DB, opts ...gen.DOOption) aprORM {
 	_aprORM := aprORM{}
 
 	_aprORM.aprORMDo.UseDB(db, opts...)
-	_aprORM.aprORMDo.UseModel(&apiv1.AprORM{})
+	_aprORM.aprORMDo.UseModel(&financial_integration_service_apiv1.AprORM{})
 
 	tableName := _aprORM.aprORMDo.TableName()
 	_aprORM.ALL = field.NewAsterisk(tableName)
@@ -138,17 +138,17 @@ type IAprORMDo interface {
 	Count() (count int64, err error)
 	Scopes(funcs ...func(gen.Dao) gen.Dao) IAprORMDo
 	Unscoped() IAprORMDo
-	Create(values ...*apiv1.AprORM) error
-	CreateInBatches(values []*apiv1.AprORM, batchSize int) error
-	Save(values ...*apiv1.AprORM) error
-	First() (*apiv1.AprORM, error)
-	Take() (*apiv1.AprORM, error)
-	Last() (*apiv1.AprORM, error)
-	Find() ([]*apiv1.AprORM, error)
-	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*apiv1.AprORM, err error)
-	FindInBatches(result *[]*apiv1.AprORM, batchSize int, fc func(tx gen.Dao, batch int) error) error
+	Create(values ...*financial_integration_service_apiv1.AprORM) error
+	CreateInBatches(values []*financial_integration_service_apiv1.AprORM, batchSize int) error
+	Save(values ...*financial_integration_service_apiv1.AprORM) error
+	First() (*financial_integration_service_apiv1.AprORM, error)
+	Take() (*financial_integration_service_apiv1.AprORM, error)
+	Last() (*financial_integration_service_apiv1.AprORM, error)
+	Find() ([]*financial_integration_service_apiv1.AprORM, error)
+	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*financial_integration_service_apiv1.AprORM, err error)
+	FindInBatches(result *[]*financial_integration_service_apiv1.AprORM, batchSize int, fc func(tx gen.Dao, batch int) error) error
 	Pluck(column field.Expr, dest interface{}) error
-	Delete(...*apiv1.AprORM) (info gen.ResultInfo, err error)
+	Delete(...*financial_integration_service_apiv1.AprORM) (info gen.ResultInfo, err error)
 	Update(column field.Expr, value interface{}) (info gen.ResultInfo, err error)
 	UpdateSimple(columns ...field.AssignExpr) (info gen.ResultInfo, err error)
 	Updates(value interface{}) (info gen.ResultInfo, err error)
@@ -160,18 +160,18 @@ type IAprORMDo interface {
 	Assign(attrs ...field.AssignExpr) IAprORMDo
 	Joins(fields ...field.RelationField) IAprORMDo
 	Preload(fields ...field.RelationField) IAprORMDo
-	FirstOrInit() (*apiv1.AprORM, error)
-	FirstOrCreate() (*apiv1.AprORM, error)
-	FindByPage(offset int, limit int) (result []*apiv1.AprORM, count int64, err error)
+	FirstOrInit() (*financial_integration_service_apiv1.AprORM, error)
+	FirstOrCreate() (*financial_integration_service_apiv1.AprORM, error)
+	FindByPage(offset int, limit int) (result []*financial_integration_service_apiv1.AprORM, count int64, err error)
 	ScanByPage(result interface{}, offset int, limit int) (count int64, err error)
 	Scan(result interface{}) (err error)
 	Returning(value interface{}, columns ...string) IAprORMDo
 	UnderlyingDB() *gorm.DB
 	schema.Tabler
 
-	GetByUserID(user_id int) (result apiv1.AprORM, err error)
-	GetByID(id int) (result apiv1.AprORM, err error)
-	GetByIDs(ids []int) (result []apiv1.AprORM, err error)
+	GetByUserID(user_id int) (result financial_integration_service_apiv1.AprORM, err error)
+	GetByID(id int) (result financial_integration_service_apiv1.AprORM, err error)
+	GetByIDs(ids []int) (result []financial_integration_service_apiv1.AprORM, err error)
 }
 
 // SELECT * FROM @@table
@@ -180,7 +180,7 @@ type IAprORMDo interface {
 //	user_id=@user_id
 //
 // {{end}}
-func (a aprORMDo) GetByUserID(user_id int) (result apiv1.AprORM, err error) {
+func (a aprORMDo) GetByUserID(user_id int) (result financial_integration_service_apiv1.AprORM, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -203,7 +203,7 @@ func (a aprORMDo) GetByUserID(user_id int) (result apiv1.AprORM, err error) {
 //	id=@id
 //
 // {{end}}
-func (a aprORMDo) GetByID(id int) (result apiv1.AprORM, err error) {
+func (a aprORMDo) GetByID(id int) (result financial_integration_service_apiv1.AprORM, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -226,7 +226,7 @@ func (a aprORMDo) GetByID(id int) (result apiv1.AprORM, err error) {
 //	id IN (@ids)
 //
 // {{end}}
-func (a aprORMDo) GetByIDs(ids []int) (result []apiv1.AprORM, err error) {
+func (a aprORMDo) GetByIDs(ids []int) (result []financial_integration_service_apiv1.AprORM, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -339,57 +339,57 @@ func (a aprORMDo) Unscoped() IAprORMDo {
 	return a.withDO(a.DO.Unscoped())
 }
 
-func (a aprORMDo) Create(values ...*apiv1.AprORM) error {
+func (a aprORMDo) Create(values ...*financial_integration_service_apiv1.AprORM) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return a.DO.Create(values)
 }
 
-func (a aprORMDo) CreateInBatches(values []*apiv1.AprORM, batchSize int) error {
+func (a aprORMDo) CreateInBatches(values []*financial_integration_service_apiv1.AprORM, batchSize int) error {
 	return a.DO.CreateInBatches(values, batchSize)
 }
 
 // Save : !!! underlying implementation is different with GORM
 // The method is equivalent to executing the statement: db.Clauses(clause.OnConflict{UpdateAll: true}).Create(values)
-func (a aprORMDo) Save(values ...*apiv1.AprORM) error {
+func (a aprORMDo) Save(values ...*financial_integration_service_apiv1.AprORM) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return a.DO.Save(values)
 }
 
-func (a aprORMDo) First() (*apiv1.AprORM, error) {
+func (a aprORMDo) First() (*financial_integration_service_apiv1.AprORM, error) {
 	if result, err := a.DO.First(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.AprORM), nil
+		return result.(*financial_integration_service_apiv1.AprORM), nil
 	}
 }
 
-func (a aprORMDo) Take() (*apiv1.AprORM, error) {
+func (a aprORMDo) Take() (*financial_integration_service_apiv1.AprORM, error) {
 	if result, err := a.DO.Take(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.AprORM), nil
+		return result.(*financial_integration_service_apiv1.AprORM), nil
 	}
 }
 
-func (a aprORMDo) Last() (*apiv1.AprORM, error) {
+func (a aprORMDo) Last() (*financial_integration_service_apiv1.AprORM, error) {
 	if result, err := a.DO.Last(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.AprORM), nil
+		return result.(*financial_integration_service_apiv1.AprORM), nil
 	}
 }
 
-func (a aprORMDo) Find() ([]*apiv1.AprORM, error) {
+func (a aprORMDo) Find() ([]*financial_integration_service_apiv1.AprORM, error) {
 	result, err := a.DO.Find()
-	return result.([]*apiv1.AprORM), err
+	return result.([]*financial_integration_service_apiv1.AprORM), err
 }
 
-func (a aprORMDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*apiv1.AprORM, err error) {
-	buf := make([]*apiv1.AprORM, 0, batchSize)
+func (a aprORMDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*financial_integration_service_apiv1.AprORM, err error) {
+	buf := make([]*financial_integration_service_apiv1.AprORM, 0, batchSize)
 	err = a.DO.FindInBatches(&buf, batchSize, func(tx gen.Dao, batch int) error {
 		defer func() { results = append(results, buf...) }()
 		return fc(tx, batch)
@@ -397,7 +397,7 @@ func (a aprORMDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) erro
 	return results, err
 }
 
-func (a aprORMDo) FindInBatches(result *[]*apiv1.AprORM, batchSize int, fc func(tx gen.Dao, batch int) error) error {
+func (a aprORMDo) FindInBatches(result *[]*financial_integration_service_apiv1.AprORM, batchSize int, fc func(tx gen.Dao, batch int) error) error {
 	return a.DO.FindInBatches(result, batchSize, fc)
 }
 
@@ -423,23 +423,23 @@ func (a aprORMDo) Preload(fields ...field.RelationField) IAprORMDo {
 	return &a
 }
 
-func (a aprORMDo) FirstOrInit() (*apiv1.AprORM, error) {
+func (a aprORMDo) FirstOrInit() (*financial_integration_service_apiv1.AprORM, error) {
 	if result, err := a.DO.FirstOrInit(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.AprORM), nil
+		return result.(*financial_integration_service_apiv1.AprORM), nil
 	}
 }
 
-func (a aprORMDo) FirstOrCreate() (*apiv1.AprORM, error) {
+func (a aprORMDo) FirstOrCreate() (*financial_integration_service_apiv1.AprORM, error) {
 	if result, err := a.DO.FirstOrCreate(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.AprORM), nil
+		return result.(*financial_integration_service_apiv1.AprORM), nil
 	}
 }
 
-func (a aprORMDo) FindByPage(offset int, limit int) (result []*apiv1.AprORM, count int64, err error) {
+func (a aprORMDo) FindByPage(offset int, limit int) (result []*financial_integration_service_apiv1.AprORM, count int64, err error) {
 	result, err = a.Offset(offset).Limit(limit).Find()
 	if err != nil {
 		return
@@ -468,7 +468,7 @@ func (a aprORMDo) Scan(result interface{}) (err error) {
 	return a.DO.Scan(result)
 }
 
-func (a aprORMDo) Delete(models ...*apiv1.AprORM) (result gen.ResultInfo, err error) {
+func (a aprORMDo) Delete(models ...*financial_integration_service_apiv1.AprORM) (result gen.ResultInfo, err error) {
 	return a.DO.Delete(models)
 }
 

@@ -195,7 +195,8 @@ func (db *Db) performSchemaMigration() error {
 
 					fmt.Println("Table created successfully")
 		*/
-		if err := engine.AutoMigrate(models...); err != nil {
+
+		if err := engine.Set("gorm:table_options", "ENGINE = CollapsingMergeTree(Time, (Id, Time), 8192, Sign)").AutoMigrate(models...); err != nil {
 			// TODO: emit failure metric here
 			log.Error(err.Error())
 			return err

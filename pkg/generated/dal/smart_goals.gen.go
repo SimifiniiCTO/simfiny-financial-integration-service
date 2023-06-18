@@ -8,7 +8,7 @@ import (
 	"context"
 	"strings"
 
-	apiv1 "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
+	financial_integration_service_apiv1 "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 	"gorm.io/gorm/schema"
@@ -24,7 +24,7 @@ func newSmartGoalORM(db *gorm.DB, opts ...gen.DOOption) smartGoalORM {
 	_smartGoalORM := smartGoalORM{}
 
 	_smartGoalORM.smartGoalORMDo.UseDB(db, opts...)
-	_smartGoalORM.smartGoalORMDo.UseModel(&apiv1.SmartGoalORM{})
+	_smartGoalORM.smartGoalORMDo.UseModel(&financial_integration_service_apiv1.SmartGoalORM{})
 
 	tableName := _smartGoalORM.smartGoalORMDo.TableName()
 	_smartGoalORM.ALL = field.NewAsterisk(tableName)
@@ -43,24 +43,24 @@ func newSmartGoalORM(db *gorm.DB, opts ...gen.DOOption) smartGoalORM {
 	_smartGoalORM.Forecasts = smartGoalORMHasOneForecasts{
 		db: db.Session(&gorm.Session{}),
 
-		RelationField: field.NewRelation("Forecasts", "apiv1.ForecastORM"),
+		RelationField: field.NewRelation("Forecasts", "financial_integration_service_apiv1.ForecastORM"),
 	}
 
 	_smartGoalORM.Milestones = smartGoalORMHasManyMilestones{
 		db: db.Session(&gorm.Session{}),
 
-		RelationField: field.NewRelation("Milestones", "apiv1.MilestoneORM"),
+		RelationField: field.NewRelation("Milestones", "financial_integration_service_apiv1.MilestoneORM"),
 		Budget: struct {
 			field.RelationField
 			Category struct {
 				field.RelationField
 			}
 		}{
-			RelationField: field.NewRelation("Milestones.Budget", "apiv1.BudgetORM"),
+			RelationField: field.NewRelation("Milestones.Budget", "financial_integration_service_apiv1.BudgetORM"),
 			Category: struct {
 				field.RelationField
 			}{
-				RelationField: field.NewRelation("Milestones.Budget.Category", "apiv1.CategoryORM"),
+				RelationField: field.NewRelation("Milestones.Budget.Category", "financial_integration_service_apiv1.CategoryORM"),
 			},
 		},
 	}
@@ -183,17 +183,17 @@ func (a smartGoalORMHasOneForecasts) WithContext(ctx context.Context) *smartGoal
 	return &a
 }
 
-func (a smartGoalORMHasOneForecasts) Model(m *apiv1.SmartGoalORM) *smartGoalORMHasOneForecastsTx {
+func (a smartGoalORMHasOneForecasts) Model(m *financial_integration_service_apiv1.SmartGoalORM) *smartGoalORMHasOneForecastsTx {
 	return &smartGoalORMHasOneForecastsTx{a.db.Model(m).Association(a.Name())}
 }
 
 type smartGoalORMHasOneForecastsTx struct{ tx *gorm.Association }
 
-func (a smartGoalORMHasOneForecastsTx) Find() (result *apiv1.ForecastORM, err error) {
+func (a smartGoalORMHasOneForecastsTx) Find() (result *financial_integration_service_apiv1.ForecastORM, err error) {
 	return result, a.tx.Find(&result)
 }
 
-func (a smartGoalORMHasOneForecastsTx) Append(values ...*apiv1.ForecastORM) (err error) {
+func (a smartGoalORMHasOneForecastsTx) Append(values ...*financial_integration_service_apiv1.ForecastORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -201,7 +201,7 @@ func (a smartGoalORMHasOneForecastsTx) Append(values ...*apiv1.ForecastORM) (err
 	return a.tx.Append(targetValues...)
 }
 
-func (a smartGoalORMHasOneForecastsTx) Replace(values ...*apiv1.ForecastORM) (err error) {
+func (a smartGoalORMHasOneForecastsTx) Replace(values ...*financial_integration_service_apiv1.ForecastORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -209,7 +209,7 @@ func (a smartGoalORMHasOneForecastsTx) Replace(values ...*apiv1.ForecastORM) (er
 	return a.tx.Replace(targetValues...)
 }
 
-func (a smartGoalORMHasOneForecastsTx) Delete(values ...*apiv1.ForecastORM) (err error) {
+func (a smartGoalORMHasOneForecastsTx) Delete(values ...*financial_integration_service_apiv1.ForecastORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -256,17 +256,17 @@ func (a smartGoalORMHasManyMilestones) WithContext(ctx context.Context) *smartGo
 	return &a
 }
 
-func (a smartGoalORMHasManyMilestones) Model(m *apiv1.SmartGoalORM) *smartGoalORMHasManyMilestonesTx {
+func (a smartGoalORMHasManyMilestones) Model(m *financial_integration_service_apiv1.SmartGoalORM) *smartGoalORMHasManyMilestonesTx {
 	return &smartGoalORMHasManyMilestonesTx{a.db.Model(m).Association(a.Name())}
 }
 
 type smartGoalORMHasManyMilestonesTx struct{ tx *gorm.Association }
 
-func (a smartGoalORMHasManyMilestonesTx) Find() (result []*apiv1.MilestoneORM, err error) {
+func (a smartGoalORMHasManyMilestonesTx) Find() (result []*financial_integration_service_apiv1.MilestoneORM, err error) {
 	return result, a.tx.Find(&result)
 }
 
-func (a smartGoalORMHasManyMilestonesTx) Append(values ...*apiv1.MilestoneORM) (err error) {
+func (a smartGoalORMHasManyMilestonesTx) Append(values ...*financial_integration_service_apiv1.MilestoneORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -274,7 +274,7 @@ func (a smartGoalORMHasManyMilestonesTx) Append(values ...*apiv1.MilestoneORM) (
 	return a.tx.Append(targetValues...)
 }
 
-func (a smartGoalORMHasManyMilestonesTx) Replace(values ...*apiv1.MilestoneORM) (err error) {
+func (a smartGoalORMHasManyMilestonesTx) Replace(values ...*financial_integration_service_apiv1.MilestoneORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -282,7 +282,7 @@ func (a smartGoalORMHasManyMilestonesTx) Replace(values ...*apiv1.MilestoneORM) 
 	return a.tx.Replace(targetValues...)
 }
 
-func (a smartGoalORMHasManyMilestonesTx) Delete(values ...*apiv1.MilestoneORM) (err error) {
+func (a smartGoalORMHasManyMilestonesTx) Delete(values ...*financial_integration_service_apiv1.MilestoneORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -329,17 +329,17 @@ type ISmartGoalORMDo interface {
 	Count() (count int64, err error)
 	Scopes(funcs ...func(gen.Dao) gen.Dao) ISmartGoalORMDo
 	Unscoped() ISmartGoalORMDo
-	Create(values ...*apiv1.SmartGoalORM) error
-	CreateInBatches(values []*apiv1.SmartGoalORM, batchSize int) error
-	Save(values ...*apiv1.SmartGoalORM) error
-	First() (*apiv1.SmartGoalORM, error)
-	Take() (*apiv1.SmartGoalORM, error)
-	Last() (*apiv1.SmartGoalORM, error)
-	Find() ([]*apiv1.SmartGoalORM, error)
-	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*apiv1.SmartGoalORM, err error)
-	FindInBatches(result *[]*apiv1.SmartGoalORM, batchSize int, fc func(tx gen.Dao, batch int) error) error
+	Create(values ...*financial_integration_service_apiv1.SmartGoalORM) error
+	CreateInBatches(values []*financial_integration_service_apiv1.SmartGoalORM, batchSize int) error
+	Save(values ...*financial_integration_service_apiv1.SmartGoalORM) error
+	First() (*financial_integration_service_apiv1.SmartGoalORM, error)
+	Take() (*financial_integration_service_apiv1.SmartGoalORM, error)
+	Last() (*financial_integration_service_apiv1.SmartGoalORM, error)
+	Find() ([]*financial_integration_service_apiv1.SmartGoalORM, error)
+	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*financial_integration_service_apiv1.SmartGoalORM, err error)
+	FindInBatches(result *[]*financial_integration_service_apiv1.SmartGoalORM, batchSize int, fc func(tx gen.Dao, batch int) error) error
 	Pluck(column field.Expr, dest interface{}) error
-	Delete(...*apiv1.SmartGoalORM) (info gen.ResultInfo, err error)
+	Delete(...*financial_integration_service_apiv1.SmartGoalORM) (info gen.ResultInfo, err error)
 	Update(column field.Expr, value interface{}) (info gen.ResultInfo, err error)
 	UpdateSimple(columns ...field.AssignExpr) (info gen.ResultInfo, err error)
 	Updates(value interface{}) (info gen.ResultInfo, err error)
@@ -351,18 +351,18 @@ type ISmartGoalORMDo interface {
 	Assign(attrs ...field.AssignExpr) ISmartGoalORMDo
 	Joins(fields ...field.RelationField) ISmartGoalORMDo
 	Preload(fields ...field.RelationField) ISmartGoalORMDo
-	FirstOrInit() (*apiv1.SmartGoalORM, error)
-	FirstOrCreate() (*apiv1.SmartGoalORM, error)
-	FindByPage(offset int, limit int) (result []*apiv1.SmartGoalORM, count int64, err error)
+	FirstOrInit() (*financial_integration_service_apiv1.SmartGoalORM, error)
+	FirstOrCreate() (*financial_integration_service_apiv1.SmartGoalORM, error)
+	FindByPage(offset int, limit int) (result []*financial_integration_service_apiv1.SmartGoalORM, count int64, err error)
 	ScanByPage(result interface{}, offset int, limit int) (count int64, err error)
 	Scan(result interface{}) (err error)
 	Returning(value interface{}, columns ...string) ISmartGoalORMDo
 	UnderlyingDB() *gorm.DB
 	schema.Tabler
 
-	GetByUserID(user_id int) (result apiv1.SmartGoalORM, err error)
-	GetByID(id int) (result apiv1.SmartGoalORM, err error)
-	GetByIDs(ids []int) (result []apiv1.SmartGoalORM, err error)
+	GetByUserID(user_id int) (result financial_integration_service_apiv1.SmartGoalORM, err error)
+	GetByID(id int) (result financial_integration_service_apiv1.SmartGoalORM, err error)
+	GetByIDs(ids []int) (result []financial_integration_service_apiv1.SmartGoalORM, err error)
 }
 
 // SELECT * FROM @@table
@@ -371,7 +371,7 @@ type ISmartGoalORMDo interface {
 //	user_id=@user_id
 //
 // {{end}}
-func (s smartGoalORMDo) GetByUserID(user_id int) (result apiv1.SmartGoalORM, err error) {
+func (s smartGoalORMDo) GetByUserID(user_id int) (result financial_integration_service_apiv1.SmartGoalORM, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -394,7 +394,7 @@ func (s smartGoalORMDo) GetByUserID(user_id int) (result apiv1.SmartGoalORM, err
 //	id=@id
 //
 // {{end}}
-func (s smartGoalORMDo) GetByID(id int) (result apiv1.SmartGoalORM, err error) {
+func (s smartGoalORMDo) GetByID(id int) (result financial_integration_service_apiv1.SmartGoalORM, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -417,7 +417,7 @@ func (s smartGoalORMDo) GetByID(id int) (result apiv1.SmartGoalORM, err error) {
 //	id IN (@ids)
 //
 // {{end}}
-func (s smartGoalORMDo) GetByIDs(ids []int) (result []apiv1.SmartGoalORM, err error) {
+func (s smartGoalORMDo) GetByIDs(ids []int) (result []financial_integration_service_apiv1.SmartGoalORM, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -530,57 +530,57 @@ func (s smartGoalORMDo) Unscoped() ISmartGoalORMDo {
 	return s.withDO(s.DO.Unscoped())
 }
 
-func (s smartGoalORMDo) Create(values ...*apiv1.SmartGoalORM) error {
+func (s smartGoalORMDo) Create(values ...*financial_integration_service_apiv1.SmartGoalORM) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return s.DO.Create(values)
 }
 
-func (s smartGoalORMDo) CreateInBatches(values []*apiv1.SmartGoalORM, batchSize int) error {
+func (s smartGoalORMDo) CreateInBatches(values []*financial_integration_service_apiv1.SmartGoalORM, batchSize int) error {
 	return s.DO.CreateInBatches(values, batchSize)
 }
 
 // Save : !!! underlying implementation is different with GORM
 // The method is equivalent to executing the statement: db.Clauses(clause.OnConflict{UpdateAll: true}).Create(values)
-func (s smartGoalORMDo) Save(values ...*apiv1.SmartGoalORM) error {
+func (s smartGoalORMDo) Save(values ...*financial_integration_service_apiv1.SmartGoalORM) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return s.DO.Save(values)
 }
 
-func (s smartGoalORMDo) First() (*apiv1.SmartGoalORM, error) {
+func (s smartGoalORMDo) First() (*financial_integration_service_apiv1.SmartGoalORM, error) {
 	if result, err := s.DO.First(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.SmartGoalORM), nil
+		return result.(*financial_integration_service_apiv1.SmartGoalORM), nil
 	}
 }
 
-func (s smartGoalORMDo) Take() (*apiv1.SmartGoalORM, error) {
+func (s smartGoalORMDo) Take() (*financial_integration_service_apiv1.SmartGoalORM, error) {
 	if result, err := s.DO.Take(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.SmartGoalORM), nil
+		return result.(*financial_integration_service_apiv1.SmartGoalORM), nil
 	}
 }
 
-func (s smartGoalORMDo) Last() (*apiv1.SmartGoalORM, error) {
+func (s smartGoalORMDo) Last() (*financial_integration_service_apiv1.SmartGoalORM, error) {
 	if result, err := s.DO.Last(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.SmartGoalORM), nil
+		return result.(*financial_integration_service_apiv1.SmartGoalORM), nil
 	}
 }
 
-func (s smartGoalORMDo) Find() ([]*apiv1.SmartGoalORM, error) {
+func (s smartGoalORMDo) Find() ([]*financial_integration_service_apiv1.SmartGoalORM, error) {
 	result, err := s.DO.Find()
-	return result.([]*apiv1.SmartGoalORM), err
+	return result.([]*financial_integration_service_apiv1.SmartGoalORM), err
 }
 
-func (s smartGoalORMDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*apiv1.SmartGoalORM, err error) {
-	buf := make([]*apiv1.SmartGoalORM, 0, batchSize)
+func (s smartGoalORMDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*financial_integration_service_apiv1.SmartGoalORM, err error) {
+	buf := make([]*financial_integration_service_apiv1.SmartGoalORM, 0, batchSize)
 	err = s.DO.FindInBatches(&buf, batchSize, func(tx gen.Dao, batch int) error {
 		defer func() { results = append(results, buf...) }()
 		return fc(tx, batch)
@@ -588,7 +588,7 @@ func (s smartGoalORMDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int
 	return results, err
 }
 
-func (s smartGoalORMDo) FindInBatches(result *[]*apiv1.SmartGoalORM, batchSize int, fc func(tx gen.Dao, batch int) error) error {
+func (s smartGoalORMDo) FindInBatches(result *[]*financial_integration_service_apiv1.SmartGoalORM, batchSize int, fc func(tx gen.Dao, batch int) error) error {
 	return s.DO.FindInBatches(result, batchSize, fc)
 }
 
@@ -614,23 +614,23 @@ func (s smartGoalORMDo) Preload(fields ...field.RelationField) ISmartGoalORMDo {
 	return &s
 }
 
-func (s smartGoalORMDo) FirstOrInit() (*apiv1.SmartGoalORM, error) {
+func (s smartGoalORMDo) FirstOrInit() (*financial_integration_service_apiv1.SmartGoalORM, error) {
 	if result, err := s.DO.FirstOrInit(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.SmartGoalORM), nil
+		return result.(*financial_integration_service_apiv1.SmartGoalORM), nil
 	}
 }
 
-func (s smartGoalORMDo) FirstOrCreate() (*apiv1.SmartGoalORM, error) {
+func (s smartGoalORMDo) FirstOrCreate() (*financial_integration_service_apiv1.SmartGoalORM, error) {
 	if result, err := s.DO.FirstOrCreate(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.SmartGoalORM), nil
+		return result.(*financial_integration_service_apiv1.SmartGoalORM), nil
 	}
 }
 
-func (s smartGoalORMDo) FindByPage(offset int, limit int) (result []*apiv1.SmartGoalORM, count int64, err error) {
+func (s smartGoalORMDo) FindByPage(offset int, limit int) (result []*financial_integration_service_apiv1.SmartGoalORM, count int64, err error) {
 	result, err = s.Offset(offset).Limit(limit).Find()
 	if err != nil {
 		return
@@ -659,7 +659,7 @@ func (s smartGoalORMDo) Scan(result interface{}) (err error) {
 	return s.DO.Scan(result)
 }
 
-func (s smartGoalORMDo) Delete(models ...*apiv1.SmartGoalORM) (result gen.ResultInfo, err error) {
+func (s smartGoalORMDo) Delete(models ...*financial_integration_service_apiv1.SmartGoalORM) (result gen.ResultInfo, err error) {
 	return s.DO.Delete(models)
 }
 

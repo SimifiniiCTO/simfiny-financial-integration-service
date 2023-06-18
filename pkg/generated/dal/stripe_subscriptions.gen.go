@@ -8,7 +8,7 @@ import (
 	"context"
 	"strings"
 
-	apiv1 "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
+	financial_integration_service_apiv1 "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 	"gorm.io/gorm/schema"
@@ -24,7 +24,7 @@ func newStripeSubscriptionORM(db *gorm.DB, opts ...gen.DOOption) stripeSubscript
 	_stripeSubscriptionORM := stripeSubscriptionORM{}
 
 	_stripeSubscriptionORM.stripeSubscriptionORMDo.UseDB(db, opts...)
-	_stripeSubscriptionORM.stripeSubscriptionORMDo.UseModel(&apiv1.StripeSubscriptionORM{})
+	_stripeSubscriptionORM.stripeSubscriptionORMDo.UseModel(&financial_integration_service_apiv1.StripeSubscriptionORM{})
 
 	tableName := _stripeSubscriptionORM.stripeSubscriptionORMDo.TableName()
 	_stripeSubscriptionORM.ALL = field.NewAsterisk(tableName)
@@ -142,17 +142,17 @@ type IStripeSubscriptionORMDo interface {
 	Count() (count int64, err error)
 	Scopes(funcs ...func(gen.Dao) gen.Dao) IStripeSubscriptionORMDo
 	Unscoped() IStripeSubscriptionORMDo
-	Create(values ...*apiv1.StripeSubscriptionORM) error
-	CreateInBatches(values []*apiv1.StripeSubscriptionORM, batchSize int) error
-	Save(values ...*apiv1.StripeSubscriptionORM) error
-	First() (*apiv1.StripeSubscriptionORM, error)
-	Take() (*apiv1.StripeSubscriptionORM, error)
-	Last() (*apiv1.StripeSubscriptionORM, error)
-	Find() ([]*apiv1.StripeSubscriptionORM, error)
-	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*apiv1.StripeSubscriptionORM, err error)
-	FindInBatches(result *[]*apiv1.StripeSubscriptionORM, batchSize int, fc func(tx gen.Dao, batch int) error) error
+	Create(values ...*financial_integration_service_apiv1.StripeSubscriptionORM) error
+	CreateInBatches(values []*financial_integration_service_apiv1.StripeSubscriptionORM, batchSize int) error
+	Save(values ...*financial_integration_service_apiv1.StripeSubscriptionORM) error
+	First() (*financial_integration_service_apiv1.StripeSubscriptionORM, error)
+	Take() (*financial_integration_service_apiv1.StripeSubscriptionORM, error)
+	Last() (*financial_integration_service_apiv1.StripeSubscriptionORM, error)
+	Find() ([]*financial_integration_service_apiv1.StripeSubscriptionORM, error)
+	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*financial_integration_service_apiv1.StripeSubscriptionORM, err error)
+	FindInBatches(result *[]*financial_integration_service_apiv1.StripeSubscriptionORM, batchSize int, fc func(tx gen.Dao, batch int) error) error
 	Pluck(column field.Expr, dest interface{}) error
-	Delete(...*apiv1.StripeSubscriptionORM) (info gen.ResultInfo, err error)
+	Delete(...*financial_integration_service_apiv1.StripeSubscriptionORM) (info gen.ResultInfo, err error)
 	Update(column field.Expr, value interface{}) (info gen.ResultInfo, err error)
 	UpdateSimple(columns ...field.AssignExpr) (info gen.ResultInfo, err error)
 	Updates(value interface{}) (info gen.ResultInfo, err error)
@@ -164,18 +164,18 @@ type IStripeSubscriptionORMDo interface {
 	Assign(attrs ...field.AssignExpr) IStripeSubscriptionORMDo
 	Joins(fields ...field.RelationField) IStripeSubscriptionORMDo
 	Preload(fields ...field.RelationField) IStripeSubscriptionORMDo
-	FirstOrInit() (*apiv1.StripeSubscriptionORM, error)
-	FirstOrCreate() (*apiv1.StripeSubscriptionORM, error)
-	FindByPage(offset int, limit int) (result []*apiv1.StripeSubscriptionORM, count int64, err error)
+	FirstOrInit() (*financial_integration_service_apiv1.StripeSubscriptionORM, error)
+	FirstOrCreate() (*financial_integration_service_apiv1.StripeSubscriptionORM, error)
+	FindByPage(offset int, limit int) (result []*financial_integration_service_apiv1.StripeSubscriptionORM, count int64, err error)
 	ScanByPage(result interface{}, offset int, limit int) (count int64, err error)
 	Scan(result interface{}) (err error)
 	Returning(value interface{}, columns ...string) IStripeSubscriptionORMDo
 	UnderlyingDB() *gorm.DB
 	schema.Tabler
 
-	GetByUserID(user_id int) (result apiv1.StripeSubscriptionORM, err error)
-	GetByID(id int) (result apiv1.StripeSubscriptionORM, err error)
-	GetByIDs(ids []int) (result []apiv1.StripeSubscriptionORM, err error)
+	GetByUserID(user_id int) (result financial_integration_service_apiv1.StripeSubscriptionORM, err error)
+	GetByID(id int) (result financial_integration_service_apiv1.StripeSubscriptionORM, err error)
+	GetByIDs(ids []int) (result []financial_integration_service_apiv1.StripeSubscriptionORM, err error)
 }
 
 // SELECT * FROM @@table
@@ -184,7 +184,7 @@ type IStripeSubscriptionORMDo interface {
 //	user_id=@user_id
 //
 // {{end}}
-func (s stripeSubscriptionORMDo) GetByUserID(user_id int) (result apiv1.StripeSubscriptionORM, err error) {
+func (s stripeSubscriptionORMDo) GetByUserID(user_id int) (result financial_integration_service_apiv1.StripeSubscriptionORM, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -207,7 +207,7 @@ func (s stripeSubscriptionORMDo) GetByUserID(user_id int) (result apiv1.StripeSu
 //	id=@id
 //
 // {{end}}
-func (s stripeSubscriptionORMDo) GetByID(id int) (result apiv1.StripeSubscriptionORM, err error) {
+func (s stripeSubscriptionORMDo) GetByID(id int) (result financial_integration_service_apiv1.StripeSubscriptionORM, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -230,7 +230,7 @@ func (s stripeSubscriptionORMDo) GetByID(id int) (result apiv1.StripeSubscriptio
 //	id IN (@ids)
 //
 // {{end}}
-func (s stripeSubscriptionORMDo) GetByIDs(ids []int) (result []apiv1.StripeSubscriptionORM, err error) {
+func (s stripeSubscriptionORMDo) GetByIDs(ids []int) (result []financial_integration_service_apiv1.StripeSubscriptionORM, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -343,57 +343,57 @@ func (s stripeSubscriptionORMDo) Unscoped() IStripeSubscriptionORMDo {
 	return s.withDO(s.DO.Unscoped())
 }
 
-func (s stripeSubscriptionORMDo) Create(values ...*apiv1.StripeSubscriptionORM) error {
+func (s stripeSubscriptionORMDo) Create(values ...*financial_integration_service_apiv1.StripeSubscriptionORM) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return s.DO.Create(values)
 }
 
-func (s stripeSubscriptionORMDo) CreateInBatches(values []*apiv1.StripeSubscriptionORM, batchSize int) error {
+func (s stripeSubscriptionORMDo) CreateInBatches(values []*financial_integration_service_apiv1.StripeSubscriptionORM, batchSize int) error {
 	return s.DO.CreateInBatches(values, batchSize)
 }
 
 // Save : !!! underlying implementation is different with GORM
 // The method is equivalent to executing the statement: db.Clauses(clause.OnConflict{UpdateAll: true}).Create(values)
-func (s stripeSubscriptionORMDo) Save(values ...*apiv1.StripeSubscriptionORM) error {
+func (s stripeSubscriptionORMDo) Save(values ...*financial_integration_service_apiv1.StripeSubscriptionORM) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return s.DO.Save(values)
 }
 
-func (s stripeSubscriptionORMDo) First() (*apiv1.StripeSubscriptionORM, error) {
+func (s stripeSubscriptionORMDo) First() (*financial_integration_service_apiv1.StripeSubscriptionORM, error) {
 	if result, err := s.DO.First(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.StripeSubscriptionORM), nil
+		return result.(*financial_integration_service_apiv1.StripeSubscriptionORM), nil
 	}
 }
 
-func (s stripeSubscriptionORMDo) Take() (*apiv1.StripeSubscriptionORM, error) {
+func (s stripeSubscriptionORMDo) Take() (*financial_integration_service_apiv1.StripeSubscriptionORM, error) {
 	if result, err := s.DO.Take(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.StripeSubscriptionORM), nil
+		return result.(*financial_integration_service_apiv1.StripeSubscriptionORM), nil
 	}
 }
 
-func (s stripeSubscriptionORMDo) Last() (*apiv1.StripeSubscriptionORM, error) {
+func (s stripeSubscriptionORMDo) Last() (*financial_integration_service_apiv1.StripeSubscriptionORM, error) {
 	if result, err := s.DO.Last(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.StripeSubscriptionORM), nil
+		return result.(*financial_integration_service_apiv1.StripeSubscriptionORM), nil
 	}
 }
 
-func (s stripeSubscriptionORMDo) Find() ([]*apiv1.StripeSubscriptionORM, error) {
+func (s stripeSubscriptionORMDo) Find() ([]*financial_integration_service_apiv1.StripeSubscriptionORM, error) {
 	result, err := s.DO.Find()
-	return result.([]*apiv1.StripeSubscriptionORM), err
+	return result.([]*financial_integration_service_apiv1.StripeSubscriptionORM), err
 }
 
-func (s stripeSubscriptionORMDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*apiv1.StripeSubscriptionORM, err error) {
-	buf := make([]*apiv1.StripeSubscriptionORM, 0, batchSize)
+func (s stripeSubscriptionORMDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*financial_integration_service_apiv1.StripeSubscriptionORM, err error) {
+	buf := make([]*financial_integration_service_apiv1.StripeSubscriptionORM, 0, batchSize)
 	err = s.DO.FindInBatches(&buf, batchSize, func(tx gen.Dao, batch int) error {
 		defer func() { results = append(results, buf...) }()
 		return fc(tx, batch)
@@ -401,7 +401,7 @@ func (s stripeSubscriptionORMDo) FindInBatch(batchSize int, fc func(tx gen.Dao, 
 	return results, err
 }
 
-func (s stripeSubscriptionORMDo) FindInBatches(result *[]*apiv1.StripeSubscriptionORM, batchSize int, fc func(tx gen.Dao, batch int) error) error {
+func (s stripeSubscriptionORMDo) FindInBatches(result *[]*financial_integration_service_apiv1.StripeSubscriptionORM, batchSize int, fc func(tx gen.Dao, batch int) error) error {
 	return s.DO.FindInBatches(result, batchSize, fc)
 }
 
@@ -427,23 +427,23 @@ func (s stripeSubscriptionORMDo) Preload(fields ...field.RelationField) IStripeS
 	return &s
 }
 
-func (s stripeSubscriptionORMDo) FirstOrInit() (*apiv1.StripeSubscriptionORM, error) {
+func (s stripeSubscriptionORMDo) FirstOrInit() (*financial_integration_service_apiv1.StripeSubscriptionORM, error) {
 	if result, err := s.DO.FirstOrInit(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.StripeSubscriptionORM), nil
+		return result.(*financial_integration_service_apiv1.StripeSubscriptionORM), nil
 	}
 }
 
-func (s stripeSubscriptionORMDo) FirstOrCreate() (*apiv1.StripeSubscriptionORM, error) {
+func (s stripeSubscriptionORMDo) FirstOrCreate() (*financial_integration_service_apiv1.StripeSubscriptionORM, error) {
 	if result, err := s.DO.FirstOrCreate(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.StripeSubscriptionORM), nil
+		return result.(*financial_integration_service_apiv1.StripeSubscriptionORM), nil
 	}
 }
 
-func (s stripeSubscriptionORMDo) FindByPage(offset int, limit int) (result []*apiv1.StripeSubscriptionORM, count int64, err error) {
+func (s stripeSubscriptionORMDo) FindByPage(offset int, limit int) (result []*financial_integration_service_apiv1.StripeSubscriptionORM, count int64, err error) {
 	result, err = s.Offset(offset).Limit(limit).Find()
 	if err != nil {
 		return
@@ -472,7 +472,7 @@ func (s stripeSubscriptionORMDo) Scan(result interface{}) (err error) {
 	return s.DO.Scan(result)
 }
 
-func (s stripeSubscriptionORMDo) Delete(models ...*apiv1.StripeSubscriptionORM) (result gen.ResultInfo, err error) {
+func (s stripeSubscriptionORMDo) Delete(models ...*financial_integration_service_apiv1.StripeSubscriptionORM) (result gen.ResultInfo, err error) {
 	return s.DO.Delete(models)
 }
 

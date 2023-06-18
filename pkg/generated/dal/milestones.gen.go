@@ -8,7 +8,7 @@ import (
 	"context"
 	"strings"
 
-	apiv1 "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
+	financial_integration_service_apiv1 "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 	"gorm.io/gorm/schema"
@@ -24,7 +24,7 @@ func newMilestoneORM(db *gorm.DB, opts ...gen.DOOption) milestoneORM {
 	_milestoneORM := milestoneORM{}
 
 	_milestoneORM.milestoneORMDo.UseDB(db, opts...)
-	_milestoneORM.milestoneORMDo.UseModel(&apiv1.MilestoneORM{})
+	_milestoneORM.milestoneORMDo.UseModel(&financial_integration_service_apiv1.MilestoneORM{})
 
 	tableName := _milestoneORM.milestoneORMDo.TableName()
 	_milestoneORM.ALL = field.NewAsterisk(tableName)
@@ -38,11 +38,11 @@ func newMilestoneORM(db *gorm.DB, opts ...gen.DOOption) milestoneORM {
 	_milestoneORM.Budget = milestoneORMHasOneBudget{
 		db: db.Session(&gorm.Session{}),
 
-		RelationField: field.NewRelation("Budget", "apiv1.BudgetORM"),
+		RelationField: field.NewRelation("Budget", "financial_integration_service_apiv1.BudgetORM"),
 		Category: struct {
 			field.RelationField
 		}{
-			RelationField: field.NewRelation("Budget.Category", "apiv1.CategoryORM"),
+			RelationField: field.NewRelation("Budget.Category", "financial_integration_service_apiv1.CategoryORM"),
 		},
 	}
 
@@ -151,17 +151,17 @@ func (a milestoneORMHasOneBudget) WithContext(ctx context.Context) *milestoneORM
 	return &a
 }
 
-func (a milestoneORMHasOneBudget) Model(m *apiv1.MilestoneORM) *milestoneORMHasOneBudgetTx {
+func (a milestoneORMHasOneBudget) Model(m *financial_integration_service_apiv1.MilestoneORM) *milestoneORMHasOneBudgetTx {
 	return &milestoneORMHasOneBudgetTx{a.db.Model(m).Association(a.Name())}
 }
 
 type milestoneORMHasOneBudgetTx struct{ tx *gorm.Association }
 
-func (a milestoneORMHasOneBudgetTx) Find() (result *apiv1.BudgetORM, err error) {
+func (a milestoneORMHasOneBudgetTx) Find() (result *financial_integration_service_apiv1.BudgetORM, err error) {
 	return result, a.tx.Find(&result)
 }
 
-func (a milestoneORMHasOneBudgetTx) Append(values ...*apiv1.BudgetORM) (err error) {
+func (a milestoneORMHasOneBudgetTx) Append(values ...*financial_integration_service_apiv1.BudgetORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -169,7 +169,7 @@ func (a milestoneORMHasOneBudgetTx) Append(values ...*apiv1.BudgetORM) (err erro
 	return a.tx.Append(targetValues...)
 }
 
-func (a milestoneORMHasOneBudgetTx) Replace(values ...*apiv1.BudgetORM) (err error) {
+func (a milestoneORMHasOneBudgetTx) Replace(values ...*financial_integration_service_apiv1.BudgetORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -177,7 +177,7 @@ func (a milestoneORMHasOneBudgetTx) Replace(values ...*apiv1.BudgetORM) (err err
 	return a.tx.Replace(targetValues...)
 }
 
-func (a milestoneORMHasOneBudgetTx) Delete(values ...*apiv1.BudgetORM) (err error) {
+func (a milestoneORMHasOneBudgetTx) Delete(values ...*financial_integration_service_apiv1.BudgetORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -224,17 +224,17 @@ type IMilestoneORMDo interface {
 	Count() (count int64, err error)
 	Scopes(funcs ...func(gen.Dao) gen.Dao) IMilestoneORMDo
 	Unscoped() IMilestoneORMDo
-	Create(values ...*apiv1.MilestoneORM) error
-	CreateInBatches(values []*apiv1.MilestoneORM, batchSize int) error
-	Save(values ...*apiv1.MilestoneORM) error
-	First() (*apiv1.MilestoneORM, error)
-	Take() (*apiv1.MilestoneORM, error)
-	Last() (*apiv1.MilestoneORM, error)
-	Find() ([]*apiv1.MilestoneORM, error)
-	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*apiv1.MilestoneORM, err error)
-	FindInBatches(result *[]*apiv1.MilestoneORM, batchSize int, fc func(tx gen.Dao, batch int) error) error
+	Create(values ...*financial_integration_service_apiv1.MilestoneORM) error
+	CreateInBatches(values []*financial_integration_service_apiv1.MilestoneORM, batchSize int) error
+	Save(values ...*financial_integration_service_apiv1.MilestoneORM) error
+	First() (*financial_integration_service_apiv1.MilestoneORM, error)
+	Take() (*financial_integration_service_apiv1.MilestoneORM, error)
+	Last() (*financial_integration_service_apiv1.MilestoneORM, error)
+	Find() ([]*financial_integration_service_apiv1.MilestoneORM, error)
+	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*financial_integration_service_apiv1.MilestoneORM, err error)
+	FindInBatches(result *[]*financial_integration_service_apiv1.MilestoneORM, batchSize int, fc func(tx gen.Dao, batch int) error) error
 	Pluck(column field.Expr, dest interface{}) error
-	Delete(...*apiv1.MilestoneORM) (info gen.ResultInfo, err error)
+	Delete(...*financial_integration_service_apiv1.MilestoneORM) (info gen.ResultInfo, err error)
 	Update(column field.Expr, value interface{}) (info gen.ResultInfo, err error)
 	UpdateSimple(columns ...field.AssignExpr) (info gen.ResultInfo, err error)
 	Updates(value interface{}) (info gen.ResultInfo, err error)
@@ -246,18 +246,18 @@ type IMilestoneORMDo interface {
 	Assign(attrs ...field.AssignExpr) IMilestoneORMDo
 	Joins(fields ...field.RelationField) IMilestoneORMDo
 	Preload(fields ...field.RelationField) IMilestoneORMDo
-	FirstOrInit() (*apiv1.MilestoneORM, error)
-	FirstOrCreate() (*apiv1.MilestoneORM, error)
-	FindByPage(offset int, limit int) (result []*apiv1.MilestoneORM, count int64, err error)
+	FirstOrInit() (*financial_integration_service_apiv1.MilestoneORM, error)
+	FirstOrCreate() (*financial_integration_service_apiv1.MilestoneORM, error)
+	FindByPage(offset int, limit int) (result []*financial_integration_service_apiv1.MilestoneORM, count int64, err error)
 	ScanByPage(result interface{}, offset int, limit int) (count int64, err error)
 	Scan(result interface{}) (err error)
 	Returning(value interface{}, columns ...string) IMilestoneORMDo
 	UnderlyingDB() *gorm.DB
 	schema.Tabler
 
-	GetByUserID(user_id int) (result apiv1.MilestoneORM, err error)
-	GetByID(id int) (result apiv1.MilestoneORM, err error)
-	GetByIDs(ids []int) (result []apiv1.MilestoneORM, err error)
+	GetByUserID(user_id int) (result financial_integration_service_apiv1.MilestoneORM, err error)
+	GetByID(id int) (result financial_integration_service_apiv1.MilestoneORM, err error)
+	GetByIDs(ids []int) (result []financial_integration_service_apiv1.MilestoneORM, err error)
 }
 
 // SELECT * FROM @@table
@@ -266,7 +266,7 @@ type IMilestoneORMDo interface {
 //	user_id=@user_id
 //
 // {{end}}
-func (m milestoneORMDo) GetByUserID(user_id int) (result apiv1.MilestoneORM, err error) {
+func (m milestoneORMDo) GetByUserID(user_id int) (result financial_integration_service_apiv1.MilestoneORM, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -289,7 +289,7 @@ func (m milestoneORMDo) GetByUserID(user_id int) (result apiv1.MilestoneORM, err
 //	id=@id
 //
 // {{end}}
-func (m milestoneORMDo) GetByID(id int) (result apiv1.MilestoneORM, err error) {
+func (m milestoneORMDo) GetByID(id int) (result financial_integration_service_apiv1.MilestoneORM, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -312,7 +312,7 @@ func (m milestoneORMDo) GetByID(id int) (result apiv1.MilestoneORM, err error) {
 //	id IN (@ids)
 //
 // {{end}}
-func (m milestoneORMDo) GetByIDs(ids []int) (result []apiv1.MilestoneORM, err error) {
+func (m milestoneORMDo) GetByIDs(ids []int) (result []financial_integration_service_apiv1.MilestoneORM, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -425,57 +425,57 @@ func (m milestoneORMDo) Unscoped() IMilestoneORMDo {
 	return m.withDO(m.DO.Unscoped())
 }
 
-func (m milestoneORMDo) Create(values ...*apiv1.MilestoneORM) error {
+func (m milestoneORMDo) Create(values ...*financial_integration_service_apiv1.MilestoneORM) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return m.DO.Create(values)
 }
 
-func (m milestoneORMDo) CreateInBatches(values []*apiv1.MilestoneORM, batchSize int) error {
+func (m milestoneORMDo) CreateInBatches(values []*financial_integration_service_apiv1.MilestoneORM, batchSize int) error {
 	return m.DO.CreateInBatches(values, batchSize)
 }
 
 // Save : !!! underlying implementation is different with GORM
 // The method is equivalent to executing the statement: db.Clauses(clause.OnConflict{UpdateAll: true}).Create(values)
-func (m milestoneORMDo) Save(values ...*apiv1.MilestoneORM) error {
+func (m milestoneORMDo) Save(values ...*financial_integration_service_apiv1.MilestoneORM) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return m.DO.Save(values)
 }
 
-func (m milestoneORMDo) First() (*apiv1.MilestoneORM, error) {
+func (m milestoneORMDo) First() (*financial_integration_service_apiv1.MilestoneORM, error) {
 	if result, err := m.DO.First(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.MilestoneORM), nil
+		return result.(*financial_integration_service_apiv1.MilestoneORM), nil
 	}
 }
 
-func (m milestoneORMDo) Take() (*apiv1.MilestoneORM, error) {
+func (m milestoneORMDo) Take() (*financial_integration_service_apiv1.MilestoneORM, error) {
 	if result, err := m.DO.Take(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.MilestoneORM), nil
+		return result.(*financial_integration_service_apiv1.MilestoneORM), nil
 	}
 }
 
-func (m milestoneORMDo) Last() (*apiv1.MilestoneORM, error) {
+func (m milestoneORMDo) Last() (*financial_integration_service_apiv1.MilestoneORM, error) {
 	if result, err := m.DO.Last(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.MilestoneORM), nil
+		return result.(*financial_integration_service_apiv1.MilestoneORM), nil
 	}
 }
 
-func (m milestoneORMDo) Find() ([]*apiv1.MilestoneORM, error) {
+func (m milestoneORMDo) Find() ([]*financial_integration_service_apiv1.MilestoneORM, error) {
 	result, err := m.DO.Find()
-	return result.([]*apiv1.MilestoneORM), err
+	return result.([]*financial_integration_service_apiv1.MilestoneORM), err
 }
 
-func (m milestoneORMDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*apiv1.MilestoneORM, err error) {
-	buf := make([]*apiv1.MilestoneORM, 0, batchSize)
+func (m milestoneORMDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*financial_integration_service_apiv1.MilestoneORM, err error) {
+	buf := make([]*financial_integration_service_apiv1.MilestoneORM, 0, batchSize)
 	err = m.DO.FindInBatches(&buf, batchSize, func(tx gen.Dao, batch int) error {
 		defer func() { results = append(results, buf...) }()
 		return fc(tx, batch)
@@ -483,7 +483,7 @@ func (m milestoneORMDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int
 	return results, err
 }
 
-func (m milestoneORMDo) FindInBatches(result *[]*apiv1.MilestoneORM, batchSize int, fc func(tx gen.Dao, batch int) error) error {
+func (m milestoneORMDo) FindInBatches(result *[]*financial_integration_service_apiv1.MilestoneORM, batchSize int, fc func(tx gen.Dao, batch int) error) error {
 	return m.DO.FindInBatches(result, batchSize, fc)
 }
 
@@ -509,23 +509,23 @@ func (m milestoneORMDo) Preload(fields ...field.RelationField) IMilestoneORMDo {
 	return &m
 }
 
-func (m milestoneORMDo) FirstOrInit() (*apiv1.MilestoneORM, error) {
+func (m milestoneORMDo) FirstOrInit() (*financial_integration_service_apiv1.MilestoneORM, error) {
 	if result, err := m.DO.FirstOrInit(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.MilestoneORM), nil
+		return result.(*financial_integration_service_apiv1.MilestoneORM), nil
 	}
 }
 
-func (m milestoneORMDo) FirstOrCreate() (*apiv1.MilestoneORM, error) {
+func (m milestoneORMDo) FirstOrCreate() (*financial_integration_service_apiv1.MilestoneORM, error) {
 	if result, err := m.DO.FirstOrCreate(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.MilestoneORM), nil
+		return result.(*financial_integration_service_apiv1.MilestoneORM), nil
 	}
 }
 
-func (m milestoneORMDo) FindByPage(offset int, limit int) (result []*apiv1.MilestoneORM, count int64, err error) {
+func (m milestoneORMDo) FindByPage(offset int, limit int) (result []*financial_integration_service_apiv1.MilestoneORM, count int64, err error) {
 	result, err = m.Offset(offset).Limit(limit).Find()
 	if err != nil {
 		return
@@ -554,7 +554,7 @@ func (m milestoneORMDo) Scan(result interface{}) (err error) {
 	return m.DO.Scan(result)
 }
 
-func (m milestoneORMDo) Delete(models ...*apiv1.MilestoneORM) (result gen.ResultInfo, err error) {
+func (m milestoneORMDo) Delete(models ...*financial_integration_service_apiv1.MilestoneORM) (result gen.ResultInfo, err error) {
 	return m.DO.Delete(models)
 }
 

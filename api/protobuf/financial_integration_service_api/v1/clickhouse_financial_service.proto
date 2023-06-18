@@ -7,6 +7,8 @@ import "protoc-gen-gorm/options/gorm.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 import "validate/validate.proto";
 import "gogoproto/gogo.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/any.proto";
 
 option (gogoproto.gostring_all) = true;
 option (gogoproto.equal_all) = true;
@@ -96,6 +98,8 @@ message InvestmentTransaction {
     string created_at = 18;
     option (gorm.opts) = {ormable: true};
     int32 sign = 19;
+    google.protobuf.Timestamp time = 20;
+    google.protobuf.Any additional_properties = 21;
 }
 
 message ReOccuringTransaction {
@@ -153,6 +157,8 @@ message ReOccuringTransaction {
     ReCurringFlow flow = 23;
     option (gorm.opts) = {ormable: true};
     int32 sign = 24;
+    google.protobuf.Timestamp time = 25;
+    google.protobuf.Any additional_properties = 26;
 }
 
 message Transaction {
@@ -227,6 +233,8 @@ message Transaction {
     string payment_meta_ppd_id = 41;
     string payment_meta_reason = 42;
     string payment_meta_reference_number = 43;
+    google.protobuf.Timestamp time = 44;
+    google.protobuf.Any additional_properties = 45;
 }
 
 message TransactionAmountByCountryMetric {

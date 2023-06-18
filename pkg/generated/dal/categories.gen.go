@@ -8,7 +8,7 @@ import (
 	"context"
 	"strings"
 
-	apiv1 "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
+	financial_integration_service_apiv1 "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 	"gorm.io/gorm/schema"
@@ -24,7 +24,7 @@ func newCategoryORM(db *gorm.DB, opts ...gen.DOOption) categoryORM {
 	_categoryORM := categoryORM{}
 
 	_categoryORM.categoryORMDo.UseDB(db, opts...)
-	_categoryORM.categoryORMDo.UseModel(&apiv1.CategoryORM{})
+	_categoryORM.categoryORMDo.UseModel(&financial_integration_service_apiv1.CategoryORM{})
 
 	tableName := _categoryORM.categoryORMDo.TableName()
 	_categoryORM.ALL = field.NewAsterisk(tableName)
@@ -134,17 +134,17 @@ type ICategoryORMDo interface {
 	Count() (count int64, err error)
 	Scopes(funcs ...func(gen.Dao) gen.Dao) ICategoryORMDo
 	Unscoped() ICategoryORMDo
-	Create(values ...*apiv1.CategoryORM) error
-	CreateInBatches(values []*apiv1.CategoryORM, batchSize int) error
-	Save(values ...*apiv1.CategoryORM) error
-	First() (*apiv1.CategoryORM, error)
-	Take() (*apiv1.CategoryORM, error)
-	Last() (*apiv1.CategoryORM, error)
-	Find() ([]*apiv1.CategoryORM, error)
-	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*apiv1.CategoryORM, err error)
-	FindInBatches(result *[]*apiv1.CategoryORM, batchSize int, fc func(tx gen.Dao, batch int) error) error
+	Create(values ...*financial_integration_service_apiv1.CategoryORM) error
+	CreateInBatches(values []*financial_integration_service_apiv1.CategoryORM, batchSize int) error
+	Save(values ...*financial_integration_service_apiv1.CategoryORM) error
+	First() (*financial_integration_service_apiv1.CategoryORM, error)
+	Take() (*financial_integration_service_apiv1.CategoryORM, error)
+	Last() (*financial_integration_service_apiv1.CategoryORM, error)
+	Find() ([]*financial_integration_service_apiv1.CategoryORM, error)
+	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*financial_integration_service_apiv1.CategoryORM, err error)
+	FindInBatches(result *[]*financial_integration_service_apiv1.CategoryORM, batchSize int, fc func(tx gen.Dao, batch int) error) error
 	Pluck(column field.Expr, dest interface{}) error
-	Delete(...*apiv1.CategoryORM) (info gen.ResultInfo, err error)
+	Delete(...*financial_integration_service_apiv1.CategoryORM) (info gen.ResultInfo, err error)
 	Update(column field.Expr, value interface{}) (info gen.ResultInfo, err error)
 	UpdateSimple(columns ...field.AssignExpr) (info gen.ResultInfo, err error)
 	Updates(value interface{}) (info gen.ResultInfo, err error)
@@ -156,18 +156,18 @@ type ICategoryORMDo interface {
 	Assign(attrs ...field.AssignExpr) ICategoryORMDo
 	Joins(fields ...field.RelationField) ICategoryORMDo
 	Preload(fields ...field.RelationField) ICategoryORMDo
-	FirstOrInit() (*apiv1.CategoryORM, error)
-	FirstOrCreate() (*apiv1.CategoryORM, error)
-	FindByPage(offset int, limit int) (result []*apiv1.CategoryORM, count int64, err error)
+	FirstOrInit() (*financial_integration_service_apiv1.CategoryORM, error)
+	FirstOrCreate() (*financial_integration_service_apiv1.CategoryORM, error)
+	FindByPage(offset int, limit int) (result []*financial_integration_service_apiv1.CategoryORM, count int64, err error)
 	ScanByPage(result interface{}, offset int, limit int) (count int64, err error)
 	Scan(result interface{}) (err error)
 	Returning(value interface{}, columns ...string) ICategoryORMDo
 	UnderlyingDB() *gorm.DB
 	schema.Tabler
 
-	GetByUserID(user_id int) (result apiv1.CategoryORM, err error)
-	GetByID(id int) (result apiv1.CategoryORM, err error)
-	GetByIDs(ids []int) (result []apiv1.CategoryORM, err error)
+	GetByUserID(user_id int) (result financial_integration_service_apiv1.CategoryORM, err error)
+	GetByID(id int) (result financial_integration_service_apiv1.CategoryORM, err error)
+	GetByIDs(ids []int) (result []financial_integration_service_apiv1.CategoryORM, err error)
 }
 
 // SELECT * FROM @@table
@@ -176,7 +176,7 @@ type ICategoryORMDo interface {
 //	user_id=@user_id
 //
 // {{end}}
-func (c categoryORMDo) GetByUserID(user_id int) (result apiv1.CategoryORM, err error) {
+func (c categoryORMDo) GetByUserID(user_id int) (result financial_integration_service_apiv1.CategoryORM, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -199,7 +199,7 @@ func (c categoryORMDo) GetByUserID(user_id int) (result apiv1.CategoryORM, err e
 //	id=@id
 //
 // {{end}}
-func (c categoryORMDo) GetByID(id int) (result apiv1.CategoryORM, err error) {
+func (c categoryORMDo) GetByID(id int) (result financial_integration_service_apiv1.CategoryORM, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -222,7 +222,7 @@ func (c categoryORMDo) GetByID(id int) (result apiv1.CategoryORM, err error) {
 //	id IN (@ids)
 //
 // {{end}}
-func (c categoryORMDo) GetByIDs(ids []int) (result []apiv1.CategoryORM, err error) {
+func (c categoryORMDo) GetByIDs(ids []int) (result []financial_integration_service_apiv1.CategoryORM, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -335,57 +335,57 @@ func (c categoryORMDo) Unscoped() ICategoryORMDo {
 	return c.withDO(c.DO.Unscoped())
 }
 
-func (c categoryORMDo) Create(values ...*apiv1.CategoryORM) error {
+func (c categoryORMDo) Create(values ...*financial_integration_service_apiv1.CategoryORM) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return c.DO.Create(values)
 }
 
-func (c categoryORMDo) CreateInBatches(values []*apiv1.CategoryORM, batchSize int) error {
+func (c categoryORMDo) CreateInBatches(values []*financial_integration_service_apiv1.CategoryORM, batchSize int) error {
 	return c.DO.CreateInBatches(values, batchSize)
 }
 
 // Save : !!! underlying implementation is different with GORM
 // The method is equivalent to executing the statement: db.Clauses(clause.OnConflict{UpdateAll: true}).Create(values)
-func (c categoryORMDo) Save(values ...*apiv1.CategoryORM) error {
+func (c categoryORMDo) Save(values ...*financial_integration_service_apiv1.CategoryORM) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return c.DO.Save(values)
 }
 
-func (c categoryORMDo) First() (*apiv1.CategoryORM, error) {
+func (c categoryORMDo) First() (*financial_integration_service_apiv1.CategoryORM, error) {
 	if result, err := c.DO.First(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.CategoryORM), nil
+		return result.(*financial_integration_service_apiv1.CategoryORM), nil
 	}
 }
 
-func (c categoryORMDo) Take() (*apiv1.CategoryORM, error) {
+func (c categoryORMDo) Take() (*financial_integration_service_apiv1.CategoryORM, error) {
 	if result, err := c.DO.Take(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.CategoryORM), nil
+		return result.(*financial_integration_service_apiv1.CategoryORM), nil
 	}
 }
 
-func (c categoryORMDo) Last() (*apiv1.CategoryORM, error) {
+func (c categoryORMDo) Last() (*financial_integration_service_apiv1.CategoryORM, error) {
 	if result, err := c.DO.Last(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.CategoryORM), nil
+		return result.(*financial_integration_service_apiv1.CategoryORM), nil
 	}
 }
 
-func (c categoryORMDo) Find() ([]*apiv1.CategoryORM, error) {
+func (c categoryORMDo) Find() ([]*financial_integration_service_apiv1.CategoryORM, error) {
 	result, err := c.DO.Find()
-	return result.([]*apiv1.CategoryORM), err
+	return result.([]*financial_integration_service_apiv1.CategoryORM), err
 }
 
-func (c categoryORMDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*apiv1.CategoryORM, err error) {
-	buf := make([]*apiv1.CategoryORM, 0, batchSize)
+func (c categoryORMDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*financial_integration_service_apiv1.CategoryORM, err error) {
+	buf := make([]*financial_integration_service_apiv1.CategoryORM, 0, batchSize)
 	err = c.DO.FindInBatches(&buf, batchSize, func(tx gen.Dao, batch int) error {
 		defer func() { results = append(results, buf...) }()
 		return fc(tx, batch)
@@ -393,7 +393,7 @@ func (c categoryORMDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int)
 	return results, err
 }
 
-func (c categoryORMDo) FindInBatches(result *[]*apiv1.CategoryORM, batchSize int, fc func(tx gen.Dao, batch int) error) error {
+func (c categoryORMDo) FindInBatches(result *[]*financial_integration_service_apiv1.CategoryORM, batchSize int, fc func(tx gen.Dao, batch int) error) error {
 	return c.DO.FindInBatches(result, batchSize, fc)
 }
 
@@ -419,23 +419,23 @@ func (c categoryORMDo) Preload(fields ...field.RelationField) ICategoryORMDo {
 	return &c
 }
 
-func (c categoryORMDo) FirstOrInit() (*apiv1.CategoryORM, error) {
+func (c categoryORMDo) FirstOrInit() (*financial_integration_service_apiv1.CategoryORM, error) {
 	if result, err := c.DO.FirstOrInit(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.CategoryORM), nil
+		return result.(*financial_integration_service_apiv1.CategoryORM), nil
 	}
 }
 
-func (c categoryORMDo) FirstOrCreate() (*apiv1.CategoryORM, error) {
+func (c categoryORMDo) FirstOrCreate() (*financial_integration_service_apiv1.CategoryORM, error) {
 	if result, err := c.DO.FirstOrCreate(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.CategoryORM), nil
+		return result.(*financial_integration_service_apiv1.CategoryORM), nil
 	}
 }
 
-func (c categoryORMDo) FindByPage(offset int, limit int) (result []*apiv1.CategoryORM, count int64, err error) {
+func (c categoryORMDo) FindByPage(offset int, limit int) (result []*financial_integration_service_apiv1.CategoryORM, count int64, err error) {
 	result, err = c.Offset(offset).Limit(limit).Find()
 	if err != nil {
 		return
@@ -464,7 +464,7 @@ func (c categoryORMDo) Scan(result interface{}) (err error) {
 	return c.DO.Scan(result)
 }
 
-func (c categoryORMDo) Delete(models ...*apiv1.CategoryORM) (result gen.ResultInfo, err error) {
+func (c categoryORMDo) Delete(models ...*financial_integration_service_apiv1.CategoryORM) (result gen.ResultInfo, err error) {
 	return c.DO.Delete(models)
 }
 

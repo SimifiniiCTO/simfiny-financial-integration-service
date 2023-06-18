@@ -10,7 +10,7 @@ import (
 	"strconv"
 	"testing"
 
-	apiv1 "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
+	financial_integration_service_apiv1 "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 	"gorm.io/gen"
 	"gorm.io/gen/field"
 	"gorm.io/gorm/clause"
@@ -18,9 +18,9 @@ import (
 
 func init() {
 	InitializeDB()
-	err := db.AutoMigrate(&apiv1.SmartGoalORM{})
+	err := db.AutoMigrate(&financial_integration_service_apiv1.SmartGoalORM{})
 	if err != nil {
-		fmt.Printf("Error: AutoMigrate(&apiv1.SmartGoalORM{}) fail: %s", err)
+		fmt.Printf("Error: AutoMigrate(&financial_integration_service_apiv1.SmartGoalORM{}) fail: %s", err)
 	}
 }
 
@@ -41,17 +41,17 @@ func Test_smartGoalORMQuery(t *testing.T) {
 		t.Error("GetFieldByName(\"\") from smartGoalORM success")
 	}
 
-	err = _do.Create(&apiv1.SmartGoalORM{})
+	err = _do.Create(&financial_integration_service_apiv1.SmartGoalORM{})
 	if err != nil {
 		t.Error("create item in table <smart_goals> fail:", err)
 	}
 
-	err = _do.Save(&apiv1.SmartGoalORM{})
+	err = _do.Save(&financial_integration_service_apiv1.SmartGoalORM{})
 	if err != nil {
 		t.Error("create item in table <smart_goals> fail:", err)
 	}
 
-	err = _do.CreateInBatches([]*apiv1.SmartGoalORM{{}, {}}, 10)
+	err = _do.CreateInBatches([]*financial_integration_service_apiv1.SmartGoalORM{{}, {}}, 10)
 	if err != nil {
 		t.Error("create item in table <smart_goals> fail:", err)
 	}
@@ -76,7 +76,7 @@ func Test_smartGoalORMQuery(t *testing.T) {
 		t.Error("FindInBatch() on table <smart_goals> fail:", err)
 	}
 
-	err = _do.Where(primaryKey.IsNotNull()).FindInBatches(&[]*apiv1.SmartGoalORM{}, 10, func(tx gen.Dao, batch int) error { return nil })
+	err = _do.Where(primaryKey.IsNotNull()).FindInBatches(&[]*financial_integration_service_apiv1.SmartGoalORM{}, 10, func(tx gen.Dao, batch int) error { return nil })
 	if err != nil {
 		t.Error("FindInBatches() on table <smart_goals> fail:", err)
 	}
@@ -111,7 +111,7 @@ func Test_smartGoalORMQuery(t *testing.T) {
 		t.Error("FindByPage() on table <smart_goals> fail:", err)
 	}
 
-	_, err = _do.ScanByPage(&apiv1.SmartGoalORM{}, 0, 1)
+	_, err = _do.ScanByPage(&financial_integration_service_apiv1.SmartGoalORM{}, 0, 1)
 	if err != nil {
 		t.Error("ScanByPage() on table <smart_goals> fail:", err)
 	}

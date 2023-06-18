@@ -1,6 +1,8 @@
 /* eslint-disable */
 import * as Long from "long";
 import * as _m0 from "protobufjs/minimal";
+import { Any } from "../../google/protobuf/any";
+import { Timestamp } from "../../google/protobuf/timestamp";
 
 export const protobufPackage = "financial_integration_service_api.v1";
 
@@ -194,6 +196,8 @@ export interface InvestmentTransaction {
   userId: number;
   createdAt: string;
   sign: number;
+  time: Date | undefined;
+  additionalProperties: Any | undefined;
 }
 
 export interface ReOccuringTransaction {
@@ -242,6 +246,8 @@ export interface ReOccuringTransaction {
   /** @gotag: ch:"flow" */
   flow: ReCurringFlow;
   sign: number;
+  time: Date | undefined;
+  additionalProperties: Any | undefined;
 }
 
 export interface Transaction {
@@ -307,6 +313,8 @@ export interface Transaction {
   paymentMetaPpdId: string;
   paymentMetaReason: string;
   paymentMetaReferenceNumber: string;
+  time: Date | undefined;
+  additionalProperties: Any | undefined;
 }
 
 export interface TransactionAmountByCountryMetric {
@@ -359,6 +367,8 @@ function createBaseInvestmentTransaction(): InvestmentTransaction {
     userId: 0,
     createdAt: "",
     sign: 0,
+    time: undefined,
+    additionalProperties: undefined,
   };
 }
 
@@ -420,6 +430,12 @@ export const InvestmentTransaction = {
     }
     if (message.sign !== 0) {
       writer.uint32(152).int32(message.sign);
+    }
+    if (message.time !== undefined) {
+      Timestamp.encode(toTimestamp(message.time), writer.uint32(162).fork()).ldelim();
+    }
+    if (message.additionalProperties !== undefined) {
+      Any.encode(message.additionalProperties, writer.uint32(170).fork()).ldelim();
     }
     return writer;
   },
@@ -564,6 +580,20 @@ export const InvestmentTransaction = {
 
           message.sign = reader.int32();
           continue;
+        case 20:
+          if (tag !== 162) {
+            break;
+          }
+
+          message.time = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 21:
+          if (tag !== 170) {
+            break;
+          }
+
+          message.additionalProperties = Any.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -594,6 +624,8 @@ export const InvestmentTransaction = {
       userId: isSet(object.userId) ? Number(object.userId) : 0,
       createdAt: isSet(object.createdAt) ? String(object.createdAt) : "",
       sign: isSet(object.sign) ? Number(object.sign) : 0,
+      time: isSet(object.time) ? fromJsonTimestamp(object.time) : undefined,
+      additionalProperties: isSet(object.additionalProperties) ? Any.fromJSON(object.additionalProperties) : undefined,
     };
   },
 
@@ -618,6 +650,9 @@ export const InvestmentTransaction = {
     message.userId !== undefined && (obj.userId = Math.round(message.userId));
     message.createdAt !== undefined && (obj.createdAt = message.createdAt);
     message.sign !== undefined && (obj.sign = Math.round(message.sign));
+    message.time !== undefined && (obj.time = message.time.toISOString());
+    message.additionalProperties !== undefined &&
+      (obj.additionalProperties = message.additionalProperties ? Any.toJSON(message.additionalProperties) : undefined);
     return obj;
   },
 
@@ -646,6 +681,10 @@ export const InvestmentTransaction = {
     message.userId = object.userId ?? 0;
     message.createdAt = object.createdAt ?? "";
     message.sign = object.sign ?? 0;
+    message.time = object.time ?? undefined;
+    message.additionalProperties = (object.additionalProperties !== undefined && object.additionalProperties !== null)
+      ? Any.fromPartial(object.additionalProperties)
+      : undefined;
     return message;
   },
 };
@@ -675,6 +714,8 @@ function createBaseReOccuringTransaction(): ReOccuringTransaction {
     id: 0,
     flow: 0,
     sign: 0,
+    time: undefined,
+    additionalProperties: undefined,
   };
 }
 
@@ -748,6 +789,12 @@ export const ReOccuringTransaction = {
     }
     if (message.sign !== 0) {
       writer.uint32(192).int32(message.sign);
+    }
+    if (message.time !== undefined) {
+      Timestamp.encode(toTimestamp(message.time), writer.uint32(202).fork()).ldelim();
+    }
+    if (message.additionalProperties !== undefined) {
+      Any.encode(message.additionalProperties, writer.uint32(210).fork()).ldelim();
     }
     return writer;
   },
@@ -920,6 +967,20 @@ export const ReOccuringTransaction = {
 
           message.sign = reader.int32();
           continue;
+        case 25:
+          if (tag !== 202) {
+            break;
+          }
+
+          message.time = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 26:
+          if (tag !== 210) {
+            break;
+          }
+
+          message.additionalProperties = Any.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -962,6 +1023,8 @@ export const ReOccuringTransaction = {
       id: isSet(object.id) ? Number(object.id) : 0,
       flow: isSet(object.flow) ? reCurringFlowFromJSON(object.flow) : 0,
       sign: isSet(object.sign) ? Number(object.sign) : 0,
+      time: isSet(object.time) ? fromJsonTimestamp(object.time) : undefined,
+      additionalProperties: isSet(object.additionalProperties) ? Any.fromJSON(object.additionalProperties) : undefined,
     };
   },
 
@@ -994,6 +1057,9 @@ export const ReOccuringTransaction = {
     message.id !== undefined && (obj.id = Math.round(message.id));
     message.flow !== undefined && (obj.flow = reCurringFlowToJSON(message.flow));
     message.sign !== undefined && (obj.sign = Math.round(message.sign));
+    message.time !== undefined && (obj.time = message.time.toISOString());
+    message.additionalProperties !== undefined &&
+      (obj.additionalProperties = message.additionalProperties ? Any.toJSON(message.additionalProperties) : undefined);
     return obj;
   },
 
@@ -1026,6 +1092,10 @@ export const ReOccuringTransaction = {
     message.id = object.id ?? 0;
     message.flow = object.flow ?? 0;
     message.sign = object.sign ?? 0;
+    message.time = object.time ?? undefined;
+    message.additionalProperties = (object.additionalProperties !== undefined && object.additionalProperties !== null)
+      ? Any.fromPartial(object.additionalProperties)
+      : undefined;
     return message;
   },
 };
@@ -1072,6 +1142,8 @@ function createBaseTransaction(): Transaction {
     paymentMetaPpdId: "",
     paymentMetaReason: "",
     paymentMetaReferenceNumber: "",
+    time: undefined,
+    additionalProperties: undefined,
   };
 }
 
@@ -1196,6 +1268,12 @@ export const Transaction = {
     }
     if (message.paymentMetaReferenceNumber !== "") {
       writer.uint32(346).string(message.paymentMetaReferenceNumber);
+    }
+    if (message.time !== undefined) {
+      Timestamp.encode(toTimestamp(message.time), writer.uint32(354).fork()).ldelim();
+    }
+    if (message.additionalProperties !== undefined) {
+      Any.encode(message.additionalProperties, writer.uint32(362).fork()).ldelim();
     }
     return writer;
   },
@@ -1487,6 +1565,20 @@ export const Transaction = {
 
           message.paymentMetaReferenceNumber = reader.string();
           continue;
+        case 44:
+          if (tag !== 354) {
+            break;
+          }
+
+          message.time = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 45:
+          if (tag !== 362) {
+            break;
+          }
+
+          message.additionalProperties = Any.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1546,6 +1638,8 @@ export const Transaction = {
       paymentMetaReferenceNumber: isSet(object.paymentMetaReferenceNumber)
         ? String(object.paymentMetaReferenceNumber)
         : "",
+      time: isSet(object.time) ? fromJsonTimestamp(object.time) : undefined,
+      additionalProperties: isSet(object.additionalProperties) ? Any.fromJSON(object.additionalProperties) : undefined,
     };
   },
 
@@ -1595,6 +1689,9 @@ export const Transaction = {
     message.paymentMetaReason !== undefined && (obj.paymentMetaReason = message.paymentMetaReason);
     message.paymentMetaReferenceNumber !== undefined &&
       (obj.paymentMetaReferenceNumber = message.paymentMetaReferenceNumber);
+    message.time !== undefined && (obj.time = message.time.toISOString());
+    message.additionalProperties !== undefined &&
+      (obj.additionalProperties = message.additionalProperties ? Any.toJSON(message.additionalProperties) : undefined);
     return obj;
   },
 
@@ -1644,6 +1741,10 @@ export const Transaction = {
     message.paymentMetaPpdId = object.paymentMetaPpdId ?? "";
     message.paymentMetaReason = object.paymentMetaReason ?? "";
     message.paymentMetaReferenceNumber = object.paymentMetaReferenceNumber ?? "";
+    message.time = object.time ?? undefined;
+    message.additionalProperties = (object.additionalProperties !== undefined && object.additionalProperties !== null)
+      ? Any.fromPartial(object.additionalProperties)
+      : undefined;
     return message;
   },
 };
@@ -2107,6 +2208,28 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
+
+function toTimestamp(date: Date): Timestamp {
+  const seconds = date.getTime() / 1_000;
+  const nanos = (date.getTime() % 1_000) * 1_000_000;
+  return { seconds, nanos };
+}
+
+function fromTimestamp(t: Timestamp): Date {
+  let millis = (t.seconds || 0) * 1_000;
+  millis += (t.nanos || 0) / 1_000_000;
+  return new Date(millis);
+}
+
+function fromJsonTimestamp(o: any): Date {
+  if (o instanceof Date) {
+    return o;
+  } else if (typeof o === "string") {
+    return new Date(o);
+  } else {
+    return fromTimestamp(Timestamp.fromJSON(o));
+  }
+}
 
 function longToNumber(long: Long): number {
   if (long.gt(Number.MAX_SAFE_INTEGER)) {

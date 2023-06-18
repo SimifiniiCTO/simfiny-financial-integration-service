@@ -8,7 +8,7 @@ import (
 	"context"
 	"strings"
 
-	apiv1 "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
+	financial_integration_service_apiv1 "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 	"gorm.io/gorm/schema"
@@ -24,7 +24,7 @@ func newBankAccountORM(db *gorm.DB, opts ...gen.DOOption) bankAccountORM {
 	_bankAccountORM := bankAccountORM{}
 
 	_bankAccountORM.bankAccountORMDo.UseDB(db, opts...)
-	_bankAccountORM.bankAccountORMDo.UseModel(&apiv1.BankAccountORM{})
+	_bankAccountORM.bankAccountORMDo.UseModel(&financial_integration_service_apiv1.BankAccountORM{})
 
 	tableName := _bankAccountORM.bankAccountORMDo.TableName()
 	_bankAccountORM.ALL = field.NewAsterisk(tableName)
@@ -44,7 +44,7 @@ func newBankAccountORM(db *gorm.DB, opts ...gen.DOOption) bankAccountORM {
 	_bankAccountORM.Pockets = bankAccountORMHasManyPockets{
 		db: db.Session(&gorm.Session{}),
 
-		RelationField: field.NewRelation("Pockets", "apiv1.PocketORM"),
+		RelationField: field.NewRelation("Pockets", "financial_integration_service_apiv1.PocketORM"),
 		Goals: struct {
 			field.RelationField
 			Forecasts struct {
@@ -60,11 +60,11 @@ func newBankAccountORM(db *gorm.DB, opts ...gen.DOOption) bankAccountORM {
 				}
 			}
 		}{
-			RelationField: field.NewRelation("Pockets.Goals", "apiv1.SmartGoalORM"),
+			RelationField: field.NewRelation("Pockets.Goals", "financial_integration_service_apiv1.SmartGoalORM"),
 			Forecasts: struct {
 				field.RelationField
 			}{
-				RelationField: field.NewRelation("Pockets.Goals.Forecasts", "apiv1.ForecastORM"),
+				RelationField: field.NewRelation("Pockets.Goals.Forecasts", "financial_integration_service_apiv1.ForecastORM"),
 			},
 			Milestones: struct {
 				field.RelationField
@@ -75,18 +75,18 @@ func newBankAccountORM(db *gorm.DB, opts ...gen.DOOption) bankAccountORM {
 					}
 				}
 			}{
-				RelationField: field.NewRelation("Pockets.Goals.Milestones", "apiv1.MilestoneORM"),
+				RelationField: field.NewRelation("Pockets.Goals.Milestones", "financial_integration_service_apiv1.MilestoneORM"),
 				Budget: struct {
 					field.RelationField
 					Category struct {
 						field.RelationField
 					}
 				}{
-					RelationField: field.NewRelation("Pockets.Goals.Milestones.Budget", "apiv1.BudgetORM"),
+					RelationField: field.NewRelation("Pockets.Goals.Milestones.Budget", "financial_integration_service_apiv1.BudgetORM"),
 					Category: struct {
 						field.RelationField
 					}{
-						RelationField: field.NewRelation("Pockets.Goals.Milestones.Budget.Category", "apiv1.CategoryORM"),
+						RelationField: field.NewRelation("Pockets.Goals.Milestones.Budget.Category", "financial_integration_service_apiv1.CategoryORM"),
 					},
 				},
 			},
@@ -228,17 +228,17 @@ func (a bankAccountORMHasManyPockets) WithContext(ctx context.Context) *bankAcco
 	return &a
 }
 
-func (a bankAccountORMHasManyPockets) Model(m *apiv1.BankAccountORM) *bankAccountORMHasManyPocketsTx {
+func (a bankAccountORMHasManyPockets) Model(m *financial_integration_service_apiv1.BankAccountORM) *bankAccountORMHasManyPocketsTx {
 	return &bankAccountORMHasManyPocketsTx{a.db.Model(m).Association(a.Name())}
 }
 
 type bankAccountORMHasManyPocketsTx struct{ tx *gorm.Association }
 
-func (a bankAccountORMHasManyPocketsTx) Find() (result []*apiv1.PocketORM, err error) {
+func (a bankAccountORMHasManyPocketsTx) Find() (result []*financial_integration_service_apiv1.PocketORM, err error) {
 	return result, a.tx.Find(&result)
 }
 
-func (a bankAccountORMHasManyPocketsTx) Append(values ...*apiv1.PocketORM) (err error) {
+func (a bankAccountORMHasManyPocketsTx) Append(values ...*financial_integration_service_apiv1.PocketORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -246,7 +246,7 @@ func (a bankAccountORMHasManyPocketsTx) Append(values ...*apiv1.PocketORM) (err 
 	return a.tx.Append(targetValues...)
 }
 
-func (a bankAccountORMHasManyPocketsTx) Replace(values ...*apiv1.PocketORM) (err error) {
+func (a bankAccountORMHasManyPocketsTx) Replace(values ...*financial_integration_service_apiv1.PocketORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -254,7 +254,7 @@ func (a bankAccountORMHasManyPocketsTx) Replace(values ...*apiv1.PocketORM) (err
 	return a.tx.Replace(targetValues...)
 }
 
-func (a bankAccountORMHasManyPocketsTx) Delete(values ...*apiv1.PocketORM) (err error) {
+func (a bankAccountORMHasManyPocketsTx) Delete(values ...*financial_integration_service_apiv1.PocketORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -301,17 +301,17 @@ type IBankAccountORMDo interface {
 	Count() (count int64, err error)
 	Scopes(funcs ...func(gen.Dao) gen.Dao) IBankAccountORMDo
 	Unscoped() IBankAccountORMDo
-	Create(values ...*apiv1.BankAccountORM) error
-	CreateInBatches(values []*apiv1.BankAccountORM, batchSize int) error
-	Save(values ...*apiv1.BankAccountORM) error
-	First() (*apiv1.BankAccountORM, error)
-	Take() (*apiv1.BankAccountORM, error)
-	Last() (*apiv1.BankAccountORM, error)
-	Find() ([]*apiv1.BankAccountORM, error)
-	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*apiv1.BankAccountORM, err error)
-	FindInBatches(result *[]*apiv1.BankAccountORM, batchSize int, fc func(tx gen.Dao, batch int) error) error
+	Create(values ...*financial_integration_service_apiv1.BankAccountORM) error
+	CreateInBatches(values []*financial_integration_service_apiv1.BankAccountORM, batchSize int) error
+	Save(values ...*financial_integration_service_apiv1.BankAccountORM) error
+	First() (*financial_integration_service_apiv1.BankAccountORM, error)
+	Take() (*financial_integration_service_apiv1.BankAccountORM, error)
+	Last() (*financial_integration_service_apiv1.BankAccountORM, error)
+	Find() ([]*financial_integration_service_apiv1.BankAccountORM, error)
+	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*financial_integration_service_apiv1.BankAccountORM, err error)
+	FindInBatches(result *[]*financial_integration_service_apiv1.BankAccountORM, batchSize int, fc func(tx gen.Dao, batch int) error) error
 	Pluck(column field.Expr, dest interface{}) error
-	Delete(...*apiv1.BankAccountORM) (info gen.ResultInfo, err error)
+	Delete(...*financial_integration_service_apiv1.BankAccountORM) (info gen.ResultInfo, err error)
 	Update(column field.Expr, value interface{}) (info gen.ResultInfo, err error)
 	UpdateSimple(columns ...field.AssignExpr) (info gen.ResultInfo, err error)
 	Updates(value interface{}) (info gen.ResultInfo, err error)
@@ -323,18 +323,18 @@ type IBankAccountORMDo interface {
 	Assign(attrs ...field.AssignExpr) IBankAccountORMDo
 	Joins(fields ...field.RelationField) IBankAccountORMDo
 	Preload(fields ...field.RelationField) IBankAccountORMDo
-	FirstOrInit() (*apiv1.BankAccountORM, error)
-	FirstOrCreate() (*apiv1.BankAccountORM, error)
-	FindByPage(offset int, limit int) (result []*apiv1.BankAccountORM, count int64, err error)
+	FirstOrInit() (*financial_integration_service_apiv1.BankAccountORM, error)
+	FirstOrCreate() (*financial_integration_service_apiv1.BankAccountORM, error)
+	FindByPage(offset int, limit int) (result []*financial_integration_service_apiv1.BankAccountORM, count int64, err error)
 	ScanByPage(result interface{}, offset int, limit int) (count int64, err error)
 	Scan(result interface{}) (err error)
 	Returning(value interface{}, columns ...string) IBankAccountORMDo
 	UnderlyingDB() *gorm.DB
 	schema.Tabler
 
-	GetByUserID(user_id int) (result apiv1.BankAccountORM, err error)
-	GetByID(id int) (result apiv1.BankAccountORM, err error)
-	GetByIDs(ids []int) (result []apiv1.BankAccountORM, err error)
+	GetByUserID(user_id int) (result financial_integration_service_apiv1.BankAccountORM, err error)
+	GetByID(id int) (result financial_integration_service_apiv1.BankAccountORM, err error)
+	GetByIDs(ids []int) (result []financial_integration_service_apiv1.BankAccountORM, err error)
 }
 
 // SELECT * FROM @@table
@@ -343,7 +343,7 @@ type IBankAccountORMDo interface {
 //	user_id=@user_id
 //
 // {{end}}
-func (b bankAccountORMDo) GetByUserID(user_id int) (result apiv1.BankAccountORM, err error) {
+func (b bankAccountORMDo) GetByUserID(user_id int) (result financial_integration_service_apiv1.BankAccountORM, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -366,7 +366,7 @@ func (b bankAccountORMDo) GetByUserID(user_id int) (result apiv1.BankAccountORM,
 //	id=@id
 //
 // {{end}}
-func (b bankAccountORMDo) GetByID(id int) (result apiv1.BankAccountORM, err error) {
+func (b bankAccountORMDo) GetByID(id int) (result financial_integration_service_apiv1.BankAccountORM, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -389,7 +389,7 @@ func (b bankAccountORMDo) GetByID(id int) (result apiv1.BankAccountORM, err erro
 //	id IN (@ids)
 //
 // {{end}}
-func (b bankAccountORMDo) GetByIDs(ids []int) (result []apiv1.BankAccountORM, err error) {
+func (b bankAccountORMDo) GetByIDs(ids []int) (result []financial_integration_service_apiv1.BankAccountORM, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -502,57 +502,57 @@ func (b bankAccountORMDo) Unscoped() IBankAccountORMDo {
 	return b.withDO(b.DO.Unscoped())
 }
 
-func (b bankAccountORMDo) Create(values ...*apiv1.BankAccountORM) error {
+func (b bankAccountORMDo) Create(values ...*financial_integration_service_apiv1.BankAccountORM) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return b.DO.Create(values)
 }
 
-func (b bankAccountORMDo) CreateInBatches(values []*apiv1.BankAccountORM, batchSize int) error {
+func (b bankAccountORMDo) CreateInBatches(values []*financial_integration_service_apiv1.BankAccountORM, batchSize int) error {
 	return b.DO.CreateInBatches(values, batchSize)
 }
 
 // Save : !!! underlying implementation is different with GORM
 // The method is equivalent to executing the statement: db.Clauses(clause.OnConflict{UpdateAll: true}).Create(values)
-func (b bankAccountORMDo) Save(values ...*apiv1.BankAccountORM) error {
+func (b bankAccountORMDo) Save(values ...*financial_integration_service_apiv1.BankAccountORM) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return b.DO.Save(values)
 }
 
-func (b bankAccountORMDo) First() (*apiv1.BankAccountORM, error) {
+func (b bankAccountORMDo) First() (*financial_integration_service_apiv1.BankAccountORM, error) {
 	if result, err := b.DO.First(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.BankAccountORM), nil
+		return result.(*financial_integration_service_apiv1.BankAccountORM), nil
 	}
 }
 
-func (b bankAccountORMDo) Take() (*apiv1.BankAccountORM, error) {
+func (b bankAccountORMDo) Take() (*financial_integration_service_apiv1.BankAccountORM, error) {
 	if result, err := b.DO.Take(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.BankAccountORM), nil
+		return result.(*financial_integration_service_apiv1.BankAccountORM), nil
 	}
 }
 
-func (b bankAccountORMDo) Last() (*apiv1.BankAccountORM, error) {
+func (b bankAccountORMDo) Last() (*financial_integration_service_apiv1.BankAccountORM, error) {
 	if result, err := b.DO.Last(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.BankAccountORM), nil
+		return result.(*financial_integration_service_apiv1.BankAccountORM), nil
 	}
 }
 
-func (b bankAccountORMDo) Find() ([]*apiv1.BankAccountORM, error) {
+func (b bankAccountORMDo) Find() ([]*financial_integration_service_apiv1.BankAccountORM, error) {
 	result, err := b.DO.Find()
-	return result.([]*apiv1.BankAccountORM), err
+	return result.([]*financial_integration_service_apiv1.BankAccountORM), err
 }
 
-func (b bankAccountORMDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*apiv1.BankAccountORM, err error) {
-	buf := make([]*apiv1.BankAccountORM, 0, batchSize)
+func (b bankAccountORMDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*financial_integration_service_apiv1.BankAccountORM, err error) {
+	buf := make([]*financial_integration_service_apiv1.BankAccountORM, 0, batchSize)
 	err = b.DO.FindInBatches(&buf, batchSize, func(tx gen.Dao, batch int) error {
 		defer func() { results = append(results, buf...) }()
 		return fc(tx, batch)
@@ -560,7 +560,7 @@ func (b bankAccountORMDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch i
 	return results, err
 }
 
-func (b bankAccountORMDo) FindInBatches(result *[]*apiv1.BankAccountORM, batchSize int, fc func(tx gen.Dao, batch int) error) error {
+func (b bankAccountORMDo) FindInBatches(result *[]*financial_integration_service_apiv1.BankAccountORM, batchSize int, fc func(tx gen.Dao, batch int) error) error {
 	return b.DO.FindInBatches(result, batchSize, fc)
 }
 
@@ -586,23 +586,23 @@ func (b bankAccountORMDo) Preload(fields ...field.RelationField) IBankAccountORM
 	return &b
 }
 
-func (b bankAccountORMDo) FirstOrInit() (*apiv1.BankAccountORM, error) {
+func (b bankAccountORMDo) FirstOrInit() (*financial_integration_service_apiv1.BankAccountORM, error) {
 	if result, err := b.DO.FirstOrInit(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.BankAccountORM), nil
+		return result.(*financial_integration_service_apiv1.BankAccountORM), nil
 	}
 }
 
-func (b bankAccountORMDo) FirstOrCreate() (*apiv1.BankAccountORM, error) {
+func (b bankAccountORMDo) FirstOrCreate() (*financial_integration_service_apiv1.BankAccountORM, error) {
 	if result, err := b.DO.FirstOrCreate(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.BankAccountORM), nil
+		return result.(*financial_integration_service_apiv1.BankAccountORM), nil
 	}
 }
 
-func (b bankAccountORMDo) FindByPage(offset int, limit int) (result []*apiv1.BankAccountORM, count int64, err error) {
+func (b bankAccountORMDo) FindByPage(offset int, limit int) (result []*financial_integration_service_apiv1.BankAccountORM, count int64, err error) {
 	result, err = b.Offset(offset).Limit(limit).Find()
 	if err != nil {
 		return
@@ -631,7 +631,7 @@ func (b bankAccountORMDo) Scan(result interface{}) (err error) {
 	return b.DO.Scan(result)
 }
 
-func (b bankAccountORMDo) Delete(models ...*apiv1.BankAccountORM) (result gen.ResultInfo, err error) {
+func (b bankAccountORMDo) Delete(models ...*financial_integration_service_apiv1.BankAccountORM) (result gen.ResultInfo, err error) {
 	return b.DO.Delete(models)
 }
 

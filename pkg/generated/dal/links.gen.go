@@ -8,7 +8,7 @@ import (
 	"context"
 	"strings"
 
-	apiv1 "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
+	financial_integration_service_apiv1 "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 	"gorm.io/gorm/schema"
@@ -24,7 +24,7 @@ func newLinkORM(db *gorm.DB, opts ...gen.DOOption) linkORM {
 	_linkORM := linkORM{}
 
 	_linkORM.linkORMDo.UseDB(db, opts...)
-	_linkORM.linkORMDo.UseModel(&apiv1.LinkORM{})
+	_linkORM.linkORMDo.UseModel(&financial_integration_service_apiv1.LinkORM{})
 
 	tableName := _linkORM.linkORMDo.TableName()
 	_linkORM.ALL = field.NewAsterisk(tableName)
@@ -46,25 +46,25 @@ func newLinkORM(db *gorm.DB, opts ...gen.DOOption) linkORM {
 	_linkORM.PlaidLink = linkORMHasOnePlaidLink{
 		db: db.Session(&gorm.Session{}),
 
-		RelationField: field.NewRelation("PlaidLink", "apiv1.PlaidLinkORM"),
+		RelationField: field.NewRelation("PlaidLink", "financial_integration_service_apiv1.PlaidLinkORM"),
 	}
 
 	_linkORM.PlaidSync = linkORMHasOnePlaidSync{
 		db: db.Session(&gorm.Session{}),
 
-		RelationField: field.NewRelation("PlaidSync", "apiv1.PlaidSyncORM"),
+		RelationField: field.NewRelation("PlaidSync", "financial_integration_service_apiv1.PlaidSyncORM"),
 	}
 
 	_linkORM.Token = linkORMHasOneToken{
 		db: db.Session(&gorm.Session{}),
 
-		RelationField: field.NewRelation("Token", "apiv1.TokenORM"),
+		RelationField: field.NewRelation("Token", "financial_integration_service_apiv1.TokenORM"),
 	}
 
 	_linkORM.BankAccounts = linkORMHasManyBankAccounts{
 		db: db.Session(&gorm.Session{}),
 
-		RelationField: field.NewRelation("BankAccounts", "apiv1.BankAccountORM"),
+		RelationField: field.NewRelation("BankAccounts", "financial_integration_service_apiv1.BankAccountORM"),
 		Pockets: struct {
 			field.RelationField
 			Goals struct {
@@ -83,7 +83,7 @@ func newLinkORM(db *gorm.DB, opts ...gen.DOOption) linkORM {
 				}
 			}
 		}{
-			RelationField: field.NewRelation("BankAccounts.Pockets", "apiv1.PocketORM"),
+			RelationField: field.NewRelation("BankAccounts.Pockets", "financial_integration_service_apiv1.PocketORM"),
 			Goals: struct {
 				field.RelationField
 				Forecasts struct {
@@ -99,11 +99,11 @@ func newLinkORM(db *gorm.DB, opts ...gen.DOOption) linkORM {
 					}
 				}
 			}{
-				RelationField: field.NewRelation("BankAccounts.Pockets.Goals", "apiv1.SmartGoalORM"),
+				RelationField: field.NewRelation("BankAccounts.Pockets.Goals", "financial_integration_service_apiv1.SmartGoalORM"),
 				Forecasts: struct {
 					field.RelationField
 				}{
-					RelationField: field.NewRelation("BankAccounts.Pockets.Goals.Forecasts", "apiv1.ForecastORM"),
+					RelationField: field.NewRelation("BankAccounts.Pockets.Goals.Forecasts", "financial_integration_service_apiv1.ForecastORM"),
 				},
 				Milestones: struct {
 					field.RelationField
@@ -114,18 +114,18 @@ func newLinkORM(db *gorm.DB, opts ...gen.DOOption) linkORM {
 						}
 					}
 				}{
-					RelationField: field.NewRelation("BankAccounts.Pockets.Goals.Milestones", "apiv1.MilestoneORM"),
+					RelationField: field.NewRelation("BankAccounts.Pockets.Goals.Milestones", "financial_integration_service_apiv1.MilestoneORM"),
 					Budget: struct {
 						field.RelationField
 						Category struct {
 							field.RelationField
 						}
 					}{
-						RelationField: field.NewRelation("BankAccounts.Pockets.Goals.Milestones.Budget", "apiv1.BudgetORM"),
+						RelationField: field.NewRelation("BankAccounts.Pockets.Goals.Milestones.Budget", "financial_integration_service_apiv1.BudgetORM"),
 						Category: struct {
 							field.RelationField
 						}{
-							RelationField: field.NewRelation("BankAccounts.Pockets.Goals.Milestones.Budget.Category", "apiv1.CategoryORM"),
+							RelationField: field.NewRelation("BankAccounts.Pockets.Goals.Milestones.Budget.Category", "financial_integration_service_apiv1.CategoryORM"),
 						},
 					},
 				},
@@ -136,40 +136,40 @@ func newLinkORM(db *gorm.DB, opts ...gen.DOOption) linkORM {
 	_linkORM.CreditAccounts = linkORMHasManyCreditAccounts{
 		db: db.Session(&gorm.Session{}),
 
-		RelationField: field.NewRelation("CreditAccounts", "apiv1.CreditAccountORM"),
+		RelationField: field.NewRelation("CreditAccounts", "financial_integration_service_apiv1.CreditAccountORM"),
 		Aprs: struct {
 			field.RelationField
 		}{
-			RelationField: field.NewRelation("CreditAccounts.Aprs", "apiv1.AprORM"),
+			RelationField: field.NewRelation("CreditAccounts.Aprs", "financial_integration_service_apiv1.AprORM"),
 		},
 	}
 
 	_linkORM.InvestmentAccounts = linkORMHasManyInvestmentAccounts{
 		db: db.Session(&gorm.Session{}),
 
-		RelationField: field.NewRelation("InvestmentAccounts", "apiv1.InvestmentAccountORM"),
+		RelationField: field.NewRelation("InvestmentAccounts", "financial_integration_service_apiv1.InvestmentAccountORM"),
 		Holdings: struct {
 			field.RelationField
 		}{
-			RelationField: field.NewRelation("InvestmentAccounts.Holdings", "apiv1.InvesmentHoldingORM"),
+			RelationField: field.NewRelation("InvestmentAccounts.Holdings", "financial_integration_service_apiv1.InvesmentHoldingORM"),
 		},
 		Securities: struct {
 			field.RelationField
 		}{
-			RelationField: field.NewRelation("InvestmentAccounts.Securities", "apiv1.InvestmentSecurityORM"),
+			RelationField: field.NewRelation("InvestmentAccounts.Securities", "financial_integration_service_apiv1.InvestmentSecurityORM"),
 		},
 	}
 
 	_linkORM.MortgageAccounts = linkORMHasManyMortgageAccounts{
 		db: db.Session(&gorm.Session{}),
 
-		RelationField: field.NewRelation("MortgageAccounts", "apiv1.MortgageAccountORM"),
+		RelationField: field.NewRelation("MortgageAccounts", "financial_integration_service_apiv1.MortgageAccountORM"),
 	}
 
 	_linkORM.StudentLoanAccounts = linkORMHasManyStudentLoanAccounts{
 		db: db.Session(&gorm.Session{}),
 
-		RelationField: field.NewRelation("StudentLoanAccounts", "apiv1.StudentLoanAccountORM"),
+		RelationField: field.NewRelation("StudentLoanAccounts", "financial_integration_service_apiv1.StudentLoanAccountORM"),
 	}
 
 	_linkORM.fillFieldMap()
@@ -311,17 +311,17 @@ func (a linkORMHasOnePlaidLink) WithContext(ctx context.Context) *linkORMHasOneP
 	return &a
 }
 
-func (a linkORMHasOnePlaidLink) Model(m *apiv1.LinkORM) *linkORMHasOnePlaidLinkTx {
+func (a linkORMHasOnePlaidLink) Model(m *financial_integration_service_apiv1.LinkORM) *linkORMHasOnePlaidLinkTx {
 	return &linkORMHasOnePlaidLinkTx{a.db.Model(m).Association(a.Name())}
 }
 
 type linkORMHasOnePlaidLinkTx struct{ tx *gorm.Association }
 
-func (a linkORMHasOnePlaidLinkTx) Find() (result *apiv1.PlaidLinkORM, err error) {
+func (a linkORMHasOnePlaidLinkTx) Find() (result *financial_integration_service_apiv1.PlaidLinkORM, err error) {
 	return result, a.tx.Find(&result)
 }
 
-func (a linkORMHasOnePlaidLinkTx) Append(values ...*apiv1.PlaidLinkORM) (err error) {
+func (a linkORMHasOnePlaidLinkTx) Append(values ...*financial_integration_service_apiv1.PlaidLinkORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -329,7 +329,7 @@ func (a linkORMHasOnePlaidLinkTx) Append(values ...*apiv1.PlaidLinkORM) (err err
 	return a.tx.Append(targetValues...)
 }
 
-func (a linkORMHasOnePlaidLinkTx) Replace(values ...*apiv1.PlaidLinkORM) (err error) {
+func (a linkORMHasOnePlaidLinkTx) Replace(values ...*financial_integration_service_apiv1.PlaidLinkORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -337,7 +337,7 @@ func (a linkORMHasOnePlaidLinkTx) Replace(values ...*apiv1.PlaidLinkORM) (err er
 	return a.tx.Replace(targetValues...)
 }
 
-func (a linkORMHasOnePlaidLinkTx) Delete(values ...*apiv1.PlaidLinkORM) (err error) {
+func (a linkORMHasOnePlaidLinkTx) Delete(values ...*financial_integration_service_apiv1.PlaidLinkORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -377,17 +377,17 @@ func (a linkORMHasOnePlaidSync) WithContext(ctx context.Context) *linkORMHasOneP
 	return &a
 }
 
-func (a linkORMHasOnePlaidSync) Model(m *apiv1.LinkORM) *linkORMHasOnePlaidSyncTx {
+func (a linkORMHasOnePlaidSync) Model(m *financial_integration_service_apiv1.LinkORM) *linkORMHasOnePlaidSyncTx {
 	return &linkORMHasOnePlaidSyncTx{a.db.Model(m).Association(a.Name())}
 }
 
 type linkORMHasOnePlaidSyncTx struct{ tx *gorm.Association }
 
-func (a linkORMHasOnePlaidSyncTx) Find() (result *apiv1.PlaidSyncORM, err error) {
+func (a linkORMHasOnePlaidSyncTx) Find() (result *financial_integration_service_apiv1.PlaidSyncORM, err error) {
 	return result, a.tx.Find(&result)
 }
 
-func (a linkORMHasOnePlaidSyncTx) Append(values ...*apiv1.PlaidSyncORM) (err error) {
+func (a linkORMHasOnePlaidSyncTx) Append(values ...*financial_integration_service_apiv1.PlaidSyncORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -395,7 +395,7 @@ func (a linkORMHasOnePlaidSyncTx) Append(values ...*apiv1.PlaidSyncORM) (err err
 	return a.tx.Append(targetValues...)
 }
 
-func (a linkORMHasOnePlaidSyncTx) Replace(values ...*apiv1.PlaidSyncORM) (err error) {
+func (a linkORMHasOnePlaidSyncTx) Replace(values ...*financial_integration_service_apiv1.PlaidSyncORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -403,7 +403,7 @@ func (a linkORMHasOnePlaidSyncTx) Replace(values ...*apiv1.PlaidSyncORM) (err er
 	return a.tx.Replace(targetValues...)
 }
 
-func (a linkORMHasOnePlaidSyncTx) Delete(values ...*apiv1.PlaidSyncORM) (err error) {
+func (a linkORMHasOnePlaidSyncTx) Delete(values ...*financial_integration_service_apiv1.PlaidSyncORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -443,17 +443,17 @@ func (a linkORMHasOneToken) WithContext(ctx context.Context) *linkORMHasOneToken
 	return &a
 }
 
-func (a linkORMHasOneToken) Model(m *apiv1.LinkORM) *linkORMHasOneTokenTx {
+func (a linkORMHasOneToken) Model(m *financial_integration_service_apiv1.LinkORM) *linkORMHasOneTokenTx {
 	return &linkORMHasOneTokenTx{a.db.Model(m).Association(a.Name())}
 }
 
 type linkORMHasOneTokenTx struct{ tx *gorm.Association }
 
-func (a linkORMHasOneTokenTx) Find() (result *apiv1.TokenORM, err error) {
+func (a linkORMHasOneTokenTx) Find() (result *financial_integration_service_apiv1.TokenORM, err error) {
 	return result, a.tx.Find(&result)
 }
 
-func (a linkORMHasOneTokenTx) Append(values ...*apiv1.TokenORM) (err error) {
+func (a linkORMHasOneTokenTx) Append(values ...*financial_integration_service_apiv1.TokenORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -461,7 +461,7 @@ func (a linkORMHasOneTokenTx) Append(values ...*apiv1.TokenORM) (err error) {
 	return a.tx.Append(targetValues...)
 }
 
-func (a linkORMHasOneTokenTx) Replace(values ...*apiv1.TokenORM) (err error) {
+func (a linkORMHasOneTokenTx) Replace(values ...*financial_integration_service_apiv1.TokenORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -469,7 +469,7 @@ func (a linkORMHasOneTokenTx) Replace(values ...*apiv1.TokenORM) (err error) {
 	return a.tx.Replace(targetValues...)
 }
 
-func (a linkORMHasOneTokenTx) Delete(values ...*apiv1.TokenORM) (err error) {
+func (a linkORMHasOneTokenTx) Delete(values ...*financial_integration_service_apiv1.TokenORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -528,17 +528,17 @@ func (a linkORMHasManyBankAccounts) WithContext(ctx context.Context) *linkORMHas
 	return &a
 }
 
-func (a linkORMHasManyBankAccounts) Model(m *apiv1.LinkORM) *linkORMHasManyBankAccountsTx {
+func (a linkORMHasManyBankAccounts) Model(m *financial_integration_service_apiv1.LinkORM) *linkORMHasManyBankAccountsTx {
 	return &linkORMHasManyBankAccountsTx{a.db.Model(m).Association(a.Name())}
 }
 
 type linkORMHasManyBankAccountsTx struct{ tx *gorm.Association }
 
-func (a linkORMHasManyBankAccountsTx) Find() (result []*apiv1.BankAccountORM, err error) {
+func (a linkORMHasManyBankAccountsTx) Find() (result []*financial_integration_service_apiv1.BankAccountORM, err error) {
 	return result, a.tx.Find(&result)
 }
 
-func (a linkORMHasManyBankAccountsTx) Append(values ...*apiv1.BankAccountORM) (err error) {
+func (a linkORMHasManyBankAccountsTx) Append(values ...*financial_integration_service_apiv1.BankAccountORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -546,7 +546,7 @@ func (a linkORMHasManyBankAccountsTx) Append(values ...*apiv1.BankAccountORM) (e
 	return a.tx.Append(targetValues...)
 }
 
-func (a linkORMHasManyBankAccountsTx) Replace(values ...*apiv1.BankAccountORM) (err error) {
+func (a linkORMHasManyBankAccountsTx) Replace(values ...*financial_integration_service_apiv1.BankAccountORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -554,7 +554,7 @@ func (a linkORMHasManyBankAccountsTx) Replace(values ...*apiv1.BankAccountORM) (
 	return a.tx.Replace(targetValues...)
 }
 
-func (a linkORMHasManyBankAccountsTx) Delete(values ...*apiv1.BankAccountORM) (err error) {
+func (a linkORMHasManyBankAccountsTx) Delete(values ...*financial_integration_service_apiv1.BankAccountORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -598,17 +598,17 @@ func (a linkORMHasManyCreditAccounts) WithContext(ctx context.Context) *linkORMH
 	return &a
 }
 
-func (a linkORMHasManyCreditAccounts) Model(m *apiv1.LinkORM) *linkORMHasManyCreditAccountsTx {
+func (a linkORMHasManyCreditAccounts) Model(m *financial_integration_service_apiv1.LinkORM) *linkORMHasManyCreditAccountsTx {
 	return &linkORMHasManyCreditAccountsTx{a.db.Model(m).Association(a.Name())}
 }
 
 type linkORMHasManyCreditAccountsTx struct{ tx *gorm.Association }
 
-func (a linkORMHasManyCreditAccountsTx) Find() (result []*apiv1.CreditAccountORM, err error) {
+func (a linkORMHasManyCreditAccountsTx) Find() (result []*financial_integration_service_apiv1.CreditAccountORM, err error) {
 	return result, a.tx.Find(&result)
 }
 
-func (a linkORMHasManyCreditAccountsTx) Append(values ...*apiv1.CreditAccountORM) (err error) {
+func (a linkORMHasManyCreditAccountsTx) Append(values ...*financial_integration_service_apiv1.CreditAccountORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -616,7 +616,7 @@ func (a linkORMHasManyCreditAccountsTx) Append(values ...*apiv1.CreditAccountORM
 	return a.tx.Append(targetValues...)
 }
 
-func (a linkORMHasManyCreditAccountsTx) Replace(values ...*apiv1.CreditAccountORM) (err error) {
+func (a linkORMHasManyCreditAccountsTx) Replace(values ...*financial_integration_service_apiv1.CreditAccountORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -624,7 +624,7 @@ func (a linkORMHasManyCreditAccountsTx) Replace(values ...*apiv1.CreditAccountOR
 	return a.tx.Replace(targetValues...)
 }
 
-func (a linkORMHasManyCreditAccountsTx) Delete(values ...*apiv1.CreditAccountORM) (err error) {
+func (a linkORMHasManyCreditAccountsTx) Delete(values ...*financial_integration_service_apiv1.CreditAccountORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -671,17 +671,17 @@ func (a linkORMHasManyInvestmentAccounts) WithContext(ctx context.Context) *link
 	return &a
 }
 
-func (a linkORMHasManyInvestmentAccounts) Model(m *apiv1.LinkORM) *linkORMHasManyInvestmentAccountsTx {
+func (a linkORMHasManyInvestmentAccounts) Model(m *financial_integration_service_apiv1.LinkORM) *linkORMHasManyInvestmentAccountsTx {
 	return &linkORMHasManyInvestmentAccountsTx{a.db.Model(m).Association(a.Name())}
 }
 
 type linkORMHasManyInvestmentAccountsTx struct{ tx *gorm.Association }
 
-func (a linkORMHasManyInvestmentAccountsTx) Find() (result []*apiv1.InvestmentAccountORM, err error) {
+func (a linkORMHasManyInvestmentAccountsTx) Find() (result []*financial_integration_service_apiv1.InvestmentAccountORM, err error) {
 	return result, a.tx.Find(&result)
 }
 
-func (a linkORMHasManyInvestmentAccountsTx) Append(values ...*apiv1.InvestmentAccountORM) (err error) {
+func (a linkORMHasManyInvestmentAccountsTx) Append(values ...*financial_integration_service_apiv1.InvestmentAccountORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -689,7 +689,7 @@ func (a linkORMHasManyInvestmentAccountsTx) Append(values ...*apiv1.InvestmentAc
 	return a.tx.Append(targetValues...)
 }
 
-func (a linkORMHasManyInvestmentAccountsTx) Replace(values ...*apiv1.InvestmentAccountORM) (err error) {
+func (a linkORMHasManyInvestmentAccountsTx) Replace(values ...*financial_integration_service_apiv1.InvestmentAccountORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -697,7 +697,7 @@ func (a linkORMHasManyInvestmentAccountsTx) Replace(values ...*apiv1.InvestmentA
 	return a.tx.Replace(targetValues...)
 }
 
-func (a linkORMHasManyInvestmentAccountsTx) Delete(values ...*apiv1.InvestmentAccountORM) (err error) {
+func (a linkORMHasManyInvestmentAccountsTx) Delete(values ...*financial_integration_service_apiv1.InvestmentAccountORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -737,17 +737,17 @@ func (a linkORMHasManyMortgageAccounts) WithContext(ctx context.Context) *linkOR
 	return &a
 }
 
-func (a linkORMHasManyMortgageAccounts) Model(m *apiv1.LinkORM) *linkORMHasManyMortgageAccountsTx {
+func (a linkORMHasManyMortgageAccounts) Model(m *financial_integration_service_apiv1.LinkORM) *linkORMHasManyMortgageAccountsTx {
 	return &linkORMHasManyMortgageAccountsTx{a.db.Model(m).Association(a.Name())}
 }
 
 type linkORMHasManyMortgageAccountsTx struct{ tx *gorm.Association }
 
-func (a linkORMHasManyMortgageAccountsTx) Find() (result []*apiv1.MortgageAccountORM, err error) {
+func (a linkORMHasManyMortgageAccountsTx) Find() (result []*financial_integration_service_apiv1.MortgageAccountORM, err error) {
 	return result, a.tx.Find(&result)
 }
 
-func (a linkORMHasManyMortgageAccountsTx) Append(values ...*apiv1.MortgageAccountORM) (err error) {
+func (a linkORMHasManyMortgageAccountsTx) Append(values ...*financial_integration_service_apiv1.MortgageAccountORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -755,7 +755,7 @@ func (a linkORMHasManyMortgageAccountsTx) Append(values ...*apiv1.MortgageAccoun
 	return a.tx.Append(targetValues...)
 }
 
-func (a linkORMHasManyMortgageAccountsTx) Replace(values ...*apiv1.MortgageAccountORM) (err error) {
+func (a linkORMHasManyMortgageAccountsTx) Replace(values ...*financial_integration_service_apiv1.MortgageAccountORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -763,7 +763,7 @@ func (a linkORMHasManyMortgageAccountsTx) Replace(values ...*apiv1.MortgageAccou
 	return a.tx.Replace(targetValues...)
 }
 
-func (a linkORMHasManyMortgageAccountsTx) Delete(values ...*apiv1.MortgageAccountORM) (err error) {
+func (a linkORMHasManyMortgageAccountsTx) Delete(values ...*financial_integration_service_apiv1.MortgageAccountORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -803,17 +803,17 @@ func (a linkORMHasManyStudentLoanAccounts) WithContext(ctx context.Context) *lin
 	return &a
 }
 
-func (a linkORMHasManyStudentLoanAccounts) Model(m *apiv1.LinkORM) *linkORMHasManyStudentLoanAccountsTx {
+func (a linkORMHasManyStudentLoanAccounts) Model(m *financial_integration_service_apiv1.LinkORM) *linkORMHasManyStudentLoanAccountsTx {
 	return &linkORMHasManyStudentLoanAccountsTx{a.db.Model(m).Association(a.Name())}
 }
 
 type linkORMHasManyStudentLoanAccountsTx struct{ tx *gorm.Association }
 
-func (a linkORMHasManyStudentLoanAccountsTx) Find() (result []*apiv1.StudentLoanAccountORM, err error) {
+func (a linkORMHasManyStudentLoanAccountsTx) Find() (result []*financial_integration_service_apiv1.StudentLoanAccountORM, err error) {
 	return result, a.tx.Find(&result)
 }
 
-func (a linkORMHasManyStudentLoanAccountsTx) Append(values ...*apiv1.StudentLoanAccountORM) (err error) {
+func (a linkORMHasManyStudentLoanAccountsTx) Append(values ...*financial_integration_service_apiv1.StudentLoanAccountORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -821,7 +821,7 @@ func (a linkORMHasManyStudentLoanAccountsTx) Append(values ...*apiv1.StudentLoan
 	return a.tx.Append(targetValues...)
 }
 
-func (a linkORMHasManyStudentLoanAccountsTx) Replace(values ...*apiv1.StudentLoanAccountORM) (err error) {
+func (a linkORMHasManyStudentLoanAccountsTx) Replace(values ...*financial_integration_service_apiv1.StudentLoanAccountORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -829,7 +829,7 @@ func (a linkORMHasManyStudentLoanAccountsTx) Replace(values ...*apiv1.StudentLoa
 	return a.tx.Replace(targetValues...)
 }
 
-func (a linkORMHasManyStudentLoanAccountsTx) Delete(values ...*apiv1.StudentLoanAccountORM) (err error) {
+func (a linkORMHasManyStudentLoanAccountsTx) Delete(values ...*financial_integration_service_apiv1.StudentLoanAccountORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -876,17 +876,17 @@ type ILinkORMDo interface {
 	Count() (count int64, err error)
 	Scopes(funcs ...func(gen.Dao) gen.Dao) ILinkORMDo
 	Unscoped() ILinkORMDo
-	Create(values ...*apiv1.LinkORM) error
-	CreateInBatches(values []*apiv1.LinkORM, batchSize int) error
-	Save(values ...*apiv1.LinkORM) error
-	First() (*apiv1.LinkORM, error)
-	Take() (*apiv1.LinkORM, error)
-	Last() (*apiv1.LinkORM, error)
-	Find() ([]*apiv1.LinkORM, error)
-	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*apiv1.LinkORM, err error)
-	FindInBatches(result *[]*apiv1.LinkORM, batchSize int, fc func(tx gen.Dao, batch int) error) error
+	Create(values ...*financial_integration_service_apiv1.LinkORM) error
+	CreateInBatches(values []*financial_integration_service_apiv1.LinkORM, batchSize int) error
+	Save(values ...*financial_integration_service_apiv1.LinkORM) error
+	First() (*financial_integration_service_apiv1.LinkORM, error)
+	Take() (*financial_integration_service_apiv1.LinkORM, error)
+	Last() (*financial_integration_service_apiv1.LinkORM, error)
+	Find() ([]*financial_integration_service_apiv1.LinkORM, error)
+	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*financial_integration_service_apiv1.LinkORM, err error)
+	FindInBatches(result *[]*financial_integration_service_apiv1.LinkORM, batchSize int, fc func(tx gen.Dao, batch int) error) error
 	Pluck(column field.Expr, dest interface{}) error
-	Delete(...*apiv1.LinkORM) (info gen.ResultInfo, err error)
+	Delete(...*financial_integration_service_apiv1.LinkORM) (info gen.ResultInfo, err error)
 	Update(column field.Expr, value interface{}) (info gen.ResultInfo, err error)
 	UpdateSimple(columns ...field.AssignExpr) (info gen.ResultInfo, err error)
 	Updates(value interface{}) (info gen.ResultInfo, err error)
@@ -898,18 +898,18 @@ type ILinkORMDo interface {
 	Assign(attrs ...field.AssignExpr) ILinkORMDo
 	Joins(fields ...field.RelationField) ILinkORMDo
 	Preload(fields ...field.RelationField) ILinkORMDo
-	FirstOrInit() (*apiv1.LinkORM, error)
-	FirstOrCreate() (*apiv1.LinkORM, error)
-	FindByPage(offset int, limit int) (result []*apiv1.LinkORM, count int64, err error)
+	FirstOrInit() (*financial_integration_service_apiv1.LinkORM, error)
+	FirstOrCreate() (*financial_integration_service_apiv1.LinkORM, error)
+	FindByPage(offset int, limit int) (result []*financial_integration_service_apiv1.LinkORM, count int64, err error)
 	ScanByPage(result interface{}, offset int, limit int) (count int64, err error)
 	Scan(result interface{}) (err error)
 	Returning(value interface{}, columns ...string) ILinkORMDo
 	UnderlyingDB() *gorm.DB
 	schema.Tabler
 
-	GetByUserID(user_id int) (result apiv1.LinkORM, err error)
-	GetByID(id int) (result apiv1.LinkORM, err error)
-	GetByIDs(ids []int) (result []apiv1.LinkORM, err error)
+	GetByUserID(user_id int) (result financial_integration_service_apiv1.LinkORM, err error)
+	GetByID(id int) (result financial_integration_service_apiv1.LinkORM, err error)
+	GetByIDs(ids []int) (result []financial_integration_service_apiv1.LinkORM, err error)
 }
 
 // SELECT * FROM @@table
@@ -918,7 +918,7 @@ type ILinkORMDo interface {
 //	user_id=@user_id
 //
 // {{end}}
-func (l linkORMDo) GetByUserID(user_id int) (result apiv1.LinkORM, err error) {
+func (l linkORMDo) GetByUserID(user_id int) (result financial_integration_service_apiv1.LinkORM, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -941,7 +941,7 @@ func (l linkORMDo) GetByUserID(user_id int) (result apiv1.LinkORM, err error) {
 //	id=@id
 //
 // {{end}}
-func (l linkORMDo) GetByID(id int) (result apiv1.LinkORM, err error) {
+func (l linkORMDo) GetByID(id int) (result financial_integration_service_apiv1.LinkORM, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -964,7 +964,7 @@ func (l linkORMDo) GetByID(id int) (result apiv1.LinkORM, err error) {
 //	id IN (@ids)
 //
 // {{end}}
-func (l linkORMDo) GetByIDs(ids []int) (result []apiv1.LinkORM, err error) {
+func (l linkORMDo) GetByIDs(ids []int) (result []financial_integration_service_apiv1.LinkORM, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -1077,57 +1077,57 @@ func (l linkORMDo) Unscoped() ILinkORMDo {
 	return l.withDO(l.DO.Unscoped())
 }
 
-func (l linkORMDo) Create(values ...*apiv1.LinkORM) error {
+func (l linkORMDo) Create(values ...*financial_integration_service_apiv1.LinkORM) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return l.DO.Create(values)
 }
 
-func (l linkORMDo) CreateInBatches(values []*apiv1.LinkORM, batchSize int) error {
+func (l linkORMDo) CreateInBatches(values []*financial_integration_service_apiv1.LinkORM, batchSize int) error {
 	return l.DO.CreateInBatches(values, batchSize)
 }
 
 // Save : !!! underlying implementation is different with GORM
 // The method is equivalent to executing the statement: db.Clauses(clause.OnConflict{UpdateAll: true}).Create(values)
-func (l linkORMDo) Save(values ...*apiv1.LinkORM) error {
+func (l linkORMDo) Save(values ...*financial_integration_service_apiv1.LinkORM) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return l.DO.Save(values)
 }
 
-func (l linkORMDo) First() (*apiv1.LinkORM, error) {
+func (l linkORMDo) First() (*financial_integration_service_apiv1.LinkORM, error) {
 	if result, err := l.DO.First(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.LinkORM), nil
+		return result.(*financial_integration_service_apiv1.LinkORM), nil
 	}
 }
 
-func (l linkORMDo) Take() (*apiv1.LinkORM, error) {
+func (l linkORMDo) Take() (*financial_integration_service_apiv1.LinkORM, error) {
 	if result, err := l.DO.Take(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.LinkORM), nil
+		return result.(*financial_integration_service_apiv1.LinkORM), nil
 	}
 }
 
-func (l linkORMDo) Last() (*apiv1.LinkORM, error) {
+func (l linkORMDo) Last() (*financial_integration_service_apiv1.LinkORM, error) {
 	if result, err := l.DO.Last(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.LinkORM), nil
+		return result.(*financial_integration_service_apiv1.LinkORM), nil
 	}
 }
 
-func (l linkORMDo) Find() ([]*apiv1.LinkORM, error) {
+func (l linkORMDo) Find() ([]*financial_integration_service_apiv1.LinkORM, error) {
 	result, err := l.DO.Find()
-	return result.([]*apiv1.LinkORM), err
+	return result.([]*financial_integration_service_apiv1.LinkORM), err
 }
 
-func (l linkORMDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*apiv1.LinkORM, err error) {
-	buf := make([]*apiv1.LinkORM, 0, batchSize)
+func (l linkORMDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*financial_integration_service_apiv1.LinkORM, err error) {
+	buf := make([]*financial_integration_service_apiv1.LinkORM, 0, batchSize)
 	err = l.DO.FindInBatches(&buf, batchSize, func(tx gen.Dao, batch int) error {
 		defer func() { results = append(results, buf...) }()
 		return fc(tx, batch)
@@ -1135,7 +1135,7 @@ func (l linkORMDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) err
 	return results, err
 }
 
-func (l linkORMDo) FindInBatches(result *[]*apiv1.LinkORM, batchSize int, fc func(tx gen.Dao, batch int) error) error {
+func (l linkORMDo) FindInBatches(result *[]*financial_integration_service_apiv1.LinkORM, batchSize int, fc func(tx gen.Dao, batch int) error) error {
 	return l.DO.FindInBatches(result, batchSize, fc)
 }
 
@@ -1161,23 +1161,23 @@ func (l linkORMDo) Preload(fields ...field.RelationField) ILinkORMDo {
 	return &l
 }
 
-func (l linkORMDo) FirstOrInit() (*apiv1.LinkORM, error) {
+func (l linkORMDo) FirstOrInit() (*financial_integration_service_apiv1.LinkORM, error) {
 	if result, err := l.DO.FirstOrInit(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.LinkORM), nil
+		return result.(*financial_integration_service_apiv1.LinkORM), nil
 	}
 }
 
-func (l linkORMDo) FirstOrCreate() (*apiv1.LinkORM, error) {
+func (l linkORMDo) FirstOrCreate() (*financial_integration_service_apiv1.LinkORM, error) {
 	if result, err := l.DO.FirstOrCreate(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.LinkORM), nil
+		return result.(*financial_integration_service_apiv1.LinkORM), nil
 	}
 }
 
-func (l linkORMDo) FindByPage(offset int, limit int) (result []*apiv1.LinkORM, count int64, err error) {
+func (l linkORMDo) FindByPage(offset int, limit int) (result []*financial_integration_service_apiv1.LinkORM, count int64, err error) {
 	result, err = l.Offset(offset).Limit(limit).Find()
 	if err != nil {
 		return
@@ -1206,7 +1206,7 @@ func (l linkORMDo) Scan(result interface{}) (err error) {
 	return l.DO.Scan(result)
 }
 
-func (l linkORMDo) Delete(models ...*apiv1.LinkORM) (result gen.ResultInfo, err error) {
+func (l linkORMDo) Delete(models ...*financial_integration_service_apiv1.LinkORM) (result gen.ResultInfo, err error) {
 	return l.DO.Delete(models)
 }
 

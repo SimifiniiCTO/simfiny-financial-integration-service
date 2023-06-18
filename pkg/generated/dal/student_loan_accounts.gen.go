@@ -8,7 +8,7 @@ import (
 	"context"
 	"strings"
 
-	apiv1 "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
+	financial_integration_service_apiv1 "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 	"gorm.io/gorm/schema"
@@ -24,7 +24,7 @@ func newStudentLoanAccountORM(db *gorm.DB, opts ...gen.DOOption) studentLoanAcco
 	_studentLoanAccountORM := studentLoanAccountORM{}
 
 	_studentLoanAccountORM.studentLoanAccountORMDo.UseDB(db, opts...)
-	_studentLoanAccountORM.studentLoanAccountORMDo.UseModel(&apiv1.StudentLoanAccountORM{})
+	_studentLoanAccountORM.studentLoanAccountORMDo.UseModel(&financial_integration_service_apiv1.StudentLoanAccountORM{})
 
 	tableName := _studentLoanAccountORM.studentLoanAccountORMDo.TableName()
 	_studentLoanAccountORM.ALL = field.NewAsterisk(tableName)
@@ -258,17 +258,17 @@ type IStudentLoanAccountORMDo interface {
 	Count() (count int64, err error)
 	Scopes(funcs ...func(gen.Dao) gen.Dao) IStudentLoanAccountORMDo
 	Unscoped() IStudentLoanAccountORMDo
-	Create(values ...*apiv1.StudentLoanAccountORM) error
-	CreateInBatches(values []*apiv1.StudentLoanAccountORM, batchSize int) error
-	Save(values ...*apiv1.StudentLoanAccountORM) error
-	First() (*apiv1.StudentLoanAccountORM, error)
-	Take() (*apiv1.StudentLoanAccountORM, error)
-	Last() (*apiv1.StudentLoanAccountORM, error)
-	Find() ([]*apiv1.StudentLoanAccountORM, error)
-	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*apiv1.StudentLoanAccountORM, err error)
-	FindInBatches(result *[]*apiv1.StudentLoanAccountORM, batchSize int, fc func(tx gen.Dao, batch int) error) error
+	Create(values ...*financial_integration_service_apiv1.StudentLoanAccountORM) error
+	CreateInBatches(values []*financial_integration_service_apiv1.StudentLoanAccountORM, batchSize int) error
+	Save(values ...*financial_integration_service_apiv1.StudentLoanAccountORM) error
+	First() (*financial_integration_service_apiv1.StudentLoanAccountORM, error)
+	Take() (*financial_integration_service_apiv1.StudentLoanAccountORM, error)
+	Last() (*financial_integration_service_apiv1.StudentLoanAccountORM, error)
+	Find() ([]*financial_integration_service_apiv1.StudentLoanAccountORM, error)
+	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*financial_integration_service_apiv1.StudentLoanAccountORM, err error)
+	FindInBatches(result *[]*financial_integration_service_apiv1.StudentLoanAccountORM, batchSize int, fc func(tx gen.Dao, batch int) error) error
 	Pluck(column field.Expr, dest interface{}) error
-	Delete(...*apiv1.StudentLoanAccountORM) (info gen.ResultInfo, err error)
+	Delete(...*financial_integration_service_apiv1.StudentLoanAccountORM) (info gen.ResultInfo, err error)
 	Update(column field.Expr, value interface{}) (info gen.ResultInfo, err error)
 	UpdateSimple(columns ...field.AssignExpr) (info gen.ResultInfo, err error)
 	Updates(value interface{}) (info gen.ResultInfo, err error)
@@ -280,18 +280,18 @@ type IStudentLoanAccountORMDo interface {
 	Assign(attrs ...field.AssignExpr) IStudentLoanAccountORMDo
 	Joins(fields ...field.RelationField) IStudentLoanAccountORMDo
 	Preload(fields ...field.RelationField) IStudentLoanAccountORMDo
-	FirstOrInit() (*apiv1.StudentLoanAccountORM, error)
-	FirstOrCreate() (*apiv1.StudentLoanAccountORM, error)
-	FindByPage(offset int, limit int) (result []*apiv1.StudentLoanAccountORM, count int64, err error)
+	FirstOrInit() (*financial_integration_service_apiv1.StudentLoanAccountORM, error)
+	FirstOrCreate() (*financial_integration_service_apiv1.StudentLoanAccountORM, error)
+	FindByPage(offset int, limit int) (result []*financial_integration_service_apiv1.StudentLoanAccountORM, count int64, err error)
 	ScanByPage(result interface{}, offset int, limit int) (count int64, err error)
 	Scan(result interface{}) (err error)
 	Returning(value interface{}, columns ...string) IStudentLoanAccountORMDo
 	UnderlyingDB() *gorm.DB
 	schema.Tabler
 
-	GetByUserID(user_id int) (result apiv1.StudentLoanAccountORM, err error)
-	GetByID(id int) (result apiv1.StudentLoanAccountORM, err error)
-	GetByIDs(ids []int) (result []apiv1.StudentLoanAccountORM, err error)
+	GetByUserID(user_id int) (result financial_integration_service_apiv1.StudentLoanAccountORM, err error)
+	GetByID(id int) (result financial_integration_service_apiv1.StudentLoanAccountORM, err error)
+	GetByIDs(ids []int) (result []financial_integration_service_apiv1.StudentLoanAccountORM, err error)
 }
 
 // SELECT * FROM @@table
@@ -300,7 +300,7 @@ type IStudentLoanAccountORMDo interface {
 //	user_id=@user_id
 //
 // {{end}}
-func (s studentLoanAccountORMDo) GetByUserID(user_id int) (result apiv1.StudentLoanAccountORM, err error) {
+func (s studentLoanAccountORMDo) GetByUserID(user_id int) (result financial_integration_service_apiv1.StudentLoanAccountORM, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -323,7 +323,7 @@ func (s studentLoanAccountORMDo) GetByUserID(user_id int) (result apiv1.StudentL
 //	id=@id
 //
 // {{end}}
-func (s studentLoanAccountORMDo) GetByID(id int) (result apiv1.StudentLoanAccountORM, err error) {
+func (s studentLoanAccountORMDo) GetByID(id int) (result financial_integration_service_apiv1.StudentLoanAccountORM, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -346,7 +346,7 @@ func (s studentLoanAccountORMDo) GetByID(id int) (result apiv1.StudentLoanAccoun
 //	id IN (@ids)
 //
 // {{end}}
-func (s studentLoanAccountORMDo) GetByIDs(ids []int) (result []apiv1.StudentLoanAccountORM, err error) {
+func (s studentLoanAccountORMDo) GetByIDs(ids []int) (result []financial_integration_service_apiv1.StudentLoanAccountORM, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -459,57 +459,57 @@ func (s studentLoanAccountORMDo) Unscoped() IStudentLoanAccountORMDo {
 	return s.withDO(s.DO.Unscoped())
 }
 
-func (s studentLoanAccountORMDo) Create(values ...*apiv1.StudentLoanAccountORM) error {
+func (s studentLoanAccountORMDo) Create(values ...*financial_integration_service_apiv1.StudentLoanAccountORM) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return s.DO.Create(values)
 }
 
-func (s studentLoanAccountORMDo) CreateInBatches(values []*apiv1.StudentLoanAccountORM, batchSize int) error {
+func (s studentLoanAccountORMDo) CreateInBatches(values []*financial_integration_service_apiv1.StudentLoanAccountORM, batchSize int) error {
 	return s.DO.CreateInBatches(values, batchSize)
 }
 
 // Save : !!! underlying implementation is different with GORM
 // The method is equivalent to executing the statement: db.Clauses(clause.OnConflict{UpdateAll: true}).Create(values)
-func (s studentLoanAccountORMDo) Save(values ...*apiv1.StudentLoanAccountORM) error {
+func (s studentLoanAccountORMDo) Save(values ...*financial_integration_service_apiv1.StudentLoanAccountORM) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return s.DO.Save(values)
 }
 
-func (s studentLoanAccountORMDo) First() (*apiv1.StudentLoanAccountORM, error) {
+func (s studentLoanAccountORMDo) First() (*financial_integration_service_apiv1.StudentLoanAccountORM, error) {
 	if result, err := s.DO.First(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.StudentLoanAccountORM), nil
+		return result.(*financial_integration_service_apiv1.StudentLoanAccountORM), nil
 	}
 }
 
-func (s studentLoanAccountORMDo) Take() (*apiv1.StudentLoanAccountORM, error) {
+func (s studentLoanAccountORMDo) Take() (*financial_integration_service_apiv1.StudentLoanAccountORM, error) {
 	if result, err := s.DO.Take(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.StudentLoanAccountORM), nil
+		return result.(*financial_integration_service_apiv1.StudentLoanAccountORM), nil
 	}
 }
 
-func (s studentLoanAccountORMDo) Last() (*apiv1.StudentLoanAccountORM, error) {
+func (s studentLoanAccountORMDo) Last() (*financial_integration_service_apiv1.StudentLoanAccountORM, error) {
 	if result, err := s.DO.Last(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.StudentLoanAccountORM), nil
+		return result.(*financial_integration_service_apiv1.StudentLoanAccountORM), nil
 	}
 }
 
-func (s studentLoanAccountORMDo) Find() ([]*apiv1.StudentLoanAccountORM, error) {
+func (s studentLoanAccountORMDo) Find() ([]*financial_integration_service_apiv1.StudentLoanAccountORM, error) {
 	result, err := s.DO.Find()
-	return result.([]*apiv1.StudentLoanAccountORM), err
+	return result.([]*financial_integration_service_apiv1.StudentLoanAccountORM), err
 }
 
-func (s studentLoanAccountORMDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*apiv1.StudentLoanAccountORM, err error) {
-	buf := make([]*apiv1.StudentLoanAccountORM, 0, batchSize)
+func (s studentLoanAccountORMDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*financial_integration_service_apiv1.StudentLoanAccountORM, err error) {
+	buf := make([]*financial_integration_service_apiv1.StudentLoanAccountORM, 0, batchSize)
 	err = s.DO.FindInBatches(&buf, batchSize, func(tx gen.Dao, batch int) error {
 		defer func() { results = append(results, buf...) }()
 		return fc(tx, batch)
@@ -517,7 +517,7 @@ func (s studentLoanAccountORMDo) FindInBatch(batchSize int, fc func(tx gen.Dao, 
 	return results, err
 }
 
-func (s studentLoanAccountORMDo) FindInBatches(result *[]*apiv1.StudentLoanAccountORM, batchSize int, fc func(tx gen.Dao, batch int) error) error {
+func (s studentLoanAccountORMDo) FindInBatches(result *[]*financial_integration_service_apiv1.StudentLoanAccountORM, batchSize int, fc func(tx gen.Dao, batch int) error) error {
 	return s.DO.FindInBatches(result, batchSize, fc)
 }
 
@@ -543,23 +543,23 @@ func (s studentLoanAccountORMDo) Preload(fields ...field.RelationField) IStudent
 	return &s
 }
 
-func (s studentLoanAccountORMDo) FirstOrInit() (*apiv1.StudentLoanAccountORM, error) {
+func (s studentLoanAccountORMDo) FirstOrInit() (*financial_integration_service_apiv1.StudentLoanAccountORM, error) {
 	if result, err := s.DO.FirstOrInit(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.StudentLoanAccountORM), nil
+		return result.(*financial_integration_service_apiv1.StudentLoanAccountORM), nil
 	}
 }
 
-func (s studentLoanAccountORMDo) FirstOrCreate() (*apiv1.StudentLoanAccountORM, error) {
+func (s studentLoanAccountORMDo) FirstOrCreate() (*financial_integration_service_apiv1.StudentLoanAccountORM, error) {
 	if result, err := s.DO.FirstOrCreate(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.StudentLoanAccountORM), nil
+		return result.(*financial_integration_service_apiv1.StudentLoanAccountORM), nil
 	}
 }
 
-func (s studentLoanAccountORMDo) FindByPage(offset int, limit int) (result []*apiv1.StudentLoanAccountORM, count int64, err error) {
+func (s studentLoanAccountORMDo) FindByPage(offset int, limit int) (result []*financial_integration_service_apiv1.StudentLoanAccountORM, count int64, err error) {
 	result, err = s.Offset(offset).Limit(limit).Find()
 	if err != nil {
 		return
@@ -588,7 +588,7 @@ func (s studentLoanAccountORMDo) Scan(result interface{}) (err error) {
 	return s.DO.Scan(result)
 }
 
-func (s studentLoanAccountORMDo) Delete(models ...*apiv1.StudentLoanAccountORM) (result gen.ResultInfo, err error) {
+func (s studentLoanAccountORMDo) Delete(models ...*financial_integration_service_apiv1.StudentLoanAccountORM) (result gen.ResultInfo, err error) {
 	return s.DO.Delete(models)
 }
 

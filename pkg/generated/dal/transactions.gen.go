@@ -18,14 +18,14 @@ import (
 
 	"gorm.io/plugin/dbresolver"
 
-	apiv1 "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
+	financial_integration_service_apiv1 "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 )
 
 func newTransactionORM(db *gorm.DB, opts ...gen.DOOption) transactionORM {
 	_transactionORM := transactionORM{}
 
 	_transactionORM.transactionORMDo.UseDB(db, opts...)
-	_transactionORM.transactionORMDo.UseModel(&apiv1.TransactionORM{})
+	_transactionORM.transactionORMDo.UseModel(&financial_integration_service_apiv1.TransactionORM{})
 
 	tableName := _transactionORM.transactionORMDo.TableName()
 	_transactionORM.ALL = field.NewAsterisk(tableName)
@@ -65,6 +65,7 @@ func newTransactionORM(db *gorm.DB, opts ...gen.DOOption) transactionORM {
 	_transactionORM.PersonalFinanceCategoryDetailed = field.NewString(tableName, "personal_finance_category_detailed")
 	_transactionORM.PersonalFinanceCategoryPrimary = field.NewString(tableName, "personal_finance_category_primary")
 	_transactionORM.Sign = field.NewInt32(tableName, "sign")
+	_transactionORM.Time = field.NewTime(tableName, "time")
 	_transactionORM.TransactionCode = field.NewString(tableName, "transaction_code")
 	_transactionORM.TransactionId = field.NewString(tableName, "transaction_id")
 	_transactionORM.UnofficialCurrencyCode = field.NewString(tableName, "unofficial_currency_code")
@@ -115,6 +116,7 @@ type transactionORM struct {
 	PersonalFinanceCategoryDetailed field.String
 	PersonalFinanceCategoryPrimary  field.String
 	Sign                            field.Int32
+	Time                            field.Time
 	TransactionCode                 field.String
 	TransactionId                   field.String
 	UnofficialCurrencyCode          field.String
@@ -171,6 +173,7 @@ func (t *transactionORM) updateTableName(table string) *transactionORM {
 	t.PersonalFinanceCategoryDetailed = field.NewString(table, "personal_finance_category_detailed")
 	t.PersonalFinanceCategoryPrimary = field.NewString(table, "personal_finance_category_primary")
 	t.Sign = field.NewInt32(table, "sign")
+	t.Time = field.NewTime(table, "time")
 	t.TransactionCode = field.NewString(table, "transaction_code")
 	t.TransactionId = field.NewString(table, "transaction_id")
 	t.UnofficialCurrencyCode = field.NewString(table, "unofficial_currency_code")
@@ -191,7 +194,7 @@ func (t *transactionORM) GetFieldByName(fieldName string) (field.OrderExpr, bool
 }
 
 func (t *transactionORM) fillFieldMap() {
-	t.fieldMap = make(map[string]field.Expr, 40)
+	t.fieldMap = make(map[string]field.Expr, 41)
 	t.fieldMap["account_id"] = t.AccountId
 	t.fieldMap["account_owner"] = t.AccountOwner
 	t.fieldMap["amount"] = t.Amount
@@ -228,6 +231,7 @@ func (t *transactionORM) fillFieldMap() {
 	t.fieldMap["personal_finance_category_detailed"] = t.PersonalFinanceCategoryDetailed
 	t.fieldMap["personal_finance_category_primary"] = t.PersonalFinanceCategoryPrimary
 	t.fieldMap["sign"] = t.Sign
+	t.fieldMap["time"] = t.Time
 	t.fieldMap["transaction_code"] = t.TransactionCode
 	t.fieldMap["transaction_id"] = t.TransactionId
 	t.fieldMap["unofficial_currency_code"] = t.UnofficialCurrencyCode
@@ -275,17 +279,17 @@ type ITransactionORMDo interface {
 	Count() (count int64, err error)
 	Scopes(funcs ...func(gen.Dao) gen.Dao) ITransactionORMDo
 	Unscoped() ITransactionORMDo
-	Create(values ...*apiv1.TransactionORM) error
-	CreateInBatches(values []*apiv1.TransactionORM, batchSize int) error
-	Save(values ...*apiv1.TransactionORM) error
-	First() (*apiv1.TransactionORM, error)
-	Take() (*apiv1.TransactionORM, error)
-	Last() (*apiv1.TransactionORM, error)
-	Find() ([]*apiv1.TransactionORM, error)
-	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*apiv1.TransactionORM, err error)
-	FindInBatches(result *[]*apiv1.TransactionORM, batchSize int, fc func(tx gen.Dao, batch int) error) error
+	Create(values ...*financial_integration_service_apiv1.TransactionORM) error
+	CreateInBatches(values []*financial_integration_service_apiv1.TransactionORM, batchSize int) error
+	Save(values ...*financial_integration_service_apiv1.TransactionORM) error
+	First() (*financial_integration_service_apiv1.TransactionORM, error)
+	Take() (*financial_integration_service_apiv1.TransactionORM, error)
+	Last() (*financial_integration_service_apiv1.TransactionORM, error)
+	Find() ([]*financial_integration_service_apiv1.TransactionORM, error)
+	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*financial_integration_service_apiv1.TransactionORM, err error)
+	FindInBatches(result *[]*financial_integration_service_apiv1.TransactionORM, batchSize int, fc func(tx gen.Dao, batch int) error) error
 	Pluck(column field.Expr, dest interface{}) error
-	Delete(...*apiv1.TransactionORM) (info gen.ResultInfo, err error)
+	Delete(...*financial_integration_service_apiv1.TransactionORM) (info gen.ResultInfo, err error)
 	Update(column field.Expr, value interface{}) (info gen.ResultInfo, err error)
 	UpdateSimple(columns ...field.AssignExpr) (info gen.ResultInfo, err error)
 	Updates(value interface{}) (info gen.ResultInfo, err error)
@@ -297,18 +301,18 @@ type ITransactionORMDo interface {
 	Assign(attrs ...field.AssignExpr) ITransactionORMDo
 	Joins(fields ...field.RelationField) ITransactionORMDo
 	Preload(fields ...field.RelationField) ITransactionORMDo
-	FirstOrInit() (*apiv1.TransactionORM, error)
-	FirstOrCreate() (*apiv1.TransactionORM, error)
-	FindByPage(offset int, limit int) (result []*apiv1.TransactionORM, count int64, err error)
+	FirstOrInit() (*financial_integration_service_apiv1.TransactionORM, error)
+	FirstOrCreate() (*financial_integration_service_apiv1.TransactionORM, error)
+	FindByPage(offset int, limit int) (result []*financial_integration_service_apiv1.TransactionORM, count int64, err error)
 	ScanByPage(result interface{}, offset int, limit int) (count int64, err error)
 	Scan(result interface{}) (err error)
 	Returning(value interface{}, columns ...string) ITransactionORMDo
 	UnderlyingDB() *gorm.DB
 	schema.Tabler
 
-	GetByUserID(user_id int) (result apiv1.TransactionORM, err error)
-	GetByID(id int) (result apiv1.TransactionORM, err error)
-	GetByIDs(ids []int) (result []apiv1.TransactionORM, err error)
+	GetByUserID(user_id int) (result financial_integration_service_apiv1.TransactionORM, err error)
+	GetByID(id int) (result financial_integration_service_apiv1.TransactionORM, err error)
+	GetByIDs(ids []int) (result []financial_integration_service_apiv1.TransactionORM, err error)
 }
 
 // SELECT * FROM @@table
@@ -317,7 +321,7 @@ type ITransactionORMDo interface {
 //	user_id=@user_id
 //
 // {{end}}
-func (t transactionORMDo) GetByUserID(user_id int) (result apiv1.TransactionORM, err error) {
+func (t transactionORMDo) GetByUserID(user_id int) (result financial_integration_service_apiv1.TransactionORM, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -340,7 +344,7 @@ func (t transactionORMDo) GetByUserID(user_id int) (result apiv1.TransactionORM,
 //	id=@id
 //
 // {{end}}
-func (t transactionORMDo) GetByID(id int) (result apiv1.TransactionORM, err error) {
+func (t transactionORMDo) GetByID(id int) (result financial_integration_service_apiv1.TransactionORM, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -363,7 +367,7 @@ func (t transactionORMDo) GetByID(id int) (result apiv1.TransactionORM, err erro
 //	id IN (@ids)
 //
 // {{end}}
-func (t transactionORMDo) GetByIDs(ids []int) (result []apiv1.TransactionORM, err error) {
+func (t transactionORMDo) GetByIDs(ids []int) (result []financial_integration_service_apiv1.TransactionORM, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -476,57 +480,57 @@ func (t transactionORMDo) Unscoped() ITransactionORMDo {
 	return t.withDO(t.DO.Unscoped())
 }
 
-func (t transactionORMDo) Create(values ...*apiv1.TransactionORM) error {
+func (t transactionORMDo) Create(values ...*financial_integration_service_apiv1.TransactionORM) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return t.DO.Create(values)
 }
 
-func (t transactionORMDo) CreateInBatches(values []*apiv1.TransactionORM, batchSize int) error {
+func (t transactionORMDo) CreateInBatches(values []*financial_integration_service_apiv1.TransactionORM, batchSize int) error {
 	return t.DO.CreateInBatches(values, batchSize)
 }
 
 // Save : !!! underlying implementation is different with GORM
 // The method is equivalent to executing the statement: db.Clauses(clause.OnConflict{UpdateAll: true}).Create(values)
-func (t transactionORMDo) Save(values ...*apiv1.TransactionORM) error {
+func (t transactionORMDo) Save(values ...*financial_integration_service_apiv1.TransactionORM) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return t.DO.Save(values)
 }
 
-func (t transactionORMDo) First() (*apiv1.TransactionORM, error) {
+func (t transactionORMDo) First() (*financial_integration_service_apiv1.TransactionORM, error) {
 	if result, err := t.DO.First(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.TransactionORM), nil
+		return result.(*financial_integration_service_apiv1.TransactionORM), nil
 	}
 }
 
-func (t transactionORMDo) Take() (*apiv1.TransactionORM, error) {
+func (t transactionORMDo) Take() (*financial_integration_service_apiv1.TransactionORM, error) {
 	if result, err := t.DO.Take(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.TransactionORM), nil
+		return result.(*financial_integration_service_apiv1.TransactionORM), nil
 	}
 }
 
-func (t transactionORMDo) Last() (*apiv1.TransactionORM, error) {
+func (t transactionORMDo) Last() (*financial_integration_service_apiv1.TransactionORM, error) {
 	if result, err := t.DO.Last(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.TransactionORM), nil
+		return result.(*financial_integration_service_apiv1.TransactionORM), nil
 	}
 }
 
-func (t transactionORMDo) Find() ([]*apiv1.TransactionORM, error) {
+func (t transactionORMDo) Find() ([]*financial_integration_service_apiv1.TransactionORM, error) {
 	result, err := t.DO.Find()
-	return result.([]*apiv1.TransactionORM), err
+	return result.([]*financial_integration_service_apiv1.TransactionORM), err
 }
 
-func (t transactionORMDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*apiv1.TransactionORM, err error) {
-	buf := make([]*apiv1.TransactionORM, 0, batchSize)
+func (t transactionORMDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*financial_integration_service_apiv1.TransactionORM, err error) {
+	buf := make([]*financial_integration_service_apiv1.TransactionORM, 0, batchSize)
 	err = t.DO.FindInBatches(&buf, batchSize, func(tx gen.Dao, batch int) error {
 		defer func() { results = append(results, buf...) }()
 		return fc(tx, batch)
@@ -534,7 +538,7 @@ func (t transactionORMDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch i
 	return results, err
 }
 
-func (t transactionORMDo) FindInBatches(result *[]*apiv1.TransactionORM, batchSize int, fc func(tx gen.Dao, batch int) error) error {
+func (t transactionORMDo) FindInBatches(result *[]*financial_integration_service_apiv1.TransactionORM, batchSize int, fc func(tx gen.Dao, batch int) error) error {
 	return t.DO.FindInBatches(result, batchSize, fc)
 }
 
@@ -560,23 +564,23 @@ func (t transactionORMDo) Preload(fields ...field.RelationField) ITransactionORM
 	return &t
 }
 
-func (t transactionORMDo) FirstOrInit() (*apiv1.TransactionORM, error) {
+func (t transactionORMDo) FirstOrInit() (*financial_integration_service_apiv1.TransactionORM, error) {
 	if result, err := t.DO.FirstOrInit(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.TransactionORM), nil
+		return result.(*financial_integration_service_apiv1.TransactionORM), nil
 	}
 }
 
-func (t transactionORMDo) FirstOrCreate() (*apiv1.TransactionORM, error) {
+func (t transactionORMDo) FirstOrCreate() (*financial_integration_service_apiv1.TransactionORM, error) {
 	if result, err := t.DO.FirstOrCreate(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.TransactionORM), nil
+		return result.(*financial_integration_service_apiv1.TransactionORM), nil
 	}
 }
 
-func (t transactionORMDo) FindByPage(offset int, limit int) (result []*apiv1.TransactionORM, count int64, err error) {
+func (t transactionORMDo) FindByPage(offset int, limit int) (result []*financial_integration_service_apiv1.TransactionORM, count int64, err error) {
 	result, err = t.Offset(offset).Limit(limit).Find()
 	if err != nil {
 		return
@@ -605,7 +609,7 @@ func (t transactionORMDo) Scan(result interface{}) (err error) {
 	return t.DO.Scan(result)
 }
 
-func (t transactionORMDo) Delete(models ...*apiv1.TransactionORM) (result gen.ResultInfo, err error) {
+func (t transactionORMDo) Delete(models ...*financial_integration_service_apiv1.TransactionORM) (result gen.ResultInfo, err error) {
 	return t.DO.Delete(models)
 }
 

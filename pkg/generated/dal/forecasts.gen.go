@@ -8,7 +8,7 @@ import (
 	"context"
 	"strings"
 
-	apiv1 "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
+	financial_integration_service_apiv1 "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 	"gorm.io/gorm/schema"
@@ -24,7 +24,7 @@ func newForecastORM(db *gorm.DB, opts ...gen.DOOption) forecastORM {
 	_forecastORM := forecastORM{}
 
 	_forecastORM.forecastORMDo.UseDB(db, opts...)
-	_forecastORM.forecastORMDo.UseModel(&apiv1.ForecastORM{})
+	_forecastORM.forecastORMDo.UseModel(&financial_integration_service_apiv1.ForecastORM{})
 
 	tableName := _forecastORM.forecastORMDo.TableName()
 	_forecastORM.ALL = field.NewAsterisk(tableName)
@@ -134,17 +134,17 @@ type IForecastORMDo interface {
 	Count() (count int64, err error)
 	Scopes(funcs ...func(gen.Dao) gen.Dao) IForecastORMDo
 	Unscoped() IForecastORMDo
-	Create(values ...*apiv1.ForecastORM) error
-	CreateInBatches(values []*apiv1.ForecastORM, batchSize int) error
-	Save(values ...*apiv1.ForecastORM) error
-	First() (*apiv1.ForecastORM, error)
-	Take() (*apiv1.ForecastORM, error)
-	Last() (*apiv1.ForecastORM, error)
-	Find() ([]*apiv1.ForecastORM, error)
-	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*apiv1.ForecastORM, err error)
-	FindInBatches(result *[]*apiv1.ForecastORM, batchSize int, fc func(tx gen.Dao, batch int) error) error
+	Create(values ...*financial_integration_service_apiv1.ForecastORM) error
+	CreateInBatches(values []*financial_integration_service_apiv1.ForecastORM, batchSize int) error
+	Save(values ...*financial_integration_service_apiv1.ForecastORM) error
+	First() (*financial_integration_service_apiv1.ForecastORM, error)
+	Take() (*financial_integration_service_apiv1.ForecastORM, error)
+	Last() (*financial_integration_service_apiv1.ForecastORM, error)
+	Find() ([]*financial_integration_service_apiv1.ForecastORM, error)
+	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*financial_integration_service_apiv1.ForecastORM, err error)
+	FindInBatches(result *[]*financial_integration_service_apiv1.ForecastORM, batchSize int, fc func(tx gen.Dao, batch int) error) error
 	Pluck(column field.Expr, dest interface{}) error
-	Delete(...*apiv1.ForecastORM) (info gen.ResultInfo, err error)
+	Delete(...*financial_integration_service_apiv1.ForecastORM) (info gen.ResultInfo, err error)
 	Update(column field.Expr, value interface{}) (info gen.ResultInfo, err error)
 	UpdateSimple(columns ...field.AssignExpr) (info gen.ResultInfo, err error)
 	Updates(value interface{}) (info gen.ResultInfo, err error)
@@ -156,18 +156,18 @@ type IForecastORMDo interface {
 	Assign(attrs ...field.AssignExpr) IForecastORMDo
 	Joins(fields ...field.RelationField) IForecastORMDo
 	Preload(fields ...field.RelationField) IForecastORMDo
-	FirstOrInit() (*apiv1.ForecastORM, error)
-	FirstOrCreate() (*apiv1.ForecastORM, error)
-	FindByPage(offset int, limit int) (result []*apiv1.ForecastORM, count int64, err error)
+	FirstOrInit() (*financial_integration_service_apiv1.ForecastORM, error)
+	FirstOrCreate() (*financial_integration_service_apiv1.ForecastORM, error)
+	FindByPage(offset int, limit int) (result []*financial_integration_service_apiv1.ForecastORM, count int64, err error)
 	ScanByPage(result interface{}, offset int, limit int) (count int64, err error)
 	Scan(result interface{}) (err error)
 	Returning(value interface{}, columns ...string) IForecastORMDo
 	UnderlyingDB() *gorm.DB
 	schema.Tabler
 
-	GetByUserID(user_id int) (result apiv1.ForecastORM, err error)
-	GetByID(id int) (result apiv1.ForecastORM, err error)
-	GetByIDs(ids []int) (result []apiv1.ForecastORM, err error)
+	GetByUserID(user_id int) (result financial_integration_service_apiv1.ForecastORM, err error)
+	GetByID(id int) (result financial_integration_service_apiv1.ForecastORM, err error)
+	GetByIDs(ids []int) (result []financial_integration_service_apiv1.ForecastORM, err error)
 }
 
 // SELECT * FROM @@table
@@ -176,7 +176,7 @@ type IForecastORMDo interface {
 //	user_id=@user_id
 //
 // {{end}}
-func (f forecastORMDo) GetByUserID(user_id int) (result apiv1.ForecastORM, err error) {
+func (f forecastORMDo) GetByUserID(user_id int) (result financial_integration_service_apiv1.ForecastORM, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -199,7 +199,7 @@ func (f forecastORMDo) GetByUserID(user_id int) (result apiv1.ForecastORM, err e
 //	id=@id
 //
 // {{end}}
-func (f forecastORMDo) GetByID(id int) (result apiv1.ForecastORM, err error) {
+func (f forecastORMDo) GetByID(id int) (result financial_integration_service_apiv1.ForecastORM, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -222,7 +222,7 @@ func (f forecastORMDo) GetByID(id int) (result apiv1.ForecastORM, err error) {
 //	id IN (@ids)
 //
 // {{end}}
-func (f forecastORMDo) GetByIDs(ids []int) (result []apiv1.ForecastORM, err error) {
+func (f forecastORMDo) GetByIDs(ids []int) (result []financial_integration_service_apiv1.ForecastORM, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -335,57 +335,57 @@ func (f forecastORMDo) Unscoped() IForecastORMDo {
 	return f.withDO(f.DO.Unscoped())
 }
 
-func (f forecastORMDo) Create(values ...*apiv1.ForecastORM) error {
+func (f forecastORMDo) Create(values ...*financial_integration_service_apiv1.ForecastORM) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return f.DO.Create(values)
 }
 
-func (f forecastORMDo) CreateInBatches(values []*apiv1.ForecastORM, batchSize int) error {
+func (f forecastORMDo) CreateInBatches(values []*financial_integration_service_apiv1.ForecastORM, batchSize int) error {
 	return f.DO.CreateInBatches(values, batchSize)
 }
 
 // Save : !!! underlying implementation is different with GORM
 // The method is equivalent to executing the statement: db.Clauses(clause.OnConflict{UpdateAll: true}).Create(values)
-func (f forecastORMDo) Save(values ...*apiv1.ForecastORM) error {
+func (f forecastORMDo) Save(values ...*financial_integration_service_apiv1.ForecastORM) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return f.DO.Save(values)
 }
 
-func (f forecastORMDo) First() (*apiv1.ForecastORM, error) {
+func (f forecastORMDo) First() (*financial_integration_service_apiv1.ForecastORM, error) {
 	if result, err := f.DO.First(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.ForecastORM), nil
+		return result.(*financial_integration_service_apiv1.ForecastORM), nil
 	}
 }
 
-func (f forecastORMDo) Take() (*apiv1.ForecastORM, error) {
+func (f forecastORMDo) Take() (*financial_integration_service_apiv1.ForecastORM, error) {
 	if result, err := f.DO.Take(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.ForecastORM), nil
+		return result.(*financial_integration_service_apiv1.ForecastORM), nil
 	}
 }
 
-func (f forecastORMDo) Last() (*apiv1.ForecastORM, error) {
+func (f forecastORMDo) Last() (*financial_integration_service_apiv1.ForecastORM, error) {
 	if result, err := f.DO.Last(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.ForecastORM), nil
+		return result.(*financial_integration_service_apiv1.ForecastORM), nil
 	}
 }
 
-func (f forecastORMDo) Find() ([]*apiv1.ForecastORM, error) {
+func (f forecastORMDo) Find() ([]*financial_integration_service_apiv1.ForecastORM, error) {
 	result, err := f.DO.Find()
-	return result.([]*apiv1.ForecastORM), err
+	return result.([]*financial_integration_service_apiv1.ForecastORM), err
 }
 
-func (f forecastORMDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*apiv1.ForecastORM, err error) {
-	buf := make([]*apiv1.ForecastORM, 0, batchSize)
+func (f forecastORMDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*financial_integration_service_apiv1.ForecastORM, err error) {
+	buf := make([]*financial_integration_service_apiv1.ForecastORM, 0, batchSize)
 	err = f.DO.FindInBatches(&buf, batchSize, func(tx gen.Dao, batch int) error {
 		defer func() { results = append(results, buf...) }()
 		return fc(tx, batch)
@@ -393,7 +393,7 @@ func (f forecastORMDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int)
 	return results, err
 }
 
-func (f forecastORMDo) FindInBatches(result *[]*apiv1.ForecastORM, batchSize int, fc func(tx gen.Dao, batch int) error) error {
+func (f forecastORMDo) FindInBatches(result *[]*financial_integration_service_apiv1.ForecastORM, batchSize int, fc func(tx gen.Dao, batch int) error) error {
 	return f.DO.FindInBatches(result, batchSize, fc)
 }
 
@@ -419,23 +419,23 @@ func (f forecastORMDo) Preload(fields ...field.RelationField) IForecastORMDo {
 	return &f
 }
 
-func (f forecastORMDo) FirstOrInit() (*apiv1.ForecastORM, error) {
+func (f forecastORMDo) FirstOrInit() (*financial_integration_service_apiv1.ForecastORM, error) {
 	if result, err := f.DO.FirstOrInit(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.ForecastORM), nil
+		return result.(*financial_integration_service_apiv1.ForecastORM), nil
 	}
 }
 
-func (f forecastORMDo) FirstOrCreate() (*apiv1.ForecastORM, error) {
+func (f forecastORMDo) FirstOrCreate() (*financial_integration_service_apiv1.ForecastORM, error) {
 	if result, err := f.DO.FirstOrCreate(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.ForecastORM), nil
+		return result.(*financial_integration_service_apiv1.ForecastORM), nil
 	}
 }
 
-func (f forecastORMDo) FindByPage(offset int, limit int) (result []*apiv1.ForecastORM, count int64, err error) {
+func (f forecastORMDo) FindByPage(offset int, limit int) (result []*financial_integration_service_apiv1.ForecastORM, count int64, err error) {
 	result, err = f.Offset(offset).Limit(limit).Find()
 	if err != nil {
 		return
@@ -464,7 +464,7 @@ func (f forecastORMDo) Scan(result interface{}) (err error) {
 	return f.DO.Scan(result)
 }
 
-func (f forecastORMDo) Delete(models ...*apiv1.ForecastORM) (result gen.ResultInfo, err error) {
+func (f forecastORMDo) Delete(models ...*financial_integration_service_apiv1.ForecastORM) (result gen.ResultInfo, err error) {
 	return f.DO.Delete(models)
 }
 

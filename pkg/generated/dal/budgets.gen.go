@@ -8,7 +8,7 @@ import (
 	"context"
 	"strings"
 
-	apiv1 "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
+	financial_integration_service_apiv1 "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 	"gorm.io/gorm/schema"
@@ -24,7 +24,7 @@ func newBudgetORM(db *gorm.DB, opts ...gen.DOOption) budgetORM {
 	_budgetORM := budgetORM{}
 
 	_budgetORM.budgetORMDo.UseDB(db, opts...)
-	_budgetORM.budgetORMDo.UseModel(&apiv1.BudgetORM{})
+	_budgetORM.budgetORMDo.UseModel(&financial_integration_service_apiv1.BudgetORM{})
 
 	tableName := _budgetORM.budgetORMDo.TableName()
 	_budgetORM.ALL = field.NewAsterisk(tableName)
@@ -37,7 +37,7 @@ func newBudgetORM(db *gorm.DB, opts ...gen.DOOption) budgetORM {
 	_budgetORM.Category = budgetORMHasOneCategory{
 		db: db.Session(&gorm.Session{}),
 
-		RelationField: field.NewRelation("Category", "apiv1.CategoryORM"),
+		RelationField: field.NewRelation("Category", "financial_integration_service_apiv1.CategoryORM"),
 	}
 
 	_budgetORM.fillFieldMap()
@@ -138,17 +138,17 @@ func (a budgetORMHasOneCategory) WithContext(ctx context.Context) *budgetORMHasO
 	return &a
 }
 
-func (a budgetORMHasOneCategory) Model(m *apiv1.BudgetORM) *budgetORMHasOneCategoryTx {
+func (a budgetORMHasOneCategory) Model(m *financial_integration_service_apiv1.BudgetORM) *budgetORMHasOneCategoryTx {
 	return &budgetORMHasOneCategoryTx{a.db.Model(m).Association(a.Name())}
 }
 
 type budgetORMHasOneCategoryTx struct{ tx *gorm.Association }
 
-func (a budgetORMHasOneCategoryTx) Find() (result *apiv1.CategoryORM, err error) {
+func (a budgetORMHasOneCategoryTx) Find() (result *financial_integration_service_apiv1.CategoryORM, err error) {
 	return result, a.tx.Find(&result)
 }
 
-func (a budgetORMHasOneCategoryTx) Append(values ...*apiv1.CategoryORM) (err error) {
+func (a budgetORMHasOneCategoryTx) Append(values ...*financial_integration_service_apiv1.CategoryORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -156,7 +156,7 @@ func (a budgetORMHasOneCategoryTx) Append(values ...*apiv1.CategoryORM) (err err
 	return a.tx.Append(targetValues...)
 }
 
-func (a budgetORMHasOneCategoryTx) Replace(values ...*apiv1.CategoryORM) (err error) {
+func (a budgetORMHasOneCategoryTx) Replace(values ...*financial_integration_service_apiv1.CategoryORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -164,7 +164,7 @@ func (a budgetORMHasOneCategoryTx) Replace(values ...*apiv1.CategoryORM) (err er
 	return a.tx.Replace(targetValues...)
 }
 
-func (a budgetORMHasOneCategoryTx) Delete(values ...*apiv1.CategoryORM) (err error) {
+func (a budgetORMHasOneCategoryTx) Delete(values ...*financial_integration_service_apiv1.CategoryORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -211,17 +211,17 @@ type IBudgetORMDo interface {
 	Count() (count int64, err error)
 	Scopes(funcs ...func(gen.Dao) gen.Dao) IBudgetORMDo
 	Unscoped() IBudgetORMDo
-	Create(values ...*apiv1.BudgetORM) error
-	CreateInBatches(values []*apiv1.BudgetORM, batchSize int) error
-	Save(values ...*apiv1.BudgetORM) error
-	First() (*apiv1.BudgetORM, error)
-	Take() (*apiv1.BudgetORM, error)
-	Last() (*apiv1.BudgetORM, error)
-	Find() ([]*apiv1.BudgetORM, error)
-	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*apiv1.BudgetORM, err error)
-	FindInBatches(result *[]*apiv1.BudgetORM, batchSize int, fc func(tx gen.Dao, batch int) error) error
+	Create(values ...*financial_integration_service_apiv1.BudgetORM) error
+	CreateInBatches(values []*financial_integration_service_apiv1.BudgetORM, batchSize int) error
+	Save(values ...*financial_integration_service_apiv1.BudgetORM) error
+	First() (*financial_integration_service_apiv1.BudgetORM, error)
+	Take() (*financial_integration_service_apiv1.BudgetORM, error)
+	Last() (*financial_integration_service_apiv1.BudgetORM, error)
+	Find() ([]*financial_integration_service_apiv1.BudgetORM, error)
+	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*financial_integration_service_apiv1.BudgetORM, err error)
+	FindInBatches(result *[]*financial_integration_service_apiv1.BudgetORM, batchSize int, fc func(tx gen.Dao, batch int) error) error
 	Pluck(column field.Expr, dest interface{}) error
-	Delete(...*apiv1.BudgetORM) (info gen.ResultInfo, err error)
+	Delete(...*financial_integration_service_apiv1.BudgetORM) (info gen.ResultInfo, err error)
 	Update(column field.Expr, value interface{}) (info gen.ResultInfo, err error)
 	UpdateSimple(columns ...field.AssignExpr) (info gen.ResultInfo, err error)
 	Updates(value interface{}) (info gen.ResultInfo, err error)
@@ -233,18 +233,18 @@ type IBudgetORMDo interface {
 	Assign(attrs ...field.AssignExpr) IBudgetORMDo
 	Joins(fields ...field.RelationField) IBudgetORMDo
 	Preload(fields ...field.RelationField) IBudgetORMDo
-	FirstOrInit() (*apiv1.BudgetORM, error)
-	FirstOrCreate() (*apiv1.BudgetORM, error)
-	FindByPage(offset int, limit int) (result []*apiv1.BudgetORM, count int64, err error)
+	FirstOrInit() (*financial_integration_service_apiv1.BudgetORM, error)
+	FirstOrCreate() (*financial_integration_service_apiv1.BudgetORM, error)
+	FindByPage(offset int, limit int) (result []*financial_integration_service_apiv1.BudgetORM, count int64, err error)
 	ScanByPage(result interface{}, offset int, limit int) (count int64, err error)
 	Scan(result interface{}) (err error)
 	Returning(value interface{}, columns ...string) IBudgetORMDo
 	UnderlyingDB() *gorm.DB
 	schema.Tabler
 
-	GetByUserID(user_id int) (result apiv1.BudgetORM, err error)
-	GetByID(id int) (result apiv1.BudgetORM, err error)
-	GetByIDs(ids []int) (result []apiv1.BudgetORM, err error)
+	GetByUserID(user_id int) (result financial_integration_service_apiv1.BudgetORM, err error)
+	GetByID(id int) (result financial_integration_service_apiv1.BudgetORM, err error)
+	GetByIDs(ids []int) (result []financial_integration_service_apiv1.BudgetORM, err error)
 }
 
 // SELECT * FROM @@table
@@ -253,7 +253,7 @@ type IBudgetORMDo interface {
 //	user_id=@user_id
 //
 // {{end}}
-func (b budgetORMDo) GetByUserID(user_id int) (result apiv1.BudgetORM, err error) {
+func (b budgetORMDo) GetByUserID(user_id int) (result financial_integration_service_apiv1.BudgetORM, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -276,7 +276,7 @@ func (b budgetORMDo) GetByUserID(user_id int) (result apiv1.BudgetORM, err error
 //	id=@id
 //
 // {{end}}
-func (b budgetORMDo) GetByID(id int) (result apiv1.BudgetORM, err error) {
+func (b budgetORMDo) GetByID(id int) (result financial_integration_service_apiv1.BudgetORM, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -299,7 +299,7 @@ func (b budgetORMDo) GetByID(id int) (result apiv1.BudgetORM, err error) {
 //	id IN (@ids)
 //
 // {{end}}
-func (b budgetORMDo) GetByIDs(ids []int) (result []apiv1.BudgetORM, err error) {
+func (b budgetORMDo) GetByIDs(ids []int) (result []financial_integration_service_apiv1.BudgetORM, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -412,57 +412,57 @@ func (b budgetORMDo) Unscoped() IBudgetORMDo {
 	return b.withDO(b.DO.Unscoped())
 }
 
-func (b budgetORMDo) Create(values ...*apiv1.BudgetORM) error {
+func (b budgetORMDo) Create(values ...*financial_integration_service_apiv1.BudgetORM) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return b.DO.Create(values)
 }
 
-func (b budgetORMDo) CreateInBatches(values []*apiv1.BudgetORM, batchSize int) error {
+func (b budgetORMDo) CreateInBatches(values []*financial_integration_service_apiv1.BudgetORM, batchSize int) error {
 	return b.DO.CreateInBatches(values, batchSize)
 }
 
 // Save : !!! underlying implementation is different with GORM
 // The method is equivalent to executing the statement: db.Clauses(clause.OnConflict{UpdateAll: true}).Create(values)
-func (b budgetORMDo) Save(values ...*apiv1.BudgetORM) error {
+func (b budgetORMDo) Save(values ...*financial_integration_service_apiv1.BudgetORM) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return b.DO.Save(values)
 }
 
-func (b budgetORMDo) First() (*apiv1.BudgetORM, error) {
+func (b budgetORMDo) First() (*financial_integration_service_apiv1.BudgetORM, error) {
 	if result, err := b.DO.First(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.BudgetORM), nil
+		return result.(*financial_integration_service_apiv1.BudgetORM), nil
 	}
 }
 
-func (b budgetORMDo) Take() (*apiv1.BudgetORM, error) {
+func (b budgetORMDo) Take() (*financial_integration_service_apiv1.BudgetORM, error) {
 	if result, err := b.DO.Take(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.BudgetORM), nil
+		return result.(*financial_integration_service_apiv1.BudgetORM), nil
 	}
 }
 
-func (b budgetORMDo) Last() (*apiv1.BudgetORM, error) {
+func (b budgetORMDo) Last() (*financial_integration_service_apiv1.BudgetORM, error) {
 	if result, err := b.DO.Last(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.BudgetORM), nil
+		return result.(*financial_integration_service_apiv1.BudgetORM), nil
 	}
 }
 
-func (b budgetORMDo) Find() ([]*apiv1.BudgetORM, error) {
+func (b budgetORMDo) Find() ([]*financial_integration_service_apiv1.BudgetORM, error) {
 	result, err := b.DO.Find()
-	return result.([]*apiv1.BudgetORM), err
+	return result.([]*financial_integration_service_apiv1.BudgetORM), err
 }
 
-func (b budgetORMDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*apiv1.BudgetORM, err error) {
-	buf := make([]*apiv1.BudgetORM, 0, batchSize)
+func (b budgetORMDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*financial_integration_service_apiv1.BudgetORM, err error) {
+	buf := make([]*financial_integration_service_apiv1.BudgetORM, 0, batchSize)
 	err = b.DO.FindInBatches(&buf, batchSize, func(tx gen.Dao, batch int) error {
 		defer func() { results = append(results, buf...) }()
 		return fc(tx, batch)
@@ -470,7 +470,7 @@ func (b budgetORMDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) e
 	return results, err
 }
 
-func (b budgetORMDo) FindInBatches(result *[]*apiv1.BudgetORM, batchSize int, fc func(tx gen.Dao, batch int) error) error {
+func (b budgetORMDo) FindInBatches(result *[]*financial_integration_service_apiv1.BudgetORM, batchSize int, fc func(tx gen.Dao, batch int) error) error {
 	return b.DO.FindInBatches(result, batchSize, fc)
 }
 
@@ -496,23 +496,23 @@ func (b budgetORMDo) Preload(fields ...field.RelationField) IBudgetORMDo {
 	return &b
 }
 
-func (b budgetORMDo) FirstOrInit() (*apiv1.BudgetORM, error) {
+func (b budgetORMDo) FirstOrInit() (*financial_integration_service_apiv1.BudgetORM, error) {
 	if result, err := b.DO.FirstOrInit(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.BudgetORM), nil
+		return result.(*financial_integration_service_apiv1.BudgetORM), nil
 	}
 }
 
-func (b budgetORMDo) FirstOrCreate() (*apiv1.BudgetORM, error) {
+func (b budgetORMDo) FirstOrCreate() (*financial_integration_service_apiv1.BudgetORM, error) {
 	if result, err := b.DO.FirstOrCreate(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.BudgetORM), nil
+		return result.(*financial_integration_service_apiv1.BudgetORM), nil
 	}
 }
 
-func (b budgetORMDo) FindByPage(offset int, limit int) (result []*apiv1.BudgetORM, count int64, err error) {
+func (b budgetORMDo) FindByPage(offset int, limit int) (result []*financial_integration_service_apiv1.BudgetORM, count int64, err error) {
 	result, err = b.Offset(offset).Limit(limit).Find()
 	if err != nil {
 		return
@@ -541,7 +541,7 @@ func (b budgetORMDo) Scan(result interface{}) (err error) {
 	return b.DO.Scan(result)
 }
 
-func (b budgetORMDo) Delete(models ...*apiv1.BudgetORM) (result gen.ResultInfo, err error) {
+func (b budgetORMDo) Delete(models ...*financial_integration_service_apiv1.BudgetORM) (result gen.ResultInfo, err error) {
 	return b.DO.Delete(models)
 }
 

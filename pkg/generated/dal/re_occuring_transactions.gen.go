@@ -18,14 +18,14 @@ import (
 
 	"gorm.io/plugin/dbresolver"
 
-	apiv1 "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
+	financial_integration_service_apiv1 "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 )
 
 func newReOccuringTransactionORM(db *gorm.DB, opts ...gen.DOOption) reOccuringTransactionORM {
 	_reOccuringTransactionORM := reOccuringTransactionORM{}
 
 	_reOccuringTransactionORM.reOccuringTransactionORMDo.UseDB(db, opts...)
-	_reOccuringTransactionORM.reOccuringTransactionORMDo.UseModel(&apiv1.ReOccuringTransactionORM{})
+	_reOccuringTransactionORM.reOccuringTransactionORMDo.UseModel(&financial_integration_service_apiv1.ReOccuringTransactionORM{})
 
 	tableName := _reOccuringTransactionORM.reOccuringTransactionORMDo.TableName()
 	_reOccuringTransactionORM.ALL = field.NewAsterisk(tableName)
@@ -49,6 +49,7 @@ func newReOccuringTransactionORM(db *gorm.DB, opts ...gen.DOOption) reOccuringTr
 	_reOccuringTransactionORM.Sign = field.NewInt32(tableName, "sign")
 	_reOccuringTransactionORM.Status = field.NewString(tableName, "status")
 	_reOccuringTransactionORM.StreamId = field.NewString(tableName, "stream_id")
+	_reOccuringTransactionORM.Time = field.NewTime(tableName, "time")
 	_reOccuringTransactionORM.TransactionIds = field.NewString(tableName, "transaction_ids")
 	_reOccuringTransactionORM.UpdatedTime = field.NewString(tableName, "updated_time")
 	_reOccuringTransactionORM.UserId = field.NewUint64(tableName, "user_id")
@@ -82,6 +83,7 @@ type reOccuringTransactionORM struct {
 	Sign                            field.Int32
 	Status                          field.String
 	StreamId                        field.String
+	Time                            field.Time
 	TransactionIds                  field.String
 	UpdatedTime                     field.String
 	UserId                          field.Uint64
@@ -121,6 +123,7 @@ func (r *reOccuringTransactionORM) updateTableName(table string) *reOccuringTran
 	r.Sign = field.NewInt32(table, "sign")
 	r.Status = field.NewString(table, "status")
 	r.StreamId = field.NewString(table, "stream_id")
+	r.Time = field.NewTime(table, "time")
 	r.TransactionIds = field.NewString(table, "transaction_ids")
 	r.UpdatedTime = field.NewString(table, "updated_time")
 	r.UserId = field.NewUint64(table, "user_id")
@@ -140,7 +143,7 @@ func (r *reOccuringTransactionORM) GetFieldByName(fieldName string) (field.Order
 }
 
 func (r *reOccuringTransactionORM) fillFieldMap() {
-	r.fieldMap = make(map[string]field.Expr, 23)
+	r.fieldMap = make(map[string]field.Expr, 24)
 	r.fieldMap["account_id"] = r.AccountId
 	r.fieldMap["average_amount"] = r.AverageAmount
 	r.fieldMap["average_amount_iso_currency_code"] = r.AverageAmountIsoCurrencyCode
@@ -161,6 +164,7 @@ func (r *reOccuringTransactionORM) fillFieldMap() {
 	r.fieldMap["sign"] = r.Sign
 	r.fieldMap["status"] = r.Status
 	r.fieldMap["stream_id"] = r.StreamId
+	r.fieldMap["time"] = r.Time
 	r.fieldMap["transaction_ids"] = r.TransactionIds
 	r.fieldMap["updated_time"] = r.UpdatedTime
 	r.fieldMap["user_id"] = r.UserId
@@ -207,17 +211,17 @@ type IReOccuringTransactionORMDo interface {
 	Count() (count int64, err error)
 	Scopes(funcs ...func(gen.Dao) gen.Dao) IReOccuringTransactionORMDo
 	Unscoped() IReOccuringTransactionORMDo
-	Create(values ...*apiv1.ReOccuringTransactionORM) error
-	CreateInBatches(values []*apiv1.ReOccuringTransactionORM, batchSize int) error
-	Save(values ...*apiv1.ReOccuringTransactionORM) error
-	First() (*apiv1.ReOccuringTransactionORM, error)
-	Take() (*apiv1.ReOccuringTransactionORM, error)
-	Last() (*apiv1.ReOccuringTransactionORM, error)
-	Find() ([]*apiv1.ReOccuringTransactionORM, error)
-	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*apiv1.ReOccuringTransactionORM, err error)
-	FindInBatches(result *[]*apiv1.ReOccuringTransactionORM, batchSize int, fc func(tx gen.Dao, batch int) error) error
+	Create(values ...*financial_integration_service_apiv1.ReOccuringTransactionORM) error
+	CreateInBatches(values []*financial_integration_service_apiv1.ReOccuringTransactionORM, batchSize int) error
+	Save(values ...*financial_integration_service_apiv1.ReOccuringTransactionORM) error
+	First() (*financial_integration_service_apiv1.ReOccuringTransactionORM, error)
+	Take() (*financial_integration_service_apiv1.ReOccuringTransactionORM, error)
+	Last() (*financial_integration_service_apiv1.ReOccuringTransactionORM, error)
+	Find() ([]*financial_integration_service_apiv1.ReOccuringTransactionORM, error)
+	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*financial_integration_service_apiv1.ReOccuringTransactionORM, err error)
+	FindInBatches(result *[]*financial_integration_service_apiv1.ReOccuringTransactionORM, batchSize int, fc func(tx gen.Dao, batch int) error) error
 	Pluck(column field.Expr, dest interface{}) error
-	Delete(...*apiv1.ReOccuringTransactionORM) (info gen.ResultInfo, err error)
+	Delete(...*financial_integration_service_apiv1.ReOccuringTransactionORM) (info gen.ResultInfo, err error)
 	Update(column field.Expr, value interface{}) (info gen.ResultInfo, err error)
 	UpdateSimple(columns ...field.AssignExpr) (info gen.ResultInfo, err error)
 	Updates(value interface{}) (info gen.ResultInfo, err error)
@@ -229,18 +233,18 @@ type IReOccuringTransactionORMDo interface {
 	Assign(attrs ...field.AssignExpr) IReOccuringTransactionORMDo
 	Joins(fields ...field.RelationField) IReOccuringTransactionORMDo
 	Preload(fields ...field.RelationField) IReOccuringTransactionORMDo
-	FirstOrInit() (*apiv1.ReOccuringTransactionORM, error)
-	FirstOrCreate() (*apiv1.ReOccuringTransactionORM, error)
-	FindByPage(offset int, limit int) (result []*apiv1.ReOccuringTransactionORM, count int64, err error)
+	FirstOrInit() (*financial_integration_service_apiv1.ReOccuringTransactionORM, error)
+	FirstOrCreate() (*financial_integration_service_apiv1.ReOccuringTransactionORM, error)
+	FindByPage(offset int, limit int) (result []*financial_integration_service_apiv1.ReOccuringTransactionORM, count int64, err error)
 	ScanByPage(result interface{}, offset int, limit int) (count int64, err error)
 	Scan(result interface{}) (err error)
 	Returning(value interface{}, columns ...string) IReOccuringTransactionORMDo
 	UnderlyingDB() *gorm.DB
 	schema.Tabler
 
-	GetByUserID(user_id int) (result apiv1.ReOccuringTransactionORM, err error)
-	GetByID(id int) (result apiv1.ReOccuringTransactionORM, err error)
-	GetByIDs(ids []int) (result []apiv1.ReOccuringTransactionORM, err error)
+	GetByUserID(user_id int) (result financial_integration_service_apiv1.ReOccuringTransactionORM, err error)
+	GetByID(id int) (result financial_integration_service_apiv1.ReOccuringTransactionORM, err error)
+	GetByIDs(ids []int) (result []financial_integration_service_apiv1.ReOccuringTransactionORM, err error)
 }
 
 // SELECT * FROM @@table
@@ -249,7 +253,7 @@ type IReOccuringTransactionORMDo interface {
 //	user_id=@user_id
 //
 // {{end}}
-func (r reOccuringTransactionORMDo) GetByUserID(user_id int) (result apiv1.ReOccuringTransactionORM, err error) {
+func (r reOccuringTransactionORMDo) GetByUserID(user_id int) (result financial_integration_service_apiv1.ReOccuringTransactionORM, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -272,7 +276,7 @@ func (r reOccuringTransactionORMDo) GetByUserID(user_id int) (result apiv1.ReOcc
 //	id=@id
 //
 // {{end}}
-func (r reOccuringTransactionORMDo) GetByID(id int) (result apiv1.ReOccuringTransactionORM, err error) {
+func (r reOccuringTransactionORMDo) GetByID(id int) (result financial_integration_service_apiv1.ReOccuringTransactionORM, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -295,7 +299,7 @@ func (r reOccuringTransactionORMDo) GetByID(id int) (result apiv1.ReOccuringTran
 //	id IN (@ids)
 //
 // {{end}}
-func (r reOccuringTransactionORMDo) GetByIDs(ids []int) (result []apiv1.ReOccuringTransactionORM, err error) {
+func (r reOccuringTransactionORMDo) GetByIDs(ids []int) (result []financial_integration_service_apiv1.ReOccuringTransactionORM, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -408,57 +412,57 @@ func (r reOccuringTransactionORMDo) Unscoped() IReOccuringTransactionORMDo {
 	return r.withDO(r.DO.Unscoped())
 }
 
-func (r reOccuringTransactionORMDo) Create(values ...*apiv1.ReOccuringTransactionORM) error {
+func (r reOccuringTransactionORMDo) Create(values ...*financial_integration_service_apiv1.ReOccuringTransactionORM) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return r.DO.Create(values)
 }
 
-func (r reOccuringTransactionORMDo) CreateInBatches(values []*apiv1.ReOccuringTransactionORM, batchSize int) error {
+func (r reOccuringTransactionORMDo) CreateInBatches(values []*financial_integration_service_apiv1.ReOccuringTransactionORM, batchSize int) error {
 	return r.DO.CreateInBatches(values, batchSize)
 }
 
 // Save : !!! underlying implementation is different with GORM
 // The method is equivalent to executing the statement: db.Clauses(clause.OnConflict{UpdateAll: true}).Create(values)
-func (r reOccuringTransactionORMDo) Save(values ...*apiv1.ReOccuringTransactionORM) error {
+func (r reOccuringTransactionORMDo) Save(values ...*financial_integration_service_apiv1.ReOccuringTransactionORM) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return r.DO.Save(values)
 }
 
-func (r reOccuringTransactionORMDo) First() (*apiv1.ReOccuringTransactionORM, error) {
+func (r reOccuringTransactionORMDo) First() (*financial_integration_service_apiv1.ReOccuringTransactionORM, error) {
 	if result, err := r.DO.First(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.ReOccuringTransactionORM), nil
+		return result.(*financial_integration_service_apiv1.ReOccuringTransactionORM), nil
 	}
 }
 
-func (r reOccuringTransactionORMDo) Take() (*apiv1.ReOccuringTransactionORM, error) {
+func (r reOccuringTransactionORMDo) Take() (*financial_integration_service_apiv1.ReOccuringTransactionORM, error) {
 	if result, err := r.DO.Take(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.ReOccuringTransactionORM), nil
+		return result.(*financial_integration_service_apiv1.ReOccuringTransactionORM), nil
 	}
 }
 
-func (r reOccuringTransactionORMDo) Last() (*apiv1.ReOccuringTransactionORM, error) {
+func (r reOccuringTransactionORMDo) Last() (*financial_integration_service_apiv1.ReOccuringTransactionORM, error) {
 	if result, err := r.DO.Last(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.ReOccuringTransactionORM), nil
+		return result.(*financial_integration_service_apiv1.ReOccuringTransactionORM), nil
 	}
 }
 
-func (r reOccuringTransactionORMDo) Find() ([]*apiv1.ReOccuringTransactionORM, error) {
+func (r reOccuringTransactionORMDo) Find() ([]*financial_integration_service_apiv1.ReOccuringTransactionORM, error) {
 	result, err := r.DO.Find()
-	return result.([]*apiv1.ReOccuringTransactionORM), err
+	return result.([]*financial_integration_service_apiv1.ReOccuringTransactionORM), err
 }
 
-func (r reOccuringTransactionORMDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*apiv1.ReOccuringTransactionORM, err error) {
-	buf := make([]*apiv1.ReOccuringTransactionORM, 0, batchSize)
+func (r reOccuringTransactionORMDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*financial_integration_service_apiv1.ReOccuringTransactionORM, err error) {
+	buf := make([]*financial_integration_service_apiv1.ReOccuringTransactionORM, 0, batchSize)
 	err = r.DO.FindInBatches(&buf, batchSize, func(tx gen.Dao, batch int) error {
 		defer func() { results = append(results, buf...) }()
 		return fc(tx, batch)
@@ -466,7 +470,7 @@ func (r reOccuringTransactionORMDo) FindInBatch(batchSize int, fc func(tx gen.Da
 	return results, err
 }
 
-func (r reOccuringTransactionORMDo) FindInBatches(result *[]*apiv1.ReOccuringTransactionORM, batchSize int, fc func(tx gen.Dao, batch int) error) error {
+func (r reOccuringTransactionORMDo) FindInBatches(result *[]*financial_integration_service_apiv1.ReOccuringTransactionORM, batchSize int, fc func(tx gen.Dao, batch int) error) error {
 	return r.DO.FindInBatches(result, batchSize, fc)
 }
 
@@ -492,23 +496,23 @@ func (r reOccuringTransactionORMDo) Preload(fields ...field.RelationField) IReOc
 	return &r
 }
 
-func (r reOccuringTransactionORMDo) FirstOrInit() (*apiv1.ReOccuringTransactionORM, error) {
+func (r reOccuringTransactionORMDo) FirstOrInit() (*financial_integration_service_apiv1.ReOccuringTransactionORM, error) {
 	if result, err := r.DO.FirstOrInit(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.ReOccuringTransactionORM), nil
+		return result.(*financial_integration_service_apiv1.ReOccuringTransactionORM), nil
 	}
 }
 
-func (r reOccuringTransactionORMDo) FirstOrCreate() (*apiv1.ReOccuringTransactionORM, error) {
+func (r reOccuringTransactionORMDo) FirstOrCreate() (*financial_integration_service_apiv1.ReOccuringTransactionORM, error) {
 	if result, err := r.DO.FirstOrCreate(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.ReOccuringTransactionORM), nil
+		return result.(*financial_integration_service_apiv1.ReOccuringTransactionORM), nil
 	}
 }
 
-func (r reOccuringTransactionORMDo) FindByPage(offset int, limit int) (result []*apiv1.ReOccuringTransactionORM, count int64, err error) {
+func (r reOccuringTransactionORMDo) FindByPage(offset int, limit int) (result []*financial_integration_service_apiv1.ReOccuringTransactionORM, count int64, err error) {
 	result, err = r.Offset(offset).Limit(limit).Find()
 	if err != nil {
 		return
@@ -537,7 +541,7 @@ func (r reOccuringTransactionORMDo) Scan(result interface{}) (err error) {
 	return r.DO.Scan(result)
 }
 
-func (r reOccuringTransactionORMDo) Delete(models ...*apiv1.ReOccuringTransactionORM) (result gen.ResultInfo, err error) {
+func (r reOccuringTransactionORMDo) Delete(models ...*financial_integration_service_apiv1.ReOccuringTransactionORM) (result gen.ResultInfo, err error) {
 	return r.DO.Delete(models)
 }
 

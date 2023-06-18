@@ -8,7 +8,7 @@ import (
 	"context"
 	"strings"
 
-	apiv1 "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
+	financial_integration_service_apiv1 "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 	"gorm.io/gorm/schema"
@@ -24,7 +24,7 @@ func newInvestmentAccountORM(db *gorm.DB, opts ...gen.DOOption) investmentAccoun
 	_investmentAccountORM := investmentAccountORM{}
 
 	_investmentAccountORM.investmentAccountORMDo.UseDB(db, opts...)
-	_investmentAccountORM.investmentAccountORMDo.UseModel(&apiv1.InvestmentAccountORM{})
+	_investmentAccountORM.investmentAccountORMDo.UseModel(&financial_integration_service_apiv1.InvestmentAccountORM{})
 
 	tableName := _investmentAccountORM.investmentAccountORMDo.TableName()
 	_investmentAccountORM.ALL = field.NewAsterisk(tableName)
@@ -42,13 +42,13 @@ func newInvestmentAccountORM(db *gorm.DB, opts ...gen.DOOption) investmentAccoun
 	_investmentAccountORM.Holdings = investmentAccountORMHasManyHoldings{
 		db: db.Session(&gorm.Session{}),
 
-		RelationField: field.NewRelation("Holdings", "apiv1.InvesmentHoldingORM"),
+		RelationField: field.NewRelation("Holdings", "financial_integration_service_apiv1.InvesmentHoldingORM"),
 	}
 
 	_investmentAccountORM.Securities = investmentAccountORMHasManySecurities{
 		db: db.Session(&gorm.Session{}),
 
-		RelationField: field.NewRelation("Securities", "apiv1.InvestmentSecurityORM"),
+		RelationField: field.NewRelation("Securities", "financial_integration_service_apiv1.InvestmentSecurityORM"),
 	}
 
 	_investmentAccountORM.fillFieldMap()
@@ -166,17 +166,17 @@ func (a investmentAccountORMHasManyHoldings) WithContext(ctx context.Context) *i
 	return &a
 }
 
-func (a investmentAccountORMHasManyHoldings) Model(m *apiv1.InvestmentAccountORM) *investmentAccountORMHasManyHoldingsTx {
+func (a investmentAccountORMHasManyHoldings) Model(m *financial_integration_service_apiv1.InvestmentAccountORM) *investmentAccountORMHasManyHoldingsTx {
 	return &investmentAccountORMHasManyHoldingsTx{a.db.Model(m).Association(a.Name())}
 }
 
 type investmentAccountORMHasManyHoldingsTx struct{ tx *gorm.Association }
 
-func (a investmentAccountORMHasManyHoldingsTx) Find() (result []*apiv1.InvesmentHoldingORM, err error) {
+func (a investmentAccountORMHasManyHoldingsTx) Find() (result []*financial_integration_service_apiv1.InvesmentHoldingORM, err error) {
 	return result, a.tx.Find(&result)
 }
 
-func (a investmentAccountORMHasManyHoldingsTx) Append(values ...*apiv1.InvesmentHoldingORM) (err error) {
+func (a investmentAccountORMHasManyHoldingsTx) Append(values ...*financial_integration_service_apiv1.InvesmentHoldingORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -184,7 +184,7 @@ func (a investmentAccountORMHasManyHoldingsTx) Append(values ...*apiv1.Invesment
 	return a.tx.Append(targetValues...)
 }
 
-func (a investmentAccountORMHasManyHoldingsTx) Replace(values ...*apiv1.InvesmentHoldingORM) (err error) {
+func (a investmentAccountORMHasManyHoldingsTx) Replace(values ...*financial_integration_service_apiv1.InvesmentHoldingORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -192,7 +192,7 @@ func (a investmentAccountORMHasManyHoldingsTx) Replace(values ...*apiv1.Invesmen
 	return a.tx.Replace(targetValues...)
 }
 
-func (a investmentAccountORMHasManyHoldingsTx) Delete(values ...*apiv1.InvesmentHoldingORM) (err error) {
+func (a investmentAccountORMHasManyHoldingsTx) Delete(values ...*financial_integration_service_apiv1.InvesmentHoldingORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -232,17 +232,17 @@ func (a investmentAccountORMHasManySecurities) WithContext(ctx context.Context) 
 	return &a
 }
 
-func (a investmentAccountORMHasManySecurities) Model(m *apiv1.InvestmentAccountORM) *investmentAccountORMHasManySecuritiesTx {
+func (a investmentAccountORMHasManySecurities) Model(m *financial_integration_service_apiv1.InvestmentAccountORM) *investmentAccountORMHasManySecuritiesTx {
 	return &investmentAccountORMHasManySecuritiesTx{a.db.Model(m).Association(a.Name())}
 }
 
 type investmentAccountORMHasManySecuritiesTx struct{ tx *gorm.Association }
 
-func (a investmentAccountORMHasManySecuritiesTx) Find() (result []*apiv1.InvestmentSecurityORM, err error) {
+func (a investmentAccountORMHasManySecuritiesTx) Find() (result []*financial_integration_service_apiv1.InvestmentSecurityORM, err error) {
 	return result, a.tx.Find(&result)
 }
 
-func (a investmentAccountORMHasManySecuritiesTx) Append(values ...*apiv1.InvestmentSecurityORM) (err error) {
+func (a investmentAccountORMHasManySecuritiesTx) Append(values ...*financial_integration_service_apiv1.InvestmentSecurityORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -250,7 +250,7 @@ func (a investmentAccountORMHasManySecuritiesTx) Append(values ...*apiv1.Investm
 	return a.tx.Append(targetValues...)
 }
 
-func (a investmentAccountORMHasManySecuritiesTx) Replace(values ...*apiv1.InvestmentSecurityORM) (err error) {
+func (a investmentAccountORMHasManySecuritiesTx) Replace(values ...*financial_integration_service_apiv1.InvestmentSecurityORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -258,7 +258,7 @@ func (a investmentAccountORMHasManySecuritiesTx) Replace(values ...*apiv1.Invest
 	return a.tx.Replace(targetValues...)
 }
 
-func (a investmentAccountORMHasManySecuritiesTx) Delete(values ...*apiv1.InvestmentSecurityORM) (err error) {
+func (a investmentAccountORMHasManySecuritiesTx) Delete(values ...*financial_integration_service_apiv1.InvestmentSecurityORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -305,17 +305,17 @@ type IInvestmentAccountORMDo interface {
 	Count() (count int64, err error)
 	Scopes(funcs ...func(gen.Dao) gen.Dao) IInvestmentAccountORMDo
 	Unscoped() IInvestmentAccountORMDo
-	Create(values ...*apiv1.InvestmentAccountORM) error
-	CreateInBatches(values []*apiv1.InvestmentAccountORM, batchSize int) error
-	Save(values ...*apiv1.InvestmentAccountORM) error
-	First() (*apiv1.InvestmentAccountORM, error)
-	Take() (*apiv1.InvestmentAccountORM, error)
-	Last() (*apiv1.InvestmentAccountORM, error)
-	Find() ([]*apiv1.InvestmentAccountORM, error)
-	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*apiv1.InvestmentAccountORM, err error)
-	FindInBatches(result *[]*apiv1.InvestmentAccountORM, batchSize int, fc func(tx gen.Dao, batch int) error) error
+	Create(values ...*financial_integration_service_apiv1.InvestmentAccountORM) error
+	CreateInBatches(values []*financial_integration_service_apiv1.InvestmentAccountORM, batchSize int) error
+	Save(values ...*financial_integration_service_apiv1.InvestmentAccountORM) error
+	First() (*financial_integration_service_apiv1.InvestmentAccountORM, error)
+	Take() (*financial_integration_service_apiv1.InvestmentAccountORM, error)
+	Last() (*financial_integration_service_apiv1.InvestmentAccountORM, error)
+	Find() ([]*financial_integration_service_apiv1.InvestmentAccountORM, error)
+	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*financial_integration_service_apiv1.InvestmentAccountORM, err error)
+	FindInBatches(result *[]*financial_integration_service_apiv1.InvestmentAccountORM, batchSize int, fc func(tx gen.Dao, batch int) error) error
 	Pluck(column field.Expr, dest interface{}) error
-	Delete(...*apiv1.InvestmentAccountORM) (info gen.ResultInfo, err error)
+	Delete(...*financial_integration_service_apiv1.InvestmentAccountORM) (info gen.ResultInfo, err error)
 	Update(column field.Expr, value interface{}) (info gen.ResultInfo, err error)
 	UpdateSimple(columns ...field.AssignExpr) (info gen.ResultInfo, err error)
 	Updates(value interface{}) (info gen.ResultInfo, err error)
@@ -327,18 +327,18 @@ type IInvestmentAccountORMDo interface {
 	Assign(attrs ...field.AssignExpr) IInvestmentAccountORMDo
 	Joins(fields ...field.RelationField) IInvestmentAccountORMDo
 	Preload(fields ...field.RelationField) IInvestmentAccountORMDo
-	FirstOrInit() (*apiv1.InvestmentAccountORM, error)
-	FirstOrCreate() (*apiv1.InvestmentAccountORM, error)
-	FindByPage(offset int, limit int) (result []*apiv1.InvestmentAccountORM, count int64, err error)
+	FirstOrInit() (*financial_integration_service_apiv1.InvestmentAccountORM, error)
+	FirstOrCreate() (*financial_integration_service_apiv1.InvestmentAccountORM, error)
+	FindByPage(offset int, limit int) (result []*financial_integration_service_apiv1.InvestmentAccountORM, count int64, err error)
 	ScanByPage(result interface{}, offset int, limit int) (count int64, err error)
 	Scan(result interface{}) (err error)
 	Returning(value interface{}, columns ...string) IInvestmentAccountORMDo
 	UnderlyingDB() *gorm.DB
 	schema.Tabler
 
-	GetByUserID(user_id int) (result apiv1.InvestmentAccountORM, err error)
-	GetByID(id int) (result apiv1.InvestmentAccountORM, err error)
-	GetByIDs(ids []int) (result []apiv1.InvestmentAccountORM, err error)
+	GetByUserID(user_id int) (result financial_integration_service_apiv1.InvestmentAccountORM, err error)
+	GetByID(id int) (result financial_integration_service_apiv1.InvestmentAccountORM, err error)
+	GetByIDs(ids []int) (result []financial_integration_service_apiv1.InvestmentAccountORM, err error)
 }
 
 // SELECT * FROM @@table
@@ -347,7 +347,7 @@ type IInvestmentAccountORMDo interface {
 //	user_id=@user_id
 //
 // {{end}}
-func (i investmentAccountORMDo) GetByUserID(user_id int) (result apiv1.InvestmentAccountORM, err error) {
+func (i investmentAccountORMDo) GetByUserID(user_id int) (result financial_integration_service_apiv1.InvestmentAccountORM, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -370,7 +370,7 @@ func (i investmentAccountORMDo) GetByUserID(user_id int) (result apiv1.Investmen
 //	id=@id
 //
 // {{end}}
-func (i investmentAccountORMDo) GetByID(id int) (result apiv1.InvestmentAccountORM, err error) {
+func (i investmentAccountORMDo) GetByID(id int) (result financial_integration_service_apiv1.InvestmentAccountORM, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -393,7 +393,7 @@ func (i investmentAccountORMDo) GetByID(id int) (result apiv1.InvestmentAccountO
 //	id IN (@ids)
 //
 // {{end}}
-func (i investmentAccountORMDo) GetByIDs(ids []int) (result []apiv1.InvestmentAccountORM, err error) {
+func (i investmentAccountORMDo) GetByIDs(ids []int) (result []financial_integration_service_apiv1.InvestmentAccountORM, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -506,57 +506,57 @@ func (i investmentAccountORMDo) Unscoped() IInvestmentAccountORMDo {
 	return i.withDO(i.DO.Unscoped())
 }
 
-func (i investmentAccountORMDo) Create(values ...*apiv1.InvestmentAccountORM) error {
+func (i investmentAccountORMDo) Create(values ...*financial_integration_service_apiv1.InvestmentAccountORM) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return i.DO.Create(values)
 }
 
-func (i investmentAccountORMDo) CreateInBatches(values []*apiv1.InvestmentAccountORM, batchSize int) error {
+func (i investmentAccountORMDo) CreateInBatches(values []*financial_integration_service_apiv1.InvestmentAccountORM, batchSize int) error {
 	return i.DO.CreateInBatches(values, batchSize)
 }
 
 // Save : !!! underlying implementation is different with GORM
 // The method is equivalent to executing the statement: db.Clauses(clause.OnConflict{UpdateAll: true}).Create(values)
-func (i investmentAccountORMDo) Save(values ...*apiv1.InvestmentAccountORM) error {
+func (i investmentAccountORMDo) Save(values ...*financial_integration_service_apiv1.InvestmentAccountORM) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return i.DO.Save(values)
 }
 
-func (i investmentAccountORMDo) First() (*apiv1.InvestmentAccountORM, error) {
+func (i investmentAccountORMDo) First() (*financial_integration_service_apiv1.InvestmentAccountORM, error) {
 	if result, err := i.DO.First(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.InvestmentAccountORM), nil
+		return result.(*financial_integration_service_apiv1.InvestmentAccountORM), nil
 	}
 }
 
-func (i investmentAccountORMDo) Take() (*apiv1.InvestmentAccountORM, error) {
+func (i investmentAccountORMDo) Take() (*financial_integration_service_apiv1.InvestmentAccountORM, error) {
 	if result, err := i.DO.Take(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.InvestmentAccountORM), nil
+		return result.(*financial_integration_service_apiv1.InvestmentAccountORM), nil
 	}
 }
 
-func (i investmentAccountORMDo) Last() (*apiv1.InvestmentAccountORM, error) {
+func (i investmentAccountORMDo) Last() (*financial_integration_service_apiv1.InvestmentAccountORM, error) {
 	if result, err := i.DO.Last(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.InvestmentAccountORM), nil
+		return result.(*financial_integration_service_apiv1.InvestmentAccountORM), nil
 	}
 }
 
-func (i investmentAccountORMDo) Find() ([]*apiv1.InvestmentAccountORM, error) {
+func (i investmentAccountORMDo) Find() ([]*financial_integration_service_apiv1.InvestmentAccountORM, error) {
 	result, err := i.DO.Find()
-	return result.([]*apiv1.InvestmentAccountORM), err
+	return result.([]*financial_integration_service_apiv1.InvestmentAccountORM), err
 }
 
-func (i investmentAccountORMDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*apiv1.InvestmentAccountORM, err error) {
-	buf := make([]*apiv1.InvestmentAccountORM, 0, batchSize)
+func (i investmentAccountORMDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*financial_integration_service_apiv1.InvestmentAccountORM, err error) {
+	buf := make([]*financial_integration_service_apiv1.InvestmentAccountORM, 0, batchSize)
 	err = i.DO.FindInBatches(&buf, batchSize, func(tx gen.Dao, batch int) error {
 		defer func() { results = append(results, buf...) }()
 		return fc(tx, batch)
@@ -564,7 +564,7 @@ func (i investmentAccountORMDo) FindInBatch(batchSize int, fc func(tx gen.Dao, b
 	return results, err
 }
 
-func (i investmentAccountORMDo) FindInBatches(result *[]*apiv1.InvestmentAccountORM, batchSize int, fc func(tx gen.Dao, batch int) error) error {
+func (i investmentAccountORMDo) FindInBatches(result *[]*financial_integration_service_apiv1.InvestmentAccountORM, batchSize int, fc func(tx gen.Dao, batch int) error) error {
 	return i.DO.FindInBatches(result, batchSize, fc)
 }
 
@@ -590,23 +590,23 @@ func (i investmentAccountORMDo) Preload(fields ...field.RelationField) IInvestme
 	return &i
 }
 
-func (i investmentAccountORMDo) FirstOrInit() (*apiv1.InvestmentAccountORM, error) {
+func (i investmentAccountORMDo) FirstOrInit() (*financial_integration_service_apiv1.InvestmentAccountORM, error) {
 	if result, err := i.DO.FirstOrInit(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.InvestmentAccountORM), nil
+		return result.(*financial_integration_service_apiv1.InvestmentAccountORM), nil
 	}
 }
 
-func (i investmentAccountORMDo) FirstOrCreate() (*apiv1.InvestmentAccountORM, error) {
+func (i investmentAccountORMDo) FirstOrCreate() (*financial_integration_service_apiv1.InvestmentAccountORM, error) {
 	if result, err := i.DO.FirstOrCreate(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.InvestmentAccountORM), nil
+		return result.(*financial_integration_service_apiv1.InvestmentAccountORM), nil
 	}
 }
 
-func (i investmentAccountORMDo) FindByPage(offset int, limit int) (result []*apiv1.InvestmentAccountORM, count int64, err error) {
+func (i investmentAccountORMDo) FindByPage(offset int, limit int) (result []*financial_integration_service_apiv1.InvestmentAccountORM, count int64, err error) {
 	result, err = i.Offset(offset).Limit(limit).Find()
 	if err != nil {
 		return
@@ -635,7 +635,7 @@ func (i investmentAccountORMDo) Scan(result interface{}) (err error) {
 	return i.DO.Scan(result)
 }
 
-func (i investmentAccountORMDo) Delete(models ...*apiv1.InvestmentAccountORM) (result gen.ResultInfo, err error) {
+func (i investmentAccountORMDo) Delete(models ...*financial_integration_service_apiv1.InvestmentAccountORM) (result gen.ResultInfo, err error) {
 	return i.DO.Delete(models)
 }
 

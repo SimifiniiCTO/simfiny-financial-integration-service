@@ -8,7 +8,7 @@ import (
 	"context"
 	"strings"
 
-	apiv1 "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
+	financial_integration_service_apiv1 "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 	"gorm.io/gorm/schema"
@@ -24,7 +24,7 @@ func newPocketORM(db *gorm.DB, opts ...gen.DOOption) pocketORM {
 	_pocketORM := pocketORM{}
 
 	_pocketORM.pocketORMDo.UseDB(db, opts...)
-	_pocketORM.pocketORMDo.UseModel(&apiv1.PocketORM{})
+	_pocketORM.pocketORMDo.UseModel(&financial_integration_service_apiv1.PocketORM{})
 
 	tableName := _pocketORM.pocketORMDo.TableName()
 	_pocketORM.ALL = field.NewAsterisk(tableName)
@@ -34,11 +34,11 @@ func newPocketORM(db *gorm.DB, opts ...gen.DOOption) pocketORM {
 	_pocketORM.Goals = pocketORMHasManyGoals{
 		db: db.Session(&gorm.Session{}),
 
-		RelationField: field.NewRelation("Goals", "apiv1.SmartGoalORM"),
+		RelationField: field.NewRelation("Goals", "financial_integration_service_apiv1.SmartGoalORM"),
 		Forecasts: struct {
 			field.RelationField
 		}{
-			RelationField: field.NewRelation("Goals.Forecasts", "apiv1.ForecastORM"),
+			RelationField: field.NewRelation("Goals.Forecasts", "financial_integration_service_apiv1.ForecastORM"),
 		},
 		Milestones: struct {
 			field.RelationField
@@ -49,18 +49,18 @@ func newPocketORM(db *gorm.DB, opts ...gen.DOOption) pocketORM {
 				}
 			}
 		}{
-			RelationField: field.NewRelation("Goals.Milestones", "apiv1.MilestoneORM"),
+			RelationField: field.NewRelation("Goals.Milestones", "financial_integration_service_apiv1.MilestoneORM"),
 			Budget: struct {
 				field.RelationField
 				Category struct {
 					field.RelationField
 				}
 			}{
-				RelationField: field.NewRelation("Goals.Milestones.Budget", "apiv1.BudgetORM"),
+				RelationField: field.NewRelation("Goals.Milestones.Budget", "financial_integration_service_apiv1.BudgetORM"),
 				Category: struct {
 					field.RelationField
 				}{
-					RelationField: field.NewRelation("Goals.Milestones.Budget.Category", "apiv1.CategoryORM"),
+					RelationField: field.NewRelation("Goals.Milestones.Budget.Category", "financial_integration_service_apiv1.CategoryORM"),
 				},
 			},
 		},
@@ -168,17 +168,17 @@ func (a pocketORMHasManyGoals) WithContext(ctx context.Context) *pocketORMHasMan
 	return &a
 }
 
-func (a pocketORMHasManyGoals) Model(m *apiv1.PocketORM) *pocketORMHasManyGoalsTx {
+func (a pocketORMHasManyGoals) Model(m *financial_integration_service_apiv1.PocketORM) *pocketORMHasManyGoalsTx {
 	return &pocketORMHasManyGoalsTx{a.db.Model(m).Association(a.Name())}
 }
 
 type pocketORMHasManyGoalsTx struct{ tx *gorm.Association }
 
-func (a pocketORMHasManyGoalsTx) Find() (result []*apiv1.SmartGoalORM, err error) {
+func (a pocketORMHasManyGoalsTx) Find() (result []*financial_integration_service_apiv1.SmartGoalORM, err error) {
 	return result, a.tx.Find(&result)
 }
 
-func (a pocketORMHasManyGoalsTx) Append(values ...*apiv1.SmartGoalORM) (err error) {
+func (a pocketORMHasManyGoalsTx) Append(values ...*financial_integration_service_apiv1.SmartGoalORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -186,7 +186,7 @@ func (a pocketORMHasManyGoalsTx) Append(values ...*apiv1.SmartGoalORM) (err erro
 	return a.tx.Append(targetValues...)
 }
 
-func (a pocketORMHasManyGoalsTx) Replace(values ...*apiv1.SmartGoalORM) (err error) {
+func (a pocketORMHasManyGoalsTx) Replace(values ...*financial_integration_service_apiv1.SmartGoalORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -194,7 +194,7 @@ func (a pocketORMHasManyGoalsTx) Replace(values ...*apiv1.SmartGoalORM) (err err
 	return a.tx.Replace(targetValues...)
 }
 
-func (a pocketORMHasManyGoalsTx) Delete(values ...*apiv1.SmartGoalORM) (err error) {
+func (a pocketORMHasManyGoalsTx) Delete(values ...*financial_integration_service_apiv1.SmartGoalORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -241,17 +241,17 @@ type IPocketORMDo interface {
 	Count() (count int64, err error)
 	Scopes(funcs ...func(gen.Dao) gen.Dao) IPocketORMDo
 	Unscoped() IPocketORMDo
-	Create(values ...*apiv1.PocketORM) error
-	CreateInBatches(values []*apiv1.PocketORM, batchSize int) error
-	Save(values ...*apiv1.PocketORM) error
-	First() (*apiv1.PocketORM, error)
-	Take() (*apiv1.PocketORM, error)
-	Last() (*apiv1.PocketORM, error)
-	Find() ([]*apiv1.PocketORM, error)
-	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*apiv1.PocketORM, err error)
-	FindInBatches(result *[]*apiv1.PocketORM, batchSize int, fc func(tx gen.Dao, batch int) error) error
+	Create(values ...*financial_integration_service_apiv1.PocketORM) error
+	CreateInBatches(values []*financial_integration_service_apiv1.PocketORM, batchSize int) error
+	Save(values ...*financial_integration_service_apiv1.PocketORM) error
+	First() (*financial_integration_service_apiv1.PocketORM, error)
+	Take() (*financial_integration_service_apiv1.PocketORM, error)
+	Last() (*financial_integration_service_apiv1.PocketORM, error)
+	Find() ([]*financial_integration_service_apiv1.PocketORM, error)
+	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*financial_integration_service_apiv1.PocketORM, err error)
+	FindInBatches(result *[]*financial_integration_service_apiv1.PocketORM, batchSize int, fc func(tx gen.Dao, batch int) error) error
 	Pluck(column field.Expr, dest interface{}) error
-	Delete(...*apiv1.PocketORM) (info gen.ResultInfo, err error)
+	Delete(...*financial_integration_service_apiv1.PocketORM) (info gen.ResultInfo, err error)
 	Update(column field.Expr, value interface{}) (info gen.ResultInfo, err error)
 	UpdateSimple(columns ...field.AssignExpr) (info gen.ResultInfo, err error)
 	Updates(value interface{}) (info gen.ResultInfo, err error)
@@ -263,18 +263,18 @@ type IPocketORMDo interface {
 	Assign(attrs ...field.AssignExpr) IPocketORMDo
 	Joins(fields ...field.RelationField) IPocketORMDo
 	Preload(fields ...field.RelationField) IPocketORMDo
-	FirstOrInit() (*apiv1.PocketORM, error)
-	FirstOrCreate() (*apiv1.PocketORM, error)
-	FindByPage(offset int, limit int) (result []*apiv1.PocketORM, count int64, err error)
+	FirstOrInit() (*financial_integration_service_apiv1.PocketORM, error)
+	FirstOrCreate() (*financial_integration_service_apiv1.PocketORM, error)
+	FindByPage(offset int, limit int) (result []*financial_integration_service_apiv1.PocketORM, count int64, err error)
 	ScanByPage(result interface{}, offset int, limit int) (count int64, err error)
 	Scan(result interface{}) (err error)
 	Returning(value interface{}, columns ...string) IPocketORMDo
 	UnderlyingDB() *gorm.DB
 	schema.Tabler
 
-	GetByUserID(user_id int) (result apiv1.PocketORM, err error)
-	GetByID(id int) (result apiv1.PocketORM, err error)
-	GetByIDs(ids []int) (result []apiv1.PocketORM, err error)
+	GetByUserID(user_id int) (result financial_integration_service_apiv1.PocketORM, err error)
+	GetByID(id int) (result financial_integration_service_apiv1.PocketORM, err error)
+	GetByIDs(ids []int) (result []financial_integration_service_apiv1.PocketORM, err error)
 }
 
 // SELECT * FROM @@table
@@ -283,7 +283,7 @@ type IPocketORMDo interface {
 //	user_id=@user_id
 //
 // {{end}}
-func (p pocketORMDo) GetByUserID(user_id int) (result apiv1.PocketORM, err error) {
+func (p pocketORMDo) GetByUserID(user_id int) (result financial_integration_service_apiv1.PocketORM, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -306,7 +306,7 @@ func (p pocketORMDo) GetByUserID(user_id int) (result apiv1.PocketORM, err error
 //	id=@id
 //
 // {{end}}
-func (p pocketORMDo) GetByID(id int) (result apiv1.PocketORM, err error) {
+func (p pocketORMDo) GetByID(id int) (result financial_integration_service_apiv1.PocketORM, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -329,7 +329,7 @@ func (p pocketORMDo) GetByID(id int) (result apiv1.PocketORM, err error) {
 //	id IN (@ids)
 //
 // {{end}}
-func (p pocketORMDo) GetByIDs(ids []int) (result []apiv1.PocketORM, err error) {
+func (p pocketORMDo) GetByIDs(ids []int) (result []financial_integration_service_apiv1.PocketORM, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -442,57 +442,57 @@ func (p pocketORMDo) Unscoped() IPocketORMDo {
 	return p.withDO(p.DO.Unscoped())
 }
 
-func (p pocketORMDo) Create(values ...*apiv1.PocketORM) error {
+func (p pocketORMDo) Create(values ...*financial_integration_service_apiv1.PocketORM) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return p.DO.Create(values)
 }
 
-func (p pocketORMDo) CreateInBatches(values []*apiv1.PocketORM, batchSize int) error {
+func (p pocketORMDo) CreateInBatches(values []*financial_integration_service_apiv1.PocketORM, batchSize int) error {
 	return p.DO.CreateInBatches(values, batchSize)
 }
 
 // Save : !!! underlying implementation is different with GORM
 // The method is equivalent to executing the statement: db.Clauses(clause.OnConflict{UpdateAll: true}).Create(values)
-func (p pocketORMDo) Save(values ...*apiv1.PocketORM) error {
+func (p pocketORMDo) Save(values ...*financial_integration_service_apiv1.PocketORM) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return p.DO.Save(values)
 }
 
-func (p pocketORMDo) First() (*apiv1.PocketORM, error) {
+func (p pocketORMDo) First() (*financial_integration_service_apiv1.PocketORM, error) {
 	if result, err := p.DO.First(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.PocketORM), nil
+		return result.(*financial_integration_service_apiv1.PocketORM), nil
 	}
 }
 
-func (p pocketORMDo) Take() (*apiv1.PocketORM, error) {
+func (p pocketORMDo) Take() (*financial_integration_service_apiv1.PocketORM, error) {
 	if result, err := p.DO.Take(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.PocketORM), nil
+		return result.(*financial_integration_service_apiv1.PocketORM), nil
 	}
 }
 
-func (p pocketORMDo) Last() (*apiv1.PocketORM, error) {
+func (p pocketORMDo) Last() (*financial_integration_service_apiv1.PocketORM, error) {
 	if result, err := p.DO.Last(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.PocketORM), nil
+		return result.(*financial_integration_service_apiv1.PocketORM), nil
 	}
 }
 
-func (p pocketORMDo) Find() ([]*apiv1.PocketORM, error) {
+func (p pocketORMDo) Find() ([]*financial_integration_service_apiv1.PocketORM, error) {
 	result, err := p.DO.Find()
-	return result.([]*apiv1.PocketORM), err
+	return result.([]*financial_integration_service_apiv1.PocketORM), err
 }
 
-func (p pocketORMDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*apiv1.PocketORM, err error) {
-	buf := make([]*apiv1.PocketORM, 0, batchSize)
+func (p pocketORMDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*financial_integration_service_apiv1.PocketORM, err error) {
+	buf := make([]*financial_integration_service_apiv1.PocketORM, 0, batchSize)
 	err = p.DO.FindInBatches(&buf, batchSize, func(tx gen.Dao, batch int) error {
 		defer func() { results = append(results, buf...) }()
 		return fc(tx, batch)
@@ -500,7 +500,7 @@ func (p pocketORMDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) e
 	return results, err
 }
 
-func (p pocketORMDo) FindInBatches(result *[]*apiv1.PocketORM, batchSize int, fc func(tx gen.Dao, batch int) error) error {
+func (p pocketORMDo) FindInBatches(result *[]*financial_integration_service_apiv1.PocketORM, batchSize int, fc func(tx gen.Dao, batch int) error) error {
 	return p.DO.FindInBatches(result, batchSize, fc)
 }
 
@@ -526,23 +526,23 @@ func (p pocketORMDo) Preload(fields ...field.RelationField) IPocketORMDo {
 	return &p
 }
 
-func (p pocketORMDo) FirstOrInit() (*apiv1.PocketORM, error) {
+func (p pocketORMDo) FirstOrInit() (*financial_integration_service_apiv1.PocketORM, error) {
 	if result, err := p.DO.FirstOrInit(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.PocketORM), nil
+		return result.(*financial_integration_service_apiv1.PocketORM), nil
 	}
 }
 
-func (p pocketORMDo) FirstOrCreate() (*apiv1.PocketORM, error) {
+func (p pocketORMDo) FirstOrCreate() (*financial_integration_service_apiv1.PocketORM, error) {
 	if result, err := p.DO.FirstOrCreate(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.PocketORM), nil
+		return result.(*financial_integration_service_apiv1.PocketORM), nil
 	}
 }
 
-func (p pocketORMDo) FindByPage(offset int, limit int) (result []*apiv1.PocketORM, count int64, err error) {
+func (p pocketORMDo) FindByPage(offset int, limit int) (result []*financial_integration_service_apiv1.PocketORM, count int64, err error) {
 	result, err = p.Offset(offset).Limit(limit).Find()
 	if err != nil {
 		return
@@ -571,7 +571,7 @@ func (p pocketORMDo) Scan(result interface{}) (err error) {
 	return p.DO.Scan(result)
 }
 
-func (p pocketORMDo) Delete(models ...*apiv1.PocketORM) (result gen.ResultInfo, err error) {
+func (p pocketORMDo) Delete(models ...*financial_integration_service_apiv1.PocketORM) (result gen.ResultInfo, err error) {
 	return p.DO.Delete(models)
 }
 

@@ -36,3 +36,11 @@ func GetClickhouseSchemas() []interface{} {
 	}
 	return models
 }
+
+func GetClickhouseTableNameToSchemaMap() map[string]interface{} {
+	schemaMap := make(map[string]interface{}, 0)
+	schemaMap[TransactionORM{}.TableName()] = TransactionORM{}
+	schemaMap[ReOccuringTransactionORM{}.TableName()] = ReOccuringTransactionORM{}
+	schemaMap[InvestmentTransactionORM{}.TableName()] = InvestmentTransactionORM{}
+	return schemaMap
+}

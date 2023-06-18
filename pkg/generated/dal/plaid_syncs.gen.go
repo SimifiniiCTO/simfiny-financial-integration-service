@@ -8,7 +8,7 @@ import (
 	"context"
 	"strings"
 
-	apiv1 "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
+	financial_integration_service_apiv1 "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 	"gorm.io/gorm/schema"
@@ -24,7 +24,7 @@ func newPlaidSyncORM(db *gorm.DB, opts ...gen.DOOption) plaidSyncORM {
 	_plaidSyncORM := plaidSyncORM{}
 
 	_plaidSyncORM.plaidSyncORMDo.UseDB(db, opts...)
-	_plaidSyncORM.plaidSyncORMDo.UseModel(&apiv1.PlaidSyncORM{})
+	_plaidSyncORM.plaidSyncORMDo.UseModel(&financial_integration_service_apiv1.PlaidSyncORM{})
 
 	tableName := _plaidSyncORM.plaidSyncORMDo.TableName()
 	_plaidSyncORM.ALL = field.NewAsterisk(tableName)
@@ -146,17 +146,17 @@ type IPlaidSyncORMDo interface {
 	Count() (count int64, err error)
 	Scopes(funcs ...func(gen.Dao) gen.Dao) IPlaidSyncORMDo
 	Unscoped() IPlaidSyncORMDo
-	Create(values ...*apiv1.PlaidSyncORM) error
-	CreateInBatches(values []*apiv1.PlaidSyncORM, batchSize int) error
-	Save(values ...*apiv1.PlaidSyncORM) error
-	First() (*apiv1.PlaidSyncORM, error)
-	Take() (*apiv1.PlaidSyncORM, error)
-	Last() (*apiv1.PlaidSyncORM, error)
-	Find() ([]*apiv1.PlaidSyncORM, error)
-	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*apiv1.PlaidSyncORM, err error)
-	FindInBatches(result *[]*apiv1.PlaidSyncORM, batchSize int, fc func(tx gen.Dao, batch int) error) error
+	Create(values ...*financial_integration_service_apiv1.PlaidSyncORM) error
+	CreateInBatches(values []*financial_integration_service_apiv1.PlaidSyncORM, batchSize int) error
+	Save(values ...*financial_integration_service_apiv1.PlaidSyncORM) error
+	First() (*financial_integration_service_apiv1.PlaidSyncORM, error)
+	Take() (*financial_integration_service_apiv1.PlaidSyncORM, error)
+	Last() (*financial_integration_service_apiv1.PlaidSyncORM, error)
+	Find() ([]*financial_integration_service_apiv1.PlaidSyncORM, error)
+	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*financial_integration_service_apiv1.PlaidSyncORM, err error)
+	FindInBatches(result *[]*financial_integration_service_apiv1.PlaidSyncORM, batchSize int, fc func(tx gen.Dao, batch int) error) error
 	Pluck(column field.Expr, dest interface{}) error
-	Delete(...*apiv1.PlaidSyncORM) (info gen.ResultInfo, err error)
+	Delete(...*financial_integration_service_apiv1.PlaidSyncORM) (info gen.ResultInfo, err error)
 	Update(column field.Expr, value interface{}) (info gen.ResultInfo, err error)
 	UpdateSimple(columns ...field.AssignExpr) (info gen.ResultInfo, err error)
 	Updates(value interface{}) (info gen.ResultInfo, err error)
@@ -168,18 +168,18 @@ type IPlaidSyncORMDo interface {
 	Assign(attrs ...field.AssignExpr) IPlaidSyncORMDo
 	Joins(fields ...field.RelationField) IPlaidSyncORMDo
 	Preload(fields ...field.RelationField) IPlaidSyncORMDo
-	FirstOrInit() (*apiv1.PlaidSyncORM, error)
-	FirstOrCreate() (*apiv1.PlaidSyncORM, error)
-	FindByPage(offset int, limit int) (result []*apiv1.PlaidSyncORM, count int64, err error)
+	FirstOrInit() (*financial_integration_service_apiv1.PlaidSyncORM, error)
+	FirstOrCreate() (*financial_integration_service_apiv1.PlaidSyncORM, error)
+	FindByPage(offset int, limit int) (result []*financial_integration_service_apiv1.PlaidSyncORM, count int64, err error)
 	ScanByPage(result interface{}, offset int, limit int) (count int64, err error)
 	Scan(result interface{}) (err error)
 	Returning(value interface{}, columns ...string) IPlaidSyncORMDo
 	UnderlyingDB() *gorm.DB
 	schema.Tabler
 
-	GetByUserID(user_id int) (result apiv1.PlaidSyncORM, err error)
-	GetByID(id int) (result apiv1.PlaidSyncORM, err error)
-	GetByIDs(ids []int) (result []apiv1.PlaidSyncORM, err error)
+	GetByUserID(user_id int) (result financial_integration_service_apiv1.PlaidSyncORM, err error)
+	GetByID(id int) (result financial_integration_service_apiv1.PlaidSyncORM, err error)
+	GetByIDs(ids []int) (result []financial_integration_service_apiv1.PlaidSyncORM, err error)
 }
 
 // SELECT * FROM @@table
@@ -188,7 +188,7 @@ type IPlaidSyncORMDo interface {
 //	user_id=@user_id
 //
 // {{end}}
-func (p plaidSyncORMDo) GetByUserID(user_id int) (result apiv1.PlaidSyncORM, err error) {
+func (p plaidSyncORMDo) GetByUserID(user_id int) (result financial_integration_service_apiv1.PlaidSyncORM, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -211,7 +211,7 @@ func (p plaidSyncORMDo) GetByUserID(user_id int) (result apiv1.PlaidSyncORM, err
 //	id=@id
 //
 // {{end}}
-func (p plaidSyncORMDo) GetByID(id int) (result apiv1.PlaidSyncORM, err error) {
+func (p plaidSyncORMDo) GetByID(id int) (result financial_integration_service_apiv1.PlaidSyncORM, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -234,7 +234,7 @@ func (p plaidSyncORMDo) GetByID(id int) (result apiv1.PlaidSyncORM, err error) {
 //	id IN (@ids)
 //
 // {{end}}
-func (p plaidSyncORMDo) GetByIDs(ids []int) (result []apiv1.PlaidSyncORM, err error) {
+func (p plaidSyncORMDo) GetByIDs(ids []int) (result []financial_integration_service_apiv1.PlaidSyncORM, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -347,57 +347,57 @@ func (p plaidSyncORMDo) Unscoped() IPlaidSyncORMDo {
 	return p.withDO(p.DO.Unscoped())
 }
 
-func (p plaidSyncORMDo) Create(values ...*apiv1.PlaidSyncORM) error {
+func (p plaidSyncORMDo) Create(values ...*financial_integration_service_apiv1.PlaidSyncORM) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return p.DO.Create(values)
 }
 
-func (p plaidSyncORMDo) CreateInBatches(values []*apiv1.PlaidSyncORM, batchSize int) error {
+func (p plaidSyncORMDo) CreateInBatches(values []*financial_integration_service_apiv1.PlaidSyncORM, batchSize int) error {
 	return p.DO.CreateInBatches(values, batchSize)
 }
 
 // Save : !!! underlying implementation is different with GORM
 // The method is equivalent to executing the statement: db.Clauses(clause.OnConflict{UpdateAll: true}).Create(values)
-func (p plaidSyncORMDo) Save(values ...*apiv1.PlaidSyncORM) error {
+func (p plaidSyncORMDo) Save(values ...*financial_integration_service_apiv1.PlaidSyncORM) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return p.DO.Save(values)
 }
 
-func (p plaidSyncORMDo) First() (*apiv1.PlaidSyncORM, error) {
+func (p plaidSyncORMDo) First() (*financial_integration_service_apiv1.PlaidSyncORM, error) {
 	if result, err := p.DO.First(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.PlaidSyncORM), nil
+		return result.(*financial_integration_service_apiv1.PlaidSyncORM), nil
 	}
 }
 
-func (p plaidSyncORMDo) Take() (*apiv1.PlaidSyncORM, error) {
+func (p plaidSyncORMDo) Take() (*financial_integration_service_apiv1.PlaidSyncORM, error) {
 	if result, err := p.DO.Take(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.PlaidSyncORM), nil
+		return result.(*financial_integration_service_apiv1.PlaidSyncORM), nil
 	}
 }
 
-func (p plaidSyncORMDo) Last() (*apiv1.PlaidSyncORM, error) {
+func (p plaidSyncORMDo) Last() (*financial_integration_service_apiv1.PlaidSyncORM, error) {
 	if result, err := p.DO.Last(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.PlaidSyncORM), nil
+		return result.(*financial_integration_service_apiv1.PlaidSyncORM), nil
 	}
 }
 
-func (p plaidSyncORMDo) Find() ([]*apiv1.PlaidSyncORM, error) {
+func (p plaidSyncORMDo) Find() ([]*financial_integration_service_apiv1.PlaidSyncORM, error) {
 	result, err := p.DO.Find()
-	return result.([]*apiv1.PlaidSyncORM), err
+	return result.([]*financial_integration_service_apiv1.PlaidSyncORM), err
 }
 
-func (p plaidSyncORMDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*apiv1.PlaidSyncORM, err error) {
-	buf := make([]*apiv1.PlaidSyncORM, 0, batchSize)
+func (p plaidSyncORMDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*financial_integration_service_apiv1.PlaidSyncORM, err error) {
+	buf := make([]*financial_integration_service_apiv1.PlaidSyncORM, 0, batchSize)
 	err = p.DO.FindInBatches(&buf, batchSize, func(tx gen.Dao, batch int) error {
 		defer func() { results = append(results, buf...) }()
 		return fc(tx, batch)
@@ -405,7 +405,7 @@ func (p plaidSyncORMDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int
 	return results, err
 }
 
-func (p plaidSyncORMDo) FindInBatches(result *[]*apiv1.PlaidSyncORM, batchSize int, fc func(tx gen.Dao, batch int) error) error {
+func (p plaidSyncORMDo) FindInBatches(result *[]*financial_integration_service_apiv1.PlaidSyncORM, batchSize int, fc func(tx gen.Dao, batch int) error) error {
 	return p.DO.FindInBatches(result, batchSize, fc)
 }
 
@@ -431,23 +431,23 @@ func (p plaidSyncORMDo) Preload(fields ...field.RelationField) IPlaidSyncORMDo {
 	return &p
 }
 
-func (p plaidSyncORMDo) FirstOrInit() (*apiv1.PlaidSyncORM, error) {
+func (p plaidSyncORMDo) FirstOrInit() (*financial_integration_service_apiv1.PlaidSyncORM, error) {
 	if result, err := p.DO.FirstOrInit(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.PlaidSyncORM), nil
+		return result.(*financial_integration_service_apiv1.PlaidSyncORM), nil
 	}
 }
 
-func (p plaidSyncORMDo) FirstOrCreate() (*apiv1.PlaidSyncORM, error) {
+func (p plaidSyncORMDo) FirstOrCreate() (*financial_integration_service_apiv1.PlaidSyncORM, error) {
 	if result, err := p.DO.FirstOrCreate(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.PlaidSyncORM), nil
+		return result.(*financial_integration_service_apiv1.PlaidSyncORM), nil
 	}
 }
 
-func (p plaidSyncORMDo) FindByPage(offset int, limit int) (result []*apiv1.PlaidSyncORM, count int64, err error) {
+func (p plaidSyncORMDo) FindByPage(offset int, limit int) (result []*financial_integration_service_apiv1.PlaidSyncORM, count int64, err error) {
 	result, err = p.Offset(offset).Limit(limit).Find()
 	if err != nil {
 		return
@@ -476,7 +476,7 @@ func (p plaidSyncORMDo) Scan(result interface{}) (err error) {
 	return p.DO.Scan(result)
 }
 
-func (p plaidSyncORMDo) Delete(models ...*apiv1.PlaidSyncORM) (result gen.ResultInfo, err error) {
+func (p plaidSyncORMDo) Delete(models ...*financial_integration_service_apiv1.PlaidSyncORM) (result gen.ResultInfo, err error) {
 	return p.DO.Delete(models)
 }
 

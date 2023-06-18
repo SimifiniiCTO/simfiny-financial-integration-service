@@ -18,14 +18,14 @@ import (
 
 	"gorm.io/plugin/dbresolver"
 
-	apiv1 "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
+	financial_integration_service_apiv1 "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 )
 
 func newUserProfileORM(db *gorm.DB, opts ...gen.DOOption) userProfileORM {
 	_userProfileORM := userProfileORM{}
 
 	_userProfileORM.userProfileORMDo.UseDB(db, opts...)
-	_userProfileORM.userProfileORMDo.UseModel(&apiv1.UserProfileORM{})
+	_userProfileORM.userProfileORMDo.UseModel(&financial_integration_service_apiv1.UserProfileORM{})
 
 	tableName := _userProfileORM.userProfileORMDo.TableName()
 	_userProfileORM.ALL = field.NewAsterisk(tableName)
@@ -35,27 +35,27 @@ func newUserProfileORM(db *gorm.DB, opts ...gen.DOOption) userProfileORM {
 	_userProfileORM.StripeSubscriptions = userProfileORMHasOneStripeSubscriptions{
 		db: db.Session(&gorm.Session{}),
 
-		RelationField: field.NewRelation("StripeSubscriptions", "apiv1.StripeSubscriptionORM"),
+		RelationField: field.NewRelation("StripeSubscriptions", "financial_integration_service_apiv1.StripeSubscriptionORM"),
 	}
 
 	_userProfileORM.Link = userProfileORMHasManyLink{
 		db: db.Session(&gorm.Session{}),
 
-		RelationField: field.NewRelation("Link", "apiv1.LinkORM"),
+		RelationField: field.NewRelation("Link", "financial_integration_service_apiv1.LinkORM"),
 		PlaidLink: struct {
 			field.RelationField
 		}{
-			RelationField: field.NewRelation("Link.PlaidLink", "apiv1.PlaidLinkORM"),
+			RelationField: field.NewRelation("Link.PlaidLink", "financial_integration_service_apiv1.PlaidLinkORM"),
 		},
 		PlaidSync: struct {
 			field.RelationField
 		}{
-			RelationField: field.NewRelation("Link.PlaidSync", "apiv1.PlaidSyncORM"),
+			RelationField: field.NewRelation("Link.PlaidSync", "financial_integration_service_apiv1.PlaidSyncORM"),
 		},
 		Token: struct {
 			field.RelationField
 		}{
-			RelationField: field.NewRelation("Link.Token", "apiv1.TokenORM"),
+			RelationField: field.NewRelation("Link.Token", "financial_integration_service_apiv1.TokenORM"),
 		},
 		BankAccounts: struct {
 			field.RelationField
@@ -78,7 +78,7 @@ func newUserProfileORM(db *gorm.DB, opts ...gen.DOOption) userProfileORM {
 				}
 			}
 		}{
-			RelationField: field.NewRelation("Link.BankAccounts", "apiv1.BankAccountORM"),
+			RelationField: field.NewRelation("Link.BankAccounts", "financial_integration_service_apiv1.BankAccountORM"),
 			Pockets: struct {
 				field.RelationField
 				Goals struct {
@@ -97,7 +97,7 @@ func newUserProfileORM(db *gorm.DB, opts ...gen.DOOption) userProfileORM {
 					}
 				}
 			}{
-				RelationField: field.NewRelation("Link.BankAccounts.Pockets", "apiv1.PocketORM"),
+				RelationField: field.NewRelation("Link.BankAccounts.Pockets", "financial_integration_service_apiv1.PocketORM"),
 				Goals: struct {
 					field.RelationField
 					Forecasts struct {
@@ -113,11 +113,11 @@ func newUserProfileORM(db *gorm.DB, opts ...gen.DOOption) userProfileORM {
 						}
 					}
 				}{
-					RelationField: field.NewRelation("Link.BankAccounts.Pockets.Goals", "apiv1.SmartGoalORM"),
+					RelationField: field.NewRelation("Link.BankAccounts.Pockets.Goals", "financial_integration_service_apiv1.SmartGoalORM"),
 					Forecasts: struct {
 						field.RelationField
 					}{
-						RelationField: field.NewRelation("Link.BankAccounts.Pockets.Goals.Forecasts", "apiv1.ForecastORM"),
+						RelationField: field.NewRelation("Link.BankAccounts.Pockets.Goals.Forecasts", "financial_integration_service_apiv1.ForecastORM"),
 					},
 					Milestones: struct {
 						field.RelationField
@@ -128,18 +128,18 @@ func newUserProfileORM(db *gorm.DB, opts ...gen.DOOption) userProfileORM {
 							}
 						}
 					}{
-						RelationField: field.NewRelation("Link.BankAccounts.Pockets.Goals.Milestones", "apiv1.MilestoneORM"),
+						RelationField: field.NewRelation("Link.BankAccounts.Pockets.Goals.Milestones", "financial_integration_service_apiv1.MilestoneORM"),
 						Budget: struct {
 							field.RelationField
 							Category struct {
 								field.RelationField
 							}
 						}{
-							RelationField: field.NewRelation("Link.BankAccounts.Pockets.Goals.Milestones.Budget", "apiv1.BudgetORM"),
+							RelationField: field.NewRelation("Link.BankAccounts.Pockets.Goals.Milestones.Budget", "financial_integration_service_apiv1.BudgetORM"),
 							Category: struct {
 								field.RelationField
 							}{
-								RelationField: field.NewRelation("Link.BankAccounts.Pockets.Goals.Milestones.Budget.Category", "apiv1.CategoryORM"),
+								RelationField: field.NewRelation("Link.BankAccounts.Pockets.Goals.Milestones.Budget.Category", "financial_integration_service_apiv1.CategoryORM"),
 							},
 						},
 					},
@@ -152,11 +152,11 @@ func newUserProfileORM(db *gorm.DB, opts ...gen.DOOption) userProfileORM {
 				field.RelationField
 			}
 		}{
-			RelationField: field.NewRelation("Link.CreditAccounts", "apiv1.CreditAccountORM"),
+			RelationField: field.NewRelation("Link.CreditAccounts", "financial_integration_service_apiv1.CreditAccountORM"),
 			Aprs: struct {
 				field.RelationField
 			}{
-				RelationField: field.NewRelation("Link.CreditAccounts.Aprs", "apiv1.AprORM"),
+				RelationField: field.NewRelation("Link.CreditAccounts.Aprs", "financial_integration_service_apiv1.AprORM"),
 			},
 		},
 		InvestmentAccounts: struct {
@@ -168,27 +168,27 @@ func newUserProfileORM(db *gorm.DB, opts ...gen.DOOption) userProfileORM {
 				field.RelationField
 			}
 		}{
-			RelationField: field.NewRelation("Link.InvestmentAccounts", "apiv1.InvestmentAccountORM"),
+			RelationField: field.NewRelation("Link.InvestmentAccounts", "financial_integration_service_apiv1.InvestmentAccountORM"),
 			Holdings: struct {
 				field.RelationField
 			}{
-				RelationField: field.NewRelation("Link.InvestmentAccounts.Holdings", "apiv1.InvesmentHoldingORM"),
+				RelationField: field.NewRelation("Link.InvestmentAccounts.Holdings", "financial_integration_service_apiv1.InvesmentHoldingORM"),
 			},
 			Securities: struct {
 				field.RelationField
 			}{
-				RelationField: field.NewRelation("Link.InvestmentAccounts.Securities", "apiv1.InvestmentSecurityORM"),
+				RelationField: field.NewRelation("Link.InvestmentAccounts.Securities", "financial_integration_service_apiv1.InvestmentSecurityORM"),
 			},
 		},
 		MortgageAccounts: struct {
 			field.RelationField
 		}{
-			RelationField: field.NewRelation("Link.MortgageAccounts", "apiv1.MortgageAccountORM"),
+			RelationField: field.NewRelation("Link.MortgageAccounts", "financial_integration_service_apiv1.MortgageAccountORM"),
 		},
 		StudentLoanAccounts: struct {
 			field.RelationField
 		}{
-			RelationField: field.NewRelation("Link.StudentLoanAccounts", "apiv1.StudentLoanAccountORM"),
+			RelationField: field.NewRelation("Link.StudentLoanAccounts", "financial_integration_service_apiv1.StudentLoanAccountORM"),
 		},
 	}
 
@@ -283,17 +283,17 @@ func (a userProfileORMHasOneStripeSubscriptions) WithContext(ctx context.Context
 	return &a
 }
 
-func (a userProfileORMHasOneStripeSubscriptions) Model(m *apiv1.UserProfileORM) *userProfileORMHasOneStripeSubscriptionsTx {
+func (a userProfileORMHasOneStripeSubscriptions) Model(m *financial_integration_service_apiv1.UserProfileORM) *userProfileORMHasOneStripeSubscriptionsTx {
 	return &userProfileORMHasOneStripeSubscriptionsTx{a.db.Model(m).Association(a.Name())}
 }
 
 type userProfileORMHasOneStripeSubscriptionsTx struct{ tx *gorm.Association }
 
-func (a userProfileORMHasOneStripeSubscriptionsTx) Find() (result *apiv1.StripeSubscriptionORM, err error) {
+func (a userProfileORMHasOneStripeSubscriptionsTx) Find() (result *financial_integration_service_apiv1.StripeSubscriptionORM, err error) {
 	return result, a.tx.Find(&result)
 }
 
-func (a userProfileORMHasOneStripeSubscriptionsTx) Append(values ...*apiv1.StripeSubscriptionORM) (err error) {
+func (a userProfileORMHasOneStripeSubscriptionsTx) Append(values ...*financial_integration_service_apiv1.StripeSubscriptionORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -301,7 +301,7 @@ func (a userProfileORMHasOneStripeSubscriptionsTx) Append(values ...*apiv1.Strip
 	return a.tx.Append(targetValues...)
 }
 
-func (a userProfileORMHasOneStripeSubscriptionsTx) Replace(values ...*apiv1.StripeSubscriptionORM) (err error) {
+func (a userProfileORMHasOneStripeSubscriptionsTx) Replace(values ...*financial_integration_service_apiv1.StripeSubscriptionORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -309,7 +309,7 @@ func (a userProfileORMHasOneStripeSubscriptionsTx) Replace(values ...*apiv1.Stri
 	return a.tx.Replace(targetValues...)
 }
 
-func (a userProfileORMHasOneStripeSubscriptionsTx) Delete(values ...*apiv1.StripeSubscriptionORM) (err error) {
+func (a userProfileORMHasOneStripeSubscriptionsTx) Delete(values ...*financial_integration_service_apiv1.StripeSubscriptionORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -401,17 +401,17 @@ func (a userProfileORMHasManyLink) WithContext(ctx context.Context) *userProfile
 	return &a
 }
 
-func (a userProfileORMHasManyLink) Model(m *apiv1.UserProfileORM) *userProfileORMHasManyLinkTx {
+func (a userProfileORMHasManyLink) Model(m *financial_integration_service_apiv1.UserProfileORM) *userProfileORMHasManyLinkTx {
 	return &userProfileORMHasManyLinkTx{a.db.Model(m).Association(a.Name())}
 }
 
 type userProfileORMHasManyLinkTx struct{ tx *gorm.Association }
 
-func (a userProfileORMHasManyLinkTx) Find() (result []*apiv1.LinkORM, err error) {
+func (a userProfileORMHasManyLinkTx) Find() (result []*financial_integration_service_apiv1.LinkORM, err error) {
 	return result, a.tx.Find(&result)
 }
 
-func (a userProfileORMHasManyLinkTx) Append(values ...*apiv1.LinkORM) (err error) {
+func (a userProfileORMHasManyLinkTx) Append(values ...*financial_integration_service_apiv1.LinkORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -419,7 +419,7 @@ func (a userProfileORMHasManyLinkTx) Append(values ...*apiv1.LinkORM) (err error
 	return a.tx.Append(targetValues...)
 }
 
-func (a userProfileORMHasManyLinkTx) Replace(values ...*apiv1.LinkORM) (err error) {
+func (a userProfileORMHasManyLinkTx) Replace(values ...*financial_integration_service_apiv1.LinkORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -427,7 +427,7 @@ func (a userProfileORMHasManyLinkTx) Replace(values ...*apiv1.LinkORM) (err erro
 	return a.tx.Replace(targetValues...)
 }
 
-func (a userProfileORMHasManyLinkTx) Delete(values ...*apiv1.LinkORM) (err error) {
+func (a userProfileORMHasManyLinkTx) Delete(values ...*financial_integration_service_apiv1.LinkORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -474,17 +474,17 @@ type IUserProfileORMDo interface {
 	Count() (count int64, err error)
 	Scopes(funcs ...func(gen.Dao) gen.Dao) IUserProfileORMDo
 	Unscoped() IUserProfileORMDo
-	Create(values ...*apiv1.UserProfileORM) error
-	CreateInBatches(values []*apiv1.UserProfileORM, batchSize int) error
-	Save(values ...*apiv1.UserProfileORM) error
-	First() (*apiv1.UserProfileORM, error)
-	Take() (*apiv1.UserProfileORM, error)
-	Last() (*apiv1.UserProfileORM, error)
-	Find() ([]*apiv1.UserProfileORM, error)
-	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*apiv1.UserProfileORM, err error)
-	FindInBatches(result *[]*apiv1.UserProfileORM, batchSize int, fc func(tx gen.Dao, batch int) error) error
+	Create(values ...*financial_integration_service_apiv1.UserProfileORM) error
+	CreateInBatches(values []*financial_integration_service_apiv1.UserProfileORM, batchSize int) error
+	Save(values ...*financial_integration_service_apiv1.UserProfileORM) error
+	First() (*financial_integration_service_apiv1.UserProfileORM, error)
+	Take() (*financial_integration_service_apiv1.UserProfileORM, error)
+	Last() (*financial_integration_service_apiv1.UserProfileORM, error)
+	Find() ([]*financial_integration_service_apiv1.UserProfileORM, error)
+	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*financial_integration_service_apiv1.UserProfileORM, err error)
+	FindInBatches(result *[]*financial_integration_service_apiv1.UserProfileORM, batchSize int, fc func(tx gen.Dao, batch int) error) error
 	Pluck(column field.Expr, dest interface{}) error
-	Delete(...*apiv1.UserProfileORM) (info gen.ResultInfo, err error)
+	Delete(...*financial_integration_service_apiv1.UserProfileORM) (info gen.ResultInfo, err error)
 	Update(column field.Expr, value interface{}) (info gen.ResultInfo, err error)
 	UpdateSimple(columns ...field.AssignExpr) (info gen.ResultInfo, err error)
 	Updates(value interface{}) (info gen.ResultInfo, err error)
@@ -496,18 +496,18 @@ type IUserProfileORMDo interface {
 	Assign(attrs ...field.AssignExpr) IUserProfileORMDo
 	Joins(fields ...field.RelationField) IUserProfileORMDo
 	Preload(fields ...field.RelationField) IUserProfileORMDo
-	FirstOrInit() (*apiv1.UserProfileORM, error)
-	FirstOrCreate() (*apiv1.UserProfileORM, error)
-	FindByPage(offset int, limit int) (result []*apiv1.UserProfileORM, count int64, err error)
+	FirstOrInit() (*financial_integration_service_apiv1.UserProfileORM, error)
+	FirstOrCreate() (*financial_integration_service_apiv1.UserProfileORM, error)
+	FindByPage(offset int, limit int) (result []*financial_integration_service_apiv1.UserProfileORM, count int64, err error)
 	ScanByPage(result interface{}, offset int, limit int) (count int64, err error)
 	Scan(result interface{}) (err error)
 	Returning(value interface{}, columns ...string) IUserProfileORMDo
 	UnderlyingDB() *gorm.DB
 	schema.Tabler
 
-	GetByUserID(user_id int) (result apiv1.UserProfileORM, err error)
-	GetByID(id int) (result apiv1.UserProfileORM, err error)
-	GetByIDs(ids []int) (result []apiv1.UserProfileORM, err error)
+	GetByUserID(user_id int) (result financial_integration_service_apiv1.UserProfileORM, err error)
+	GetByID(id int) (result financial_integration_service_apiv1.UserProfileORM, err error)
+	GetByIDs(ids []int) (result []financial_integration_service_apiv1.UserProfileORM, err error)
 }
 
 // SELECT * FROM @@table
@@ -516,7 +516,7 @@ type IUserProfileORMDo interface {
 //	user_id=@user_id
 //
 // {{end}}
-func (u userProfileORMDo) GetByUserID(user_id int) (result apiv1.UserProfileORM, err error) {
+func (u userProfileORMDo) GetByUserID(user_id int) (result financial_integration_service_apiv1.UserProfileORM, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -539,7 +539,7 @@ func (u userProfileORMDo) GetByUserID(user_id int) (result apiv1.UserProfileORM,
 //	id=@id
 //
 // {{end}}
-func (u userProfileORMDo) GetByID(id int) (result apiv1.UserProfileORM, err error) {
+func (u userProfileORMDo) GetByID(id int) (result financial_integration_service_apiv1.UserProfileORM, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -562,7 +562,7 @@ func (u userProfileORMDo) GetByID(id int) (result apiv1.UserProfileORM, err erro
 //	id IN (@ids)
 //
 // {{end}}
-func (u userProfileORMDo) GetByIDs(ids []int) (result []apiv1.UserProfileORM, err error) {
+func (u userProfileORMDo) GetByIDs(ids []int) (result []financial_integration_service_apiv1.UserProfileORM, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -675,57 +675,57 @@ func (u userProfileORMDo) Unscoped() IUserProfileORMDo {
 	return u.withDO(u.DO.Unscoped())
 }
 
-func (u userProfileORMDo) Create(values ...*apiv1.UserProfileORM) error {
+func (u userProfileORMDo) Create(values ...*financial_integration_service_apiv1.UserProfileORM) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return u.DO.Create(values)
 }
 
-func (u userProfileORMDo) CreateInBatches(values []*apiv1.UserProfileORM, batchSize int) error {
+func (u userProfileORMDo) CreateInBatches(values []*financial_integration_service_apiv1.UserProfileORM, batchSize int) error {
 	return u.DO.CreateInBatches(values, batchSize)
 }
 
 // Save : !!! underlying implementation is different with GORM
 // The method is equivalent to executing the statement: db.Clauses(clause.OnConflict{UpdateAll: true}).Create(values)
-func (u userProfileORMDo) Save(values ...*apiv1.UserProfileORM) error {
+func (u userProfileORMDo) Save(values ...*financial_integration_service_apiv1.UserProfileORM) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return u.DO.Save(values)
 }
 
-func (u userProfileORMDo) First() (*apiv1.UserProfileORM, error) {
+func (u userProfileORMDo) First() (*financial_integration_service_apiv1.UserProfileORM, error) {
 	if result, err := u.DO.First(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.UserProfileORM), nil
+		return result.(*financial_integration_service_apiv1.UserProfileORM), nil
 	}
 }
 
-func (u userProfileORMDo) Take() (*apiv1.UserProfileORM, error) {
+func (u userProfileORMDo) Take() (*financial_integration_service_apiv1.UserProfileORM, error) {
 	if result, err := u.DO.Take(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.UserProfileORM), nil
+		return result.(*financial_integration_service_apiv1.UserProfileORM), nil
 	}
 }
 
-func (u userProfileORMDo) Last() (*apiv1.UserProfileORM, error) {
+func (u userProfileORMDo) Last() (*financial_integration_service_apiv1.UserProfileORM, error) {
 	if result, err := u.DO.Last(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.UserProfileORM), nil
+		return result.(*financial_integration_service_apiv1.UserProfileORM), nil
 	}
 }
 
-func (u userProfileORMDo) Find() ([]*apiv1.UserProfileORM, error) {
+func (u userProfileORMDo) Find() ([]*financial_integration_service_apiv1.UserProfileORM, error) {
 	result, err := u.DO.Find()
-	return result.([]*apiv1.UserProfileORM), err
+	return result.([]*financial_integration_service_apiv1.UserProfileORM), err
 }
 
-func (u userProfileORMDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*apiv1.UserProfileORM, err error) {
-	buf := make([]*apiv1.UserProfileORM, 0, batchSize)
+func (u userProfileORMDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*financial_integration_service_apiv1.UserProfileORM, err error) {
+	buf := make([]*financial_integration_service_apiv1.UserProfileORM, 0, batchSize)
 	err = u.DO.FindInBatches(&buf, batchSize, func(tx gen.Dao, batch int) error {
 		defer func() { results = append(results, buf...) }()
 		return fc(tx, batch)
@@ -733,7 +733,7 @@ func (u userProfileORMDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch i
 	return results, err
 }
 
-func (u userProfileORMDo) FindInBatches(result *[]*apiv1.UserProfileORM, batchSize int, fc func(tx gen.Dao, batch int) error) error {
+func (u userProfileORMDo) FindInBatches(result *[]*financial_integration_service_apiv1.UserProfileORM, batchSize int, fc func(tx gen.Dao, batch int) error) error {
 	return u.DO.FindInBatches(result, batchSize, fc)
 }
 
@@ -759,23 +759,23 @@ func (u userProfileORMDo) Preload(fields ...field.RelationField) IUserProfileORM
 	return &u
 }
 
-func (u userProfileORMDo) FirstOrInit() (*apiv1.UserProfileORM, error) {
+func (u userProfileORMDo) FirstOrInit() (*financial_integration_service_apiv1.UserProfileORM, error) {
 	if result, err := u.DO.FirstOrInit(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.UserProfileORM), nil
+		return result.(*financial_integration_service_apiv1.UserProfileORM), nil
 	}
 }
 
-func (u userProfileORMDo) FirstOrCreate() (*apiv1.UserProfileORM, error) {
+func (u userProfileORMDo) FirstOrCreate() (*financial_integration_service_apiv1.UserProfileORM, error) {
 	if result, err := u.DO.FirstOrCreate(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.UserProfileORM), nil
+		return result.(*financial_integration_service_apiv1.UserProfileORM), nil
 	}
 }
 
-func (u userProfileORMDo) FindByPage(offset int, limit int) (result []*apiv1.UserProfileORM, count int64, err error) {
+func (u userProfileORMDo) FindByPage(offset int, limit int) (result []*financial_integration_service_apiv1.UserProfileORM, count int64, err error) {
 	result, err = u.Offset(offset).Limit(limit).Find()
 	if err != nil {
 		return
@@ -804,7 +804,7 @@ func (u userProfileORMDo) Scan(result interface{}) (err error) {
 	return u.DO.Scan(result)
 }
 
-func (u userProfileORMDo) Delete(models ...*apiv1.UserProfileORM) (result gen.ResultInfo, err error) {
+func (u userProfileORMDo) Delete(models ...*financial_integration_service_apiv1.UserProfileORM) (result gen.ResultInfo, err error) {
 	return u.DO.Delete(models)
 }
 

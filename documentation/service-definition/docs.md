@@ -203,6 +203,8 @@
 | user_id | [uint64](#uint64) |  | @gotag: ch:&#34;user_id&#34; |
 | created_at | [string](#string) |  |  |
 | sign | [int32](#int32) |  |  |
+| time | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+| additional_properties | [google.protobuf.Any](#google-protobuf-Any) |  |  |
 
 
 
@@ -257,6 +259,8 @@
 | id | [uint64](#uint64) |  | @gotag: ch:&#34;id&#34; |
 | flow | [ReCurringFlow](#financial_integration_service_api-v1-ReCurringFlow) |  | @gotag: ch:&#34;flow&#34; |
 | sign | [int32](#int32) |  |  |
+| time | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+| additional_properties | [google.protobuf.Any](#google-protobuf-Any) |  |  |
 
 
 
@@ -311,6 +315,8 @@
 | payment_meta_ppd_id | [string](#string) |  |  |
 | payment_meta_reason | [string](#string) |  |  |
 | payment_meta_reference_number | [string](#string) |  |  |
+| time | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+| additional_properties | [google.protobuf.Any](#google-protobuf-Any) |  |  |
 
 
 

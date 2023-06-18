@@ -8,7 +8,7 @@ import (
 	"context"
 	"strings"
 
-	apiv1 "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
+	financial_integration_service_apiv1 "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 	"gorm.io/gorm/schema"
@@ -24,7 +24,7 @@ func newMortgageAccountORM(db *gorm.DB, opts ...gen.DOOption) mortgageAccountORM
 	_mortgageAccountORM := mortgageAccountORM{}
 
 	_mortgageAccountORM.mortgageAccountORMDo.UseDB(db, opts...)
-	_mortgageAccountORM.mortgageAccountORMDo.UseModel(&apiv1.MortgageAccountORM{})
+	_mortgageAccountORM.mortgageAccountORMDo.UseModel(&financial_integration_service_apiv1.MortgageAccountORM{})
 
 	tableName := _mortgageAccountORM.mortgageAccountORMDo.TableName()
 	_mortgageAccountORM.ALL = field.NewAsterisk(tableName)
@@ -246,17 +246,17 @@ type IMortgageAccountORMDo interface {
 	Count() (count int64, err error)
 	Scopes(funcs ...func(gen.Dao) gen.Dao) IMortgageAccountORMDo
 	Unscoped() IMortgageAccountORMDo
-	Create(values ...*apiv1.MortgageAccountORM) error
-	CreateInBatches(values []*apiv1.MortgageAccountORM, batchSize int) error
-	Save(values ...*apiv1.MortgageAccountORM) error
-	First() (*apiv1.MortgageAccountORM, error)
-	Take() (*apiv1.MortgageAccountORM, error)
-	Last() (*apiv1.MortgageAccountORM, error)
-	Find() ([]*apiv1.MortgageAccountORM, error)
-	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*apiv1.MortgageAccountORM, err error)
-	FindInBatches(result *[]*apiv1.MortgageAccountORM, batchSize int, fc func(tx gen.Dao, batch int) error) error
+	Create(values ...*financial_integration_service_apiv1.MortgageAccountORM) error
+	CreateInBatches(values []*financial_integration_service_apiv1.MortgageAccountORM, batchSize int) error
+	Save(values ...*financial_integration_service_apiv1.MortgageAccountORM) error
+	First() (*financial_integration_service_apiv1.MortgageAccountORM, error)
+	Take() (*financial_integration_service_apiv1.MortgageAccountORM, error)
+	Last() (*financial_integration_service_apiv1.MortgageAccountORM, error)
+	Find() ([]*financial_integration_service_apiv1.MortgageAccountORM, error)
+	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*financial_integration_service_apiv1.MortgageAccountORM, err error)
+	FindInBatches(result *[]*financial_integration_service_apiv1.MortgageAccountORM, batchSize int, fc func(tx gen.Dao, batch int) error) error
 	Pluck(column field.Expr, dest interface{}) error
-	Delete(...*apiv1.MortgageAccountORM) (info gen.ResultInfo, err error)
+	Delete(...*financial_integration_service_apiv1.MortgageAccountORM) (info gen.ResultInfo, err error)
 	Update(column field.Expr, value interface{}) (info gen.ResultInfo, err error)
 	UpdateSimple(columns ...field.AssignExpr) (info gen.ResultInfo, err error)
 	Updates(value interface{}) (info gen.ResultInfo, err error)
@@ -268,18 +268,18 @@ type IMortgageAccountORMDo interface {
 	Assign(attrs ...field.AssignExpr) IMortgageAccountORMDo
 	Joins(fields ...field.RelationField) IMortgageAccountORMDo
 	Preload(fields ...field.RelationField) IMortgageAccountORMDo
-	FirstOrInit() (*apiv1.MortgageAccountORM, error)
-	FirstOrCreate() (*apiv1.MortgageAccountORM, error)
-	FindByPage(offset int, limit int) (result []*apiv1.MortgageAccountORM, count int64, err error)
+	FirstOrInit() (*financial_integration_service_apiv1.MortgageAccountORM, error)
+	FirstOrCreate() (*financial_integration_service_apiv1.MortgageAccountORM, error)
+	FindByPage(offset int, limit int) (result []*financial_integration_service_apiv1.MortgageAccountORM, count int64, err error)
 	ScanByPage(result interface{}, offset int, limit int) (count int64, err error)
 	Scan(result interface{}) (err error)
 	Returning(value interface{}, columns ...string) IMortgageAccountORMDo
 	UnderlyingDB() *gorm.DB
 	schema.Tabler
 
-	GetByUserID(user_id int) (result apiv1.MortgageAccountORM, err error)
-	GetByID(id int) (result apiv1.MortgageAccountORM, err error)
-	GetByIDs(ids []int) (result []apiv1.MortgageAccountORM, err error)
+	GetByUserID(user_id int) (result financial_integration_service_apiv1.MortgageAccountORM, err error)
+	GetByID(id int) (result financial_integration_service_apiv1.MortgageAccountORM, err error)
+	GetByIDs(ids []int) (result []financial_integration_service_apiv1.MortgageAccountORM, err error)
 }
 
 // SELECT * FROM @@table
@@ -288,7 +288,7 @@ type IMortgageAccountORMDo interface {
 //	user_id=@user_id
 //
 // {{end}}
-func (m mortgageAccountORMDo) GetByUserID(user_id int) (result apiv1.MortgageAccountORM, err error) {
+func (m mortgageAccountORMDo) GetByUserID(user_id int) (result financial_integration_service_apiv1.MortgageAccountORM, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -311,7 +311,7 @@ func (m mortgageAccountORMDo) GetByUserID(user_id int) (result apiv1.MortgageAcc
 //	id=@id
 //
 // {{end}}
-func (m mortgageAccountORMDo) GetByID(id int) (result apiv1.MortgageAccountORM, err error) {
+func (m mortgageAccountORMDo) GetByID(id int) (result financial_integration_service_apiv1.MortgageAccountORM, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -334,7 +334,7 @@ func (m mortgageAccountORMDo) GetByID(id int) (result apiv1.MortgageAccountORM, 
 //	id IN (@ids)
 //
 // {{end}}
-func (m mortgageAccountORMDo) GetByIDs(ids []int) (result []apiv1.MortgageAccountORM, err error) {
+func (m mortgageAccountORMDo) GetByIDs(ids []int) (result []financial_integration_service_apiv1.MortgageAccountORM, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -447,57 +447,57 @@ func (m mortgageAccountORMDo) Unscoped() IMortgageAccountORMDo {
 	return m.withDO(m.DO.Unscoped())
 }
 
-func (m mortgageAccountORMDo) Create(values ...*apiv1.MortgageAccountORM) error {
+func (m mortgageAccountORMDo) Create(values ...*financial_integration_service_apiv1.MortgageAccountORM) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return m.DO.Create(values)
 }
 
-func (m mortgageAccountORMDo) CreateInBatches(values []*apiv1.MortgageAccountORM, batchSize int) error {
+func (m mortgageAccountORMDo) CreateInBatches(values []*financial_integration_service_apiv1.MortgageAccountORM, batchSize int) error {
 	return m.DO.CreateInBatches(values, batchSize)
 }
 
 // Save : !!! underlying implementation is different with GORM
 // The method is equivalent to executing the statement: db.Clauses(clause.OnConflict{UpdateAll: true}).Create(values)
-func (m mortgageAccountORMDo) Save(values ...*apiv1.MortgageAccountORM) error {
+func (m mortgageAccountORMDo) Save(values ...*financial_integration_service_apiv1.MortgageAccountORM) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return m.DO.Save(values)
 }
 
-func (m mortgageAccountORMDo) First() (*apiv1.MortgageAccountORM, error) {
+func (m mortgageAccountORMDo) First() (*financial_integration_service_apiv1.MortgageAccountORM, error) {
 	if result, err := m.DO.First(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.MortgageAccountORM), nil
+		return result.(*financial_integration_service_apiv1.MortgageAccountORM), nil
 	}
 }
 
-func (m mortgageAccountORMDo) Take() (*apiv1.MortgageAccountORM, error) {
+func (m mortgageAccountORMDo) Take() (*financial_integration_service_apiv1.MortgageAccountORM, error) {
 	if result, err := m.DO.Take(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.MortgageAccountORM), nil
+		return result.(*financial_integration_service_apiv1.MortgageAccountORM), nil
 	}
 }
 
-func (m mortgageAccountORMDo) Last() (*apiv1.MortgageAccountORM, error) {
+func (m mortgageAccountORMDo) Last() (*financial_integration_service_apiv1.MortgageAccountORM, error) {
 	if result, err := m.DO.Last(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.MortgageAccountORM), nil
+		return result.(*financial_integration_service_apiv1.MortgageAccountORM), nil
 	}
 }
 
-func (m mortgageAccountORMDo) Find() ([]*apiv1.MortgageAccountORM, error) {
+func (m mortgageAccountORMDo) Find() ([]*financial_integration_service_apiv1.MortgageAccountORM, error) {
 	result, err := m.DO.Find()
-	return result.([]*apiv1.MortgageAccountORM), err
+	return result.([]*financial_integration_service_apiv1.MortgageAccountORM), err
 }
 
-func (m mortgageAccountORMDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*apiv1.MortgageAccountORM, err error) {
-	buf := make([]*apiv1.MortgageAccountORM, 0, batchSize)
+func (m mortgageAccountORMDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*financial_integration_service_apiv1.MortgageAccountORM, err error) {
+	buf := make([]*financial_integration_service_apiv1.MortgageAccountORM, 0, batchSize)
 	err = m.DO.FindInBatches(&buf, batchSize, func(tx gen.Dao, batch int) error {
 		defer func() { results = append(results, buf...) }()
 		return fc(tx, batch)
@@ -505,7 +505,7 @@ func (m mortgageAccountORMDo) FindInBatch(batchSize int, fc func(tx gen.Dao, bat
 	return results, err
 }
 
-func (m mortgageAccountORMDo) FindInBatches(result *[]*apiv1.MortgageAccountORM, batchSize int, fc func(tx gen.Dao, batch int) error) error {
+func (m mortgageAccountORMDo) FindInBatches(result *[]*financial_integration_service_apiv1.MortgageAccountORM, batchSize int, fc func(tx gen.Dao, batch int) error) error {
 	return m.DO.FindInBatches(result, batchSize, fc)
 }
 
@@ -531,23 +531,23 @@ func (m mortgageAccountORMDo) Preload(fields ...field.RelationField) IMortgageAc
 	return &m
 }
 
-func (m mortgageAccountORMDo) FirstOrInit() (*apiv1.MortgageAccountORM, error) {
+func (m mortgageAccountORMDo) FirstOrInit() (*financial_integration_service_apiv1.MortgageAccountORM, error) {
 	if result, err := m.DO.FirstOrInit(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.MortgageAccountORM), nil
+		return result.(*financial_integration_service_apiv1.MortgageAccountORM), nil
 	}
 }
 
-func (m mortgageAccountORMDo) FirstOrCreate() (*apiv1.MortgageAccountORM, error) {
+func (m mortgageAccountORMDo) FirstOrCreate() (*financial_integration_service_apiv1.MortgageAccountORM, error) {
 	if result, err := m.DO.FirstOrCreate(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.MortgageAccountORM), nil
+		return result.(*financial_integration_service_apiv1.MortgageAccountORM), nil
 	}
 }
 
-func (m mortgageAccountORMDo) FindByPage(offset int, limit int) (result []*apiv1.MortgageAccountORM, count int64, err error) {
+func (m mortgageAccountORMDo) FindByPage(offset int, limit int) (result []*financial_integration_service_apiv1.MortgageAccountORM, count int64, err error) {
 	result, err = m.Offset(offset).Limit(limit).Find()
 	if err != nil {
 		return
@@ -576,7 +576,7 @@ func (m mortgageAccountORMDo) Scan(result interface{}) (err error) {
 	return m.DO.Scan(result)
 }
 
-func (m mortgageAccountORMDo) Delete(models ...*apiv1.MortgageAccountORM) (result gen.ResultInfo, err error) {
+func (m mortgageAccountORMDo) Delete(models ...*financial_integration_service_apiv1.MortgageAccountORM) (result gen.ResultInfo, err error) {
 	return m.DO.Delete(models)
 }
 

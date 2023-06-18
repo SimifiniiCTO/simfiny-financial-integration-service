@@ -1,4 +1,4 @@
-FROM golang:1.18-alpine as builder
+FROM golang:1.20-alpine as builder
 
 ARG REVISION
 
@@ -17,12 +17,12 @@ COPY . .
 RUN go mod download
 
 RUN CGO_ENABLED=0 go build -ldflags \
-    						"-s -w -X github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/version.REVISION=${REVISION}" \
-							-a -o bin/podinfo cmd/podinfo/*
+	"-s -w -X github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/version.REVISION=${REVISION}" \
+	-a -o bin/podinfo cmd/podinfo/*
 
 RUN CGO_ENABLED=0 go build -ldflags \
-    						"-s -w -X github.com/SimifiniiCTO/simfinii/src/backend/services//financial-integration-service/pkg/version.REVISION=${REVISION}" \
-							-a -o bin/podcli cmd/podcli/*
+	"-s -w -X github.com/SimifiniiCTO/simfinii/src/backend/services//financial-integration-service/pkg/version.REVISION=${REVISION}" \
+	-a -o bin/podcli cmd/podcli/*
 
 FROM alpine
 
@@ -33,9 +33,9 @@ ARG REVISION
 LABEL maintainer="yoanyomba"
 
 RUN addgroup -S app \
-    && adduser -S -G app app \
-    && apk --no-cache add \
-    ca-certificates curl netcat-openbsd
+	&& adduser -S -G app app \
+	&& apk --no-cache add \
+	ca-certificates curl netcat-openbsd
 
 WORKDIR /home/app
 
@@ -50,7 +50,6 @@ COPY ./buf.gen.yaml .
 RUN set -ex && apk --no-cache add sudo
 RUN apk update && apk add bash
 
-RUN curl -Ls https://download.newrelic.com/install/newrelic-cli/scripts/install.sh | bash && sudo NEW_RELIC_API_KEY=NRAK-FGBHISKJUMWR9DXMIV4Q4EFZJTK NEW_RELIC_ACCOUNT_ID=3270596 /usr/local/bin/newrelic install -n logs-integration
 RUN chown -R app:app ./
 
 USER app

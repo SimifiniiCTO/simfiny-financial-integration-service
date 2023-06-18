@@ -8,7 +8,7 @@ import (
 	"context"
 	"strings"
 
-	apiv1 "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
+	financial_integration_service_apiv1 "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 	"gorm.io/gorm/schema"
@@ -24,7 +24,7 @@ func newCreditAccountORM(db *gorm.DB, opts ...gen.DOOption) creditAccountORM {
 	_creditAccountORM := creditAccountORM{}
 
 	_creditAccountORM.creditAccountORMDo.UseDB(db, opts...)
-	_creditAccountORM.creditAccountORMDo.UseModel(&apiv1.CreditAccountORM{})
+	_creditAccountORM.creditAccountORMDo.UseModel(&financial_integration_service_apiv1.CreditAccountORM{})
 
 	tableName := _creditAccountORM.creditAccountORMDo.TableName()
 	_creditAccountORM.ALL = field.NewAsterisk(tableName)
@@ -51,7 +51,7 @@ func newCreditAccountORM(db *gorm.DB, opts ...gen.DOOption) creditAccountORM {
 	_creditAccountORM.Aprs = creditAccountORMHasManyAprs{
 		db: db.Session(&gorm.Session{}),
 
-		RelationField: field.NewRelation("Aprs", "apiv1.AprORM"),
+		RelationField: field.NewRelation("Aprs", "financial_integration_service_apiv1.AprORM"),
 	}
 
 	_creditAccountORM.fillFieldMap()
@@ -194,17 +194,17 @@ func (a creditAccountORMHasManyAprs) WithContext(ctx context.Context) *creditAcc
 	return &a
 }
 
-func (a creditAccountORMHasManyAprs) Model(m *apiv1.CreditAccountORM) *creditAccountORMHasManyAprsTx {
+func (a creditAccountORMHasManyAprs) Model(m *financial_integration_service_apiv1.CreditAccountORM) *creditAccountORMHasManyAprsTx {
 	return &creditAccountORMHasManyAprsTx{a.db.Model(m).Association(a.Name())}
 }
 
 type creditAccountORMHasManyAprsTx struct{ tx *gorm.Association }
 
-func (a creditAccountORMHasManyAprsTx) Find() (result []*apiv1.AprORM, err error) {
+func (a creditAccountORMHasManyAprsTx) Find() (result []*financial_integration_service_apiv1.AprORM, err error) {
 	return result, a.tx.Find(&result)
 }
 
-func (a creditAccountORMHasManyAprsTx) Append(values ...*apiv1.AprORM) (err error) {
+func (a creditAccountORMHasManyAprsTx) Append(values ...*financial_integration_service_apiv1.AprORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -212,7 +212,7 @@ func (a creditAccountORMHasManyAprsTx) Append(values ...*apiv1.AprORM) (err erro
 	return a.tx.Append(targetValues...)
 }
 
-func (a creditAccountORMHasManyAprsTx) Replace(values ...*apiv1.AprORM) (err error) {
+func (a creditAccountORMHasManyAprsTx) Replace(values ...*financial_integration_service_apiv1.AprORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -220,7 +220,7 @@ func (a creditAccountORMHasManyAprsTx) Replace(values ...*apiv1.AprORM) (err err
 	return a.tx.Replace(targetValues...)
 }
 
-func (a creditAccountORMHasManyAprsTx) Delete(values ...*apiv1.AprORM) (err error) {
+func (a creditAccountORMHasManyAprsTx) Delete(values ...*financial_integration_service_apiv1.AprORM) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -267,17 +267,17 @@ type ICreditAccountORMDo interface {
 	Count() (count int64, err error)
 	Scopes(funcs ...func(gen.Dao) gen.Dao) ICreditAccountORMDo
 	Unscoped() ICreditAccountORMDo
-	Create(values ...*apiv1.CreditAccountORM) error
-	CreateInBatches(values []*apiv1.CreditAccountORM, batchSize int) error
-	Save(values ...*apiv1.CreditAccountORM) error
-	First() (*apiv1.CreditAccountORM, error)
-	Take() (*apiv1.CreditAccountORM, error)
-	Last() (*apiv1.CreditAccountORM, error)
-	Find() ([]*apiv1.CreditAccountORM, error)
-	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*apiv1.CreditAccountORM, err error)
-	FindInBatches(result *[]*apiv1.CreditAccountORM, batchSize int, fc func(tx gen.Dao, batch int) error) error
+	Create(values ...*financial_integration_service_apiv1.CreditAccountORM) error
+	CreateInBatches(values []*financial_integration_service_apiv1.CreditAccountORM, batchSize int) error
+	Save(values ...*financial_integration_service_apiv1.CreditAccountORM) error
+	First() (*financial_integration_service_apiv1.CreditAccountORM, error)
+	Take() (*financial_integration_service_apiv1.CreditAccountORM, error)
+	Last() (*financial_integration_service_apiv1.CreditAccountORM, error)
+	Find() ([]*financial_integration_service_apiv1.CreditAccountORM, error)
+	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*financial_integration_service_apiv1.CreditAccountORM, err error)
+	FindInBatches(result *[]*financial_integration_service_apiv1.CreditAccountORM, batchSize int, fc func(tx gen.Dao, batch int) error) error
 	Pluck(column field.Expr, dest interface{}) error
-	Delete(...*apiv1.CreditAccountORM) (info gen.ResultInfo, err error)
+	Delete(...*financial_integration_service_apiv1.CreditAccountORM) (info gen.ResultInfo, err error)
 	Update(column field.Expr, value interface{}) (info gen.ResultInfo, err error)
 	UpdateSimple(columns ...field.AssignExpr) (info gen.ResultInfo, err error)
 	Updates(value interface{}) (info gen.ResultInfo, err error)
@@ -289,18 +289,18 @@ type ICreditAccountORMDo interface {
 	Assign(attrs ...field.AssignExpr) ICreditAccountORMDo
 	Joins(fields ...field.RelationField) ICreditAccountORMDo
 	Preload(fields ...field.RelationField) ICreditAccountORMDo
-	FirstOrInit() (*apiv1.CreditAccountORM, error)
-	FirstOrCreate() (*apiv1.CreditAccountORM, error)
-	FindByPage(offset int, limit int) (result []*apiv1.CreditAccountORM, count int64, err error)
+	FirstOrInit() (*financial_integration_service_apiv1.CreditAccountORM, error)
+	FirstOrCreate() (*financial_integration_service_apiv1.CreditAccountORM, error)
+	FindByPage(offset int, limit int) (result []*financial_integration_service_apiv1.CreditAccountORM, count int64, err error)
 	ScanByPage(result interface{}, offset int, limit int) (count int64, err error)
 	Scan(result interface{}) (err error)
 	Returning(value interface{}, columns ...string) ICreditAccountORMDo
 	UnderlyingDB() *gorm.DB
 	schema.Tabler
 
-	GetByUserID(user_id int) (result apiv1.CreditAccountORM, err error)
-	GetByID(id int) (result apiv1.CreditAccountORM, err error)
-	GetByIDs(ids []int) (result []apiv1.CreditAccountORM, err error)
+	GetByUserID(user_id int) (result financial_integration_service_apiv1.CreditAccountORM, err error)
+	GetByID(id int) (result financial_integration_service_apiv1.CreditAccountORM, err error)
+	GetByIDs(ids []int) (result []financial_integration_service_apiv1.CreditAccountORM, err error)
 }
 
 // SELECT * FROM @@table
@@ -309,7 +309,7 @@ type ICreditAccountORMDo interface {
 //	user_id=@user_id
 //
 // {{end}}
-func (c creditAccountORMDo) GetByUserID(user_id int) (result apiv1.CreditAccountORM, err error) {
+func (c creditAccountORMDo) GetByUserID(user_id int) (result financial_integration_service_apiv1.CreditAccountORM, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -332,7 +332,7 @@ func (c creditAccountORMDo) GetByUserID(user_id int) (result apiv1.CreditAccount
 //	id=@id
 //
 // {{end}}
-func (c creditAccountORMDo) GetByID(id int) (result apiv1.CreditAccountORM, err error) {
+func (c creditAccountORMDo) GetByID(id int) (result financial_integration_service_apiv1.CreditAccountORM, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -355,7 +355,7 @@ func (c creditAccountORMDo) GetByID(id int) (result apiv1.CreditAccountORM, err 
 //	id IN (@ids)
 //
 // {{end}}
-func (c creditAccountORMDo) GetByIDs(ids []int) (result []apiv1.CreditAccountORM, err error) {
+func (c creditAccountORMDo) GetByIDs(ids []int) (result []financial_integration_service_apiv1.CreditAccountORM, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -468,57 +468,57 @@ func (c creditAccountORMDo) Unscoped() ICreditAccountORMDo {
 	return c.withDO(c.DO.Unscoped())
 }
 
-func (c creditAccountORMDo) Create(values ...*apiv1.CreditAccountORM) error {
+func (c creditAccountORMDo) Create(values ...*financial_integration_service_apiv1.CreditAccountORM) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return c.DO.Create(values)
 }
 
-func (c creditAccountORMDo) CreateInBatches(values []*apiv1.CreditAccountORM, batchSize int) error {
+func (c creditAccountORMDo) CreateInBatches(values []*financial_integration_service_apiv1.CreditAccountORM, batchSize int) error {
 	return c.DO.CreateInBatches(values, batchSize)
 }
 
 // Save : !!! underlying implementation is different with GORM
 // The method is equivalent to executing the statement: db.Clauses(clause.OnConflict{UpdateAll: true}).Create(values)
-func (c creditAccountORMDo) Save(values ...*apiv1.CreditAccountORM) error {
+func (c creditAccountORMDo) Save(values ...*financial_integration_service_apiv1.CreditAccountORM) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return c.DO.Save(values)
 }
 
-func (c creditAccountORMDo) First() (*apiv1.CreditAccountORM, error) {
+func (c creditAccountORMDo) First() (*financial_integration_service_apiv1.CreditAccountORM, error) {
 	if result, err := c.DO.First(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.CreditAccountORM), nil
+		return result.(*financial_integration_service_apiv1.CreditAccountORM), nil
 	}
 }
 
-func (c creditAccountORMDo) Take() (*apiv1.CreditAccountORM, error) {
+func (c creditAccountORMDo) Take() (*financial_integration_service_apiv1.CreditAccountORM, error) {
 	if result, err := c.DO.Take(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.CreditAccountORM), nil
+		return result.(*financial_integration_service_apiv1.CreditAccountORM), nil
 	}
 }
 
-func (c creditAccountORMDo) Last() (*apiv1.CreditAccountORM, error) {
+func (c creditAccountORMDo) Last() (*financial_integration_service_apiv1.CreditAccountORM, error) {
 	if result, err := c.DO.Last(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.CreditAccountORM), nil
+		return result.(*financial_integration_service_apiv1.CreditAccountORM), nil
 	}
 }
 
-func (c creditAccountORMDo) Find() ([]*apiv1.CreditAccountORM, error) {
+func (c creditAccountORMDo) Find() ([]*financial_integration_service_apiv1.CreditAccountORM, error) {
 	result, err := c.DO.Find()
-	return result.([]*apiv1.CreditAccountORM), err
+	return result.([]*financial_integration_service_apiv1.CreditAccountORM), err
 }
 
-func (c creditAccountORMDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*apiv1.CreditAccountORM, err error) {
-	buf := make([]*apiv1.CreditAccountORM, 0, batchSize)
+func (c creditAccountORMDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*financial_integration_service_apiv1.CreditAccountORM, err error) {
+	buf := make([]*financial_integration_service_apiv1.CreditAccountORM, 0, batchSize)
 	err = c.DO.FindInBatches(&buf, batchSize, func(tx gen.Dao, batch int) error {
 		defer func() { results = append(results, buf...) }()
 		return fc(tx, batch)
@@ -526,7 +526,7 @@ func (c creditAccountORMDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch
 	return results, err
 }
 
-func (c creditAccountORMDo) FindInBatches(result *[]*apiv1.CreditAccountORM, batchSize int, fc func(tx gen.Dao, batch int) error) error {
+func (c creditAccountORMDo) FindInBatches(result *[]*financial_integration_service_apiv1.CreditAccountORM, batchSize int, fc func(tx gen.Dao, batch int) error) error {
 	return c.DO.FindInBatches(result, batchSize, fc)
 }
 
@@ -552,23 +552,23 @@ func (c creditAccountORMDo) Preload(fields ...field.RelationField) ICreditAccoun
 	return &c
 }
 
-func (c creditAccountORMDo) FirstOrInit() (*apiv1.CreditAccountORM, error) {
+func (c creditAccountORMDo) FirstOrInit() (*financial_integration_service_apiv1.CreditAccountORM, error) {
 	if result, err := c.DO.FirstOrInit(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.CreditAccountORM), nil
+		return result.(*financial_integration_service_apiv1.CreditAccountORM), nil
 	}
 }
 
-func (c creditAccountORMDo) FirstOrCreate() (*apiv1.CreditAccountORM, error) {
+func (c creditAccountORMDo) FirstOrCreate() (*financial_integration_service_apiv1.CreditAccountORM, error) {
 	if result, err := c.DO.FirstOrCreate(); err != nil {
 		return nil, err
 	} else {
-		return result.(*apiv1.CreditAccountORM), nil
+		return result.(*financial_integration_service_apiv1.CreditAccountORM), nil
 	}
 }
 
-func (c creditAccountORMDo) FindByPage(offset int, limit int) (result []*apiv1.CreditAccountORM, count int64, err error) {
+func (c creditAccountORMDo) FindByPage(offset int, limit int) (result []*financial_integration_service_apiv1.CreditAccountORM, count int64, err error) {
 	result, err = c.Offset(offset).Limit(limit).Find()
 	if err != nil {
 		return
@@ -597,7 +597,7 @@ func (c creditAccountORMDo) Scan(result interface{}) (err error) {
 	return c.DO.Scan(result)
 }
 
-func (c creditAccountORMDo) Delete(models ...*apiv1.CreditAccountORM) (result gen.ResultInfo, err error) {
+func (c creditAccountORMDo) Delete(models ...*financial_integration_service_apiv1.CreditAccountORM) (result gen.ResultInfo, err error) {
 	return c.DO.Delete(models)
 }
 

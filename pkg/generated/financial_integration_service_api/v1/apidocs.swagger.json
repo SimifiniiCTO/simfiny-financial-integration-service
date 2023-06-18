@@ -3839,6 +3839,13 @@
         "sign": {
           "type": "integer",
           "format": "int32"
+        },
+        "time": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "additionalProperties": {
+          "$ref": "#/definitions/Any"
         }
       }
     },
@@ -4329,6 +4336,13 @@
         },
         "paymentMetaReferenceNumber": {
           "type": "string"
+        },
+        "time": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "additionalProperties": {
+          "$ref": "#/definitions/Any"
         }
       }
     },
