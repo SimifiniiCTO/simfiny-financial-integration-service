@@ -5,6 +5,7 @@ import (
 
 	"github.com/plaid/plaid-go/v12/plaid"
 
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/helper"
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 )
 
@@ -28,7 +29,7 @@ func NewPlaidBankAccount(userID uint64, bankAccount *plaid.AccountBase) (*schema
 		Currency:       bankAccount.Balances.GetIsoCurrencyCode(),
 		CurrentFunds:   float64(bankAccount.Balances.GetCurrent()),
 		BalanceLimit:   uint64(bankAccount.Balances.GetLimit()),
-		Pockets:        []*schema.Pocket{},
+		Pockets:        helper.DefaultPockets(),
 		PlaidAccountId: bankAccount.AccountId,
 		Subtype:        string(bankAccount.GetSubtype()),
 		Status:         schema.BankAccountStatus_BANK_ACCOUNT_STATUS_ACTIVE,

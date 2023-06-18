@@ -6,6 +6,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/helper"
 	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 )
 
@@ -40,7 +41,7 @@ func (s *Server) CreateBankAccount(ctx context.Context, req *proto.CreateBankAcc
 	// if a set of pockets are not already present for the given account, we must create them
 	// pockets are crucial given they fascilitate the abstraction of sub-bank accounts better enabling proper goal management
 	if len(req.BankAccount.Pockets) == 0 {
-		req.BankAccount.Pockets = s.DefaultPockets()
+		req.BankAccount.Pockets = helper.DefaultPockets()
 	}
 
 	createdBankAcct, err := s.conn.CreateBankAccount(ctx, req.UserId, req.BankAccount)
@@ -51,34 +52,4 @@ func (s *Server) CreateBankAccount(ctx context.Context, req *proto.CreateBankAcc
 	return &proto.CreateBankAccountResponse{
 		BankAccountId: createdBankAcct.Id,
 	}, nil
-}
-
-// DefaultPockets returns the default pockets for a bank accout.
-// These pockets are used to fascilitate the abstraction of sub-bank accounts better enabling proper goal management
-// IDEALLY pockets should partition ONLY all BANK ACCOUNTS a given user utilizes.
-// TODO: fascilitate this later
-func (s *Server) DefaultPockets() []*proto.Pocket {
-	return []*proto.Pocket{
-		{
-			Type: proto.PocketType_POCKET_TYPE_DEBT_REDUCTION,
-		},
-		{
-			Type: proto.PocketType_POCKET_TYPE_EMERGENCY_FUND,
-		},
-		{
-			Type: proto.PocketType_POCKET_TYPE_DISCRETIONARY_SPENDING,
-		},
-		{
-			Type: proto.PocketType_POCKET_TYPE_FUN_MONEY,
-		},
-		{
-			Type: proto.PocketType_POCKET_TYPE_LONG_TERM_SAVINGS,
-		},
-		{
-			Type: proto.PocketType_POCKET_TYPE_SHORT_TERM_SAVINGS,
-		},
-		{
-			Type: proto.PocketType_POCKET_TYPE_INVESTMENT,
-		},
-	}
 }

@@ -9,6 +9,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/helper"
 	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 )
 
@@ -85,7 +86,7 @@ func (s *Server) autoGenerateManualBankAccount(ctx context.Context, userID *uint
 		Currency:       "USD",
 		CurrentFunds:   0,
 		BalanceLimit:   10000,
-		Pockets:        s.DefaultPockets(),
+		Pockets:        helper.DefaultPockets(),
 		PlaidAccountId: "",
 		Subtype:        "deposit",
 	}, nil

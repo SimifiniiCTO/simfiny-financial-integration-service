@@ -3,7 +3,6 @@ package grpc
 import (
 	"context"
 	"fmt"
-	"reflect"
 	"testing"
 
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/helper"
@@ -90,40 +89,6 @@ func TestServer_CreateBankAccount(t *testing.T) {
 
 			if !tt.wantErr {
 				assert.NotNil(t, got)
-			}
-		})
-	}
-}
-
-func TestServer_defaultPockets(t *testing.T) {
-	tests := []struct {
-		name string
-		s    *Server
-		want []*proto.Pocket
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := tt.s.DefaultPockets(); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("Server.defaultPockets() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
-
-func TestServer_DefaultPockets(t *testing.T) {
-	tests := []struct {
-		name string
-		s    *Server
-		want []*proto.Pocket
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := tt.s.DefaultPockets(); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("Server.DefaultPockets() = %v, want %v", got, tt.want)
 			}
 		})
 	}
