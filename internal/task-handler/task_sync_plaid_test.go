@@ -6,70 +6,57 @@ import (
 	"testing"
 
 	"github.com/SimifiniiCTO/asynq"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/helper"
 	apiv1 "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
+	"github.com/stretchr/testify/assert"
 )
-
-func TestSyncPlaidTaskPayload_String(t *testing.T) {
-	tests := []struct {
-		name string
-		tr   *SyncPlaidTaskPayload
-		want *string
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := tt.tr.String(); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("SyncPlaidTaskPayload.String() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
-
-func TestNewSyncPlaidTask(t *testing.T) {
-	type args struct {
-		userId          uint64
-		accessToken     string
-		plaidLinkItemId uint64
-	}
-	tests := []struct {
-		name    string
-		args    args
-		want    *asynq.Task
-		wantErr bool
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			got, err := NewSyncPlaidTask(tt.args.userId, tt.args.accessToken, tt.args.plaidLinkItemId)
-			if (err != nil) != tt.wantErr {
-				t.Errorf("NewSyncPlaidTask() error = %v, wantErr %v", err, tt.wantErr)
-				return
-			}
-			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("NewSyncPlaidTask() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
 
 func TestTaskHandler_RunSyncPlaidTransactionsTask(t *testing.T) {
 	type args struct {
-		ctx  context.Context
-		task *asynq.Task
+		ctx context.Context
 	}
 	tests := []struct {
-		name    string
-		th      *TaskHandler
-		args    args
-		wantErr bool
+		name         string
+		th           *TaskHandler
+		precondition func(t *testing.T, arg *args) *asynq.Task
+		args         args
+		wantErr      bool
 	}{
-		// TODO: Add test cases.
+		{
+			name: "runSyncPlaidTransactionsTask",
+			th:   testTaskHandler,
+			precondition: func(t *testing.T, arg *args) *asynq.Task {
+
+				// create a user and associate a link to said user
+				profile := helper.GenereateRandomUserProfileForTest()
+				profile.Link[0].PlaidLink.ItemId = testItemId
+				profile.Link[0].Token.ItemId = testItemId
+				userId := profile.UserId
+
+				plaidBankAccounts, err := testTaskHandler.plaidClient.GetAccounts(arg.ctx, testAccessToken, userId)
+				assert.NoError(t, err)
+
+				profile.Link[0].BankAccounts = plaidBankAccounts
+
+				user, err := testTaskHandler.postgresDb.CreateUserProfile(arg.ctx, profile)
+				assert.NoError(t, err)
+
+				linkId := user.Link[0].Id
+				task, err := NewSyncPlaidTask(userId, testAccessToken, linkId)
+				assert.NoError(t, err)
+
+				return task
+			},
+			args: args{
+				ctx: context.Background(),
+			},
+			wantErr: false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if err := tt.th.RunSyncPlaidTransactionsTask(tt.args.ctx, tt.args.task); (err != nil) != tt.wantErr {
+			tsk := tt.precondition(t, &tt.args)
+			if err := tt.th.RunSyncPlaidTransactionsTask(tt.args.ctx, tsk); (err != nil) != tt.wantErr {
 				t.Errorf("TaskHandler.RunSyncPlaidTransactionsTask() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})

@@ -354,7 +354,7 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, payload *SyncPl
 		added := len(syncResult.New)
 		deleted := len(syncResult.Deleted)
 		modified := len(syncResult.Updated)
-		if err := postgresClient.RecordPlaidSync(ctx, link.Id, linkId, *trigger, nextCursor, int64(added), int64(modified), int64(deleted)); err != nil {
+		if err := postgresClient.RecordPlaidSync(ctx, payload.UserId, linkId, *trigger, nextCursor, int64(added), int64(modified), int64(deleted)); err != nil {
 			return nil, err
 		}
 
@@ -421,12 +421,12 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, payload *SyncPl
 					AccountOwner:                    plaidTransaction.GetAccountOwner(),
 					TransactionId:                   plaidTransaction.GetTransactionId(),
 					TransactionCode:                 plaidTransaction.GetTransactionCode(),
-					Id:                              linkId,
+					Id:                              0,
 					UserId:                          payload.UserId,
 					LinkId:                          link.Id,
 					Sign:                            0,
-					PersonalFinanceCategoryPrimary:  plaidTransaction.PersonalFinanceCategoryPrimary,
-					PersonalFinanceCategoryDetailed: plaidTransaction.PersonalFinanceCategoryDetailed,
+					PersonalFinanceCategoryPrimary:  plaidTransaction.GetPersonalFinanceCategoryPrimary(),
+					PersonalFinanceCategoryDetailed: plaidTransaction.GetPersonalFinanceCategoryDetailed(),
 					LocationAddress:                 plaidTransaction.GetLocationAddress(),
 					LocationCity:                    plaidTransaction.GetLocationCity(),
 					LocationRegion:                  plaidTransaction.GetLocationRegion(),
@@ -585,6 +585,7 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, payload *SyncPl
 	}
 
 	// sync the recurring transactions for the given user
+	// TODO: this should be a separate task
 	if err := th.pullReOcurringTransactions(ctx, &payload.UserId, &link.Id, &payload.AccessToken); err != nil {
 		th.logger.Error("failed to pull recurring transactions", zap.Error(err))
 		return nil, err

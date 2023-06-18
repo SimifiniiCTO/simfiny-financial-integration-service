@@ -92,7 +92,7 @@ func (p *PlaidWrapper) CreateLinkToken(ctx context.Context, options *LinkTokenOp
 // the access token and item ID.
 func (p *PlaidWrapper) ExchangePublicToken(ctx context.Context, publicToken string) (*ItemToken, error) {
 	if p.Environment == plaid.Sandbox {
-		res, err := p.getAccessTokenForSandboxAcct()
+		res, err := p.GetAccessTokenForSandboxAcct()
 		if err != nil {
 			p.Logger.Error("failed to create link token with Plaid", zap.Error(err))
 			return nil, err
@@ -137,7 +137,7 @@ func (p *PlaidWrapper) ExchangePublicToken(ctx context.Context, publicToken stri
 // public token and constructs an `ItemPublicTokenExchangeRequest` using the Plaid API client and
 // sends the request to exchange the public token for an access token and item ID. It then returns
 // the access token and item ID.
-func (p *PlaidWrapper) getAccessTokenForSandboxAcct() (*plaid.ItemPublicTokenExchangeResponse, error) {
+func (p *PlaidWrapper) GetAccessTokenForSandboxAcct() (*plaid.ItemPublicTokenExchangeResponse, error) {
 	ctx := context.Background()
 
 	// If not testing in Sandbox, remove these four lines and instead use a publicToken obtained from Link

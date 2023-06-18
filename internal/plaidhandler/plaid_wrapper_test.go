@@ -20,7 +20,7 @@ func setup() {
 		log.Fatal(err)
 	}
 
-	res, err := plaidTestClient.getAccessTokenForSandboxAcct()
+	res, err := plaidTestClient.GetAccessTokenForSandboxAcct()
 	if err != nil {
 		log.Fatal(err)
 	}
