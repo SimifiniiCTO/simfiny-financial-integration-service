@@ -207,7 +207,7 @@ autoscaling:
   requests: 10000
 
 # Redis address in the format <host>:<port>
-cache: ""
+cache: "rediss://default:AVNS_B0xiuGf7QSnREFG@simfiny-redis-cluster-do-user-11446161-0.b.db.ondigitalocean.com:25061"
 
 cacheTTLInSeconds: 3600
 
