@@ -191,6 +191,7 @@ autoscaling:
 
 # Redis address in the format <host>:<port>
 cache: ""
+cacheTLSEnabled: true
 
 cacheTTLInSeconds: 3600
   

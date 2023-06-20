@@ -65,6 +65,7 @@ func ReadEnvVars() {
 	fs.Duration("max-db-retry-sleep-interval", 100*time.Millisecond, "max time to sleep in between db connection attempts")
 	fs.Duration("max-query-timeout", 500*time.Millisecond, "max time until a db query is seen as timing out")
 	fs.Int("cache-ttl-in-seconds", 3600, "time data lives in the cache")
+	fs.Bool("cache-tls-enabled", false, "whether tls connection is enabled")
 
 	fs.String("max-db-idle-connections", "10", "max number of idle connections to the database")            // exists
 	fs.String("max-db-open-connections", "10", "max number of open connections to the database")            // exists

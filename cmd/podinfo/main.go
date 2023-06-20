@@ -428,6 +428,7 @@ func configureRedisConn(logger *zap.Logger, instrumentation *instrumentation.Cli
 	host := viper.GetString("cache-server")
 	serviceName := viper.GetString("grpc-service-name")
 	cacheTTLInSeconds := viper.GetInt("cache-ttl-in-seconds")
+	tlsEnabled := viper.GetBool("cache-tls-enabled")
 
 	stopCh := signals.SetupSignalHandler()
 	opts := []redis.Option{
@@ -436,6 +437,7 @@ func configureRedisConn(logger *zap.Logger, instrumentation *instrumentation.Cli
 		redis.WithURI(host),
 		redis.WithServiceName(serviceName),
 		redis.WithCacheTTLInSeconds(cacheTTLInSeconds),
+		redis.WithTlsEnabled(tlsEnabled),
 	}
 
 	c, err := redis.New(stopCh, opts...)

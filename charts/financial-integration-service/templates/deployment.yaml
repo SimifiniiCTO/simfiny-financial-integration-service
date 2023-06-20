@@ -170,6 +170,7 @@ spec:
             {{- end }}
             - --task-processor-workers={{ .Values.taskProcessorWorkers }}
             - --clickhouse-connection-uri={{ .Values.clickhouse.uri }}
+            - --cache-tls-enabled={{ .Values.cacheTLSEnabled }}
           env:
           {{- if .Values.ui.message }}
           - name: fis_UI_MESSAGE
