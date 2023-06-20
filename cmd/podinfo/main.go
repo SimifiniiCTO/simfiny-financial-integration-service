@@ -287,7 +287,6 @@ func configureNewrelicSDK(logger *zap.Logger) (*newrelic.Application, error) {
 			newrelic.ConfigDistributedTracerEnabled(true),
 			newrelic.ConfigEnabled(true),
 		)
-
 	}
 
 	return nil, fmt.Errorf("invalid input parameter. param: newrelicLicenseKey = %s", newrelicLicenseKey)
