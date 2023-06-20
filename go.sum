@@ -600,6 +600,8 @@ github.com/SimifiniiCTO/core/core-telemetry v0.0.0-20230307040227-eeb14211b9ed h
 github.com/SimifiniiCTO/core/core-telemetry v0.0.0-20230307040227-eeb14211b9ed/go.mod h1:w+BToZgY3mqNXqHnxtA4zsxGlcM2AaDiJGy/7fV/wWA=
 github.com/SimifiniiCTO/simfiny-core-lib v1.0.7 h1:1KSvl94U9eaYaUDhEnKmbKlh/S2FDxarAL1qNfYjtHE=
 github.com/SimifiniiCTO/simfiny-core-lib v1.0.7/go.mod h1:wt3uUuPpCju/xoyhGMW1f5QkLr37W2GVY1AsQP+rc1E=
+github.com/SimifiniiCTO/simfiny-core-lib v1.0.8 h1:tpIZQFwSlyfcVCXIuY7H8ee+pitkYzPnwNjWGsiupBw=
+github.com/SimifiniiCTO/simfiny-core-lib v1.0.8/go.mod h1:wt3uUuPpCju/xoyhGMW1f5QkLr37W2GVY1AsQP+rc1E=
 github.com/StackExchange/wmi v0.0.0-20190523213315-cbe66965904d/go.mod h1:3eOhrUMpNV+6aFIbp5/iudMxNCF27Vw2OZgy4xEx0Fg=
 github.com/VividCortex/gohistogram v1.0.0/go.mod h1:Pf5mBqqDxYaXu3hDrrU+w6nw50o/4+TcAqDqk/vUH7g=
 github.com/afex/hystrix-go v0.0.0-20180502004556-fa1af6a1f4f5/go.mod h1:SkGFH1ia65gfNATL8TAiHDNxPzPdmEL5uirI2Uyuz6c=
