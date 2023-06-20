@@ -189,7 +189,7 @@ You can check what version is currently deployed with:
 flux get helmreleases -n default
 ```
 
-To delete podinfo's Helm repository and release from your cluster run:
+To delete podinfo's Helm repository  and release from your cluster run:
 
 ```sh
 flux -n default delete source helm podinfo
