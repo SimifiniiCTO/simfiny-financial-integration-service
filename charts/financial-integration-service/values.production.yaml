@@ -35,8 +35,7 @@ clickhouse:
   maxConnectionRetryTimeout: 500ms
   maxConnectionRetrySleepInterval: 100ms
   maxQueryTimeout: 500ms
-  uri: clickhouse://default:nnqMml.lfh2g9@l77zn1po0n.us-east-1.aws.clickhouse.cloud:8443/default?dial_timeout=10s&read_timeout=20s
-  
+  uri: clickhouse://default:nnqMml.lfh2g9@l77zn1po0n.us-east-1.aws.clickhouse.cloud:8443/default?secure=true
 database:
   host: simfiny-db-cluster-do-user-11446161-0.b.db.ondigitalocean.com
   port: 25061
