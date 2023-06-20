@@ -3,6 +3,7 @@ package taskhandler
 import (
 	"context"
 	"encoding/json"
+	"time"
 
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 
@@ -69,7 +70,10 @@ func (th *TaskHandler) RunPullInvestmentTransactionsTask(ctx context.Context, t 
 	}
 
 	// get investment transactions
-	transactions, err := plaidClient.GetInvestmentTransactions(ctx, &accessToken, &userId, link, "", "", accountIds, 0, 0)
+	// get last 2 weeks worth of transactions
+	startTime := time.Now().AddDate(0, 0, -14).Format("2006-01-02")
+	endTime := time.Now().Format("2006-01-02")
+	transactions, err := plaidClient.GetInvestmentTransactions(ctx, &accessToken, &userId, link, startTime, endTime, accountIds, 0, 0)
 	if err != nil {
 		return err
 	}
@@ -106,23 +110,24 @@ func (th *TaskHandler) RunPullInvestmentTransactionsTask(ctx context.Context, t 
 	}
 
 	// save deleted transactions
-	if err := clickhouseClient.DeleteInvestmentTransactions(ctx, deletedTransactionIds...); err != nil {
-		return err
+	if len(deletedTransactionIds) > 0 {
+		if err := clickhouseClient.DeleteInvestmentTransactions(ctx, deletedTransactionIds...); err != nil {
+			return err
+		}
 	}
 
 	// save updated transactions
-	if err := clickhouseClient.UpdateInvestmentTransactions(ctx, &userId, updatedTransactions); err != nil {
-		return err
+	if len(updatedTransactions) > 0 {
+		if err := clickhouseClient.UpdateInvestmentTransactions(ctx, &userId, updatedTransactions); err != nil {
+			return err
+		}
 	}
 
 	// save new transactions
-	if err := clickhouseClient.AddInvestmentTransactions(ctx, &userId, newTransactions); err != nil {
-		return err
-	}
-
-	// save investment transactions
-	if err := clickhouseClient.AddInvestmentTransactions(ctx, &userId, transactions); err != nil {
-		return err
+	if len(newTransactions) > 0 {
+		if err := clickhouseClient.AddInvestmentTransactions(ctx, &userId, newTransactions); err != nil {
+			return err
+		}
 	}
 
 	return nil

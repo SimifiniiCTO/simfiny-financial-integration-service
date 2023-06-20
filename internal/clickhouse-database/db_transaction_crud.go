@@ -114,7 +114,7 @@ func (db *Db) DeleteTransaction(ctx context.Context, txId *uint64) error {
 	}
 
 	if result.RowsAffected == 0 {
-		return fmt.Errorf("no rows affected")
+		db.Logger.Info("no rows affected")
 	}
 
 	return nil
@@ -164,7 +164,7 @@ func (db *Db) DeleteTransactionsByLinkId(ctx context.Context, linkId *uint64) er
 	}
 
 	if result.RowsAffected == 0 {
-		return fmt.Errorf("no rows affected")
+		db.Logger.Info("no rows affected")
 	}
 
 	return nil
@@ -189,7 +189,7 @@ func (db *Db) DeleteUserTransactons(ctx context.Context, userId *uint64) error {
 	}
 
 	if result.RowsAffected == 0 {
-		return fmt.Errorf("no rows affected")
+		db.Logger.Info("no rows affected")
 	}
 
 	return nil

@@ -106,8 +106,10 @@ func (th *TaskHandler) RunPullInvestmentHoldingsTask(ctx context.Context, t *asy
 	}
 
 	// delete investment holdings that should be deleted from the database
-	if err := postgresClient.DeleteInvestmentHoldings(ctx, deletedInvestmentHoldings...); err != nil {
-		return err
+	if len(deletedInvestmentHoldings) > 0 {
+		if err := postgresClient.DeleteInvestmentHoldings(ctx, deletedInvestmentHoldings...); err != nil {
+			return err
+		}
 	}
 
 	for _, potentiallyNewInvestmentHolding := range investments.Holdings {

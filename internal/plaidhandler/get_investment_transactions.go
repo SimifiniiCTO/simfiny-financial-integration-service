@@ -19,7 +19,7 @@ func (p *PlaidWrapper) GetInvestmentTransactions(ctx context.Context, accessToke
 
 	opts := plaid.InvestmentsTransactionsGetRequestOptions{}
 
-	if accountIds != nil {
+	if len(accountIds) > 0 {
 		opts.AccountIds = &accountIds
 	}
 
@@ -41,12 +41,7 @@ func (p *PlaidWrapper) GetInvestmentTransactions(ctx context.Context, accessToke
 	}
 
 	if len(investmentAccountIds) > 0 {
-		if opts.AccountIds == nil {
-			opts.AccountIds = &investmentAccountIds
-		} else {
-			ids := append(*opts.AccountIds, investmentAccountIds...)
-			opts.AccountIds = &ids
-		}
+		opts.AccountIds = &investmentAccountIds
 	}
 
 	request := plaid.InvestmentsTransactionsGetRequest{
