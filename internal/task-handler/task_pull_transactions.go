@@ -173,7 +173,6 @@ func (th *TaskHandler) RunPullTransactionsTask(ctx context.Context, task *asynq.
 				AccountOwner:                    plaidTransaction.GetAccountOwner(),
 				TransactionId:                   plaidTransaction.GetTransactionId(),
 				TransactionCode:                 plaidTransaction.GetTransactionCode(),
-				Id:                              userId,
 				UserId:                          payload.UserId,
 				LinkId:                          link.Id,
 				Sign:                            0,

@@ -38,6 +38,7 @@ func NewInvestmentAccount(userID uint64, bankAccount *plaid.AccountBase) (*schem
 func NewInvestmentHolding(input *plaid.Holding) *schema.InvesmentHolding {
 	return &schema.InvesmentHolding{
 		Id:                       0,
+		Name:                     fmt.Sprintf("holding_%s_%s", input.GetAccountId(), input.GetSecurityId()),
 		PlaidAccountId:           input.GetAccountId(),
 		CostBasis:                float64(input.GetCostBasis()),
 		InstitutionPrice:         float64(input.GetInstitutionPrice()),

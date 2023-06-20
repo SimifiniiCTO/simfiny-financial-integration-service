@@ -33,6 +33,7 @@ const (
 	TaskPullInvestmentTransactions       TaskType = "transactions:pull:investment"
 	TaskPullInvestmentHoldings           TaskType = "holdings:pull:investment"
 	TaskSyncNewLiabilityAccounts         TaskType = "accounts:sync:new-liability"
+	TaskSyncRecurringTransactions        TaskType = "transactions:sync:recurring"
 )
 
 func (t TaskType) String() string {

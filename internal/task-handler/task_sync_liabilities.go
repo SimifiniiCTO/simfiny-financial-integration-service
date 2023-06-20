@@ -147,8 +147,10 @@ func (th *TaskHandler) processLiabilityAccountSyncOperation(ctx context.Context,
 		}
 
 		// add the new credit accounts to the database
-		if err := l.CreditAccounts.Model(&linkOrm).Append(creditCardAccountsToAdd...); err != nil {
-			return nil, err
+		if len(creditCardAccountsToAdd) > 0 {
+			if err := l.CreditAccounts.Model(&linkOrm).Append(creditCardAccountsToAdd...); err != nil {
+				return nil, err
+			}
 		}
 
 		th.logger.Info("found credit accounts", zap.Int("count", len(creditAccountsSet.CrediCardAccounts)))

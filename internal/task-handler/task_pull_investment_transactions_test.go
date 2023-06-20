@@ -2,80 +2,73 @@ package taskhandler
 
 import (
 	"context"
-	"reflect"
 	"testing"
 
 	"github.com/SimifiniiCTO/asynq"
-	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/helper"
+	"github.com/stretchr/testify/assert"
 )
-
-func TestNewPullInvestmentTransactionsTask(t *testing.T) {
-	type args struct {
-		userId      uint64
-		linkId      uint64
-		accessToken string
-		accountIds  []string
-	}
-	tests := []struct {
-		name    string
-		args    args
-		want    *asynq.Task
-		wantErr bool
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			got, err := NewPullInvestmentTransactionsTask(tt.args.userId, tt.args.linkId, tt.args.accessToken, tt.args.accountIds)
-			if (err != nil) != tt.wantErr {
-				t.Errorf("NewPullInvestmentTransactionsTask() error = %v, wantErr %v", err, tt.wantErr)
-				return
-			}
-			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("NewPullInvestmentTransactionsTask() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
 
 func TestTaskHandler_RunPullInvestmentTransactionsTask(t *testing.T) {
 	type args struct {
 		ctx context.Context
-		t   *asynq.Task
 	}
 	tests := []struct {
-		name    string
-		th      *TaskHandler
-		args    args
-		wantErr bool
+		name         string
+		args         args
+		th           *TaskHandler
+		precondition func(t *testing.T, arg *args) *asynq.Task
+		wantErr      bool
 	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if err := tt.th.RunPullInvestmentTransactionsTask(tt.args.ctx, tt.args.t); (err != nil) != tt.wantErr {
-				t.Errorf("TaskHandler.RunPullInvestmentTransactionsTask() error = %v, wantErr %v", err, tt.wantErr)
-			}
-		})
-	}
-}
+		{
+			name: "runPullInvestmentTransactionsTask",
+			args: args{ctx: context.Background()},
+			th:   testTaskHandler,
+			precondition: func(t *testing.T, arg *args) *asynq.Task {
+				// create a user and associate a link to said user
+				profile := helper.GenereateRandomUserProfileForTest()
+				profile.Link[0].PlaidLink.ItemId = testItemId
+				profile.Link[0].Token.ItemId = testItemId
+				userId := profile.UserId
 
-func Test_isTransactionInSlice(t *testing.T) {
-	type args struct {
-		transaction  *schema.InvestmentTransaction
-		transactions []*schema.InvestmentTransaction
-	}
-	tests := []struct {
-		name string
-		args args
-		want bool
-	}{
-		// TODO: Add test cases.
+				plaidBankAccounts, err := testTaskHandler.plaidClient.GetAccounts(arg.ctx, testAccessToken, userId)
+				assert.NoError(t, err)
+
+				liabilityAcctSet, err := testTaskHandler.plaidClient.GetPlaidLiabilityAccounts(arg.ctx, &testAccessToken)
+				assert.NoError(t, err)
+
+				investmentAccounts, err := testTaskHandler.plaidClient.GetInvestmentAccount(arg.ctx, userId, testAccessToken)
+				assert.NoError(t, err)
+
+				profile.Link[0].BankAccounts = plaidBankAccounts
+				profile.Link[0].CreditAccounts = liabilityAcctSet.CrediCardAccounts
+				profile.Link[0].StudentLoanAccounts = liabilityAcctSet.StudentLoanAccts
+				profile.Link[0].MortgageAccounts = liabilityAcctSet.MortgageLoanAccts
+				profile.Link[0].InvestmentAccounts = investmentAccounts
+
+				user, err := testTaskHandler.postgresDb.CreateUserProfile(arg.ctx, profile)
+				assert.NoError(t, err)
+
+				acctIdsOfInterest := make([]string, 0)
+
+				for _, acct := range user.Link[0].InvestmentAccounts {
+					acctIdsOfInterest = append(acctIdsOfInterest, acct.PlaidAccountId)
+				}
+
+				linkId := user.Link[0].Id
+				task, err := NewPullInvestmentTransactionsTask(userId, linkId, testAccessToken, acctIdsOfInterest)
+				assert.NoError(t, err)
+
+				return task
+			},
+			wantErr: false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := isTransactionInSlice(tt.args.transaction, tt.args.transactions); got != tt.want {
-				t.Errorf("isTransactionInSlice() = %v, want %v", got, tt.want)
+			tsk := tt.precondition(t, &tt.args)
+			if err := tt.th.RunPullInvestmentTransactionsTask(tt.args.ctx, tsk); (err != nil) != tt.wantErr {
+				t.Errorf("TaskHandler.RunPullInvestmentTransactionsTask() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
 	}
