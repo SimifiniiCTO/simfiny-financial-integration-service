@@ -35,7 +35,7 @@ clickhouse:
   maxConnectionRetryTimeout: 500ms
   maxConnectionRetrySleepInterval: 100ms
   maxQueryTimeout: 500ms
-  uri: clickhouse://default:nnqMml.lfh2g9@l77zn1po0n.us-east-1.aws.clickhouse.cloud:8443/default?secure=true&skip_verify=true
+  uri: https://default:nnqMml.lfh2g9@l77zn1po0n.us-east-1.aws.clickhouse.cloud:8443/default?secure=true&skip_verify=true
   
 database:
   host: financial-integration-service-db
