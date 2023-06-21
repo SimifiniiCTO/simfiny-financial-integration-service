@@ -10,7 +10,6 @@ import (
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/service_errors"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/dal"
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
-	"github.com/labstack/gommon/log"
 	"github.com/newrelic/go-agent/v3/newrelic"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
@@ -145,18 +144,21 @@ func (db *Db) performSchemaMigration() error {
 		return service_errors.ErrInvalidGormDbOject
 	}
 
+	// TODO: NEED TO PROPERLY SUPPORT MIGRATIONS (REF: https://github.com/go-gormigrate/gormigrate)
 	if len(models) > 0 {
 		// ref. https://kb.altinity.com/engines/mergetree-table-engine-family/collapsing-vs-replacing/
 		// ref. https://clickhouse.com/docs/en/guides/developer/deduplication
 		for _, e := range models {
-			if err := engine.Set("gorm:table_options", "ENGINE = CollapsingMergeTree(Time, (Id, Time), 8192, Sign)").AutoMigrate(&e); err != nil {
-				// TODO: emit failure metric here
-				log.Error(err.Error())
-				return err
+			if !engine.Migrator().HasTable(e) {
+				if err := engine.AutoMigrate(e); err != nil {
+					// TODO: emit failure metric here
+					// money
+					db.Logger.Error(err.Error())
+				}
 			}
-		}
 
-		log.Info("successfully migrated database schemas")
+		}
+		db.Logger.Info("successfully migrated database schemas")
 	}
 
 	return nil
