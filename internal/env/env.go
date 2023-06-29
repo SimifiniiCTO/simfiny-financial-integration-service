@@ -78,7 +78,7 @@ func ReadEnvVars() {
 	// production: 6f127c086ba9c1d5dafe7e38541783
 	fs.String("plaid-secret-key", "465686056e8fd1b87db3d993d096d8", "plaid secret key")
 	fs.String("plaid-env", "sandbox", "plaid environment")
-	fs.StringSlice("plaid-products", []string{"investments", "liabilities"}, "plaid products to enable")
+	fs.StringSlice("plaid-products", []string{"investments", "liabilities", "transactions"}, "plaid products to enable")
 	fs.String("plaid-oauth-domain", "1d8d-209-122-236-129.ngrok-free.app/api/v1", "plaid oauth domain")
 	fs.String("plaid-webhook-oauth-domain", "1d8d-209-122-236-129.ngrok-free.app/api/v1", "plaid webhook oauth domain")
 	fs.Bool("plaid-webhook-enabled", true, "enable plaid webhook")

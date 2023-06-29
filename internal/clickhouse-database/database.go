@@ -130,6 +130,7 @@ func (db *Db) pingDatabase() error {
 	return nil
 }
 
+// performSchemaMigration performs schema migration
 func (db *Db) performSchemaMigration() error {
 	var (
 		engine *gorm.DB

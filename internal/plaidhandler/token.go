@@ -2,7 +2,6 @@ package plaidhandler
 
 import (
 	"context"
-	"fmt"
 	"io/ioutil"
 
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/pointer"
@@ -24,10 +23,10 @@ func (p *PlaidWrapper) TriggerWebhookForTest(ctx context.Context, clientId, secr
 // It constructs a `LinkTokenCreateRequest` using the Plaid API client and sends the request to
 // create the link token. It then returns the link token and the expiration date and time.
 func (p *PlaidWrapper) CreateLinkToken(ctx context.Context, options *LinkTokenOptions) (LinkToken, error) {
-	var redirectUri *string
+	/* var redirectUri *string
 	if p.OAuthDomain != "" {
 		redirectUri = pointer.StringP(fmt.Sprintf("https://%s/plaid/oauth-return", p.OAuthDomain))
-	}
+	}*/
 
 	var webhooksUrl *string
 	if p.WebhooksEnabled {
@@ -71,12 +70,22 @@ func (p *PlaidWrapper) CreateLinkToken(ctx context.Context, options *LinkTokenOp
 	request.SetProducts(p.EnabledProducts)
 	request.SetLinkCustomizationName(PlaidClientName)
 	request.SetWebhook(*webhooksUrl)
-	request.SetRedirectUri(*redirectUri)
+	// request.SetRedirectUri(*redirectUri)
+
+	p.Logger.Info("creating link token with Plaid", zap.Any("request", request))
 
 	result, _, err := p.client.PlaidApi.
 		LinkTokenCreate(ctx).
 		LinkTokenCreateRequest(*request).Execute()
 	if err != nil {
+		if plaidErr, ok := err.(plaid.GenericOpenAPIError); ok {
+			// Handle the plaidErr
+			// You can access the specific fields of plaidErr if needed
+			p.Logger.Error("Plaid error occurred", zap.Error(plaidErr), zap.Any("details", string(plaidErr.Body())))
+		} else {
+			// Handle other types of errors
+			p.Logger.Error("Non-Plaid error occurred", zap.Error(err))
+		}
 		return nil, err
 	}
 
