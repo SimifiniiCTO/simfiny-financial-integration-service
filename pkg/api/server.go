@@ -181,6 +181,7 @@ func (s *Server) RegisterHandlers() {
 	s.router.HandleFunc("/chunked/{wait:[0-9]+}", s.chunkedHandler)
 	s.router.HandleFunc("/stripe/webhook", s.handleStripeWebhook).Methods("POST")
 	s.router.HandleFunc("/plaid/webhook", s.handlerPlaidWebhook).Methods("POST")
+	s.router.HandleFunc("/stripe/checkout", s.handleCheckoutSession).Methods("POST")
 
 	s.router.PathPrefix("/swagger/").Handler(httpSwagger.Handler(
 		httpSwagger.URL("/swagger/doc.json"),
