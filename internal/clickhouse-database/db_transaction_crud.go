@@ -3,7 +3,6 @@ package clickhousedatabase
 import (
 	"context"
 	"fmt"
-	"strconv"
 	"strings"
 
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
@@ -120,22 +119,6 @@ func (db *Db) DeleteTransaction(ctx context.Context, txId *string) error {
 		return fmt.Errorf("transaction ID must be 0 at creation time")
 	}
 
-	// //	get the transacton by tx id
-	// t := db.QueryOperator.TransactionORM
-	// if _, err := db.GetTransactionById(ctx, txId); err != nil {
-	// 	return err
-	// }
-
-	// // delete the transaction
-	// result, err := t.WithContext(ctx).Where(t.Id.Eq(*txId)).Delete()
-	// if err != nil {
-	// 	return err
-	// }
-
-	// if result.RowsAffected == 0 {
-	// 	db.Logger.Info("no rows affected")
-	// }
-
 	// raw query to delete the transaction
 	query := fmt.Sprintf(`ALTER TABLE TransactionInternal DELETE WHERE ID = '%s'`, *txId)
 	if err := db.queryEngine.
@@ -167,10 +150,6 @@ func (db *Db) DeleteTransactionsByIds(ctx context.Context, txIds []string) error
 		return err
 	}
 
-	// Check if rows were affected by the delete operation
-	// TODO: You need to add your own code to do this.
-	//       ClickHouse does not return the number of affected rows after a DELETE operation.
-
 	return nil
 }
 
@@ -183,14 +162,6 @@ func (db *Db) DeleteTransactionsByLinkId(ctx context.Context, linkId *uint64) er
 	if linkId == nil {
 		return fmt.Errorf("transaction ID must be 0 at creation time")
 	}
-
-	// //	get the transacton by tx id
-	// t := db.QueryOperator.TransactionORM
-	// // delete all transactions matching this link id
-	// result, err := t.WithContext(ctx).Where(t.LinkId.Eq(*linkId)).Delete()
-	// if err != nil {
-	// 	return err
-	// }
 
 	if err := db.queryEngine.
 		NewRaw(
@@ -216,14 +187,6 @@ func (db *Db) DeleteUserTransactions(ctx context.Context, userId *uint64) error 
 	if userId == nil {
 		return fmt.Errorf("user ID must be 0 at creation time")
 	}
-
-	//	get the transacton by tx id
-	// t := db.QueryOperator.TransactionORM
-	// // delete the transaction
-	// result, err := t.WithContext(ctx).Where(t.UserId.Eq(*userId)).Delete()
-	// if err != nil {
-	// 	return err
-	// }
 
 	// raw query to delete the transaction
 	if err := db.queryEngine.
@@ -490,17 +453,6 @@ func (db *Db) GetTransactionById(ctx context.Context, txId *string) (*schema.Tra
 		return nil, err
 	}
 
-	// t := db.QueryOperator.TransactionORM
-	// record, err := t.WithContext(ctx).Where(t.Id.Eq(*txId)).First()
-	// if err != nil {
-	// 	return nil, fmt.Errorf("transaction with id %d does not exist", txId)
-	// }
-
-	// tx, err := record.ToPB(ctx)
-	// if err != nil {
-	// 	return nil, err
-	// }
-
 	return res, nil
 }
 
@@ -522,17 +474,6 @@ func (db *Db) GetTransactionByUserId(ctx context.Context, userId *uint64) (*sche
 	if err != nil {
 		return nil, err
 	}
-
-	// t := db.QueryOperator.TransactionORM
-	// record, err := t.WithContext(ctx).Where(t.Id.Eq(*txId)).First()
-	// if err != nil {
-	// 	return nil, fmt.Errorf("transaction with id %d does not exist", txId)
-	// }
-
-	// tx, err := record.ToPB(ctx)
-	// if err != nil {
-	// 	return nil, err
-	// }
 
 	return res, nil
 }
@@ -585,14 +526,4 @@ func (*Db) sanitizePaginationParams(pageNumber int64, pageSize int64) (int64, in
 		pageSize = 10
 	}
 	return pageNumber, pageSize
-}
-
-func idsToIdsStringHelper(txIds []uint64) string {
-	var idStrings []string
-	for _, id := range txIds {
-		idStrings = append(idStrings, strconv.Itoa(int(id)))
-	}
-
-	idsString := fmt.Sprintf("('%s')", strings.Join(idStrings, "', '"))
-	return idsString
 }
