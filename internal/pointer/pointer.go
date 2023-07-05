@@ -58,6 +58,10 @@ func Int32P(value int32) *int32 {
 	return &value
 }
 
+func Uint64(value uint64) *uint64 {
+	return &value
+}
+
 // Number is an interface that represents a number type.
 type Number interface {
 	int | int32 | int64

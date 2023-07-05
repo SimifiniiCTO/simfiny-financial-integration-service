@@ -161,8 +161,8 @@ func (th *TaskHandler) RunPullTransactionsTask(ctx context.Context, task *asynq.
 				UnofficialCurrencyCode:          plaidTransaction.GetUnofficialCurrencyCode(),
 				CategoryId:                      plaidTransaction.GetCategoryId(),
 				CheckNumber:                     plaidTransaction.GetCheckNumber(),
-				Date:                            plaidTransaction.GetDate(),
-				Datetime:                        plaidTransaction.GetDatetime(),
+				CurrentDate:                     plaidTransaction.GetCurrentDate(),
+				CurrentDatetime:                 plaidTransaction.GetCurrentDatetime(),
 				AuthorizedDate:                  plaidTransaction.GetAuthorizedDate(),
 				AuthorizedDatetime:              plaidTransaction.GetAuthorizedDatetime(),
 				Name:                            transactionName,
@@ -221,12 +221,12 @@ func (th *TaskHandler) RunPullTransactionsTask(ctx context.Context, task *asynq.
 		}
 	}
 
-	if len(transactionsToUpdate) > 0 {
-		th.logger.Info("updating transactions", zap.Int("count", len(transactionsToUpdate)))
-		if err = clickhouseClient.UpdateTransactions(ctx, &payload.UserId, transactionsToUpdate); err != nil {
-			return err
-		}
-	}
+	// if len(transactionsToUpdate) > 0 {
+	// 	th.logger.Info("updating transactions", zap.Int("count", len(transactionsToUpdate)))
+	// 	if err = clickhouseClient.UpdateTransactions(ctx, &payload.UserId, transactionsToUpdate); err != nil {
+	// 		return err
+	// 	}
+	// }
 
 	if len(transactionsToInsert) > 0 {
 		th.logger.Info("inserting transactions", zap.Int("count", len(transactionsToInsert)))

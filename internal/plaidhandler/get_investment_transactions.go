@@ -71,7 +71,7 @@ func (p *PlaidWrapper) getInvestmentTransactions(ctx context.Context, req *plaid
 			Ammount:                 fmt.Sprintf("%f", t.GetAmount()),
 			InvestmentTransactionId: t.GetInvestmentTransactionId(),
 			SecurityId:              t.GetSecurityId(),
-			Date:                    t.GetDate(),
+			CurrentDate:             t.GetDate(),
 			Name:                    t.GetName(),
 			Quantity:                t.GetQuantity(),
 			Amount:                  t.GetAmount(),

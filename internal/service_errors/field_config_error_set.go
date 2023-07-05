@@ -61,3 +61,17 @@ var ErrInvalidConn *FieldConfigurationError = &FieldConfigurationError{
 		OAuthErrorDescription: "",
 	},
 }
+
+var ErrInvalidConnectionURI *FieldConfigurationError = &FieldConfigurationError{
+	err: &ServiceError{
+		Code:                  ErrorCodeInvalidConfigurationParameters,
+		Err:                   errors.New("invalid database connection uri"),
+		GRPCStatusCode:        codes.Internal,
+		Msg:                   "",
+		Param:                 "",
+		RequestID:             "",
+		Type:                  ErrorTypeParameters,
+		OAuthError:            "",
+		OAuthErrorDescription: "",
+	},
+}
