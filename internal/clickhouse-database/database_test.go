@@ -41,7 +41,6 @@ func NewTestDatabase() *Db {
 		InstrumentationClient: &instrumentation.Client{},
 		queryEngine:           db,
 	}
-
 	if err := orm.performSchemaMigration(context.Background()); err != nil {
 		panic(err)
 	}

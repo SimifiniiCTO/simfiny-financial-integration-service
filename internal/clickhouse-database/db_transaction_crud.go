@@ -54,7 +54,7 @@ func (db *Db) AddTransaction(ctx context.Context, userId *uint64, tx *schema.Tra
 
 	// get the newly created tx
 	createdTx := new(schema.TransactionInternal)
-	if err := db.queryEngine.NewSelect().Model(createdTx).Where("user_id = ?", record.UserId).Scan(ctx); err != nil {
+	if err := db.queryEngine.NewSelect().Model(createdTx).Where("UserId = ?", record.UserId).Scan(ctx); err != nil {
 		return nil, err
 	}
 
@@ -137,10 +137,9 @@ func (db *Db) DeleteTransaction(ctx context.Context, txId *string) error {
 	// }
 
 	// raw query to delete the transaction
+	query := fmt.Sprintf(`ALTER TABLE TransactionInternal DELETE WHERE ID = '%s'`, *txId)
 	if err := db.queryEngine.
-		NewRaw(
-			fmt.
-				Sprintf("DELETE FROM transaction_internals WHERE id = %s", *txId)).
+		NewRaw(query).
 		Scan(ctx); err != nil {
 		return err
 	}
@@ -148,7 +147,6 @@ func (db *Db) DeleteTransaction(ctx context.Context, txId *string) error {
 	return nil
 }
 
-// DeleteTransactionsByIds deletes transactions by ids.
 func (db *Db) DeleteTransactionsByIds(ctx context.Context, txIds []string) error {
 	if span := db.startDatastoreSpan(ctx, "dbtxn-delete-transactions-by-ids"); span != nil {
 		defer span.End()
@@ -158,23 +156,20 @@ func (db *Db) DeleteTransactionsByIds(ctx context.Context, txIds []string) error
 		return fmt.Errorf("transaction ID must be 0 at creation time")
 	}
 
+	// Create a string with comma-separated values from txIds
+	ids := "'" + strings.Join(txIds, "', '") + "'"
+
+	sqlQuery := fmt.Sprintf("ALTER TABLE TransactionInternal DELETE WHERE ID IN (%s)", ids)
+
 	if err := db.queryEngine.
-		NewRaw("DELETE FROM transaction_internals WHERE id IN (?)", txIds).
+		NewRaw(sqlQuery).
 		Scan(ctx); err != nil {
 		return err
 	}
 
-	// //	get the transacton by tx id
-	// t := db.QueryOperator.TransactionORM
-	// // delete the transaction
-	// result, err := t.WithContext(ctx).Where(t.Id.In(txIds...)).Delete()
-	// if err != nil {
-	// 	return err
-	// }
-
-	// if result.RowsAffected == 0 {
-	// 	return fmt.Errorf("no rows affected")
-	// }
+	// Check if rows were affected by the delete operation
+	// TODO: You need to add your own code to do this.
+	//       ClickHouse does not return the number of affected rows after a DELETE operation.
 
 	return nil
 }
@@ -200,7 +195,7 @@ func (db *Db) DeleteTransactionsByLinkId(ctx context.Context, linkId *uint64) er
 	if err := db.queryEngine.
 		NewRaw(
 			fmt.
-				Sprintf("DELETE FROM transaction_internals WHERE link_id = %d", *linkId)).
+				Sprintf("ALTER TABLE TransactionInternal DELETE WHERE LinkId = %d", *linkId)).
 		Scan(ctx); err != nil {
 		return err
 	}
@@ -234,7 +229,7 @@ func (db *Db) DeleteUserTransactions(ctx context.Context, userId *uint64) error 
 	if err := db.queryEngine.
 		NewRaw(
 			fmt.
-				Sprintf("DELETE FROM transaction_internals WHERE user_id = %d", *userId)).
+				Sprintf("ALTER TABLE TransactionInternal DELETE WHERE UserId = %d", *userId)).
 		Scan(ctx); err != nil {
 		return err
 	}
@@ -264,31 +259,31 @@ func (db *Db) GetTransactions(ctx context.Context, userId *uint64, pagenumber in
 		nextPageNumber = pageNumber + 1
 	}
 
+	offset := int(pageSize * (pageNumber - 1))
+	queryLimit := int(pageSize)
+	query := fmt.Sprintf(`UserId = %d`, *userId)
 	var transactions []schema.TransactionInternal
-	if err := db.queryEngine.NewSelect().
+	if err := db.
+		queryEngine.
+		NewSelect().
 		Model(&transactions).
-		Where("user_id = ?", userId).
-		Offset(int(pageSize * (pageNumber - 1))).Limit(int(pageSize)).
+		Where(query).
+		Offset(offset).
+		Limit(queryLimit).
 		Scan(ctx); err != nil {
 		return nil, 0, err
 	}
 
-	// t := db.QueryOperator.TransactionORM
-	// txs, err := t.
-	// 	WithContext(ctx).
-	// 	Limit(int(pageSize)).Offset(int(pageSize * (pageNumber - 1))).
-	// 	Find()
-	// if err != nil {
-	// 	return nil, 0, err
-	// }
-
 	results := make([]*schema.Transaction, 0, len(transactions))
-	for _, tx := range transactions {
-		txRecord, err := tx.ConvertToTransaction()
-		if err != nil {
-			return nil, 0, err
+
+	if len(transactions) > 0 {
+		for _, tx := range transactions {
+			txRecord, err := tx.ConvertToTransaction()
+			if err != nil {
+				return nil, 0, err
+			}
+			results = append(results, txRecord)
 		}
-		results = append(results, txRecord)
 	}
 
 	return results, nextPageNumber, nil
@@ -486,7 +481,40 @@ func (db *Db) GetTransactionById(ctx context.Context, txId *string) (*schema.Tra
 	}
 
 	tx := new(schema.TransactionInternal)
-	if err := db.queryEngine.NewSelect().Model(tx).Where("id = ?", *txId).Scan(ctx); err != nil {
+	if err := db.queryEngine.NewSelect().Model(tx).Where("ID = ?", *txId).Scan(ctx); err != nil {
+		return nil, err
+	}
+
+	res, err := tx.ConvertToTransaction()
+	if err != nil {
+		return nil, err
+	}
+
+	// t := db.QueryOperator.TransactionORM
+	// record, err := t.WithContext(ctx).Where(t.Id.Eq(*txId)).First()
+	// if err != nil {
+	// 	return nil, fmt.Errorf("transaction with id %d does not exist", txId)
+	// }
+
+	// tx, err := record.ToPB(ctx)
+	// if err != nil {
+	// 	return nil, err
+	// }
+
+	return res, nil
+}
+
+func (db *Db) GetTransactionByUserId(ctx context.Context, userId *uint64) (*schema.Transaction, error) {
+	if span := db.startDatastoreSpan(ctx, "dbtxn-get-transaction-by-id"); span != nil {
+		defer span.End()
+	}
+
+	if userId == nil {
+		return nil, fmt.Errorf("user ID cannot be nil")
+	}
+
+	tx := new(schema.TransactionInternal)
+	if err := db.queryEngine.NewSelect().Model(tx).Where("UserId = ?", *userId).Scan(ctx); err != nil {
 		return nil, err
 	}
 
@@ -520,30 +548,24 @@ func (db *Db) GetTransactionsByPlaidTransactionIds(ctx context.Context, txIds []
 	}
 
 	var result []schema.TransactionInternal
-	if err := db.queryEngine.NewSelect().Where("transaction_id IN (?)", txIds).Scan(ctx, result); err != nil {
+	ids := "'" + strings.Join(txIds, "', '") + "'"
+	sqlQuery := fmt.Sprintf("SELECT * FROM TransactionInternal WHERE TransactionId IN (%s)", ids)
+	if err := db.queryEngine.
+		NewRaw(sqlQuery).
+		Scan(ctx, &result); err != nil {
 		return nil, err
 	}
 
-	// //	get the transacton by tx id
-	// t := db.QueryOperator.TransactionORM
-	// // delete the transaction
-	// result, err := t.WithContext(ctx).Where(t.TransactionId.In(txIds...)).Find()
-	// if err != nil {
-	// 	return nil, err
-	// }
-
-	// if result == nil {
-	// 	return nil, fmt.Errorf("no txn found")
-	// }
-
 	resultSet := make([]*schema.Transaction, 0, len(result))
-	for _, tx := range result {
-		txRecord, err := tx.ConvertToTransaction()
-		if err != nil {
-			return nil, err
-		}
+	if len(result) > 0 {
+		for _, tx := range result {
+			txRecord, err := tx.ConvertToTransaction()
+			if err != nil {
+				return nil, err
+			}
 
-		resultSet = append(resultSet, txRecord)
+			resultSet = append(resultSet, txRecord)
+		}
 	}
 
 	return resultSet, nil

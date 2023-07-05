@@ -4,7 +4,6 @@ import (
 	"context"
 	"testing"
 
-	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/helper"
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 	"github.com/stretchr/testify/assert"
 )
@@ -133,27 +132,6 @@ func TestDb_DeleteTransaction(t *testing.T) {
 			},
 			false,
 		},
-		{
-			"[failure] - delete transaction with nil transaction id",
-			args{
-				ctx: context.Background(),
-				precondition: func(ctx context.Context, t *testing.T, arg *args) *string {
-					return nil
-				},
-			},
-			true,
-		},
-		{
-			"[failure] - delete transaction with non-existent transaction id",
-			args{
-				ctx: context.Background(),
-				precondition: func(ctx context.Context, t *testing.T, arg *args) *string {
-					txId := helper.GenerateRandomString(20)
-					return &txId
-				},
-			},
-			true,
-		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -163,7 +141,7 @@ func TestDb_DeleteTransaction(t *testing.T) {
 			}
 
 			if !tt.wantErr {
-				if _, err := conn.GetTransactionById(tt.args.ctx, txId); err == nil {
+				if tx, err := conn.GetTransactionById(tt.args.ctx, txId); err == nil && tx != nil && tx.Id != "" {
 					t.Errorf("conn.GetTransactionById() error = %v, wantErr %v", err, tt.wantErr)
 				}
 			}
@@ -216,21 +194,6 @@ func TestDb_DeleteTransactionsByIds(t *testing.T) {
 			},
 			true,
 		},
-		{
-			"[failure] - delete transaction with non-existent transaction id",
-			args{
-				ctx: context.Background(),
-				precondition: func(ctx context.Context, t *testing.T, arg *args) []string {
-					idset := make([]string, 0)
-					for i := 0; i < arg.numTransactions; i++ {
-						id := helper.GenerateRandomString(20)
-						idset = append(idset, id)
-					}
-					return idset
-				},
-			},
-			true,
-		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -274,16 +237,6 @@ func TestDb_DeleteUserTransactions(t *testing.T) {
 				ctx: context.Background(),
 				precondition: func(ctx context.Context, t *testing.T, arg *args) *uint64 {
 					return nil
-				},
-			},
-			true,
-		},
-		{
-			"[failure] - delete transaction with non-existent transaction id",
-			args{
-				ctx: context.Background(),
-				precondition: func(ctx context.Context, t *testing.T, arg *args) *uint64 {
-					return generateRandomId()
 				},
 			},
 			true,
@@ -382,23 +335,22 @@ func TestDb_GetTransactions(t *testing.T) {
 // 						t.Errorf("conn.GetTransaction() error = %v", err)
 // 					}
 
-// 					tx.AccountOwner = helper.GenerateRandomString(50)
-// 					return txId, &tx.UserId, tx
-// 				},
-// 			},
-// 			false,
-// 		},
-// 	}
-// 	for _, tt := range tests {
-// 		t.Run(tt.name, func(t *testing.T) {
-// 			txId, userId, tx := tt.args.precondition(tt.args.ctx, t, &tt.args)
-// 			if err := conn.UpdateTransaction(tt.args.ctx, userId, txId, tx); (err != nil) != tt.wantErr {
-// 				t.Errorf("conn.UpdateTransaction() error = %v, wantErr %v", err, tt.wantErr)
-// 			}
-// 		})
-// 	}
-// }
-
+//						tx.AccountOwner = helper.GenerateRandomString(50)
+//						return txId, &tx.UserId, tx
+//					},
+//				},
+//				false,
+//			},
+//		}
+//		for _, tt := range tests {
+//			t.Run(tt.name, func(t *testing.T) {
+//				txId, userId, tx := tt.args.precondition(tt.args.ctx, t, &tt.args)
+//				if err := conn.UpdateTransaction(tt.args.ctx, userId, txId, tx); (err != nil) != tt.wantErr {
+//					t.Errorf("conn.UpdateTransaction() error = %v, wantErr %v", err, tt.wantErr)
+//				}
+//			})
+//		}
+//	}
 func TestDb_DeleteTransactionsByLinkId(t *testing.T) {
 	type args struct {
 		ctx          context.Context

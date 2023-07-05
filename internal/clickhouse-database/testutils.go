@@ -79,7 +79,7 @@ func generateRandomTransaction() *schema.Transaction {
 		Id:                              "",
 		UserId:                          *generateRandomId(),
 		LinkId:                          *generateRandomId(),
-		Sign:                            0,
+		Sign:                            1,
 		PersonalFinanceCategoryPrimary:  helper.GenerateRandomString(20),
 		PersonalFinanceCategoryDetailed: helper.GenerateRandomString(20),
 		LocationAddress:                 helper.GenerateRandomString(20),
@@ -126,7 +126,7 @@ func generateMultipleReOcurringTransactions(numTransactions int) []*schema.ReOcc
 }
 
 func generateRandomId() *uint64 {
-	id := uint64(helper.GenerateRandomId(100, 3000000))
+	id := uint64(helper.GenerateRandomId(100000, 3000000))
 	return &id
 }
 
