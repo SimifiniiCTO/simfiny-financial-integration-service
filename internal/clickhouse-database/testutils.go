@@ -1,6 +1,8 @@
 package clickhousedatabase
 
 import (
+	"time"
+
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/helper"
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 )
@@ -11,7 +13,7 @@ func generateRandomInvestmentTransaction() *schema.InvestmentTransaction {
 		Ammount:                 helper.GenerateRandomString(20),
 		InvestmentTransactionId: helper.GenerateRandomString(20),
 		SecurityId:              helper.GenerateRandomString(20),
-		Date:                    helper.GenerateRandomString(20),
+		CurrentDate:             helper.GenerateRandomString(20),
 		Name:                    helper.GenerateRandomString(20),
 		Quantity:                float64(*generateRandomId()),
 		Amount:                  float64(*generateRandomId()),
@@ -22,7 +24,7 @@ func generateRandomInvestmentTransaction() *schema.InvestmentTransaction {
 		IsoCurrencyCode:         helper.GenerateRandomString(20),
 		UnofficialCurrencyCode:  helper.GenerateRandomString(20),
 		LinkId:                  *generateRandomId(),
-		Id:                      0,
+		Id:                      helper.GenerateRandomString(20),
 		UserId:                  *generateRandomId(),
 		CreatedAt:               helper.GenerateRandomString(20),
 	}
@@ -50,7 +52,7 @@ func generateRandomReOccurringTransaction() *schema.ReOccuringTransaction {
 		UpdatedTime:                     helper.GenerateRandomString(20),
 		UserId:                          *generateRandomId(),
 		LinkId:                          *generateRandomId(),
-		Id:                              0,
+		Id:                              helper.GenerateRandomString(20),
 	}
 }
 
@@ -62,8 +64,8 @@ func generateRandomTransaction() *schema.Transaction {
 		UnofficialCurrencyCode:          helper.GenerateRandomString(20),
 		CategoryId:                      helper.GenerateRandomString(20),
 		CheckNumber:                     helper.GenerateRandomString(20),
-		Date:                            helper.GenerateRandomString(20),
-		Datetime:                        helper.GenerateRandomString(10),
+		CurrentDate:                     time.Now().String(),
+		CurrentDatetime:                 time.Now().String(),
 		AuthorizedDate:                  helper.GenerateRandomString(20),
 		AuthorizedDatetime:              helper.GenerateRandomString(10),
 		Name:                            helper.GenerateRandomString(20),
@@ -74,7 +76,7 @@ func generateRandomTransaction() *schema.Transaction {
 		AccountOwner:                    helper.GenerateRandomString(20),
 		TransactionId:                   helper.GenerateRandomString(20),
 		TransactionCode:                 helper.GenerateRandomString(20),
-		Id:                              0,
+		Id:                              "",
 		UserId:                          *generateRandomId(),
 		LinkId:                          *generateRandomId(),
 		Sign:                            0,
