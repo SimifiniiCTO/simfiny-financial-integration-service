@@ -310,7 +310,7 @@ func TestDb_GetTransactions(t *testing.T) {
 // func TestDb_UpdateTransaction(t *testing.T) {
 // 	type args struct {
 // 		ctx          context.Context
-// 		precondition func(ctx context.Context, t *testing.T, arg *args) (*uint64, *uint64, *schema.Transaction)
+// 		precondition func(ctx context.Context, t *testing.T, arg *args) (*string, *uint64, *schema.Transaction)
 // 	}
 // 	tests := []struct {
 // 		name    string
@@ -321,7 +321,7 @@ func TestDb_GetTransactions(t *testing.T) {
 // 			"[success] - update transaction",
 // 			args{
 // 				ctx: context.Background(),
-// 				precondition: func(ctx context.Context, t *testing.T, arg *args) (*uint64, *uint64, *schema.Transaction) {
+// 				precondition: func(ctx context.Context, t *testing.T, arg *args) (*string, *uint64, *schema.Transaction) {
 // 					tx := generateRandomTransaction()
 // 					userId := generateRandomId()
 // 					txId, err := conn.AddTransaction(ctx, userId, tx)
@@ -351,6 +351,7 @@ func TestDb_GetTransactions(t *testing.T) {
 //			})
 //		}
 //	}
+
 func TestDb_DeleteTransactionsByLinkId(t *testing.T) {
 	type args struct {
 		ctx          context.Context

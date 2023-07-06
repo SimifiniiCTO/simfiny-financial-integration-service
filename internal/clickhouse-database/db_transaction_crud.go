@@ -252,8 +252,8 @@ func (db *Db) GetTransactions(ctx context.Context, userId *uint64, pagenumber in
 	return results, nextPageNumber, nil
 }
 
-// // UpdateTransaction updates a single transaction.
-// func (db *Db) UpdateTransaction(ctx context.Context, userId *uint64, txId *uint64, tx *schema.Transaction) error {
+// UpdateTransaction updates a single transaction.
+// func (db *Db) UpdateTransaction(ctx context.Context, userId *uint64, txId *string, tx *schema.Transaction) error {
 // 	if span := db.startDatastoreSpan(ctx, "dbtxn-update-transaction"); span != nil {
 // 		defer span.End()
 // 	}
@@ -281,48 +281,48 @@ func (db *Db) GetTransactions(ctx context.Context, userId *uint64, pagenumber in
 // 	}
 
 // 	query := `
-// 		ALTER TABLE my_table UPDATE
-// 		accountid = ?,
-// 		accountowner = ?,
-// 		amount = ?,
-// 		authorizeddate = ?,
-// 		authorizeddatetime = ?,
-// 		categoryid = ?,
-// 		checknumber = ?,
-// 		currentdate = ?,
-// 		currentdatetime = ?,
-// 		isocurrencycode = ?,
-// 		linkid = ?,
-// 		locationaddress = ?,
-// 		locationcity = ?,
-// 		locationcountry = ?,
-// 		locationlat = ?,
-// 		locationlon = ?,
-// 		locationpostalcode = ?,
-// 		locationregion = ?,
-// 		locationstorenumber = ?,
-// 		merchantname = ?,
-// 		name = ?,
-// 		paymentchannel = ?,
-// 		paymentmetabyorderof = ?,
-// 		paymentmetapayee = ?,
-// 		paymentmetapayer = ?,
-// 		paymentmetapaymentmethod = ?,
-// 		paymentmetapaymentprocessor = ?,
-// 		paymentmetappdid = ?,
-// 		paymentmetareason = ?,
-// 		paymentmetareferencenumber = ?,
-// 		pending = ?,
-// 		pendingtransactionid = ?,
-// 		personalfinancecategorydetailed = ?,
-// 		personalfinancecategoryprimary = ?,
-// 		sign = ?,
-// 		time = ?,
-// 		transactioncode = ?,
-// 		unofficialcurrencycode = ?,
-// 		userid = ?,
-// 		categories = ?,
-// 		WHERE transactionid = ?;
+// 		ALTER TABLE TransactionInternal UPDATE
+// 		AccountId = ?,
+// 		AccountOwner = ?,
+// 		Amount = ?,
+// 		AuthorizedDate = ?,
+// 		AuthorizedDatetime = ?,
+// 		CategoryId = ?,
+// 		CheckNumber = ?,
+// 		CurrentDate = ?,
+// 		CurrentDatetime = ?,
+// 		IsoCurrencyCode = ?,
+// 		LinkId = ?,
+// 		LocationAddress = ?,
+// 		LocationCity = ?,
+// 		LocationCountry = ?,
+// 		LocationLat = ?,
+// 		LocationLon = ?,
+// 		LocationPostalCode = ?,
+// 		LocationRegion = ?,
+// 		LocationStoreNumber = ?,
+// 		MerchantName = ?,
+// 		Name = ?,
+// 		PaymentChannel = ?,
+// 		PaymentMetaByOrderOf = ?,
+// 		PaymentMetaPayee = ?,
+// 		PaymentMetaPayer = ?,
+// 		PaymentMetaPaymentMethod = ?,
+// 		PaymentMetaPaymentProcessor = ?,
+// 		PaymentMetaPpdId = ?,
+// 		PaymentMetaReason = ?,
+// 		PaymentMetaReferenceNumber = ?,
+// 		Pending = ?,
+// 		PendingTransactionId = ?,
+// 		PersonalFinanceCategoryDetailed = ?,
+// 		PersonalFinanceCategoryPrimary = ?,
+// 		Sign = ?,
+// 		Time = ?,
+// 		TransactionCode = ?,
+// 		UnofficialCurrencyCode = ?,
+// 		UserId = ?,
+// 		Categories = ?,
+// 		WHERE TransactionId = ?;
 // 	`
 
 // 	if err := db.queryEngine.NewRaw(query,

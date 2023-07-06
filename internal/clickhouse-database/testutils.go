@@ -5,6 +5,7 @@ import (
 
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/helper"
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 func generateRandomInvestmentTransaction() *schema.InvestmentTransaction {
@@ -24,9 +25,10 @@ func generateRandomInvestmentTransaction() *schema.InvestmentTransaction {
 		IsoCurrencyCode:         helper.GenerateRandomString(20),
 		UnofficialCurrencyCode:  helper.GenerateRandomString(20),
 		LinkId:                  *generateRandomId(),
-		Id:                      helper.GenerateRandomString(20),
+		Id:                      "",
 		UserId:                  *generateRandomId(),
 		CreatedAt:               helper.GenerateRandomString(20),
+		Sign:                    1,
 	}
 }
 
@@ -52,7 +54,13 @@ func generateRandomReOccurringTransaction() *schema.ReOccuringTransaction {
 		UpdatedTime:                     helper.GenerateRandomString(20),
 		UserId:                          *generateRandomId(),
 		LinkId:                          *generateRandomId(),
-		Id:                              helper.GenerateRandomString(20),
+		Id:                              "",
+		Flow:                            schema.ReCurringFlow_RE_CURRING_FLOW_INFLOW,
+		Sign:                            1,
+		Time: &timestamppb.Timestamp{
+			Seconds: int64(time.Now().UTC().Second()),
+			Nanos:   int32(time.Now().UTC().Nanosecond()),
+		},
 	}
 }
 

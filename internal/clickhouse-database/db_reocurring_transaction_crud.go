@@ -1,266 +1,268 @@
 package clickhousedatabase
 
-// import (
-// 	"context"
-// 	"fmt"
+import (
+	"context"
+	"fmt"
+	"strings"
 
-// 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
-// )
+	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
+	"github.com/google/uuid"
+)
 
-// // AddReOccuringTransaction adds a new reoccurring transaction to the database for a given user id
-// func (db *Db) AddReOccurringTransaction(ctx context.Context, userId *uint64, tx *schema.ReOccuringTransaction) (*uint64, error) {
-// 	// trace the operation
-// 	if span := db.startDatastoreSpan(ctx, "dbtxn-add-reocurring-transaction"); span != nil {
-// 		defer span.End()
-// 	}
+// AddReOccuringTransaction adds a new reoccurring transaction to the database for a given user id
+func (db *Db) AddReOccurringTransaction(ctx context.Context, userId *uint64, tx *schema.ReOccuringTransaction) (*string, error) {
+	// trace the operation
+	if span := db.startDatastoreSpan(ctx, "dbtxn-add-reocurring-transaction"); span != nil {
+		defer span.End()
+	}
 
-// 	// validate input parameters
-// 	if userId == nil {
-// 		return nil, fmt.Errorf("user ID is nil")
-// 	}
+	// validate input parameters
+	if userId == nil {
+		return nil, fmt.Errorf("user ID is nil")
+	}
 
-// 	if tx == nil {
-// 		return nil, fmt.Errorf("transaction is nil")
-// 	}
+	if tx == nil {
+		return nil, fmt.Errorf("transaction is nil")
+	}
 
-// 	if tx.Id != 0 {
-// 		return nil, fmt.Errorf("transaction ID must be 0 at creation time")
-// 	}
+	if tx.Id != "" {
+		return nil, fmt.Errorf("transaction ID must be 0 at creation time")
+	}
 
-// 	// the link id must be provided at write time in order to properly associate the transaction
-// 	// to a given plaid link. This facilitates the ability to delete all transactions associated
-// 	// to a given plaid link
-// 	if tx.LinkId == 0 {
-// 		return nil, fmt.Errorf("transaction link ID must be greater than 0")
-// 	}
+	// the link id must be provided at write time in order to properly associate the transaction
+	// to a given plaid link. This facilitates the ability to delete all transactions associated
+	// to a given plaid link
+	if tx.LinkId == 0 {
+		return nil, fmt.Errorf("transaction link ID must be greater than 0")
+	}
 
-// 	// associate the user id to the transaction of interest
-// 	tx.UserId = *userId
-// 	// convert the transaction object to orm type
-// 	record, err := tx.ToORM(ctx)
-// 	if err != nil {
-// 		return nil, err
-// 	}
+	id, err := uuid.NewUUID()
+	if err != nil {
+		return nil, err
+	}
 
-// 	// validate the transaction object
-// 	if err := tx.Validate(); err != nil {
-// 		return nil, err
-// 	}
+	// associate the user id to the transaction of interest
+	tx.UserId = *userId
+	tx.Id = id.String()
 
-// 	// create the transaction record
-// 	t := db.QueryOperator.ReOccuringTransactionORM
-// 	if err := t.WithContext(ctx).Create(&record); err != nil {
-// 		return nil, err
-// 	}
+	// validate the transaction object
+	if err := tx.Validate(); err != nil {
+		return nil, err
+	}
 
-// 	return &record.Id, nil
-// }
+	// convert the transaction object to orm type
+	record, err := tx.ConvertToInternal()
+	if err != nil {
+		return nil, err
+	}
 
-// // AddReOccurringTransactions adds a new set of reoccurring transactions to the database and associates them to a given user id
-// func (db *Db) AddReOccurringTransactions(ctx context.Context, userId *uint64, txs []*schema.ReOccuringTransaction) error {
-// 	// trace the operation
-// 	if span := db.startDatastoreSpan(ctx, "dbtxn-add-reocurring-transactions"); span != nil {
-// 		defer span.End()
-// 	}
+	// create the transaction record
+	_, err = db.queryEngine.NewInsert().Model(record).Exec(ctx)
+	if err != nil {
+		return nil, err
+	}
 
-// 	// validate input parameters
-// 	if userId == nil {
-// 		return fmt.Errorf("user ID is nil")
-// 	}
+	// get the newly created tx
+	createdTx := new(schema.ReOccuringTransactionInternal)
+	if err := db.queryEngine.NewSelect().Model(createdTx).Where("UserId = ?", record.UserId).Scan(ctx); err != nil {
+		return nil, err
+	}
 
-// 	if txs == nil {
-// 		return fmt.Errorf("transactions is nil")
-// 	}
+	return &createdTx.ID, nil
+}
 
-// 	txRecords := make([]*schema.ReOccuringTransactionORM, 0, len(txs))
-// 	// associate the user id to the transaction of interest
-// 	for _, tx := range txs {
-// 		if tx.Id != 0 {
-// 			return fmt.Errorf("transaction ID must be 0 at creation time")
-// 		}
+// AddReOccurringTransactions adds a new set of reoccurring transactions to the database and associates them to a given user id
+func (db *Db) AddReOccurringTransactions(ctx context.Context, userId *uint64, txs []*schema.ReOccuringTransaction) error {
+	// trace the operation
+	if span := db.startDatastoreSpan(ctx, "dbtxn-add-reocurring-transactions"); span != nil {
+		defer span.End()
+	}
 
-// 		if tx.LinkId == 0 {
-// 			return fmt.Errorf("transaction link ID must be greater than 0")
-// 		}
+	// validate input parameters
+	if userId == nil {
+		return fmt.Errorf("user ID is nil")
+	}
 
-// 		// associate the user id to the transaction of interest
-// 		tx.UserId = *userId
+	if txs == nil {
+		return fmt.Errorf("transactions is nil")
+	}
 
-// 		// validate transactions
-// 		if err := tx.Validate(); err != nil {
-// 			return err
-// 		}
+	txRecords := make([]schema.ReOccuringTransactionInternal, 0, len(txs))
+	// associate the user id to the transaction of interest
+	for _, tx := range txs {
+		if tx.Id != "" {
+			return fmt.Errorf("transaction ID must be 0 at creation time")
+		}
 
-// 		record, err := tx.ToORM(ctx)
-// 		if err != nil {
-// 			return err
-// 		}
+		if tx.LinkId == 0 {
+			return fmt.Errorf("transaction link ID must be greater than 0")
+		}
 
-// 		txRecords = append(txRecords, &record)
-// 	}
+		// associate the user id to the transaction of interest
+		tx.UserId = *userId
 
-// 	t := db.QueryOperator.ReOccuringTransactionORM
-// 	if err := t.WithContext(ctx).Create(txRecords...); err != nil {
-// 		return err
-// 	}
+		// validate transactions
+		if err := tx.Validate(); err != nil {
+			return err
+		}
 
-// 	return nil
-// }
+		record, err := tx.ConvertToInternal()
+		if err != nil {
+			return err
+		}
 
-// // DeleteReOccuringTransaction delets a singular reoccurring transaction by its id
-// func (db *Db) DeleteReOccuringTransaction(ctx context.Context, txId *uint64) error {
-// 	if span := db.startDatastoreSpan(ctx, "dbtxn-delete-reocurring-transaction"); span != nil {
-// 		defer span.End()
-// 	}
+		txRecords = append(txRecords, *record)
+	}
 
-// 	if txId == nil {
-// 		return fmt.Errorf("transaction ID must be 0 at creation time")
-// 	}
+	if _, err := db.queryEngine.NewInsert().Model(&txRecords).Exec(ctx); err != nil {
+		return err
+	}
 
-// 	//	get the transacton by tx id
-// 	t := db.QueryOperator.ReOccuringTransactionORM
-// 	if _, err := db.GetTransactionById(ctx, txId); err != nil {
-// 		return err
-// 	}
+	return nil
+}
 
-// 	// delete the transaction
-// 	result, err := t.WithContext(ctx).Where(t.Id.Eq(*txId)).Delete()
-// 	if err != nil {
-// 		return err
-// 	}
+// DeleteReOccuringTransaction delets a singular reoccurring transaction by its id
+func (db *Db) DeleteReOccuringTransaction(ctx context.Context, txId *string) error {
+	if span := db.startDatastoreSpan(ctx, "dbtxn-delete-reocurring-transaction"); span != nil {
+		defer span.End()
+	}
 
-// 	if result.RowsAffected == 0 {
-// 		return fmt.Errorf("no rows affected")
-// 	}
+	if txId == nil {
+		return fmt.Errorf("transaction ID must be 0 at creation time")
+	}
 
-// 	return nil
-// }
+	// raw query to delete the transaction
+	query := fmt.Sprintf(`ALTER TABLE ReOccuringTransactionInternal DELETE WHERE ID = '%s'`, *txId)
+	if err := db.queryEngine.
+		NewRaw(query).
+		Scan(ctx); err != nil {
+		return err
+	}
 
-// // DeleteReOccurringTransactionsByIds deletes a set of reoccurring transactions by their ids
-// func (db *Db) DeleteReOccurringTransactionsByIds(ctx context.Context, txIds []uint64) error {
-// 	if span := db.startDatastoreSpan(ctx, "dbtxn-delete-reocurring-transactions-by-ids"); span != nil {
-// 		defer span.End()
-// 	}
+	return nil
+}
 
-// 	if txIds == nil {
-// 		return fmt.Errorf("transaction ID must be 0 at creation time")
-// 	}
+// DeleteReOccurringTransactionsByIds deletes a set of reoccurring transactions by their ids
+func (db *Db) DeleteReOccurringTransactionsByIds(ctx context.Context, txIds []string) error {
+	if span := db.startDatastoreSpan(ctx, "dbtxn-delete-reocurring-transactions-by-ids"); span != nil {
+		defer span.End()
+	}
 
-// 	//	get the transacton by tx id
-// 	t := db.QueryOperator.ReOccuringTransactionORM
-// 	// delete the transaction
-// 	result, err := t.WithContext(ctx).Where(t.Id.In(txIds...)).Delete()
-// 	if err != nil {
-// 		return err
-// 	}
+	if txIds == nil {
+		return fmt.Errorf("transaction ID must be 0 at creation time")
+	}
 
-// 	if result.RowsAffected == 0 {
-// 		return fmt.Errorf("no rows affected")
-// 	}
+	// Create a string with comma-separated values from txIds
+	ids := "'" + strings.Join(txIds, "', '") + "'"
 
-// 	return nil
-// }
+	sqlQuery := fmt.Sprintf("ALTER TABLE ReOccuringTransactionInternal DELETE WHERE ID IN (%s)", ids)
 
-// // DeleteReOccurringTransactionsByLinkId deletes a set of reoccurring transactions by their link id
-// func (db *Db) DeleteReOcurringTransactionsByLinkId(ctx context.Context, linkId *uint64) error {
-// 	if span := db.startDatastoreSpan(ctx, "dbtxn-delete-reocurring-transactions-by-ids"); span != nil {
-// 		defer span.End()
-// 	}
+	if err := db.queryEngine.
+		NewRaw(sqlQuery).
+		Scan(ctx); err != nil {
+		return err
+	}
 
-// 	if linkId == nil {
-// 		return fmt.Errorf("transaction ID must be 0 at creation time")
-// 	}
+	return nil
+}
 
-// 	//	get the transacton by tx id
-// 	t := db.QueryOperator.ReOccuringTransactionORM
-// 	// delete all transactions matching this link id
-// 	result, err := t.WithContext(ctx).Where(t.LinkId.Eq(*linkId)).Delete()
-// 	if err != nil {
-// 		return err
-// 	}
+// DeleteReOccurringTransactionsByLinkId deletes a set of reoccurring transactions by their link id
+func (db *Db) DeleteReOcurringTransactionsByLinkId(ctx context.Context, linkId *uint64) error {
+	if span := db.startDatastoreSpan(ctx, "dbtxn-delete-reocurring-transactions-by-ids"); span != nil {
+		defer span.End()
+	}
 
-// 	if result.RowsAffected == 0 {
-// 		return fmt.Errorf("no rows affected")
-// 	}
+	if linkId == nil {
+		return fmt.Errorf("transaction ID must be 0 at creation time")
+	}
 
-// 	return nil
-// }
+	// raw query to delete the transaction
+	query := fmt.Sprintf(`ALTER TABLE ReOccuringTransactionInternal DELETE WHERE LinkId = '%d'`, *linkId)
+	if err := db.queryEngine.
+		NewRaw(query).
+		Scan(ctx); err != nil {
+		return err
+	}
 
-// // DeleteUserReOcurringTransactons deletes all reoccurring transactions for a given user id
-// func (db *Db) DeleteUserReOcurringTransactons(ctx context.Context, userId *uint64) error {
-// 	if span := db.startDatastoreSpan(ctx, "dbtxn-delete-user-reocurring-transaction"); span != nil {
-// 		defer span.End()
-// 	}
+	return nil
+}
 
-// 	if userId == nil {
-// 		return fmt.Errorf("user ID must be 0 at creation time")
-// 	}
+// DeleteUserReOcurringTransactons deletes all reoccurring transactions for a given user id
+func (db *Db) DeleteUserReOcurringTransactons(ctx context.Context, userId *uint64) error {
+	if span := db.startDatastoreSpan(ctx, "dbtxn-delete-user-reocurring-transaction"); span != nil {
+		defer span.End()
+	}
 
-// 	//	get the transacton by tx id
-// 	t := db.QueryOperator.ReOccuringTransactionORM
-// 	// delete the transaction
-// 	result, err := t.WithContext(ctx).Where(t.UserId.Eq(*userId)).Delete()
-// 	if err != nil {
-// 		return err
-// 	}
+	if userId == nil {
+		return fmt.Errorf("user ID must be 0 at creation time")
+	}
 
-// 	if result.RowsAffected == 0 {
-// 		return fmt.Errorf("no rows affected")
-// 	}
+	// delete the transaction
+	query := fmt.Sprintf(`ALTER TABLE ReOccuringTransactionInternal DELETE WHERE UserId = '%d'`, *userId)
+	if err := db.queryEngine.
+		NewRaw(query).
+		Scan(ctx); err != nil {
+		return err
+	}
 
-// 	return nil
-// }
+	return nil
+}
 
-// // GetReOcurringTransactions gets a set of reoccurring transactions for a given user id in a paginated format
-// func (db *Db) GetReOcurringTransactions(ctx context.Context, userId *uint64, pagenumber int64, limit int64) ([]*schema.ReOccuringTransaction, int64, error) {
-// 	var (
-// 		nextPageNumber int64
-// 	)
+// GetReOcurringTransactions gets a set of reoccurring transactions for a given user id in a paginated format
+func (db *Db) GetReOcurringTransactions(ctx context.Context, userId *uint64, pagenumber int64, limit int64) ([]*schema.ReOccuringTransaction, int64, error) {
+	var (
+		nextPageNumber int64
+	)
 
-// 	if span := db.startDatastoreSpan(ctx, "dbtxn-get-reocurring-transactions"); span != nil {
-// 		defer span.End()
-// 	}
+	if span := db.startDatastoreSpan(ctx, "dbtxn-get-reocurring-transactions"); span != nil {
+		defer span.End()
+	}
 
-// 	if userId == nil {
-// 		return nil, 0, fmt.Errorf("user ID must be 0 at creation time")
-// 	}
+	if userId == nil {
+		return nil, 0, fmt.Errorf("user ID must be 0 at creation time")
+	}
 
-// 	// sanitize the request params
-// 	pageNumber, pageSize := db.sanitizePaginationParams(pagenumber, limit)
-// 	if pageNumber == 0 {
-// 		nextPageNumber = 2
-// 	} else {
-// 		nextPageNumber = pageNumber + 1
-// 	}
+	// sanitize the request params
+	pageNumber, pageSize := db.sanitizePaginationParams(pagenumber, limit)
+	if pageNumber == 0 {
+		nextPageNumber = 2
+	} else {
+		nextPageNumber = pageNumber + 1
+	}
 
-// 	t := db.QueryOperator.ReOccuringTransactionORM
-// 	txs, err := t.
-// 		WithContext(ctx).
-// 		Where(t.UserId.Eq(*userId)).
-// 		Limit(int(pageSize)).Offset(int(pageSize * (pageNumber - 1))).
-// 		Find()
-// 	if err != nil {
-// 		return nil, 0, err
-// 	}
+	offset := int(pageSize * (pageNumber - 1))
+	queryLimit := int(pageSize)
+	query := fmt.Sprintf(`UserId = %d`, *userId)
+	var transactions []schema.ReOccuringTransactionInternal
+	if err := db.
+		queryEngine.
+		NewSelect().
+		Model(&transactions).
+		Where(query).
+		Offset(offset).
+		Limit(queryLimit).
+		Scan(ctx); err != nil {
+		return nil, 0, err
+	}
 
-// 	if len(txs) == 0 {
-// 		return nil, 0, fmt.Errorf("no transactions found")
-// 	}
+	if len(transactions) == 0 {
+		return nil, 0, fmt.Errorf("no transactions found")
+	}
 
-// 	results := make([]*schema.ReOccuringTransaction, 0, len(txs))
-// 	for _, tx := range txs {
-// 		txRecord, err := tx.ToPB(ctx)
-// 		if err != nil {
-// 			return nil, 0, err
-// 		}
-// 		results = append(results, &txRecord)
-// 	}
+	results := make([]*schema.ReOccuringTransaction, 0, len(transactions))
+	for _, tx := range transactions {
+		txRecord, err := tx.ConvertToRecurringTransaction()
+		if err != nil {
+			return nil, 0, err
+		}
+		results = append(results, txRecord)
+	}
 
-// 	return results, nextPageNumber, nil
-// }
+	return results, nextPageNumber, nil
+}
 
 // // UpdateReOccurringTransaction updates a singular reoccurring transaction
-// func (db *Db) UpdateReOccurringTransaction(ctx context.Context, userId *uint64, txId *uint64, tx *schema.ReOccuringTransaction) error {
+// func (db *Db) UpdateReOccurringTransaction(ctx context.Context, userId *uint64, txId *string, tx *schema.ReOccuringTransaction) error {
 // 	if span := db.startDatastoreSpan(ctx, "dbtxn-reocurring-update-transaction"); span != nil {
 // 		defer span.End()
 // 	}
@@ -350,60 +352,58 @@ package clickhousedatabase
 // 	return nil
 // }
 
-// // GetReOcurringTransactionById gets a singular reoccurring transaction by its id
-// func (db *Db) GetReOcurringTransactionById(ctx context.Context, txId *uint64) (*schema.ReOccuringTransaction, error) {
-// 	if span := db.startDatastoreSpan(ctx, "dbtxn-get-reocurring-transaction-by-id"); span != nil {
-// 		defer span.End()
-// 	}
+// GetReOcurringTransactionById gets a singular reoccurring transaction by its id
+func (db *Db) GetReOcurringTransactionById(ctx context.Context, txId *string) (*schema.ReOccuringTransaction, error) {
+	if span := db.startDatastoreSpan(ctx, "dbtxn-get-reocurring-transaction-by-id"); span != nil {
+		defer span.End()
+	}
 
-// 	if txId == nil {
-// 		return nil, fmt.Errorf("transaction ID must be 0 at creation time")
-// 	}
+	if txId == nil {
+		return nil, fmt.Errorf("transaction ID must be 0 at creation time")
+	}
 
-// 	t := db.QueryOperator.ReOccuringTransactionORM
-// 	record, err := t.WithContext(ctx).Where(t.Id.Eq(*txId)).First()
-// 	if err != nil {
-// 		return nil, fmt.Errorf("transaction with id %d does not exist", txId)
-// 	}
+	tx := new(schema.ReOccuringTransactionInternal)
+	if err := db.queryEngine.NewSelect().Model(tx).Where("ID = ?", *txId).Scan(ctx); err != nil {
+		return nil, err
+	}
 
-// 	tx, err := record.ToPB(ctx)
-// 	if err != nil {
-// 		return nil, err
-// 	}
+	res, err := tx.ConvertToRecurringTransaction()
+	if err != nil {
+		return nil, err
+	}
 
-// 	return &tx, nil
-// }
+	return res, nil
+}
 
-// func (db *Db) GetUserReOccurringTransactions(ctx context.Context, userId *uint64) ([]*schema.ReOccuringTransaction, error) {
-// 	if span := db.startDatastoreSpan(ctx, "dbtxn-get-reocurring-transaction-for-user"); span != nil {
-// 		defer span.End()
-// 	}
+func (db *Db) GetUserReOccurringTransactions(ctx context.Context, userId *uint64) ([]*schema.ReOccuringTransaction, error) {
+	if span := db.startDatastoreSpan(ctx, "dbtxn-get-reocurring-transaction-for-user"); span != nil {
+		defer span.End()
+	}
 
-// 	if userId == nil {
-// 		return nil, fmt.Errorf("userId must not be nil")
-// 	}
+	if userId == nil {
+		return nil, fmt.Errorf("userId must not be nil")
+	}
 
-// 	t := db.QueryOperator.ReOccuringTransactionORM
-// 	txs, err := t.
-// 		WithContext(ctx).
-// 		Where(t.UserId.Eq(*userId)).
-// 		Find()
-// 	if err != nil {
-// 		return nil, err
-// 	}
+	var result []schema.ReOccuringTransactionInternal
+	sqlQuery := fmt.Sprintf("SELECT * FROM ReOccuringTransactionInternal WHERE UserId = %d", *userId)
+	if err := db.queryEngine.
+		NewRaw(sqlQuery).
+		Scan(ctx, &result); err != nil {
+		return nil, err
+	}
 
-// 	if len(txs) == 0 {
-// 		return nil, fmt.Errorf("no transactions found")
-// 	}
+	if len(result) == 0 {
+		return nil, fmt.Errorf("no transactions found")
+	}
 
-// 	results := make([]*schema.ReOccuringTransaction, 0, len(txs))
-// 	for _, tx := range txs {
-// 		txRecord, err := tx.ToPB(ctx)
-// 		if err != nil {
-// 			return nil, err
-// 		}
-// 		results = append(results, &txRecord)
-// 	}
+	results := make([]*schema.ReOccuringTransaction, 0, len(result))
+	for _, tx := range result {
+		txRecord, err := tx.ConvertToRecurringTransaction()
+		if err != nil {
+			return nil, err
+		}
+		results = append(results, txRecord)
+	}
 
-// 	return results, nil
-// }
+	return results, nil
+}
