@@ -7,8 +7,8 @@ CREATE TABLE IF NOT EXISTS ReOccuringTransactionInternal (
     FirstDate                       String,
     Flow                            String,
     Frequency                       String,
-    Id                              String DEFAULT generateUUIDv4(),
-    IsActive                        UInt8,
+    ID                              String DEFAULT generateUUIDv4(),
+    IsActive                        Bool,
     LastAmount                      String,
     LastAmountIsoCurrencyCode       String,
     LastDate                        String,
@@ -25,5 +25,5 @@ CREATE TABLE IF NOT EXISTS ReOccuringTransactionInternal (
     UserId                          UInt64
 ) ENGINE = CollapsingMergeTree(Sign)
 PARTITION BY toYYYYMM(Time)
-ORDER BY (Time, Id)
-PRIMARY KEY (Time, Id);
+ORDER BY (Time, ID)
+PRIMARY KEY (Time, ID);

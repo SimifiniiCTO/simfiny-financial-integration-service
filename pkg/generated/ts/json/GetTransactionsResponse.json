@@ -45,11 +45,11 @@
                     "type": "string",
                     "description": "@gotag: ch:\"check_number\""
                 },
-                "date": {
+                "current_date": {
                     "type": "string",
                     "description": "@gotag: ch:\"date\""
                 },
-                "datetime": {
+                "current_datetime": {
                     "type": "string",
                     "description": "@gotag: ch:\"datetime\""
                 },
@@ -182,6 +182,12 @@
                     },
                     "additionalProperties": true,
                     "type": "object"
+                },
+                "categories": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
                 }
             },
             "additionalProperties": true,

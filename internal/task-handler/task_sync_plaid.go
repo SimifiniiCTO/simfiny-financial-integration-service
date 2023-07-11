@@ -394,7 +394,7 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, payload *SyncPl
 					AccountOwner:                    plaidTransaction.GetAccountOwner(),
 					TransactionId:                   plaidTransaction.GetTransactionId(),
 					TransactionCode:                 plaidTransaction.GetTransactionCode(),
-					Id:                              0,
+					Id:                              "",
 					UserId:                          payload.UserId,
 					LinkId:                          link.Id,
 					Sign:                            0,

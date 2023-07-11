@@ -4,6 +4,7 @@
 ## Table of Contents
 
 - [financial_integration_service_api/v1/clickhouse_financial_service.proto](#financial_integration_service_api_v1_clickhouse_financial_service-proto)
+    - [AccountBalanceHistory](#financial_integration_service_api-v1-AccountBalanceHistory)
     - [AverageTransactionAmountByCategoryMetric](#financial_integration_service_api-v1-AverageTransactionAmountByCategoryMetric)
     - [InvestmentTransaction](#financial_integration_service_api-v1-InvestmentTransaction)
     - [MonthlyTransactionCountByCategoryMetric](#financial_integration_service_api-v1-MonthlyTransactionCountByCategoryMetric)
@@ -160,6 +161,26 @@
 
 
 
+<a name="financial_integration_service_api-v1-AccountBalanceHistory"></a>
+
+### AccountBalanceHistory
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| time | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+| account_id | [string](#string) |  |  |
+| iso_currency_code | [string](#string) |  |  |
+| balance | [double](#double) |  |  |
+| user_id | [uint64](#uint64) |  |  |
+| sign | [uint32](#uint32) |  |  |
+
+
+
+
+
+
 <a name="financial_integration_service_api-v1-AverageTransactionAmountByCategoryMetric"></a>
 
 ### AverageTransactionAmountByCategoryMetric
@@ -188,7 +209,7 @@
 | ammount | [string](#string) |  | @gotag: ch:&#34;amount&#34; |
 | investment_transaction_id | [string](#string) |  | @gotag: ch:&#34;investment_transaction_id&#34; |
 | security_id | [string](#string) |  | @gotag: ch:&#34;security_id&#34; |
-| date | [string](#string) |  | @gotag: ch:&#34;date&#34; |
+| current_date | [string](#string) |  | @gotag: ch:&#34;date&#34; |
 | name | [string](#string) |  | @gotag: ch:&#34;name&#34; |
 | quantity | [double](#double) |  | @gotag: ch:&#34;quantity&#34; |
 | amount | [double](#double) |  | @gotag: ch:&#34;amount&#34; |
@@ -199,7 +220,7 @@
 | iso_currency_code | [string](#string) |  | @gotag: ch:&#34;iso_currency_code&#34; |
 | unofficial_currency_code | [string](#string) |  | @gotag: ch:&#34;unofficial_currency_code&#34; |
 | link_id | [uint64](#uint64) |  | @gotag: ch:&#34;link_id&#34; |
-| id | [uint64](#uint64) |  | @gotag: ch:&#34;id&#34; |
+| id | [string](#string) |  | @gotag: ch:&#34;id&#34; |
 | user_id | [uint64](#uint64) |  | @gotag: ch:&#34;user_id&#34; |
 | created_at | [string](#string) |  |  |
 | sign | [int32](#int32) |  |  |
@@ -256,7 +277,7 @@
 | updated_time | [string](#string) |  | @gotag: ch:&#34;updated_time&#34; |
 | user_id | [uint64](#uint64) |  | @gotag: ch:&#34;user_id&#34; |
 | link_id | [uint64](#uint64) |  | @gotag: ch:&#34;link_id&#34; |
-| id | [uint64](#uint64) |  | @gotag: ch:&#34;id&#34; |
+| id | [string](#string) |  | @gotag: ch:&#34;id&#34; |
 | flow | [ReCurringFlow](#financial_integration_service_api-v1-ReCurringFlow) |  | @gotag: ch:&#34;flow&#34; |
 | sign | [int32](#int32) |  |  |
 | time | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
@@ -281,8 +302,8 @@
 | unofficial_currency_code | [string](#string) |  | @gotag: ch:&#34;unofficial_currency_code&#34; |
 | category_id | [string](#string) |  | @gotag: ch:&#34;category_id&#34; |
 | check_number | [string](#string) |  | @gotag: ch:&#34;check_number&#34; |
-| date | [string](#string) |  | @gotag: ch:&#34;date&#34; |
-| datetime | [string](#string) |  | @gotag: ch:&#34;datetime&#34; |
+| current_date | [string](#string) |  | @gotag: ch:&#34;date&#34; |
+| current_datetime | [string](#string) |  | @gotag: ch:&#34;datetime&#34; |
 | authorized_date | [string](#string) |  | @gotag: ch:&#34;authorized_date&#34; |
 | authorized_datetime | [string](#string) |  | @gotag: ch:&#34;authorized_datetime&#34; |
 | name | [string](#string) |  | @gotag: ch:&#34;name&#34; |
@@ -293,7 +314,7 @@
 | account_owner | [string](#string) |  | @gotag: ch:&#34;account_owner&#34; |
 | transaction_id | [string](#string) |  | @gotag: ch:&#34;transaction_id&#34; |
 | transaction_code | [string](#string) |  | @gotag: ch:&#34;transaction_code&#34; |
-| id | [uint64](#uint64) |  |  |
+| id | [string](#string) |  |  |
 | user_id | [uint64](#uint64) |  | @gotag: ch:&#34;user_id&#34; |
 | link_id | [uint64](#uint64) |  | @gotag: ch:&#34;link_id&#34; |
 | sign | [int32](#int32) |  |  |
@@ -317,6 +338,7 @@
 | payment_meta_reference_number | [string](#string) |  |  |
 | time | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
 | additional_properties | [google.protobuf.Any](#google-protobuf-Any) |  |  |
+| categories | [string](#string) | repeated |  |
 
 
 
@@ -2130,7 +2152,7 @@ the `get bank account` request
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| reocurring_transaction_id | [uint64](#uint64) |  | The participant id |
+| reocurring_transaction_id | [string](#string) |  | The participant id |
 | transactions | [Transaction](#financial_integration_service_api-v1-Transaction) | repeated | The transactions |
 
 

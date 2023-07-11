@@ -6,4 +6,4 @@ CREATE TABLE IF NOT EXISTS MonthlyExpenditure
 ) 
 ENGINE = AggregatingMergeTree()
 PARTITION BY Month
-ORDER BY Month, UserId;
+ORDER BY Month;

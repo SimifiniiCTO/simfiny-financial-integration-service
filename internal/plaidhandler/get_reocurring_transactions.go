@@ -9,6 +9,8 @@ import (
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/helper"
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 	"github.com/plaid/plaid-go/v12/plaid"
+	"google.golang.org/protobuf/types/known/anypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 // GetRecurringTransactionsForAccounts is used to retrieve recurring transactions from the Plaid API for a given set of account IDs
@@ -112,8 +114,14 @@ func transactionStreamToRecurringTransactions(userId, linkId *uint64, streams []
 			UpdatedTime:                     time.Now().String(),
 			UserId:                          *userId,
 			LinkId:                          *linkId,
-			Id:                              0,
+			Id:                              "",
 			Flow:                            flow,
+			Sign:                            1,
+			Time: &timestamppb.Timestamp{
+				Seconds: int64(time.Now().Second()),
+				Nanos:   int32(time.Now().Nanosecond()),
+			},
+			AdditionalProperties: &anypb.Any{},
 		})
 	}
 

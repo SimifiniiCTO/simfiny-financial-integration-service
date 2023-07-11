@@ -81,7 +81,6 @@ func (p *PlaidWrapper) getInvestmentTransactions(ctx context.Context, req *plaid
 			Subtype:                 string(t.GetSubtype()),
 			IsoCurrencyCode:         t.GetIsoCurrencyCode(),
 			LinkId:                  link.Id,
-			Id:                      0,
 			UserId:                  *userId,
 			CreatedAt:               time.Now().String(),
 			UnofficialCurrencyCode:  t.GetUnofficialCurrencyCode(),

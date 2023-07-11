@@ -12,7 +12,7 @@ import (
 
 type TaskDeleteTransactionsPayload struct {
 	UserId         uint64   `json:"user_id"`
-	TransactionIds []uint64 `json:"transaction_ids"`
+	TransactionIds []string `json:"transaction_ids"`
 	LinkId         uint64   `json:"link_id"`
 }
 
@@ -21,7 +21,7 @@ func (t *TaskDeleteTransactionsPayload) String() *string {
 	return &str
 }
 
-func NewDeleteTransactionsTask(userId, linkId uint64, transactionIds []uint64) (*asynq.Task, error) {
+func NewDeleteTransactionsTask(userId, linkId uint64, transactionIds []string) (*asynq.Task, error) {
 	rec := &TaskDeleteTransactionsPayload{
 		UserId:         userId,
 		TransactionIds: transactionIds,

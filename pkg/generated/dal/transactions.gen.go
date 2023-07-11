@@ -34,11 +34,12 @@ func newTransactionORM(db *gorm.DB, opts ...gen.DOOption) transactionORM {
 	_transactionORM.Amount = field.NewFloat64(tableName, "amount")
 	_transactionORM.AuthorizedDate = field.NewString(tableName, "authorized_date")
 	_transactionORM.AuthorizedDatetime = field.NewString(tableName, "authorized_datetime")
+	_transactionORM.Categories = field.NewField(tableName, "categories")
 	_transactionORM.CategoryId = field.NewString(tableName, "category_id")
 	_transactionORM.CheckNumber = field.NewString(tableName, "check_number")
-	_transactionORM.Date = field.NewString(tableName, "date")
-	_transactionORM.Datetime = field.NewString(tableName, "datetime")
-	_transactionORM.Id = field.NewUint64(tableName, "id")
+	_transactionORM.CurrentDate = field.NewString(tableName, "current_date")
+	_transactionORM.CurrentDatetime = field.NewString(tableName, "current_datetime")
+	_transactionORM.Id = field.NewString(tableName, "id")
 	_transactionORM.IsoCurrencyCode = field.NewString(tableName, "iso_currency_code")
 	_transactionORM.LinkId = field.NewUint64(tableName, "link_id")
 	_transactionORM.LocationAddress = field.NewString(tableName, "location_address")
@@ -85,11 +86,12 @@ type transactionORM struct {
 	Amount                          field.Float64
 	AuthorizedDate                  field.String
 	AuthorizedDatetime              field.String
+	Categories                      field.Field
 	CategoryId                      field.String
 	CheckNumber                     field.String
-	Date                            field.String
-	Datetime                        field.String
-	Id                              field.Uint64
+	CurrentDate                     field.String
+	CurrentDatetime                 field.String
+	Id                              field.String
 	IsoCurrencyCode                 field.String
 	LinkId                          field.Uint64
 	LocationAddress                 field.String
@@ -142,11 +144,12 @@ func (t *transactionORM) updateTableName(table string) *transactionORM {
 	t.Amount = field.NewFloat64(table, "amount")
 	t.AuthorizedDate = field.NewString(table, "authorized_date")
 	t.AuthorizedDatetime = field.NewString(table, "authorized_datetime")
+	t.Categories = field.NewField(table, "categories")
 	t.CategoryId = field.NewString(table, "category_id")
 	t.CheckNumber = field.NewString(table, "check_number")
-	t.Date = field.NewString(table, "date")
-	t.Datetime = field.NewString(table, "datetime")
-	t.Id = field.NewUint64(table, "id")
+	t.CurrentDate = field.NewString(table, "current_date")
+	t.CurrentDatetime = field.NewString(table, "current_datetime")
+	t.Id = field.NewString(table, "id")
 	t.IsoCurrencyCode = field.NewString(table, "iso_currency_code")
 	t.LinkId = field.NewUint64(table, "link_id")
 	t.LocationAddress = field.NewString(table, "location_address")
@@ -194,16 +197,17 @@ func (t *transactionORM) GetFieldByName(fieldName string) (field.OrderExpr, bool
 }
 
 func (t *transactionORM) fillFieldMap() {
-	t.fieldMap = make(map[string]field.Expr, 41)
+	t.fieldMap = make(map[string]field.Expr, 42)
 	t.fieldMap["account_id"] = t.AccountId
 	t.fieldMap["account_owner"] = t.AccountOwner
 	t.fieldMap["amount"] = t.Amount
 	t.fieldMap["authorized_date"] = t.AuthorizedDate
 	t.fieldMap["authorized_datetime"] = t.AuthorizedDatetime
+	t.fieldMap["categories"] = t.Categories
 	t.fieldMap["category_id"] = t.CategoryId
 	t.fieldMap["check_number"] = t.CheckNumber
-	t.fieldMap["date"] = t.Date
-	t.fieldMap["datetime"] = t.Datetime
+	t.fieldMap["current_date"] = t.CurrentDate
+	t.fieldMap["current_datetime"] = t.CurrentDatetime
 	t.fieldMap["id"] = t.Id
 	t.fieldMap["iso_currency_code"] = t.IsoCurrencyCode
 	t.fieldMap["link_id"] = t.LinkId

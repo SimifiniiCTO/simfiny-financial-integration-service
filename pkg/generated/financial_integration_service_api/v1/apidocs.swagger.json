@@ -3451,7 +3451,6 @@
       "properties": {
         "reocurringTransactionId": {
           "type": "string",
-          "format": "uint64",
           "title": "The participant id"
         },
         "transactions": {
@@ -3827,7 +3826,6 @@
         },
         "id": {
           "type": "string",
-          "format": "uint64",
           "title": "@gotag: ch:\"id\""
         },
         "flow": {
@@ -4211,11 +4209,11 @@
           "type": "string",
           "title": "@gotag: ch:\"check_number\""
         },
-        "date": {
+        "currentDate": {
           "type": "string",
           "title": "@gotag: ch:\"date\""
         },
-        "datetime": {
+        "currentDatetime": {
           "type": "string",
           "title": "@gotag: ch:\"datetime\""
         },
@@ -4260,8 +4258,7 @@
           "title": "@gotag: ch:\"transaction_code\""
         },
         "id": {
-          "type": "string",
-          "format": "uint64"
+          "type": "string"
         },
         "userId": {
           "type": "string",
@@ -4341,6 +4338,12 @@
         },
         "additionalProperties": {
           "$ref": "#/definitions/Any"
+        },
+        "categories": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       }
     },

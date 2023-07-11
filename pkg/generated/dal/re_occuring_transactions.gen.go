@@ -37,7 +37,7 @@ func newReOccuringTransactionORM(db *gorm.DB, opts ...gen.DOOption) reOccuringTr
 	_reOccuringTransactionORM.FirstDate = field.NewString(tableName, "first_date")
 	_reOccuringTransactionORM.Flow = field.NewString(tableName, "flow")
 	_reOccuringTransactionORM.Frequency = field.NewString(tableName, "frequency")
-	_reOccuringTransactionORM.Id = field.NewUint64(tableName, "id")
+	_reOccuringTransactionORM.Id = field.NewString(tableName, "id")
 	_reOccuringTransactionORM.IsActive = field.NewBool(tableName, "is_active")
 	_reOccuringTransactionORM.LastAmount = field.NewString(tableName, "last_amount")
 	_reOccuringTransactionORM.LastAmountIsoCurrencyCode = field.NewString(tableName, "last_amount_iso_currency_code")
@@ -71,7 +71,7 @@ type reOccuringTransactionORM struct {
 	FirstDate                       field.String
 	Flow                            field.String
 	Frequency                       field.String
-	Id                              field.Uint64
+	Id                              field.String
 	IsActive                        field.Bool
 	LastAmount                      field.String
 	LastAmountIsoCurrencyCode       field.String
@@ -111,7 +111,7 @@ func (r *reOccuringTransactionORM) updateTableName(table string) *reOccuringTran
 	r.FirstDate = field.NewString(table, "first_date")
 	r.Flow = field.NewString(table, "flow")
 	r.Frequency = field.NewString(table, "frequency")
-	r.Id = field.NewUint64(table, "id")
+	r.Id = field.NewString(table, "id")
 	r.IsActive = field.NewBool(table, "is_active")
 	r.LastAmount = field.NewString(table, "last_amount")
 	r.LastAmountIsoCurrencyCode = field.NewString(table, "last_amount_iso_currency_code")

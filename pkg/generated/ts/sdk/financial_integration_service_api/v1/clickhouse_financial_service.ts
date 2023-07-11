@@ -169,7 +169,7 @@ export interface InvestmentTransaction {
   /** @gotag: ch:"security_id" */
   securityId: string;
   /** @gotag: ch:"date" */
-  date: string;
+  currentDate: string;
   /** @gotag: ch:"name" */
   name: string;
   /** @gotag: ch:"quantity" */
@@ -191,7 +191,7 @@ export interface InvestmentTransaction {
   /** @gotag: ch:"link_id" */
   linkId: number;
   /** @gotag: ch:"id" */
-  id: number;
+  id: string;
   /** @gotag: ch:"user_id" */
   userId: number;
   createdAt: string;
@@ -242,7 +242,7 @@ export interface ReOccuringTransaction {
   /** @gotag: ch:"link_id" */
   linkId: number;
   /** @gotag: ch:"id" */
-  id: number;
+  id: string;
   /** @gotag: ch:"flow" */
   flow: ReCurringFlow;
   sign: number;
@@ -264,9 +264,9 @@ export interface Transaction {
   /** @gotag: ch:"check_number" */
   checkNumber: string;
   /** @gotag: ch:"date" */
-  date: string;
+  currentDate: string;
   /** @gotag: ch:"datetime" */
-  datetime: string;
+  currentDatetime: string;
   /** @gotag: ch:"authorized_date" */
   authorizedDate: string;
   /** @gotag: ch:"authorized_datetime" */
@@ -287,7 +287,7 @@ export interface Transaction {
   transactionId: string;
   /** @gotag: ch:"transaction_code" */
   transactionCode: string;
-  id: number;
+  id: string;
   /** @gotag: ch:"user_id" */
   userId: number;
   /** @gotag: ch:"link_id" */
@@ -315,6 +315,7 @@ export interface Transaction {
   paymentMetaReferenceNumber: string;
   time: Date | undefined;
   additionalProperties: Any | undefined;
+  categories: string[];
 }
 
 export interface TransactionAmountByCountryMetric {
@@ -346,13 +347,22 @@ export interface TransactionAmountDistributionByCategoryMetric {
   standardDeviation: number;
 }
 
+export interface AccountBalanceHistory {
+  time: Date | undefined;
+  accountId: string;
+  isoCurrencyCode: string;
+  balance: number;
+  userId: number;
+  sign: number;
+}
+
 function createBaseInvestmentTransaction(): InvestmentTransaction {
   return {
     accountId: "",
     ammount: "",
     investmentTransactionId: "",
     securityId: "",
-    date: "",
+    currentDate: "",
     name: "",
     quantity: 0,
     amount: 0,
@@ -363,7 +373,7 @@ function createBaseInvestmentTransaction(): InvestmentTransaction {
     isoCurrencyCode: "",
     unofficialCurrencyCode: "",
     linkId: 0,
-    id: 0,
+    id: "",
     userId: 0,
     createdAt: "",
     sign: 0,
@@ -386,8 +396,8 @@ export const InvestmentTransaction = {
     if (message.securityId !== "") {
       writer.uint32(34).string(message.securityId);
     }
-    if (message.date !== "") {
-      writer.uint32(42).string(message.date);
+    if (message.currentDate !== "") {
+      writer.uint32(42).string(message.currentDate);
     }
     if (message.name !== "") {
       writer.uint32(50).string(message.name);
@@ -419,8 +429,8 @@ export const InvestmentTransaction = {
     if (message.linkId !== 0) {
       writer.uint32(120).uint64(message.linkId);
     }
-    if (message.id !== 0) {
-      writer.uint32(128).uint64(message.id);
+    if (message.id !== "") {
+      writer.uint32(130).string(message.id);
     }
     if (message.userId !== 0) {
       writer.uint32(136).uint64(message.userId);
@@ -480,7 +490,7 @@ export const InvestmentTransaction = {
             break;
           }
 
-          message.date = reader.string();
+          message.currentDate = reader.string();
           continue;
         case 6:
           if (tag !== 50) {
@@ -553,11 +563,11 @@ export const InvestmentTransaction = {
           message.linkId = longToNumber(reader.uint64() as Long);
           continue;
         case 16:
-          if (tag !== 128) {
+          if (tag !== 130) {
             break;
           }
 
-          message.id = longToNumber(reader.uint64() as Long);
+          message.id = reader.string();
           continue;
         case 17:
           if (tag !== 136) {
@@ -609,7 +619,7 @@ export const InvestmentTransaction = {
       ammount: isSet(object.ammount) ? String(object.ammount) : "",
       investmentTransactionId: isSet(object.investmentTransactionId) ? String(object.investmentTransactionId) : "",
       securityId: isSet(object.securityId) ? String(object.securityId) : "",
-      date: isSet(object.date) ? String(object.date) : "",
+      currentDate: isSet(object.currentDate) ? String(object.currentDate) : "",
       name: isSet(object.name) ? String(object.name) : "",
       quantity: isSet(object.quantity) ? Number(object.quantity) : 0,
       amount: isSet(object.amount) ? Number(object.amount) : 0,
@@ -620,7 +630,7 @@ export const InvestmentTransaction = {
       isoCurrencyCode: isSet(object.isoCurrencyCode) ? String(object.isoCurrencyCode) : "",
       unofficialCurrencyCode: isSet(object.unofficialCurrencyCode) ? String(object.unofficialCurrencyCode) : "",
       linkId: isSet(object.linkId) ? Number(object.linkId) : 0,
-      id: isSet(object.id) ? Number(object.id) : 0,
+      id: isSet(object.id) ? String(object.id) : "",
       userId: isSet(object.userId) ? Number(object.userId) : 0,
       createdAt: isSet(object.createdAt) ? String(object.createdAt) : "",
       sign: isSet(object.sign) ? Number(object.sign) : 0,
@@ -635,7 +645,7 @@ export const InvestmentTransaction = {
     message.ammount !== undefined && (obj.ammount = message.ammount);
     message.investmentTransactionId !== undefined && (obj.investmentTransactionId = message.investmentTransactionId);
     message.securityId !== undefined && (obj.securityId = message.securityId);
-    message.date !== undefined && (obj.date = message.date);
+    message.currentDate !== undefined && (obj.currentDate = message.currentDate);
     message.name !== undefined && (obj.name = message.name);
     message.quantity !== undefined && (obj.quantity = message.quantity);
     message.amount !== undefined && (obj.amount = message.amount);
@@ -646,7 +656,7 @@ export const InvestmentTransaction = {
     message.isoCurrencyCode !== undefined && (obj.isoCurrencyCode = message.isoCurrencyCode);
     message.unofficialCurrencyCode !== undefined && (obj.unofficialCurrencyCode = message.unofficialCurrencyCode);
     message.linkId !== undefined && (obj.linkId = Math.round(message.linkId));
-    message.id !== undefined && (obj.id = Math.round(message.id));
+    message.id !== undefined && (obj.id = message.id);
     message.userId !== undefined && (obj.userId = Math.round(message.userId));
     message.createdAt !== undefined && (obj.createdAt = message.createdAt);
     message.sign !== undefined && (obj.sign = Math.round(message.sign));
@@ -666,7 +676,7 @@ export const InvestmentTransaction = {
     message.ammount = object.ammount ?? "";
     message.investmentTransactionId = object.investmentTransactionId ?? "";
     message.securityId = object.securityId ?? "";
-    message.date = object.date ?? "";
+    message.currentDate = object.currentDate ?? "";
     message.name = object.name ?? "";
     message.quantity = object.quantity ?? 0;
     message.amount = object.amount ?? 0;
@@ -677,7 +687,7 @@ export const InvestmentTransaction = {
     message.isoCurrencyCode = object.isoCurrencyCode ?? "";
     message.unofficialCurrencyCode = object.unofficialCurrencyCode ?? "";
     message.linkId = object.linkId ?? 0;
-    message.id = object.id ?? 0;
+    message.id = object.id ?? "";
     message.userId = object.userId ?? 0;
     message.createdAt = object.createdAt ?? "";
     message.sign = object.sign ?? 0;
@@ -711,7 +721,7 @@ function createBaseReOccuringTransaction(): ReOccuringTransaction {
     updatedTime: "",
     userId: 0,
     linkId: 0,
-    id: 0,
+    id: "",
     flow: 0,
     sign: 0,
     time: undefined,
@@ -781,8 +791,8 @@ export const ReOccuringTransaction = {
     if (message.linkId !== 0) {
       writer.uint32(168).uint64(message.linkId);
     }
-    if (message.id !== 0) {
-      writer.uint32(176).uint64(message.id);
+    if (message.id !== "") {
+      writer.uint32(178).string(message.id);
     }
     if (message.flow !== 0) {
       writer.uint32(184).int32(message.flow);
@@ -947,11 +957,11 @@ export const ReOccuringTransaction = {
           message.linkId = longToNumber(reader.uint64() as Long);
           continue;
         case 22:
-          if (tag !== 176) {
+          if (tag !== 178) {
             break;
           }
 
-          message.id = longToNumber(reader.uint64() as Long);
+          message.id = reader.string();
           continue;
         case 23:
           if (tag !== 184) {
@@ -1020,7 +1030,7 @@ export const ReOccuringTransaction = {
       updatedTime: isSet(object.updatedTime) ? String(object.updatedTime) : "",
       userId: isSet(object.userId) ? Number(object.userId) : 0,
       linkId: isSet(object.linkId) ? Number(object.linkId) : 0,
-      id: isSet(object.id) ? Number(object.id) : 0,
+      id: isSet(object.id) ? String(object.id) : "",
       flow: isSet(object.flow) ? reCurringFlowFromJSON(object.flow) : 0,
       sign: isSet(object.sign) ? Number(object.sign) : 0,
       time: isSet(object.time) ? fromJsonTimestamp(object.time) : undefined,
@@ -1054,7 +1064,7 @@ export const ReOccuringTransaction = {
     message.updatedTime !== undefined && (obj.updatedTime = message.updatedTime);
     message.userId !== undefined && (obj.userId = Math.round(message.userId));
     message.linkId !== undefined && (obj.linkId = Math.round(message.linkId));
-    message.id !== undefined && (obj.id = Math.round(message.id));
+    message.id !== undefined && (obj.id = message.id);
     message.flow !== undefined && (obj.flow = reCurringFlowToJSON(message.flow));
     message.sign !== undefined && (obj.sign = Math.round(message.sign));
     message.time !== undefined && (obj.time = message.time.toISOString());
@@ -1089,7 +1099,7 @@ export const ReOccuringTransaction = {
     message.updatedTime = object.updatedTime ?? "";
     message.userId = object.userId ?? 0;
     message.linkId = object.linkId ?? 0;
-    message.id = object.id ?? 0;
+    message.id = object.id ?? "";
     message.flow = object.flow ?? 0;
     message.sign = object.sign ?? 0;
     message.time = object.time ?? undefined;
@@ -1108,8 +1118,8 @@ function createBaseTransaction(): Transaction {
     unofficialCurrencyCode: "",
     categoryId: "",
     checkNumber: "",
-    date: "",
-    datetime: "",
+    currentDate: "",
+    currentDatetime: "",
     authorizedDate: "",
     authorizedDatetime: "",
     name: "",
@@ -1120,7 +1130,7 @@ function createBaseTransaction(): Transaction {
     accountOwner: "",
     transactionId: "",
     transactionCode: "",
-    id: 0,
+    id: "",
     userId: 0,
     linkId: 0,
     sign: 0,
@@ -1144,6 +1154,7 @@ function createBaseTransaction(): Transaction {
     paymentMetaReferenceNumber: "",
     time: undefined,
     additionalProperties: undefined,
+    categories: [],
   };
 }
 
@@ -1167,11 +1178,11 @@ export const Transaction = {
     if (message.checkNumber !== "") {
       writer.uint32(58).string(message.checkNumber);
     }
-    if (message.date !== "") {
-      writer.uint32(66).string(message.date);
+    if (message.currentDate !== "") {
+      writer.uint32(66).string(message.currentDate);
     }
-    if (message.datetime !== "") {
-      writer.uint32(74).string(message.datetime);
+    if (message.currentDatetime !== "") {
+      writer.uint32(74).string(message.currentDatetime);
     }
     if (message.authorizedDate !== "") {
       writer.uint32(82).string(message.authorizedDate);
@@ -1203,8 +1214,8 @@ export const Transaction = {
     if (message.transactionCode !== "") {
       writer.uint32(170).string(message.transactionCode);
     }
-    if (message.id !== 0) {
-      writer.uint32(176).uint64(message.id);
+    if (message.id !== "") {
+      writer.uint32(178).string(message.id);
     }
     if (message.userId !== 0) {
       writer.uint32(184).uint64(message.userId);
@@ -1275,6 +1286,9 @@ export const Transaction = {
     if (message.additionalProperties !== undefined) {
       Any.encode(message.additionalProperties, writer.uint32(362).fork()).ldelim();
     }
+    for (const v of message.categories) {
+      writer.uint32(370).string(v!);
+    }
     return writer;
   },
 
@@ -1332,14 +1346,14 @@ export const Transaction = {
             break;
           }
 
-          message.date = reader.string();
+          message.currentDate = reader.string();
           continue;
         case 9:
           if (tag !== 74) {
             break;
           }
 
-          message.datetime = reader.string();
+          message.currentDatetime = reader.string();
           continue;
         case 10:
           if (tag !== 82) {
@@ -1412,11 +1426,11 @@ export const Transaction = {
           message.transactionCode = reader.string();
           continue;
         case 22:
-          if (tag !== 176) {
+          if (tag !== 178) {
             break;
           }
 
-          message.id = longToNumber(reader.uint64() as Long);
+          message.id = reader.string();
           continue;
         case 23:
           if (tag !== 184) {
@@ -1579,6 +1593,13 @@ export const Transaction = {
 
           message.additionalProperties = Any.decode(reader, reader.uint32());
           continue;
+        case 46:
+          if (tag !== 370) {
+            break;
+          }
+
+          message.categories.push(reader.string());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1596,8 +1617,8 @@ export const Transaction = {
       unofficialCurrencyCode: isSet(object.unofficialCurrencyCode) ? String(object.unofficialCurrencyCode) : "",
       categoryId: isSet(object.categoryId) ? String(object.categoryId) : "",
       checkNumber: isSet(object.checkNumber) ? String(object.checkNumber) : "",
-      date: isSet(object.date) ? String(object.date) : "",
-      datetime: isSet(object.datetime) ? String(object.datetime) : "",
+      currentDate: isSet(object.currentDate) ? String(object.currentDate) : "",
+      currentDatetime: isSet(object.currentDatetime) ? String(object.currentDatetime) : "",
       authorizedDate: isSet(object.authorizedDate) ? String(object.authorizedDate) : "",
       authorizedDatetime: isSet(object.authorizedDatetime) ? String(object.authorizedDatetime) : "",
       name: isSet(object.name) ? String(object.name) : "",
@@ -1608,7 +1629,7 @@ export const Transaction = {
       accountOwner: isSet(object.accountOwner) ? String(object.accountOwner) : "",
       transactionId: isSet(object.transactionId) ? String(object.transactionId) : "",
       transactionCode: isSet(object.transactionCode) ? String(object.transactionCode) : "",
-      id: isSet(object.id) ? Number(object.id) : 0,
+      id: isSet(object.id) ? String(object.id) : "",
       userId: isSet(object.userId) ? Number(object.userId) : 0,
       linkId: isSet(object.linkId) ? Number(object.linkId) : 0,
       sign: isSet(object.sign) ? Number(object.sign) : 0,
@@ -1640,6 +1661,9 @@ export const Transaction = {
         : "",
       time: isSet(object.time) ? fromJsonTimestamp(object.time) : undefined,
       additionalProperties: isSet(object.additionalProperties) ? Any.fromJSON(object.additionalProperties) : undefined,
+      categories: Array.isArray(object?.categories)
+        ? object.categories.map((e: any) => String(e))
+        : [],
     };
   },
 
@@ -1651,8 +1675,8 @@ export const Transaction = {
     message.unofficialCurrencyCode !== undefined && (obj.unofficialCurrencyCode = message.unofficialCurrencyCode);
     message.categoryId !== undefined && (obj.categoryId = message.categoryId);
     message.checkNumber !== undefined && (obj.checkNumber = message.checkNumber);
-    message.date !== undefined && (obj.date = message.date);
-    message.datetime !== undefined && (obj.datetime = message.datetime);
+    message.currentDate !== undefined && (obj.currentDate = message.currentDate);
+    message.currentDatetime !== undefined && (obj.currentDatetime = message.currentDatetime);
     message.authorizedDate !== undefined && (obj.authorizedDate = message.authorizedDate);
     message.authorizedDatetime !== undefined && (obj.authorizedDatetime = message.authorizedDatetime);
     message.name !== undefined && (obj.name = message.name);
@@ -1663,7 +1687,7 @@ export const Transaction = {
     message.accountOwner !== undefined && (obj.accountOwner = message.accountOwner);
     message.transactionId !== undefined && (obj.transactionId = message.transactionId);
     message.transactionCode !== undefined && (obj.transactionCode = message.transactionCode);
-    message.id !== undefined && (obj.id = Math.round(message.id));
+    message.id !== undefined && (obj.id = message.id);
     message.userId !== undefined && (obj.userId = Math.round(message.userId));
     message.linkId !== undefined && (obj.linkId = Math.round(message.linkId));
     message.sign !== undefined && (obj.sign = Math.round(message.sign));
@@ -1692,6 +1716,11 @@ export const Transaction = {
     message.time !== undefined && (obj.time = message.time.toISOString());
     message.additionalProperties !== undefined &&
       (obj.additionalProperties = message.additionalProperties ? Any.toJSON(message.additionalProperties) : undefined);
+    if (message.categories) {
+      obj.categories = message.categories.map((e) => e);
+    } else {
+      obj.categories = [];
+    }
     return obj;
   },
 
@@ -1707,8 +1736,8 @@ export const Transaction = {
     message.unofficialCurrencyCode = object.unofficialCurrencyCode ?? "";
     message.categoryId = object.categoryId ?? "";
     message.checkNumber = object.checkNumber ?? "";
-    message.date = object.date ?? "";
-    message.datetime = object.datetime ?? "";
+    message.currentDate = object.currentDate ?? "";
+    message.currentDatetime = object.currentDatetime ?? "";
     message.authorizedDate = object.authorizedDate ?? "";
     message.authorizedDatetime = object.authorizedDatetime ?? "";
     message.name = object.name ?? "";
@@ -1719,7 +1748,7 @@ export const Transaction = {
     message.accountOwner = object.accountOwner ?? "";
     message.transactionId = object.transactionId ?? "";
     message.transactionCode = object.transactionCode ?? "";
-    message.id = object.id ?? 0;
+    message.id = object.id ?? "";
     message.userId = object.userId ?? 0;
     message.linkId = object.linkId ?? 0;
     message.sign = object.sign ?? 0;
@@ -1745,6 +1774,7 @@ export const Transaction = {
     message.additionalProperties = (object.additionalProperties !== undefined && object.additionalProperties !== null)
       ? Any.fromPartial(object.additionalProperties)
       : undefined;
+    message.categories = object.categories?.map((e) => e) || [];
     return message;
   },
 };
@@ -2175,6 +2205,129 @@ export const TransactionAmountDistributionByCategoryMetric = {
     message.mean = object.mean ?? 0;
     message.median = object.median ?? 0;
     message.standardDeviation = object.standardDeviation ?? 0;
+    return message;
+  },
+};
+
+function createBaseAccountBalanceHistory(): AccountBalanceHistory {
+  return { time: undefined, accountId: "", isoCurrencyCode: "", balance: 0, userId: 0, sign: 0 };
+}
+
+export const AccountBalanceHistory = {
+  encode(message: AccountBalanceHistory, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.time !== undefined) {
+      Timestamp.encode(toTimestamp(message.time), writer.uint32(10).fork()).ldelim();
+    }
+    if (message.accountId !== "") {
+      writer.uint32(18).string(message.accountId);
+    }
+    if (message.isoCurrencyCode !== "") {
+      writer.uint32(26).string(message.isoCurrencyCode);
+    }
+    if (message.balance !== 0) {
+      writer.uint32(33).double(message.balance);
+    }
+    if (message.userId !== 0) {
+      writer.uint32(40).uint64(message.userId);
+    }
+    if (message.sign !== 0) {
+      writer.uint32(48).uint32(message.sign);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): AccountBalanceHistory {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseAccountBalanceHistory();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.time = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.accountId = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.isoCurrencyCode = reader.string();
+          continue;
+        case 4:
+          if (tag !== 33) {
+            break;
+          }
+
+          message.balance = reader.double();
+          continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.userId = longToNumber(reader.uint64() as Long);
+          continue;
+        case 6:
+          if (tag !== 48) {
+            break;
+          }
+
+          message.sign = reader.uint32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): AccountBalanceHistory {
+    return {
+      time: isSet(object.time) ? fromJsonTimestamp(object.time) : undefined,
+      accountId: isSet(object.accountId) ? String(object.accountId) : "",
+      isoCurrencyCode: isSet(object.isoCurrencyCode) ? String(object.isoCurrencyCode) : "",
+      balance: isSet(object.balance) ? Number(object.balance) : 0,
+      userId: isSet(object.userId) ? Number(object.userId) : 0,
+      sign: isSet(object.sign) ? Number(object.sign) : 0,
+    };
+  },
+
+  toJSON(message: AccountBalanceHistory): unknown {
+    const obj: any = {};
+    message.time !== undefined && (obj.time = message.time.toISOString());
+    message.accountId !== undefined && (obj.accountId = message.accountId);
+    message.isoCurrencyCode !== undefined && (obj.isoCurrencyCode = message.isoCurrencyCode);
+    message.balance !== undefined && (obj.balance = message.balance);
+    message.userId !== undefined && (obj.userId = Math.round(message.userId));
+    message.sign !== undefined && (obj.sign = Math.round(message.sign));
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<AccountBalanceHistory>, I>>(base?: I): AccountBalanceHistory {
+    return AccountBalanceHistory.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<AccountBalanceHistory>, I>>(object: I): AccountBalanceHistory {
+    const message = createBaseAccountBalanceHistory();
+    message.time = object.time ?? undefined;
+    message.accountId = object.accountId ?? "";
+    message.isoCurrencyCode = object.isoCurrencyCode ?? "";
+    message.balance = object.balance ?? 0;
+    message.userId = object.userId ?? 0;
+    message.sign = object.sign ?? 0;
     return message;
   },
 };
