@@ -35,7 +35,7 @@ clickhouse:
   maxConnectionRetryTimeout: 500ms
   maxConnectionRetrySleepInterval: 100ms
   maxQueryTimeout: 500ms
-  uri: https://default:nnqMml.lfh2g9@l77zn1po0n.us-east-1.aws.clickhouse.cloud:8443/FinancialIntegrationService?secure=true&skip_verify=true
+  uri: clickhouse://default:nnqMml.lfh2g9@l77zn1po0n.us-east-1.aws.clickhouse.cloud:9440/FinancialIntegrationService # https://default:nnqMml.lfh2g9@l77zn1po0n.us-east-1.aws.clickhouse.cloud:8443/FinancialIntegrationService?secure=true&skip_verify=true
 database:
   host: simfiny-db-cluster-do-user-11446161-0.b.db.ondigitalocean.com
   port: 25061
