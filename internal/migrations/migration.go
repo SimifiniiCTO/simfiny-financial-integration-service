@@ -36,6 +36,7 @@ func New(db *ch.DB) (*MigrationEngine, error) {
 	return engine, nil
 }
 
+// Migrate migrates the various schema migrations
 func (m *MigrationEngine) Migrate(ctx context.Context) error {
 	var (
 		migrator = chmigrate.NewMigrator(m.db, m.migrator)

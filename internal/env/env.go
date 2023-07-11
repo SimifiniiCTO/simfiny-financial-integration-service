@@ -121,7 +121,7 @@ func ReadEnvVars() {
 	fs.Duration("workflow-task-timeout", 1*time.Second, "The timeout for processing workflow task from the time the worker pulled this task. If a workflow task is lost, it is retried after this timeout. The resolution is seconds.")
 	fs.Duration("workflow-run-timeout", 1*time.Second, "The timeout for duration of a single workflow run. The resolution is seconds. Optional: defaulted to WorkflowExecutionTimeout.")
 
-	fs.String("clickhouse-connection-uri", "clickhouse://gorm:gorm@clickhouse-database:9000/gorm?dial_timeout=10s&read_timeout=20s", "clickhouse-connection-uri")
+	fs.String("clickhouse-connection-uri", "clickhouse://gorm:gorm@clickhouse-database:9000/gorm?sslmode=disable&dial_timeout=10s&read_timeout=20s", "clickhouse-connection-uri")
 	fs.Int("task-processor-workers", 5, "task-processor-workers")
 	defaultLogger := zap.L()
 

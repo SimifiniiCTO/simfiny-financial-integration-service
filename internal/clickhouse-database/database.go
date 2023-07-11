@@ -2,7 +2,6 @@ package clickhousedatabase
 
 import (
 	"context"
-	"crypto/tls"
 	"fmt"
 	"time"
 
@@ -106,6 +105,8 @@ func New(ctx context.Context, opts ...Option) (*Db, error) {
 		return nil, err
 	}
 
+	database.Logger.Info("successfully validated clickhouse db")
+	database.Logger.Info(database.connectionUri)
 	db := ch.Connect(
 		// clickhouse://<user>:<password>@<host>:<port>/<database>?sslmode=disable
 		ch.WithDSN(database.connectionUri),
@@ -113,14 +114,19 @@ func New(ctx context.Context, opts ...Option) (*Db, error) {
 		ch.WithDialTimeout(5*time.Second),
 		ch.WithReadTimeout(5*time.Second),
 		ch.WithWriteTimeout(5*time.Second),
-		ch.WithTLSConfig(&tls.Config{InsecureSkipVerify: true}),
+		// ch.WithTLSConfig(&tls.Config{InsecureSkipVerify: true}),
 	)
+
+	if db != nil {
+		database.Logger.Info("successful connection to database with uptrace client")
+	}
 
 	// ping the database
 	if err := db.Ping(ctx); err != nil {
 		return nil, err
 	}
 
+	database.Logger.Info("successful pinged database with uptrace")
 	database.queryEngine = db
 
 	// perform migrations
@@ -139,6 +145,7 @@ func (db *Db) performSchemaMigration(ctx context.Context) error {
 		return service_errors.ErrInvalidAcctParam
 	}
 
+	db.Logger.Info("Defining migration engine")
 	migationEngine, err := migrations.New(db.queryEngine)
 	if err != nil {
 		db.Logger.Error(err.Error())
@@ -148,11 +155,13 @@ func (db *Db) performSchemaMigration(ctx context.Context) error {
 	// TODO: NEED TO PROPERLY SUPPORT MIGRATIONS (REF: https://github.com/go-gormigrate/gormigrate)
 	// 	// ref. https://kb.altinity.com/engines/mergetree-table-engine-family/collapsing-vs-replacing/
 	// 	// ref. https://clickhouse.com/docs/en/guides/developer/deduplication
+	db.Logger.Info("Performing database migrations")
 	if err := migationEngine.Migrate(ctx); err != nil {
 		db.Logger.Error(err.Error())
 		return err
 	}
 
+	db.Logger.Info("Successfully migrated clickhouse database schemas")
 	return nil
 }
 

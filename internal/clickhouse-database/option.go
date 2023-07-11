@@ -46,24 +46,12 @@ func WithConnectionUri(uri string) Option {
 
 // Validate validates the database object
 func (db *Db) Validate() error {
-	if db.Conn == nil {
-		return service_errors.ErrInvalidDbObject
-	}
-
 	if db.Logger == nil {
 		return service_errors.ErrInvalidDbObject
 	}
 
 	if db.InstrumentationClient == nil {
 		return service_errors.ErrInvalidDbObject
-	}
-
-	if db.QueryOperator == nil {
-		return service_errors.ErrInvalidDbObject
-	}
-
-	if db.Conn == nil {
-		return service_errors.ErrInvalidConn
 	}
 
 	if db.connectionUri == "" {
