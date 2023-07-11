@@ -176,6 +176,68 @@ func (db *Db) GetAllInvestmentTransactions(ctx context.Context, userId *uint64) 
 	return txs, nil
 }
 
+// UpdateInvestmentTransaction updates a singular investment transaction
+func (db *Db) UpdateInvestmentTransaction(ctx context.Context, userId *uint64, investmentTransactionId *string, tx *schema.InvestmentTransaction) error {
+	if span := db.startDatastoreSpan(ctx, "dbtxn-reocurring-update-transaction"); span != nil {
+		defer span.End()
+	}
+
+	if investmentTransactionId == nil {
+		return fmt.Errorf("transaction ID must be 0 at creation time")
+	}
+
+	if userId == nil {
+		return fmt.Errorf("user ID must be 0 at creation time")
+	}
+
+	if tx == nil {
+		return fmt.Errorf("transaction must not be nil")
+	}
+
+	// validate transactions
+	if err := tx.Validate(); err != nil {
+		return err
+	}
+
+	// update the transaction
+	record, err := tx.ConvertToInternal()
+	if err != nil {
+		return err
+	}
+
+	query := `
+		ALTER TABLE InvestmentTransactionInternal UPDATE
+		AccountId = ?,
+		Amount = ?,
+		Fees = ?,
+		IsoCurrencyCode = ?,
+		Name = ?,
+		Price = ?,
+		Quantity = ?,
+		SecurityId = ?,
+		Subtype = ?,
+		Type = ?
+		WHERE InvestmentTransactionId = ? AND UserId = ?;
+	`
+
+	if err := db.queryEngine.NewRaw(query,
+		record.AccountId,
+		record.Amount,
+		record.Fees,
+		record.IsoCurrencyCode,
+		record.Name,
+		record.Price,
+		record.Quantity,
+		record.SecurityId,
+		record.Subtype,
+		record.Type,
+		record.InvestmentTransactionId, *userId).Scan(ctx); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 // UpdateInvestmentTransactions is updating investment transactions in the Clickhouse database.
 func (db *Db) UpdateInvestmentTransactions(ctx context.Context, userId *uint64, txs []*schema.InvestmentTransaction) error {
 	if span := db.startDatastoreSpan(ctx, "dbtxn-update-transaction"); span != nil {
@@ -190,50 +252,14 @@ func (db *Db) UpdateInvestmentTransactions(ctx context.Context, userId *uint64, 
 		return fmt.Errorf("user ID must be 0 at creation time")
 	}
 
-	// txnsOrmRecords := make([]*schema.InvestmentTransactionORM, 0, len(txs))
-	// for _, tx := range txs {
-	// 	tx.UserId = *userId
-
-	// 	txnOrm, err := tx.ToORM(ctx)
-	// 	if err != nil {
-	// 		return err
-	// 	}
-
-	// 	txnsOrmRecords = append(txnsOrmRecords, &txnOrm)
-	// }
-
-	// t := db.QueryOperator.InvestmentTransactionORM
-	// for _, tx := range txnsOrmRecords {
-	// 	if tx.Id == "" {
-	// 		return fmt.Errorf("transaction ID must be 0 at creation time")
-	// 	}
-
-	// 	// update the transaction
-	// 	if _, err := t.WithContext(ctx).Updates(tx); err != nil {
-	// 		return err
-	// 	}
-	// }
-
-	transactions := make([]schema.InvestmentTransactionInternal, 0, len(txs))
 	for _, tx := range txs {
-		if tx.Id != "" {
-			return fmt.Errorf("transaction ID must be 0 at creation time")
+		if tx.Id == "" {
+			return fmt.Errorf("transaction ID cannot be empty at update time")
 		}
 
-		// associate the user id to the transaction of interest
-		tx.UserId = *userId
-
-		// validate transactions
-		if err := tx.Validate(); err != nil {
-			return err
+		if err := db.UpdateInvestmentTransaction(ctx, userId, &tx.InvestmentTransactionId, tx); err != nil {
+			db.Logger.Error(err.Error())
 		}
-
-		record, err := tx.ConvertToInternal()
-		if err != nil {
-			return err
-		}
-
-		transactions = append(transactions, *record)
 	}
 
 	return nil
