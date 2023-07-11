@@ -2,7 +2,7 @@
 CREATE TABLE IF NOT EXISTS MonthlyTransactionCount 
 (
     Month UInt32,
-    TransactionCount AggregateFunction(count)
+    TransactionCount UInt32
 ) 
 ENGINE = AggregatingMergeTree()
 PARTITION BY Month

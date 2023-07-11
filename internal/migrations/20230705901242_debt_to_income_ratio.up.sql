@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS DebtToIncomeRatio
 (
     Month UInt32,
     UserId UInt64,
-    Ratio AggregateFunction(avg, Float64)
+    Ratio Float64
 ) 
 ENGINE = AggregatingMergeTree()
 PARTITION BY Month

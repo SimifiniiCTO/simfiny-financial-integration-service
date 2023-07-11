@@ -1,10 +1,12 @@
 package financial_integration_service_apiv1
 
 import (
-	context "context"
+	fmt "fmt"
 	"time"
 
 	"github.com/uptrace/go-clickhouse/ch"
+	"github.com/uptrace/go-clickhouse/ch/chschema"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 type InvestmentTransactionInternal struct {
@@ -84,23 +86,59 @@ func (source *InvestmentTransactionORM) ConvertToInternal() *InvestmentTransacti
 }
 
 func (internal *InvestmentTransactionInternal) ConvertToInvestmentTransaction() (*InvestmentTransaction, error) {
-	ctx := context.Background()
-	ormRec := internal.ConvertToORM()
-	tx, err := ormRec.ToPB(ctx)
-	if err != nil {
-		return nil, err
+	tx := &InvestmentTransaction{
+		AccountId:               internal.AccountId,
+		Ammount:                 fmt.Sprintf("%f", internal.Amount),
+		InvestmentTransactionId: internal.InvestmentTransactionId,
+		SecurityId:              internal.SecurityId,
+		CurrentDate:             internal.CurrentDate,
+		Name:                    internal.Name,
+		Quantity:                internal.Quantity,
+		Amount:                  internal.Amount,
+		Price:                   internal.Price,
+		Fees:                    internal.Fees,
+		Type:                    internal.Type,
+		Subtype:                 internal.Subtype,
+		IsoCurrencyCode:         internal.IsoCurrencyCode,
+		UnofficialCurrencyCode:  internal.UnofficialCurrencyCode,
+		LinkId:                  internal.LinkId,
+		Id:                      internal.ID,
+		UserId:                  internal.UserId,
+		CreatedAt:               internal.CreatedAt,
+		Sign:                    int32(internal.Sign),
+		Time:                    timestamppb.New(internal.Time),
 	}
 
-	return &tx, nil
+	return tx, nil
 }
 
 func (internal *InvestmentTransaction) ConvertToInternal() (*InvestmentTransactionInternal, error) {
-	ctx := context.Background()
-	ormRec, err := internal.ToORM(ctx)
-	if err != nil {
-		return nil, err
+	tx := &InvestmentTransactionInternal{
+		CHModel:                 chschema.CHModel{},
+		AccountId:               internal.AccountId,
+		Amount:                  internal.Amount,
+		CreatedAt:               internal.CreatedAt,
+		CurrentDate:             internal.CurrentDate,
+		Fees:                    internal.Fees,
+		ID:                      internal.Id,
+		InvestmentTransactionId: internal.InvestmentTransactionId,
+		IsoCurrencyCode:         internal.IsoCurrencyCode,
+		LinkId:                  internal.LinkId,
+		Name:                    internal.Name,
+		Price:                   internal.Price,
+		Quantity:                internal.Quantity,
+		SecurityId:              internal.SecurityId,
+		Sign:                    int8(internal.Sign),
+		Subtype:                 internal.Subtype,
+		Time:                    time.Time{},
+		Type:                    internal.Type,
+		UnofficialCurrencyCode:  internal.UnofficialCurrencyCode,
+		UserId:                  internal.UserId,
 	}
 
-	tx := ormRec.ConvertToInternal()
+	if internal.Time != nil {
+		tx.Time = internal.Time.AsTime()
+	}
+
 	return tx, nil
 }

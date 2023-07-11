@@ -20,5 +20,5 @@ CREATE TABLE IF NOT EXISTS InvestmentTransactionInternal (
     UserId                  UInt64
 ) ENGINE = CollapsingMergeTree(Sign)
 PARTITION BY toYYYYMM(Time)
-ORDER BY (Time, Amount, ID)
-PRIMARY KEY (Time, Amount, ID);
+ORDER BY (Time, UserId, ID)
+PRIMARY KEY (Time, UserId, ID);

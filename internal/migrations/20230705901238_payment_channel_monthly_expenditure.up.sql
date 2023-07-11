@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS PaymentChannelMonthlyExpenditure
 (
     Month UInt32,
     PaymentChannel String,
-    TotalSpending AggregateFunction(sum, Float64)
+    TotalSpending Float64
 ) 
 ENGINE = AggregatingMergeTree()
 PARTITION BY Month

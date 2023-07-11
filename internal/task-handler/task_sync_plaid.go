@@ -443,14 +443,14 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, payload *SyncPl
 			}
 		}
 
-		// if len(transactionsToUpdate) > 0 {
-		// 	// TODO: also update the transactions in s3
+		if len(transactionsToUpdate) > 0 {
+			// TODO: also update the transactions in s3
 
-		// 	th.logger.Info("updating transactions", zap.Int("count", len(transactionsToUpdate)))
-		// 	if err = clickhouseClient.UpdateTransactions(ctx, &payload.UserId, transactionsToUpdate); err != nil {
-		// 		return nil, err
-		// 	}
-		// }
+			th.logger.Info("updating transactions", zap.Int("count", len(transactionsToUpdate)))
+			if err = clickhouseClient.UpdateTransactions(ctx, &payload.UserId, transactionsToUpdate); err != nil {
+				return nil, err
+			}
+		}
 
 		if len(transactionsToInsert) > 0 {
 			// TODO: also insert the transactions in s3

@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS MonthlySavings
 (
     Month UInt32,
     UserId UInt64,
-    NetSavings AggregateFunction(sum, Float64)
+    NetSavings Float64
 ) 
 ENGINE = AggregatingMergeTree()
 PARTITION BY Month

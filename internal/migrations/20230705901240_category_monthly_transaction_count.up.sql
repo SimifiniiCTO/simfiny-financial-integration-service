@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS CategoryMonthlyTransactionCount
 (
     Month UInt32,
     CategoryId String,
-    TransactionCount AggregateFunction(count)
+    TransactionCount UInt32
 ) 
 ENGINE = AggregatingMergeTree()
 PARTITION BY Month

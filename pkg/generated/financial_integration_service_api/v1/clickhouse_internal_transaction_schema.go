@@ -66,13 +66,54 @@ func (internal *TransactionInternal) ConvertToTransaction() (*Transaction, error
 }
 
 func (internal *Transaction) ConvertToInternal() (*TransactionInternal, error) {
-	ctx := context.Background()
-	ormRec, err := internal.ToORM(ctx)
-	if err != nil {
-		return nil, err
+	tx := &TransactionInternal{
+		AccountId:                       internal.AccountId,
+		AccountOwner:                    internal.AccountOwner,
+		Amount:                          internal.Amount,
+		AuthorizedDate:                  internal.AuthorizedDate,
+		AuthorizedDatetime:              internal.AuthorizedDatetime,
+		CategoryId:                      internal.CategoryId,
+		CheckNumber:                     internal.CheckNumber,
+		CurrentDate:                     internal.CurrentDate,
+		CurrentDatetime:                 internal.CurrentDatetime,
+		ID:                              internal.Id,
+		IsoCurrencyCode:                 internal.IsoCurrencyCode,
+		LinkId:                          internal.LinkId,
+		LocationAddress:                 internal.LocationAddress,
+		LocationCity:                    internal.LocationCity,
+		LocationCountry:                 internal.LocationCountry,
+		LocationLat:                     internal.LocationLat,
+		LocationLon:                     internal.LocationLon,
+		LocationPostalCode:              internal.LocationPostalCode,
+		LocationRegion:                  internal.LocationRegion,
+		LocationStoreNumber:             internal.LocationStoreNumber,
+		MerchantName:                    internal.MerchantName,
+		Name:                            internal.Name,
+		PaymentChannel:                  internal.PaymentChannel,
+		PaymentMetaByOrderOf:            internal.PaymentMetaByOrderOf,
+		PaymentMetaPayee:                internal.PaymentMetaPayee,
+		PaymentMetaPayer:                internal.PaymentMetaPayer,
+		PaymentMetaPaymentMethod:        internal.PaymentMetaPaymentMethod,
+		PaymentMetaPaymentProcessor:     internal.PaymentMetaPaymentProcessor,
+		PaymentMetaPpdId:                internal.PaymentMetaPpdId,
+		PaymentMetaReason:               internal.PaymentMetaReason,
+		PaymentMetaReferenceNumber:      internal.PaymentMetaReferenceNumber,
+		Pending:                         internal.Pending,
+		PendingTransactionId:            internal.PendingTransactionId,
+		PersonalFinanceCategoryDetailed: internal.PersonalFinanceCategoryDetailed,
+		PersonalFinanceCategoryPrimary:  internal.PersonalFinanceCategoryPrimary,
+		Sign:                            int8(internal.Sign),
+		TransactionCode:                 internal.TransactionCode,
+		TransactionId:                   internal.TransactionId,
+		UnofficialCurrencyCode:          internal.UnofficialCurrencyCode,
+		UserId:                          internal.UserId,
+		Categories:                      internal.Categories,
 	}
 
-	tx := ormRec.ConvertToInternal()
+	if internal.Time != nil {
+		tx.Time = internal.Time.AsTime()
+	}
+
 	return tx, nil
 }
 

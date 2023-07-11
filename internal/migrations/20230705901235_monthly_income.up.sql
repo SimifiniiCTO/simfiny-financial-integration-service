@@ -2,7 +2,7 @@
 CREATE TABLE IF NOT EXISTS MonthlyIncome 
 (
     Month UInt32,
-    TotalIncome AggregateFunction(sum, Float64)
+    TotalIncome Float64
 ) 
 ENGINE = AggregatingMergeTree()
 PARTITION BY Month

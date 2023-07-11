@@ -2,7 +2,7 @@
 CREATE TABLE IF NOT EXISTS IncomeExpenseRatio 
 (
     Month UInt32,
-    Ratio AggregateFunction(avg, Float64)
+    Ratio Float64
 ) 
 ENGINE = AggregatingMergeTree()
 PARTITION BY Month
