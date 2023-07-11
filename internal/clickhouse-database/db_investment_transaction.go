@@ -176,46 +176,68 @@ func (db *Db) GetAllInvestmentTransactions(ctx context.Context, userId *uint64) 
 	return txs, nil
 }
 
-// // UpdateInvestmentTransactions is updating investment transactions in the Clickhouse database.
-// func (db *Db) UpdateInvestmentTransactions(ctx context.Context, userId *uint64, txs []*schema.InvestmentTransaction) error {
-// 	if span := db.startDatastoreSpan(ctx, "dbtxn-update-transaction"); span != nil {
-// 		defer span.End()
-// 	}
+// UpdateInvestmentTransactions is updating investment transactions in the Clickhouse database.
+func (db *Db) UpdateInvestmentTransactions(ctx context.Context, userId *uint64, txs []*schema.InvestmentTransaction) error {
+	if span := db.startDatastoreSpan(ctx, "dbtxn-update-transaction"); span != nil {
+		defer span.End()
+	}
 
-// 	if len(txs) == 0 {
-// 		return fmt.Errorf("transactions length must be greater than 0")
-// 	}
+	if len(txs) == 0 {
+		return fmt.Errorf("transactions length must be greater than 0")
+	}
 
-// 	if userId == nil {
-// 		return fmt.Errorf("user ID must be 0 at creation time")
-// 	}
+	if userId == nil {
+		return fmt.Errorf("user ID must be 0 at creation time")
+	}
 
-// 	txnsOrmRecords := make([]*schema.InvestmentTransactionORM, 0, len(txs))
-// 	for _, tx := range txs {
-// 		tx.UserId = *userId
+	// txnsOrmRecords := make([]*schema.InvestmentTransactionORM, 0, len(txs))
+	// for _, tx := range txs {
+	// 	tx.UserId = *userId
 
-// 		txnOrm, err := tx.ToORM(ctx)
-// 		if err != nil {
-// 			return err
-// 		}
+	// 	txnOrm, err := tx.ToORM(ctx)
+	// 	if err != nil {
+	// 		return err
+	// 	}
 
-// 		txnsOrmRecords = append(txnsOrmRecords, &txnOrm)
-// 	}
+	// 	txnsOrmRecords = append(txnsOrmRecords, &txnOrm)
+	// }
 
-// 	t := db.QueryOperator.InvestmentTransactionORM
-// 	for _, tx := range txnsOrmRecords {
-// 		if tx.Id == "" {
-// 			return fmt.Errorf("transaction ID must be 0 at creation time")
-// 		}
+	// t := db.QueryOperator.InvestmentTransactionORM
+	// for _, tx := range txnsOrmRecords {
+	// 	if tx.Id == "" {
+	// 		return fmt.Errorf("transaction ID must be 0 at creation time")
+	// 	}
 
-// 		// update the transaction
-// 		if _, err := t.WithContext(ctx).Updates(tx); err != nil {
-// 			return err
-// 		}
-// 	}
+	// 	// update the transaction
+	// 	if _, err := t.WithContext(ctx).Updates(tx); err != nil {
+	// 		return err
+	// 	}
+	// }
 
-// 	return nil
-// }
+	transactions := make([]schema.InvestmentTransactionInternal, 0, len(txs))
+	for _, tx := range txs {
+		if tx.Id != "" {
+			return fmt.Errorf("transaction ID must be 0 at creation time")
+		}
+
+		// associate the user id to the transaction of interest
+		tx.UserId = *userId
+
+		// validate transactions
+		if err := tx.Validate(); err != nil {
+			return err
+		}
+
+		record, err := tx.ConvertToInternal()
+		if err != nil {
+			return err
+		}
+
+		transactions = append(transactions, *record)
+	}
+
+	return nil
+}
 
 // GetInvestmentTransactionById is retrieving investment transactions from the Clickhouse database by ID.
 func (db *Db) GetInvestmentTransactionById(ctx context.Context, txId *string) (*schema.InvestmentTransaction, error) {

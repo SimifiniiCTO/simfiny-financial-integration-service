@@ -2,6 +2,7 @@ package clickhousedatabase
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
@@ -244,94 +245,94 @@ func TestDb_GetAllInvestmentTransactions(t *testing.T) {
 	}
 }
 
-// func TestDb_UpdateInvestmentTransactions(t *testing.T) {
-// 	type args struct {
-// 		ctx          context.Context
-// 		userId       *uint64
-// 		txs          []*schema.InvestmentTransaction
-// 		precondition func(ctx context.Context, t *testing.T, arg *args) []*schema.InvestmentTransaction
-// 	}
-// 	tests := []struct {
-// 		name    string
-// 		args    args
-// 		wantErr bool
-// 	}{
-// 		{
-// 			name: "[success] - update transaction",
-// 			args: args{
-// 				ctx:    context.Background(),
-// 				userId: generateRandomId(),
-// 				txs:    generateMultipleInvestmentTransaction(10),
-// 				precondition: func(ctx context.Context, t *testing.T, arg *args) []*schema.InvestmentTransaction {
-// 					if err := conn.AddInvestmentTransactions(ctx, arg.userId, arg.txs); err != nil {
-// 						t.Errorf("conn.AddTransaction() error = %v", err)
-// 					}
+func TestDb_UpdateInvestmentTransactions(t *testing.T) {
+	type args struct {
+		ctx          context.Context
+		userId       *uint64
+		txs          []*schema.InvestmentTransaction
+		precondition func(ctx context.Context, t *testing.T, arg *args) []*schema.InvestmentTransaction
+	}
+	tests := []struct {
+		name    string
+		args    args
+		wantErr bool
+	}{
+		{
+			name: "[success] - update transaction",
+			args: args{
+				ctx:    context.Background(),
+				userId: generateRandomId(),
+				txs:    generateMultipleInvestmentTransaction(10),
+				precondition: func(ctx context.Context, t *testing.T, arg *args) []*schema.InvestmentTransaction {
+					if err := conn.AddInvestmentTransactions(ctx, arg.userId, arg.txs); err != nil {
+						t.Errorf("conn.AddTransaction() error = %v", err)
+					}
 
-// 					txs, err := conn.GetAllInvestmentTransactions(ctx, arg.userId)
-// 					if err != nil {
-// 						t.Errorf("conn.GetAllTransactions() error = %v", err)
-// 					}
+					txs, err := conn.GetAllInvestmentTransactions(ctx, arg.userId)
+					if err != nil {
+						t.Errorf("conn.GetAllTransactions() error = %v", err)
+					}
 
-// 					// update all the transaction merchant names
-// 					for _, tx := range txs {
-// 						tx.Name = fmt.Sprintf("updated_%s_%s", tx.Name, tx.Id)
-// 					}
+					// update all the transaction merchant names
+					for _, tx := range txs {
+						tx.Name = fmt.Sprintf("updated_%s_%s", tx.Name, tx.Id)
+					}
 
-// 					return txs
-// 				},
-// 			},
-// 			wantErr: false,
-// 		},
-// 		{
-// 			name: "[failure] - update transaction with nil user id",
-// 			args: args{
-// 				ctx:    context.Background(),
-// 				userId: nil,
-// 				txs:    generateMultipleInvestmentTransaction(10),
-// 				precondition: func(ctx context.Context, t *testing.T, arg *args) []*schema.InvestmentTransaction {
-// 					userId := generateRandomId()
-// 					if err := conn.AddInvestmentTransactions(ctx, userId, arg.txs); err != nil {
-// 						t.Errorf("conn.AddTransaction() error = %v", err)
-// 					}
+					return txs
+				},
+			},
+			wantErr: false,
+		},
+		{
+			name: "[failure] - update transaction with nil user id",
+			args: args{
+				ctx:    context.Background(),
+				userId: nil,
+				txs:    generateMultipleInvestmentTransaction(10),
+				precondition: func(ctx context.Context, t *testing.T, arg *args) []*schema.InvestmentTransaction {
+					userId := generateRandomId()
+					if err := conn.AddInvestmentTransactions(ctx, userId, arg.txs); err != nil {
+						t.Errorf("conn.AddTransaction() error = %v", err)
+					}
 
-// 					txs, err := conn.GetAllInvestmentTransactions(ctx, userId)
-// 					if err != nil {
-// 						t.Errorf("conn.GetAllTransactions() error = %v", err)
-// 					}
+					txs, err := conn.GetAllInvestmentTransactions(ctx, userId)
+					if err != nil {
+						t.Errorf("conn.GetAllTransactions() error = %v", err)
+					}
 
-// 					// update all the transaction merchant names
-// 					for _, tx := range txs {
-// 						tx.Name = fmt.Sprintf("updated_%s_%s", tx.Name, tx.Id)
-// 					}
+					// update all the transaction merchant names
+					for _, tx := range txs {
+						tx.Name = fmt.Sprintf("updated_%s_%s", tx.Name, tx.Id)
+					}
 
-// 					return txs
-// 				},
-// 			},
-// 			wantErr: true,
-// 		},
-// 	}
-// 	for _, tt := range tests {
-// 		t.Run(tt.name, func(t *testing.T) {
-// 			// call precondition
-// 			txs := tt.args.precondition(tt.args.ctx, t, &tt.args)
-// 			if err := conn.UpdateInvestmentTransactions(tt.args.ctx, tt.args.userId, txs); (err != nil) != tt.wantErr {
-// 				t.Errorf("Db.UpdateInvestmentTransactions() error = %v, wantErr %v", err, tt.wantErr)
-// 			}
+					return txs
+				},
+			},
+			wantErr: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			// call precondition
+			txs := tt.args.precondition(tt.args.ctx, t, &tt.args)
+			if err := conn.UpdateInvestmentTransactions(tt.args.ctx, tt.args.userId, txs); (err != nil) != tt.wantErr {
+				t.Errorf("Db.UpdateInvestmentTransactions() error = %v, wantErr %v", err, tt.wantErr)
+			}
 
-// 			// ensure that the transactions were updated
-// 			if !tt.wantErr {
-// 				updatedTxs, err := conn.GetAllInvestmentTransactions(tt.args.ctx, tt.args.userId)
-// 				if err != nil {
-// 					t.Errorf("conn.GetAllTransactions() error = %v", err)
-// 				}
+			// ensure that the transactions were updated
+			if !tt.wantErr {
+				updatedTxs, err := conn.GetAllInvestmentTransactions(tt.args.ctx, tt.args.userId)
+				if err != nil {
+					t.Errorf("conn.GetAllTransactions() error = %v", err)
+				}
 
-// 				for _, tx := range updatedTxs {
-// 					assert.Contains(t, tx.Name, "updated")
-// 				}
-// 			}
-// 		})
-// 	}
-// }
+				for _, tx := range updatedTxs {
+					assert.Contains(t, tx.Name, "updated")
+				}
+			}
+		})
+	}
+}
 
 func TestDb_GetInvestmentTransactionById(t *testing.T) {
 	type args struct {

@@ -252,186 +252,172 @@ func (db *Db) GetTransactions(ctx context.Context, userId *uint64, pagenumber in
 	return results, nextPageNumber, nil
 }
 
+func Stringify(strs []string) string {
+	quotedStrs := make([]string, len(strs))
+	for i, str := range strs {
+		quotedStrs[i] = fmt.Sprintf("'%s'", str)
+	}
+	return fmt.Sprintf("[%s]", strings.Join(quotedStrs, ", "))
+}
+
 // UpdateTransaction updates a single transaction.
-// func (db *Db) UpdateTransaction(ctx context.Context, userId *uint64, txId *string, tx *schema.Transaction) error {
-// 	if span := db.startDatastoreSpan(ctx, "dbtxn-update-transaction"); span != nil {
-// 		defer span.End()
-// 	}
+func (db *Db) UpdateTransaction(ctx context.Context, userId *uint64, txId *string, tx *schema.Transaction) error {
+	if span := db.startDatastoreSpan(ctx, "dbtxn-update-transaction"); span != nil {
+		defer span.End()
+	}
 
-// 	if txId == nil {
-// 		return fmt.Errorf("transaction ID must be 0 at creation time")
-// 	}
+	if txId == nil {
+		return fmt.Errorf("transaction ID must be 0 at creation time")
+	}
 
-// 	if userId == nil {
-// 		return fmt.Errorf("user ID must be 0 at creation time")
-// 	}
+	if userId == nil {
+		return fmt.Errorf("user ID must be 0 at creation time")
+	}
 
-// 	if tx == nil {
-// 		return fmt.Errorf("transaction must not be nil")
-// 	}
+	if tx == nil {
+		return fmt.Errorf("transaction must not be nil")
+	}
 
-// 	// validate transactions
-// 	if err := tx.Validate(); err != nil {
-// 		return err
-// 	}
+	// validate transactions
+	if err := tx.Validate(); err != nil {
+		return err
+	}
 
-// 	//	get the transacton by tx id
-// 	if _, err := db.GetTransactionById(ctx, txId); err != nil {
-// 		return err
-// 	}
+	//	get the transacton by tx id
+	if _, err := db.GetTransactionById(ctx, txId); err != nil {
+		return err
+	}
 
-// 	query := `
-// 		ALTER TABLE TransactionInternal UPDATE
-// 		AccountId = ?,
-// 		AccountOwner = ?,
-// 		Amount = ?,
-// 		AuthorizedDate = ?,
-// 		AuthorizedDatetime = ?,
-// 		CategoryId = ?,
-// 		CheckNumber = ?,
-// 		CurrentDate = ?,
-// 		CurrentDatetime = ?,
-// 		IsoCurrencyCode = ?,
-// 		LinkId = ?,
-// 		LocationAddress = ?,
-// 		LocationCity = ?,
-// 		LocationCountry = ?,
-// 		LocationLat = ?,
-// 		LocationLon = ?,
-// 		LocationPostalCode = ?,
-// 		LocationRegion = ?,
-// 		LocationStoreNumber = ?,
-// 		MerchantName = ?,
-// 		Name = ?,
-// 		PaymentChannel = ?,
-// 		PaymentMetaByOrderOf = ?,
-// 		PaymentMetaPayee = ?,
-// 		PaymentMetaPayer = ?,
-// 		PaymentMetaPaymentMethod = ?,
-// 		PaymentMetaPaymentProcessor = ?,
-// 		PaymentMetaPpdId = ?,
-// 		PaymentMetaReason = ?,
-// 		PaymentMetaReferenceNumber = ?,
-// 		Pending = ?,
-// 		PendingTransactionId = ?,
-// 		PersonalFinanceCategoryDetailed = ?,
-// 		PersonalFinanceCategoryPrimary = ?,
-// 		Sign = ?,
-// 		Time = ?,
-// 		TransactionCode = ?,
-// 		UnofficialCurrencyCode = ?,
-// 		UserId = ?,
-// 		Categories = ?,
-// 		WHERE TransactionId = ?;
-// 	`
+	query := `
+		ALTER TABLE TransactionInternal UPDATE
+		AccountId = ?,
+		AccountOwner = ?,
+		Amount = ?,
+		AuthorizedDate = ?,
+		AuthorizedDatetime = ?,
+		CategoryId = ?,
+		CheckNumber = ?,
+		CurrentDate = ?,
+		CurrentDatetime = ?,
+		IsoCurrencyCode = ?,
+		LinkId = ?,
+		LocationAddress = ?,
+		LocationCity = ?,
+		LocationCountry = ?,
+		LocationLat = ?,
+		LocationLon = ?,
+		LocationPostalCode = ?,
+		LocationRegion = ?,
+		LocationStoreNumber = ?,
+		MerchantName = ?,
+		Name = ?,
+		PaymentChannel = ?,
+		PaymentMetaByOrderOf = ?,
+		PaymentMetaPayee = ?,
+		PaymentMetaPayer = ?,
+		PaymentMetaPaymentMethod = ?,
+		PaymentMetaPaymentProcessor = ?,
+		PaymentMetaPpdId = ?,
+		PaymentMetaReason = ?,
+		PaymentMetaReferenceNumber = ?,
+		Pending = ?,
+		PendingTransactionId = ?,
+		PersonalFinanceCategoryDetailed = ?,
+		PersonalFinanceCategoryPrimary = ?,
+		TransactionCode = ?,
+		UnofficialCurrencyCode = ?,
+		UserId = ?,
+		Categories = ?
+		WHERE TransactionId = ?;
+	`
 
-// 	if err := db.queryEngine.NewRaw(query,
-// 		tx.AccountId,
-// 		tx.AccountOwner,
-// 		tx.Amount,
-// 		tx.AuthorizedDate,
-// 		tx.AuthorizedDatetime,
-// 		tx.CategoryId,
-// 		tx.CheckNumber,
-// 		tx.CurrentDate,
-// 		tx.CurrentDatetime,
-// 		tx.IsoCurrencyCode,
-// 		tx.LinkId,
-// 		tx.LocationAddress,
-// 		tx.LocationCity,
-// 		tx.LocationCountry,
-// 		tx.LocationLat,
-// 		tx.LocationLon,
-// 		tx.LocationPostalCode,
-// 		tx.LocationRegion,
-// 		tx.LocationStoreNumber,
-// 		tx.MerchantName,
-// 		tx.Name,
-// 		tx.PaymentChannel,
-// 		tx.PaymentMetaByOrderOf,
-// 		tx.PaymentMetaPayee,
-// 		tx.PaymentMetaPayer,
-// 		tx.PaymentMetaPaymentMethod,
-// 		tx.PaymentMetaPaymentProcessor,
-// 		tx.PaymentMetaPpdId,
-// 		tx.PaymentMetaReason,
-// 		tx.PaymentMetaReferenceNumber,
-// 		tx.Pending,
-// 		tx.PendingTransactionId,
-// 		tx.PersonalFinanceCategoryDetailed,
-// 		tx.PersonalFinanceCategoryPrimary,
-// 		tx.Sign,
-// 		tx.Time,
-// 		tx.TransactionCode,
-// 		tx.UnofficialCurrencyCode,
-// 		tx.UserId,
-// 		tx.Categories,
-// 		tx.TransactionId).Scan(ctx); err != nil {
-// 		return err
-// 	}
+	transactionPendingBinaryRef := func(b bool) int {
+		if b {
+			return 1
+		} else {
+			return 0
+		}
+	}(tx.Pending)
 
-// 	// // update the transaction
-// 	// txOrm, err := tx.ToORM(ctx)
-// 	// if err != nil {
-// 	// 	return err
-// 	// }
+	// we first delete the old row
 
-// 	// // perform the update operation
-// 	// result, err := t.WithContext(ctx).Updates(txOrm)
-// 	// if err != nil {
-// 	// 	return err
-// 	// }
+	if err := db.queryEngine.NewRaw(query,
+		tx.AccountId,
+		tx.AccountOwner,
+		tx.Amount,
+		tx.AuthorizedDate,
+		tx.AuthorizedDatetime,
+		tx.CategoryId,
+		tx.CheckNumber,
+		tx.CurrentDate,
+		tx.CurrentDatetime,
+		tx.IsoCurrencyCode,
+		tx.LinkId,
+		tx.LocationAddress,
+		tx.LocationCity,
+		tx.LocationCountry,
+		tx.LocationLat,
+		tx.LocationLon,
+		tx.LocationPostalCode,
+		tx.LocationRegion,
+		tx.LocationStoreNumber,
+		tx.MerchantName,
+		tx.Name,
+		tx.PaymentChannel,
+		tx.PaymentMetaByOrderOf,
+		tx.PaymentMetaPayee,
+		tx.PaymentMetaPayer,
+		tx.PaymentMetaPaymentMethod,
+		tx.PaymentMetaPaymentProcessor,
+		tx.PaymentMetaPpdId,
+		tx.PaymentMetaReason,
+		tx.PaymentMetaReferenceNumber,
+		transactionPendingBinaryRef,
+		tx.PendingTransactionId,
+		tx.PersonalFinanceCategoryDetailed,
+		tx.PersonalFinanceCategoryPrimary,
+		tx.TransactionCode,
+		tx.UnofficialCurrencyCode,
+		tx.UserId,
+		Stringify(tx.GetCategories()),
+		tx.TransactionId).Scan(ctx); err != nil {
+		return err
+	}
 
-// 	// if result.RowsAffected == 0 {
-// 	// 	return fmt.Errorf("no rows affected")
-// 	// }
+	return nil
+}
 
-// 	return nil
-// }
+// UpdateTransactions updates transactions.
+func (db *Db) UpdateTransactions(ctx context.Context, userId *uint64, txs []*schema.Transaction) error {
+	if span := db.startDatastoreSpan(ctx, "dbtxn-update-transaction"); span != nil {
+		defer span.End()
+	}
 
-// // UpdateTransactions updates transactions.
-// func (db *Db) UpdateTransactions(ctx context.Context, userId *uint64, txs []*schema.Transaction) error {
-// 	if span := db.startDatastoreSpan(ctx, "dbtxn-update-transaction"); span != nil {
-// 		defer span.End()
-// 	}
+	if len(txs) == 0 {
+		return fmt.Errorf("transactions length must be greater than 0")
+	}
 
-// 	if len(txs) == 0 {
-// 		return fmt.Errorf("transactions length must be greater than 0")
-// 	}
+	if userId == nil {
+		return fmt.Errorf("user ID must be 0 at creation time")
+	}
 
-// 	if userId == nil {
-// 		return fmt.Errorf("user ID must be 0 at creation time")
-// 	}
+	for _, tx := range txs {
+		if tx.Id == "" {
+			return fmt.Errorf("transaction ID not be empty at update time")
+		}
 
-// 	txnsOrmRecords := make([]*schema.TransactionORM, 0, len(txs))
-// 	for _, tx := range txs {
-// 		// associate the user id with the transaction
-// 		tx.UserId = *userId
+		// validate transactions
+		if err := tx.Validate(); err != nil {
+			return err
+		}
 
-// 		txnOrm, err := tx.ToORM(ctx)
-// 		if err != nil {
-// 			return err
-// 		}
+		if err := db.UpdateTransaction(ctx, userId, &tx.Id, tx); err != nil {
+			db.Logger.Error(err.Error())
+		}
+	}
 
-// 		txnsOrmRecords = append(txnsOrmRecords, &txnOrm)
-// 	}
-
-// 	t := db.QueryOperator.TransactionORM
-// 	// perform the update operation
-
-// 	for _, tx := range txnsOrmRecords {
-// 		result, err := t.WithContext(ctx).Where(t.UserId.Eq(*userId)).Updates(tx)
-// 		if err != nil {
-// 			return err
-// 		}
-
-// 		if result.RowsAffected == 0 {
-// 			return fmt.Errorf("no rows affected")
-// 		}
-// 	}
-
-// 	return nil
-// }
+	return nil
+}
 
 // GetTransactionById Gets a transaction by ID.
 func (db *Db) GetTransactionById(ctx context.Context, txId *string) (*schema.Transaction, error) {

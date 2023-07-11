@@ -79,7 +79,7 @@ func generateRandomTransaction() *schema.Transaction {
 		Name:                            helper.GenerateRandomString(20),
 		MerchantName:                    helper.GenerateRandomString(20),
 		PaymentChannel:                  helper.GenerateRandomString(20),
-		Pending:                         false,
+		Pending:                         true,
 		PendingTransactionId:            helper.GenerateRandomString(20),
 		AccountOwner:                    helper.GenerateRandomString(20),
 		TransactionId:                   helper.GenerateRandomString(20),
@@ -106,6 +106,8 @@ func generateRandomTransaction() *schema.Transaction {
 		PaymentMetaPpdId:                helper.GenerateRandomString(20),
 		PaymentMetaReason:               helper.GenerateRandomString(20),
 		PaymentMetaReferenceNumber:      helper.GenerateRandomString(20),
+		Time:                            &timestamppb.Timestamp{},
+		Categories:                      generateStringList(5),
 	}
 }
 
