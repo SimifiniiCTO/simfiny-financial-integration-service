@@ -172,6 +172,11 @@ spec:
             - --clickhouse-connection-uri={{ .Values.clickhouse.uri }}
             - --cache-tls-enabled={{ .Values.cacheTLSEnabled }}
             - --openai-token={{ .Values.openai.apiKey }}
+            - --openai-temperature="{{ .Values.openai.configs.temperature }}"
+            - --openai-presence-penalty="{{ .Values.openai.configs.presencePenalty }}"
+            - --openai-frequency-penalty="{{ .Values.openai.configs.frequencyPenalty }}"
+            - --openai-top-p="{{ .Values.openai.configs.topP }}"
+            - --openai-max-tokens="{{ .Values.openai.configs.maxToken }}"
           env:
           {{- if .Values.ui.message }}
           - name: fis_UI_MESSAGE

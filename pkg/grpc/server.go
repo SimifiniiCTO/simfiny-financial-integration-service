@@ -69,6 +69,11 @@ type Config struct {
 	WorkflowTaskTimeout      time.Duration    `mapstructure:"workflow-task-timeout"`
 	WorkflowRunTimeout       time.Duration    `mapstructure:"workflow-run-timeout"`
 	TaskProcessorWorkers     int              `mapstructure:"task-processor-workers"`
+	OpenAiMaxTokens          int32            `mapstructure:"openai-max-tokens"`
+	OpenAiTopP               float32          `mapstructure:"openai-top-p"`
+	OpenAiFrequencyPenalty   float32          `mapstructure:"openai-frequency-penalty"`
+	OpenAiPresencePenalty    int              `mapstructure:"openai-presence-penalty"`
+	OpenAiTemperature        float32          `mapstructure:"openai-temperature"`
 }
 
 var _ proto.FinancialServiceServer = (*Server)(nil)

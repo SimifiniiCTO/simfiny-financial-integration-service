@@ -125,6 +125,12 @@ func ReadEnvVars() {
 	fs.Int("task-processor-workers", 5, "task-processor-workers")
 
 	fs.String("openai-token", "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", "openai-token")
+	fs.Int32("openai-max-tokens", 2000, "max number of tokens to generate")                         // exists
+	fs.Float32("openai-top-p", 1.0, "degree of diversity in the text")                              // exists
+	fs.Float32("openai-frequency-penalty", 0.0, "degree to penalize new tokens based on existence") // exists
+	fs.Int("openai-presence-penalty", 1, "how much to penalize new token")                          // exists
+	fs.Float32("openai-temperature", 0.7, "controls the degree of randomness in the text")          // exists
+
 	defaultLogger := zap.L()
 
 	// parse flags
