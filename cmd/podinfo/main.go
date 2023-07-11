@@ -114,6 +114,7 @@ func main() {
 	defer clickHouseConn.Close()
 
 	// initialize gRPC server
+	openAiToken := viper.GetString("openai-token")
 	grpcSrv, err := grpc.NewServer(&grpc.Params{
 		Config:             &grpcCfg,
 		Logger:             logger,
@@ -124,6 +125,7 @@ func main() {
 		TransactionManager: transactionManager,
 		ClickhouseDb:       clickHouseDb,
 		RedisDb:            redisConn,
+		OpenAiToken:        &openAiToken,
 	})
 	if err != nil {
 		logger.Panic(err.Error())

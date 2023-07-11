@@ -123,6 +123,8 @@ func ReadEnvVars() {
 
 	fs.String("clickhouse-connection-uri", "clickhouse://gorm:gorm@clickhouse-database:9000/gorm?sslmode=disable&dial_timeout=10s&read_timeout=20s", "clickhouse-connection-uri")
 	fs.Int("task-processor-workers", 5, "task-processor-workers")
+
+	fs.String("openai-token", "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", "openai-token")
 	defaultLogger := zap.L()
 
 	// parse flags

@@ -20,6 +20,7 @@ import (
 	taskhandler "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/task-handler"
 	transactionmanager "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/transaction_manager"
 	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
+	openai "github.com/sashabaranov/go-openai"
 )
 
 // Server is the grpc server object
@@ -39,6 +40,7 @@ type Server struct {
 	InMemoryWebhookVerification plaidhandler.WebhookVerification
 	redisDb                     *redis.Client
 	Taskprocessor               *taskprocessor.TaskProcessor
+	OpenAiClient                *openai.Client
 }
 
 // Config is the config for the grpc server initialization
@@ -82,6 +84,7 @@ type Params struct {
 	TransactionManager *transactionmanager.TransactionManager
 	ClickhouseDb       *clickhousedatabase.Db
 	RedisDb            *redis.Client
+	OpenAiToken        *string
 }
 
 // RegisterGrpcServer registers the grpc server object
@@ -101,6 +104,10 @@ func (p *Params) Validate() error {
 
 	if p.Db == nil {
 		return errors.New("db is nil")
+	}
+
+	if p.OpenAiToken == nil {
+		return errors.New("open ai token is nil")
 	}
 
 	return nil
@@ -158,5 +165,11 @@ func NewServer(param *Params) (*Server, error) {
 		redisDb:                     param.RedisDb,
 		Taskprocessor:               tp,
 	}
+
+	if param.OpenAiToken == nil {
+		return nil, errors.New("open ai token is required")
+	}
+
+	srv.OpenAiClient = openai.NewClient(*param.OpenAiToken)
 	return srv, nil
 }
