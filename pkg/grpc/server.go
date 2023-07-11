@@ -143,6 +143,7 @@ func NewServer(param *Params) (*Server, error) {
 		return nil, err
 	}
 
+	// TODO: here we should register any task that should be processed at an interval
 	srv := &Server{
 		logger:                      param.Logger,
 		config:                      param.Config,
