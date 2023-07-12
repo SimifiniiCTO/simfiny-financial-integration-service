@@ -61,7 +61,7 @@ message InvestmentTransaction {
     // @gotag: ch:"security_id"
     string security_id = 4;
     // @gotag: ch:"date"
-    string date = 5;
+    string current_date = 5;
     // @gotag: ch:"name"
     string name = 6;
     // @gotag: ch:"quantity"
@@ -86,7 +86,7 @@ message InvestmentTransaction {
         (validate.rules).uint64.gt = 0
     ];
     // @gotag: ch:"id"
-    uint64 id = 16 [
+    string id = 16 [
         (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}
     ];
         // @gotag: ch:"user_id"
@@ -150,7 +150,7 @@ message ReOccuringTransaction {
         (validate.rules).uint64.gt = 0
     ];
     // @gotag: ch:"id"
-    uint64 id = 22 [
+    string id = 22 [
         (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}
     ];
     // @gotag: ch:"flow"
@@ -176,9 +176,9 @@ message Transaction {
     // @gotag: ch:"check_number"
     string check_number = 7;
     // @gotag: ch:"date"
-    string date = 8;
+    string current_date = 8;
     // @gotag: ch:"datetime"
-    string datetime = 9;
+    string current_datetime = 9;
     // @gotag: ch:"authorized_date"
     string authorized_date = 10;
     // @gotag: ch:"authorized_datetime"
@@ -199,7 +199,7 @@ message Transaction {
     string transaction_id = 20;
     // @gotag: ch:"transaction_code"
     string transaction_code = 21;
-    uint64 id = 22 [
+    string id = 22 [
         (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}
     ];
     // @gotag: ch:"user_id"
@@ -235,6 +235,7 @@ message Transaction {
     string payment_meta_reference_number = 43;
     google.protobuf.Timestamp time = 44;
     google.protobuf.Any additional_properties = 45;
+    repeated string categories = 46;
 }
 
 message TransactionAmountByCountryMetric {
@@ -264,4 +265,14 @@ message TransactionAmountDistributionByCategoryMetric {
     double mean = 2;
     double median = 3;
     double standard_deviation = 4;
+}
+
+message AccountBalanceHistory {
+    option (gorm.opts) = {ormable: true};
+    google.protobuf.Timestamp time = 1;
+    string account_id = 2;
+    string iso_currency_code = 3;
+    double balance = 4;
+    uint64 user_id = 5;
+    uint32 sign = 6;
 }

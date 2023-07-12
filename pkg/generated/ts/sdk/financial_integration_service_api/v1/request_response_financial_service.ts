@@ -685,7 +685,7 @@ export interface GetReCurringTransactionsResponse {
 
 export interface GetReCurringTransactionsResponse_ParticipantReCurringTransactions {
   /** The participant id */
-  reocurringTransactionId: number;
+  reocurringTransactionId: string;
   /** The transactions */
   transactions: Transaction[];
 }
@@ -5428,7 +5428,7 @@ export const GetReCurringTransactionsResponse = {
 };
 
 function createBaseGetReCurringTransactionsResponse_ParticipantReCurringTransactions(): GetReCurringTransactionsResponse_ParticipantReCurringTransactions {
-  return { reocurringTransactionId: 0, transactions: [] };
+  return { reocurringTransactionId: "", transactions: [] };
 }
 
 export const GetReCurringTransactionsResponse_ParticipantReCurringTransactions = {
@@ -5436,8 +5436,8 @@ export const GetReCurringTransactionsResponse_ParticipantReCurringTransactions =
     message: GetReCurringTransactionsResponse_ParticipantReCurringTransactions,
     writer: _m0.Writer = _m0.Writer.create(),
   ): _m0.Writer {
-    if (message.reocurringTransactionId !== 0) {
-      writer.uint32(8).uint64(message.reocurringTransactionId);
+    if (message.reocurringTransactionId !== "") {
+      writer.uint32(10).string(message.reocurringTransactionId);
     }
     for (const v of message.transactions) {
       Transaction.encode(v!, writer.uint32(18).fork()).ldelim();
@@ -5456,11 +5456,11 @@ export const GetReCurringTransactionsResponse_ParticipantReCurringTransactions =
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag !== 8) {
+          if (tag !== 10) {
             break;
           }
 
-          message.reocurringTransactionId = longToNumber(reader.uint64() as Long);
+          message.reocurringTransactionId = reader.string();
           continue;
         case 2:
           if (tag !== 18) {
@@ -5480,7 +5480,7 @@ export const GetReCurringTransactionsResponse_ParticipantReCurringTransactions =
 
   fromJSON(object: any): GetReCurringTransactionsResponse_ParticipantReCurringTransactions {
     return {
-      reocurringTransactionId: isSet(object.reocurringTransactionId) ? Number(object.reocurringTransactionId) : 0,
+      reocurringTransactionId: isSet(object.reocurringTransactionId) ? String(object.reocurringTransactionId) : "",
       transactions: Array.isArray(object?.transactions)
         ? object.transactions.map((e: any) => Transaction.fromJSON(e))
         : [],
@@ -5489,8 +5489,7 @@ export const GetReCurringTransactionsResponse_ParticipantReCurringTransactions =
 
   toJSON(message: GetReCurringTransactionsResponse_ParticipantReCurringTransactions): unknown {
     const obj: any = {};
-    message.reocurringTransactionId !== undefined &&
-      (obj.reocurringTransactionId = Math.round(message.reocurringTransactionId));
+    message.reocurringTransactionId !== undefined && (obj.reocurringTransactionId = message.reocurringTransactionId);
     if (message.transactions) {
       obj.transactions = message.transactions.map((e) => e ? Transaction.toJSON(e) : undefined);
     } else {
@@ -5509,7 +5508,7 @@ export const GetReCurringTransactionsResponse_ParticipantReCurringTransactions =
     object: I,
   ): GetReCurringTransactionsResponse_ParticipantReCurringTransactions {
     const message = createBaseGetReCurringTransactionsResponse_ParticipantReCurringTransactions();
-    message.reocurringTransactionId = object.reocurringTransactionId ?? 0;
+    message.reocurringTransactionId = object.reocurringTransactionId ?? "";
     message.transactions = object.transactions?.map((e) => Transaction.fromPartial(e)) || [];
     return message;
   },

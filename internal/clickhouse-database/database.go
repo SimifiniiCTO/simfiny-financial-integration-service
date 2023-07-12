@@ -3,52 +3,55 @@ package clickhousedatabase
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"github.com/SimifiniiCTO/simfiny-core-lib/database/clickhouse"
 	clickhousedb "github.com/SimifiniiCTO/simfiny-core-lib/database/clickhouse"
 	"github.com/SimifiniiCTO/simfiny-core-lib/instrumentation"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/migrations"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/service_errors"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/dal"
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 	"github.com/newrelic/go-agent/v3/newrelic"
+	"github.com/uptrace/go-clickhouse/ch"
+	chgo "github.com/uptrace/go-clickhouse/ch"
 	"go.uber.org/zap"
-	"gorm.io/gorm"
 )
 
 type ClickhouseDatabaseOperations interface {
 	// `AddTransaction` is a method defined in the `ClickhouseDatabaseOperations` interface in the Go
 	// programming language. It takes in a context and an interface representing a transaction, and returns
 	// an error. This method is used to add a single transaction to a Clickhouse database.
-	AddTransaction(ctx context.Context, userId *uint64, tx *schema.Transaction) (*uint64, error)
+	AddTransaction(ctx context.Context, userId *uint64, tx *schema.Transaction) (*string, error)
 
 	// `AddTransactions` is a method defined in the `ClickhouseDatabaseOperations` interface in the Go
 	// programming language. It takes in a context and a slice of interfaces representing transactions, and
 	// returns an error. This method is used to add multiple transactions to a Clickhouse database.
 	AddTransactions(ctx context.Context, userId *uint64, txs []*schema.Transaction) error
 
-	// The `UpdateTransaction` method is defined in the `ClickhouseDatabaseOperations` interface in the Go
-	// programming language. It takes in a context, a user ID as a uint64, a transaction ID as a uint64,
-	// and an interface representing a transaction, and returns an error. This method is used to update a
-	// single transaction with the specified transaction ID for a specific user in a Clickhouse database.
-	UpdateTransaction(ctx context.Context, userId *uint64, txId *uint64, tx *schema.Transaction) error
+	// // The `UpdateTransaction` method is defined in the `ClickhouseDatabaseOperations` interface in the Go
+	// // programming language. It takes in a context, a user ID as a uint64, a transaction ID as a uint64,
+	// // and an interface representing a transaction, and returns an error. This method is used to update a
+	// // single transaction with the specified transaction ID for a specific user in a Clickhouse database.
+	// UpdateTransaction(ctx context.Context, userId *uint64, txId *uint64, tx *schema.Transaction) error
 
 	// The `DeleteTransaction` method is defined in the `ClickhouseDatabaseOperations` interface in the Go
 	// programming language. It takes in a context and a transaction ID as a uint64, and returns an error.
 	// This method is used to delete a single transaction with the specified transaction ID from a
 	// Clickhouse database.
-	DeleteTransaction(ctx context.Context, txId *uint64) error
+	DeleteTransaction(ctx context.Context, txId *string) error
 
 	// The `DeleteTransactons` method is defined in the `ClickhouseDatabaseOperations` interface in the Go
 	// programming language. It takes in a context and a user ID as a uint64, and returns an error. This
 	// method is used to delete all transactions associated with a specific user from a Clickhouse
 	// database.
-	DeleteUserTransactons(ctx context.Context, userId *uint64) error
+	DeleteUserTransactions(ctx context.Context, userId *uint64) error
 
 	// The `DeleteTransactionsByIds` method is defined in the `ClickhouseDatabaseOperations` interface in
 	// the Go programming language. It takes in a context and a variable number of transaction IDs as
 	// uint64 values, and returns an error. This method is used to delete multiple transactions with the
 	// specified transaction IDs from a Clickhouse database.
-	DeleteTransactionsByIds(ctx context.Context, txIds []uint64) error
+	// DeleteTransactionsByIds(ctx context.Context, txIds []string) error
 
 	// `GetTransactions` is a method defined in the `ClickhouseDatabaseOperations` interface in the Go
 	// programming language. It takes in a context and a user ID as a uint64, and returns a slice of
@@ -59,10 +62,12 @@ type ClickhouseDatabaseOperations interface {
 	// programming language. It takes in a context and a transaction ID as a uint64, and returns a pointer
 	// to a `schema.Transaction` struct and an error. This method is used to retrieve a single transaction
 	// with the specified transaction ID from a Clickhouse database.
-	GetTransactionById(ctx context.Context, txId *uint64) (*schema.Transaction, error)
+	// GetTransactionById(ctx context.Context, txId *uint64) (*schema.Transaction, error)
 }
 
 type Db struct {
+	connectionUri string
+	queryEngine   *chgo.DB
 	// `Conn *clickhousedb.Client` is defining a field named `Conn` of type `*clickhousedb.Client`. This
 	// field is used to store a connection to a Clickhouse database.
 	Conn *clickhousedb.Client
@@ -100,68 +105,63 @@ func New(ctx context.Context, opts ...Option) (*Db, error) {
 		return nil, err
 	}
 
+	database.Logger.Info("successfully validated clickhouse db")
+	database.Logger.Info(database.connectionUri)
+	db := ch.Connect(
+		// clickhouse://<user>:<password>@<host>:<port>/<database>?sslmode=disable
+		ch.WithDSN(database.connectionUri),
+		ch.WithTimeout(5*time.Second),
+		ch.WithDialTimeout(5*time.Second),
+		ch.WithReadTimeout(5*time.Second),
+		ch.WithWriteTimeout(5*time.Second),
+		// ch.WithTLSConfig(&tls.Config{InsecureSkipVerify: true}),
+	)
+
+	if db != nil {
+		database.Logger.Info("successful connection to database with uptrace client")
+	}
+
 	// ping the database
-	if err := database.pingDatabase(); err != nil {
+	if err := db.Ping(ctx); err != nil {
 		return nil, err
 	}
 
+	database.Logger.Info("successful pinged database with uptrace")
+	database.queryEngine = db
+
 	// perform migrations
-	if err := database.performSchemaMigration(); err != nil {
+	if err := database.performSchemaMigration(ctx); err != nil {
 		return nil, err
 	}
 
 	return database, nil
 }
 
-func (db *Db) pingDatabase() error {
+// The `performSchemaMigration` function is a method defined on the `Db` struct. It takes a context as
+// an argument and returns an error. This method is responsible for performing schema migration on the
+// Clickhouse database.
+func (db *Db) performSchemaMigration(ctx context.Context) error {
 	if db == nil {
 		return service_errors.ErrInvalidAcctParam
 	}
 
-	conn, err := db.Conn.Engine.DB()
+	db.Logger.Info("Defining migration engine")
+	migationEngine, err := migrations.New(db.queryEngine)
 	if err != nil {
+		db.Logger.Error(err.Error())
 		return err
-	}
-
-	if err := conn.Ping(); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-// performSchemaMigration performs schema migration
-func (db *Db) performSchemaMigration() error {
-	var (
-		engine *gorm.DB
-		models = schema.GetClickhouseSchemas()
-	)
-
-	if db == nil {
-		return service_errors.ErrInvalidAcctParam
-	}
-
-	if engine = db.Conn.Engine; engine == nil {
-		return service_errors.ErrInvalidGormDbOject
 	}
 
 	// TODO: NEED TO PROPERLY SUPPORT MIGRATIONS (REF: https://github.com/go-gormigrate/gormigrate)
-	if len(models) > 0 {
-		// ref. https://kb.altinity.com/engines/mergetree-table-engine-family/collapsing-vs-replacing/
-		// ref. https://clickhouse.com/docs/en/guides/developer/deduplication
-		for _, e := range models {
-			if !engine.Migrator().HasTable(e) {
-				if err := engine.AutoMigrate(e); err != nil {
-					// TODO: emit failure metric here
-					// money
-					db.Logger.Error(err.Error())
-				}
-			}
-
-		}
-		db.Logger.Info("successfully migrated database schemas")
+	// 	// ref. https://kb.altinity.com/engines/mergetree-table-engine-family/collapsing-vs-replacing/
+	// 	// ref. https://clickhouse.com/docs/en/guides/developer/deduplication
+	db.Logger.Info("Performing database migrations")
+	if err := migationEngine.Migrate(ctx); err != nil {
+		db.Logger.Error(err.Error())
+		return err
 	}
 
+	db.Logger.Info("Successfully migrated clickhouse database schemas")
 	return nil
 }
 

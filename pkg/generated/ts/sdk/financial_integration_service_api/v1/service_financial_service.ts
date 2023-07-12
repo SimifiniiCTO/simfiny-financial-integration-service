@@ -132,11 +132,12 @@ export interface FinancialService {
   CreateSubscription(request: CreateSubscriptionRequest): Promise<CreateSubscriptionResponse>;
 }
 
+export const FinancialServiceServiceName = "financial_integration_service_api.v1.FinancialService";
 export class FinancialServiceClientImpl implements FinancialService {
   private readonly rpc: Rpc;
   private readonly service: string;
   constructor(rpc: Rpc, opts?: { service?: string }) {
-    this.service = opts?.service || "financial_integration_service_api.v1.FinancialService";
+    this.service = opts?.service || FinancialServiceServiceName;
     this.rpc = rpc;
     this.PlaidInitiateTokenExchange = this.PlaidInitiateTokenExchange.bind(this);
     this.PlaidExchangeToken = this.PlaidExchangeToken.bind(this);

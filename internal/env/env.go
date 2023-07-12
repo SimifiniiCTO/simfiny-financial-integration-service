@@ -121,8 +121,16 @@ func ReadEnvVars() {
 	fs.Duration("workflow-task-timeout", 1*time.Second, "The timeout for processing workflow task from the time the worker pulled this task. If a workflow task is lost, it is retried after this timeout. The resolution is seconds.")
 	fs.Duration("workflow-run-timeout", 1*time.Second, "The timeout for duration of a single workflow run. The resolution is seconds. Optional: defaulted to WorkflowExecutionTimeout.")
 
-	fs.String("clickhouse-connection-uri", "clickhouse://gorm:gorm@clickhouse-database:9000/gorm?dial_timeout=10s&read_timeout=20s", "clickhouse-connection-uri")
+	fs.String("clickhouse-connection-uri", "clickhouse://gorm:gorm@clickhouse-database:9000/gorm?sslmode=disable&dial_timeout=10s&read_timeout=20s", "clickhouse-connection-uri")
 	fs.Int("task-processor-workers", 5, "task-processor-workers")
+
+	fs.String("openai-token", "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", "openai-token")
+	fs.Int32("openai-max-tokens", 2000, "max number of tokens to generate")                         // exists
+	fs.Float32("openai-top-p", 1.0, "degree of diversity in the text")                              // exists
+	fs.Float32("openai-frequency-penalty", 0.0, "degree to penalize new tokens based on existence") // exists
+	fs.Int("openai-presence-penalty", 1, "how much to penalize new token")                          // exists
+	fs.Float32("openai-temperature", 0.7, "controls the degree of randomness in the text")          // exists
+
 	defaultLogger := zap.L()
 
 	// parse flags

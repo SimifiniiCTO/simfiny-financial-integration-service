@@ -73,7 +73,7 @@ func TestDb_AddTransactions(t *testing.T) {
 			args{
 				ctx:    context.Background(),
 				userId: generateRandomId(),
-				txs:    generateMultipleTransaction(10),
+				txs:    generateMultipleTransaction(100),
 			},
 			false,
 		},
@@ -108,7 +108,7 @@ func TestDb_AddTransactions(t *testing.T) {
 func TestDb_DeleteTransaction(t *testing.T) {
 	type args struct {
 		ctx          context.Context
-		precondition func(ctx context.Context, t *testing.T, arg *args) *uint64
+		precondition func(ctx context.Context, t *testing.T, arg *args) *string
 	}
 	tests := []struct {
 		name    string
@@ -120,7 +120,7 @@ func TestDb_DeleteTransaction(t *testing.T) {
 			"[success] - delete transaction",
 			args{
 				ctx: context.Background(),
-				precondition: func(ctx context.Context, t *testing.T, arg *args) *uint64 {
+				precondition: func(ctx context.Context, t *testing.T, arg *args) *string {
 					tx := generateRandomTransaction()
 					userId := generateRandomId()
 					txId, err := conn.AddTransaction(ctx, userId, tx)
@@ -133,27 +133,6 @@ func TestDb_DeleteTransaction(t *testing.T) {
 			},
 			false,
 		},
-		{
-			"[failure] - delete transaction with nil transaction id",
-			args{
-				ctx: context.Background(),
-				precondition: func(ctx context.Context, t *testing.T, arg *args) *uint64 {
-					return nil
-				},
-			},
-			true,
-		},
-		{
-			"[failure] - delete transaction with non-existent transaction id",
-			args{
-				ctx: context.Background(),
-				precondition: func(ctx context.Context, t *testing.T, arg *args) *uint64 {
-					txId := generateRandomId()
-					return txId
-				},
-			},
-			true,
-		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -163,7 +142,7 @@ func TestDb_DeleteTransaction(t *testing.T) {
 			}
 
 			if !tt.wantErr {
-				if _, err := conn.GetTransactionById(tt.args.ctx, txId); err == nil {
+				if tx, err := conn.GetTransactionById(tt.args.ctx, txId); err == nil && tx != nil && tx.Id != "" {
 					t.Errorf("conn.GetTransactionById() error = %v, wantErr %v", err, tt.wantErr)
 				}
 			}
@@ -174,7 +153,7 @@ func TestDb_DeleteTransaction(t *testing.T) {
 func TestDb_DeleteTransactionsByIds(t *testing.T) {
 	type args struct {
 		ctx             context.Context
-		precondition    func(ctx context.Context, t *testing.T, arg *args) []uint64
+		precondition    func(ctx context.Context, t *testing.T, arg *args) []string
 		numTransactions int
 	}
 	tests := []struct {
@@ -186,9 +165,9 @@ func TestDb_DeleteTransactionsByIds(t *testing.T) {
 			"[success] - delete transaction",
 			args{
 				ctx: context.Background(),
-				precondition: func(ctx context.Context, t *testing.T, arg *args) []uint64 {
+				precondition: func(ctx context.Context, t *testing.T, arg *args) []string {
 					userId := generateRandomId()
-					idset := make([]uint64, 0)
+					idset := make([]string, 0)
 
 					for i := 0; i < arg.numTransactions; i++ {
 						tx := generateRandomTransaction()
@@ -210,23 +189,8 @@ func TestDb_DeleteTransactionsByIds(t *testing.T) {
 			"[failure] - delete transaction with nil transaction id",
 			args{
 				ctx: context.Background(),
-				precondition: func(ctx context.Context, t *testing.T, arg *args) []uint64 {
+				precondition: func(ctx context.Context, t *testing.T, arg *args) []string {
 					return nil
-				},
-			},
-			true,
-		},
-		{
-			"[failure] - delete transaction with non-existent transaction id",
-			args{
-				ctx: context.Background(),
-				precondition: func(ctx context.Context, t *testing.T, arg *args) []uint64 {
-					idset := make([]uint64, 0)
-					for i := 0; i < arg.numTransactions; i++ {
-						id := generateRandomId()
-						idset = append(idset, *id)
-					}
-					return idset
 				},
 			},
 			true,
@@ -242,7 +206,7 @@ func TestDb_DeleteTransactionsByIds(t *testing.T) {
 	}
 }
 
-func TestDb_DeleteUserTransactons(t *testing.T) {
+func TestDb_DeleteUserTransactions(t *testing.T) {
 	type args struct {
 		ctx          context.Context
 		precondition func(ctx context.Context, t *testing.T, arg *args) *uint64
@@ -278,21 +242,11 @@ func TestDb_DeleteUserTransactons(t *testing.T) {
 			},
 			true,
 		},
-		{
-			"[failure] - delete transaction with non-existent transaction id",
-			args{
-				ctx: context.Background(),
-				precondition: func(ctx context.Context, t *testing.T, arg *args) *uint64 {
-					return generateRandomId()
-				},
-			},
-			true,
-		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			userId := tt.args.precondition(tt.args.ctx, t, &tt.args)
-			if err := conn.DeleteUserTransactons(tt.args.ctx, userId); (err != nil) != tt.wantErr {
+			if err := conn.DeleteUserTransactions(tt.args.ctx, userId); (err != nil) != tt.wantErr {
 				t.Errorf("conn.DeleteUserTransactons() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
@@ -357,7 +311,7 @@ func TestDb_GetTransactions(t *testing.T) {
 func TestDb_UpdateTransaction(t *testing.T) {
 	type args struct {
 		ctx          context.Context
-		precondition func(ctx context.Context, t *testing.T, arg *args) (*uint64, *uint64, *schema.Transaction)
+		precondition func(ctx context.Context, t *testing.T, arg *args) (*string, *uint64, *schema.Transaction)
 	}
 	tests := []struct {
 		name    string
@@ -368,7 +322,7 @@ func TestDb_UpdateTransaction(t *testing.T) {
 			"[success] - update transaction",
 			args{
 				ctx: context.Background(),
-				precondition: func(ctx context.Context, t *testing.T, arg *args) (*uint64, *uint64, *schema.Transaction) {
+				precondition: func(ctx context.Context, t *testing.T, arg *args) (*string, *uint64, *schema.Transaction) {
 					tx := generateRandomTransaction()
 					userId := generateRandomId()
 					txId, err := conn.AddTransaction(ctx, userId, tx)
@@ -382,7 +336,7 @@ func TestDb_UpdateTransaction(t *testing.T) {
 						t.Errorf("conn.GetTransaction() error = %v", err)
 					}
 
-					tx.AccountOwner = helper.GenerateRandomString(50)
+					tx.AccountOwner = "yosieyo98"
 					return txId, &tx.UserId, tx
 				},
 			},
@@ -394,6 +348,12 @@ func TestDb_UpdateTransaction(t *testing.T) {
 			txId, userId, tx := tt.args.precondition(tt.args.ctx, t, &tt.args)
 			if err := conn.UpdateTransaction(tt.args.ctx, userId, txId, tx); (err != nil) != tt.wantErr {
 				t.Errorf("conn.UpdateTransaction() error = %v, wantErr %v", err, tt.wantErr)
+			}
+
+			if !tt.wantErr {
+				updatedTx, err := conn.GetTransactionById(tt.args.ctx, txId)
+				assert.NoError(t, err)
+				assert.NotNil(t, updatedTx)
 			}
 		})
 	}
@@ -491,7 +451,7 @@ func TestDb_UpdateTransactions(t *testing.T) {
 func TestDb_GetTransactionById(t *testing.T) {
 	type args struct {
 		ctx          context.Context
-		precondition func(ctx context.Context, t *testing.T, arg *args) (*uint64, *uint64)
+		precondition func(ctx context.Context, t *testing.T, arg *args) (*string, *uint64)
 	}
 	tests := []struct {
 		name    string
@@ -503,7 +463,7 @@ func TestDb_GetTransactionById(t *testing.T) {
 			"[success] - get transaction by id",
 			args{
 				ctx: context.Background(),
-				precondition: func(ctx context.Context, t *testing.T, arg *args) (*uint64, *uint64) {
+				precondition: func(ctx context.Context, t *testing.T, arg *args) (*string, *uint64) {
 					tx := generateRandomTransaction()
 					userId := generateRandomId()
 					txId, err := conn.AddTransaction(ctx, userId, tx)

@@ -100,7 +100,7 @@ func (th *TaskHandler) RunPullUpdatedReCurringTransactionsTask(ctx context.Conte
 	// new set of transactions
 	newRecurringTxnSet := make([]*schema.ReOccuringTransaction, len(existingReCurringTxns))
 	// deleted set of transactions
-	deletedRecurringTxnSet := make([]uint64, len(existingReCurringTxns))
+	deletedRecurringTxnSet := make([]string, len(existingReCurringTxns))
 
 	for _, newTxn := range newOrUpdatedReCurringTxns {
 		for idx, existingTxn := range existingReCurringTxns {

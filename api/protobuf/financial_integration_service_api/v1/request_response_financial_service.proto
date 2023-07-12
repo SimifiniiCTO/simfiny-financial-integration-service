@@ -730,7 +730,7 @@ message GetReCurringTransactionsRequest {
 message GetReCurringTransactionsResponse {
   message ParticipantReCurringTransactions {
   // The participant id
-  uint64 reocurring_transaction_id = 1;
+  string reocurring_transaction_id = 1;
   // The transactions
   repeated Transaction transactions = 2;
 }

@@ -102,7 +102,7 @@ func (th *TaskHandler) RunPullInvestmentTransactionsTask(ctx context.Context, t 
 	}
 
 	// get deleted transactions
-	deletedTransactionIds := make([]uint64, 0, len(currentTransactions))
+	deletedTransactionIds := make([]string, 0, len(currentTransactions))
 	for _, transaction := range currentTransactions {
 		if !isTransactionInSlice(transaction, transactions) {
 			deletedTransactionIds = append(deletedTransactionIds, transaction.Id)

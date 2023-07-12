@@ -3,8 +3,10 @@ package clickhousedatabase
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
+	"github.com/google/uuid"
 )
 
 // AddInvestmentTransactions is adding investment transactions to the Clickhouse database. It takes in a context, a
@@ -27,30 +29,35 @@ func (db *Db) AddInvestmentTransactions(ctx context.Context, userId *uint64, txs
 		return fmt.Errorf("transactions length must be greater than 0")
 	}
 
-	transactions := make([]*schema.InvestmentTransactionORM, 0, len(txs))
+	transactions := make([]schema.InvestmentTransactionInternal, 0, len(txs))
 	for _, tx := range txs {
-		if tx.Id != 0 {
+		if tx.Id != "" {
 			return fmt.Errorf("transaction ID must be 0 at creation time")
+		}
+
+		id, err := uuid.NewUUID()
+		if err != nil {
+			return err
 		}
 
 		// associate the user id to the transaction of interest
 		tx.UserId = *userId
+		tx.Id = id.String()
 
 		// validate transactions
 		if err := tx.Validate(); err != nil {
 			return err
 		}
 
-		record, err := tx.ToORM(ctx)
+		record, err := tx.ConvertToInternal()
 		if err != nil {
 			return err
 		}
 
-		transactions = append(transactions, &record)
+		transactions = append(transactions, *record)
 	}
 
-	t := db.QueryOperator.InvestmentTransactionORM
-	if err := t.WithContext(ctx).Create(transactions...); err != nil {
+	if _, err := db.queryEngine.NewInsert().Model(&transactions).Exec(ctx); err != nil {
 		return err
 	}
 
@@ -61,7 +68,7 @@ func (db *Db) AddInvestmentTransactions(ctx context.Context, userId *uint64, txs
 // and a variable number of transaction IDs as uint64 values. It first checks that the length of the
 // transaction IDs slice is greater than 0. It then uses the QueryOperator to delete the transactions
 // from the database and returns an error if there is one.
-func (db *Db) DeleteInvestmentTransactions(ctx context.Context, txIds ...uint64) error {
+func (db *Db) DeleteInvestmentTransactions(ctx context.Context, txIds ...string) error {
 	if span := db.startDatastoreSpan(ctx, "dbtxn-delete-investment-transaction"); span != nil {
 		defer span.End()
 	}
@@ -70,15 +77,15 @@ func (db *Db) DeleteInvestmentTransactions(ctx context.Context, txIds ...uint64)
 		return fmt.Errorf("transaction ID must be 0 at creation time")
 	}
 
-	// delete the investment transactions by id
-	t := db.QueryOperator.InvestmentTransactionORM
-	result, err := t.WithContext(ctx).Where(t.Id.In(txIds...)).Delete()
-	if err != nil {
-		return err
-	}
+	// Create a string with comma-separated values from txIds
+	ids := "'" + strings.Join(txIds, "', '") + "'"
 
-	if result.RowsAffected == 0 {
-		return fmt.Errorf("no rows affected")
+	sqlQuery := fmt.Sprintf("ALTER TABLE InvestmentTransactionInternal DELETE WHERE ID IN (%s)", ids)
+
+	if err := db.queryEngine.
+		NewRaw(sqlQuery).
+		Scan(ctx); err != nil {
+		return err
 	}
 
 	return nil
@@ -105,28 +112,32 @@ func (db *Db) GetInvestmentTransactions(ctx context.Context, userId *uint64, pag
 		nextPageNumber = pageNumber + 1
 	}
 
-	t := db.QueryOperator.InvestmentTransactionORM
-	var records []*schema.InvestmentTransactionORM
-	records, err := t.WithContext(ctx).
-		Where(t.UserId.Eq(*userId)).
-		Limit(int(pageSize)).Offset(int(pageSize * (pageNumber - 1))).
-		Find()
-	if err != nil {
+	offset := int(pageSize * (pageNumber - 1))
+	queryLimit := int(pageSize)
+	query := fmt.Sprintf(`UserId = %d`, *userId)
+	var transactions []schema.InvestmentTransactionInternal
+	if err := db.
+		queryEngine.
+		NewSelect().
+		Model(&transactions).
+		Where(query).
+		Offset(offset).
+		Limit(queryLimit).
+		Scan(ctx); err != nil {
 		return nil, 0, err
 	}
 
-	if len(records) == 0 {
+	if len(transactions) == 0 {
 		return nil, 0, fmt.Errorf("no records found")
 	}
 
-	txs := make([]*schema.InvestmentTransaction, 0, len(records))
-	for _, record := range records {
-		tx, err := record.ToPB(ctx)
+	txs := make([]*schema.InvestmentTransaction, 0, len(transactions))
+	for _, record := range transactions {
+		txRecord, err := record.ConvertToInvestmentTransaction()
 		if err != nil {
 			return nil, 0, err
 		}
-
-		txs = append(txs, &tx)
+		txs = append(txs, txRecord)
 	}
 
 	return txs, nextPageNumber, nil
@@ -142,26 +153,89 @@ func (db *Db) GetAllInvestmentTransactions(ctx context.Context, userId *uint64) 
 		return nil, fmt.Errorf("user ID is nil")
 	}
 
-	t := db.QueryOperator.InvestmentTransactionORM
-	var records []*schema.InvestmentTransactionORM
-	records, err := t.WithContext(ctx).
-		Where(t.UserId.Eq(*userId)).
-		Find()
-	if err != nil {
+	query := fmt.Sprintf(`UserId = %d`, *userId)
+	var transactions []schema.InvestmentTransactionInternal
+	if err := db.
+		queryEngine.
+		NewSelect().
+		Model(&transactions).
+		Where(query).
+		Scan(ctx); err != nil {
 		return nil, err
 	}
 
-	txs := make([]*schema.InvestmentTransaction, 0, len(records))
-	for _, record := range records {
-		tx, err := record.ToPB(ctx)
+	txs := make([]*schema.InvestmentTransaction, 0, len(transactions))
+	for _, tx := range transactions {
+		txRecord, err := tx.ConvertToInvestmentTransaction()
 		if err != nil {
 			return nil, err
 		}
-
-		txs = append(txs, &tx)
+		txs = append(txs, txRecord)
 	}
 
 	return txs, nil
+}
+
+// UpdateInvestmentTransaction updates a singular investment transaction
+func (db *Db) UpdateInvestmentTransaction(ctx context.Context, userId *uint64, investmentTransactionId *string, tx *schema.InvestmentTransaction) error {
+	if span := db.startDatastoreSpan(ctx, "dbtxn-reocurring-update-transaction"); span != nil {
+		defer span.End()
+	}
+
+	if investmentTransactionId == nil {
+		return fmt.Errorf("transaction ID must be 0 at creation time")
+	}
+
+	if userId == nil {
+		return fmt.Errorf("user ID must be 0 at creation time")
+	}
+
+	if tx == nil {
+		return fmt.Errorf("transaction must not be nil")
+	}
+
+	// validate transactions
+	if err := tx.Validate(); err != nil {
+		return err
+	}
+
+	// update the transaction
+	record, err := tx.ConvertToInternal()
+	if err != nil {
+		return err
+	}
+
+	query := `
+		ALTER TABLE InvestmentTransactionInternal UPDATE
+		AccountId = ?,
+		Amount = ?,
+		Fees = ?,
+		IsoCurrencyCode = ?,
+		Name = ?,
+		Price = ?,
+		Quantity = ?,
+		SecurityId = ?,
+		Subtype = ?,
+		Type = ?
+		WHERE InvestmentTransactionId = ? AND UserId = ?;
+	`
+
+	if err := db.queryEngine.NewRaw(query,
+		record.AccountId,
+		record.Amount,
+		record.Fees,
+		record.IsoCurrencyCode,
+		record.Name,
+		record.Price,
+		record.Quantity,
+		record.SecurityId,
+		record.Subtype,
+		record.Type,
+		record.InvestmentTransactionId, *userId).Scan(ctx); err != nil {
+		return err
+	}
+
+	return nil
 }
 
 // UpdateInvestmentTransactions is updating investment transactions in the Clickhouse database.
@@ -178,27 +252,13 @@ func (db *Db) UpdateInvestmentTransactions(ctx context.Context, userId *uint64, 
 		return fmt.Errorf("user ID must be 0 at creation time")
 	}
 
-	txnsOrmRecords := make([]*schema.InvestmentTransactionORM, 0, len(txs))
 	for _, tx := range txs {
-		tx.UserId = *userId
-
-		txnOrm, err := tx.ToORM(ctx)
-		if err != nil {
-			return err
+		if tx.Id == "" {
+			return fmt.Errorf("transaction ID cannot be empty at update time")
 		}
 
-		txnsOrmRecords = append(txnsOrmRecords, &txnOrm)
-	}
-
-	t := db.QueryOperator.InvestmentTransactionORM
-	for _, tx := range txnsOrmRecords {
-		if tx.Id == 0 {
-			return fmt.Errorf("transaction ID must be 0 at creation time")
-		}
-
-		// update the transaction
-		if _, err := t.WithContext(ctx).Updates(tx); err != nil {
-			return err
+		if err := db.UpdateInvestmentTransaction(ctx, userId, &tx.InvestmentTransactionId, tx); err != nil {
+			db.Logger.Error(err.Error())
 		}
 	}
 
@@ -206,7 +266,7 @@ func (db *Db) UpdateInvestmentTransactions(ctx context.Context, userId *uint64, 
 }
 
 // GetInvestmentTransactionById is retrieving investment transactions from the Clickhouse database by ID.
-func (db *Db) GetInvestmentTransactionById(ctx context.Context, txId *uint64) (*schema.InvestmentTransaction, error) {
+func (db *Db) GetInvestmentTransactionById(ctx context.Context, txId *string) (*schema.InvestmentTransaction, error) {
 	if span := db.startDatastoreSpan(ctx, "dbtxn-get-InvestmentTransaction-by-id"); span != nil {
 		defer span.End()
 	}
@@ -215,18 +275,17 @@ func (db *Db) GetInvestmentTransactionById(ctx context.Context, txId *uint64) (*
 		return nil, fmt.Errorf("InvestmentTransaction ID must be 0 at creation time")
 	}
 
-	t := db.QueryOperator.InvestmentTransactionORM
-	record, err := t.WithContext(ctx).Where(t.Id.Eq(*txId)).First()
-	if err != nil {
-		return nil, fmt.Errorf("transaction with id %d does not exist", txId)
+	tx := new(schema.InvestmentTransactionInternal)
+	if err := db.queryEngine.NewSelect().Model(tx).Where("ID = ?", *txId).Scan(ctx); err != nil {
+		return nil, err
 	}
 
-	tx, err := record.ToPB(ctx)
+	res, err := tx.ConvertToInvestmentTransaction()
 	if err != nil {
 		return nil, err
 	}
 
-	return &tx, nil
+	return res, nil
 }
 
 // GetInvestmentTransactionsByPlaidTransactionIds is retrieving investment transactions from the Clickhouse database by Plaid transaction IDs.
@@ -239,26 +298,25 @@ func (db *Db) GetInvestmentTransactionsByPlaidTransactionIds(ctx context.Context
 		return nil, fmt.Errorf("transaction ID must be 0 at creation time")
 	}
 
-	//	get the transacton by tx id
-	t := db.QueryOperator.InvestmentTransactionORM
-	// delete the transaction
-	result, err := t.WithContext(ctx).Where(t.InvestmentTransactionId.In(txIds...)).Find()
-	if err != nil {
+	var result []schema.InvestmentTransactionInternal
+	ids := "'" + strings.Join(txIds, "', '") + "'"
+	sqlQuery := fmt.Sprintf("SELECT * FROM InvestmentTransactionInternal WHERE InvestmentTransactionId IN (%s)", ids)
+	if err := db.queryEngine.
+		NewRaw(sqlQuery).
+		Scan(ctx, &result); err != nil {
 		return nil, err
 	}
 
-	if result == nil {
-		return nil, fmt.Errorf("no txn found")
-	}
-
 	resultSet := make([]*schema.InvestmentTransaction, 0, len(result))
-	for _, tx := range result {
-		txRecord, err := tx.ToPB(ctx)
-		if err != nil {
-			return nil, err
-		}
+	if len(result) > 0 {
+		for _, tx := range result {
+			txRecord, err := tx.ConvertToInvestmentTransaction()
+			if err != nil {
+				return nil, err
+			}
 
-		resultSet = append(resultSet, &txRecord)
+			resultSet = append(resultSet, txRecord)
+		}
 	}
 
 	return resultSet, nil

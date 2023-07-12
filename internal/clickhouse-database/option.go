@@ -38,12 +38,14 @@ func WithDatabaseClient(client *clickhousedb.Client) Option {
 	}
 }
 
+func WithConnectionUri(uri string) Option {
+	return func(d *Db) {
+		d.connectionUri = uri
+	}
+}
+
 // Validate validates the database object
 func (db *Db) Validate() error {
-	if db.Conn == nil {
-		return service_errors.ErrInvalidDbObject
-	}
-
 	if db.Logger == nil {
 		return service_errors.ErrInvalidDbObject
 	}
@@ -52,11 +54,7 @@ func (db *Db) Validate() error {
 		return service_errors.ErrInvalidDbObject
 	}
 
-	if db.QueryOperator == nil {
-		return service_errors.ErrInvalidDbObject
-	}
-
-	if db.Conn == nil {
+	if db.connectionUri == "" {
 		return service_errors.ErrInvalidConn
 	}
 

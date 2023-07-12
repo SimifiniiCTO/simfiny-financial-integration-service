@@ -33,9 +33,9 @@ func newInvestmentTransactionORM(db *gorm.DB, opts ...gen.DOOption) investmentTr
 	_investmentTransactionORM.Ammount = field.NewString(tableName, "ammount")
 	_investmentTransactionORM.Amount = field.NewFloat64(tableName, "amount")
 	_investmentTransactionORM.CreatedAt = field.NewString(tableName, "created_at")
-	_investmentTransactionORM.Date = field.NewString(tableName, "date")
+	_investmentTransactionORM.CurrentDate = field.NewString(tableName, "current_date")
 	_investmentTransactionORM.Fees = field.NewFloat64(tableName, "fees")
-	_investmentTransactionORM.Id = field.NewUint64(tableName, "id")
+	_investmentTransactionORM.Id = field.NewString(tableName, "id")
 	_investmentTransactionORM.InvestmentTransactionId = field.NewString(tableName, "investment_transaction_id")
 	_investmentTransactionORM.IsoCurrencyCode = field.NewString(tableName, "iso_currency_code")
 	_investmentTransactionORM.LinkId = field.NewUint64(tableName, "link_id")
@@ -63,9 +63,9 @@ type investmentTransactionORM struct {
 	Ammount                 field.String
 	Amount                  field.Float64
 	CreatedAt               field.String
-	Date                    field.String
+	CurrentDate             field.String
 	Fees                    field.Float64
-	Id                      field.Uint64
+	Id                      field.String
 	InvestmentTransactionId field.String
 	IsoCurrencyCode         field.String
 	LinkId                  field.Uint64
@@ -99,9 +99,9 @@ func (i *investmentTransactionORM) updateTableName(table string) *investmentTran
 	i.Ammount = field.NewString(table, "ammount")
 	i.Amount = field.NewFloat64(table, "amount")
 	i.CreatedAt = field.NewString(table, "created_at")
-	i.Date = field.NewString(table, "date")
+	i.CurrentDate = field.NewString(table, "current_date")
 	i.Fees = field.NewFloat64(table, "fees")
-	i.Id = field.NewUint64(table, "id")
+	i.Id = field.NewString(table, "id")
 	i.InvestmentTransactionId = field.NewString(table, "investment_transaction_id")
 	i.IsoCurrencyCode = field.NewString(table, "iso_currency_code")
 	i.LinkId = field.NewUint64(table, "link_id")
@@ -136,7 +136,7 @@ func (i *investmentTransactionORM) fillFieldMap() {
 	i.fieldMap["ammount"] = i.Ammount
 	i.fieldMap["amount"] = i.Amount
 	i.fieldMap["created_at"] = i.CreatedAt
-	i.fieldMap["date"] = i.Date
+	i.fieldMap["current_date"] = i.CurrentDate
 	i.fieldMap["fees"] = i.Fees
 	i.fieldMap["id"] = i.Id
 	i.fieldMap["investment_transaction_id"] = i.InvestmentTransactionId

@@ -37,7 +37,7 @@ func (s *Server) GetReOcurringTransactions(ctx context.Context, req *proto.GetRe
 	}
 
 	txnIdSet := make([]string, 0)
-	txnIdToRecurringTxnIdMap := make(map[string]uint64, 0)
+	txnIdToRecurringTxnIdMap := make(map[string]string, 0)
 	for _, txn := range reCurringTransactions {
 		for _, txid := range helper.CommaSeparatedStringToStringSlice(txn.TransactionIds) {
 			txnIdSet = append(txnIdSet, txid)

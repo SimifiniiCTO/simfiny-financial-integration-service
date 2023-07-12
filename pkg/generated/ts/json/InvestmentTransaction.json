@@ -20,7 +20,7 @@
                     "type": "string",
                     "description": "@gotag: ch:\"security_id\""
                 },
-                "date": {
+                "current_date": {
                     "type": "string",
                     "description": "@gotag: ch:\"date\""
                 },

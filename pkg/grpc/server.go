@@ -20,6 +20,7 @@ import (
 	taskhandler "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/task-handler"
 	transactionmanager "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/transaction_manager"
 	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
+	openai "github.com/sashabaranov/go-openai"
 )
 
 // Server is the grpc server object
@@ -39,6 +40,7 @@ type Server struct {
 	InMemoryWebhookVerification plaidhandler.WebhookVerification
 	redisDb                     *redis.Client
 	Taskprocessor               *taskprocessor.TaskProcessor
+	OpenAiClient                *openai.Client
 }
 
 // Config is the config for the grpc server initialization
@@ -67,6 +69,11 @@ type Config struct {
 	WorkflowTaskTimeout      time.Duration    `mapstructure:"workflow-task-timeout"`
 	WorkflowRunTimeout       time.Duration    `mapstructure:"workflow-run-timeout"`
 	TaskProcessorWorkers     int              `mapstructure:"task-processor-workers"`
+	OpenAiMaxTokens          int32            `mapstructure:"openai-max-tokens"`
+	OpenAiTopP               float32          `mapstructure:"openai-top-p"`
+	OpenAiFrequencyPenalty   float32          `mapstructure:"openai-frequency-penalty"`
+	OpenAiPresencePenalty    int              `mapstructure:"openai-presence-penalty"`
+	OpenAiTemperature        float32          `mapstructure:"openai-temperature"`
 }
 
 var _ proto.FinancialServiceServer = (*Server)(nil)
@@ -82,6 +89,7 @@ type Params struct {
 	TransactionManager *transactionmanager.TransactionManager
 	ClickhouseDb       *clickhousedatabase.Db
 	RedisDb            *redis.Client
+	OpenAiToken        *string
 }
 
 // RegisterGrpcServer registers the grpc server object
@@ -101,6 +109,10 @@ func (p *Params) Validate() error {
 
 	if p.Db == nil {
 		return errors.New("db is nil")
+	}
+
+	if p.OpenAiToken == nil {
+		return errors.New("open ai token is nil")
 	}
 
 	return nil
@@ -143,6 +155,11 @@ func NewServer(param *Params) (*Server, error) {
 		return nil, err
 	}
 
+	// TODO: here we should register any task that should be processed at an interval
+	// we first enqueue the task to routinely pull transactions from plaid for all users across all accounts (this should run every 12 hours) (sync)
+	// we enqueue the task to compute actionable insights for all users across all accounts (this should run every 24 hours) - use openai for this (insights)
+	// we enqueue the task to compute the net worth of all users across all accounts (this should run every 24 hours) (net worth)
+
 	srv := &Server{
 		logger:                      param.Logger,
 		config:                      param.Config,
@@ -157,5 +174,11 @@ func NewServer(param *Params) (*Server, error) {
 		redisDb:                     param.RedisDb,
 		Taskprocessor:               tp,
 	}
+
+	if param.OpenAiToken == nil {
+		return nil, errors.New("open ai token is required")
+	}
+
+	srv.OpenAiClient = openai.NewClient(*param.OpenAiToken)
 	return srv, nil
 }

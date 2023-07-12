@@ -1,0 +1,32 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/AccountBalanceHistory",
+    "definitions": {
+        "AccountBalanceHistory": {
+            "properties": {
+                "time": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "account_id": {
+                    "type": "string"
+                },
+                "iso_currency_code": {
+                    "type": "string"
+                },
+                "balance": {
+                    "type": "number"
+                },
+                "user_id": {
+                    "type": "string"
+                },
+                "sign": {
+                    "type": "integer"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Account Balance History"
+        }
+    }
+}

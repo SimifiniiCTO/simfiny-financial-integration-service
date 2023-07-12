@@ -59,7 +59,7 @@ func TestTaskHandler_RunDeleteTransactionsTask(t *testing.T) {
 				createdTxs, _, err := testTaskHandler.clickhouseDb.GetTransactions(arg.ctx, &userId, 1, 10)
 				assert.NoError(t, err)
 
-				txsIds := make([]uint64, 0)
+				txsIds := make([]string, 0)
 				for _, tx := range createdTxs {
 					txsIds = append(txsIds, tx.Id)
 				}

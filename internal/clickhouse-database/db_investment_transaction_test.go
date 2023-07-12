@@ -61,7 +61,7 @@ func TestDb_AddInvestmentTransactions(t *testing.T) {
 func TestDb_DeleteInvestmentTransactions(t *testing.T) {
 	type args struct {
 		ctx             context.Context
-		precondition    func(ctx context.Context, t *testing.T, arg *args) []uint64
+		precondition    func(ctx context.Context, t *testing.T, arg *args) []string
 		numTransactions int
 	}
 	tests := []struct {
@@ -73,9 +73,9 @@ func TestDb_DeleteInvestmentTransactions(t *testing.T) {
 			"[success] - delete transaction",
 			args{
 				ctx: context.Background(),
-				precondition: func(ctx context.Context, t *testing.T, arg *args) []uint64 {
+				precondition: func(ctx context.Context, t *testing.T, arg *args) []string {
 					userId := generateRandomId()
-					idset := make([]uint64, 0)
+					idset := make([]string, 0)
 
 					txs := generateMultipleInvestmentTransaction(arg.numTransactions)
 					if err := conn.AddInvestmentTransactions(ctx, userId, txs); err != nil {
@@ -101,23 +101,8 @@ func TestDb_DeleteInvestmentTransactions(t *testing.T) {
 			"[failure] - delete transaction with nil transaction id",
 			args{
 				ctx: context.Background(),
-				precondition: func(ctx context.Context, t *testing.T, arg *args) []uint64 {
+				precondition: func(ctx context.Context, t *testing.T, arg *args) []string {
 					return nil
-				},
-			},
-			true,
-		},
-		{
-			"[failure] - delete transaction with non-existent transaction id",
-			args{
-				ctx: context.Background(),
-				precondition: func(ctx context.Context, t *testing.T, arg *args) []uint64 {
-					idset := make([]uint64, 0)
-					for i := 0; i < arg.numTransactions; i++ {
-						id := generateRandomId()
-						idset = append(idset, *id)
-					}
-					return idset
 				},
 			},
 			true,
@@ -290,7 +275,7 @@ func TestDb_UpdateInvestmentTransactions(t *testing.T) {
 
 					// update all the transaction merchant names
 					for _, tx := range txs {
-						tx.Name = fmt.Sprintf("updated_%s_%d", tx.Name, tx.Id)
+						tx.Name = fmt.Sprintf("updated_%s_%s", tx.Name, tx.Id)
 					}
 
 					return txs
@@ -317,7 +302,7 @@ func TestDb_UpdateInvestmentTransactions(t *testing.T) {
 
 					// update all the transaction merchant names
 					for _, tx := range txs {
-						tx.Name = fmt.Sprintf("updated_%s_%d", tx.Name, tx.Id)
+						tx.Name = fmt.Sprintf("updated_%s_%s", tx.Name, tx.Id)
 					}
 
 					return txs
@@ -353,7 +338,7 @@ func TestDb_GetInvestmentTransactionById(t *testing.T) {
 	type args struct {
 		ctx          context.Context
 		userId       *uint64
-		precondition func(ctx context.Context, t *testing.T, arg *args) *uint64
+		precondition func(ctx context.Context, t *testing.T, arg *args) *string
 	}
 	tests := []struct {
 		name    string
@@ -366,7 +351,7 @@ func TestDb_GetInvestmentTransactionById(t *testing.T) {
 			args: args{
 				ctx:    context.Background(),
 				userId: generateRandomId(),
-				precondition: func(ctx context.Context, t *testing.T, arg *args) *uint64 {
+				precondition: func(ctx context.Context, t *testing.T, arg *args) *string {
 					tx := generateRandomInvestmentTransaction()
 					if err := conn.AddInvestmentTransactions(ctx, arg.userId, []*schema.InvestmentTransaction{tx}); err != nil {
 						t.Errorf("conn.AddTransaction() error = %v", err)

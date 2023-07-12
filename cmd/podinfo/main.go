@@ -14,7 +14,6 @@ import (
 	"go.temporal.io/sdk/client"
 	"go.uber.org/zap"
 
-	clickhousedb "github.com/SimifiniiCTO/simfiny-core-lib/database/clickhouse"
 	postgresdb "github.com/SimifiniiCTO/simfiny-core-lib/database/postgres"
 	"github.com/SimifiniiCTO/simfiny-core-lib/instrumentation"
 	clickhouseDatabase "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/clickhouse-database"
@@ -89,17 +88,6 @@ func main() {
 	}
 	defer conn.Close()
 
-	clickHouseDb, err := configureClickhouseConn(ctx, logger, instrumentation)
-	if err != nil {
-		logger.Panic(err.Error())
-	}
-
-	clickHouseConn, err := clickHouseDb.Conn.Engine.DB()
-	if err != nil {
-		logger.Panic(err.Error())
-	}
-	defer clickHouseConn.Close()
-
 	plaidWrapper, err := configurePlaidWrapper(instrumentation, logger)
 	if err != nil {
 		logger.Panic(err.Error())
@@ -114,7 +102,19 @@ func main() {
 
 	logger.Info("successfully initialized temporal client ....")
 
+	clickHouseDb, err := configureClickhouseConn(ctx, logger, instrumentation)
+	if err != nil {
+		logger.Panic(err.Error())
+	}
+
+	clickHouseConn, err := clickHouseDb.Conn.Engine.DB()
+	if err != nil {
+		logger.Panic(err.Error())
+	}
+	defer clickHouseConn.Close()
+
 	// initialize gRPC server
+	openAiToken := viper.GetString("openai-token")
 	grpcSrv, err := grpc.NewServer(&grpc.Params{
 		Config:             &grpcCfg,
 		Logger:             logger,
@@ -125,6 +125,7 @@ func main() {
 		TransactionManager: transactionManager,
 		ClickhouseDb:       clickHouseDb,
 		RedisDb:            redisConn,
+		OpenAiToken:        &openAiToken,
 	})
 	if err != nil {
 		logger.Panic(err.Error())
@@ -161,6 +162,9 @@ func main() {
 		zap.String("revision", viper.GetString("revision")),
 		zap.String("port", srvCfg.Port),
 	)
+
+	go grpcSrv.Taskprocessor.Start()
+	defer grpcSrv.Taskprocessor.Close()
 
 	// TODO: clean this up
 	srv, err := api.NewServer(&httpCfg, logger, instrumentation, db, nil, plaidWrapper, keyManagement, grpcSrv.Taskprocessor)
@@ -379,47 +383,47 @@ func configurePlaidSDK() (*plaid.APIClient, error) {
 
 func configureClickhouseConn(ctx context.Context, logger *zap.Logger, instrumentation *instrumentation.Client) (*clickhouseDatabase.Db, error) {
 	host := viper.GetString("clickhouse-connection-uri")
-	maxConnectionRetries := viper.GetInt("max-db-conn-attempts")
-	maxDBRetryTimeout := viper.GetDuration("max-db-retry-timeout")
-	maxDBSleepInterval := viper.GetDuration("max-db-retry-sleep-interval")
-	queryTimeout := viper.GetDuration("max-query-timeout")
+	// maxConnectionRetries := viper.GetInt("max-db-conn-attempts")
+	// maxDBRetryTimeout := viper.GetDuration("max-db-retry-timeout")
+	// maxDBSleepInterval := viper.GetDuration("max-db-retry-sleep-interval")
+	// queryTimeout := viper.GetDuration("max-query-timeout")
 
-	maxIdleConnections := viper.GetInt("max-db-idle-connections")
-	maxOpenConnections := viper.GetInt("max-db-open-connections")
-	maxConnectionLifetime := viper.GetDuration("max-db-connection-lifetime")
+	// maxIdleConnections := viper.GetInt("max-db-idle-connections")
+	// maxOpenConnections := viper.GetInt("max-db-open-connections")
+	// maxConnectionLifetime := viper.GetDuration("max-db-connection-lifetime")
 
-	opts := []clickhousedb.Option{
-		clickhousedb.WithConnectionString(&host),
-		clickhousedb.WithQueryTimeout(&queryTimeout),
-		clickhousedb.WithMaxConnectionRetries(&maxConnectionRetries),
-		clickhousedb.WithMaxConnectionRetryTimeout(&maxDBRetryTimeout),
-		clickhousedb.WithRetrySleep(&maxDBSleepInterval),
-		clickhousedb.WithMaxIdleConnections(&maxIdleConnections),
-		clickhousedb.WithMaxOpenConnections(&maxOpenConnections),
-		clickhousedb.WithMaxConnectionLifetime(&maxConnectionLifetime),
-		clickhousedb.WithInstrumentationClient(instrumentation),
-		clickhousedb.WithLogger(logger),
-	}
+	// // opts := []clickhousedb.Option{
+	// // 	clickhousedb.WithConnectionString(&host),
+	// // 	clickhousedb.WithQueryTimeout(&queryTimeout),
+	// // 	clickhousedb.WithMaxConnectionRetries(&maxConnectionRetries),
+	// // 	clickhousedb.WithMaxConnectionRetryTimeout(&maxDBRetryTimeout),
+	// // 	clickhousedb.WithRetrySleep(&maxDBSleepInterval),
+	// // 	clickhousedb.WithMaxIdleConnections(&maxIdleConnections),
+	// // 	clickhousedb.WithMaxOpenConnections(&maxOpenConnections),
+	// // 	clickhousedb.WithMaxConnectionLifetime(&maxConnectionLifetime),
+	// // 	clickhousedb.WithInstrumentationClient(instrumentation),
+	// // 	clickhousedb.WithLogger(logger),
+	// // }
 
-	conn, err := clickhousedb.New(opts...)
-	if err != nil {
-		return nil, err
-	}
+	// // conn, err := clickhousedb.New(opts...)
+	// // if err != nil {
+	// // 	return nil, err
+	// // }
 
-	queryOperator := dal.Use(conn.Engine)
 	databaseOpts := []clickhouseDatabase.Option{
-		clickhouseDatabase.WithDatabaseClient(conn),
 		clickhouseDatabase.WithDatabaseLogger(logger),
 		clickhouseDatabase.WithDatabaseInstrumentation(instrumentation),
-		clickhouseDatabase.WithDatabaseQueryOperator(queryOperator),
+		clickhouseDatabase.WithConnectionUri(host),
 	}
+
+	logger.Info("Initializing Clickhouse connection")
 
 	db, err := clickhouseDatabase.New(ctx, databaseOpts...)
 	if err != nil {
 		return nil, err
 	}
 
-	logger.Info("successfully initialized database connection object")
+	logger.Info("successfully initialized database clickhouse connection object")
 	return db, nil
 }
 

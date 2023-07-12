@@ -3,12 +3,14 @@ package clickhousedatabase
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
+	"github.com/google/uuid"
 )
 
 // AddReOccuringTransaction adds a new reoccurring transaction to the database for a given user id
-func (db *Db) AddReOccurringTransaction(ctx context.Context, userId *uint64, tx *schema.ReOccuringTransaction) (*uint64, error) {
+func (db *Db) AddReOccurringTransaction(ctx context.Context, userId *uint64, tx *schema.ReOccuringTransaction) (*string, error) {
 	// trace the operation
 	if span := db.startDatastoreSpan(ctx, "dbtxn-add-reocurring-transaction"); span != nil {
 		defer span.End()
@@ -23,7 +25,7 @@ func (db *Db) AddReOccurringTransaction(ctx context.Context, userId *uint64, tx 
 		return nil, fmt.Errorf("transaction is nil")
 	}
 
-	if tx.Id != 0 {
+	if tx.Id != "" {
 		return nil, fmt.Errorf("transaction ID must be 0 at creation time")
 	}
 
@@ -34,26 +36,39 @@ func (db *Db) AddReOccurringTransaction(ctx context.Context, userId *uint64, tx 
 		return nil, fmt.Errorf("transaction link ID must be greater than 0")
 	}
 
-	// associate the user id to the transaction of interest
-	tx.UserId = *userId
-	// convert the transaction object to orm type
-	record, err := tx.ToORM(ctx)
+	id, err := uuid.NewUUID()
 	if err != nil {
 		return nil, err
 	}
+
+	// associate the user id to the transaction of interest
+	tx.UserId = *userId
+	tx.Id = id.String()
 
 	// validate the transaction object
 	if err := tx.Validate(); err != nil {
 		return nil, err
 	}
 
-	// create the transaction record
-	t := db.QueryOperator.ReOccuringTransactionORM
-	if err := t.WithContext(ctx).Create(&record); err != nil {
+	// convert the transaction object to orm type
+	record, err := tx.ConvertToInternal()
+	if err != nil {
 		return nil, err
 	}
 
-	return &record.Id, nil
+	// create the transaction record
+	_, err = db.queryEngine.NewInsert().Model(record).Exec(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	// get the newly created tx
+	createdTx := new(schema.ReOccuringTransactionInternal)
+	if err := db.queryEngine.NewSelect().Model(createdTx).Where("UserId = ?", record.UserId).Scan(ctx); err != nil {
+		return nil, err
+	}
+
+	return &createdTx.ID, nil
 }
 
 // AddReOccurringTransactions adds a new set of reoccurring transactions to the database and associates them to a given user id
@@ -72,10 +87,10 @@ func (db *Db) AddReOccurringTransactions(ctx context.Context, userId *uint64, tx
 		return fmt.Errorf("transactions is nil")
 	}
 
-	txRecords := make([]*schema.ReOccuringTransactionORM, 0, len(txs))
+	txRecords := make([]schema.ReOccuringTransactionInternal, 0, len(txs))
 	// associate the user id to the transaction of interest
 	for _, tx := range txs {
-		if tx.Id != 0 {
+		if tx.Id != "" {
 			return fmt.Errorf("transaction ID must be 0 at creation time")
 		}
 
@@ -91,16 +106,15 @@ func (db *Db) AddReOccurringTransactions(ctx context.Context, userId *uint64, tx
 			return err
 		}
 
-		record, err := tx.ToORM(ctx)
+		record, err := tx.ConvertToInternal()
 		if err != nil {
 			return err
 		}
 
-		txRecords = append(txRecords, &record)
+		txRecords = append(txRecords, *record)
 	}
 
-	t := db.QueryOperator.ReOccuringTransactionORM
-	if err := t.WithContext(ctx).Create(txRecords...); err != nil {
+	if _, err := db.queryEngine.NewInsert().Model(&txRecords).Exec(ctx); err != nil {
 		return err
 	}
 
@@ -108,7 +122,7 @@ func (db *Db) AddReOccurringTransactions(ctx context.Context, userId *uint64, tx
 }
 
 // DeleteReOccuringTransaction delets a singular reoccurring transaction by its id
-func (db *Db) DeleteReOccuringTransaction(ctx context.Context, txId *uint64) error {
+func (db *Db) DeleteReOccuringTransaction(ctx context.Context, txId *string) error {
 	if span := db.startDatastoreSpan(ctx, "dbtxn-delete-reocurring-transaction"); span != nil {
 		defer span.End()
 	}
@@ -117,27 +131,19 @@ func (db *Db) DeleteReOccuringTransaction(ctx context.Context, txId *uint64) err
 		return fmt.Errorf("transaction ID must be 0 at creation time")
 	}
 
-	//	get the transacton by tx id
-	t := db.QueryOperator.ReOccuringTransactionORM
-	if _, err := db.GetTransactionById(ctx, txId); err != nil {
+	// raw query to delete the transaction
+	query := fmt.Sprintf(`ALTER TABLE ReOccuringTransactionInternal DELETE WHERE ID = '%s'`, *txId)
+	if err := db.queryEngine.
+		NewRaw(query).
+		Scan(ctx); err != nil {
 		return err
-	}
-
-	// delete the transaction
-	result, err := t.WithContext(ctx).Where(t.Id.Eq(*txId)).Delete()
-	if err != nil {
-		return err
-	}
-
-	if result.RowsAffected == 0 {
-		return fmt.Errorf("no rows affected")
 	}
 
 	return nil
 }
 
 // DeleteReOccurringTransactionsByIds deletes a set of reoccurring transactions by their ids
-func (db *Db) DeleteReOccurringTransactionsByIds(ctx context.Context, txIds []uint64) error {
+func (db *Db) DeleteReOccurringTransactionsByIds(ctx context.Context, txIds []string) error {
 	if span := db.startDatastoreSpan(ctx, "dbtxn-delete-reocurring-transactions-by-ids"); span != nil {
 		defer span.End()
 	}
@@ -146,16 +152,15 @@ func (db *Db) DeleteReOccurringTransactionsByIds(ctx context.Context, txIds []ui
 		return fmt.Errorf("transaction ID must be 0 at creation time")
 	}
 
-	//	get the transacton by tx id
-	t := db.QueryOperator.ReOccuringTransactionORM
-	// delete the transaction
-	result, err := t.WithContext(ctx).Where(t.Id.In(txIds...)).Delete()
-	if err != nil {
-		return err
-	}
+	// Create a string with comma-separated values from txIds
+	ids := "'" + strings.Join(txIds, "', '") + "'"
 
-	if result.RowsAffected == 0 {
-		return fmt.Errorf("no rows affected")
+	sqlQuery := fmt.Sprintf("ALTER TABLE ReOccuringTransactionInternal DELETE WHERE ID IN (%s)", ids)
+
+	if err := db.queryEngine.
+		NewRaw(sqlQuery).
+		Scan(ctx); err != nil {
+		return err
 	}
 
 	return nil
@@ -171,16 +176,12 @@ func (db *Db) DeleteReOcurringTransactionsByLinkId(ctx context.Context, linkId *
 		return fmt.Errorf("transaction ID must be 0 at creation time")
 	}
 
-	//	get the transacton by tx id
-	t := db.QueryOperator.ReOccuringTransactionORM
-	// delete all transactions matching this link id
-	result, err := t.WithContext(ctx).Where(t.LinkId.Eq(*linkId)).Delete()
-	if err != nil {
+	// raw query to delete the transaction
+	query := fmt.Sprintf(`ALTER TABLE ReOccuringTransactionInternal DELETE WHERE LinkId = '%d'`, *linkId)
+	if err := db.queryEngine.
+		NewRaw(query).
+		Scan(ctx); err != nil {
 		return err
-	}
-
-	if result.RowsAffected == 0 {
-		return fmt.Errorf("no rows affected")
 	}
 
 	return nil
@@ -196,16 +197,12 @@ func (db *Db) DeleteUserReOcurringTransactons(ctx context.Context, userId *uint6
 		return fmt.Errorf("user ID must be 0 at creation time")
 	}
 
-	//	get the transacton by tx id
-	t := db.QueryOperator.ReOccuringTransactionORM
 	// delete the transaction
-	result, err := t.WithContext(ctx).Where(t.UserId.Eq(*userId)).Delete()
-	if err != nil {
+	query := fmt.Sprintf(`ALTER TABLE ReOccuringTransactionInternal DELETE WHERE UserId = '%d'`, *userId)
+	if err := db.queryEngine.
+		NewRaw(query).
+		Scan(ctx); err != nil {
 		return err
-	}
-
-	if result.RowsAffected == 0 {
-		return fmt.Errorf("no rows affected")
 	}
 
 	return nil
@@ -233,34 +230,39 @@ func (db *Db) GetReOcurringTransactions(ctx context.Context, userId *uint64, pag
 		nextPageNumber = pageNumber + 1
 	}
 
-	t := db.QueryOperator.ReOccuringTransactionORM
-	txs, err := t.
-		WithContext(ctx).
-		Where(t.UserId.Eq(*userId)).
-		Limit(int(pageSize)).Offset(int(pageSize * (pageNumber - 1))).
-		Find()
-	if err != nil {
+	offset := int(pageSize * (pageNumber - 1))
+	queryLimit := int(pageSize)
+	query := fmt.Sprintf(`UserId = %d`, *userId)
+	var transactions []schema.ReOccuringTransactionInternal
+	if err := db.
+		queryEngine.
+		NewSelect().
+		Model(&transactions).
+		Where(query).
+		Offset(offset).
+		Limit(queryLimit).
+		Scan(ctx); err != nil {
 		return nil, 0, err
 	}
 
-	if len(txs) == 0 {
+	if len(transactions) == 0 {
 		return nil, 0, fmt.Errorf("no transactions found")
 	}
 
-	results := make([]*schema.ReOccuringTransaction, 0, len(txs))
-	for _, tx := range txs {
-		txRecord, err := tx.ToPB(ctx)
+	results := make([]*schema.ReOccuringTransaction, 0, len(transactions))
+	for _, tx := range transactions {
+		txRecord, err := tx.ConvertToRecurringTransaction()
 		if err != nil {
 			return nil, 0, err
 		}
-		results = append(results, &txRecord)
+		results = append(results, txRecord)
 	}
 
 	return results, nextPageNumber, nil
 }
 
 // UpdateReOccurringTransaction updates a singular reoccurring transaction
-func (db *Db) UpdateReOccurringTransaction(ctx context.Context, userId *uint64, txId *uint64, tx *schema.ReOccuringTransaction) error {
+func (db *Db) UpdateReOccurringTransaction(ctx context.Context, userId *uint64, txId *string, tx *schema.ReOccuringTransaction) error {
 	if span := db.startDatastoreSpan(ctx, "dbtxn-reocurring-update-transaction"); span != nil {
 		defer span.End()
 	}
@@ -282,26 +284,70 @@ func (db *Db) UpdateReOccurringTransaction(ctx context.Context, userId *uint64, 
 		return err
 	}
 
-	//	get the transacton by tx id
-	t := db.QueryOperator.ReOccuringTransactionORM
-	if _, err := db.GetTransactionById(ctx, txId); err != nil {
-		return err
-	}
-
 	// update the transaction
-	txOrm, err := tx.ToORM(ctx)
+	record, err := tx.ConvertToInternal()
 	if err != nil {
 		return err
 	}
 
-	// perform the update operation
-	result, err := t.WithContext(ctx).Updates(txOrm)
-	if err != nil {
-		return err
-	}
+	query := `
+		ALTER TABLE ReOccuringTransactionInternal UPDATE
+		AccountId = ?,
+		AverageAmount = ?,
+		AverageAmountIsoCurrencyCode = ?,
+		CategoryId = ?,
+		Description = ?,
+		FirstDate = ?,
+		Flow = ?,
+		Frequency = ?,
+		IsActive = ?,
+		LastAmount = ?,
+		LastAmountIsoCurrencyCode = ?,
+		LastDate = ?,
+		LinkId = ?,
+		MerchantName = ?,
+		PersonalFinanceCategoryDetailed = ?,
+		PersonalFinanceCategoryPrimary = ?,
+		Status = ?,
+		StreamId = ?,
+		TransactionIds = ?,
+		UpdatedTime = ?,
+		UserId = ?
+		WHERE ID = ?;
+	`
 
-	if result.RowsAffected == 0 {
-		return fmt.Errorf("no rows affected")
+	isActiveRef := func(b bool) int {
+		if b {
+			return 1
+		} else {
+			return 0
+		}
+	}(record.IsActive)
+
+	if err := db.queryEngine.NewRaw(query,
+		record.AccountId,
+		record.AverageAmount,
+		record.AverageAmountIsoCurrencyCode,
+		record.CategoryId,
+		record.Description,
+		record.FirstDate,
+		record.Flow,
+		record.Frequency,
+		isActiveRef,
+		record.LastAmount,
+		record.LastAmountIsoCurrencyCode,
+		record.LastDate,
+		record.LinkId,
+		record.MerchantName,
+		record.PersonalFinanceCategoryDetailed,
+		record.PersonalFinanceCategoryPrimary,
+		record.Status,
+		record.StreamId,
+		record.TransactionIds,
+		record.UpdatedTime,
+		record.UserId,
+		record.ID).Scan(ctx); err != nil {
+		return err
 	}
 
 	return nil
@@ -321,29 +367,9 @@ func (db *Db) UpdateReOccurringTransactions(ctx context.Context, userId *uint64,
 		return fmt.Errorf("user ID must be 0 at creation time")
 	}
 
-	txnsOrmRecords := make([]*schema.ReOccuringTransactionORM, 0, len(txs))
 	for _, tx := range txs {
-		// associate the user id with the transaction
-		tx.UserId = *userId
-
-		txnOrm, err := tx.ToORM(ctx)
-		if err != nil {
-			return err
-		}
-
-		txnsOrmRecords = append(txnsOrmRecords, &txnOrm)
-	}
-
-	t := db.QueryOperator.ReOccuringTransactionORM
-	// perform the update operation
-	for _, tx := range txnsOrmRecords {
-		result, err := t.WithContext(ctx).Where(t.Id.Eq(tx.Id)).Updates(tx)
-		if err != nil {
-			return err
-		}
-
-		if result.RowsAffected == 0 {
-			return fmt.Errorf("no rows affected")
+		if err := db.UpdateReOccurringTransaction(ctx, userId, &tx.Id, tx); err != nil {
+			db.Logger.Error(err.Error())
 		}
 	}
 
@@ -351,7 +377,7 @@ func (db *Db) UpdateReOccurringTransactions(ctx context.Context, userId *uint64,
 }
 
 // GetReOcurringTransactionById gets a singular reoccurring transaction by its id
-func (db *Db) GetReOcurringTransactionById(ctx context.Context, txId *uint64) (*schema.ReOccuringTransaction, error) {
+func (db *Db) GetReOcurringTransactionById(ctx context.Context, txId *string) (*schema.ReOccuringTransaction, error) {
 	if span := db.startDatastoreSpan(ctx, "dbtxn-get-reocurring-transaction-by-id"); span != nil {
 		defer span.End()
 	}
@@ -360,18 +386,17 @@ func (db *Db) GetReOcurringTransactionById(ctx context.Context, txId *uint64) (*
 		return nil, fmt.Errorf("transaction ID must be 0 at creation time")
 	}
 
-	t := db.QueryOperator.ReOccuringTransactionORM
-	record, err := t.WithContext(ctx).Where(t.Id.Eq(*txId)).First()
-	if err != nil {
-		return nil, fmt.Errorf("transaction with id %d does not exist", txId)
+	tx := new(schema.ReOccuringTransactionInternal)
+	if err := db.queryEngine.NewSelect().Model(tx).Where("ID = ?", *txId).Scan(ctx); err != nil {
+		return nil, err
 	}
 
-	tx, err := record.ToPB(ctx)
+	res, err := tx.ConvertToRecurringTransaction()
 	if err != nil {
 		return nil, err
 	}
 
-	return &tx, nil
+	return res, nil
 }
 
 func (db *Db) GetUserReOccurringTransactions(ctx context.Context, userId *uint64) ([]*schema.ReOccuringTransaction, error) {
@@ -383,26 +408,25 @@ func (db *Db) GetUserReOccurringTransactions(ctx context.Context, userId *uint64
 		return nil, fmt.Errorf("userId must not be nil")
 	}
 
-	t := db.QueryOperator.ReOccuringTransactionORM
-	txs, err := t.
-		WithContext(ctx).
-		Where(t.UserId.Eq(*userId)).
-		Find()
-	if err != nil {
+	var result []schema.ReOccuringTransactionInternal
+	sqlQuery := fmt.Sprintf("SELECT * FROM ReOccuringTransactionInternal WHERE UserId = %d", *userId)
+	if err := db.queryEngine.
+		NewRaw(sqlQuery).
+		Scan(ctx, &result); err != nil {
 		return nil, err
 	}
 
-	if len(txs) == 0 {
+	if len(result) == 0 {
 		return nil, fmt.Errorf("no transactions found")
 	}
 
-	results := make([]*schema.ReOccuringTransaction, 0, len(txs))
-	for _, tx := range txs {
-		txRecord, err := tx.ToPB(ctx)
+	results := make([]*schema.ReOccuringTransaction, 0, len(result))
+	for _, tx := range result {
+		txRecord, err := tx.ConvertToRecurringTransaction()
 		if err != nil {
 			return nil, err
 		}
-		results = append(results, &txRecord)
+		results = append(results, txRecord)
 	}
 
 	return results, nil

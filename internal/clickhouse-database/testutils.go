@@ -1,8 +1,11 @@
 package clickhousedatabase
 
 import (
+	"time"
+
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/helper"
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 func generateRandomInvestmentTransaction() *schema.InvestmentTransaction {
@@ -11,7 +14,7 @@ func generateRandomInvestmentTransaction() *schema.InvestmentTransaction {
 		Ammount:                 helper.GenerateRandomString(20),
 		InvestmentTransactionId: helper.GenerateRandomString(20),
 		SecurityId:              helper.GenerateRandomString(20),
-		Date:                    helper.GenerateRandomString(20),
+		CurrentDate:             helper.GenerateRandomString(20),
 		Name:                    helper.GenerateRandomString(20),
 		Quantity:                float64(*generateRandomId()),
 		Amount:                  float64(*generateRandomId()),
@@ -22,9 +25,10 @@ func generateRandomInvestmentTransaction() *schema.InvestmentTransaction {
 		IsoCurrencyCode:         helper.GenerateRandomString(20),
 		UnofficialCurrencyCode:  helper.GenerateRandomString(20),
 		LinkId:                  *generateRandomId(),
-		Id:                      0,
+		Id:                      "",
 		UserId:                  *generateRandomId(),
 		CreatedAt:               helper.GenerateRandomString(20),
+		Sign:                    1,
 	}
 }
 
@@ -50,7 +54,13 @@ func generateRandomReOccurringTransaction() *schema.ReOccuringTransaction {
 		UpdatedTime:                     helper.GenerateRandomString(20),
 		UserId:                          *generateRandomId(),
 		LinkId:                          *generateRandomId(),
-		Id:                              0,
+		Id:                              "",
+		Flow:                            schema.ReCurringFlow_RE_CURRING_FLOW_INFLOW,
+		Sign:                            1,
+		Time: &timestamppb.Timestamp{
+			Seconds: int64(time.Now().UTC().Second()),
+			Nanos:   int32(time.Now().UTC().Nanosecond()),
+		},
 	}
 }
 
@@ -62,22 +72,22 @@ func generateRandomTransaction() *schema.Transaction {
 		UnofficialCurrencyCode:          helper.GenerateRandomString(20),
 		CategoryId:                      helper.GenerateRandomString(20),
 		CheckNumber:                     helper.GenerateRandomString(20),
-		Date:                            helper.GenerateRandomString(20),
-		Datetime:                        helper.GenerateRandomString(10),
-		AuthorizedDate:                  helper.GenerateRandomString(20),
-		AuthorizedDatetime:              helper.GenerateRandomString(10),
+		CurrentDate:                     time.Now().String(),
+		CurrentDatetime:                 time.Now().String(),
+		AuthorizedDate:                  time.Now().String(),
+		AuthorizedDatetime:              time.Now().String(),
 		Name:                            helper.GenerateRandomString(20),
 		MerchantName:                    helper.GenerateRandomString(20),
 		PaymentChannel:                  helper.GenerateRandomString(20),
-		Pending:                         false,
+		Pending:                         true,
 		PendingTransactionId:            helper.GenerateRandomString(20),
 		AccountOwner:                    helper.GenerateRandomString(20),
 		TransactionId:                   helper.GenerateRandomString(20),
 		TransactionCode:                 helper.GenerateRandomString(20),
-		Id:                              0,
+		Id:                              "",
 		UserId:                          *generateRandomId(),
 		LinkId:                          *generateRandomId(),
-		Sign:                            0,
+		Sign:                            1,
 		PersonalFinanceCategoryPrimary:  helper.GenerateRandomString(20),
 		PersonalFinanceCategoryDetailed: helper.GenerateRandomString(20),
 		LocationAddress:                 helper.GenerateRandomString(20),
@@ -96,6 +106,8 @@ func generateRandomTransaction() *schema.Transaction {
 		PaymentMetaPpdId:                helper.GenerateRandomString(20),
 		PaymentMetaReason:               helper.GenerateRandomString(20),
 		PaymentMetaReferenceNumber:      helper.GenerateRandomString(20),
+		Time:                            &timestamppb.Timestamp{},
+		Categories:                      generateStringList(5),
 	}
 }
 
@@ -124,7 +136,7 @@ func generateMultipleReOcurringTransactions(numTransactions int) []*schema.ReOcc
 }
 
 func generateRandomId() *uint64 {
-	id := uint64(helper.GenerateRandomId(100, 3000000))
+	id := uint64(helper.GenerateRandomId(100000, 3000000))
 	return &id
 }
 

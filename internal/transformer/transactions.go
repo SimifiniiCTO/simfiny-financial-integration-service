@@ -4,6 +4,8 @@ import (
 	"fmt"
 
 	"github.com/plaid/plaid-go/v12/plaid"
+	"google.golang.org/protobuf/types/known/anypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
 
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 )
@@ -25,8 +27,8 @@ func NewTransactionFromPlaid(input *plaid.Transaction) (*schema.Transaction, err
 		UnofficialCurrencyCode:          input.GetUnofficialCurrencyCode(),
 		CategoryId:                      input.GetCategoryId(),
 		CheckNumber:                     input.GetCheckNumber(),
-		Date:                            input.GetDate(),
-		Datetime:                        input.GetDate(),
+		CurrentDate:                     input.GetDate(),
+		CurrentDatetime:                 input.GetDate(),
 		AuthorizedDate:                  input.GetAuthorizedDate(),
 		AuthorizedDatetime:              input.GetAuthorizedDate(),
 		Name:                            input.GetName(),
@@ -37,10 +39,12 @@ func NewTransactionFromPlaid(input *plaid.Transaction) (*schema.Transaction, err
 		AccountOwner:                    input.GetAccountOwner(),
 		TransactionId:                   input.GetTransactionId(),
 		TransactionCode:                 string(input.GetTransactionCode()),
-		Id:                              0,
+		Id:                              "",
 		UserId:                          0,
 		LinkId:                          0,
-		Sign:                            0,
+		Sign:                            1,
+		PersonalFinanceCategoryPrimary:  personalFinanceCategory.GetPrimary(),
+		PersonalFinanceCategoryDetailed: personalFinanceCategory.GetDetailed(),
 		LocationAddress:                 location.GetAddress(),
 		LocationCity:                    location.GetCity(),
 		LocationRegion:                  location.GetRegion(),
@@ -57,8 +61,12 @@ func NewTransactionFromPlaid(input *plaid.Transaction) (*schema.Transaction, err
 		PaymentMetaPpdId:                paymentMeta.GetPpdId(),
 		PaymentMetaReason:               paymentMeta.GetReason(),
 		PaymentMetaReferenceNumber:      paymentMeta.GetReferenceNumber(),
-		PersonalFinanceCategoryPrimary:  personalFinanceCategory.GetPrimary(),
-		PersonalFinanceCategoryDetailed: personalFinanceCategory.GetDetailed(),
+		Time: &timestamppb.Timestamp{
+			Seconds: input.GetAuthorizedDatetime().UTC().Unix(),
+			Nanos:   int32(input.GetAuthorizedDatetime().Nanosecond()),
+		},
+		AdditionalProperties: &anypb.Any{},
+		Categories:           input.Category,
 	}
 
 	return tx, nil
