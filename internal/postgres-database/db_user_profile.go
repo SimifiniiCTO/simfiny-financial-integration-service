@@ -181,6 +181,45 @@ func (db *Db) GetUserProfileByUserID(ctx context.Context, userID uint64) (*schem
 	return &profile, nil
 }
 
+// GetAllUserProfiles obtains all user profiles presently in the database
+func (db *Db) GetAllUserProfiles(ctx context.Context) ([]*schema.UserProfile, error) {
+	// instrument operation
+	if span := db.startDatastoreSpan(ctx, "dbtxn-get-profiles"); span != nil {
+		defer span.End()
+	}
+
+	// preload all dependencies
+	// meaning for all connected accounts, obtain all accounts and subaccounts
+	u := db.QueryOperator.UserProfileORM
+	record, err := u.
+		WithContext(ctx).
+		Preload(u.Link.BankAccounts.Pockets.Goals.Forecasts).
+		Preload(u.Link.BankAccounts.Pockets.Goals.Milestones.Budget).
+		Preload(u.Link.CreditAccounts.Aprs).
+		Preload(u.Link.MortgageAccounts).
+		Preload(u.Link.StudentLoanAccounts).
+		Preload(u.Link.InvestmentAccounts.Holdings).
+		Preload(u.Link.InvestmentAccounts.Securities).
+		Preload(u.Link.Token).
+		Preload(u.Link.PlaidLink).
+		Preload(u.StripeSubscriptions).Find()
+	if err != nil {
+		return nil, err
+	}
+
+	results := make([]*schema.UserProfile, len(record))
+	for _, r := range record {
+		profile, err := r.ToPB(ctx)
+		if err != nil {
+			return nil, err
+		}
+
+		results = append(results, &profile)
+	}
+
+	return results, nil
+}
+
 // DeleteUserProfileByUserID implements DatabaseOperations
 func (db *Db) DeleteUserProfileByUserID(ctx context.Context, userID uint64) error {
 	// instrument operation

@@ -27,6 +27,8 @@ type DatabaseOperations interface {
 	UpdateUserProfile(ctx context.Context, profile *schema.UserProfile) error
 	// GetUserProfileByUserID retrieves a user profile by user id
 	GetUserProfileByUserID(ctx context.Context, userID uint64) (*schema.UserProfile, error)
+	// GetAllUserProfiles retrieves all user profiles
+	GetAllUserProfiles(ctx context.Context) ([]*schema.UserProfile, error)
 
 	// BankAccount Operations
 	// CreateBankAccount creates a bank account

@@ -56,7 +56,8 @@ func (th *TaskHandler) RunSyncPlaidTransactionsTask(ctx context.Context, task *a
 		return err
 	}
 
-	accts, err := th.processSyncOperation(ctx, &payload)
+	trigger := payload.String()
+	accts, err := th.processSyncOperation(ctx, payload.UserId, payload.LinkId, payload.AccessToken, *trigger)
 	if err != nil {
 		return err
 	}
@@ -69,7 +70,7 @@ func (th *TaskHandler) RunSyncPlaidTransactionsTask(ctx context.Context, task *a
 	return nil
 }
 
-func (th *TaskHandler) processSyncOperation(ctx context.Context, payload *SyncPlaidTaskPayload) ([]*apiv1.BankAccount, error) {
+func (th *TaskHandler) processSyncOperation(ctx context.Context, userId, linkId uint64, accessToken, trigger string) ([]*apiv1.BankAccount, error) {
 	var (
 		postgresClient   = th.postgresDb
 		clickhouseClient = th.clickhouseDb
@@ -77,7 +78,7 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, payload *SyncPl
 	)
 
 	// query the link from the database
-	link, err := postgresClient.GetLink(ctx, payload.UserId, payload.LinkId, false)
+	link, err := postgresClient.GetLink(ctx, userId, linkId, false)
 	if err != nil {
 		return nil, err
 	}
@@ -88,14 +89,14 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, payload *SyncPl
 	}
 
 	// query plaid for all of the user's accounts
-	plaidBankAccounts, err := plaidClient.GetAccounts(ctx, payload.AccessToken, payload.UserId)
+	plaidBankAccounts, err := plaidClient.GetAccounts(ctx, accessToken, userId)
 	if err != nil {
 		return nil, err
 	}
 
 	// get the liability accounts
 	// TODO: need to figure out wether to update the existing investment account or add a new one
-	investmentAccounts, err := plaidClient.GetInvestmentAccount(ctx, payload.UserId, payload.AccessToken)
+	investmentAccounts, err := plaidClient.GetInvestmentAccount(ctx, userId, accessToken)
 	if err != nil {
 		return nil, err
 	}
@@ -106,7 +107,7 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, payload *SyncPl
 
 	// get the credit accounts
 	// TODO: need to figure out wether to update the existing credit account or add a new one
-	creditAccountsSet, err := plaidClient.GetPlaidLiabilityAccounts(ctx, &payload.AccessToken)
+	creditAccountsSet, err := plaidClient.GetPlaidLiabilityAccounts(ctx, &accessToken)
 	if err != nil {
 		return nil, err
 	}
@@ -271,7 +272,7 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, payload *SyncPl
 	}
 
 	if len(plaidBankAccounts) == 0 {
-		th.logger.Warn("no accounts found for user", zap.Uint64("user_id", payload.UserId))
+		th.logger.Warn("no accounts found for user", zap.Uint64("user_id", userId))
 		return nil, nil
 	}
 
@@ -303,7 +304,7 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, payload *SyncPl
 	}
 
 	if (len(bankAccountIds)) == 0 {
-		th.logger.Warn("none of the linked bank accounts are active at plaid", zap.Uint64("user_id", payload.UserId))
+		th.logger.Warn("none of the linked bank accounts are active at plaid", zap.Uint64("user_id", userId))
 		return nil, nil
 	}
 
@@ -315,19 +316,18 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, payload *SyncPl
 	}
 
 	for iter := 0; iter < 10; iter++ {
-		syncResult, err := plaidClient.Sync(ctx, cursor, &payload.AccessToken)
+		syncResult, err := plaidClient.Sync(ctx, cursor, &accessToken)
 		if err != nil {
 			return nil, errors.Wrap(err, "failed to sync with plaid")
 		}
 
 		// record the sync event in the database
 		linkId := link.Id
-		trigger := payload.String()
 		nextCursor := syncResult.NextCursor
 		added := len(syncResult.New)
 		deleted := len(syncResult.Deleted)
 		modified := len(syncResult.Updated)
-		if err := postgresClient.RecordPlaidSync(ctx, payload.UserId, linkId, *trigger, nextCursor, int64(added), int64(modified), int64(deleted)); err != nil {
+		if err := postgresClient.RecordPlaidSync(ctx, userId, linkId, trigger, nextCursor, int64(added), int64(modified), int64(deleted)); err != nil {
 			return nil, err
 		}
 
@@ -395,7 +395,7 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, payload *SyncPl
 					TransactionId:                   plaidTransaction.GetTransactionId(),
 					TransactionCode:                 plaidTransaction.GetTransactionCode(),
 					Id:                              "",
-					UserId:                          payload.UserId,
+					UserId:                          userId,
 					LinkId:                          link.Id,
 					Sign:                            0,
 					PersonalFinanceCategoryPrimary:  plaidTransaction.GetPersonalFinanceCategoryPrimary(),
@@ -447,7 +447,7 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, payload *SyncPl
 			// TODO: also update the transactions in s3
 
 			th.logger.Info("updating transactions", zap.Int("count", len(transactionsToUpdate)))
-			if err = clickhouseClient.UpdateTransactions(ctx, &payload.UserId, transactionsToUpdate); err != nil {
+			if err = clickhouseClient.UpdateTransactions(ctx, &userId, transactionsToUpdate); err != nil {
 				return nil, err
 			}
 		}
@@ -456,7 +456,7 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, payload *SyncPl
 			// TODO: also insert the transactions in s3
 
 			th.logger.Info("inserting transactions", zap.Int("count", len(transactionsToInsert)))
-			if err := clickhouseClient.AddTransactions(ctx, &payload.UserId, transactionsToInsert); err != nil {
+			if err := clickhouseClient.AddTransactions(ctx, &userId, transactionsToInsert); err != nil {
 				return nil, err
 			}
 		}

@@ -1,6 +1,7 @@
 package grpc
 
 import (
+	"context"
 	"errors"
 	"time"
 
@@ -155,11 +156,6 @@ func NewServer(param *Params) (*Server, error) {
 		return nil, err
 	}
 
-	// TODO: here we should register any task that should be processed at an interval
-	// we first enqueue the task to routinely pull transactions from plaid for all users across all accounts (this should run every 12 hours) (sync)
-	// we enqueue the task to compute actionable insights for all users across all accounts (this should run every 24 hours) - use openai for this (insights)
-	// we enqueue the task to compute the net worth of all users across all accounts (this should run every 24 hours) (net worth)
-
 	srv := &Server{
 		logger:                      param.Logger,
 		config:                      param.Config,
@@ -180,5 +176,32 @@ func NewServer(param *Params) (*Server, error) {
 	}
 
 	srv.OpenAiClient = openai.NewClient(*param.OpenAiToken)
+
+	if err := srv.registerBatchJobs(); err != nil {
+		return nil, err
+	}
+
 	return srv, nil
+}
+
+func (s *Server) registerBatchJobs() error {
+	// we first enqueue the task to routinely pull transactions from plaid for all users across all accounts (this should run every 12 hours) (sync)
+	syncAllAccountsBatchJob, err := taskhandler.NewSyncAllPlatformConnectedPlaidAccounts()
+	if err != nil {
+		return err
+	}
+
+	// TODO: we enqueue the task to compute actionable insights for all users across all accounts (this should run every 24 hours) - use openai for this (insights)
+	// TODO: we enqueue the task to compute the net worth of all users across all accounts (this should run every 24 hours) (net worth)
+	// TODO: enqueue the task to routinely pull transactions from plaid for all users across all accounts (this should run every 12 hours) (sync)
+
+	// TODO: this should be config driven
+	entryId, err := s.Taskprocessor.EnqueueRecurringTask(context.Background(), syncAllAccountsBatchJob, taskprocessor.Every12Hours)
+	if err != nil {
+		return err
+	}
+
+	// ideally we should emit an event for each entry id provided
+	s.logger.Info("enqueued sync all accounts batch job", zap.Any("entry_id", entryId))
+	return nil
 }
