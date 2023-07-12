@@ -163,6 +163,9 @@ func main() {
 		zap.String("port", srvCfg.Port),
 	)
 
+	go grpcSrv.Taskprocessor.Start()
+	defer grpcSrv.Taskprocessor.Close()
+
 	// TODO: clean this up
 	srv, err := api.NewServer(&httpCfg, logger, instrumentation, db, nil, plaidWrapper, keyManagement, grpcSrv.Taskprocessor)
 	if err != nil {

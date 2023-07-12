@@ -156,6 +156,10 @@ func NewServer(param *Params) (*Server, error) {
 	}
 
 	// TODO: here we should register any task that should be processed at an interval
+	// we first enqueue the task to routinely pull transactions from plaid for all users across all accounts (this should run every 12 hours) (sync)
+	// we enqueue the task to compute actionable insights for all users across all accounts (this should run every 24 hours) - use openai for this (insights)
+	// we enqueue the task to compute the net worth of all users across all accounts (this should run every 24 hours) (net worth)
+
 	srv := &Server{
 		logger:                      param.Logger,
 		config:                      param.Config,
