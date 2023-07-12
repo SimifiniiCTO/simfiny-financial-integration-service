@@ -107,11 +107,7 @@ func main() {
 		logger.Panic(err.Error())
 	}
 
-	clickHouseConn, err := clickHouseDb.Conn.Engine.DB()
-	if err != nil {
-		logger.Panic(err.Error())
-	}
-	defer clickHouseConn.Close()
+	defer clickHouseDb.Close()
 
 	// initialize gRPC server
 	openAiToken := viper.GetString("openai-token")

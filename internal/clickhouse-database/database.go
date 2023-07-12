@@ -137,6 +137,10 @@ func New(ctx context.Context, opts ...Option) (*Db, error) {
 	return database, nil
 }
 
+func (db *Db) Close() error {
+	return db.queryEngine.Close()
+}
+
 // The `performSchemaMigration` function is a method defined on the `Db` struct. It takes a context as
 // an argument and returns an error. This method is responsible for performing schema migration on the
 // Clickhouse database.
