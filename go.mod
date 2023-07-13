@@ -6,7 +6,7 @@ require (
 	github.com/MicahParks/keyfunc v1.9.0
 	github.com/SimifiniiCTO/core/core-database v0.0.0-20230307040227-eeb14211b9ed
 	github.com/SimifiniiCTO/core/core-telemetry v0.0.0-20230307040227-eeb14211b9ed
-	github.com/SimifiniiCTO/simfiny-core-lib v1.0.9
+	github.com/SimifiniiCTO/simfiny-core-lib v1.0.10
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
 	github.com/alicebob/miniredis/v2 v2.30.2
 	github.com/aws/aws-sdk-go v1.44.299

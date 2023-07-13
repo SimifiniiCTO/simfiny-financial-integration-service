@@ -207,7 +207,7 @@ func (db *Db) GetAllUserProfiles(ctx context.Context) ([]*schema.UserProfile, er
 		return nil, err
 	}
 
-	results := make([]*schema.UserProfile, len(record))
+	results := make([]*schema.UserProfile, 0, len(record))
 	for _, r := range record {
 		profile, err := r.ToPB(ctx)
 		if err != nil {

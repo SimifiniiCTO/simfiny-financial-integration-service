@@ -184,6 +184,7 @@ func NewServer(param *Params) (*Server, error) {
 	return srv, nil
 }
 
+// registerBatchJobs registers the batch jobs
 func (s *Server) registerBatchJobs() error {
 	// we first enqueue the task to routinely pull transactions from plaid for all users across all accounts (this should run every 12 hours) (sync)
 	syncAllAccountsBatchJob, err := taskhandler.NewSyncAllPlatformConnectedPlaidAccounts()
@@ -193,7 +194,6 @@ func (s *Server) registerBatchJobs() error {
 
 	// TODO: we enqueue the task to compute actionable insights for all users across all accounts (this should run every 24 hours) - use openai for this (insights)
 	// TODO: we enqueue the task to compute the net worth of all users across all accounts (this should run every 24 hours) (net worth)
-	// TODO: enqueue the task to routinely pull transactions from plaid for all users across all accounts (this should run every 12 hours) (sync)
 
 	// TODO: this should be config driven
 	entryId, err := s.Taskprocessor.EnqueueRecurringTask(context.Background(), syncAllAccountsBatchJob, taskprocessor.Every12Hours)

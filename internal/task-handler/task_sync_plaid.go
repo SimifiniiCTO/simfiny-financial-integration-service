@@ -321,6 +321,8 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, userId, linkId 
 			return nil, errors.Wrap(err, "failed to sync with plaid")
 		}
 
+		th.logger.Info("synced result", zap.Any("result", syncResult))
+
 		// record the sync event in the database
 		linkId := link.Id
 		nextCursor := syncResult.NextCursor
@@ -444,8 +446,6 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, userId, linkId 
 		}
 
 		if len(transactionsToUpdate) > 0 {
-			// TODO: also update the transactions in s3
-
 			th.logger.Info("updating transactions", zap.Int("count", len(transactionsToUpdate)))
 			if err = clickhouseClient.UpdateTransactions(ctx, &userId, transactionsToUpdate); err != nil {
 				return nil, err
@@ -453,8 +453,6 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, userId, linkId 
 		}
 
 		if len(transactionsToInsert) > 0 {
-			// TODO: also insert the transactions in s3
-
 			th.logger.Info("inserting transactions", zap.Int("count", len(transactionsToInsert)))
 			if err := clickhouseClient.AddTransactions(ctx, &userId, transactionsToInsert); err != nil {
 				return nil, err
