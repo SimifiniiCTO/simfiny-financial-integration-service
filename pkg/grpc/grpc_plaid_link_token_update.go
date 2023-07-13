@@ -57,6 +57,9 @@ func (s *Server) PlaidInitiateTokenUpdate(ctx context.Context, req *proto.PlaidI
 	linkTokenResponse, err := s.plaidClient.UpdateLinkToken(ctx, &plaidhandler.LinkTokenOptions{
 		ClientUserID: fmt.Sprintf("%d", req.UserId),
 	}, &res.AccessToken)
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
 
 	// get the link by id
 	return &proto.PlaidInitiateTokenUpdateResponse{
