@@ -41,6 +41,7 @@ func newLinkORM(db *gorm.DB, opts ...gen.DOOption) linkORM {
 	_linkORM.NewAccountsAvailable = field.NewBool(tableName, "new_accounts_available")
 	_linkORM.PlaidInstitutionId = field.NewString(tableName, "plaid_institution_id")
 	_linkORM.PlaidNewAccountsAvailable = field.NewBool(tableName, "plaid_new_accounts_available")
+	_linkORM.ShouldBeUpdated = field.NewBool(tableName, "should_be_updated")
 	_linkORM.UpdatedAt = field.NewString(tableName, "updated_at")
 	_linkORM.UserProfileId = field.NewUint64(tableName, "user_profile_id")
 	_linkORM.PlaidLink = linkORMHasOnePlaidLink{
@@ -194,6 +195,7 @@ type linkORM struct {
 	NewAccountsAvailable      field.Bool
 	PlaidInstitutionId        field.String
 	PlaidNewAccountsAvailable field.Bool
+	ShouldBeUpdated           field.Bool
 	UpdatedAt                 field.String
 	UserProfileId             field.Uint64
 	PlaidLink                 linkORMHasOnePlaidLink
@@ -240,6 +242,7 @@ func (l *linkORM) updateTableName(table string) *linkORM {
 	l.NewAccountsAvailable = field.NewBool(table, "new_accounts_available")
 	l.PlaidInstitutionId = field.NewString(table, "plaid_institution_id")
 	l.PlaidNewAccountsAvailable = field.NewBool(table, "plaid_new_accounts_available")
+	l.ShouldBeUpdated = field.NewBool(table, "should_be_updated")
 	l.UpdatedAt = field.NewString(table, "updated_at")
 	l.UserProfileId = field.NewUint64(table, "user_profile_id")
 
@@ -258,7 +261,7 @@ func (l *linkORM) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (l *linkORM) fillFieldMap() {
-	l.fieldMap = make(map[string]field.Expr, 23)
+	l.fieldMap = make(map[string]field.Expr, 24)
 	l.fieldMap["custom_institution_name"] = l.CustomInstitutionName
 	l.fieldMap["description"] = l.Description
 	l.fieldMap["error_code"] = l.ErrorCode
@@ -272,6 +275,7 @@ func (l *linkORM) fillFieldMap() {
 	l.fieldMap["new_accounts_available"] = l.NewAccountsAvailable
 	l.fieldMap["plaid_institution_id"] = l.PlaidInstitutionId
 	l.fieldMap["plaid_new_accounts_available"] = l.PlaidNewAccountsAvailable
+	l.fieldMap["should_be_updated"] = l.ShouldBeUpdated
 	l.fieldMap["updated_at"] = l.UpdatedAt
 	l.fieldMap["user_profile_id"] = l.UserProfileId
 

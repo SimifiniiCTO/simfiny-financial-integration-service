@@ -2310,6 +2310,7 @@
         "pockets": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/Pocket"
           },
           "title": "the set of \"virtualized accounts this user witholds\"\nNOTE: these pockets are automatically created by the system\nwhen a user connects a bank account"
@@ -2671,6 +2672,7 @@
         "aprs": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/Apr"
           },
           "title": "the aprs"
@@ -2779,6 +2781,7 @@
         "budgets": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/Budget"
           },
           "title": "The budgets"
@@ -2846,6 +2849,7 @@
         "links": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/Link"
           },
           "title": "The links"
@@ -2867,6 +2871,7 @@
         "milestones": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/Milestone"
           },
           "title": "The milestones"
@@ -2897,6 +2902,7 @@
         "reCcuringTransactions": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/ReOccuringTransaction"
           },
           "title": "The re-occuring transactions"
@@ -2904,6 +2910,7 @@
         "participantReCcuringTransactions": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/ParticipantReCurringTransactions"
           }
         }
@@ -2915,6 +2922,7 @@
         "smartGoals": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/SmartGoal"
           },
           "title": "The smart goals"
@@ -2936,6 +2944,7 @@
         "transactions": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/Transaction"
           },
           "title": "The transactions"
@@ -3084,6 +3093,7 @@
         "holdings": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/InvesmentHolding"
           },
           "title": "invesment holding is the set of securities this account witholds"
@@ -3091,6 +3101,7 @@
         "securities": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/InvestmentSecurity"
           },
           "title": "the set of securities this account witholds"
@@ -3180,6 +3191,9 @@
           "format": "uint64",
           "title": "id"
         },
+        "plaidSync": {
+          "$ref": "#/definitions/PlaidSync"
+        },
         "linkStatus": {
           "$ref": "#/definitions/LinkStatus"
         },
@@ -3214,6 +3228,7 @@
         "bankAccounts": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/BankAccount"
           },
           "title": "a link event - or client login event can have many connected bank accounts\nfor example a log in link against one instition like chase can have many account (checking and savings)\nit is important though to ensure that if a link against an instition already exists, we dont fascilitate duplicated"
@@ -3221,6 +3236,7 @@
         "investmentAccounts": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/InvestmentAccount"
           },
           "title": "a link event - or client login event can have many connected investment accounts\nfor example a log in link against one instition like fidelity can have many accounts (401k and investment account)\nit is important though to ensure that if a link against an instition already exists, we dont fascilitate duplicated"
@@ -3228,6 +3244,7 @@
         "creditAccounts": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/CreditAccount"
           },
           "title": "credit accounts tied to a user"
@@ -3235,6 +3252,7 @@
         "mortgageAccounts": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/MortgageAccount"
           },
           "title": "mortgage accounts tied to a user"
@@ -3242,6 +3260,7 @@
         "studentLoanAccounts": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/StudentLoanAccount"
           },
           "title": "student loan accounts tied to a link"
@@ -3263,8 +3282,8 @@
         "newAccountsAvailable": {
           "type": "boolean"
         },
-        "plaidSync": {
-          "$ref": "#/definitions/PlaidSync"
+        "shouldBeUpdated": {
+          "type": "boolean"
         }
       },
       "description": "A Link represents a login at a financial institution. A single end-user of your application might have accounts at different financial\ninstitutions, which means they would have multiple different Items. An Item is not the same as a financial institution account,\nalthough every account will be associated with an Item. For example, if a user has one login at their bank that allows them to access\nboth their checking account and their savings account, a single Item would be associated with both of those accounts. Each Item \nlinked within your application will have a corresponding access_token, which is a token that you can use to make API requests related\nto that specific Item.\nTwo Items created for the same set of credentials at the same institution will be considered different and not share the same item_id."
@@ -3278,7 +3297,8 @@
         "LINK_STATUS_ERROR",
         "LINK_STATUS_SUCCESS",
         "LINK_STATUS_PENDING_EXPIRATION",
-        "LINK_STATUS_REVOKED"
+        "LINK_STATUS_REVOKED",
+        "LINK_STATUS_ITEM_LOGIN_REQUIRED"
       ],
       "default": "LINK_STATUS_UNSPECIFIED"
     },
@@ -3456,6 +3476,7 @@
         "transactions": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/Transaction"
           },
           "title": "The transactions"
@@ -3615,6 +3636,7 @@
         "goals": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/SmartGoal"
           },
           "title": "the set of smart goals this user witholds"
@@ -3936,6 +3958,7 @@
         "milestones": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/Milestone"
           },
           "title": "Milestones associated with the goal"
@@ -3960,6 +3983,7 @@
         "details": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/Any"
           }
         }
@@ -4484,6 +4508,7 @@
         "link": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/Link"
           },
           "title": "a user profile can have many links (connected institutions) of which finanical accounts are tied to (checking, savings, etc)"

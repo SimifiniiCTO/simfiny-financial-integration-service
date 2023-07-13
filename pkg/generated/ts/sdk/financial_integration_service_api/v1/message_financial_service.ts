@@ -348,6 +348,7 @@ export enum LinkStatus {
   LINK_STATUS_SUCCESS = 4,
   LINK_STATUS_PENDING_EXPIRATION = 5,
   LINK_STATUS_REVOKED = 6,
+  LINK_STATUS_ITEM_LOGIN_REQUIRED = 7,
   UNRECOGNIZED = -1,
 }
 
@@ -374,6 +375,9 @@ export function linkStatusFromJSON(object: any): LinkStatus {
     case 6:
     case "LINK_STATUS_REVOKED":
       return LinkStatus.LINK_STATUS_REVOKED;
+    case 7:
+    case "LINK_STATUS_ITEM_LOGIN_REQUIRED":
+      return LinkStatus.LINK_STATUS_ITEM_LOGIN_REQUIRED;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -397,6 +401,8 @@ export function linkStatusToJSON(object: LinkStatus): string {
       return "LINK_STATUS_PENDING_EXPIRATION";
     case LinkStatus.LINK_STATUS_REVOKED:
       return "LINK_STATUS_REVOKED";
+    case LinkStatus.LINK_STATUS_ITEM_LOGIN_REQUIRED:
+      return "LINK_STATUS_ITEM_LOGIN_REQUIRED";
     case LinkStatus.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -487,6 +493,7 @@ export interface UserProfile {
 export interface Link {
   /** id */
   id: number;
+  plaidSync: PlaidSync | undefined;
   linkStatus: LinkStatus;
   plaidLink: PlaidLink | undefined;
   plaidNewAccountsAvailable: boolean;
@@ -533,7 +540,7 @@ export interface Link {
   errorCode: string;
   updatedAt: string;
   newAccountsAvailable: boolean;
-  plaidSync: PlaidSync | undefined;
+  shouldBeUpdated: boolean;
 }
 
 export interface PlaidSync {
@@ -1207,6 +1214,7 @@ export const UserProfile = {
 function createBaseLink(): Link {
   return {
     id: 0,
+    plaidSync: undefined,
     linkStatus: 0,
     plaidLink: undefined,
     plaidNewAccountsAvailable: false,
@@ -1227,7 +1235,7 @@ function createBaseLink(): Link {
     errorCode: "",
     updatedAt: "",
     newAccountsAvailable: false,
-    plaidSync: undefined,
+    shouldBeUpdated: false,
   };
 }
 
@@ -1235,6 +1243,9 @@ export const Link = {
   encode(message: Link, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.id !== 0) {
       writer.uint32(8).uint64(message.id);
+    }
+    if (message.plaidSync !== undefined) {
+      PlaidSync.encode(message.plaidSync, writer.uint32(18).fork()).ldelim();
     }
     if (message.linkStatus !== 0) {
       writer.uint32(24).int32(message.linkStatus);
@@ -1296,8 +1307,8 @@ export const Link = {
     if (message.newAccountsAvailable === true) {
       writer.uint32(176).bool(message.newAccountsAvailable);
     }
-    if (message.plaidSync !== undefined) {
-      PlaidSync.encode(message.plaidSync, writer.uint32(18).fork()).ldelim();
+    if (message.shouldBeUpdated === true) {
+      writer.uint32(184).bool(message.shouldBeUpdated);
     }
     return writer;
   },
@@ -1315,6 +1326,13 @@ export const Link = {
           }
 
           message.id = longToNumber(reader.uint64() as Long);
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.plaidSync = PlaidSync.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 24) {
@@ -1456,12 +1474,12 @@ export const Link = {
 
           message.newAccountsAvailable = reader.bool();
           continue;
-        case 2:
-          if (tag !== 18) {
+        case 23:
+          if (tag !== 184) {
             break;
           }
 
-          message.plaidSync = PlaidSync.decode(reader, reader.uint32());
+          message.shouldBeUpdated = reader.bool();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1475,6 +1493,7 @@ export const Link = {
   fromJSON(object: any): Link {
     return {
       id: isSet(object.id) ? Number(object.id) : 0,
+      plaidSync: isSet(object.plaidSync) ? PlaidSync.fromJSON(object.plaidSync) : undefined,
       linkStatus: isSet(object.linkStatus) ? linkStatusFromJSON(object.linkStatus) : 0,
       plaidLink: isSet(object.plaidLink) ? PlaidLink.fromJSON(object.plaidLink) : undefined,
       plaidNewAccountsAvailable: isSet(object.plaidNewAccountsAvailable)
@@ -1507,13 +1526,15 @@ export const Link = {
       errorCode: isSet(object.errorCode) ? String(object.errorCode) : "",
       updatedAt: isSet(object.updatedAt) ? String(object.updatedAt) : "",
       newAccountsAvailable: isSet(object.newAccountsAvailable) ? Boolean(object.newAccountsAvailable) : false,
-      plaidSync: isSet(object.plaidSync) ? PlaidSync.fromJSON(object.plaidSync) : undefined,
+      shouldBeUpdated: isSet(object.shouldBeUpdated) ? Boolean(object.shouldBeUpdated) : false,
     };
   },
 
   toJSON(message: Link): unknown {
     const obj: any = {};
     message.id !== undefined && (obj.id = Math.round(message.id));
+    message.plaidSync !== undefined &&
+      (obj.plaidSync = message.plaidSync ? PlaidSync.toJSON(message.plaidSync) : undefined);
     message.linkStatus !== undefined && (obj.linkStatus = linkStatusToJSON(message.linkStatus));
     message.plaidLink !== undefined &&
       (obj.plaidLink = message.plaidLink ? PlaidLink.toJSON(message.plaidLink) : undefined);
@@ -1556,8 +1577,7 @@ export const Link = {
     message.errorCode !== undefined && (obj.errorCode = message.errorCode);
     message.updatedAt !== undefined && (obj.updatedAt = message.updatedAt);
     message.newAccountsAvailable !== undefined && (obj.newAccountsAvailable = message.newAccountsAvailable);
-    message.plaidSync !== undefined &&
-      (obj.plaidSync = message.plaidSync ? PlaidSync.toJSON(message.plaidSync) : undefined);
+    message.shouldBeUpdated !== undefined && (obj.shouldBeUpdated = message.shouldBeUpdated);
     return obj;
   },
 
@@ -1568,6 +1588,9 @@ export const Link = {
   fromPartial<I extends Exact<DeepPartial<Link>, I>>(object: I): Link {
     const message = createBaseLink();
     message.id = object.id ?? 0;
+    message.plaidSync = (object.plaidSync !== undefined && object.plaidSync !== null)
+      ? PlaidSync.fromPartial(object.plaidSync)
+      : undefined;
     message.linkStatus = object.linkStatus ?? 0;
     message.plaidLink = (object.plaidLink !== undefined && object.plaidLink !== null)
       ? PlaidLink.fromPartial(object.plaidLink)
@@ -1590,9 +1613,7 @@ export const Link = {
     message.errorCode = object.errorCode ?? "";
     message.updatedAt = object.updatedAt ?? "";
     message.newAccountsAvailable = object.newAccountsAvailable ?? false;
-    message.plaidSync = (object.plaidSync !== undefined && object.plaidSync !== null)
-      ? PlaidSync.fromPartial(object.plaidSync)
-      : undefined;
+    message.shouldBeUpdated = object.shouldBeUpdated ?? false;
     return message;
   },
 };
@@ -5228,10 +5249,10 @@ export const Apr = {
   },
 };
 
-declare var self: any | undefined;
-declare var window: any | undefined;
-declare var global: any | undefined;
-var tsProtoGlobalThis: any = (() => {
+declare const self: any | undefined;
+declare const window: any | undefined;
+declare const global: any | undefined;
+const tsProtoGlobalThis: any = (() => {
   if (typeof globalThis !== "undefined") {
     return globalThis;
   }

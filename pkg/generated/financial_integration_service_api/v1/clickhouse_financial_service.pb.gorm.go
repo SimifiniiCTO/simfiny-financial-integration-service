@@ -72,7 +72,8 @@ func (m *InvestmentTransaction) ToORM(ctx context.Context) (InvestmentTransactio
 	to.CreatedAt = m.CreatedAt
 	to.Sign = m.Sign
 	if m.Time != nil {
-		*to.Time = m.Time.AsTime()
+		t := m.Time.AsTime()
+		to.Time = &t
 	}
 	if posthook, ok := interface{}(m).(InvestmentTransactionWithAfterToORM); ok {
 		err = posthook.AfterToORM(ctx, &to)
@@ -207,7 +208,8 @@ func (m *ReOccuringTransaction) ToORM(ctx context.Context) (ReOccuringTransactio
 	to.Flow = ReCurringFlow_name[int32(m.Flow)]
 	to.Sign = m.Sign
 	if m.Time != nil {
-		*to.Time = m.Time.AsTime()
+		t := m.Time.AsTime()
+		to.Time = &t
 	}
 	if posthook, ok := interface{}(m).(ReOccuringTransactionWithAfterToORM); ok {
 		err = posthook.AfterToORM(ctx, &to)
@@ -381,7 +383,8 @@ func (m *Transaction) ToORM(ctx context.Context) (TransactionORM, error) {
 	to.PaymentMetaReason = m.PaymentMetaReason
 	to.PaymentMetaReferenceNumber = m.PaymentMetaReferenceNumber
 	if m.Time != nil {
-		*to.Time = m.Time.AsTime()
+		t := m.Time.AsTime()
+		to.Time = &t
 	}
 	if m.Categories != nil {
 		to.Categories = make(pq.StringArray, len(m.Categories))
@@ -504,7 +507,8 @@ func (m *AccountBalanceHistory) ToORM(ctx context.Context) (AccountBalanceHistor
 		}
 	}
 	if m.Time != nil {
-		*to.Time = m.Time.AsTime()
+		t := m.Time.AsTime()
+		to.Time = &t
 	}
 	to.AccountId = m.AccountId
 	to.IsoCurrencyCode = m.IsoCurrencyCode

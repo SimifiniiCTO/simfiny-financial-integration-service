@@ -426,7 +426,7 @@ func local_request_FinancialService_UpdateBankAccount_0(ctx context.Context, mar
 }
 
 var (
-	filter_FinancialService_DeleteBankAccount_0 = &utilities.DoubleArray{Encoding: map[string]int{"bank_account_id": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
+	filter_FinancialService_DeleteBankAccount_0 = &utilities.DoubleArray{Encoding: map[string]int{"bank_account_id": 0, "bankAccountId": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
 )
 
 func request_FinancialService_DeleteBankAccount_0(ctx context.Context, marshaler runtime.Marshaler, client FinancialServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
@@ -1562,7 +1562,7 @@ func local_request_FinancialService_CreateManualLink_0(ctx context.Context, mars
 }
 
 var (
-	filter_FinancialService_GetLink_0 = &utilities.DoubleArray{Encoding: map[string]int{"link_id": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
+	filter_FinancialService_GetLink_0 = &utilities.DoubleArray{Encoding: map[string]int{"link_id": 0, "linkId": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
 )
 
 func request_FinancialService_GetLink_0(ctx context.Context, marshaler runtime.Marshaler, client FinancialServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
@@ -3038,7 +3038,7 @@ func RegisterFinancialServiceHandlerServer(ctx context.Context, mux *runtime.Ser
 // RegisterFinancialServiceHandlerFromEndpoint is same as RegisterFinancialServiceHandler but
 // automatically dials to "endpoint" and closes the connection when "ctx" gets done.
 func RegisterFinancialServiceHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
-	conn, err := grpc.Dial(endpoint, opts...)
+	conn, err := grpc.DialContext(ctx, endpoint, opts...)
 	if err != nil {
 		return err
 	}

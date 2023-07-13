@@ -882,6 +882,7 @@ Two Items created for the same set of credentials at the same institution will b
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | id | [uint64](#uint64) |  | id |
+| plaid_sync | [PlaidSync](#financial_integration_service_api-v1-PlaidSync) |  |  |
 | link_status | [LinkStatus](#financial_integration_service_api-v1-LinkStatus) |  |  |
 | plaid_link | [PlaidLink](#financial_integration_service_api-v1-PlaidLink) |  |  |
 | plaid_new_accounts_available | [bool](#bool) |  |  |
@@ -902,7 +903,7 @@ Two Items created for the same set of credentials at the same institution will b
 | error_code | [string](#string) |  |  |
 | updated_at | [string](#string) |  |  |
 | new_accounts_available | [bool](#bool) |  |  |
-| plaid_sync | [PlaidSync](#financial_integration_service_api-v1-PlaidSync) |  |  |
+| should_be_updated | [bool](#bool) |  |  |
 
 
 
@@ -1254,6 +1255,7 @@ such as the id, user_id tied to the profile, and many more
 | LINK_STATUS_SUCCESS | 4 |  |
 | LINK_STATUS_PENDING_EXPIRATION | 5 |  |
 | LINK_STATUS_REVOKED | 6 |  |
+| LINK_STATUS_ITEM_LOGIN_REQUIRED | 7 |  |
 
 
 

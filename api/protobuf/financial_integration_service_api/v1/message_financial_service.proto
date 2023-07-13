@@ -71,6 +71,7 @@ enum LinkStatus {
   LINK_STATUS_SUCCESS = 4;
   LINK_STATUS_PENDING_EXPIRATION = 5;
   LINK_STATUS_REVOKED = 6;
+  LINK_STATUS_ITEM_LOGIN_REQUIRED = 7;
 }
 
 enum LinkType {
@@ -130,6 +131,10 @@ message Link {
   uint64 id = 1 [
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}
     ];
+  PlaidSync plaid_sync = 2 [
+    (gorm.field).has_one = {disable_association_autocreate: false disable_association_autoupdate: false preload: true},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}
+  ];
   LinkStatus link_status = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
   PlaidLink plaid_link = 4 [(gorm.field).has_one = {disable_association_autocreate: false disable_association_autoupdate: false preload: true}];
   bool plaid_new_accounts_available = 5 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
@@ -168,10 +173,7 @@ message Link {
   string error_code = 20 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
   string updated_at = 21 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
   bool new_accounts_available = 22 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
-  PlaidSync plaid_sync = 2 [
-    (gorm.field).has_one = {disable_association_autocreate: false disable_association_autoupdate: false preload: true},
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}
-  ];
+  bool should_be_updated = 23 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
 }
 
 message PlaidSync {

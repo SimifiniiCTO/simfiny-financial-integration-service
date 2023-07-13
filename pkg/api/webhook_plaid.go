@@ -420,7 +420,18 @@ func (s *Server) processWebhookRequest(ctx context.Context, req *PlaidWebhook) e
 
 			link.LinkStatus = proto.LinkStatus_LINK_STATUS_ERROR
 			link.ErrorCode = fmt.Sprintf("%v", code)
+			link.ShouldBeUpdated = true
 			log.Warn("link is in an error state, updating")
+			if err := s.conn.UpdateLink(ctx, link); err != nil {
+				return err
+			}
+		// Fired when an Item’s access consent is expiring in 7 days. Some Items have explicit expiration
+		// times and we try to relay this when possible to reduce service disruption. This can be resolved
+		// by having the user go through Link’s update mode.
+		case "ITEM_LOGIN_REQUIRED":
+			link.LinkStatus = proto.LinkStatus_LINK_STATUS_ITEM_LOGIN_REQUIRED
+			link.ShouldBeUpdated = true
+			log.Warn("link required a new item login")
 			if err := s.conn.UpdateLink(ctx, link); err != nil {
 				return err
 			}
@@ -430,6 +441,7 @@ func (s *Server) processWebhookRequest(ctx context.Context, req *PlaidWebhook) e
 		case "PENDING_EXPIRATION":
 			link.LinkStatus = proto.LinkStatus_LINK_STATUS_PENDING_EXPIRATION
 			link.ExpirationDate = req.ConsentExpirationTime.String()
+			link.ShouldBeUpdated = true
 			log.Warn("link is pending expiration")
 			if err := s.conn.UpdateLink(ctx, link); err != nil {
 				return err
@@ -442,6 +454,7 @@ func (s *Server) processWebhookRequest(ctx context.Context, req *PlaidWebhook) e
 			code := req.Error["error_code"]
 			link.LinkStatus = proto.LinkStatus_LINK_STATUS_REVOKED
 			link.ErrorCode = fmt.Sprintf("%v", code)
+			link.ShouldBeUpdated = true
 			if err := s.conn.UpdateLink(ctx, link); err != nil {
 				return err
 			}

@@ -222,7 +222,8 @@ type LinkORM struct {
 	PlaidInstitutionId        string
 	PlaidLink                 *PlaidLinkORM `gorm:"foreignkey:LinkId;association_foreignkey:Id;preload:true"`
 	PlaidNewAccountsAvailable bool
-	PlaidSync                 *PlaidSyncORM            `gorm:"foreignkey:LinkId;association_foreignkey:Id;preload:true"`
+	PlaidSync                 *PlaidSyncORM `gorm:"foreignkey:LinkId;association_foreignkey:Id;preload:true"`
+	ShouldBeUpdated           bool
 	StudentLoanAccounts       []*StudentLoanAccountORM `gorm:"foreignkey:LinkId;association_foreignkey:Id;preload:true"`
 	Token                     *TokenORM                `gorm:"foreignkey:LinkId;association_foreignkey:Id;preload:true"`
 	UpdatedAt                 string
@@ -245,6 +246,13 @@ func (m *Link) ToORM(ctx context.Context) (LinkORM, error) {
 		}
 	}
 	to.Id = m.Id
+	if m.PlaidSync != nil {
+		tempPlaidSync, err := m.PlaidSync.ToORM(ctx)
+		if err != nil {
+			return to, err
+		}
+		to.PlaidSync = &tempPlaidSync
+	}
 	to.LinkStatus = LinkStatus_name[int32(m.LinkStatus)]
 	if m.PlaidLink != nil {
 		tempPlaidLink, err := m.PlaidLink.ToORM(ctx)
@@ -327,13 +335,7 @@ func (m *Link) ToORM(ctx context.Context) (LinkORM, error) {
 	to.ErrorCode = m.ErrorCode
 	to.UpdatedAt = m.UpdatedAt
 	to.NewAccountsAvailable = m.NewAccountsAvailable
-	if m.PlaidSync != nil {
-		tempPlaidSync, err := m.PlaidSync.ToORM(ctx)
-		if err != nil {
-			return to, err
-		}
-		to.PlaidSync = &tempPlaidSync
-	}
+	to.ShouldBeUpdated = m.ShouldBeUpdated
 	if posthook, ok := interface{}(m).(LinkWithAfterToORM); ok {
 		err = posthook.AfterToORM(ctx, &to)
 	}
@@ -351,6 +353,13 @@ func (m *LinkORM) ToPB(ctx context.Context) (Link, error) {
 		}
 	}
 	to.Id = m.Id
+	if m.PlaidSync != nil {
+		tempPlaidSync, err := m.PlaidSync.ToPB(ctx)
+		if err != nil {
+			return to, err
+		}
+		to.PlaidSync = &tempPlaidSync
+	}
 	to.LinkStatus = LinkStatus(LinkStatus_value[m.LinkStatus])
 	if m.PlaidLink != nil {
 		tempPlaidLink, err := m.PlaidLink.ToPB(ctx)
@@ -433,13 +442,7 @@ func (m *LinkORM) ToPB(ctx context.Context) (Link, error) {
 	to.ErrorCode = m.ErrorCode
 	to.UpdatedAt = m.UpdatedAt
 	to.NewAccountsAvailable = m.NewAccountsAvailable
-	if m.PlaidSync != nil {
-		tempPlaidSync, err := m.PlaidSync.ToPB(ctx)
-		if err != nil {
-			return to, err
-		}
-		to.PlaidSync = &tempPlaidSync
-	}
+	to.ShouldBeUpdated = m.ShouldBeUpdated
 	if posthook, ok := interface{}(m).(LinkWithAfterToPB); ok {
 		err = posthook.AfterToPB(ctx, &to)
 	}
@@ -3448,12 +3451,33 @@ func DefaultApplyFieldMaskLink(ctx context.Context, patchee *Link, patcher *Link
 		return nil, errors.NilArgumentError
 	}
 	var err error
+	var updatedPlaidSync bool
 	var updatedPlaidLink bool
 	var updatedToken bool
-	var updatedPlaidSync bool
 	for i, f := range updateMask.Paths {
 		if f == prefix+"Id" {
 			patchee.Id = patcher.Id
+			continue
+		}
+		if !updatedPlaidSync && strings.HasPrefix(f, prefix+"PlaidSync.") {
+			updatedPlaidSync = true
+			if patcher.PlaidSync == nil {
+				patchee.PlaidSync = nil
+				continue
+			}
+			if patchee.PlaidSync == nil {
+				patchee.PlaidSync = &PlaidSync{}
+			}
+			if o, err := DefaultApplyFieldMaskPlaidSync(ctx, patchee.PlaidSync, patcher.PlaidSync, &field_mask.FieldMask{Paths: updateMask.Paths[i:]}, prefix+"PlaidSync.", db); err != nil {
+				return nil, err
+			} else {
+				patchee.PlaidSync = o
+			}
+			continue
+		}
+		if f == prefix+"PlaidSync" {
+			updatedPlaidSync = true
+			patchee.PlaidSync = patcher.PlaidSync
 			continue
 		}
 		if f == prefix+"LinkStatus" {
@@ -3570,25 +3594,8 @@ func DefaultApplyFieldMaskLink(ctx context.Context, patchee *Link, patcher *Link
 			patchee.NewAccountsAvailable = patcher.NewAccountsAvailable
 			continue
 		}
-		if !updatedPlaidSync && strings.HasPrefix(f, prefix+"PlaidSync.") {
-			updatedPlaidSync = true
-			if patcher.PlaidSync == nil {
-				patchee.PlaidSync = nil
-				continue
-			}
-			if patchee.PlaidSync == nil {
-				patchee.PlaidSync = &PlaidSync{}
-			}
-			if o, err := DefaultApplyFieldMaskPlaidSync(ctx, patchee.PlaidSync, patcher.PlaidSync, &field_mask.FieldMask{Paths: updateMask.Paths[i:]}, prefix+"PlaidSync.", db); err != nil {
-				return nil, err
-			} else {
-				patchee.PlaidSync = o
-			}
-			continue
-		}
-		if f == prefix+"PlaidSync" {
-			updatedPlaidSync = true
-			patchee.PlaidSync = patcher.PlaidSync
+		if f == prefix+"ShouldBeUpdated" {
+			patchee.ShouldBeUpdated = patcher.ShouldBeUpdated
 			continue
 		}
 	}
