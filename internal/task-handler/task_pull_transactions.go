@@ -10,6 +10,7 @@ import (
 	apiv1 "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 type PullTransactionsTaskPayload struct {
@@ -174,7 +175,7 @@ func (th *TaskHandler) RunPullTransactionsTask(ctx context.Context, task *asynq.
 				TransactionId:                   plaidTransaction.GetTransactionId(),
 				TransactionCode:                 plaidTransaction.GetTransactionCode(),
 				UserId:                          payload.UserId,
-				LinkId:                          link.Id,
+				LinkId:                          linkId,
 				Sign:                            0,
 				PersonalFinanceCategoryPrimary:  plaidTransaction.GetPersonalFinanceCategoryPrimary(),
 				PersonalFinanceCategoryDetailed: plaidTransaction.GetPersonalFinanceCategoryDetailed(),
@@ -194,6 +195,8 @@ func (th *TaskHandler) RunPullTransactionsTask(ctx context.Context, task *asynq.
 				PaymentMetaPpdId:                plaidTransaction.GetPaymentMetaPpdId(),
 				PaymentMetaReason:               plaidTransaction.GetPaymentMetaReason(),
 				PaymentMetaReferenceNumber:      plaidTransaction.GetPaymentMetaReferenceNumber(),
+				Time:                            timestamppb.New(plaidTransaction.Time.AsTime()),
+				Categories:                      plaidTransaction.GetCategories(),
 			}
 			transactionsToInsert = append(transactionsToInsert, txnRecord)
 			continue
@@ -234,6 +237,7 @@ func (th *TaskHandler) RunPullTransactionsTask(ctx context.Context, task *asynq.
 		for i, j := 0, len(transactionsToInsert)-1; i < j; i, j = i+1, j-1 {
 			transactionsToInsert[i], transactionsToInsert[j] = transactionsToInsert[j], transactionsToInsert[i]
 		}
+
 		if err := clickhouseClient.AddTransactions(ctx, &payload.UserId, transactionsToInsert); err != nil {
 			return err
 		}
@@ -288,6 +292,7 @@ func (th *TaskHandler) RunPullTransactionsTask(ctx context.Context, task *asynq.
 		link.LinkStatus = apiv1.LinkStatus_LINK_STATUS_SETUP
 		linkWasSetup = true
 	}
+
 	link.LastSuccessfulUpdate = time.Now().String()
 	if err = postgresClient.UpdateLink(ctx, link); err != nil {
 		th.logger.Error("failed to update link after transaction sync", zap.Error(err))

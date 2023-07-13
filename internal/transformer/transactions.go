@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"github.com/plaid/plaid-go/v12/plaid"
-	"google.golang.org/protobuf/types/known/anypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
@@ -65,8 +64,7 @@ func NewTransactionFromPlaid(input *plaid.Transaction) (*schema.Transaction, err
 			Seconds: input.GetAuthorizedDatetime().UTC().Unix(),
 			Nanos:   int32(input.GetAuthorizedDatetime().Nanosecond()),
 		},
-		AdditionalProperties: &anypb.Any{},
-		Categories:           input.Category,
+		Categories: input.GetCategory(),
 	}
 
 	return tx, nil
