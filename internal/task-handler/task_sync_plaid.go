@@ -78,6 +78,9 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, userId, linkId 
 		plaidClient      = th.plaidClient
 	)
 
+	// TODO: from the linked account we need to be able to see all accounts that the user may have chosen to deselect from access to us and remove them
+	// we need explicit support for this
+
 	// query the link from the database
 	link, err := postgresClient.GetLink(ctx, userId, linkId, false)
 	if err != nil {
