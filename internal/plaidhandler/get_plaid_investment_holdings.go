@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 
-	"github.com/plaid/plaid-go/v12/plaid"
+	"github.com/plaid/plaid-go/v14/plaid"
 )
 
 // The Investments type contains arrays of securities, holdings, and account bases from the Plaid API.

@@ -4,7 +4,7 @@ import (
 	"errors"
 
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
-	"github.com/plaid/plaid-go/v12/plaid"
+	"github.com/plaid/plaid-go/v14/plaid"
 )
 
 // TransformPlaidCredit transforms Plaid credit card liabilities into a list of credit accounts with associated

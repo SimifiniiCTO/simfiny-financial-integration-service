@@ -3,7 +3,7 @@ package transformer
 import (
 	"fmt"
 
-	"github.com/plaid/plaid-go/v12/plaid"
+	"github.com/plaid/plaid-go/v14/plaid"
 
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/helper"
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"

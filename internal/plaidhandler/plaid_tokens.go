@@ -3,7 +3,7 @@ package plaidhandler
 import (
 	"time"
 
-	"github.com/plaid/plaid-go/v12/plaid"
+	"github.com/plaid/plaid-go/v14/plaid"
 )
 
 // The ItemToken type contains an access token and the item ID associated with it.

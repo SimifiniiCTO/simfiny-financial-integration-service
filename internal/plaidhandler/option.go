@@ -3,7 +3,7 @@ package plaidhandler
 import (
 	"fmt"
 
-	"github.com/plaid/plaid-go/v12/plaid"
+	"github.com/plaid/plaid-go/v14/plaid"
 	"go.uber.org/zap"
 
 	"github.com/SimifiniiCTO/simfiny-core-lib/instrumentation"
@@ -76,20 +76,21 @@ func WithWebhooksEnabled(enabled bool) Option {
 // WithProducts is a functional option to set the plaid products
 func WithProducts(products []string) Option {
 	var plaidProducts = map[string]plaid.Products{
-		string(plaid.PRODUCTS_AUTH):                plaid.PRODUCTS_AUTH,
-		string(plaid.PRODUCTS_ASSETS):              plaid.PRODUCTS_ASSETS,
-		string(plaid.PRODUCTS_INVESTMENTS):         plaid.PRODUCTS_INVESTMENTS,
-		string(plaid.PRODUCTS_LIABILITIES):         plaid.PRODUCTS_LIABILITIES,
-		string(plaid.PRODUCTS_BALANCE):             plaid.PRODUCTS_BALANCE,
-		string(plaid.PRODUCTS_IDENTITY):            plaid.PRODUCTS_IDENTITY,
-		string(plaid.PRODUCTS_PAYMENT_INITIATION):  plaid.PRODUCTS_PAYMENT_INITIATION,
-		string(plaid.PRODUCTS_TRANSACTIONS):        plaid.PRODUCTS_TRANSACTIONS,
-		string(plaid.PRODUCTS_CREDIT_DETAILS):      plaid.PRODUCTS_CREDIT_DETAILS,
-		string(plaid.PRODUCTS_INCOME):              plaid.PRODUCTS_INCOME,
-		string(plaid.PRODUCTS_INCOME_VERIFICATION): plaid.PRODUCTS_INCOME_VERIFICATION,
-		string(plaid.PRODUCTS_DEPOSIT_SWITCH):      plaid.PRODUCTS_DEPOSIT_SWITCH,
-		string(plaid.PRODUCTS_STANDING_ORDERS):     plaid.PRODUCTS_STANDING_ORDERS,
-		string(plaid.PRODUCTS_TRANSFER):            plaid.PRODUCTS_TRANSFER,
+		string(plaid.PRODUCTS_AUTH):                   plaid.PRODUCTS_AUTH,
+		string(plaid.PRODUCTS_ASSETS):                 plaid.PRODUCTS_ASSETS,
+		string(plaid.PRODUCTS_INVESTMENTS):            plaid.PRODUCTS_INVESTMENTS,
+		string(plaid.PRODUCTS_LIABILITIES):            plaid.PRODUCTS_LIABILITIES,
+		string(plaid.PRODUCTS_BALANCE):                plaid.PRODUCTS_BALANCE,
+		string(plaid.PRODUCTS_IDENTITY):               plaid.PRODUCTS_IDENTITY,
+		string(plaid.PRODUCTS_PAYMENT_INITIATION):     plaid.PRODUCTS_PAYMENT_INITIATION,
+		string(plaid.PRODUCTS_TRANSACTIONS):           plaid.PRODUCTS_TRANSACTIONS,
+		string(plaid.PRODUCTS_CREDIT_DETAILS):         plaid.PRODUCTS_CREDIT_DETAILS,
+		string(plaid.PRODUCTS_INCOME):                 plaid.PRODUCTS_INCOME,
+		string(plaid.PRODUCTS_INCOME_VERIFICATION):    plaid.PRODUCTS_INCOME_VERIFICATION,
+		string(plaid.PRODUCTS_DEPOSIT_SWITCH):         plaid.PRODUCTS_DEPOSIT_SWITCH,
+		string(plaid.PRODUCTS_STANDING_ORDERS):        plaid.PRODUCTS_STANDING_ORDERS,
+		string(plaid.PRODUCTS_TRANSFER):               plaid.PRODUCTS_TRANSFER,
+		string(plaid.PRODUCTS_RECURRING_TRANSACTIONS): plaid.PRODUCTS_RECURRING_TRANSACTIONS,
 	}
 	return func(p *PlaidWrapper) {
 		// iterate over set of strings and convert to plaid product
@@ -101,6 +102,11 @@ func WithProducts(products []string) Option {
 		}
 
 		p.EnabledProducts = res
+		// ref: https://plaid.com/docs/link/initializing-products/#required-if-supported-products
+		p.RequiredProductsIfSupported = []plaid.Products{
+			plaid.PRODUCTS_INVESTMENTS,
+			plaid.PRODUCTS_LIABILITIES,
+		}
 	}
 }
 

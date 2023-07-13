@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"github.com/SimifiniiCTO/simfiny-core-lib/instrumentation"
-	"github.com/plaid/plaid-go/v12/plaid"
+	"github.com/plaid/plaid-go/v14/plaid"
 	"go.uber.org/zap"
 )
 

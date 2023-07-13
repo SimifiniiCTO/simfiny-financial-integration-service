@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 
-	"github.com/plaid/plaid-go/v12/plaid"
+	"github.com/plaid/plaid-go/v14/plaid"
 )
 
 // DeleteItem is used to delete an item from the Plaid API for a given access token

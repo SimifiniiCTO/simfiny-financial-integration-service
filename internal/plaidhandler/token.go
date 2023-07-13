@@ -5,7 +5,7 @@ import (
 	"io/ioutil"
 
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/pointer"
-	"github.com/plaid/plaid-go/v12/plaid"
+	"github.com/plaid/plaid-go/v14/plaid"
 	"go.uber.org/zap"
 )
 
@@ -70,6 +70,7 @@ func (p *PlaidWrapper) CreateLinkToken(ctx context.Context, options *LinkTokenOp
 	request.SetProducts(p.EnabledProducts)
 	request.SetLinkCustomizationName(PlaidClientName)
 	request.SetWebhook(*webhooksUrl)
+	request.SetRequiredIfSupportedProducts(p.RequiredProductsIfSupported)
 	// request.SetRedirectUri(*redirectUri)
 
 	p.Logger.Info("creating link token with Plaid", zap.Any("request", request))

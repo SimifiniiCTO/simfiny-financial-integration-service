@@ -9,7 +9,7 @@ import (
 
 	"github.com/MicahParks/keyfunc"
 	"github.com/pkg/errors"
-	"github.com/plaid/plaid-go/v12/plaid"
+	"github.com/plaid/plaid-go/v14/plaid"
 	"go.uber.org/zap"
 )
 

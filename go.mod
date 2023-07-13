@@ -71,6 +71,7 @@ require (
 	github.com/microsoft/go-mssqldb v1.0.0 // indirect
 	github.com/newrelic/go-agent/v3/integrations/nrgorilla v1.1.1 // indirect
 	github.com/newrelic/go-agent/v3/integrations/nrgrpc v1.4.0 // indirect
+	github.com/plaid/plaid-go/v14 v14.0.0 // indirect
 	github.com/redis/go-redis/v9 v9.0.5 // indirect
 	github.com/robfig/cron/v3 v3.0.1 // indirect
 	github.com/rookie-ninja/rk-grpc v1.2.25 // indirect

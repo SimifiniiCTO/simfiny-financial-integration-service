@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/pointer"
-	"github.com/plaid/plaid-go/v12/plaid"
+	"github.com/plaid/plaid-go/v14/plaid"
 )
 
 func TestGetAccountMetadata(t *testing.T) {

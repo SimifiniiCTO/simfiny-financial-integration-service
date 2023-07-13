@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 
-	"github.com/plaid/plaid-go/v12/plaid"
+	"github.com/plaid/plaid-go/v14/plaid"
 )
 
 // The type Deposits contains an array of Plaid account objects.

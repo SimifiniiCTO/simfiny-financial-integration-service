@@ -1,7 +1,7 @@
 package plaidhandler
 
 import (
-	"github.com/plaid/plaid-go/v12/plaid"
+	"github.com/plaid/plaid-go/v14/plaid"
 )
 
 // TODO: below should be read from env vars

@@ -1,7 +1,7 @@
 package transformer
 
 import (
-	"github.com/plaid/plaid-go/v12/plaid"
+	"github.com/plaid/plaid-go/v14/plaid"
 )
 
 // The above type defines the metadata of an account, including its subtype, type, name, ID, available

@@ -3,7 +3,7 @@ package transformer
 import (
 	"fmt"
 
-	"github.com/plaid/plaid-go/v12/plaid"
+	"github.com/plaid/plaid-go/v14/plaid"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"

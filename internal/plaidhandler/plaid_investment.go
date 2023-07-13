@@ -6,7 +6,7 @@ import (
 
 	"github.com/emirpasic/gods/maps/hashmap"
 	"github.com/emirpasic/gods/sets/hashset"
-	"github.com/plaid/plaid-go/v12/plaid"
+	"github.com/plaid/plaid-go/v14/plaid"
 
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/pointer"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/transformer"

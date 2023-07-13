@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/plaid/plaid-go/v12/plaid"
+	"github.com/plaid/plaid-go/v14/plaid"
 	"go.uber.org/zap"
 
 	"github.com/SimifiniiCTO/simfiny-core-lib/instrumentation"
@@ -72,6 +72,22 @@ type PlaidWrapper struct {
 	WebhooksEnabled bool
 	// EnabledProducts is used to specify the products that are enabled for the Plaid API client
 	EnabledProducts []plaid.Products
+
+	/**
+		In order to require a secondary product when possible, without excluding users who don't have access
+		to that product from linking their account, you can specify the secondary product in the required_if_supported_products
+		array when calling /link/token/create. (It is possible to specify multiple products in this field as well, as long as
+		at least one always-required product is specified in the regular products array.)
+
+		When a product is listed in required_if_supported_products, Plaid will require that product if possible. If the institution
+		the end user is attempting to link supports the secondary product, and the user grants Plaid access to an account at the
+		institution that is compatible with it, Plaid will treat the product as though it was listed in the products array.
+		If the institution does not support the product, if the user doesn't have accounts compatible with it, or if the user
+		has compatible accounts but doesn't grant access to them, Plaid will treat the product as though it had not been specified
+		in the /link/token/create call. (To determine whether a product was successfully added to the Item, you can
+		all /item/get after obtaining your access_token and look at the value of the products array.)
+	**/
+	RequiredProductsIfSupported []plaid.Products
 }
 
 // The PlaidWrapperImpl interface defines methods for interacting with the Plaid API, including

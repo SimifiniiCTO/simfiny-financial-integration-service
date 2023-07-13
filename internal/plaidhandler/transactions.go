@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/plaid/plaid-go/v12/plaid"
+	"github.com/plaid/plaid-go/v14/plaid"
 	"go.uber.org/zap"
 
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/pointer"
