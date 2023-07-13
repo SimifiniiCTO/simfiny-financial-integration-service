@@ -38,17 +38,27 @@ type SyncResult struct {
 
 // Sync is used to sync transactions from the Plaid API for a given set of account IDs
 func (p *PlaidWrapper) Sync(ctx context.Context, cursor, accessToken *string) (*SyncResult, error) {
+	includePersonalFinanceCategory := true
+
+	reqCtx := plaid.TransactionsSyncRequest{
+		AccessToken: *accessToken,
+		Count:       pointer.Int32P(500),
+		Options: &plaid.TransactionsSyncRequestOptions{
+			IncludePersonalFinanceCategory: &includePersonalFinanceCategory,
+		},
+	}
+
+	if cursor != nil {
+		reqCtx.Cursor = cursor
+	}
+
 	request := p.client.PlaidApi.
 		TransactionsSync(ctx).
-		TransactionsSyncRequest(plaid.TransactionsSyncRequest{
-			AccessToken: *accessToken,
-			Cursor:      cursor,
-			Count:       pointer.Int32P(500),
-		})
+		TransactionsSyncRequest(reqCtx)
 
 	result, _, err := request.Execute()
 	if err != nil {
-		p.Logger.Error("failed to sync data with Plaid", zap.Error(err))
+		p.Logger.Error("failed to sync data with Plaid", zap.Error(err), zap.Any("request", request))
 		return nil, err
 	}
 
