@@ -399,7 +399,7 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, userId, linkId 
 					Id:                              "",
 					UserId:                          userId,
 					LinkId:                          link.Id,
-					Sign:                            0,
+					Sign:                            1,
 					PersonalFinanceCategoryPrimary:  plaidTransaction.GetPersonalFinanceCategoryPrimary(),
 					PersonalFinanceCategoryDetailed: plaidTransaction.GetPersonalFinanceCategoryDetailed(),
 					LocationAddress:                 plaidTransaction.GetLocationAddress(),

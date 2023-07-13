@@ -171,10 +171,6 @@ func (db *Db) DeleteTransactionsByLinkId(ctx context.Context, linkId *uint64) er
 		return err
 	}
 
-	// if result.RowsAffected == 0 {
-	// 	db.Logger.Info("no rows affected")
-	// }
-
 	return nil
 }
 
@@ -224,13 +220,12 @@ func (db *Db) GetTransactions(ctx context.Context, userId *uint64, pagenumber in
 
 	offset := int(pageSize * (pageNumber - 1))
 	queryLimit := int(pageSize)
-	query := fmt.Sprintf(`UserId = %d`, *userId)
 	var transactions []schema.TransactionInternal
 	if err := db.
 		queryEngine.
 		NewSelect().
 		Model(&transactions).
-		Where(query).
+		Where("UserId = ?", *userId).
 		Offset(offset).
 		Limit(queryLimit).
 		Scan(ctx); err != nil {
@@ -238,7 +233,6 @@ func (db *Db) GetTransactions(ctx context.Context, userId *uint64, pagenumber in
 	}
 
 	results := make([]*schema.Transaction, 0, len(transactions))
-
 	if len(transactions) > 0 {
 		for _, tx := range transactions {
 			txRecord, err := tx.ConvertToTransaction()
