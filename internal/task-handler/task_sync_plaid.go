@@ -13,6 +13,7 @@ import (
 	"github.com/labstack/gommon/log"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 type SyncPlaidTaskPayload struct {
@@ -321,8 +322,6 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, userId, linkId 
 			return nil, errors.Wrap(err, "failed to sync with plaid")
 		}
 
-		th.logger.Info("synced result", zap.Any("result", syncResult))
-
 		// record the sync event in the database
 		linkId := link.Id
 		nextCursor := syncResult.NextCursor
@@ -365,9 +364,7 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, userId, linkId 
 		transactionsToInsert := make([]*apiv1.Transaction, 0, len(plaidTransactions))
 		for _, plaidTransaction := range plaidTransactions {
 			amount := plaidTransaction.GetAmount()
-
 			transactionName := plaidTransaction.GetName()
-
 			// We only want to make the transaction name be the merchant name if the merchant name is shorter. This is
 			// due to something I observed with a dominos transaction, where the merchant was improperly parsed and the
 			// transaction ended up being called `Mnuslindstrom` rather than `Domino's`. This should fix that problem.
@@ -398,7 +395,7 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, userId, linkId 
 					TransactionCode:                 plaidTransaction.GetTransactionCode(),
 					Id:                              "",
 					UserId:                          userId,
-					LinkId:                          link.Id,
+					LinkId:                          linkId,
 					Sign:                            1,
 					PersonalFinanceCategoryPrimary:  plaidTransaction.GetPersonalFinanceCategoryPrimary(),
 					PersonalFinanceCategoryDetailed: plaidTransaction.GetPersonalFinanceCategoryDetailed(),
@@ -418,7 +415,10 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, userId, linkId 
 					PaymentMetaPpdId:                plaidTransaction.GetPaymentMetaPpdId(),
 					PaymentMetaReason:               plaidTransaction.GetPaymentMetaReason(),
 					PaymentMetaReferenceNumber:      plaidTransaction.GetPaymentMetaReferenceNumber(),
+					Time:                            timestamppb.New(plaidTransaction.Time.AsTime()),
+					Categories:                      plaidTransaction.GetCategories(),
 				}
+
 				transactionsToInsert = append(transactionsToInsert, txnRecord)
 				continue
 			}
