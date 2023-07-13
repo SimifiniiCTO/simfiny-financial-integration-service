@@ -517,6 +517,28 @@ message PlaidInitiateTokenExchangeResponse {
   string plaid_request_id = 3;
 }
 
+message PlaidInitiateTokenUpdateRequest {
+  // The user id
+  // Validations:
+  // - user_id must be greater than 0
+  uint64 user_id = 1 [
+    (validate.rules).uint64.gt = 0,
+    (google.api.field_behavior) = REQUIRED
+  ];
+  // The link id we want to update for
+  // Validations:
+  // - cannot be nil hence required
+  uint64 link_id = 2 [
+    (validate.rules).uint64.gt = 0,
+    (google.api.field_behavior) = REQUIRED
+  ];
+}
+
+message PlaidInitiateTokenUpdateResponse {
+  string link_token = 1;
+  string expiration = 2;
+}
+
 message PlaidExchangeTokenRequest {
   // The user id
   // Validations:

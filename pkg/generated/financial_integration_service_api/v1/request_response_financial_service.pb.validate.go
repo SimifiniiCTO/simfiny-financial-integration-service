@@ -6680,6 +6680,240 @@ var _ interface {
 	ErrorName() string
 } = PlaidInitiateTokenExchangeResponseValidationError{}
 
+// Validate checks the field values on PlaidInitiateTokenUpdateRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *PlaidInitiateTokenUpdateRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on PlaidInitiateTokenUpdateRequest with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the result is a list of violation errors wrapped in
+// PlaidInitiateTokenUpdateRequestMultiError, or nil if none found.
+func (m *PlaidInitiateTokenUpdateRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *PlaidInitiateTokenUpdateRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if m.GetUserId() <= 0 {
+		err := PlaidInitiateTokenUpdateRequestValidationError{
+			field:  "UserId",
+			reason: "value must be greater than 0",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if m.GetLinkId() <= 0 {
+		err := PlaidInitiateTokenUpdateRequestValidationError{
+			field:  "LinkId",
+			reason: "value must be greater than 0",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if len(errors) > 0 {
+		return PlaidInitiateTokenUpdateRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// PlaidInitiateTokenUpdateRequestMultiError is an error wrapping multiple
+// validation errors returned by PlaidInitiateTokenUpdateRequest.ValidateAll()
+// if the designated constraints aren't met.
+type PlaidInitiateTokenUpdateRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m PlaidInitiateTokenUpdateRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m PlaidInitiateTokenUpdateRequestMultiError) AllErrors() []error { return m }
+
+// PlaidInitiateTokenUpdateRequestValidationError is the validation error
+// returned by PlaidInitiateTokenUpdateRequest.Validate if the designated
+// constraints aren't met.
+type PlaidInitiateTokenUpdateRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e PlaidInitiateTokenUpdateRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e PlaidInitiateTokenUpdateRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e PlaidInitiateTokenUpdateRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e PlaidInitiateTokenUpdateRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e PlaidInitiateTokenUpdateRequestValidationError) ErrorName() string {
+	return "PlaidInitiateTokenUpdateRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e PlaidInitiateTokenUpdateRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sPlaidInitiateTokenUpdateRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = PlaidInitiateTokenUpdateRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = PlaidInitiateTokenUpdateRequestValidationError{}
+
+// Validate checks the field values on PlaidInitiateTokenUpdateResponse with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the first error encountered is returned, or nil if there are
+// no violations.
+func (m *PlaidInitiateTokenUpdateResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on PlaidInitiateTokenUpdateResponse with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the result is a list of violation errors wrapped in
+// PlaidInitiateTokenUpdateResponseMultiError, or nil if none found.
+func (m *PlaidInitiateTokenUpdateResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *PlaidInitiateTokenUpdateResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for LinkToken
+
+	// no validation rules for Expiration
+
+	if len(errors) > 0 {
+		return PlaidInitiateTokenUpdateResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// PlaidInitiateTokenUpdateResponseMultiError is an error wrapping multiple
+// validation errors returned by
+// PlaidInitiateTokenUpdateResponse.ValidateAll() if the designated
+// constraints aren't met.
+type PlaidInitiateTokenUpdateResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m PlaidInitiateTokenUpdateResponseMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m PlaidInitiateTokenUpdateResponseMultiError) AllErrors() []error { return m }
+
+// PlaidInitiateTokenUpdateResponseValidationError is the validation error
+// returned by PlaidInitiateTokenUpdateResponse.Validate if the designated
+// constraints aren't met.
+type PlaidInitiateTokenUpdateResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e PlaidInitiateTokenUpdateResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e PlaidInitiateTokenUpdateResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e PlaidInitiateTokenUpdateResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e PlaidInitiateTokenUpdateResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e PlaidInitiateTokenUpdateResponseValidationError) ErrorName() string {
+	return "PlaidInitiateTokenUpdateResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e PlaidInitiateTokenUpdateResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sPlaidInitiateTokenUpdateResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = PlaidInitiateTokenUpdateResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = PlaidInitiateTokenUpdateResponseValidationError{}
+
 // Validate checks the field values on PlaidExchangeTokenRequest with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.

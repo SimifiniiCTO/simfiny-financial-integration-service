@@ -159,6 +159,8 @@ type PlaidWrapperImpl interface {
 	DeleteItem(ctx context.Context, accessToken *string) error
 	// GetAccessTokenForSandboxAcct returns the access token for the sandbox account
 	GetAccessTokenForSandboxAcct() (*plaid.ItemPublicTokenExchangeResponse, error)
+	// UpdateLinkToken returns the access token for the link account associated with the link account
+	UpdateLinkToken(ctx context.Context, options *LinkTokenOptions, accessToken *string) (LinkToken, error)
 	// GetPlublicTokenForSandboxAcct returns the public token for the sandbox account
 	getPlublicTokenForSandboxAcct(ctx context.Context) (plaid.SandboxPublicTokenCreateResponse, error)
 }

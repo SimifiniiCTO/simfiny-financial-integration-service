@@ -467,6 +467,10 @@ func (s *Server) processWebhookRequest(ctx context.Context, req *PlaidWebhook) e
 		// through Account Select v2 update mode.
 		case "NEW_ACCOUNTS_AVAILABLE":
 			link.PlaidNewAccountsAvailable = true
+			// If using Account Select v2, you can use update mode to request your users to share new accounts with you.
+			// Receiving a NEW_ACCOUNTS_AVAILABLE webhook indicates that Plaid has detected new accounts that you may want
+			// to ask your users to share
+			link.ShouldBeUpdated = true
 			if err := s.conn.UpdateLink(ctx, link); err != nil {
 				return err
 			}

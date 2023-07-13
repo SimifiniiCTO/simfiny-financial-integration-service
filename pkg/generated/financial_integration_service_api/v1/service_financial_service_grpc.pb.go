@@ -20,6 +20,7 @@ const _ = grpc.SupportPackageIsVersion7
 
 const (
 	FinancialService_PlaidInitiateTokenExchange_FullMethodName = "/financial_integration_service_api.v1.FinancialService/PlaidInitiateTokenExchange"
+	FinancialService_PlaidInitiateTokenUpdate_FullMethodName   = "/financial_integration_service_api.v1.FinancialService/PlaidInitiateTokenUpdate"
 	FinancialService_PlaidExchangeToken_FullMethodName         = "/financial_integration_service_api.v1.FinancialService/PlaidExchangeToken"
 	FinancialService_CreateUserProfile_FullMethodName          = "/financial_integration_service_api.v1.FinancialService/CreateUserProfile"
 	FinancialService_GetUserProfile_FullMethodName             = "/financial_integration_service_api.v1.FinancialService/GetUserProfile"
@@ -67,6 +68,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type FinancialServiceClient interface {
 	PlaidInitiateTokenExchange(ctx context.Context, in *PlaidInitiateTokenExchangeRequest, opts ...grpc.CallOption) (*PlaidInitiateTokenExchangeResponse, error)
+	PlaidInitiateTokenUpdate(ctx context.Context, in *PlaidInitiateTokenUpdateRequest, opts ...grpc.CallOption) (*PlaidInitiateTokenUpdateResponse, error)
 	PlaidExchangeToken(ctx context.Context, in *PlaidExchangeTokenRequest, opts ...grpc.CallOption) (*PlaidExchangeTokenResponse, error)
 	CreateUserProfile(ctx context.Context, in *CreateUserProfileRequest, opts ...grpc.CallOption) (*CreateUserProfileResponse, error)
 	GetUserProfile(ctx context.Context, in *GetUserProfileRequest, opts ...grpc.CallOption) (*GetUserProfileResponse, error)
@@ -120,6 +122,15 @@ func NewFinancialServiceClient(cc grpc.ClientConnInterface) FinancialServiceClie
 func (c *financialServiceClient) PlaidInitiateTokenExchange(ctx context.Context, in *PlaidInitiateTokenExchangeRequest, opts ...grpc.CallOption) (*PlaidInitiateTokenExchangeResponse, error) {
 	out := new(PlaidInitiateTokenExchangeResponse)
 	err := c.cc.Invoke(ctx, FinancialService_PlaidInitiateTokenExchange_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *financialServiceClient) PlaidInitiateTokenUpdate(ctx context.Context, in *PlaidInitiateTokenUpdateRequest, opts ...grpc.CallOption) (*PlaidInitiateTokenUpdateResponse, error) {
+	out := new(PlaidInitiateTokenUpdateResponse)
+	err := c.cc.Invoke(ctx, FinancialService_PlaidInitiateTokenUpdate_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -491,6 +502,7 @@ func (c *financialServiceClient) CreateSubscription(ctx context.Context, in *Cre
 // for forward compatibility
 type FinancialServiceServer interface {
 	PlaidInitiateTokenExchange(context.Context, *PlaidInitiateTokenExchangeRequest) (*PlaidInitiateTokenExchangeResponse, error)
+	PlaidInitiateTokenUpdate(context.Context, *PlaidInitiateTokenUpdateRequest) (*PlaidInitiateTokenUpdateResponse, error)
 	PlaidExchangeToken(context.Context, *PlaidExchangeTokenRequest) (*PlaidExchangeTokenResponse, error)
 	CreateUserProfile(context.Context, *CreateUserProfileRequest) (*CreateUserProfileResponse, error)
 	GetUserProfile(context.Context, *GetUserProfileRequest) (*GetUserProfileResponse, error)
@@ -540,6 +552,9 @@ type UnimplementedFinancialServiceServer struct {
 
 func (UnimplementedFinancialServiceServer) PlaidInitiateTokenExchange(context.Context, *PlaidInitiateTokenExchangeRequest) (*PlaidInitiateTokenExchangeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PlaidInitiateTokenExchange not implemented")
+}
+func (UnimplementedFinancialServiceServer) PlaidInitiateTokenUpdate(context.Context, *PlaidInitiateTokenUpdateRequest) (*PlaidInitiateTokenUpdateResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PlaidInitiateTokenUpdate not implemented")
 }
 func (UnimplementedFinancialServiceServer) PlaidExchangeToken(context.Context, *PlaidExchangeTokenRequest) (*PlaidExchangeTokenResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PlaidExchangeToken not implemented")
@@ -688,6 +703,24 @@ func _FinancialService_PlaidInitiateTokenExchange_Handler(srv interface{}, ctx c
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(FinancialServiceServer).PlaidInitiateTokenExchange(ctx, req.(*PlaidInitiateTokenExchangeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FinancialService_PlaidInitiateTokenUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PlaidInitiateTokenUpdateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FinancialServiceServer).PlaidInitiateTokenUpdate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FinancialService_PlaidInitiateTokenUpdate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FinancialServiceServer).PlaidInitiateTokenUpdate(ctx, req.(*PlaidInitiateTokenUpdateRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1422,6 +1455,10 @@ var FinancialService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "PlaidInitiateTokenExchange",
 			Handler:    _FinancialService_PlaidInitiateTokenExchange_Handler,
+		},
+		{
+			MethodName: "PlaidInitiateTokenUpdate",
+			Handler:    _FinancialService_PlaidInitiateTokenUpdate_Handler,
 		},
 		{
 			MethodName: "PlaidExchangeToken",

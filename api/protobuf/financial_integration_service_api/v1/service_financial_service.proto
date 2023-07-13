@@ -35,6 +35,28 @@ service FinancialService {
     };
   }
 
+  rpc PlaidInitiateTokenUpdate(PlaidInitiateTokenUpdateRequest) returns (PlaidInitiateTokenUpdateResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/plaid/initiate-token-update"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "initiate plaid link token update"
+      tags: ["plaid"]
+      operation_id: "InitiatePlaidTokenUpdate"
+      description: "This endpoint initiates a plaid link token update"
+      responses: {
+        key: "200"
+        value: {
+          description: "A successful response."
+          schema: {
+            json_schema: {ref: ".api.v1.PlaidInitiateTokenUpdateResponse"}
+          }
+        }
+      }
+    };
+  }
+
   rpc PlaidExchangeToken(PlaidExchangeTokenRequest) returns (PlaidExchangeTokenResponse) {
     option (google.api.http) = {
       post: "/api/v1/plaid/exchange-token"

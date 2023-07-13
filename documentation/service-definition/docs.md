@@ -129,6 +129,8 @@
     - [PlaidExchangeTokenResponse](#financial_integration_service_api-v1-PlaidExchangeTokenResponse)
     - [PlaidInitiateTokenExchangeRequest](#financial_integration_service_api-v1-PlaidInitiateTokenExchangeRequest)
     - [PlaidInitiateTokenExchangeResponse](#financial_integration_service_api-v1-PlaidInitiateTokenExchangeResponse)
+    - [PlaidInitiateTokenUpdateRequest](#financial_integration_service_api-v1-PlaidInitiateTokenUpdateRequest)
+    - [PlaidInitiateTokenUpdateResponse](#financial_integration_service_api-v1-PlaidInitiateTokenUpdateResponse)
     - [ProcessWebhookRequest](#financial_integration_service_api-v1-ProcessWebhookRequest)
     - [ProcessWebhookRequest.ErrorEntry](#financial_integration_service_api-v1-ProcessWebhookRequest-ErrorEntry)
     - [ProcessWebhookResponse](#financial_integration_service_api-v1-ProcessWebhookResponse)
@@ -2381,6 +2383,38 @@ the `get user profile` request
 
 
 
+<a name="financial_integration_service_api-v1-PlaidInitiateTokenUpdateRequest"></a>
+
+### PlaidInitiateTokenUpdateRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| user_id | [uint64](#uint64) |  | The user id Validations: - user_id must be greater than 0 |
+| link_id | [uint64](#uint64) |  | The link id we want to update for Validations: - cannot be nil hence required |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-PlaidInitiateTokenUpdateResponse"></a>
+
+### PlaidInitiateTokenUpdateResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| link_token | [string](#string) |  |  |
+| expiration | [string](#string) |  |  |
+
+
+
+
+
+
 <a name="financial_integration_service_api-v1-ProcessWebhookRequest"></a>
 
 ### ProcessWebhookRequest
@@ -2676,6 +2710,7 @@ FinancialService API.
 | Method Name | Request Type | Response Type | Description |
 | ----------- | ------------ | ------------- | ------------|
 | PlaidInitiateTokenExchange | [PlaidInitiateTokenExchangeRequest](#financial_integration_service_api-v1-PlaidInitiateTokenExchangeRequest) | [PlaidInitiateTokenExchangeResponse](#financial_integration_service_api-v1-PlaidInitiateTokenExchangeResponse) |  |
+| PlaidInitiateTokenUpdate | [PlaidInitiateTokenUpdateRequest](#financial_integration_service_api-v1-PlaidInitiateTokenUpdateRequest) | [PlaidInitiateTokenUpdateResponse](#financial_integration_service_api-v1-PlaidInitiateTokenUpdateResponse) |  |
 | PlaidExchangeToken | [PlaidExchangeTokenRequest](#financial_integration_service_api-v1-PlaidExchangeTokenRequest) | [PlaidExchangeTokenResponse](#financial_integration_service_api-v1-PlaidExchangeTokenResponse) |  |
 | CreateUserProfile | [CreateUserProfileRequest](#financial_integration_service_api-v1-CreateUserProfileRequest) | [CreateUserProfileResponse](#financial_integration_service_api-v1-CreateUserProfileResponse) |  |
 | GetUserProfile | [GetUserProfileRequest](#financial_integration_service_api-v1-GetUserProfileRequest) | [GetUserProfileResponse](#financial_integration_service_api-v1-GetUserProfileResponse) |  |

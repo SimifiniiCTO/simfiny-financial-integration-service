@@ -96,6 +96,78 @@ func (p *PlaidWrapper) CreateLinkToken(ctx context.Context, options *LinkTokenOp
 	}, nil
 }
 
+// UpdateLinkToken updates a link token for the Plaid API. It takes in a `LinkTokenOptions` object
+// which contains the client user ID, legal name, phone number, email address, and the date and time
+// that the phone number and email address were verified.
+//
+// It constructs a `LinkTokenCreateRequest` using the Plaid API client and sends the request to
+// update the link token. It then returns the link token and the expiration date and time.
+func (p *PlaidWrapper) UpdateLinkToken(ctx context.Context, options *LinkTokenOptions, accessToken *string) (LinkToken, error) {
+	var webhooksUrl *string
+	if p.WebhooksEnabled {
+		if p.WebhooksDomain == "" {
+			p.Logger.Error("BUG: Plaid webhook domain is not present but webhooks are enabled.")
+		} else {
+			webhooksUrl = pointer.StringP(p.GetWebhooksURL())
+		}
+	}
+
+	// if we are in sandbox mode, we need to create a public token for the sandbox account
+	// based on the env config value ... we decipher wether to use the sandbox or production plaid client
+	if p.Environment == plaid.Sandbox {
+		publicToken, err := p.getPlublicTokenForSandboxAcct(ctx)
+		if err != nil {
+			p.Logger.Error("failed to create link token with Plaid", zap.Error(err))
+			return nil, err
+		}
+
+		return &PlaidLinkToken{
+			LinkToken: publicToken.GetPublicToken(),
+		}, nil
+	}
+
+	user := plaid.LinkTokenCreateRequestUser{
+		ClientUserId: options.ClientUserID,
+	}
+
+	request := plaid.NewLinkTokenCreateRequest(
+		PlaidClientName,
+		PlaidLanguage,
+		PlaidCountries,
+		user,
+	)
+
+	request.SetWebhook(*webhooksUrl)
+	request.SetAccessToken(*accessToken)
+	request.SetLinkCustomizationName(PlaidClientName)
+	request.Update.SetAccountSelectionEnabled(true)
+
+	p.Logger.Info("creating link token with Plaid in update mode", zap.Any("request", request))
+
+	result, _, err := p.client.PlaidApi.
+		LinkTokenCreate(ctx).
+		LinkTokenCreateRequest(*request).Execute()
+	if err != nil {
+		if plaidErr, ok := err.(plaid.GenericOpenAPIError); ok {
+			// Handle the plaidErr
+			// You can access the specific fields of plaidErr if needed
+			p.Logger.Error("Plaid error occurred", zap.Error(plaidErr), zap.Any("details", string(plaidErr.Body())))
+		} else {
+			// Handle other types of errors
+			p.Logger.Error("Non-Plaid error occurred", zap.Error(err))
+		}
+		return nil, err
+	}
+
+	// Use the generated link_token to initialize Plaid Link
+	// in update mode for a user's Item so that they can provide
+	// updated credentials or MFA information
+	return &PlaidLinkToken{
+		LinkToken: result.LinkToken,
+		Expires:   result.Expiration,
+	}, nil
+}
+
 // ExchangePublicToken exchanges a public token for an access token and item ID. It takes in a
 // public token and constructs an `ItemPublicTokenExchangeRequest` using the Plaid API client and
 // sends the request to exchange the public token for an access token and item ID. It then returns

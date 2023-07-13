@@ -1450,6 +1450,58 @@
         ]
       }
     },
+    "/api/v1/plaid/initiate-token-update": {
+      "post": {
+        "summary": "initiate plaid link token update",
+        "description": "This endpoint initiates a plaid link token update",
+        "operationId": "InitiatePlaidTokenUpdate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": ".api.v1.PlaidInitiateTokenUpdateResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": ".api.v1.ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": ".api.v1.PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": ".api.v1.InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PlaidInitiateTokenUpdateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "plaid"
+        ]
+      }
+    },
     "/api/v1/plaid/webhook": {
       "post": {
         "summary": "Processes a webhook obtained from plaid",
@@ -3559,6 +3611,36 @@
           "type": "string"
         },
         "plaidRequestId": {
+          "type": "string"
+        }
+      }
+    },
+    "PlaidInitiateTokenUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "format": "uint64",
+          "title": "The user id\nValidations:\n- user_id must be greater than 0"
+        },
+        "linkId": {
+          "type": "string",
+          "format": "uint64",
+          "title": "The link id we want to update for\nValidations:\n- cannot be nil hence required"
+        }
+      },
+      "required": [
+        "userId",
+        "linkId"
+      ]
+    },
+    "PlaidInitiateTokenUpdateResponse": {
+      "type": "object",
+      "properties": {
+        "linkToken": {
+          "type": "string"
+        },
+        "expiration": {
           "type": "string"
         }
       }

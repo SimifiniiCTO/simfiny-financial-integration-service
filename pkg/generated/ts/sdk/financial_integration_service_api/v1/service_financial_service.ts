@@ -67,6 +67,8 @@ import {
   PlaidExchangeTokenResponse,
   PlaidInitiateTokenExchangeRequest,
   PlaidInitiateTokenExchangeResponse,
+  PlaidInitiateTokenUpdateRequest,
+  PlaidInitiateTokenUpdateResponse,
   ProcessWebhookRequest,
   ProcessWebhookResponse,
   ReadynessCheckRequest,
@@ -90,6 +92,7 @@ export const protobufPackage = "financial_integration_service_api.v1";
 /** FinancialService API. */
 export interface FinancialService {
   PlaidInitiateTokenExchange(request: PlaidInitiateTokenExchangeRequest): Promise<PlaidInitiateTokenExchangeResponse>;
+  PlaidInitiateTokenUpdate(request: PlaidInitiateTokenUpdateRequest): Promise<PlaidInitiateTokenUpdateResponse>;
   PlaidExchangeToken(request: PlaidExchangeTokenRequest): Promise<PlaidExchangeTokenResponse>;
   CreateUserProfile(request: CreateUserProfileRequest): Promise<CreateUserProfileResponse>;
   GetUserProfile(request: GetUserProfileRequest): Promise<GetUserProfileResponse>;
@@ -140,6 +143,7 @@ export class FinancialServiceClientImpl implements FinancialService {
     this.service = opts?.service || FinancialServiceServiceName;
     this.rpc = rpc;
     this.PlaidInitiateTokenExchange = this.PlaidInitiateTokenExchange.bind(this);
+    this.PlaidInitiateTokenUpdate = this.PlaidInitiateTokenUpdate.bind(this);
     this.PlaidExchangeToken = this.PlaidExchangeToken.bind(this);
     this.CreateUserProfile = this.CreateUserProfile.bind(this);
     this.GetUserProfile = this.GetUserProfile.bind(this);
@@ -185,6 +189,12 @@ export class FinancialServiceClientImpl implements FinancialService {
     const data = PlaidInitiateTokenExchangeRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "PlaidInitiateTokenExchange", data);
     return promise.then((data) => PlaidInitiateTokenExchangeResponse.decode(_m0.Reader.create(data)));
+  }
+
+  PlaidInitiateTokenUpdate(request: PlaidInitiateTokenUpdateRequest): Promise<PlaidInitiateTokenUpdateResponse> {
+    const data = PlaidInitiateTokenUpdateRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "PlaidInitiateTokenUpdate", data);
+    return promise.then((data) => PlaidInitiateTokenUpdateResponse.decode(_m0.Reader.create(data)));
   }
 
   PlaidExchangeToken(request: PlaidExchangeTokenRequest): Promise<PlaidExchangeTokenResponse> {

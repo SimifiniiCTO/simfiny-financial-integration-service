@@ -494,6 +494,26 @@ export interface PlaidInitiateTokenExchangeResponse {
   plaidRequestId: string;
 }
 
+export interface PlaidInitiateTokenUpdateRequest {
+  /**
+   * The user id
+   * Validations:
+   * - user_id must be greater than 0
+   */
+  userId: number;
+  /**
+   * The link id we want to update for
+   * Validations:
+   * - cannot be nil hence required
+   */
+  linkId: number;
+}
+
+export interface PlaidInitiateTokenUpdateResponse {
+  linkToken: string;
+  expiration: string;
+}
+
 export interface PlaidExchangeTokenRequest {
   /**
    * The user id
@@ -4075,6 +4095,154 @@ export const PlaidInitiateTokenExchangeResponse = {
     message.linkToken = object.linkToken ?? "";
     message.expiration = object.expiration ?? "";
     message.plaidRequestId = object.plaidRequestId ?? "";
+    return message;
+  },
+};
+
+function createBasePlaidInitiateTokenUpdateRequest(): PlaidInitiateTokenUpdateRequest {
+  return { userId: 0, linkId: 0 };
+}
+
+export const PlaidInitiateTokenUpdateRequest = {
+  encode(message: PlaidInitiateTokenUpdateRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.userId !== 0) {
+      writer.uint32(8).uint64(message.userId);
+    }
+    if (message.linkId !== 0) {
+      writer.uint32(16).uint64(message.linkId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): PlaidInitiateTokenUpdateRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePlaidInitiateTokenUpdateRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.userId = longToNumber(reader.uint64() as Long);
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.linkId = longToNumber(reader.uint64() as Long);
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PlaidInitiateTokenUpdateRequest {
+    return {
+      userId: isSet(object.userId) ? Number(object.userId) : 0,
+      linkId: isSet(object.linkId) ? Number(object.linkId) : 0,
+    };
+  },
+
+  toJSON(message: PlaidInitiateTokenUpdateRequest): unknown {
+    const obj: any = {};
+    message.userId !== undefined && (obj.userId = Math.round(message.userId));
+    message.linkId !== undefined && (obj.linkId = Math.round(message.linkId));
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<PlaidInitiateTokenUpdateRequest>, I>>(base?: I): PlaidInitiateTokenUpdateRequest {
+    return PlaidInitiateTokenUpdateRequest.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<PlaidInitiateTokenUpdateRequest>, I>>(
+    object: I,
+  ): PlaidInitiateTokenUpdateRequest {
+    const message = createBasePlaidInitiateTokenUpdateRequest();
+    message.userId = object.userId ?? 0;
+    message.linkId = object.linkId ?? 0;
+    return message;
+  },
+};
+
+function createBasePlaidInitiateTokenUpdateResponse(): PlaidInitiateTokenUpdateResponse {
+  return { linkToken: "", expiration: "" };
+}
+
+export const PlaidInitiateTokenUpdateResponse = {
+  encode(message: PlaidInitiateTokenUpdateResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.linkToken !== "") {
+      writer.uint32(10).string(message.linkToken);
+    }
+    if (message.expiration !== "") {
+      writer.uint32(18).string(message.expiration);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): PlaidInitiateTokenUpdateResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePlaidInitiateTokenUpdateResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.linkToken = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.expiration = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PlaidInitiateTokenUpdateResponse {
+    return {
+      linkToken: isSet(object.linkToken) ? String(object.linkToken) : "",
+      expiration: isSet(object.expiration) ? String(object.expiration) : "",
+    };
+  },
+
+  toJSON(message: PlaidInitiateTokenUpdateResponse): unknown {
+    const obj: any = {};
+    message.linkToken !== undefined && (obj.linkToken = message.linkToken);
+    message.expiration !== undefined && (obj.expiration = message.expiration);
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<PlaidInitiateTokenUpdateResponse>, I>>(
+    base?: I,
+  ): PlaidInitiateTokenUpdateResponse {
+    return PlaidInitiateTokenUpdateResponse.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<PlaidInitiateTokenUpdateResponse>, I>>(
+    object: I,
+  ): PlaidInitiateTokenUpdateResponse {
+    const message = createBasePlaidInitiateTokenUpdateResponse();
+    message.linkToken = object.linkToken ?? "";
+    message.expiration = object.expiration ?? "";
     return message;
   },
 };

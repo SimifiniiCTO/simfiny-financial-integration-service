@@ -2816,6 +2816,122 @@ func (x *PlaidInitiateTokenExchangeResponse) GetPlaidRequestId() string {
 	return ""
 }
 
+type PlaidInitiateTokenUpdateRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// The user id
+	// Validations:
+	// - user_id must be greater than 0
+	UserId uint64 `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	// The link id we want to update for
+	// Validations:
+	// - cannot be nil hence required
+	LinkId uint64 `protobuf:"varint,2,opt,name=link_id,json=linkId,proto3" json:"link_id,omitempty"`
+}
+
+func (x *PlaidInitiateTokenUpdateRequest) Reset() {
+	*x = PlaidInitiateTokenUpdateRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[54]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *PlaidInitiateTokenUpdateRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PlaidInitiateTokenUpdateRequest) ProtoMessage() {}
+
+func (x *PlaidInitiateTokenUpdateRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[54]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PlaidInitiateTokenUpdateRequest.ProtoReflect.Descriptor instead.
+func (*PlaidInitiateTokenUpdateRequest) Descriptor() ([]byte, []int) {
+	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{54}
+}
+
+func (x *PlaidInitiateTokenUpdateRequest) GetUserId() uint64 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+func (x *PlaidInitiateTokenUpdateRequest) GetLinkId() uint64 {
+	if x != nil {
+		return x.LinkId
+	}
+	return 0
+}
+
+type PlaidInitiateTokenUpdateResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	LinkToken  string `protobuf:"bytes,1,opt,name=link_token,json=linkToken,proto3" json:"link_token,omitempty"`
+	Expiration string `protobuf:"bytes,2,opt,name=expiration,proto3" json:"expiration,omitempty"`
+}
+
+func (x *PlaidInitiateTokenUpdateResponse) Reset() {
+	*x = PlaidInitiateTokenUpdateResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[55]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *PlaidInitiateTokenUpdateResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PlaidInitiateTokenUpdateResponse) ProtoMessage() {}
+
+func (x *PlaidInitiateTokenUpdateResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[55]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PlaidInitiateTokenUpdateResponse.ProtoReflect.Descriptor instead.
+func (*PlaidInitiateTokenUpdateResponse) Descriptor() ([]byte, []int) {
+	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{55}
+}
+
+func (x *PlaidInitiateTokenUpdateResponse) GetLinkToken() string {
+	if x != nil {
+		return x.LinkToken
+	}
+	return ""
+}
+
+func (x *PlaidInitiateTokenUpdateResponse) GetExpiration() string {
+	if x != nil {
+		return x.Expiration
+	}
+	return ""
+}
+
 type PlaidExchangeTokenRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -2838,7 +2954,7 @@ type PlaidExchangeTokenRequest struct {
 func (x *PlaidExchangeTokenRequest) Reset() {
 	*x = PlaidExchangeTokenRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[54]
+		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[56]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2851,7 +2967,7 @@ func (x *PlaidExchangeTokenRequest) String() string {
 func (*PlaidExchangeTokenRequest) ProtoMessage() {}
 
 func (x *PlaidExchangeTokenRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[54]
+	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[56]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2864,7 +2980,7 @@ func (x *PlaidExchangeTokenRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PlaidExchangeTokenRequest.ProtoReflect.Descriptor instead.
 func (*PlaidExchangeTokenRequest) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{54}
+	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{56}
 }
 
 func (x *PlaidExchangeTokenRequest) GetUserId() uint64 {
@@ -2907,7 +3023,7 @@ type PlaidExchangeTokenResponse struct {
 func (x *PlaidExchangeTokenResponse) Reset() {
 	*x = PlaidExchangeTokenResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[55]
+		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[57]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2920,7 +3036,7 @@ func (x *PlaidExchangeTokenResponse) String() string {
 func (*PlaidExchangeTokenResponse) ProtoMessage() {}
 
 func (x *PlaidExchangeTokenResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[55]
+	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[57]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2933,7 +3049,7 @@ func (x *PlaidExchangeTokenResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PlaidExchangeTokenResponse.ProtoReflect.Descriptor instead.
 func (*PlaidExchangeTokenResponse) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{55}
+	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{57}
 }
 
 func (x *PlaidExchangeTokenResponse) GetSuccess() bool {
@@ -2961,7 +3077,7 @@ type GetInvestmentAcccountRequest struct {
 func (x *GetInvestmentAcccountRequest) Reset() {
 	*x = GetInvestmentAcccountRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[56]
+		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[58]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2974,7 +3090,7 @@ func (x *GetInvestmentAcccountRequest) String() string {
 func (*GetInvestmentAcccountRequest) ProtoMessage() {}
 
 func (x *GetInvestmentAcccountRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[56]
+	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[58]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2987,7 +3103,7 @@ func (x *GetInvestmentAcccountRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetInvestmentAcccountRequest.ProtoReflect.Descriptor instead.
 func (*GetInvestmentAcccountRequest) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{56}
+	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{58}
 }
 
 func (x *GetInvestmentAcccountRequest) GetUserId() uint64 {
@@ -3016,7 +3132,7 @@ type GetInvestmentAcccountResponse struct {
 func (x *GetInvestmentAcccountResponse) Reset() {
 	*x = GetInvestmentAcccountResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[57]
+		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[59]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3029,7 +3145,7 @@ func (x *GetInvestmentAcccountResponse) String() string {
 func (*GetInvestmentAcccountResponse) ProtoMessage() {}
 
 func (x *GetInvestmentAcccountResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[57]
+	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[59]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3042,7 +3158,7 @@ func (x *GetInvestmentAcccountResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetInvestmentAcccountResponse.ProtoReflect.Descriptor instead.
 func (*GetInvestmentAcccountResponse) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{57}
+	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{59}
 }
 
 func (x *GetInvestmentAcccountResponse) GetInvestmentAccount() *InvestmentAccount {
@@ -3070,7 +3186,7 @@ type GetMortgageAccountRequest struct {
 func (x *GetMortgageAccountRequest) Reset() {
 	*x = GetMortgageAccountRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[58]
+		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[60]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3083,7 +3199,7 @@ func (x *GetMortgageAccountRequest) String() string {
 func (*GetMortgageAccountRequest) ProtoMessage() {}
 
 func (x *GetMortgageAccountRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[58]
+	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[60]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3096,7 +3212,7 @@ func (x *GetMortgageAccountRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetMortgageAccountRequest.ProtoReflect.Descriptor instead.
 func (*GetMortgageAccountRequest) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{58}
+	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{60}
 }
 
 func (x *GetMortgageAccountRequest) GetUserId() uint64 {
@@ -3125,7 +3241,7 @@ type GetMortgageAccountResponse struct {
 func (x *GetMortgageAccountResponse) Reset() {
 	*x = GetMortgageAccountResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[59]
+		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[61]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3138,7 +3254,7 @@ func (x *GetMortgageAccountResponse) String() string {
 func (*GetMortgageAccountResponse) ProtoMessage() {}
 
 func (x *GetMortgageAccountResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[59]
+	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[61]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3151,7 +3267,7 @@ func (x *GetMortgageAccountResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetMortgageAccountResponse.ProtoReflect.Descriptor instead.
 func (*GetMortgageAccountResponse) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{59}
+	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{61}
 }
 
 func (x *GetMortgageAccountResponse) GetMortageAccount() *MortgageAccount {
@@ -3179,7 +3295,7 @@ type GetLiabilityAccountRequest struct {
 func (x *GetLiabilityAccountRequest) Reset() {
 	*x = GetLiabilityAccountRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[60]
+		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[62]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3192,7 +3308,7 @@ func (x *GetLiabilityAccountRequest) String() string {
 func (*GetLiabilityAccountRequest) ProtoMessage() {}
 
 func (x *GetLiabilityAccountRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[60]
+	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[62]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3205,7 +3321,7 @@ func (x *GetLiabilityAccountRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetLiabilityAccountRequest.ProtoReflect.Descriptor instead.
 func (*GetLiabilityAccountRequest) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{60}
+	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{62}
 }
 
 func (x *GetLiabilityAccountRequest) GetUserId() uint64 {
@@ -3234,7 +3350,7 @@ type GetLiabilityAccountResponse struct {
 func (x *GetLiabilityAccountResponse) Reset() {
 	*x = GetLiabilityAccountResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[61]
+		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[63]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3247,7 +3363,7 @@ func (x *GetLiabilityAccountResponse) String() string {
 func (*GetLiabilityAccountResponse) ProtoMessage() {}
 
 func (x *GetLiabilityAccountResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[61]
+	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[63]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3260,7 +3376,7 @@ func (x *GetLiabilityAccountResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetLiabilityAccountResponse.ProtoReflect.Descriptor instead.
 func (*GetLiabilityAccountResponse) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{61}
+	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{63}
 }
 
 func (x *GetLiabilityAccountResponse) GetLiabilityAccount() *CreditAccount {
@@ -3288,7 +3404,7 @@ type GetStudentLoanAccountRequest struct {
 func (x *GetStudentLoanAccountRequest) Reset() {
 	*x = GetStudentLoanAccountRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[62]
+		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[64]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3301,7 +3417,7 @@ func (x *GetStudentLoanAccountRequest) String() string {
 func (*GetStudentLoanAccountRequest) ProtoMessage() {}
 
 func (x *GetStudentLoanAccountRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[62]
+	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[64]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3314,7 +3430,7 @@ func (x *GetStudentLoanAccountRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetStudentLoanAccountRequest.ProtoReflect.Descriptor instead.
 func (*GetStudentLoanAccountRequest) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{62}
+	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{64}
 }
 
 func (x *GetStudentLoanAccountRequest) GetUserId() uint64 {
@@ -3343,7 +3459,7 @@ type GetStudentLoanAccountResponse struct {
 func (x *GetStudentLoanAccountResponse) Reset() {
 	*x = GetStudentLoanAccountResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[63]
+		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[65]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3356,7 +3472,7 @@ func (x *GetStudentLoanAccountResponse) String() string {
 func (*GetStudentLoanAccountResponse) ProtoMessage() {}
 
 func (x *GetStudentLoanAccountResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[63]
+	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[65]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3369,7 +3485,7 @@ func (x *GetStudentLoanAccountResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetStudentLoanAccountResponse.ProtoReflect.Descriptor instead.
 func (*GetStudentLoanAccountResponse) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{63}
+	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{65}
 }
 
 func (x *GetStudentLoanAccountResponse) GetStudentLoanAccount() *StudentLoanAccount {
@@ -3395,7 +3511,7 @@ type CreateManualLinkRequest struct {
 func (x *CreateManualLinkRequest) Reset() {
 	*x = CreateManualLinkRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[64]
+		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[66]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3408,7 +3524,7 @@ func (x *CreateManualLinkRequest) String() string {
 func (*CreateManualLinkRequest) ProtoMessage() {}
 
 func (x *CreateManualLinkRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[64]
+	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[66]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3421,7 +3537,7 @@ func (x *CreateManualLinkRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateManualLinkRequest.ProtoReflect.Descriptor instead.
 func (*CreateManualLinkRequest) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{64}
+	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{66}
 }
 
 func (x *CreateManualLinkRequest) GetUserId() uint64 {
@@ -3450,7 +3566,7 @@ type CreateManualLinkResponse struct {
 func (x *CreateManualLinkResponse) Reset() {
 	*x = CreateManualLinkResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[65]
+		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[67]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3463,7 +3579,7 @@ func (x *CreateManualLinkResponse) String() string {
 func (*CreateManualLinkResponse) ProtoMessage() {}
 
 func (x *CreateManualLinkResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[65]
+	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[67]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3476,7 +3592,7 @@ func (x *CreateManualLinkResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateManualLinkResponse.ProtoReflect.Descriptor instead.
 func (*CreateManualLinkResponse) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{65}
+	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{67}
 }
 
 func (x *CreateManualLinkResponse) GetLinkId() uint64 {
@@ -3504,7 +3620,7 @@ type GetLinkRequest struct {
 func (x *GetLinkRequest) Reset() {
 	*x = GetLinkRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[66]
+		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[68]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3517,7 +3633,7 @@ func (x *GetLinkRequest) String() string {
 func (*GetLinkRequest) ProtoMessage() {}
 
 func (x *GetLinkRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[66]
+	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[68]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3530,7 +3646,7 @@ func (x *GetLinkRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetLinkRequest.ProtoReflect.Descriptor instead.
 func (*GetLinkRequest) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{66}
+	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{68}
 }
 
 func (x *GetLinkRequest) GetUserId() uint64 {
@@ -3559,7 +3675,7 @@ type GetLinkResponse struct {
 func (x *GetLinkResponse) Reset() {
 	*x = GetLinkResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[67]
+		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[69]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3572,7 +3688,7 @@ func (x *GetLinkResponse) String() string {
 func (*GetLinkResponse) ProtoMessage() {}
 
 func (x *GetLinkResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[67]
+	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[69]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3585,7 +3701,7 @@ func (x *GetLinkResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetLinkResponse.ProtoReflect.Descriptor instead.
 func (*GetLinkResponse) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{67}
+	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{69}
 }
 
 func (x *GetLinkResponse) GetLink() *Link {
@@ -3609,7 +3725,7 @@ type GetLinksRequest struct {
 func (x *GetLinksRequest) Reset() {
 	*x = GetLinksRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[68]
+		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[70]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3622,7 +3738,7 @@ func (x *GetLinksRequest) String() string {
 func (*GetLinksRequest) ProtoMessage() {}
 
 func (x *GetLinksRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[68]
+	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[70]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3635,7 +3751,7 @@ func (x *GetLinksRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetLinksRequest.ProtoReflect.Descriptor instead.
 func (*GetLinksRequest) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{68}
+	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{70}
 }
 
 func (x *GetLinksRequest) GetUserId() uint64 {
@@ -3657,7 +3773,7 @@ type GetLinksResponse struct {
 func (x *GetLinksResponse) Reset() {
 	*x = GetLinksResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[69]
+		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[71]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3670,7 +3786,7 @@ func (x *GetLinksResponse) String() string {
 func (*GetLinksResponse) ProtoMessage() {}
 
 func (x *GetLinksResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[69]
+	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[71]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3683,7 +3799,7 @@ func (x *GetLinksResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetLinksResponse.ProtoReflect.Descriptor instead.
 func (*GetLinksResponse) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{69}
+	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{71}
 }
 
 func (x *GetLinksResponse) GetLinks() []*Link {
@@ -3711,7 +3827,7 @@ type DeleteLinkRequest struct {
 func (x *DeleteLinkRequest) Reset() {
 	*x = DeleteLinkRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[70]
+		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[72]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3724,7 +3840,7 @@ func (x *DeleteLinkRequest) String() string {
 func (*DeleteLinkRequest) ProtoMessage() {}
 
 func (x *DeleteLinkRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[70]
+	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[72]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3737,7 +3853,7 @@ func (x *DeleteLinkRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteLinkRequest.ProtoReflect.Descriptor instead.
 func (*DeleteLinkRequest) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{70}
+	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{72}
 }
 
 func (x *DeleteLinkRequest) GetUserId() uint64 {
@@ -3766,7 +3882,7 @@ type DeleteLinkResponse struct {
 func (x *DeleteLinkResponse) Reset() {
 	*x = DeleteLinkResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[71]
+		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[73]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3779,7 +3895,7 @@ func (x *DeleteLinkResponse) String() string {
 func (*DeleteLinkResponse) ProtoMessage() {}
 
 func (x *DeleteLinkResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[71]
+	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[73]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3792,7 +3908,7 @@ func (x *DeleteLinkResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteLinkResponse.ProtoReflect.Descriptor instead.
 func (*DeleteLinkResponse) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{71}
+	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{73}
 }
 
 func (x *DeleteLinkResponse) GetLinkId() uint64 {
@@ -3816,7 +3932,7 @@ type GetReCurringTransactionsRequest struct {
 func (x *GetReCurringTransactionsRequest) Reset() {
 	*x = GetReCurringTransactionsRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[72]
+		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[74]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3829,7 +3945,7 @@ func (x *GetReCurringTransactionsRequest) String() string {
 func (*GetReCurringTransactionsRequest) ProtoMessage() {}
 
 func (x *GetReCurringTransactionsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[72]
+	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[74]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3842,7 +3958,7 @@ func (x *GetReCurringTransactionsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetReCurringTransactionsRequest.ProtoReflect.Descriptor instead.
 func (*GetReCurringTransactionsRequest) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{72}
+	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{74}
 }
 
 func (x *GetReCurringTransactionsRequest) GetUserId() uint64 {
@@ -3865,7 +3981,7 @@ type GetReCurringTransactionsResponse struct {
 func (x *GetReCurringTransactionsResponse) Reset() {
 	*x = GetReCurringTransactionsResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[73]
+		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[75]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3878,7 +3994,7 @@ func (x *GetReCurringTransactionsResponse) String() string {
 func (*GetReCurringTransactionsResponse) ProtoMessage() {}
 
 func (x *GetReCurringTransactionsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[73]
+	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[75]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3891,7 +4007,7 @@ func (x *GetReCurringTransactionsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetReCurringTransactionsResponse.ProtoReflect.Descriptor instead.
 func (*GetReCurringTransactionsResponse) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{73}
+	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{75}
 }
 
 func (x *GetReCurringTransactionsResponse) GetReCcuringTransactions() []*ReOccuringTransaction {
@@ -3924,7 +4040,7 @@ type GetTransactionsRequest struct {
 func (x *GetTransactionsRequest) Reset() {
 	*x = GetTransactionsRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[74]
+		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[76]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3937,7 +4053,7 @@ func (x *GetTransactionsRequest) String() string {
 func (*GetTransactionsRequest) ProtoMessage() {}
 
 func (x *GetTransactionsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[74]
+	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[76]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3950,7 +4066,7 @@ func (x *GetTransactionsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetTransactionsRequest.ProtoReflect.Descriptor instead.
 func (*GetTransactionsRequest) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{74}
+	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{76}
 }
 
 func (x *GetTransactionsRequest) GetUserId() uint64 {
@@ -3987,7 +4103,7 @@ type GetTransactionsResponse struct {
 func (x *GetTransactionsResponse) Reset() {
 	*x = GetTransactionsResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[75]
+		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[77]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4000,7 +4116,7 @@ func (x *GetTransactionsResponse) String() string {
 func (*GetTransactionsResponse) ProtoMessage() {}
 
 func (x *GetTransactionsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[75]
+	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[77]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4013,7 +4129,7 @@ func (x *GetTransactionsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetTransactionsResponse.ProtoReflect.Descriptor instead.
 func (*GetTransactionsResponse) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{75}
+	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{77}
 }
 
 func (x *GetTransactionsResponse) GetTransactions() []*Transaction {
@@ -4075,7 +4191,7 @@ type ProcessWebhookRequest struct {
 func (x *ProcessWebhookRequest) Reset() {
 	*x = ProcessWebhookRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[76]
+		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[78]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4088,7 +4204,7 @@ func (x *ProcessWebhookRequest) String() string {
 func (*ProcessWebhookRequest) ProtoMessage() {}
 
 func (x *ProcessWebhookRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[76]
+	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[78]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4101,7 +4217,7 @@ func (x *ProcessWebhookRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ProcessWebhookRequest.ProtoReflect.Descriptor instead.
 func (*ProcessWebhookRequest) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{76}
+	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{78}
 }
 
 func (x *ProcessWebhookRequest) GetWebhookType() string {
@@ -4218,7 +4334,7 @@ type ProcessWebhookResponse struct {
 func (x *ProcessWebhookResponse) Reset() {
 	*x = ProcessWebhookResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[77]
+		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[79]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4231,7 +4347,7 @@ func (x *ProcessWebhookResponse) String() string {
 func (*ProcessWebhookResponse) ProtoMessage() {}
 
 func (x *ProcessWebhookResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[77]
+	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[79]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4244,7 +4360,7 @@ func (x *ProcessWebhookResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ProcessWebhookResponse.ProtoReflect.Descriptor instead.
 func (*ProcessWebhookResponse) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{77}
+	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{79}
 }
 
 type StripeWebhookRequest struct {
@@ -4259,7 +4375,7 @@ type StripeWebhookRequest struct {
 func (x *StripeWebhookRequest) Reset() {
 	*x = StripeWebhookRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[78]
+		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[80]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4272,7 +4388,7 @@ func (x *StripeWebhookRequest) String() string {
 func (*StripeWebhookRequest) ProtoMessage() {}
 
 func (x *StripeWebhookRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[78]
+	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[80]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4285,7 +4401,7 @@ func (x *StripeWebhookRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StripeWebhookRequest.ProtoReflect.Descriptor instead.
 func (*StripeWebhookRequest) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{78}
+	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{80}
 }
 
 func (x *StripeWebhookRequest) GetBody() string {
@@ -4313,7 +4429,7 @@ type StripeWebhookResponse struct {
 func (x *StripeWebhookResponse) Reset() {
 	*x = StripeWebhookResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[79]
+		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[81]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4326,7 +4442,7 @@ func (x *StripeWebhookResponse) String() string {
 func (*StripeWebhookResponse) ProtoMessage() {}
 
 func (x *StripeWebhookResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[79]
+	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[81]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4339,7 +4455,7 @@ func (x *StripeWebhookResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StripeWebhookResponse.ProtoReflect.Descriptor instead.
 func (*StripeWebhookResponse) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{79}
+	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{81}
 }
 
 func (x *StripeWebhookResponse) GetMessage() string {
@@ -4361,7 +4477,7 @@ type CreateSubscriptionRequest struct {
 func (x *CreateSubscriptionRequest) Reset() {
 	*x = CreateSubscriptionRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[80]
+		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[82]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4374,7 +4490,7 @@ func (x *CreateSubscriptionRequest) String() string {
 func (*CreateSubscriptionRequest) ProtoMessage() {}
 
 func (x *CreateSubscriptionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[80]
+	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[82]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4387,7 +4503,7 @@ func (x *CreateSubscriptionRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateSubscriptionRequest.ProtoReflect.Descriptor instead.
 func (*CreateSubscriptionRequest) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{80}
+	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{82}
 }
 
 func (x *CreateSubscriptionRequest) GetUserId() uint64 {
@@ -4416,7 +4532,7 @@ type CreateSubscriptionResponse struct {
 func (x *CreateSubscriptionResponse) Reset() {
 	*x = CreateSubscriptionResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[81]
+		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[83]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4429,7 +4545,7 @@ func (x *CreateSubscriptionResponse) String() string {
 func (*CreateSubscriptionResponse) ProtoMessage() {}
 
 func (x *CreateSubscriptionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[81]
+	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[83]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4442,7 +4558,7 @@ func (x *CreateSubscriptionResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateSubscriptionResponse.ProtoReflect.Descriptor instead.
 func (*CreateSubscriptionResponse) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{81}
+	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{83}
 }
 
 func (x *CreateSubscriptionResponse) GetSubscriptionId() string {
@@ -4473,7 +4589,7 @@ type GetReCurringTransactionsResponse_ParticipantReCurringTransactions struct {
 func (x *GetReCurringTransactionsResponse_ParticipantReCurringTransactions) Reset() {
 	*x = GetReCurringTransactionsResponse_ParticipantReCurringTransactions{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[82]
+		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[84]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4486,7 +4602,7 @@ func (x *GetReCurringTransactionsResponse_ParticipantReCurringTransactions) Stri
 func (*GetReCurringTransactionsResponse_ParticipantReCurringTransactions) ProtoMessage() {}
 
 func (x *GetReCurringTransactionsResponse_ParticipantReCurringTransactions) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[82]
+	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[84]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4499,7 +4615,7 @@ func (x *GetReCurringTransactionsResponse_ParticipantReCurringTransactions) Prot
 
 // Deprecated: Use GetReCurringTransactionsResponse_ParticipantReCurringTransactions.ProtoReflect.Descriptor instead.
 func (*GetReCurringTransactionsResponse_ParticipantReCurringTransactions) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{73, 0}
+	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{75, 0}
 }
 
 func (x *GetReCurringTransactionsResponse_ParticipantReCurringTransactions) GetReocurringTransactionId() string {
@@ -4860,7 +4976,20 @@ var file_financial_integration_service_api_v1_request_response_financial_service
 	0x65, 0x78, 0x70, 0x69, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x28, 0x0a, 0x10, 0x70, 0x6c,
 	0x61, 0x69, 0x64, 0x5f, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x03,
 	0x20, 0x01, 0x28, 0x09, 0x52, 0x0e, 0x70, 0x6c, 0x61, 0x69, 0x64, 0x52, 0x65, 0x71, 0x75, 0x65,
-	0x73, 0x74, 0x49, 0x64, 0x22, 0xc1, 0x01, 0x0a, 0x19, 0x50, 0x6c, 0x61, 0x69, 0x64, 0x45, 0x78,
+	0x73, 0x74, 0x49, 0x64, 0x22, 0x6b, 0x0a, 0x1f, 0x50, 0x6c, 0x61, 0x69, 0x64, 0x49, 0x6e, 0x69,
+	0x74, 0x69, 0x61, 0x74, 0x65, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65,
+	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x23, 0x0a, 0x07, 0x75, 0x73, 0x65, 0x72, 0x5f,
+	0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x42, 0x0a, 0xe0, 0x41, 0x02, 0xfa, 0x42, 0x04,
+	0x32, 0x02, 0x20, 0x00, 0x52, 0x06, 0x75, 0x73, 0x65, 0x72, 0x49, 0x64, 0x12, 0x23, 0x0a, 0x07,
+	0x6c, 0x69, 0x6e, 0x6b, 0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x04, 0x42, 0x0a, 0xe0,
+	0x41, 0x02, 0xfa, 0x42, 0x04, 0x32, 0x02, 0x20, 0x00, 0x52, 0x06, 0x6c, 0x69, 0x6e, 0x6b, 0x49,
+	0x64, 0x22, 0x61, 0x0a, 0x20, 0x50, 0x6c, 0x61, 0x69, 0x64, 0x49, 0x6e, 0x69, 0x74, 0x69, 0x61,
+	0x74, 0x65, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x52, 0x65, 0x73,
+	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x1d, 0x0a, 0x0a, 0x6c, 0x69, 0x6e, 0x6b, 0x5f, 0x74, 0x6f,
+	0x6b, 0x65, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x6c, 0x69, 0x6e, 0x6b, 0x54,
+	0x6f, 0x6b, 0x65, 0x6e, 0x12, 0x1e, 0x0a, 0x0a, 0x65, 0x78, 0x70, 0x69, 0x72, 0x61, 0x74, 0x69,
+	0x6f, 0x6e, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0a, 0x65, 0x78, 0x70, 0x69, 0x72, 0x61,
+	0x74, 0x69, 0x6f, 0x6e, 0x22, 0xc1, 0x01, 0x0a, 0x19, 0x50, 0x6c, 0x61, 0x69, 0x64, 0x45, 0x78,
 	0x63, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65,
 	0x73, 0x74, 0x12, 0x23, 0x0a, 0x07, 0x75, 0x73, 0x65, 0x72, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20,
 	0x01, 0x28, 0x04, 0x42, 0x0a, 0xe0, 0x41, 0x02, 0xfa, 0x42, 0x04, 0x32, 0x02, 0x20, 0x00, 0x52,
@@ -5165,7 +5294,7 @@ func file_financial_integration_service_api_v1_request_response_financial_servic
 	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescData
 }
 
-var file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes = make([]protoimpl.MessageInfo, 84)
+var file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes = make([]protoimpl.MessageInfo, 86)
 var file_financial_integration_service_api_v1_request_response_financial_service_proto_goTypes = []interface{}{
 	(*CreateUserProfileRequest)(nil),                                          // 0: financial_integration_service_api.v1.CreateUserProfileRequest
 	(*CreateUserProfileResponse)(nil),                                         // 1: financial_integration_service_api.v1.CreateUserProfileResponse
@@ -5221,94 +5350,96 @@ var file_financial_integration_service_api_v1_request_response_financial_service
 	(*ReadynessCheckResponse)(nil),                                            // 51: financial_integration_service_api.v1.ReadynessCheckResponse
 	(*PlaidInitiateTokenExchangeRequest)(nil),                                 // 52: financial_integration_service_api.v1.PlaidInitiateTokenExchangeRequest
 	(*PlaidInitiateTokenExchangeResponse)(nil),                                // 53: financial_integration_service_api.v1.PlaidInitiateTokenExchangeResponse
-	(*PlaidExchangeTokenRequest)(nil),                                         // 54: financial_integration_service_api.v1.PlaidExchangeTokenRequest
-	(*PlaidExchangeTokenResponse)(nil),                                        // 55: financial_integration_service_api.v1.PlaidExchangeTokenResponse
-	(*GetInvestmentAcccountRequest)(nil),                                      // 56: financial_integration_service_api.v1.GetInvestmentAcccountRequest
-	(*GetInvestmentAcccountResponse)(nil),                                     // 57: financial_integration_service_api.v1.GetInvestmentAcccountResponse
-	(*GetMortgageAccountRequest)(nil),                                         // 58: financial_integration_service_api.v1.GetMortgageAccountRequest
-	(*GetMortgageAccountResponse)(nil),                                        // 59: financial_integration_service_api.v1.GetMortgageAccountResponse
-	(*GetLiabilityAccountRequest)(nil),                                        // 60: financial_integration_service_api.v1.GetLiabilityAccountRequest
-	(*GetLiabilityAccountResponse)(nil),                                       // 61: financial_integration_service_api.v1.GetLiabilityAccountResponse
-	(*GetStudentLoanAccountRequest)(nil),                                      // 62: financial_integration_service_api.v1.GetStudentLoanAccountRequest
-	(*GetStudentLoanAccountResponse)(nil),                                     // 63: financial_integration_service_api.v1.GetStudentLoanAccountResponse
-	(*CreateManualLinkRequest)(nil),                                           // 64: financial_integration_service_api.v1.CreateManualLinkRequest
-	(*CreateManualLinkResponse)(nil),                                          // 65: financial_integration_service_api.v1.CreateManualLinkResponse
-	(*GetLinkRequest)(nil),                                                    // 66: financial_integration_service_api.v1.GetLinkRequest
-	(*GetLinkResponse)(nil),                                                   // 67: financial_integration_service_api.v1.GetLinkResponse
-	(*GetLinksRequest)(nil),                                                   // 68: financial_integration_service_api.v1.GetLinksRequest
-	(*GetLinksResponse)(nil),                                                  // 69: financial_integration_service_api.v1.GetLinksResponse
-	(*DeleteLinkRequest)(nil),                                                 // 70: financial_integration_service_api.v1.DeleteLinkRequest
-	(*DeleteLinkResponse)(nil),                                                // 71: financial_integration_service_api.v1.DeleteLinkResponse
-	(*GetReCurringTransactionsRequest)(nil),                                   // 72: financial_integration_service_api.v1.GetReCurringTransactionsRequest
-	(*GetReCurringTransactionsResponse)(nil),                                  // 73: financial_integration_service_api.v1.GetReCurringTransactionsResponse
-	(*GetTransactionsRequest)(nil),                                            // 74: financial_integration_service_api.v1.GetTransactionsRequest
-	(*GetTransactionsResponse)(nil),                                           // 75: financial_integration_service_api.v1.GetTransactionsResponse
-	(*ProcessWebhookRequest)(nil),                                             // 76: financial_integration_service_api.v1.ProcessWebhookRequest
-	(*ProcessWebhookResponse)(nil),                                            // 77: financial_integration_service_api.v1.ProcessWebhookResponse
-	(*StripeWebhookRequest)(nil),                                              // 78: financial_integration_service_api.v1.StripeWebhookRequest
-	(*StripeWebhookResponse)(nil),                                             // 79: financial_integration_service_api.v1.StripeWebhookResponse
-	(*CreateSubscriptionRequest)(nil),                                         // 80: financial_integration_service_api.v1.CreateSubscriptionRequest
-	(*CreateSubscriptionResponse)(nil),                                        // 81: financial_integration_service_api.v1.CreateSubscriptionResponse
-	(*GetReCurringTransactionsResponse_ParticipantReCurringTransactions)(nil), // 82: financial_integration_service_api.v1.GetReCurringTransactionsResponse.ParticipantReCurringTransactions
-	nil,                           // 83: financial_integration_service_api.v1.ProcessWebhookRequest.ErrorEntry
-	(*UserProfile)(nil),           // 84: financial_integration_service_api.v1.UserProfile
-	(*BankAccount)(nil),           // 85: financial_integration_service_api.v1.BankAccount
-	(*Pocket)(nil),                // 86: financial_integration_service_api.v1.Pocket
-	(*SmartGoal)(nil),             // 87: financial_integration_service_api.v1.SmartGoal
-	(*Milestone)(nil),             // 88: financial_integration_service_api.v1.Milestone
-	(*Forecast)(nil),              // 89: financial_integration_service_api.v1.Forecast
-	(*Budget)(nil),                // 90: financial_integration_service_api.v1.Budget
-	(*InvestmentAccount)(nil),     // 91: financial_integration_service_api.v1.InvestmentAccount
-	(*MortgageAccount)(nil),       // 92: financial_integration_service_api.v1.MortgageAccount
-	(*CreditAccount)(nil),         // 93: financial_integration_service_api.v1.CreditAccount
-	(*StudentLoanAccount)(nil),    // 94: financial_integration_service_api.v1.StudentLoanAccount
-	(*Link)(nil),                  // 95: financial_integration_service_api.v1.Link
-	(*ReOccuringTransaction)(nil), // 96: financial_integration_service_api.v1.ReOccuringTransaction
-	(*Transaction)(nil),           // 97: financial_integration_service_api.v1.Transaction
-	(*anypb.Any)(nil),             // 98: google.protobuf.Any
+	(*PlaidInitiateTokenUpdateRequest)(nil),                                   // 54: financial_integration_service_api.v1.PlaidInitiateTokenUpdateRequest
+	(*PlaidInitiateTokenUpdateResponse)(nil),                                  // 55: financial_integration_service_api.v1.PlaidInitiateTokenUpdateResponse
+	(*PlaidExchangeTokenRequest)(nil),                                         // 56: financial_integration_service_api.v1.PlaidExchangeTokenRequest
+	(*PlaidExchangeTokenResponse)(nil),                                        // 57: financial_integration_service_api.v1.PlaidExchangeTokenResponse
+	(*GetInvestmentAcccountRequest)(nil),                                      // 58: financial_integration_service_api.v1.GetInvestmentAcccountRequest
+	(*GetInvestmentAcccountResponse)(nil),                                     // 59: financial_integration_service_api.v1.GetInvestmentAcccountResponse
+	(*GetMortgageAccountRequest)(nil),                                         // 60: financial_integration_service_api.v1.GetMortgageAccountRequest
+	(*GetMortgageAccountResponse)(nil),                                        // 61: financial_integration_service_api.v1.GetMortgageAccountResponse
+	(*GetLiabilityAccountRequest)(nil),                                        // 62: financial_integration_service_api.v1.GetLiabilityAccountRequest
+	(*GetLiabilityAccountResponse)(nil),                                       // 63: financial_integration_service_api.v1.GetLiabilityAccountResponse
+	(*GetStudentLoanAccountRequest)(nil),                                      // 64: financial_integration_service_api.v1.GetStudentLoanAccountRequest
+	(*GetStudentLoanAccountResponse)(nil),                                     // 65: financial_integration_service_api.v1.GetStudentLoanAccountResponse
+	(*CreateManualLinkRequest)(nil),                                           // 66: financial_integration_service_api.v1.CreateManualLinkRequest
+	(*CreateManualLinkResponse)(nil),                                          // 67: financial_integration_service_api.v1.CreateManualLinkResponse
+	(*GetLinkRequest)(nil),                                                    // 68: financial_integration_service_api.v1.GetLinkRequest
+	(*GetLinkResponse)(nil),                                                   // 69: financial_integration_service_api.v1.GetLinkResponse
+	(*GetLinksRequest)(nil),                                                   // 70: financial_integration_service_api.v1.GetLinksRequest
+	(*GetLinksResponse)(nil),                                                  // 71: financial_integration_service_api.v1.GetLinksResponse
+	(*DeleteLinkRequest)(nil),                                                 // 72: financial_integration_service_api.v1.DeleteLinkRequest
+	(*DeleteLinkResponse)(nil),                                                // 73: financial_integration_service_api.v1.DeleteLinkResponse
+	(*GetReCurringTransactionsRequest)(nil),                                   // 74: financial_integration_service_api.v1.GetReCurringTransactionsRequest
+	(*GetReCurringTransactionsResponse)(nil),                                  // 75: financial_integration_service_api.v1.GetReCurringTransactionsResponse
+	(*GetTransactionsRequest)(nil),                                            // 76: financial_integration_service_api.v1.GetTransactionsRequest
+	(*GetTransactionsResponse)(nil),                                           // 77: financial_integration_service_api.v1.GetTransactionsResponse
+	(*ProcessWebhookRequest)(nil),                                             // 78: financial_integration_service_api.v1.ProcessWebhookRequest
+	(*ProcessWebhookResponse)(nil),                                            // 79: financial_integration_service_api.v1.ProcessWebhookResponse
+	(*StripeWebhookRequest)(nil),                                              // 80: financial_integration_service_api.v1.StripeWebhookRequest
+	(*StripeWebhookResponse)(nil),                                             // 81: financial_integration_service_api.v1.StripeWebhookResponse
+	(*CreateSubscriptionRequest)(nil),                                         // 82: financial_integration_service_api.v1.CreateSubscriptionRequest
+	(*CreateSubscriptionResponse)(nil),                                        // 83: financial_integration_service_api.v1.CreateSubscriptionResponse
+	(*GetReCurringTransactionsResponse_ParticipantReCurringTransactions)(nil), // 84: financial_integration_service_api.v1.GetReCurringTransactionsResponse.ParticipantReCurringTransactions
+	nil,                           // 85: financial_integration_service_api.v1.ProcessWebhookRequest.ErrorEntry
+	(*UserProfile)(nil),           // 86: financial_integration_service_api.v1.UserProfile
+	(*BankAccount)(nil),           // 87: financial_integration_service_api.v1.BankAccount
+	(*Pocket)(nil),                // 88: financial_integration_service_api.v1.Pocket
+	(*SmartGoal)(nil),             // 89: financial_integration_service_api.v1.SmartGoal
+	(*Milestone)(nil),             // 90: financial_integration_service_api.v1.Milestone
+	(*Forecast)(nil),              // 91: financial_integration_service_api.v1.Forecast
+	(*Budget)(nil),                // 92: financial_integration_service_api.v1.Budget
+	(*InvestmentAccount)(nil),     // 93: financial_integration_service_api.v1.InvestmentAccount
+	(*MortgageAccount)(nil),       // 94: financial_integration_service_api.v1.MortgageAccount
+	(*CreditAccount)(nil),         // 95: financial_integration_service_api.v1.CreditAccount
+	(*StudentLoanAccount)(nil),    // 96: financial_integration_service_api.v1.StudentLoanAccount
+	(*Link)(nil),                  // 97: financial_integration_service_api.v1.Link
+	(*ReOccuringTransaction)(nil), // 98: financial_integration_service_api.v1.ReOccuringTransaction
+	(*Transaction)(nil),           // 99: financial_integration_service_api.v1.Transaction
+	(*anypb.Any)(nil),             // 100: google.protobuf.Any
 }
 var file_financial_integration_service_api_v1_request_response_financial_service_proto_depIdxs = []int32{
-	84, // 0: financial_integration_service_api.v1.CreateUserProfileRequest.profile:type_name -> financial_integration_service_api.v1.UserProfile
-	84, // 1: financial_integration_service_api.v1.GetUserProfileResponse.profile:type_name -> financial_integration_service_api.v1.UserProfile
-	84, // 2: financial_integration_service_api.v1.UpdateUserProfileRequest.profile:type_name -> financial_integration_service_api.v1.UserProfile
-	84, // 3: financial_integration_service_api.v1.UpdateUserProfileResponse.profile:type_name -> financial_integration_service_api.v1.UserProfile
-	85, // 4: financial_integration_service_api.v1.CreateBankAccountRequest.bank_account:type_name -> financial_integration_service_api.v1.BankAccount
-	85, // 5: financial_integration_service_api.v1.GetBankAccountResponse.bank_account:type_name -> financial_integration_service_api.v1.BankAccount
-	85, // 6: financial_integration_service_api.v1.UpdateBankAccountRequest.bank_account:type_name -> financial_integration_service_api.v1.BankAccount
-	85, // 7: financial_integration_service_api.v1.UpdateBankAccountResponse.bank_account:type_name -> financial_integration_service_api.v1.BankAccount
-	86, // 8: financial_integration_service_api.v1.GetPocketResponse.pocket:type_name -> financial_integration_service_api.v1.Pocket
-	87, // 9: financial_integration_service_api.v1.GetSmartGoalsByPocketIdResponse.smart_goals:type_name -> financial_integration_service_api.v1.SmartGoal
-	87, // 10: financial_integration_service_api.v1.CreateSmartGoalRequest.smart_goal:type_name -> financial_integration_service_api.v1.SmartGoal
-	87, // 11: financial_integration_service_api.v1.UpdateSmartGoalRequest.smart_goal:type_name -> financial_integration_service_api.v1.SmartGoal
-	88, // 12: financial_integration_service_api.v1.CreateMilestoneRequest.milestone:type_name -> financial_integration_service_api.v1.Milestone
-	88, // 13: financial_integration_service_api.v1.UpdateMilestoneRequest.milestone:type_name -> financial_integration_service_api.v1.Milestone
-	88, // 14: financial_integration_service_api.v1.UpdateMilestoneResponse.milestone:type_name -> financial_integration_service_api.v1.Milestone
-	88, // 15: financial_integration_service_api.v1.GetMilestonesBySmartGoalIdResponse.milestones:type_name -> financial_integration_service_api.v1.Milestone
-	88, // 16: financial_integration_service_api.v1.GetMilestoneResponse.milestone:type_name -> financial_integration_service_api.v1.Milestone
-	89, // 17: financial_integration_service_api.v1.GetForecastResponse.forecast:type_name -> financial_integration_service_api.v1.Forecast
-	90, // 18: financial_integration_service_api.v1.CreateBudgetRequest.budget:type_name -> financial_integration_service_api.v1.Budget
-	90, // 19: financial_integration_service_api.v1.UpdateBudgetRequest.budget:type_name -> financial_integration_service_api.v1.Budget
-	90, // 20: financial_integration_service_api.v1.UpdateBudgetResponse.budget:type_name -> financial_integration_service_api.v1.Budget
-	90, // 21: financial_integration_service_api.v1.GetBudgetResponse.budget:type_name -> financial_integration_service_api.v1.Budget
-	90, // 22: financial_integration_service_api.v1.GetAllBudgetsResponse.budgets:type_name -> financial_integration_service_api.v1.Budget
-	91, // 23: financial_integration_service_api.v1.GetInvestmentAcccountResponse.investment_account:type_name -> financial_integration_service_api.v1.InvestmentAccount
-	92, // 24: financial_integration_service_api.v1.GetMortgageAccountResponse.mortage_account:type_name -> financial_integration_service_api.v1.MortgageAccount
-	93, // 25: financial_integration_service_api.v1.GetLiabilityAccountResponse.liability_account:type_name -> financial_integration_service_api.v1.CreditAccount
-	94, // 26: financial_integration_service_api.v1.GetStudentLoanAccountResponse.student_loan_account:type_name -> financial_integration_service_api.v1.StudentLoanAccount
-	95, // 27: financial_integration_service_api.v1.CreateManualLinkRequest.manual_account_link:type_name -> financial_integration_service_api.v1.Link
-	95, // 28: financial_integration_service_api.v1.GetLinkResponse.link:type_name -> financial_integration_service_api.v1.Link
-	95, // 29: financial_integration_service_api.v1.GetLinksResponse.links:type_name -> financial_integration_service_api.v1.Link
-	96, // 30: financial_integration_service_api.v1.GetReCurringTransactionsResponse.re_ccuring_transactions:type_name -> financial_integration_service_api.v1.ReOccuringTransaction
-	82, // 31: financial_integration_service_api.v1.GetReCurringTransactionsResponse.participant_re_ccuring_transactions:type_name -> financial_integration_service_api.v1.GetReCurringTransactionsResponse.ParticipantReCurringTransactions
-	97, // 32: financial_integration_service_api.v1.GetTransactionsResponse.transactions:type_name -> financial_integration_service_api.v1.Transaction
-	83, // 33: financial_integration_service_api.v1.ProcessWebhookRequest.error:type_name -> financial_integration_service_api.v1.ProcessWebhookRequest.ErrorEntry
-	97, // 34: financial_integration_service_api.v1.GetReCurringTransactionsResponse.ParticipantReCurringTransactions.transactions:type_name -> financial_integration_service_api.v1.Transaction
-	98, // 35: financial_integration_service_api.v1.ProcessWebhookRequest.ErrorEntry.value:type_name -> google.protobuf.Any
-	36, // [36:36] is the sub-list for method output_type
-	36, // [36:36] is the sub-list for method input_type
-	36, // [36:36] is the sub-list for extension type_name
-	36, // [36:36] is the sub-list for extension extendee
-	0,  // [0:36] is the sub-list for field type_name
+	86,  // 0: financial_integration_service_api.v1.CreateUserProfileRequest.profile:type_name -> financial_integration_service_api.v1.UserProfile
+	86,  // 1: financial_integration_service_api.v1.GetUserProfileResponse.profile:type_name -> financial_integration_service_api.v1.UserProfile
+	86,  // 2: financial_integration_service_api.v1.UpdateUserProfileRequest.profile:type_name -> financial_integration_service_api.v1.UserProfile
+	86,  // 3: financial_integration_service_api.v1.UpdateUserProfileResponse.profile:type_name -> financial_integration_service_api.v1.UserProfile
+	87,  // 4: financial_integration_service_api.v1.CreateBankAccountRequest.bank_account:type_name -> financial_integration_service_api.v1.BankAccount
+	87,  // 5: financial_integration_service_api.v1.GetBankAccountResponse.bank_account:type_name -> financial_integration_service_api.v1.BankAccount
+	87,  // 6: financial_integration_service_api.v1.UpdateBankAccountRequest.bank_account:type_name -> financial_integration_service_api.v1.BankAccount
+	87,  // 7: financial_integration_service_api.v1.UpdateBankAccountResponse.bank_account:type_name -> financial_integration_service_api.v1.BankAccount
+	88,  // 8: financial_integration_service_api.v1.GetPocketResponse.pocket:type_name -> financial_integration_service_api.v1.Pocket
+	89,  // 9: financial_integration_service_api.v1.GetSmartGoalsByPocketIdResponse.smart_goals:type_name -> financial_integration_service_api.v1.SmartGoal
+	89,  // 10: financial_integration_service_api.v1.CreateSmartGoalRequest.smart_goal:type_name -> financial_integration_service_api.v1.SmartGoal
+	89,  // 11: financial_integration_service_api.v1.UpdateSmartGoalRequest.smart_goal:type_name -> financial_integration_service_api.v1.SmartGoal
+	90,  // 12: financial_integration_service_api.v1.CreateMilestoneRequest.milestone:type_name -> financial_integration_service_api.v1.Milestone
+	90,  // 13: financial_integration_service_api.v1.UpdateMilestoneRequest.milestone:type_name -> financial_integration_service_api.v1.Milestone
+	90,  // 14: financial_integration_service_api.v1.UpdateMilestoneResponse.milestone:type_name -> financial_integration_service_api.v1.Milestone
+	90,  // 15: financial_integration_service_api.v1.GetMilestonesBySmartGoalIdResponse.milestones:type_name -> financial_integration_service_api.v1.Milestone
+	90,  // 16: financial_integration_service_api.v1.GetMilestoneResponse.milestone:type_name -> financial_integration_service_api.v1.Milestone
+	91,  // 17: financial_integration_service_api.v1.GetForecastResponse.forecast:type_name -> financial_integration_service_api.v1.Forecast
+	92,  // 18: financial_integration_service_api.v1.CreateBudgetRequest.budget:type_name -> financial_integration_service_api.v1.Budget
+	92,  // 19: financial_integration_service_api.v1.UpdateBudgetRequest.budget:type_name -> financial_integration_service_api.v1.Budget
+	92,  // 20: financial_integration_service_api.v1.UpdateBudgetResponse.budget:type_name -> financial_integration_service_api.v1.Budget
+	92,  // 21: financial_integration_service_api.v1.GetBudgetResponse.budget:type_name -> financial_integration_service_api.v1.Budget
+	92,  // 22: financial_integration_service_api.v1.GetAllBudgetsResponse.budgets:type_name -> financial_integration_service_api.v1.Budget
+	93,  // 23: financial_integration_service_api.v1.GetInvestmentAcccountResponse.investment_account:type_name -> financial_integration_service_api.v1.InvestmentAccount
+	94,  // 24: financial_integration_service_api.v1.GetMortgageAccountResponse.mortage_account:type_name -> financial_integration_service_api.v1.MortgageAccount
+	95,  // 25: financial_integration_service_api.v1.GetLiabilityAccountResponse.liability_account:type_name -> financial_integration_service_api.v1.CreditAccount
+	96,  // 26: financial_integration_service_api.v1.GetStudentLoanAccountResponse.student_loan_account:type_name -> financial_integration_service_api.v1.StudentLoanAccount
+	97,  // 27: financial_integration_service_api.v1.CreateManualLinkRequest.manual_account_link:type_name -> financial_integration_service_api.v1.Link
+	97,  // 28: financial_integration_service_api.v1.GetLinkResponse.link:type_name -> financial_integration_service_api.v1.Link
+	97,  // 29: financial_integration_service_api.v1.GetLinksResponse.links:type_name -> financial_integration_service_api.v1.Link
+	98,  // 30: financial_integration_service_api.v1.GetReCurringTransactionsResponse.re_ccuring_transactions:type_name -> financial_integration_service_api.v1.ReOccuringTransaction
+	84,  // 31: financial_integration_service_api.v1.GetReCurringTransactionsResponse.participant_re_ccuring_transactions:type_name -> financial_integration_service_api.v1.GetReCurringTransactionsResponse.ParticipantReCurringTransactions
+	99,  // 32: financial_integration_service_api.v1.GetTransactionsResponse.transactions:type_name -> financial_integration_service_api.v1.Transaction
+	85,  // 33: financial_integration_service_api.v1.ProcessWebhookRequest.error:type_name -> financial_integration_service_api.v1.ProcessWebhookRequest.ErrorEntry
+	99,  // 34: financial_integration_service_api.v1.GetReCurringTransactionsResponse.ParticipantReCurringTransactions.transactions:type_name -> financial_integration_service_api.v1.Transaction
+	100, // 35: financial_integration_service_api.v1.ProcessWebhookRequest.ErrorEntry.value:type_name -> google.protobuf.Any
+	36,  // [36:36] is the sub-list for method output_type
+	36,  // [36:36] is the sub-list for method input_type
+	36,  // [36:36] is the sub-list for extension type_name
+	36,  // [36:36] is the sub-list for extension extendee
+	0,   // [0:36] is the sub-list for field type_name
 }
 
 func init() {
@@ -5970,7 +6101,7 @@ func file_financial_integration_service_api_v1_request_response_financial_servic
 			}
 		}
 		file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[54].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*PlaidExchangeTokenRequest); i {
+			switch v := v.(*PlaidInitiateTokenUpdateRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -5982,7 +6113,7 @@ func file_financial_integration_service_api_v1_request_response_financial_servic
 			}
 		}
 		file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[55].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*PlaidExchangeTokenResponse); i {
+			switch v := v.(*PlaidInitiateTokenUpdateResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -5994,7 +6125,7 @@ func file_financial_integration_service_api_v1_request_response_financial_servic
 			}
 		}
 		file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[56].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetInvestmentAcccountRequest); i {
+			switch v := v.(*PlaidExchangeTokenRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6006,7 +6137,7 @@ func file_financial_integration_service_api_v1_request_response_financial_servic
 			}
 		}
 		file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[57].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetInvestmentAcccountResponse); i {
+			switch v := v.(*PlaidExchangeTokenResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6018,7 +6149,7 @@ func file_financial_integration_service_api_v1_request_response_financial_servic
 			}
 		}
 		file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[58].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetMortgageAccountRequest); i {
+			switch v := v.(*GetInvestmentAcccountRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6030,7 +6161,7 @@ func file_financial_integration_service_api_v1_request_response_financial_servic
 			}
 		}
 		file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[59].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetMortgageAccountResponse); i {
+			switch v := v.(*GetInvestmentAcccountResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6042,7 +6173,7 @@ func file_financial_integration_service_api_v1_request_response_financial_servic
 			}
 		}
 		file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[60].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetLiabilityAccountRequest); i {
+			switch v := v.(*GetMortgageAccountRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6054,7 +6185,7 @@ func file_financial_integration_service_api_v1_request_response_financial_servic
 			}
 		}
 		file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[61].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetLiabilityAccountResponse); i {
+			switch v := v.(*GetMortgageAccountResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6066,7 +6197,7 @@ func file_financial_integration_service_api_v1_request_response_financial_servic
 			}
 		}
 		file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[62].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetStudentLoanAccountRequest); i {
+			switch v := v.(*GetLiabilityAccountRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6078,7 +6209,7 @@ func file_financial_integration_service_api_v1_request_response_financial_servic
 			}
 		}
 		file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[63].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetStudentLoanAccountResponse); i {
+			switch v := v.(*GetLiabilityAccountResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6090,7 +6221,7 @@ func file_financial_integration_service_api_v1_request_response_financial_servic
 			}
 		}
 		file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[64].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CreateManualLinkRequest); i {
+			switch v := v.(*GetStudentLoanAccountRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6102,7 +6233,7 @@ func file_financial_integration_service_api_v1_request_response_financial_servic
 			}
 		}
 		file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[65].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CreateManualLinkResponse); i {
+			switch v := v.(*GetStudentLoanAccountResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6114,7 +6245,7 @@ func file_financial_integration_service_api_v1_request_response_financial_servic
 			}
 		}
 		file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[66].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetLinkRequest); i {
+			switch v := v.(*CreateManualLinkRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6126,7 +6257,7 @@ func file_financial_integration_service_api_v1_request_response_financial_servic
 			}
 		}
 		file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[67].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetLinkResponse); i {
+			switch v := v.(*CreateManualLinkResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6138,7 +6269,7 @@ func file_financial_integration_service_api_v1_request_response_financial_servic
 			}
 		}
 		file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[68].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetLinksRequest); i {
+			switch v := v.(*GetLinkRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6150,7 +6281,7 @@ func file_financial_integration_service_api_v1_request_response_financial_servic
 			}
 		}
 		file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[69].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetLinksResponse); i {
+			switch v := v.(*GetLinkResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6162,7 +6293,7 @@ func file_financial_integration_service_api_v1_request_response_financial_servic
 			}
 		}
 		file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[70].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DeleteLinkRequest); i {
+			switch v := v.(*GetLinksRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6174,7 +6305,7 @@ func file_financial_integration_service_api_v1_request_response_financial_servic
 			}
 		}
 		file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[71].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DeleteLinkResponse); i {
+			switch v := v.(*GetLinksResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6186,7 +6317,7 @@ func file_financial_integration_service_api_v1_request_response_financial_servic
 			}
 		}
 		file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[72].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetReCurringTransactionsRequest); i {
+			switch v := v.(*DeleteLinkRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6198,7 +6329,7 @@ func file_financial_integration_service_api_v1_request_response_financial_servic
 			}
 		}
 		file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[73].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetReCurringTransactionsResponse); i {
+			switch v := v.(*DeleteLinkResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6210,7 +6341,7 @@ func file_financial_integration_service_api_v1_request_response_financial_servic
 			}
 		}
 		file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[74].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetTransactionsRequest); i {
+			switch v := v.(*GetReCurringTransactionsRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6222,7 +6353,7 @@ func file_financial_integration_service_api_v1_request_response_financial_servic
 			}
 		}
 		file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[75].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetTransactionsResponse); i {
+			switch v := v.(*GetReCurringTransactionsResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6234,7 +6365,7 @@ func file_financial_integration_service_api_v1_request_response_financial_servic
 			}
 		}
 		file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[76].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ProcessWebhookRequest); i {
+			switch v := v.(*GetTransactionsRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6246,7 +6377,7 @@ func file_financial_integration_service_api_v1_request_response_financial_servic
 			}
 		}
 		file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[77].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ProcessWebhookResponse); i {
+			switch v := v.(*GetTransactionsResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6258,7 +6389,7 @@ func file_financial_integration_service_api_v1_request_response_financial_servic
 			}
 		}
 		file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[78].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*StripeWebhookRequest); i {
+			switch v := v.(*ProcessWebhookRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6270,7 +6401,7 @@ func file_financial_integration_service_api_v1_request_response_financial_servic
 			}
 		}
 		file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[79].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*StripeWebhookResponse); i {
+			switch v := v.(*ProcessWebhookResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6282,7 +6413,7 @@ func file_financial_integration_service_api_v1_request_response_financial_servic
 			}
 		}
 		file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[80].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CreateSubscriptionRequest); i {
+			switch v := v.(*StripeWebhookRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6294,7 +6425,7 @@ func file_financial_integration_service_api_v1_request_response_financial_servic
 			}
 		}
 		file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[81].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CreateSubscriptionResponse); i {
+			switch v := v.(*StripeWebhookResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6306,6 +6437,30 @@ func file_financial_integration_service_api_v1_request_response_financial_servic
 			}
 		}
 		file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[82].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*CreateSubscriptionRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[83].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*CreateSubscriptionResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[84].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetReCurringTransactionsResponse_ParticipantReCurringTransactions); i {
 			case 0:
 				return &v.state
@@ -6324,7 +6479,7 @@ func file_financial_integration_service_api_v1_request_response_financial_servic
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   84,
+			NumMessages:   86,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
