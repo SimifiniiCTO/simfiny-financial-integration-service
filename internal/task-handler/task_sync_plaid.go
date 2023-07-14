@@ -107,6 +107,9 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, userId, linkId 
 
 	if len(investmentAccounts) > 0 {
 		th.logger.Info("found investment accounts", zap.Int("count", len(investmentAccounts)))
+		if err := th.processAndStoreInvestmentAccount(ctx, link, investmentAccounts); err != nil {
+			return nil, err
+		}
 	}
 
 	// get the credit accounts

@@ -60,6 +60,65 @@ func (th *TaskHandler) RunSyncNewLiabilityAccountsTask(ctx context.Context, task
 	return nil
 }
 
+func (th *TaskHandler) processAndStoreInvestmentAccount(ctx context.Context, link *apiv1.Link, investmentAccts []*apiv1.InvestmentAccount) error {
+	if len(investmentAccts) > 0 {
+		syncedInvestmentAccounts := investmentAccts
+		currentInvestmentAccounts := link.GetInvestmentAccounts()
+
+		// iterate over the syncred investment accounts and cross reference them with the existing investment accounts
+		// if the synced investment account is not found in the existing investment accounts, then add it to the existing
+		// investment accounts
+		investmentAccountsToUpdate := make([]*apiv1.InvestmentAccountORM, 0, len(syncedInvestmentAccounts))
+		investmentAccountsToAdd := make([]*apiv1.InvestmentAccountORM, 0, len(syncedInvestmentAccounts))
+		for _, syncedInvestmentAccount := range syncedInvestmentAccounts {
+			found := false
+			for idx, currentInvestmentAccount := range currentInvestmentAccounts {
+				if syncedInvestmentAccount.PlaidAccountId == currentInvestmentAccount.PlaidAccountId {
+					found = true
+					break
+				} else if syncedInvestmentAccount.PlaidAccountId != currentInvestmentAccount.PlaidAccountId && idx == len(currentInvestmentAccounts)-1 {
+					acctOrm, err := syncedInvestmentAccount.ToORM(ctx)
+					if err != nil {
+						return err
+					}
+
+					investmentAccountsToAdd = append(investmentAccountsToAdd, &acctOrm)
+				}
+			}
+
+			if found {
+				acctOrm, err := syncedInvestmentAccount.ToORM(ctx)
+				if err != nil {
+					return err
+				}
+				investmentAccountsToUpdate = append(investmentAccountsToUpdate, &acctOrm)
+			}
+		}
+
+		l := th.postgresDb.QueryOperator.LinkORM
+		linkOrm, err := link.ToORM(ctx)
+		if err != nil {
+			return err
+		}
+
+		// update the investment accounts in the database
+		if err := l.InvestmentAccounts.Model(&linkOrm).Replace(investmentAccountsToUpdate...); err != nil {
+			return err
+		}
+
+		// add the new investment accounts to the database
+		if len(investmentAccountsToAdd) > 0 {
+			if err := l.InvestmentAccounts.Model(&linkOrm).Append(investmentAccountsToAdd...); err != nil {
+				return err
+			}
+		}
+
+		th.logger.Info("found credit accounts", zap.Int("count", len(investmentAccts)))
+	}
+
+	return nil
+}
+
 func (th *TaskHandler) processLiabilityAccountSyncOperation(ctx context.Context, payload *SyncPlaidLiabilityTaskPayload) ([]*apiv1.BankAccount, error) {
 	var (
 		postgresClient = th.postgresDb
@@ -92,6 +151,9 @@ func (th *TaskHandler) processLiabilityAccountSyncOperation(ctx context.Context,
 
 	if len(investmentAccounts) > 0 {
 		th.logger.Info("found investment accounts", zap.Int("count", len(investmentAccounts)))
+		if err := th.processAndStoreInvestmentAccount(ctx, link, investmentAccounts); err != nil {
+			return nil, err
+		}
 	}
 
 	// get the credit accounts
