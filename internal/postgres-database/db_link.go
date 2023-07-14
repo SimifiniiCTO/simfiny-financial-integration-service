@@ -166,12 +166,6 @@ func (db *Db) CreateLink(ctx context.Context, userID uint64, link *schema.Link, 
 		return nil, fmt.Errorf("user with id %d does not exist", userID)
 	}
 
-	// ensure the link does not exist for the given user
-	l := db.QueryOperator.LinkORM
-	if _, err := l.WithContext(ctx).Where(l.UserProfileId.Eq(userProfile.Id)).First(); err == nil {
-		return nil, fmt.Errorf("link with id %d already exists", link.Id)
-	}
-
 	// convert the link to orm type
 	linkORM, err := link.ToORM(ctx)
 	if err != nil {
