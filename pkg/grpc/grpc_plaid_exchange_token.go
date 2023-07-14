@@ -42,21 +42,9 @@ func (s *Server) PlaidExchangeToken(ctx context.Context, req *proto.PlaidExchang
 	}
 
 	// ensure user exists
-	userProfile, err := s.conn.GetUserProfileByUserID(ctx, req.UserId)
+	_, err := s.conn.GetUserProfileByUserID(ctx, req.UserId)
 	if err != nil {
 		return nil, status.Error(codes.NotFound, "user not found")
-	}
-
-	// server side logic chekc to check if the user has already connected an account for this institution
-	if len(userProfile.Link) > 0 {
-		// iterate over the defined plaid links and check if an existing item matching the institution id exists
-		for _, link := range userProfile.Link {
-			plaidLink := link.PlaidLink
-			if plaidLink != nil && plaidLink.InstitutionId == req.InstitutionId && plaidLink.InstitutionName == req.InstitutionName {
-				// a duplicate item for the same institution exists for the same user
-				return nil, status.Error(codes.Internal, "You have already linked an item at this institution.")
-			}
-		}
 	}
 
 	// exchange public token for access token
