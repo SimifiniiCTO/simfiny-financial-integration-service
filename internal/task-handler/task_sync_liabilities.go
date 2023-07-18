@@ -72,26 +72,38 @@ func (th *TaskHandler) processAndStoreInvestmentAccount(ctx context.Context, lin
 		investmentAccountsToAdd := make([]*apiv1.InvestmentAccountORM, 0, len(syncedInvestmentAccounts))
 		for _, syncedInvestmentAccount := range syncedInvestmentAccounts {
 			found := false
-			for idx, currentInvestmentAccount := range currentInvestmentAccounts {
-				if syncedInvestmentAccount.PlaidAccountId == currentInvestmentAccount.PlaidAccountId {
-					found = true
-					break
-				} else if syncedInvestmentAccount.PlaidAccountId != currentInvestmentAccount.PlaidAccountId && idx == len(currentInvestmentAccounts)-1 {
+			if len(currentInvestmentAccounts) == 0 {
+				acctOrm, err := syncedInvestmentAccount.ToORM(ctx)
+				if err != nil {
+					return err
+				}
+
+				investmentAccountsToAdd = append(investmentAccountsToAdd, &acctOrm)
+				continue
+			} else {
+				for idx, currentInvestmentAccount := range currentInvestmentAccounts {
+
+					if syncedInvestmentAccount.PlaidAccountId == currentInvestmentAccount.PlaidAccountId {
+						found = true
+						break
+					} else if syncedInvestmentAccount.PlaidAccountId != currentInvestmentAccount.PlaidAccountId && idx == len(currentInvestmentAccounts)-1 {
+						acctOrm, err := syncedInvestmentAccount.ToORM(ctx)
+						if err != nil {
+							return err
+						}
+
+						investmentAccountsToAdd = append(investmentAccountsToAdd, &acctOrm)
+					}
+				}
+
+				if found {
 					acctOrm, err := syncedInvestmentAccount.ToORM(ctx)
 					if err != nil {
 						return err
 					}
 
-					investmentAccountsToAdd = append(investmentAccountsToAdd, &acctOrm)
+					investmentAccountsToUpdate = append(investmentAccountsToUpdate, &acctOrm)
 				}
-			}
-
-			if found {
-				acctOrm, err := syncedInvestmentAccount.ToORM(ctx)
-				if err != nil {
-					return err
-				}
-				investmentAccountsToUpdate = append(investmentAccountsToUpdate, &acctOrm)
 			}
 		}
 
@@ -112,8 +124,6 @@ func (th *TaskHandler) processAndStoreInvestmentAccount(ctx context.Context, lin
 				return err
 			}
 		}
-
-		th.logger.Info("found credit accounts", zap.Int("count", len(investmentAccts)))
 	}
 
 	return nil
