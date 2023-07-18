@@ -101,15 +101,15 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, userId, linkId 
 	// get the liability accounts
 	// TODO: need to figure out wether to update the existing investment account or add a new one
 	investmentAccounts, err := plaidClient.GetInvestmentAccount(ctx, userId, accessToken)
-	if err != nil {
-		return nil, err
-	}
-
-	if len(investmentAccounts) > 0 {
-		th.logger.Info("found investment accounts", zap.Int("count", len(investmentAccounts)))
-		if err := th.processAndStoreInvestmentAccount(ctx, link, investmentAccounts); err != nil {
-			return nil, err
+	if err == nil {
+		if len(investmentAccounts) > 0 {
+			th.logger.Info("found investment accounts", zap.Int("count", len(investmentAccounts)))
+			if err := th.processAndStoreInvestmentAccount(ctx, link, investmentAccounts); err != nil {
+				return nil, err
+			}
 		}
+	} else {
+		th.logger.Error("failed to get investment accounts", zap.Error(err))
 	}
 
 	// get the credit accounts
