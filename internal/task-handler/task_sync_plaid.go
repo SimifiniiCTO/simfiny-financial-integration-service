@@ -71,6 +71,7 @@ func (th *TaskHandler) RunSyncPlaidTransactionsTask(ctx context.Context, task *a
 	return nil
 }
 
+// TODO: Refactor this piece of code
 func (th *TaskHandler) processSyncOperation(ctx context.Context, userId, linkId uint64, accessToken, trigger string) ([]*apiv1.BankAccount, error) {
 	var (
 		postgresClient   = th.postgresDb
@@ -547,6 +548,8 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, userId, linkId 
 		if err = postgresClient.UpdateBankAccounts(ctx, updatedBankAccounts); err != nil {
 			th.logger.Error("failed to update bank accounts", zap.Error(err))
 		}
+
+		th.logger.Info("successfully updated bank accounts", zap.Int("count", len(updatedBankAccounts)))
 	}
 
 	if len(syncResult.Deleted) > 0 { // Handle removed transactions
