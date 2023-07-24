@@ -50,22 +50,38 @@ func ReadEnvVars() {
 	fs.Bool("unready", false, "when set, ready state is never reached")
 	fs.Int("stress-cpu", 0, "number of CPU cores with 100 load")
 	fs.Int("stress-memory", 0, "MB of data to load into memory")
-	fs.String("cache-server", "redis://:@redis_db:6379", "Redis address in the format <host>:<port>")
+	// local: redis://:@redis_db:6379
+	// production: rediss://default:AVNS_B0xiuGf7QSnREFG@simfiny-redis-cluster-do-user-11446161-0.b.db.ondigitalocean.com:25061
+	fs.String("cache-server", "rediss://default:AVNS_B0xiuGf7QSnREFG@simfiny-redis-cluster-do-user-11446161-0.b.db.ondigitalocean.com:25061", "Redis address in the format <host>:<port>")
 	fs.String("newrelic-api-key", "62fd721c712d5863a4e75b8f547b7c1ea884NRAL", "new relic license key")
 	// database connection environment variables
-	fs.String("dbhost", "service_db", "database host string")
-	fs.Int("dbport", 5432, "database port")
-	fs.String("dbuser", "service_db", "database user string")
-	fs.String("dbpassword", "service_db", "database password string")
-	fs.String("dbname", "service_db", "database name")
-	fs.String("dbsslmode", "disable", "wether tls connection is enabled")
+	// local: service_db
+	// production: simfiny-db-cluster-do-user-11446161-0.b.db.ondigitalocean.com
+	fs.String("dbhost", "simfiny-db-cluster-do-user-11446161-0.b.db.ondigitalocean.com", "database host string")
+	// local: 5432
+	// production: 25061
+	fs.Int("dbport", 25061, "database port")
+	// local: service_db
+	// production: doadmin
+	fs.String("dbuser", "doadmin", "database user string")
+	// local: service_db
+	// production: AVNS_QIibiEIbI5JVODo
+	fs.String("dbpassword", "AVNS_QIibiEIbI5JVODo", "database password string")
+	// local: service_db
+	// production: fis-service-pool
+	fs.String("dbname", "fis-service-pool", "database name")
+	// local: disable
+	// production: require
+	fs.String("dbsslmode", "require", "wether tls connection is enabled")
 	fs.Int("max-db-conn-attempts", 1, "max database connection attempts")
 	fs.Int("max-db-conn-retries", 1, "max database connection attempts")
 	fs.Duration("max-db-retry-timeout", 500*time.Millisecond, "max time until a db connection request is seen as timing out")
 	fs.Duration("max-db-retry-sleep-interval", 100*time.Millisecond, "max time to sleep in between db connection attempts")
 	fs.Duration("max-query-timeout", 500*time.Millisecond, "max time until a db query is seen as timing out")
 	fs.Int("cache-ttl-in-seconds", 3600, "time data lives in the cache")
-	fs.Bool("cache-tls-enabled", false, "whether tls connection is enabled")
+	// local: false
+	// production: true
+	fs.Bool("cache-tls-enabled", true, "whether tls connection is enabled")
 
 	fs.String("max-db-idle-connections", "10", "max number of idle connections to the database")            // exists
 	fs.String("max-db-open-connections", "10", "max number of open connections to the database")            // exists
@@ -76,8 +92,8 @@ func ReadEnvVars() {
 	// development secret key: 49ed22a2ee591f4e3f366c4474438d
 	// sandbox secret key: 465686056e8fd1b87db3d993d096d8
 	// production: 6f127c086ba9c1d5dafe7e38541783
-	fs.String("plaid-secret-key", "465686056e8fd1b87db3d993d096d8", "plaid secret key")
-	fs.String("plaid-env", "sandbox", "plaid environment")
+	fs.String("plaid-secret-key", "6f127c086ba9c1d5dafe7e38541783", "plaid secret key")
+	fs.String("plaid-env", "production", "plaid environment")
 	fs.StringSlice("plaid-products", []string{"investments", "liabilities", "transactions"}, "plaid products to enable")
 	fs.String("plaid-oauth-domain", "1d8d-209-122-236-129.ngrok-free.app/api/v1", "plaid oauth domain")
 	fs.String("plaid-webhook-oauth-domain", "1d8d-209-122-236-129.ngrok-free.app/api/v1", "plaid webhook oauth domain")
@@ -121,7 +137,9 @@ func ReadEnvVars() {
 	fs.Duration("workflow-task-timeout", 1*time.Second, "The timeout for processing workflow task from the time the worker pulled this task. If a workflow task is lost, it is retried after this timeout. The resolution is seconds.")
 	fs.Duration("workflow-run-timeout", 1*time.Second, "The timeout for duration of a single workflow run. The resolution is seconds. Optional: defaulted to WorkflowExecutionTimeout.")
 
-	fs.String("clickhouse-connection-uri", "clickhouse://gorm:gorm@clickhouse-database:9000/gorm?sslmode=disable&dial_timeout=10s&read_timeout=20s", "clickhouse-connection-uri")
+	// production: clickhouse://default:nnqMml.lfh2g9@l77zn1po0n.us-east-1.aws.clickhouse.cloud:9440/FinancialIntegrationService
+	// local: clickhouse://gorm:gorm@clickhouse-database:9000/gorm?sslmode=disable&dial_timeout=10s&read_timeout=20s
+	fs.String("clickhouse-connection-uri", "clickhouse://default:nnqMml.lfh2g9@l77zn1po0n.us-east-1.aws.clickhouse.cloud:9440/FinancialIntegrationService", "clickhouse-connection-uri")
 	fs.Int("task-processor-workers", 5, "task-processor-workers")
 
 	fs.String("openai-token", "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", "openai-token")

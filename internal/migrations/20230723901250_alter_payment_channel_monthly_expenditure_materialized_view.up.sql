@@ -1,4 +1,3 @@
--- Step 1: Drop the existing materialized view
 DROP MATERIALIZED VIEW IF EXISTS PaymentChannelMonthlyExpenditureMV;
 
 CREATE MATERIALIZED VIEW IF NOT EXISTS PaymentChannelMonthlyExpenditureMV
