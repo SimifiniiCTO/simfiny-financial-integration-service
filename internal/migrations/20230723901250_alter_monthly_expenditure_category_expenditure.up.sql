@@ -1,0 +1,2 @@
+ALTER TABLE CategoryMonthlyExpenditure 
+RENAME COLUMN CategoryId TO PersonalFinanceCategoryPrimary;
