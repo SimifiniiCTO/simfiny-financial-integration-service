@@ -1061,7 +1061,7 @@ service FinancialService {
   // Get CategoryMonthlyTransactionCount by User - This would return all CategoryMonthlyTransactionCount records for a specific user
   rpc GetCategoryMonthlyTransactionCount(GetCategoryMonthlyTransactionCountRequest) returns (GetCategoryMonthlyTransactionCountResponse) {
     option (google.api.http) = {
-      get: "/api/v1/analytics/monthly-transaction-count/{user_id}"
+      get: "/api/v1/analytics/category-monthly-transaction-count/{user_id}"
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
@@ -1082,7 +1082,7 @@ service FinancialService {
 
   rpc ListCategoryMonthlyTransactionCount(ListCategoryMonthlyTransactionCountRequest) returns (ListCategoryMonthlyTransactionCountResponse) {
     option (google.api.http) = {
-      get: "/api/v1/analytics/monthly-transaction-count/{user_id}/pagenumber/{page_number}/pagesize/{page_size}"
+      get: "/api/v1/analytics/category-monthly-transaction-count/{user_id}/pagenumber/{page_number}/pagesize/{page_size}"
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
@@ -1314,7 +1314,7 @@ service FinancialService {
 
   rpc GetMerchantMonthlyExpenditure(GetMerchantMonthlyExpenditureRequest) returns (GetMerchantMonthlyExpenditureResponse) {
     option (google.api.http) = {
-      get: "/api/v1/finance/merchant-expenditure/{user_id}"
+      get: "/api/v1/analytics/merchant-monthly-expenditure/{user_id}"
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
@@ -1335,7 +1335,7 @@ service FinancialService {
 
   rpc ListMerchantMonthlyExpenditure(ListMerchantMonthlyExpenditureRequest) returns (ListMerchantMonthlyExpenditureResponse) {
     option (google.api.http) = {
-      get: "/api/v1/finance/merchant-expenditure/{user_id}/pagenumber/{page_number}/pagesize/{page_size}"
+      get: "/api/v1/analytics/merchant-monthly-expenditure/{user_id}/pagenumber/{page_number}/pagesize/{page_size}"
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
@@ -1357,7 +1357,7 @@ service FinancialService {
   //@here
   rpc GetMonthlyBalance(GetMonthlyBalanceRequest) returns (GetMonthlyBalanceResponse) {
     option (google.api.http) = {
-      get: "/api/v1/finance/balance/{user_id}"
+      get: "/api/v1/analytics/monthly-balance/{user_id}"
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
@@ -1378,7 +1378,7 @@ service FinancialService {
 
   rpc GetMonthlyExpenditure(GetMonthlyExpenditureRequest) returns (GetMonthlyExpenditureResponse) {
     option (google.api.http) = {
-      get: "/api/v1/finance/expenditure/{user_id}"
+      get: "/api/v1/analytics/monthly-expenditure/{user_id}"
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
@@ -1399,7 +1399,7 @@ service FinancialService {
 
   rpc GetMonthlyIncome(GetMonthlyIncomeRequest) returns (GetMonthlyIncomeResponse) {
     option (google.api.http) = {
-      get: "/api/v1/finance/income/{user_id}"
+      get: "/api/v1/analytics/monthly-income/{user_id}"
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
@@ -1420,7 +1420,7 @@ service FinancialService {
 
   rpc GetMonthlySavings(GetMonthlySavingsRequest) returns (GetMonthlySavingsResponse) {
     option (google.api.http) = {
-      get: "/api/v1/finance/savings/{user_id}"
+      get: "/api/v1/analytics/monthly-savings/{user_id}"
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
@@ -1441,7 +1441,7 @@ service FinancialService {
 
   rpc GetMonthlyTotalQuantityBySecurityAndUser(GetMonthlyTotalQuantityBySecurityAndUserRequest) returns (GetMonthlyTotalQuantityBySecurityAndUserResponse) {
     option (google.api.http) = {
-      get: "/api/v1/finance/security-quantity/{user_id}"
+      get: "/api/v1/analytics/monthly-total-quantity-by-security-and-user/{user_id}"
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
@@ -1462,7 +1462,7 @@ service FinancialService {
 
   rpc GetMonthlyTransactionCount(GetMonthlyTransactionCountRequest) returns (GetMonthlyTransactionCountResponse) {
     option (google.api.http) = {
-      get: "/api/v1/finance/transaction-count/{user_id}"
+      get: "/api/v1/analytics/monthly-transaction-count/{user_id}"
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
@@ -1483,7 +1483,7 @@ service FinancialService {
 
   rpc GetPaymentChannelMonthlyExpenditure(GetPaymentChannelMonthlyExpenditureRequest) returns (GetPaymentChannelMonthlyExpenditureResponse) {
     option (google.api.http) = {
-      get: "/api/v1/finance/payment-channel-expenditure/{user_id}"
+      get: "/api/v1/analytics/payment-channel-expenditure/{user_id}"
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
@@ -1504,7 +1504,7 @@ service FinancialService {
 
   rpc GetTotalInvestmentBySecurity(GetTotalInvestmentBySecurityRequest) returns (GetTotalInvestmentBySecurityResponse) {
     option (google.api.http) = {
-      get: "/api/v1/finance/total-investment/{user_id}"
+      get: "/api/v1/analytics/total-investment/{user_id}"
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
@@ -1525,7 +1525,7 @@ service FinancialService {
 
   rpc GetMelodyFinancialContext(GetMelodyFinancialContextRequest) returns (GetMelodyFinancialContextResponse) {
     option (google.api.http) = {
-      get: "/api/v1/finance/melody-financial-context/{user_id}"
+      get: "/api/v1/analytics/melody-financial-context/{user_id}"
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {

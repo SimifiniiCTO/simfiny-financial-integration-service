@@ -5827,7 +5827,7 @@ func RegisterFinancialServiceHandlerServer(ctx context.Context, mux *runtime.Ser
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/GetCategoryMonthlyTransactionCount", runtime.WithHTTPPathPattern("/api/v1/analytics/monthly-transaction-count/{user_id}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/GetCategoryMonthlyTransactionCount", runtime.WithHTTPPathPattern("/api/v1/analytics/category-monthly-transaction-count/{user_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -5852,7 +5852,7 @@ func RegisterFinancialServiceHandlerServer(ctx context.Context, mux *runtime.Ser
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/ListCategoryMonthlyTransactionCount", runtime.WithHTTPPathPattern("/api/v1/analytics/monthly-transaction-count/{user_id}/pagenumber/{page_number}/pagesize/{page_size}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/ListCategoryMonthlyTransactionCount", runtime.WithHTTPPathPattern("/api/v1/analytics/category-monthly-transaction-count/{user_id}/pagenumber/{page_number}/pagesize/{page_size}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -6127,7 +6127,7 @@ func RegisterFinancialServiceHandlerServer(ctx context.Context, mux *runtime.Ser
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/GetMerchantMonthlyExpenditure", runtime.WithHTTPPathPattern("/api/v1/finance/merchant-expenditure/{user_id}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/GetMerchantMonthlyExpenditure", runtime.WithHTTPPathPattern("/api/v1/analytics/merchant-monthly-expenditure/{user_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -6152,7 +6152,7 @@ func RegisterFinancialServiceHandlerServer(ctx context.Context, mux *runtime.Ser
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/ListMerchantMonthlyExpenditure", runtime.WithHTTPPathPattern("/api/v1/finance/merchant-expenditure/{user_id}/pagenumber/{page_number}/pagesize/{page_size}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/ListMerchantMonthlyExpenditure", runtime.WithHTTPPathPattern("/api/v1/analytics/merchant-monthly-expenditure/{user_id}/pagenumber/{page_number}/pagesize/{page_size}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -6177,7 +6177,7 @@ func RegisterFinancialServiceHandlerServer(ctx context.Context, mux *runtime.Ser
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/GetMonthlyBalance", runtime.WithHTTPPathPattern("/api/v1/finance/balance/{user_id}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/GetMonthlyBalance", runtime.WithHTTPPathPattern("/api/v1/analytics/monthly-balance/{user_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -6202,7 +6202,7 @@ func RegisterFinancialServiceHandlerServer(ctx context.Context, mux *runtime.Ser
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/GetMonthlyExpenditure", runtime.WithHTTPPathPattern("/api/v1/finance/expenditure/{user_id}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/GetMonthlyExpenditure", runtime.WithHTTPPathPattern("/api/v1/analytics/monthly-expenditure/{user_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -6227,7 +6227,7 @@ func RegisterFinancialServiceHandlerServer(ctx context.Context, mux *runtime.Ser
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/GetMonthlyIncome", runtime.WithHTTPPathPattern("/api/v1/finance/income/{user_id}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/GetMonthlyIncome", runtime.WithHTTPPathPattern("/api/v1/analytics/monthly-income/{user_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -6252,7 +6252,7 @@ func RegisterFinancialServiceHandlerServer(ctx context.Context, mux *runtime.Ser
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/GetMonthlySavings", runtime.WithHTTPPathPattern("/api/v1/finance/savings/{user_id}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/GetMonthlySavings", runtime.WithHTTPPathPattern("/api/v1/analytics/monthly-savings/{user_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -6277,7 +6277,7 @@ func RegisterFinancialServiceHandlerServer(ctx context.Context, mux *runtime.Ser
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/GetMonthlyTotalQuantityBySecurityAndUser", runtime.WithHTTPPathPattern("/api/v1/finance/security-quantity/{user_id}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/GetMonthlyTotalQuantityBySecurityAndUser", runtime.WithHTTPPathPattern("/api/v1/analytics/monthly-total-quantity-by-security-and-user/{user_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -6302,7 +6302,7 @@ func RegisterFinancialServiceHandlerServer(ctx context.Context, mux *runtime.Ser
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/GetMonthlyTransactionCount", runtime.WithHTTPPathPattern("/api/v1/finance/transaction-count/{user_id}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/GetMonthlyTransactionCount", runtime.WithHTTPPathPattern("/api/v1/analytics/monthly-transaction-count/{user_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -6327,7 +6327,7 @@ func RegisterFinancialServiceHandlerServer(ctx context.Context, mux *runtime.Ser
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/GetPaymentChannelMonthlyExpenditure", runtime.WithHTTPPathPattern("/api/v1/finance/payment-channel-expenditure/{user_id}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/GetPaymentChannelMonthlyExpenditure", runtime.WithHTTPPathPattern("/api/v1/analytics/payment-channel-expenditure/{user_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -6352,7 +6352,7 @@ func RegisterFinancialServiceHandlerServer(ctx context.Context, mux *runtime.Ser
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/GetTotalInvestmentBySecurity", runtime.WithHTTPPathPattern("/api/v1/finance/total-investment/{user_id}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/GetTotalInvestmentBySecurity", runtime.WithHTTPPathPattern("/api/v1/analytics/total-investment/{user_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -6377,7 +6377,7 @@ func RegisterFinancialServiceHandlerServer(ctx context.Context, mux *runtime.Ser
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/GetMelodyFinancialContext", runtime.WithHTTPPathPattern("/api/v1/finance/melody-financial-context/{user_id}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/GetMelodyFinancialContext", runtime.WithHTTPPathPattern("/api/v1/analytics/melody-financial-context/{user_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -7566,7 +7566,7 @@ func RegisterFinancialServiceHandlerClient(ctx context.Context, mux *runtime.Ser
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/GetCategoryMonthlyTransactionCount", runtime.WithHTTPPathPattern("/api/v1/analytics/monthly-transaction-count/{user_id}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/GetCategoryMonthlyTransactionCount", runtime.WithHTTPPathPattern("/api/v1/analytics/category-monthly-transaction-count/{user_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -7588,7 +7588,7 @@ func RegisterFinancialServiceHandlerClient(ctx context.Context, mux *runtime.Ser
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/ListCategoryMonthlyTransactionCount", runtime.WithHTTPPathPattern("/api/v1/analytics/monthly-transaction-count/{user_id}/pagenumber/{page_number}/pagesize/{page_size}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/ListCategoryMonthlyTransactionCount", runtime.WithHTTPPathPattern("/api/v1/analytics/category-monthly-transaction-count/{user_id}/pagenumber/{page_number}/pagesize/{page_size}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -7830,7 +7830,7 @@ func RegisterFinancialServiceHandlerClient(ctx context.Context, mux *runtime.Ser
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/GetMerchantMonthlyExpenditure", runtime.WithHTTPPathPattern("/api/v1/finance/merchant-expenditure/{user_id}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/GetMerchantMonthlyExpenditure", runtime.WithHTTPPathPattern("/api/v1/analytics/merchant-monthly-expenditure/{user_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -7852,7 +7852,7 @@ func RegisterFinancialServiceHandlerClient(ctx context.Context, mux *runtime.Ser
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/ListMerchantMonthlyExpenditure", runtime.WithHTTPPathPattern("/api/v1/finance/merchant-expenditure/{user_id}/pagenumber/{page_number}/pagesize/{page_size}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/ListMerchantMonthlyExpenditure", runtime.WithHTTPPathPattern("/api/v1/analytics/merchant-monthly-expenditure/{user_id}/pagenumber/{page_number}/pagesize/{page_size}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -7874,7 +7874,7 @@ func RegisterFinancialServiceHandlerClient(ctx context.Context, mux *runtime.Ser
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/GetMonthlyBalance", runtime.WithHTTPPathPattern("/api/v1/finance/balance/{user_id}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/GetMonthlyBalance", runtime.WithHTTPPathPattern("/api/v1/analytics/monthly-balance/{user_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -7896,7 +7896,7 @@ func RegisterFinancialServiceHandlerClient(ctx context.Context, mux *runtime.Ser
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/GetMonthlyExpenditure", runtime.WithHTTPPathPattern("/api/v1/finance/expenditure/{user_id}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/GetMonthlyExpenditure", runtime.WithHTTPPathPattern("/api/v1/analytics/monthly-expenditure/{user_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -7918,7 +7918,7 @@ func RegisterFinancialServiceHandlerClient(ctx context.Context, mux *runtime.Ser
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/GetMonthlyIncome", runtime.WithHTTPPathPattern("/api/v1/finance/income/{user_id}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/GetMonthlyIncome", runtime.WithHTTPPathPattern("/api/v1/analytics/monthly-income/{user_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -7940,7 +7940,7 @@ func RegisterFinancialServiceHandlerClient(ctx context.Context, mux *runtime.Ser
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/GetMonthlySavings", runtime.WithHTTPPathPattern("/api/v1/finance/savings/{user_id}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/GetMonthlySavings", runtime.WithHTTPPathPattern("/api/v1/analytics/monthly-savings/{user_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -7962,7 +7962,7 @@ func RegisterFinancialServiceHandlerClient(ctx context.Context, mux *runtime.Ser
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/GetMonthlyTotalQuantityBySecurityAndUser", runtime.WithHTTPPathPattern("/api/v1/finance/security-quantity/{user_id}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/GetMonthlyTotalQuantityBySecurityAndUser", runtime.WithHTTPPathPattern("/api/v1/analytics/monthly-total-quantity-by-security-and-user/{user_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -7984,7 +7984,7 @@ func RegisterFinancialServiceHandlerClient(ctx context.Context, mux *runtime.Ser
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/GetMonthlyTransactionCount", runtime.WithHTTPPathPattern("/api/v1/finance/transaction-count/{user_id}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/GetMonthlyTransactionCount", runtime.WithHTTPPathPattern("/api/v1/analytics/monthly-transaction-count/{user_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -8006,7 +8006,7 @@ func RegisterFinancialServiceHandlerClient(ctx context.Context, mux *runtime.Ser
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/GetPaymentChannelMonthlyExpenditure", runtime.WithHTTPPathPattern("/api/v1/finance/payment-channel-expenditure/{user_id}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/GetPaymentChannelMonthlyExpenditure", runtime.WithHTTPPathPattern("/api/v1/analytics/payment-channel-expenditure/{user_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -8028,7 +8028,7 @@ func RegisterFinancialServiceHandlerClient(ctx context.Context, mux *runtime.Ser
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/GetTotalInvestmentBySecurity", runtime.WithHTTPPathPattern("/api/v1/finance/total-investment/{user_id}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/GetTotalInvestmentBySecurity", runtime.WithHTTPPathPattern("/api/v1/analytics/total-investment/{user_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -8050,7 +8050,7 @@ func RegisterFinancialServiceHandlerClient(ctx context.Context, mux *runtime.Ser
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/GetMelodyFinancialContext", runtime.WithHTTPPathPattern("/api/v1/finance/melody-financial-context/{user_id}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/GetMelodyFinancialContext", runtime.WithHTTPPathPattern("/api/v1/analytics/melody-financial-context/{user_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -8192,9 +8192,9 @@ var (
 
 	pattern_FinancialService_ListUserCategoryMonthlyIncome_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 2, 4, 1, 0, 4, 1, 5, 5, 2, 6, 1, 0, 4, 1, 5, 7, 2, 8, 1, 0, 4, 1, 5, 9}, []string{"api", "v1", "analytics", "category-monthly-income", "user", "user_id", "pagenumber", "page_number", "pagesize", "page_size"}, ""))
 
-	pattern_FinancialService_GetCategoryMonthlyTransactionCount_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"api", "v1", "analytics", "monthly-transaction-count", "user_id"}, ""))
+	pattern_FinancialService_GetCategoryMonthlyTransactionCount_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"api", "v1", "analytics", "category-monthly-transaction-count", "user_id"}, ""))
 
-	pattern_FinancialService_ListCategoryMonthlyTransactionCount_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4, 2, 5, 1, 0, 4, 1, 5, 6, 2, 7, 1, 0, 4, 1, 5, 8}, []string{"api", "v1", "analytics", "monthly-transaction-count", "user_id", "pagenumber", "page_number", "pagesize", "page_size"}, ""))
+	pattern_FinancialService_ListCategoryMonthlyTransactionCount_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4, 2, 5, 1, 0, 4, 1, 5, 6, 2, 7, 1, 0, 4, 1, 5, 8}, []string{"api", "v1", "analytics", "category-monthly-transaction-count", "user_id", "pagenumber", "page_number", "pagesize", "page_size"}, ""))
 
 	pattern_FinancialService_GetDebtToIncomeRatio_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"api", "v1", "analytics", "debt-to-income-ratio", "user_id"}, ""))
 
@@ -8216,27 +8216,27 @@ var (
 
 	pattern_FinancialService_ListIncomeMetrics_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4, 2, 5, 1, 0, 4, 1, 5, 6, 2, 7, 1, 0, 4, 1, 5, 8}, []string{"api", "v1", "analytics", "income", "user_id", "pagenumber", "page_number", "pagesize", "page_size"}, ""))
 
-	pattern_FinancialService_GetMerchantMonthlyExpenditure_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"api", "v1", "finance", "merchant-expenditure", "user_id"}, ""))
+	pattern_FinancialService_GetMerchantMonthlyExpenditure_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"api", "v1", "analytics", "merchant-monthly-expenditure", "user_id"}, ""))
 
-	pattern_FinancialService_ListMerchantMonthlyExpenditure_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4, 2, 5, 1, 0, 4, 1, 5, 6, 2, 7, 1, 0, 4, 1, 5, 8}, []string{"api", "v1", "finance", "merchant-expenditure", "user_id", "pagenumber", "page_number", "pagesize", "page_size"}, ""))
+	pattern_FinancialService_ListMerchantMonthlyExpenditure_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4, 2, 5, 1, 0, 4, 1, 5, 6, 2, 7, 1, 0, 4, 1, 5, 8}, []string{"api", "v1", "analytics", "merchant-monthly-expenditure", "user_id", "pagenumber", "page_number", "pagesize", "page_size"}, ""))
 
-	pattern_FinancialService_GetMonthlyBalance_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"api", "v1", "finance", "balance", "user_id"}, ""))
+	pattern_FinancialService_GetMonthlyBalance_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"api", "v1", "analytics", "monthly-balance", "user_id"}, ""))
 
-	pattern_FinancialService_GetMonthlyExpenditure_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"api", "v1", "finance", "expenditure", "user_id"}, ""))
+	pattern_FinancialService_GetMonthlyExpenditure_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"api", "v1", "analytics", "monthly-expenditure", "user_id"}, ""))
 
-	pattern_FinancialService_GetMonthlyIncome_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"api", "v1", "finance", "income", "user_id"}, ""))
+	pattern_FinancialService_GetMonthlyIncome_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"api", "v1", "analytics", "monthly-income", "user_id"}, ""))
 
-	pattern_FinancialService_GetMonthlySavings_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"api", "v1", "finance", "savings", "user_id"}, ""))
+	pattern_FinancialService_GetMonthlySavings_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"api", "v1", "analytics", "monthly-savings", "user_id"}, ""))
 
-	pattern_FinancialService_GetMonthlyTotalQuantityBySecurityAndUser_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"api", "v1", "finance", "security-quantity", "user_id"}, ""))
+	pattern_FinancialService_GetMonthlyTotalQuantityBySecurityAndUser_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"api", "v1", "analytics", "monthly-total-quantity-by-security-and-user", "user_id"}, ""))
 
-	pattern_FinancialService_GetMonthlyTransactionCount_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"api", "v1", "finance", "transaction-count", "user_id"}, ""))
+	pattern_FinancialService_GetMonthlyTransactionCount_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"api", "v1", "analytics", "monthly-transaction-count", "user_id"}, ""))
 
-	pattern_FinancialService_GetPaymentChannelMonthlyExpenditure_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"api", "v1", "finance", "payment-channel-expenditure", "user_id"}, ""))
+	pattern_FinancialService_GetPaymentChannelMonthlyExpenditure_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"api", "v1", "analytics", "payment-channel-expenditure", "user_id"}, ""))
 
-	pattern_FinancialService_GetTotalInvestmentBySecurity_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"api", "v1", "finance", "total-investment", "user_id"}, ""))
+	pattern_FinancialService_GetTotalInvestmentBySecurity_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"api", "v1", "analytics", "total-investment", "user_id"}, ""))
 
-	pattern_FinancialService_GetMelodyFinancialContext_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"api", "v1", "finance", "melody-financial-context", "user_id"}, ""))
+	pattern_FinancialService_GetMelodyFinancialContext_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"api", "v1", "analytics", "melody-financial-context", "user_id"}, ""))
 
 	pattern_FinancialService_GetTransactionsForBankAccount_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5, 2, 6, 1, 0, 4, 1, 5, 7, 2, 8, 1, 0, 4, 1, 5, 9}, []string{"api", "v1", "transactions", "user_id", "plaid-account-id", "plaid_account_id", "pageNumber", "page_number", "pageSize", "page_size"}, ""))
 )
