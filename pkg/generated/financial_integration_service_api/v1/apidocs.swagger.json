@@ -470,6 +470,73 @@
         ]
       }
     },
+    "/api/v1/analytics/category-monthly-expenditure/user/{userId}/pagenumber/{pageNumber}/pagesize/{pageSize}": {
+      "get": {
+        "summary": "Returns the monthly category expenditure for a user in a paginated fashion",
+        "description": "This API could accept user_id as an input parameter and return the monthly category expenditure for that user.",
+        "operationId": "GetUserCategoryMonthlyExpenditure",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": ".api.v1.ListUserCategoryMonthlyExpenditureResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": ".api.v1.ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": ".api.v1.PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": ".api.v1.InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "description": "User ID",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "pageNumber",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "description": "Number of items to return per page.",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "expenditure"
+        ]
+      }
+    },
     "/api/v1/analytics/category-monthly-income/user/{userId}": {
       "get": {
         "summary": "Get monthly income by user for a specific category",
@@ -530,6 +597,73 @@
         ],
         "tags": [
           "income"
+        ]
+      }
+    },
+    "/api/v1/analytics/category-monthly-income/user/{userId}/pagenumber/{pageNumber}/pagesize/{pageSize}": {
+      "get": {
+        "summary": "Returns the monthly category Income for a user in a paginated fashion",
+        "description": "This API could accept user_id as an input parameter and return the monthly category Income for that user.",
+        "operationId": "GetUserCategoryMonthlyIncome",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": ".api.v1.ListUserCategoryMonthlyIncomeResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": ".api.v1.ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": ".api.v1.PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": ".api.v1.InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "description": "User ID",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "pageNumber",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "description": "Number of items to return per page.",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Income"
         ]
       }
     },
@@ -3643,6 +3777,78 @@
           "transactions"
         ]
       }
+    },
+    "/api/v1/transactions/{userId}/plaid-account-id/{plaidAccountId}/pageNumber/{pageNumber}/pageSize/{pageSize}": {
+      "get": {
+        "summary": "get transactions tied to a bank account",
+        "description": "This endpoint returns the transactions for a given user id",
+        "operationId": "GetTransactions",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": ".api.v1.GetTransactionsForBankAccountResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": ".api.v1.ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": ".api.v1.PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": ".api.v1.InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "description": "The user id\nValidations:\n- user_id must be greater than 0",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "plaidAccountId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "pageNumber",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "pageSize",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "transactions"
+        ]
+      }
     }
   },
   "definitions": {
@@ -4812,6 +5018,23 @@
         }
       }
     },
+    "GetTransactionsForBankAccountResponse": {
+      "type": "object",
+      "properties": {
+        "transactions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/Transaction"
+          },
+          "title": "The transactions"
+        },
+        "nextPageNumber": {
+          "type": "string",
+          "format": "uint64"
+        }
+      }
+    },
     "GetTransactionsResponse": {
       "type": "object",
       "properties": {
@@ -5312,6 +5535,40 @@
             "type": "object",
             "$ref": "#/definitions/TransactionAggregatesByMonth"
           }
+        }
+      }
+    },
+    "ListUserCategoryMonthlyExpenditureResponse": {
+      "type": "object",
+      "properties": {
+        "categoryMonthlyExpenditure": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/CategoryMonthlyExpenditure"
+          },
+          "title": "List of CategoryMonthlyExpenditure records for the user"
+        },
+        "nextPageNumber": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "ListUserCategoryMonthlyIncomeResponse": {
+      "type": "object",
+      "properties": {
+        "categoryMonthlyIncome": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/CategoryMonthlyIncome"
+          },
+          "title": "List of CategoryMonthlyExpenditure records for the user"
+        },
+        "nextPageNumber": {
+          "type": "integer",
+          "format": "int32"
         }
       }
     },

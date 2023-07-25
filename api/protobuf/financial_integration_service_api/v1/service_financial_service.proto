@@ -992,6 +992,27 @@ service FinancialService {
     };
   }
 
+  rpc ListUserCategoryMonthlyExpenditure(ListUserCategoryMonthlyExpenditureRequest) returns (ListUserCategoryMonthlyExpenditureResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/analytics/category-monthly-expenditure/user/{user_id}/pagenumber/{page_number}/pagesize/{page_size}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Returns the monthly category expenditure for a user in a paginated fashion"
+      tags: ["expenditure"]
+      operation_id: "GetUserCategoryMonthlyExpenditure"
+      description: "This API could accept user_id as an input parameter and return the monthly category expenditure for that user."
+      responses: {
+        key: "200"
+        value: {
+          description: "A successful response."
+          schema: {
+            json_schema: {ref: ".api.v1.ListUserCategoryMonthlyExpenditureResponse"}
+          }
+        }
+      }
+    };
+  }
+
 
   // Get CategoryMonthlyIncome by Category and User - This would return all CategoryMonthlyIncome records for a specific user for a specific personal finance category
   rpc GetUserCategoryMonthlyIncome(GetUserCategoryMonthlyIncomeRequest) returns (GetUserCategoryMonthlyIncomeResponse) {
@@ -1009,6 +1030,27 @@ service FinancialService {
           description: "Successful operation"
           schema: {
             json_schema: {ref: ".api.v1.GetUserCategoryMonthlyIncomeResponse"}
+          }
+        }
+      }
+    };
+  }
+
+  rpc ListUserCategoryMonthlyIncome(ListUserCategoryMonthlyIncomeRequest) returns (ListUserCategoryMonthlyIncomeResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/analytics/category-monthly-income/user/{user_id}/pagenumber/{page_number}/pagesize/{page_size}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Returns the monthly category Income for a user in a paginated fashion"
+      tags: ["Income"]
+      operation_id: "GetUserCategoryMonthlyIncome"
+      description: "This API could accept user_id as an input parameter and return the monthly category Income for that user."
+      responses: {
+        key: "200"
+        value: {
+          description: "A successful response."
+          schema: {
+            json_schema: {ref: ".api.v1.ListUserCategoryMonthlyIncomeResponse"}
           }
         }
       }
@@ -1349,6 +1391,23 @@ service FinancialService {
           schema: {
             json_schema: {ref: ".api.v1.GetMelodyFinancialContextResponse"}
           }
+        }
+      }
+    };
+  }
+
+  rpc GetTransactionsForBankAccount(GetTransactionsForBankAccountRequest) returns (GetTransactionsForBankAccountResponse) {
+    option (google.api.http) = {get: "/api/v1/transactions/{user_id}/plaid-account-id/{plaid_account_id}/pageNumber/{page_number}/pageSize/{page_size}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "get transactions tied to a bank account"
+      tags: ["transactions"]
+      operation_id: "GetTransactions"
+      description: "This endpoint returns the transactions for a given user id"
+      responses: {
+        key: "200"
+        value: {
+          description: "A successful response."
+          schema: {json_schema: {ref: ".api.v1.GetTransactionsForBankAccountResponse"}}
         }
       }
     };

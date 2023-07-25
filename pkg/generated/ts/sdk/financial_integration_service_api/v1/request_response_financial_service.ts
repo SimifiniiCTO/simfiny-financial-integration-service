@@ -796,6 +796,24 @@ export interface CreateSubscriptionResponse {
   paymentIntentClientSecret: string;
 }
 
+export interface GetTransactionsForBankAccountRequest {
+  /**
+   * The user id
+   * Validations:
+   * - user_id must be greater than 0
+   */
+  userId: number;
+  plaidAccountId: string;
+  pageNumber: number;
+  pageSize: number;
+}
+
+export interface GetTransactionsForBankAccountResponse {
+  /** The transactions */
+  transactions: Transaction[];
+  nextPageNumber: number;
+}
+
 function createBaseCreateUserProfileRequest(): CreateUserProfileRequest {
   return { profile: undefined, email: "" };
 }
@@ -6725,6 +6743,196 @@ export const CreateSubscriptionResponse = {
     const message = createBaseCreateSubscriptionResponse();
     message.subscriptionId = object.subscriptionId ?? "";
     message.paymentIntentClientSecret = object.paymentIntentClientSecret ?? "";
+    return message;
+  },
+};
+
+function createBaseGetTransactionsForBankAccountRequest(): GetTransactionsForBankAccountRequest {
+  return { userId: 0, plaidAccountId: "", pageNumber: 0, pageSize: 0 };
+}
+
+export const GetTransactionsForBankAccountRequest = {
+  encode(message: GetTransactionsForBankAccountRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.userId !== 0) {
+      writer.uint32(16).uint64(message.userId);
+    }
+    if (message.plaidAccountId !== "") {
+      writer.uint32(10).string(message.plaidAccountId);
+    }
+    if (message.pageNumber !== 0) {
+      writer.uint32(24).uint64(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      writer.uint32(32).uint64(message.pageSize);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetTransactionsForBankAccountRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetTransactionsForBankAccountRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.userId = longToNumber(reader.uint64() as Long);
+          continue;
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.plaidAccountId = reader.string();
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.pageNumber = longToNumber(reader.uint64() as Long);
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.pageSize = longToNumber(reader.uint64() as Long);
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetTransactionsForBankAccountRequest {
+    return {
+      userId: isSet(object.userId) ? Number(object.userId) : 0,
+      plaidAccountId: isSet(object.plaidAccountId) ? String(object.plaidAccountId) : "",
+      pageNumber: isSet(object.pageNumber) ? Number(object.pageNumber) : 0,
+      pageSize: isSet(object.pageSize) ? Number(object.pageSize) : 0,
+    };
+  },
+
+  toJSON(message: GetTransactionsForBankAccountRequest): unknown {
+    const obj: any = {};
+    if (message.userId !== 0) {
+      obj.userId = Math.round(message.userId);
+    }
+    if (message.plaidAccountId !== "") {
+      obj.plaidAccountId = message.plaidAccountId;
+    }
+    if (message.pageNumber !== 0) {
+      obj.pageNumber = Math.round(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      obj.pageSize = Math.round(message.pageSize);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetTransactionsForBankAccountRequest>, I>>(
+    base?: I,
+  ): GetTransactionsForBankAccountRequest {
+    return GetTransactionsForBankAccountRequest.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<GetTransactionsForBankAccountRequest>, I>>(
+    object: I,
+  ): GetTransactionsForBankAccountRequest {
+    const message = createBaseGetTransactionsForBankAccountRequest();
+    message.userId = object.userId ?? 0;
+    message.plaidAccountId = object.plaidAccountId ?? "";
+    message.pageNumber = object.pageNumber ?? 0;
+    message.pageSize = object.pageSize ?? 0;
+    return message;
+  },
+};
+
+function createBaseGetTransactionsForBankAccountResponse(): GetTransactionsForBankAccountResponse {
+  return { transactions: [], nextPageNumber: 0 };
+}
+
+export const GetTransactionsForBankAccountResponse = {
+  encode(message: GetTransactionsForBankAccountResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.transactions) {
+      Transaction.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.nextPageNumber !== 0) {
+      writer.uint32(16).uint64(message.nextPageNumber);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetTransactionsForBankAccountResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetTransactionsForBankAccountResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.transactions.push(Transaction.decode(reader, reader.uint32()));
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.nextPageNumber = longToNumber(reader.uint64() as Long);
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetTransactionsForBankAccountResponse {
+    return {
+      transactions: Array.isArray(object?.transactions)
+        ? object.transactions.map((e: any) => Transaction.fromJSON(e))
+        : [],
+      nextPageNumber: isSet(object.nextPageNumber) ? Number(object.nextPageNumber) : 0,
+    };
+  },
+
+  toJSON(message: GetTransactionsForBankAccountResponse): unknown {
+    const obj: any = {};
+    if (message.transactions?.length) {
+      obj.transactions = message.transactions.map((e) => Transaction.toJSON(e));
+    }
+    if (message.nextPageNumber !== 0) {
+      obj.nextPageNumber = Math.round(message.nextPageNumber);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetTransactionsForBankAccountResponse>, I>>(
+    base?: I,
+  ): GetTransactionsForBankAccountResponse {
+    return GetTransactionsForBankAccountResponse.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<GetTransactionsForBankAccountResponse>, I>>(
+    object: I,
+  ): GetTransactionsForBankAccountResponse {
+    const message = createBaseGetTransactionsForBankAccountResponse();
+    message.transactions = object.transactions?.map((e) => Transaction.fromPartial(e)) || [];
+    message.nextPageNumber = object.nextPageNumber ?? 0;
     return message;
   },
 };

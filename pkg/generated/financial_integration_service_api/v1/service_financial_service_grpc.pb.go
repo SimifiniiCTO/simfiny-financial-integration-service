@@ -66,7 +66,9 @@ const (
 	FinancialService_GetUserAccountBalanceHistory_FullMethodName             = "/financial_integration_service_api.v1.FinancialService/GetUserAccountBalanceHistory"
 	FinancialService_GetAccountBalanceHistory_FullMethodName                 = "/financial_integration_service_api.v1.FinancialService/GetAccountBalanceHistory"
 	FinancialService_GetUserCategoryMonthlyExpenditure_FullMethodName        = "/financial_integration_service_api.v1.FinancialService/GetUserCategoryMonthlyExpenditure"
+	FinancialService_ListUserCategoryMonthlyExpenditure_FullMethodName       = "/financial_integration_service_api.v1.FinancialService/ListUserCategoryMonthlyExpenditure"
 	FinancialService_GetUserCategoryMonthlyIncome_FullMethodName             = "/financial_integration_service_api.v1.FinancialService/GetUserCategoryMonthlyIncome"
+	FinancialService_ListUserCategoryMonthlyIncome_FullMethodName            = "/financial_integration_service_api.v1.FinancialService/ListUserCategoryMonthlyIncome"
 	FinancialService_GetCategoryMonthlyTransactionCount_FullMethodName       = "/financial_integration_service_api.v1.FinancialService/GetCategoryMonthlyTransactionCount"
 	FinancialService_GetDebtToIncomeRatio_FullMethodName                     = "/financial_integration_service_api.v1.FinancialService/GetDebtToIncomeRatio"
 	FinancialService_GetExpenseMetrics_FullMethodName                        = "/financial_integration_service_api.v1.FinancialService/GetExpenseMetrics"
@@ -83,6 +85,7 @@ const (
 	FinancialService_GetPaymentChannelMonthlyExpenditure_FullMethodName      = "/financial_integration_service_api.v1.FinancialService/GetPaymentChannelMonthlyExpenditure"
 	FinancialService_GetTotalInvestmentBySecurity_FullMethodName             = "/financial_integration_service_api.v1.FinancialService/GetTotalInvestmentBySecurity"
 	FinancialService_GetMelodyFinancialContext_FullMethodName                = "/financial_integration_service_api.v1.FinancialService/GetMelodyFinancialContext"
+	FinancialService_GetTransactionsForBankAccount_FullMethodName            = "/financial_integration_service_api.v1.FinancialService/GetTransactionsForBankAccount"
 )
 
 // FinancialServiceClient is the client API for FinancialService service.
@@ -138,8 +141,10 @@ type FinancialServiceClient interface {
 	GetAccountBalanceHistory(ctx context.Context, in *GetAccountBalanceHistoryRequest, opts ...grpc.CallOption) (*GetAccountBalanceHistoryResponse, error)
 	// Get user category monthly expenditure
 	GetUserCategoryMonthlyExpenditure(ctx context.Context, in *GetUserCategoryMonthlyExpenditureRequest, opts ...grpc.CallOption) (*GetUserCategoryMonthlyExpenditureResponse, error)
+	ListUserCategoryMonthlyExpenditure(ctx context.Context, in *ListUserCategoryMonthlyExpenditureRequest, opts ...grpc.CallOption) (*ListUserCategoryMonthlyExpenditureResponse, error)
 	// Get CategoryMonthlyIncome by Category and User - This would return all CategoryMonthlyIncome records for a specific user for a specific personal finance category
 	GetUserCategoryMonthlyIncome(ctx context.Context, in *GetUserCategoryMonthlyIncomeRequest, opts ...grpc.CallOption) (*GetUserCategoryMonthlyIncomeResponse, error)
+	ListUserCategoryMonthlyIncome(ctx context.Context, in *ListUserCategoryMonthlyIncomeRequest, opts ...grpc.CallOption) (*ListUserCategoryMonthlyIncomeResponse, error)
 	// Get CategoryMonthlyTransactionCount by User - This would return all CategoryMonthlyTransactionCount records for a specific user
 	GetCategoryMonthlyTransactionCount(ctx context.Context, in *GetCategoryMonthlyTransactionCountRequest, opts ...grpc.CallOption) (*GetCategoryMonthlyTransactionCountResponse, error)
 	GetDebtToIncomeRatio(ctx context.Context, in *GetDebtToIncomeRatioRequest, opts ...grpc.CallOption) (*GetDebtToIncomeRatioResponse, error)
@@ -157,6 +162,7 @@ type FinancialServiceClient interface {
 	GetPaymentChannelMonthlyExpenditure(ctx context.Context, in *GetPaymentChannelMonthlyExpenditureRequest, opts ...grpc.CallOption) (*GetPaymentChannelMonthlyExpenditureResponse, error)
 	GetTotalInvestmentBySecurity(ctx context.Context, in *GetTotalInvestmentBySecurityRequest, opts ...grpc.CallOption) (*GetTotalInvestmentBySecurityResponse, error)
 	GetMelodyFinancialContext(ctx context.Context, in *GetMelodyFinancialContextRequest, opts ...grpc.CallOption) (*GetMelodyFinancialContextResponse, error)
+	GetTransactionsForBankAccount(ctx context.Context, in *GetTransactionsForBankAccountRequest, opts ...grpc.CallOption) (*GetTransactionsForBankAccountResponse, error)
 }
 
 type financialServiceClient struct {
@@ -590,9 +596,27 @@ func (c *financialServiceClient) GetUserCategoryMonthlyExpenditure(ctx context.C
 	return out, nil
 }
 
+func (c *financialServiceClient) ListUserCategoryMonthlyExpenditure(ctx context.Context, in *ListUserCategoryMonthlyExpenditureRequest, opts ...grpc.CallOption) (*ListUserCategoryMonthlyExpenditureResponse, error) {
+	out := new(ListUserCategoryMonthlyExpenditureResponse)
+	err := c.cc.Invoke(ctx, FinancialService_ListUserCategoryMonthlyExpenditure_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *financialServiceClient) GetUserCategoryMonthlyIncome(ctx context.Context, in *GetUserCategoryMonthlyIncomeRequest, opts ...grpc.CallOption) (*GetUserCategoryMonthlyIncomeResponse, error) {
 	out := new(GetUserCategoryMonthlyIncomeResponse)
 	err := c.cc.Invoke(ctx, FinancialService_GetUserCategoryMonthlyIncome_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *financialServiceClient) ListUserCategoryMonthlyIncome(ctx context.Context, in *ListUserCategoryMonthlyIncomeRequest, opts ...grpc.CallOption) (*ListUserCategoryMonthlyIncomeResponse, error) {
+	out := new(ListUserCategoryMonthlyIncomeResponse)
+	err := c.cc.Invoke(ctx, FinancialService_ListUserCategoryMonthlyIncome_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -743,6 +767,15 @@ func (c *financialServiceClient) GetMelodyFinancialContext(ctx context.Context, 
 	return out, nil
 }
 
+func (c *financialServiceClient) GetTransactionsForBankAccount(ctx context.Context, in *GetTransactionsForBankAccountRequest, opts ...grpc.CallOption) (*GetTransactionsForBankAccountResponse, error) {
+	out := new(GetTransactionsForBankAccountResponse)
+	err := c.cc.Invoke(ctx, FinancialService_GetTransactionsForBankAccount_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // FinancialServiceServer is the server API for FinancialService service.
 // All implementations must embed UnimplementedFinancialServiceServer
 // for forward compatibility
@@ -796,8 +829,10 @@ type FinancialServiceServer interface {
 	GetAccountBalanceHistory(context.Context, *GetAccountBalanceHistoryRequest) (*GetAccountBalanceHistoryResponse, error)
 	// Get user category monthly expenditure
 	GetUserCategoryMonthlyExpenditure(context.Context, *GetUserCategoryMonthlyExpenditureRequest) (*GetUserCategoryMonthlyExpenditureResponse, error)
+	ListUserCategoryMonthlyExpenditure(context.Context, *ListUserCategoryMonthlyExpenditureRequest) (*ListUserCategoryMonthlyExpenditureResponse, error)
 	// Get CategoryMonthlyIncome by Category and User - This would return all CategoryMonthlyIncome records for a specific user for a specific personal finance category
 	GetUserCategoryMonthlyIncome(context.Context, *GetUserCategoryMonthlyIncomeRequest) (*GetUserCategoryMonthlyIncomeResponse, error)
+	ListUserCategoryMonthlyIncome(context.Context, *ListUserCategoryMonthlyIncomeRequest) (*ListUserCategoryMonthlyIncomeResponse, error)
 	// Get CategoryMonthlyTransactionCount by User - This would return all CategoryMonthlyTransactionCount records for a specific user
 	GetCategoryMonthlyTransactionCount(context.Context, *GetCategoryMonthlyTransactionCountRequest) (*GetCategoryMonthlyTransactionCountResponse, error)
 	GetDebtToIncomeRatio(context.Context, *GetDebtToIncomeRatioRequest) (*GetDebtToIncomeRatioResponse, error)
@@ -815,6 +850,7 @@ type FinancialServiceServer interface {
 	GetPaymentChannelMonthlyExpenditure(context.Context, *GetPaymentChannelMonthlyExpenditureRequest) (*GetPaymentChannelMonthlyExpenditureResponse, error)
 	GetTotalInvestmentBySecurity(context.Context, *GetTotalInvestmentBySecurityRequest) (*GetTotalInvestmentBySecurityResponse, error)
 	GetMelodyFinancialContext(context.Context, *GetMelodyFinancialContextRequest) (*GetMelodyFinancialContextResponse, error)
+	GetTransactionsForBankAccount(context.Context, *GetTransactionsForBankAccountRequest) (*GetTransactionsForBankAccountResponse, error)
 	mustEmbedUnimplementedFinancialServiceServer()
 }
 
@@ -963,8 +999,14 @@ func (UnimplementedFinancialServiceServer) GetAccountBalanceHistory(context.Cont
 func (UnimplementedFinancialServiceServer) GetUserCategoryMonthlyExpenditure(context.Context, *GetUserCategoryMonthlyExpenditureRequest) (*GetUserCategoryMonthlyExpenditureResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserCategoryMonthlyExpenditure not implemented")
 }
+func (UnimplementedFinancialServiceServer) ListUserCategoryMonthlyExpenditure(context.Context, *ListUserCategoryMonthlyExpenditureRequest) (*ListUserCategoryMonthlyExpenditureResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListUserCategoryMonthlyExpenditure not implemented")
+}
 func (UnimplementedFinancialServiceServer) GetUserCategoryMonthlyIncome(context.Context, *GetUserCategoryMonthlyIncomeRequest) (*GetUserCategoryMonthlyIncomeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserCategoryMonthlyIncome not implemented")
+}
+func (UnimplementedFinancialServiceServer) ListUserCategoryMonthlyIncome(context.Context, *ListUserCategoryMonthlyIncomeRequest) (*ListUserCategoryMonthlyIncomeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListUserCategoryMonthlyIncome not implemented")
 }
 func (UnimplementedFinancialServiceServer) GetCategoryMonthlyTransactionCount(context.Context, *GetCategoryMonthlyTransactionCountRequest) (*GetCategoryMonthlyTransactionCountResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetCategoryMonthlyTransactionCount not implemented")
@@ -1013,6 +1055,9 @@ func (UnimplementedFinancialServiceServer) GetTotalInvestmentBySecurity(context.
 }
 func (UnimplementedFinancialServiceServer) GetMelodyFinancialContext(context.Context, *GetMelodyFinancialContextRequest) (*GetMelodyFinancialContextResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetMelodyFinancialContext not implemented")
+}
+func (UnimplementedFinancialServiceServer) GetTransactionsForBankAccount(context.Context, *GetTransactionsForBankAccountRequest) (*GetTransactionsForBankAccountResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetTransactionsForBankAccount not implemented")
 }
 func (UnimplementedFinancialServiceServer) mustEmbedUnimplementedFinancialServiceServer() {}
 
@@ -1873,6 +1918,24 @@ func _FinancialService_GetUserCategoryMonthlyExpenditure_Handler(srv interface{}
 	return interceptor(ctx, in, info, handler)
 }
 
+func _FinancialService_ListUserCategoryMonthlyExpenditure_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListUserCategoryMonthlyExpenditureRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FinancialServiceServer).ListUserCategoryMonthlyExpenditure(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FinancialService_ListUserCategoryMonthlyExpenditure_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FinancialServiceServer).ListUserCategoryMonthlyExpenditure(ctx, req.(*ListUserCategoryMonthlyExpenditureRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _FinancialService_GetUserCategoryMonthlyIncome_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetUserCategoryMonthlyIncomeRequest)
 	if err := dec(in); err != nil {
@@ -1887,6 +1950,24 @@ func _FinancialService_GetUserCategoryMonthlyIncome_Handler(srv interface{}, ctx
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(FinancialServiceServer).GetUserCategoryMonthlyIncome(ctx, req.(*GetUserCategoryMonthlyIncomeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FinancialService_ListUserCategoryMonthlyIncome_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListUserCategoryMonthlyIncomeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FinancialServiceServer).ListUserCategoryMonthlyIncome(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FinancialService_ListUserCategoryMonthlyIncome_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FinancialServiceServer).ListUserCategoryMonthlyIncome(ctx, req.(*ListUserCategoryMonthlyIncomeRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2179,6 +2260,24 @@ func _FinancialService_GetMelodyFinancialContext_Handler(srv interface{}, ctx co
 	return interceptor(ctx, in, info, handler)
 }
 
+func _FinancialService_GetTransactionsForBankAccount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetTransactionsForBankAccountRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FinancialServiceServer).GetTransactionsForBankAccount(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FinancialService_GetTransactionsForBankAccount_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FinancialServiceServer).GetTransactionsForBankAccount(ctx, req.(*GetTransactionsForBankAccountRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // FinancialService_ServiceDesc is the grpc.ServiceDesc for FinancialService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -2375,8 +2474,16 @@ var FinancialService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _FinancialService_GetUserCategoryMonthlyExpenditure_Handler,
 		},
 		{
+			MethodName: "ListUserCategoryMonthlyExpenditure",
+			Handler:    _FinancialService_ListUserCategoryMonthlyExpenditure_Handler,
+		},
+		{
 			MethodName: "GetUserCategoryMonthlyIncome",
 			Handler:    _FinancialService_GetUserCategoryMonthlyIncome_Handler,
+		},
+		{
+			MethodName: "ListUserCategoryMonthlyIncome",
+			Handler:    _FinancialService_ListUserCategoryMonthlyIncome_Handler,
 		},
 		{
 			MethodName: "GetCategoryMonthlyTransactionCount",
@@ -2441,6 +2548,10 @@ var FinancialService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetMelodyFinancialContext",
 			Handler:    _FinancialService_GetMelodyFinancialContext_Handler,
+		},
+		{
+			MethodName: "GetTransactionsForBankAccount",
+			Handler:    _FinancialService_GetTransactionsForBankAccount_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

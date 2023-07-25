@@ -90,6 +90,21 @@ message GetUserCategoryMonthlyExpenditureResponse {
   repeated CategoryMonthlyExpenditure category_monthly_expenditure = 1; // List of CategoryMonthlyExpenditure records for the user
 }
 
+// CategoryMonthlyExpenditure
+message ListUserCategoryMonthlyExpenditureRequest {
+  uint64 user_id = 1 [
+    (validate.rules).uint64.gt = 0,
+    (google.api.field_behavior) = REQUIRED
+  ]; // User ID
+  int32 page_number = 2;
+  int32 page_size = 3;  // Number of items to return per page.
+}
+
+message ListUserCategoryMonthlyExpenditureResponse {
+  repeated CategoryMonthlyExpenditure category_monthly_expenditure = 1; // List of CategoryMonthlyExpenditure records for the user
+  int32 next_page_number = 2;
+}
+
 message GetUserCategoryMonthlyIncomeRequest {
   uint64 user_id = 1 [
     (validate.rules).uint64.gt = 0,
@@ -101,6 +116,20 @@ message GetUserCategoryMonthlyIncomeRequest {
 
 message GetUserCategoryMonthlyIncomeResponse {
   repeated CategoryMonthlyIncome category_monthly_income = 1;
+}
+
+message ListUserCategoryMonthlyIncomeRequest {
+  uint64 user_id = 1 [
+    (validate.rules).uint64.gt = 0,
+    (google.api.field_behavior) = REQUIRED
+  ]; // User ID
+  int32 page_number = 2;
+  int32 page_size = 3;  // Number of items to return per page.
+}
+
+message ListUserCategoryMonthlyIncomeResponse {
+  repeated CategoryMonthlyIncome category_monthly_income = 1; // List of CategoryMonthlyExpenditure records for the user
+  int32 next_page_number = 2;
 }
 
 message GetCategoryMonthlyTransactionCountRequest {

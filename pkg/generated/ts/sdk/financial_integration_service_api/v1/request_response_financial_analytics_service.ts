@@ -94,6 +94,21 @@ export interface GetUserCategoryMonthlyExpenditureResponse {
   categoryMonthlyExpenditure: CategoryMonthlyExpenditure[];
 }
 
+/** CategoryMonthlyExpenditure */
+export interface ListUserCategoryMonthlyExpenditureRequest {
+  /** User ID */
+  userId: number;
+  pageNumber: number;
+  /** Number of items to return per page. */
+  pageSize: number;
+}
+
+export interface ListUserCategoryMonthlyExpenditureResponse {
+  /** List of CategoryMonthlyExpenditure records for the user */
+  categoryMonthlyExpenditure: CategoryMonthlyExpenditure[];
+  nextPageNumber: number;
+}
+
 export interface GetUserCategoryMonthlyIncomeRequest {
   userId: number;
   personalFinanceCategoryPrimary: string;
@@ -102,6 +117,20 @@ export interface GetUserCategoryMonthlyIncomeRequest {
 
 export interface GetUserCategoryMonthlyIncomeResponse {
   categoryMonthlyIncome: CategoryMonthlyIncome[];
+}
+
+export interface ListUserCategoryMonthlyIncomeRequest {
+  /** User ID */
+  userId: number;
+  pageNumber: number;
+  /** Number of items to return per page. */
+  pageSize: number;
+}
+
+export interface ListUserCategoryMonthlyIncomeResponse {
+  /** List of CategoryMonthlyExpenditure records for the user */
+  categoryMonthlyIncome: CategoryMonthlyIncome[];
+  nextPageNumber: number;
 }
 
 export interface GetCategoryMonthlyTransactionCountRequest {
@@ -1151,6 +1180,184 @@ export const GetUserCategoryMonthlyExpenditureResponse = {
   },
 };
 
+function createBaseListUserCategoryMonthlyExpenditureRequest(): ListUserCategoryMonthlyExpenditureRequest {
+  return { userId: 0, pageNumber: 0, pageSize: 0 };
+}
+
+export const ListUserCategoryMonthlyExpenditureRequest = {
+  encode(message: ListUserCategoryMonthlyExpenditureRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.userId !== 0) {
+      writer.uint32(8).uint64(message.userId);
+    }
+    if (message.pageNumber !== 0) {
+      writer.uint32(16).int32(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      writer.uint32(24).int32(message.pageSize);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ListUserCategoryMonthlyExpenditureRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListUserCategoryMonthlyExpenditureRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.userId = longToNumber(reader.uint64() as Long);
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.pageNumber = reader.int32();
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.pageSize = reader.int32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListUserCategoryMonthlyExpenditureRequest {
+    return {
+      userId: isSet(object.userId) ? Number(object.userId) : 0,
+      pageNumber: isSet(object.pageNumber) ? Number(object.pageNumber) : 0,
+      pageSize: isSet(object.pageSize) ? Number(object.pageSize) : 0,
+    };
+  },
+
+  toJSON(message: ListUserCategoryMonthlyExpenditureRequest): unknown {
+    const obj: any = {};
+    if (message.userId !== 0) {
+      obj.userId = Math.round(message.userId);
+    }
+    if (message.pageNumber !== 0) {
+      obj.pageNumber = Math.round(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      obj.pageSize = Math.round(message.pageSize);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListUserCategoryMonthlyExpenditureRequest>, I>>(
+    base?: I,
+  ): ListUserCategoryMonthlyExpenditureRequest {
+    return ListUserCategoryMonthlyExpenditureRequest.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ListUserCategoryMonthlyExpenditureRequest>, I>>(
+    object: I,
+  ): ListUserCategoryMonthlyExpenditureRequest {
+    const message = createBaseListUserCategoryMonthlyExpenditureRequest();
+    message.userId = object.userId ?? 0;
+    message.pageNumber = object.pageNumber ?? 0;
+    message.pageSize = object.pageSize ?? 0;
+    return message;
+  },
+};
+
+function createBaseListUserCategoryMonthlyExpenditureResponse(): ListUserCategoryMonthlyExpenditureResponse {
+  return { categoryMonthlyExpenditure: [], nextPageNumber: 0 };
+}
+
+export const ListUserCategoryMonthlyExpenditureResponse = {
+  encode(message: ListUserCategoryMonthlyExpenditureResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.categoryMonthlyExpenditure) {
+      CategoryMonthlyExpenditure.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.nextPageNumber !== 0) {
+      writer.uint32(16).int32(message.nextPageNumber);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ListUserCategoryMonthlyExpenditureResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListUserCategoryMonthlyExpenditureResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.categoryMonthlyExpenditure.push(CategoryMonthlyExpenditure.decode(reader, reader.uint32()));
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.nextPageNumber = reader.int32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListUserCategoryMonthlyExpenditureResponse {
+    return {
+      categoryMonthlyExpenditure: Array.isArray(object?.categoryMonthlyExpenditure)
+        ? object.categoryMonthlyExpenditure.map((e: any) => CategoryMonthlyExpenditure.fromJSON(e))
+        : [],
+      nextPageNumber: isSet(object.nextPageNumber) ? Number(object.nextPageNumber) : 0,
+    };
+  },
+
+  toJSON(message: ListUserCategoryMonthlyExpenditureResponse): unknown {
+    const obj: any = {};
+    if (message.categoryMonthlyExpenditure?.length) {
+      obj.categoryMonthlyExpenditure = message.categoryMonthlyExpenditure.map((e) =>
+        CategoryMonthlyExpenditure.toJSON(e)
+      );
+    }
+    if (message.nextPageNumber !== 0) {
+      obj.nextPageNumber = Math.round(message.nextPageNumber);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListUserCategoryMonthlyExpenditureResponse>, I>>(
+    base?: I,
+  ): ListUserCategoryMonthlyExpenditureResponse {
+    return ListUserCategoryMonthlyExpenditureResponse.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ListUserCategoryMonthlyExpenditureResponse>, I>>(
+    object: I,
+  ): ListUserCategoryMonthlyExpenditureResponse {
+    const message = createBaseListUserCategoryMonthlyExpenditureResponse();
+    message.categoryMonthlyExpenditure =
+      object.categoryMonthlyExpenditure?.map((e) => CategoryMonthlyExpenditure.fromPartial(e)) || [];
+    message.nextPageNumber = object.nextPageNumber ?? 0;
+    return message;
+  },
+};
+
 function createBaseGetUserCategoryMonthlyIncomeRequest(): GetUserCategoryMonthlyIncomeRequest {
   return { userId: 0, personalFinanceCategoryPrimary: "", month: 0 };
 }
@@ -1310,6 +1517,182 @@ export const GetUserCategoryMonthlyIncomeResponse = {
     const message = createBaseGetUserCategoryMonthlyIncomeResponse();
     message.categoryMonthlyIncome = object.categoryMonthlyIncome?.map((e) => CategoryMonthlyIncome.fromPartial(e)) ||
       [];
+    return message;
+  },
+};
+
+function createBaseListUserCategoryMonthlyIncomeRequest(): ListUserCategoryMonthlyIncomeRequest {
+  return { userId: 0, pageNumber: 0, pageSize: 0 };
+}
+
+export const ListUserCategoryMonthlyIncomeRequest = {
+  encode(message: ListUserCategoryMonthlyIncomeRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.userId !== 0) {
+      writer.uint32(8).uint64(message.userId);
+    }
+    if (message.pageNumber !== 0) {
+      writer.uint32(16).int32(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      writer.uint32(24).int32(message.pageSize);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ListUserCategoryMonthlyIncomeRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListUserCategoryMonthlyIncomeRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.userId = longToNumber(reader.uint64() as Long);
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.pageNumber = reader.int32();
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.pageSize = reader.int32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListUserCategoryMonthlyIncomeRequest {
+    return {
+      userId: isSet(object.userId) ? Number(object.userId) : 0,
+      pageNumber: isSet(object.pageNumber) ? Number(object.pageNumber) : 0,
+      pageSize: isSet(object.pageSize) ? Number(object.pageSize) : 0,
+    };
+  },
+
+  toJSON(message: ListUserCategoryMonthlyIncomeRequest): unknown {
+    const obj: any = {};
+    if (message.userId !== 0) {
+      obj.userId = Math.round(message.userId);
+    }
+    if (message.pageNumber !== 0) {
+      obj.pageNumber = Math.round(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      obj.pageSize = Math.round(message.pageSize);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListUserCategoryMonthlyIncomeRequest>, I>>(
+    base?: I,
+  ): ListUserCategoryMonthlyIncomeRequest {
+    return ListUserCategoryMonthlyIncomeRequest.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ListUserCategoryMonthlyIncomeRequest>, I>>(
+    object: I,
+  ): ListUserCategoryMonthlyIncomeRequest {
+    const message = createBaseListUserCategoryMonthlyIncomeRequest();
+    message.userId = object.userId ?? 0;
+    message.pageNumber = object.pageNumber ?? 0;
+    message.pageSize = object.pageSize ?? 0;
+    return message;
+  },
+};
+
+function createBaseListUserCategoryMonthlyIncomeResponse(): ListUserCategoryMonthlyIncomeResponse {
+  return { categoryMonthlyIncome: [], nextPageNumber: 0 };
+}
+
+export const ListUserCategoryMonthlyIncomeResponse = {
+  encode(message: ListUserCategoryMonthlyIncomeResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.categoryMonthlyIncome) {
+      CategoryMonthlyIncome.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.nextPageNumber !== 0) {
+      writer.uint32(16).int32(message.nextPageNumber);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ListUserCategoryMonthlyIncomeResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListUserCategoryMonthlyIncomeResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.categoryMonthlyIncome.push(CategoryMonthlyIncome.decode(reader, reader.uint32()));
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.nextPageNumber = reader.int32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListUserCategoryMonthlyIncomeResponse {
+    return {
+      categoryMonthlyIncome: Array.isArray(object?.categoryMonthlyIncome)
+        ? object.categoryMonthlyIncome.map((e: any) => CategoryMonthlyIncome.fromJSON(e))
+        : [],
+      nextPageNumber: isSet(object.nextPageNumber) ? Number(object.nextPageNumber) : 0,
+    };
+  },
+
+  toJSON(message: ListUserCategoryMonthlyIncomeResponse): unknown {
+    const obj: any = {};
+    if (message.categoryMonthlyIncome?.length) {
+      obj.categoryMonthlyIncome = message.categoryMonthlyIncome.map((e) => CategoryMonthlyIncome.toJSON(e));
+    }
+    if (message.nextPageNumber !== 0) {
+      obj.nextPageNumber = Math.round(message.nextPageNumber);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListUserCategoryMonthlyIncomeResponse>, I>>(
+    base?: I,
+  ): ListUserCategoryMonthlyIncomeResponse {
+    return ListUserCategoryMonthlyIncomeResponse.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ListUserCategoryMonthlyIncomeResponse>, I>>(
+    object: I,
+  ): ListUserCategoryMonthlyIncomeResponse {
+    const message = createBaseListUserCategoryMonthlyIncomeResponse();
+    message.categoryMonthlyIncome = object.categoryMonthlyIncome?.map((e) => CategoryMonthlyIncome.fromPartial(e)) ||
+      [];
+    message.nextPageNumber = object.nextPageNumber ?? 0;
     return message;
   },
 };

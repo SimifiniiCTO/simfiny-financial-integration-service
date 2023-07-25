@@ -4575,6 +4575,136 @@ func (x *CreateSubscriptionResponse) GetPaymentIntentClientSecret() string {
 	return ""
 }
 
+type GetTransactionsForBankAccountRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// The user id
+	// Validations:
+	// - user_id must be greater than 0
+	UserId         uint64 `protobuf:"varint,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	PlaidAccountId string `protobuf:"bytes,1,opt,name=plaid_account_id,json=plaidAccountId,proto3" json:"plaid_account_id,omitempty"`
+	PageNumber     uint64 `protobuf:"varint,3,opt,name=page_number,json=pageNumber,proto3" json:"page_number,omitempty"`
+	PageSize       uint64 `protobuf:"varint,4,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+}
+
+func (x *GetTransactionsForBankAccountRequest) Reset() {
+	*x = GetTransactionsForBankAccountRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[84]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetTransactionsForBankAccountRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetTransactionsForBankAccountRequest) ProtoMessage() {}
+
+func (x *GetTransactionsForBankAccountRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[84]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetTransactionsForBankAccountRequest.ProtoReflect.Descriptor instead.
+func (*GetTransactionsForBankAccountRequest) Descriptor() ([]byte, []int) {
+	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{84}
+}
+
+func (x *GetTransactionsForBankAccountRequest) GetUserId() uint64 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+func (x *GetTransactionsForBankAccountRequest) GetPlaidAccountId() string {
+	if x != nil {
+		return x.PlaidAccountId
+	}
+	return ""
+}
+
+func (x *GetTransactionsForBankAccountRequest) GetPageNumber() uint64 {
+	if x != nil {
+		return x.PageNumber
+	}
+	return 0
+}
+
+func (x *GetTransactionsForBankAccountRequest) GetPageSize() uint64 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+type GetTransactionsForBankAccountResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// The transactions
+	Transactions   []*Transaction `protobuf:"bytes,1,rep,name=transactions,proto3" json:"transactions,omitempty"`
+	NextPageNumber uint64         `protobuf:"varint,2,opt,name=next_page_number,json=nextPageNumber,proto3" json:"next_page_number,omitempty"`
+}
+
+func (x *GetTransactionsForBankAccountResponse) Reset() {
+	*x = GetTransactionsForBankAccountResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[85]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetTransactionsForBankAccountResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetTransactionsForBankAccountResponse) ProtoMessage() {}
+
+func (x *GetTransactionsForBankAccountResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[85]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetTransactionsForBankAccountResponse.ProtoReflect.Descriptor instead.
+func (*GetTransactionsForBankAccountResponse) Descriptor() ([]byte, []int) {
+	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescGZIP(), []int{85}
+}
+
+func (x *GetTransactionsForBankAccountResponse) GetTransactions() []*Transaction {
+	if x != nil {
+		return x.Transactions
+	}
+	return nil
+}
+
+func (x *GetTransactionsForBankAccountResponse) GetNextPageNumber() uint64 {
+	if x != nil {
+		return x.NextPageNumber
+	}
+	return 0
+}
+
 type GetReCurringTransactionsResponse_ParticipantReCurringTransactions struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -4589,7 +4719,7 @@ type GetReCurringTransactionsResponse_ParticipantReCurringTransactions struct {
 func (x *GetReCurringTransactionsResponse_ParticipantReCurringTransactions) Reset() {
 	*x = GetReCurringTransactionsResponse_ParticipantReCurringTransactions{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[84]
+		mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[86]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4602,7 +4732,7 @@ func (x *GetReCurringTransactionsResponse_ParticipantReCurringTransactions) Stri
 func (*GetReCurringTransactionsResponse_ParticipantReCurringTransactions) ProtoMessage() {}
 
 func (x *GetReCurringTransactionsResponse_ParticipantReCurringTransactions) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[84]
+	mi := &file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[86]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5248,38 +5378,61 @@ var file_financial_integration_service_api_v1_request_response_financial_service
 	0x1c, 0x70, 0x61, 0x79, 0x6d, 0x65, 0x6e, 0x74, 0x5f, 0x69, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x5f,
 	0x63, 0x6c, 0x69, 0x65, 0x6e, 0x74, 0x5f, 0x73, 0x65, 0x63, 0x72, 0x65, 0x74, 0x18, 0x02, 0x20,
 	0x01, 0x28, 0x09, 0x52, 0x19, 0x70, 0x61, 0x79, 0x6d, 0x65, 0x6e, 0x74, 0x49, 0x6e, 0x74, 0x65,
-	0x6e, 0x74, 0x43, 0x6c, 0x69, 0x65, 0x6e, 0x74, 0x53, 0x65, 0x63, 0x72, 0x65, 0x74, 0x42, 0xdd,
-	0x03, 0x0a, 0x28, 0x63, 0x6f, 0x6d, 0x2e, 0x66, 0x69, 0x6e, 0x61, 0x6e, 0x63, 0x69, 0x61, 0x6c,
-	0x5f, 0x69, 0x6e, 0x74, 0x65, 0x67, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x73, 0x65, 0x72,
-	0x76, 0x69, 0x63, 0x65, 0x5f, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x42, 0x24, 0x52, 0x65, 0x71,
-	0x75, 0x65, 0x73, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x46, 0x69, 0x6e, 0x61,
-	0x6e, 0x63, 0x69, 0x61, 0x6c, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x50, 0x72, 0x6f, 0x74,
-	0x6f, 0x50, 0x01, 0x5a, 0xb9, 0x01, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d,
-	0x2f, 0x53, 0x69, 0x6d, 0x69, 0x66, 0x69, 0x6e, 0x69, 0x69, 0x43, 0x54, 0x4f, 0x2f, 0x73, 0x69,
-	0x6d, 0x66, 0x69, 0x6e, 0x79, 0x2d, 0x66, 0x69, 0x6e, 0x61, 0x6e, 0x63, 0x69, 0x61, 0x6c, 0x2d,
-	0x69, 0x6e, 0x74, 0x65, 0x67, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2d, 0x73, 0x65, 0x72, 0x76,
-	0x69, 0x63, 0x65, 0x2f, 0x70, 0x6b, 0x67, 0x2f, 0x67, 0x65, 0x6e, 0x65, 0x72, 0x61, 0x74, 0x65,
-	0x64, 0x2f, 0x66, 0x69, 0x6e, 0x61, 0x6e, 0x63, 0x69, 0x61, 0x6c, 0x5f, 0x69, 0x6e, 0x74, 0x65,
-	0x67, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x5f,
-	0x61, 0x70, 0x69, 0x2f, 0x76, 0x31, 0x2f, 0x66, 0x69, 0x6e, 0x61, 0x6e, 0x63, 0x69, 0x61, 0x6c,
-	0x5f, 0x69, 0x6e, 0x74, 0x65, 0x67, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x73, 0x65, 0x72,
-	0x76, 0x69, 0x63, 0x65, 0x5f, 0x61, 0x70, 0x69, 0x2f, 0x76, 0x31, 0x3b, 0x66, 0x69, 0x6e, 0x61,
-	0x6e, 0x63, 0x69, 0x61, 0x6c, 0x5f, 0x69, 0x6e, 0x74, 0x65, 0x67, 0x72, 0x61, 0x74, 0x69, 0x6f,
-	0x6e, 0x5f, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x5f, 0x61, 0x70, 0x69, 0x76, 0x31, 0xa2,
-	0x02, 0x03, 0x46, 0x58, 0x58, 0xaa, 0x02, 0x21, 0x46, 0x69, 0x6e, 0x61, 0x6e, 0x63, 0x69, 0x61,
-	0x6c, 0x49, 0x6e, 0x74, 0x65, 0x67, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x53, 0x65, 0x72, 0x76,
-	0x69, 0x63, 0x65, 0x41, 0x70, 0x69, 0x2e, 0x56, 0x31, 0xca, 0x02, 0x21, 0x46, 0x69, 0x6e, 0x61,
-	0x6e, 0x63, 0x69, 0x61, 0x6c, 0x49, 0x6e, 0x74, 0x65, 0x67, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e,
-	0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x41, 0x70, 0x69, 0x5c, 0x56, 0x31, 0xe2, 0x02, 0x2d,
-	0x46, 0x69, 0x6e, 0x61, 0x6e, 0x63, 0x69, 0x61, 0x6c, 0x49, 0x6e, 0x74, 0x65, 0x67, 0x72, 0x61,
-	0x74, 0x69, 0x6f, 0x6e, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x41, 0x70, 0x69, 0x5c, 0x56,
-	0x31, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x22,
-	0x46, 0x69, 0x6e, 0x61, 0x6e, 0x63, 0x69, 0x61, 0x6c, 0x49, 0x6e, 0x74, 0x65, 0x67, 0x72, 0x61,
-	0x74, 0x69, 0x6f, 0x6e, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x41, 0x70, 0x69, 0x3a, 0x3a,
-	0x56, 0x31, 0xd8, 0xe1, 0x1e, 0x00, 0xe0, 0xe1, 0x1e, 0x01, 0xf0, 0xe1, 0x1e, 0x01, 0xf8, 0xe1,
-	0x1e, 0x01, 0x80, 0xe2, 0x1e, 0x01, 0xa8, 0xe2, 0x1e, 0x01, 0xb8, 0xe2, 0x1e, 0x01, 0xc0, 0xe2,
-	0x1e, 0x01, 0xc8, 0xe2, 0x1e, 0x01, 0xd0, 0xe2, 0x1e, 0x01, 0xe0, 0xe2, 0x1e, 0x01, 0x62, 0x06,
-	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x6e, 0x74, 0x43, 0x6c, 0x69, 0x65, 0x6e, 0x74, 0x53, 0x65, 0x63, 0x72, 0x65, 0x74, 0x22, 0xbf,
+	0x01, 0x0a, 0x24, 0x47, 0x65, 0x74, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x61, 0x63, 0x74, 0x69, 0x6f,
+	0x6e, 0x73, 0x46, 0x6f, 0x72, 0x42, 0x61, 0x6e, 0x6b, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74,
+	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x23, 0x0a, 0x07, 0x75, 0x73, 0x65, 0x72, 0x5f,
+	0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x04, 0x42, 0x0a, 0xe0, 0x41, 0x02, 0xfa, 0x42, 0x04,
+	0x32, 0x02, 0x20, 0x00, 0x52, 0x06, 0x75, 0x73, 0x65, 0x72, 0x49, 0x64, 0x12, 0x34, 0x0a, 0x10,
+	0x70, 0x6c, 0x61, 0x69, 0x64, 0x5f, 0x61, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x5f, 0x69, 0x64,
+	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x42, 0x0a, 0xe0, 0x41, 0x02, 0xfa, 0x42, 0x04, 0x72, 0x02,
+	0x10, 0x01, 0x52, 0x0e, 0x70, 0x6c, 0x61, 0x69, 0x64, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74,
+	0x49, 0x64, 0x12, 0x1f, 0x0a, 0x0b, 0x70, 0x61, 0x67, 0x65, 0x5f, 0x6e, 0x75, 0x6d, 0x62, 0x65,
+	0x72, 0x18, 0x03, 0x20, 0x01, 0x28, 0x04, 0x52, 0x0a, 0x70, 0x61, 0x67, 0x65, 0x4e, 0x75, 0x6d,
+	0x62, 0x65, 0x72, 0x12, 0x1b, 0x0a, 0x09, 0x70, 0x61, 0x67, 0x65, 0x5f, 0x73, 0x69, 0x7a, 0x65,
+	0x18, 0x04, 0x20, 0x01, 0x28, 0x04, 0x52, 0x08, 0x70, 0x61, 0x67, 0x65, 0x53, 0x69, 0x7a, 0x65,
+	0x22, 0xa8, 0x01, 0x0a, 0x25, 0x47, 0x65, 0x74, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x61, 0x63, 0x74,
+	0x69, 0x6f, 0x6e, 0x73, 0x46, 0x6f, 0x72, 0x42, 0x61, 0x6e, 0x6b, 0x41, 0x63, 0x63, 0x6f, 0x75,
+	0x6e, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x55, 0x0a, 0x0c, 0x74, 0x72,
+	0x61, 0x6e, 0x73, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b,
+	0x32, 0x31, 0x2e, 0x66, 0x69, 0x6e, 0x61, 0x6e, 0x63, 0x69, 0x61, 0x6c, 0x5f, 0x69, 0x6e, 0x74,
+	0x65, 0x67, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65,
+	0x5f, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x61, 0x63, 0x74,
+	0x69, 0x6f, 0x6e, 0x52, 0x0c, 0x74, 0x72, 0x61, 0x6e, 0x73, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e,
+	0x73, 0x12, 0x28, 0x0a, 0x10, 0x6e, 0x65, 0x78, 0x74, 0x5f, 0x70, 0x61, 0x67, 0x65, 0x5f, 0x6e,
+	0x75, 0x6d, 0x62, 0x65, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x04, 0x52, 0x0e, 0x6e, 0x65, 0x78,
+	0x74, 0x50, 0x61, 0x67, 0x65, 0x4e, 0x75, 0x6d, 0x62, 0x65, 0x72, 0x42, 0xdd, 0x03, 0x0a, 0x28,
+	0x63, 0x6f, 0x6d, 0x2e, 0x66, 0x69, 0x6e, 0x61, 0x6e, 0x63, 0x69, 0x61, 0x6c, 0x5f, 0x69, 0x6e,
+	0x74, 0x65, 0x67, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63,
+	0x65, 0x5f, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x42, 0x24, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
+	0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x46, 0x69, 0x6e, 0x61, 0x6e, 0x63, 0x69,
+	0x61, 0x6c, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01,
+	0x5a, 0xb9, 0x01, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x53, 0x69,
+	0x6d, 0x69, 0x66, 0x69, 0x6e, 0x69, 0x69, 0x43, 0x54, 0x4f, 0x2f, 0x73, 0x69, 0x6d, 0x66, 0x69,
+	0x6e, 0x79, 0x2d, 0x66, 0x69, 0x6e, 0x61, 0x6e, 0x63, 0x69, 0x61, 0x6c, 0x2d, 0x69, 0x6e, 0x74,
+	0x65, 0x67, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2d, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65,
+	0x2f, 0x70, 0x6b, 0x67, 0x2f, 0x67, 0x65, 0x6e, 0x65, 0x72, 0x61, 0x74, 0x65, 0x64, 0x2f, 0x66,
+	0x69, 0x6e, 0x61, 0x6e, 0x63, 0x69, 0x61, 0x6c, 0x5f, 0x69, 0x6e, 0x74, 0x65, 0x67, 0x72, 0x61,
+	0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x5f, 0x61, 0x70, 0x69,
+	0x2f, 0x76, 0x31, 0x2f, 0x66, 0x69, 0x6e, 0x61, 0x6e, 0x63, 0x69, 0x61, 0x6c, 0x5f, 0x69, 0x6e,
+	0x74, 0x65, 0x67, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63,
+	0x65, 0x5f, 0x61, 0x70, 0x69, 0x2f, 0x76, 0x31, 0x3b, 0x66, 0x69, 0x6e, 0x61, 0x6e, 0x63, 0x69,
+	0x61, 0x6c, 0x5f, 0x69, 0x6e, 0x74, 0x65, 0x67, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x73,
+	0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x5f, 0x61, 0x70, 0x69, 0x76, 0x31, 0xa2, 0x02, 0x03, 0x46,
+	0x58, 0x58, 0xaa, 0x02, 0x21, 0x46, 0x69, 0x6e, 0x61, 0x6e, 0x63, 0x69, 0x61, 0x6c, 0x49, 0x6e,
+	0x74, 0x65, 0x67, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65,
+	0x41, 0x70, 0x69, 0x2e, 0x56, 0x31, 0xca, 0x02, 0x21, 0x46, 0x69, 0x6e, 0x61, 0x6e, 0x63, 0x69,
+	0x61, 0x6c, 0x49, 0x6e, 0x74, 0x65, 0x67, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x53, 0x65, 0x72,
+	0x76, 0x69, 0x63, 0x65, 0x41, 0x70, 0x69, 0x5c, 0x56, 0x31, 0xe2, 0x02, 0x2d, 0x46, 0x69, 0x6e,
+	0x61, 0x6e, 0x63, 0x69, 0x61, 0x6c, 0x49, 0x6e, 0x74, 0x65, 0x67, 0x72, 0x61, 0x74, 0x69, 0x6f,
+	0x6e, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x41, 0x70, 0x69, 0x5c, 0x56, 0x31, 0x5c, 0x47,
+	0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x22, 0x46, 0x69, 0x6e,
+	0x61, 0x6e, 0x63, 0x69, 0x61, 0x6c, 0x49, 0x6e, 0x74, 0x65, 0x67, 0x72, 0x61, 0x74, 0x69, 0x6f,
+	0x6e, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x41, 0x70, 0x69, 0x3a, 0x3a, 0x56, 0x31, 0xd8,
+	0xe1, 0x1e, 0x00, 0xe0, 0xe1, 0x1e, 0x01, 0xf0, 0xe1, 0x1e, 0x01, 0xf8, 0xe1, 0x1e, 0x01, 0x80,
+	0xe2, 0x1e, 0x01, 0xa8, 0xe2, 0x1e, 0x01, 0xb8, 0xe2, 0x1e, 0x01, 0xc0, 0xe2, 0x1e, 0x01, 0xc8,
+	0xe2, 0x1e, 0x01, 0xd0, 0xe2, 0x1e, 0x01, 0xe0, 0xe2, 0x1e, 0x01, 0x62, 0x06, 0x70, 0x72, 0x6f,
+	0x74, 0x6f, 0x33,
 }
 
 var (
@@ -5294,7 +5447,7 @@ func file_financial_integration_service_api_v1_request_response_financial_servic
 	return file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDescData
 }
 
-var file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes = make([]protoimpl.MessageInfo, 86)
+var file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes = make([]protoimpl.MessageInfo, 88)
 var file_financial_integration_service_api_v1_request_response_financial_service_proto_goTypes = []interface{}{
 	(*CreateUserProfileRequest)(nil),                                          // 0: financial_integration_service_api.v1.CreateUserProfileRequest
 	(*CreateUserProfileResponse)(nil),                                         // 1: financial_integration_service_api.v1.CreateUserProfileResponse
@@ -5380,66 +5533,69 @@ var file_financial_integration_service_api_v1_request_response_financial_service
 	(*StripeWebhookResponse)(nil),                                             // 81: financial_integration_service_api.v1.StripeWebhookResponse
 	(*CreateSubscriptionRequest)(nil),                                         // 82: financial_integration_service_api.v1.CreateSubscriptionRequest
 	(*CreateSubscriptionResponse)(nil),                                        // 83: financial_integration_service_api.v1.CreateSubscriptionResponse
-	(*GetReCurringTransactionsResponse_ParticipantReCurringTransactions)(nil), // 84: financial_integration_service_api.v1.GetReCurringTransactionsResponse.ParticipantReCurringTransactions
-	nil,                           // 85: financial_integration_service_api.v1.ProcessWebhookRequest.ErrorEntry
-	(*UserProfile)(nil),           // 86: financial_integration_service_api.v1.UserProfile
-	(*BankAccount)(nil),           // 87: financial_integration_service_api.v1.BankAccount
-	(*Pocket)(nil),                // 88: financial_integration_service_api.v1.Pocket
-	(*SmartGoal)(nil),             // 89: financial_integration_service_api.v1.SmartGoal
-	(*Milestone)(nil),             // 90: financial_integration_service_api.v1.Milestone
-	(*Forecast)(nil),              // 91: financial_integration_service_api.v1.Forecast
-	(*Budget)(nil),                // 92: financial_integration_service_api.v1.Budget
-	(*InvestmentAccount)(nil),     // 93: financial_integration_service_api.v1.InvestmentAccount
-	(*MortgageAccount)(nil),       // 94: financial_integration_service_api.v1.MortgageAccount
-	(*CreditAccount)(nil),         // 95: financial_integration_service_api.v1.CreditAccount
-	(*StudentLoanAccount)(nil),    // 96: financial_integration_service_api.v1.StudentLoanAccount
-	(*Link)(nil),                  // 97: financial_integration_service_api.v1.Link
-	(*ReOccuringTransaction)(nil), // 98: financial_integration_service_api.v1.ReOccuringTransaction
-	(*Transaction)(nil),           // 99: financial_integration_service_api.v1.Transaction
-	(*anypb.Any)(nil),             // 100: google.protobuf.Any
+	(*GetTransactionsForBankAccountRequest)(nil),                              // 84: financial_integration_service_api.v1.GetTransactionsForBankAccountRequest
+	(*GetTransactionsForBankAccountResponse)(nil),                             // 85: financial_integration_service_api.v1.GetTransactionsForBankAccountResponse
+	(*GetReCurringTransactionsResponse_ParticipantReCurringTransactions)(nil), // 86: financial_integration_service_api.v1.GetReCurringTransactionsResponse.ParticipantReCurringTransactions
+	nil,                           // 87: financial_integration_service_api.v1.ProcessWebhookRequest.ErrorEntry
+	(*UserProfile)(nil),           // 88: financial_integration_service_api.v1.UserProfile
+	(*BankAccount)(nil),           // 89: financial_integration_service_api.v1.BankAccount
+	(*Pocket)(nil),                // 90: financial_integration_service_api.v1.Pocket
+	(*SmartGoal)(nil),             // 91: financial_integration_service_api.v1.SmartGoal
+	(*Milestone)(nil),             // 92: financial_integration_service_api.v1.Milestone
+	(*Forecast)(nil),              // 93: financial_integration_service_api.v1.Forecast
+	(*Budget)(nil),                // 94: financial_integration_service_api.v1.Budget
+	(*InvestmentAccount)(nil),     // 95: financial_integration_service_api.v1.InvestmentAccount
+	(*MortgageAccount)(nil),       // 96: financial_integration_service_api.v1.MortgageAccount
+	(*CreditAccount)(nil),         // 97: financial_integration_service_api.v1.CreditAccount
+	(*StudentLoanAccount)(nil),    // 98: financial_integration_service_api.v1.StudentLoanAccount
+	(*Link)(nil),                  // 99: financial_integration_service_api.v1.Link
+	(*ReOccuringTransaction)(nil), // 100: financial_integration_service_api.v1.ReOccuringTransaction
+	(*Transaction)(nil),           // 101: financial_integration_service_api.v1.Transaction
+	(*anypb.Any)(nil),             // 102: google.protobuf.Any
 }
 var file_financial_integration_service_api_v1_request_response_financial_service_proto_depIdxs = []int32{
-	86,  // 0: financial_integration_service_api.v1.CreateUserProfileRequest.profile:type_name -> financial_integration_service_api.v1.UserProfile
-	86,  // 1: financial_integration_service_api.v1.GetUserProfileResponse.profile:type_name -> financial_integration_service_api.v1.UserProfile
-	86,  // 2: financial_integration_service_api.v1.UpdateUserProfileRequest.profile:type_name -> financial_integration_service_api.v1.UserProfile
-	86,  // 3: financial_integration_service_api.v1.UpdateUserProfileResponse.profile:type_name -> financial_integration_service_api.v1.UserProfile
-	87,  // 4: financial_integration_service_api.v1.CreateBankAccountRequest.bank_account:type_name -> financial_integration_service_api.v1.BankAccount
-	87,  // 5: financial_integration_service_api.v1.GetBankAccountResponse.bank_account:type_name -> financial_integration_service_api.v1.BankAccount
-	87,  // 6: financial_integration_service_api.v1.UpdateBankAccountRequest.bank_account:type_name -> financial_integration_service_api.v1.BankAccount
-	87,  // 7: financial_integration_service_api.v1.UpdateBankAccountResponse.bank_account:type_name -> financial_integration_service_api.v1.BankAccount
-	88,  // 8: financial_integration_service_api.v1.GetPocketResponse.pocket:type_name -> financial_integration_service_api.v1.Pocket
-	89,  // 9: financial_integration_service_api.v1.GetSmartGoalsByPocketIdResponse.smart_goals:type_name -> financial_integration_service_api.v1.SmartGoal
-	89,  // 10: financial_integration_service_api.v1.CreateSmartGoalRequest.smart_goal:type_name -> financial_integration_service_api.v1.SmartGoal
-	89,  // 11: financial_integration_service_api.v1.UpdateSmartGoalRequest.smart_goal:type_name -> financial_integration_service_api.v1.SmartGoal
-	90,  // 12: financial_integration_service_api.v1.CreateMilestoneRequest.milestone:type_name -> financial_integration_service_api.v1.Milestone
-	90,  // 13: financial_integration_service_api.v1.UpdateMilestoneRequest.milestone:type_name -> financial_integration_service_api.v1.Milestone
-	90,  // 14: financial_integration_service_api.v1.UpdateMilestoneResponse.milestone:type_name -> financial_integration_service_api.v1.Milestone
-	90,  // 15: financial_integration_service_api.v1.GetMilestonesBySmartGoalIdResponse.milestones:type_name -> financial_integration_service_api.v1.Milestone
-	90,  // 16: financial_integration_service_api.v1.GetMilestoneResponse.milestone:type_name -> financial_integration_service_api.v1.Milestone
-	91,  // 17: financial_integration_service_api.v1.GetForecastResponse.forecast:type_name -> financial_integration_service_api.v1.Forecast
-	92,  // 18: financial_integration_service_api.v1.CreateBudgetRequest.budget:type_name -> financial_integration_service_api.v1.Budget
-	92,  // 19: financial_integration_service_api.v1.UpdateBudgetRequest.budget:type_name -> financial_integration_service_api.v1.Budget
-	92,  // 20: financial_integration_service_api.v1.UpdateBudgetResponse.budget:type_name -> financial_integration_service_api.v1.Budget
-	92,  // 21: financial_integration_service_api.v1.GetBudgetResponse.budget:type_name -> financial_integration_service_api.v1.Budget
-	92,  // 22: financial_integration_service_api.v1.GetAllBudgetsResponse.budgets:type_name -> financial_integration_service_api.v1.Budget
-	93,  // 23: financial_integration_service_api.v1.GetInvestmentAcccountResponse.investment_account:type_name -> financial_integration_service_api.v1.InvestmentAccount
-	94,  // 24: financial_integration_service_api.v1.GetMortgageAccountResponse.mortage_account:type_name -> financial_integration_service_api.v1.MortgageAccount
-	95,  // 25: financial_integration_service_api.v1.GetLiabilityAccountResponse.liability_account:type_name -> financial_integration_service_api.v1.CreditAccount
-	96,  // 26: financial_integration_service_api.v1.GetStudentLoanAccountResponse.student_loan_account:type_name -> financial_integration_service_api.v1.StudentLoanAccount
-	97,  // 27: financial_integration_service_api.v1.CreateManualLinkRequest.manual_account_link:type_name -> financial_integration_service_api.v1.Link
-	97,  // 28: financial_integration_service_api.v1.GetLinkResponse.link:type_name -> financial_integration_service_api.v1.Link
-	97,  // 29: financial_integration_service_api.v1.GetLinksResponse.links:type_name -> financial_integration_service_api.v1.Link
-	98,  // 30: financial_integration_service_api.v1.GetReCurringTransactionsResponse.re_ccuring_transactions:type_name -> financial_integration_service_api.v1.ReOccuringTransaction
-	84,  // 31: financial_integration_service_api.v1.GetReCurringTransactionsResponse.participant_re_ccuring_transactions:type_name -> financial_integration_service_api.v1.GetReCurringTransactionsResponse.ParticipantReCurringTransactions
-	99,  // 32: financial_integration_service_api.v1.GetTransactionsResponse.transactions:type_name -> financial_integration_service_api.v1.Transaction
-	85,  // 33: financial_integration_service_api.v1.ProcessWebhookRequest.error:type_name -> financial_integration_service_api.v1.ProcessWebhookRequest.ErrorEntry
-	99,  // 34: financial_integration_service_api.v1.GetReCurringTransactionsResponse.ParticipantReCurringTransactions.transactions:type_name -> financial_integration_service_api.v1.Transaction
-	100, // 35: financial_integration_service_api.v1.ProcessWebhookRequest.ErrorEntry.value:type_name -> google.protobuf.Any
-	36,  // [36:36] is the sub-list for method output_type
-	36,  // [36:36] is the sub-list for method input_type
-	36,  // [36:36] is the sub-list for extension type_name
-	36,  // [36:36] is the sub-list for extension extendee
-	0,   // [0:36] is the sub-list for field type_name
+	88,  // 0: financial_integration_service_api.v1.CreateUserProfileRequest.profile:type_name -> financial_integration_service_api.v1.UserProfile
+	88,  // 1: financial_integration_service_api.v1.GetUserProfileResponse.profile:type_name -> financial_integration_service_api.v1.UserProfile
+	88,  // 2: financial_integration_service_api.v1.UpdateUserProfileRequest.profile:type_name -> financial_integration_service_api.v1.UserProfile
+	88,  // 3: financial_integration_service_api.v1.UpdateUserProfileResponse.profile:type_name -> financial_integration_service_api.v1.UserProfile
+	89,  // 4: financial_integration_service_api.v1.CreateBankAccountRequest.bank_account:type_name -> financial_integration_service_api.v1.BankAccount
+	89,  // 5: financial_integration_service_api.v1.GetBankAccountResponse.bank_account:type_name -> financial_integration_service_api.v1.BankAccount
+	89,  // 6: financial_integration_service_api.v1.UpdateBankAccountRequest.bank_account:type_name -> financial_integration_service_api.v1.BankAccount
+	89,  // 7: financial_integration_service_api.v1.UpdateBankAccountResponse.bank_account:type_name -> financial_integration_service_api.v1.BankAccount
+	90,  // 8: financial_integration_service_api.v1.GetPocketResponse.pocket:type_name -> financial_integration_service_api.v1.Pocket
+	91,  // 9: financial_integration_service_api.v1.GetSmartGoalsByPocketIdResponse.smart_goals:type_name -> financial_integration_service_api.v1.SmartGoal
+	91,  // 10: financial_integration_service_api.v1.CreateSmartGoalRequest.smart_goal:type_name -> financial_integration_service_api.v1.SmartGoal
+	91,  // 11: financial_integration_service_api.v1.UpdateSmartGoalRequest.smart_goal:type_name -> financial_integration_service_api.v1.SmartGoal
+	92,  // 12: financial_integration_service_api.v1.CreateMilestoneRequest.milestone:type_name -> financial_integration_service_api.v1.Milestone
+	92,  // 13: financial_integration_service_api.v1.UpdateMilestoneRequest.milestone:type_name -> financial_integration_service_api.v1.Milestone
+	92,  // 14: financial_integration_service_api.v1.UpdateMilestoneResponse.milestone:type_name -> financial_integration_service_api.v1.Milestone
+	92,  // 15: financial_integration_service_api.v1.GetMilestonesBySmartGoalIdResponse.milestones:type_name -> financial_integration_service_api.v1.Milestone
+	92,  // 16: financial_integration_service_api.v1.GetMilestoneResponse.milestone:type_name -> financial_integration_service_api.v1.Milestone
+	93,  // 17: financial_integration_service_api.v1.GetForecastResponse.forecast:type_name -> financial_integration_service_api.v1.Forecast
+	94,  // 18: financial_integration_service_api.v1.CreateBudgetRequest.budget:type_name -> financial_integration_service_api.v1.Budget
+	94,  // 19: financial_integration_service_api.v1.UpdateBudgetRequest.budget:type_name -> financial_integration_service_api.v1.Budget
+	94,  // 20: financial_integration_service_api.v1.UpdateBudgetResponse.budget:type_name -> financial_integration_service_api.v1.Budget
+	94,  // 21: financial_integration_service_api.v1.GetBudgetResponse.budget:type_name -> financial_integration_service_api.v1.Budget
+	94,  // 22: financial_integration_service_api.v1.GetAllBudgetsResponse.budgets:type_name -> financial_integration_service_api.v1.Budget
+	95,  // 23: financial_integration_service_api.v1.GetInvestmentAcccountResponse.investment_account:type_name -> financial_integration_service_api.v1.InvestmentAccount
+	96,  // 24: financial_integration_service_api.v1.GetMortgageAccountResponse.mortage_account:type_name -> financial_integration_service_api.v1.MortgageAccount
+	97,  // 25: financial_integration_service_api.v1.GetLiabilityAccountResponse.liability_account:type_name -> financial_integration_service_api.v1.CreditAccount
+	98,  // 26: financial_integration_service_api.v1.GetStudentLoanAccountResponse.student_loan_account:type_name -> financial_integration_service_api.v1.StudentLoanAccount
+	99,  // 27: financial_integration_service_api.v1.CreateManualLinkRequest.manual_account_link:type_name -> financial_integration_service_api.v1.Link
+	99,  // 28: financial_integration_service_api.v1.GetLinkResponse.link:type_name -> financial_integration_service_api.v1.Link
+	99,  // 29: financial_integration_service_api.v1.GetLinksResponse.links:type_name -> financial_integration_service_api.v1.Link
+	100, // 30: financial_integration_service_api.v1.GetReCurringTransactionsResponse.re_ccuring_transactions:type_name -> financial_integration_service_api.v1.ReOccuringTransaction
+	86,  // 31: financial_integration_service_api.v1.GetReCurringTransactionsResponse.participant_re_ccuring_transactions:type_name -> financial_integration_service_api.v1.GetReCurringTransactionsResponse.ParticipantReCurringTransactions
+	101, // 32: financial_integration_service_api.v1.GetTransactionsResponse.transactions:type_name -> financial_integration_service_api.v1.Transaction
+	87,  // 33: financial_integration_service_api.v1.ProcessWebhookRequest.error:type_name -> financial_integration_service_api.v1.ProcessWebhookRequest.ErrorEntry
+	101, // 34: financial_integration_service_api.v1.GetTransactionsForBankAccountResponse.transactions:type_name -> financial_integration_service_api.v1.Transaction
+	101, // 35: financial_integration_service_api.v1.GetReCurringTransactionsResponse.ParticipantReCurringTransactions.transactions:type_name -> financial_integration_service_api.v1.Transaction
+	102, // 36: financial_integration_service_api.v1.ProcessWebhookRequest.ErrorEntry.value:type_name -> google.protobuf.Any
+	37,  // [37:37] is the sub-list for method output_type
+	37,  // [37:37] is the sub-list for method input_type
+	37,  // [37:37] is the sub-list for extension type_name
+	37,  // [37:37] is the sub-list for extension extendee
+	0,   // [0:37] is the sub-list for field type_name
 }
 
 func init() {
@@ -6461,6 +6617,30 @@ func file_financial_integration_service_api_v1_request_response_financial_servic
 			}
 		}
 		file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[84].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetTransactionsForBankAccountRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[85].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetTransactionsForBankAccountResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_financial_integration_service_api_v1_request_response_financial_service_proto_msgTypes[86].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetReCurringTransactionsResponse_ParticipantReCurringTransactions); i {
 			case 0:
 				return &v.state
@@ -6479,7 +6659,7 @@ func file_financial_integration_service_api_v1_request_response_financial_servic
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_financial_integration_service_api_v1_request_response_financial_service_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   86,
+			NumMessages:   88,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

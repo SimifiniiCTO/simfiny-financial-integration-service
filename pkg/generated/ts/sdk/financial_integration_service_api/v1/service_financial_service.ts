@@ -45,6 +45,10 @@ import {
   GetUserCategoryMonthlyIncomeResponse,
   ListTransactionAggregatesRequest,
   ListTransactionAggregatesResponse,
+  ListUserCategoryMonthlyExpenditureRequest,
+  ListUserCategoryMonthlyExpenditureResponse,
+  ListUserCategoryMonthlyIncomeRequest,
+  ListUserCategoryMonthlyIncomeResponse,
 } from "./request_response_financial_analytics_service";
 import {
   CreateBankAccountRequest,
@@ -103,6 +107,8 @@ import {
   GetSmartGoalsByPocketIdResponse,
   GetStudentLoanAccountRequest,
   GetStudentLoanAccountResponse,
+  GetTransactionsForBankAccountRequest,
+  GetTransactionsForBankAccountResponse,
   GetTransactionsRequest,
   GetTransactionsResponse,
   GetUserProfileRequest,
@@ -190,10 +196,16 @@ export interface FinancialService {
   GetUserCategoryMonthlyExpenditure(
     request: GetUserCategoryMonthlyExpenditureRequest,
   ): Promise<GetUserCategoryMonthlyExpenditureResponse>;
+  ListUserCategoryMonthlyExpenditure(
+    request: ListUserCategoryMonthlyExpenditureRequest,
+  ): Promise<ListUserCategoryMonthlyExpenditureResponse>;
   /** Get CategoryMonthlyIncome by Category and User - This would return all CategoryMonthlyIncome records for a specific user for a specific personal finance category */
   GetUserCategoryMonthlyIncome(
     request: GetUserCategoryMonthlyIncomeRequest,
   ): Promise<GetUserCategoryMonthlyIncomeResponse>;
+  ListUserCategoryMonthlyIncome(
+    request: ListUserCategoryMonthlyIncomeRequest,
+  ): Promise<ListUserCategoryMonthlyIncomeResponse>;
   /** Get CategoryMonthlyTransactionCount by User - This would return all CategoryMonthlyTransactionCount records for a specific user */
   GetCategoryMonthlyTransactionCount(
     request: GetCategoryMonthlyTransactionCountRequest,
@@ -221,6 +233,9 @@ export interface FinancialService {
     request: GetTotalInvestmentBySecurityRequest,
   ): Promise<GetTotalInvestmentBySecurityResponse>;
   GetMelodyFinancialContext(request: GetMelodyFinancialContextRequest): Promise<GetMelodyFinancialContextResponse>;
+  GetTransactionsForBankAccount(
+    request: GetTransactionsForBankAccountRequest,
+  ): Promise<GetTransactionsForBankAccountResponse>;
 }
 
 export const FinancialServiceServiceName = "financial_integration_service_api.v1.FinancialService";
@@ -277,7 +292,9 @@ export class FinancialServiceClientImpl implements FinancialService {
     this.GetUserAccountBalanceHistory = this.GetUserAccountBalanceHistory.bind(this);
     this.GetAccountBalanceHistory = this.GetAccountBalanceHistory.bind(this);
     this.GetUserCategoryMonthlyExpenditure = this.GetUserCategoryMonthlyExpenditure.bind(this);
+    this.ListUserCategoryMonthlyExpenditure = this.ListUserCategoryMonthlyExpenditure.bind(this);
     this.GetUserCategoryMonthlyIncome = this.GetUserCategoryMonthlyIncome.bind(this);
+    this.ListUserCategoryMonthlyIncome = this.ListUserCategoryMonthlyIncome.bind(this);
     this.GetCategoryMonthlyTransactionCount = this.GetCategoryMonthlyTransactionCount.bind(this);
     this.GetDebtToIncomeRatio = this.GetDebtToIncomeRatio.bind(this);
     this.GetExpenseMetrics = this.GetExpenseMetrics.bind(this);
@@ -294,6 +311,7 @@ export class FinancialServiceClientImpl implements FinancialService {
     this.GetPaymentChannelMonthlyExpenditure = this.GetPaymentChannelMonthlyExpenditure.bind(this);
     this.GetTotalInvestmentBySecurity = this.GetTotalInvestmentBySecurity.bind(this);
     this.GetMelodyFinancialContext = this.GetMelodyFinancialContext.bind(this);
+    this.GetTransactionsForBankAccount = this.GetTransactionsForBankAccount.bind(this);
   }
   PlaidInitiateTokenExchange(request: PlaidInitiateTokenExchangeRequest): Promise<PlaidInitiateTokenExchangeResponse> {
     const data = PlaidInitiateTokenExchangeRequest.encode(request).finish();
@@ -581,12 +599,28 @@ export class FinancialServiceClientImpl implements FinancialService {
     return promise.then((data) => GetUserCategoryMonthlyExpenditureResponse.decode(_m0.Reader.create(data)));
   }
 
+  ListUserCategoryMonthlyExpenditure(
+    request: ListUserCategoryMonthlyExpenditureRequest,
+  ): Promise<ListUserCategoryMonthlyExpenditureResponse> {
+    const data = ListUserCategoryMonthlyExpenditureRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "ListUserCategoryMonthlyExpenditure", data);
+    return promise.then((data) => ListUserCategoryMonthlyExpenditureResponse.decode(_m0.Reader.create(data)));
+  }
+
   GetUserCategoryMonthlyIncome(
     request: GetUserCategoryMonthlyIncomeRequest,
   ): Promise<GetUserCategoryMonthlyIncomeResponse> {
     const data = GetUserCategoryMonthlyIncomeRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "GetUserCategoryMonthlyIncome", data);
     return promise.then((data) => GetUserCategoryMonthlyIncomeResponse.decode(_m0.Reader.create(data)));
+  }
+
+  ListUserCategoryMonthlyIncome(
+    request: ListUserCategoryMonthlyIncomeRequest,
+  ): Promise<ListUserCategoryMonthlyIncomeResponse> {
+    const data = ListUserCategoryMonthlyIncomeRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "ListUserCategoryMonthlyIncome", data);
+    return promise.then((data) => ListUserCategoryMonthlyIncomeResponse.decode(_m0.Reader.create(data)));
   }
 
   GetCategoryMonthlyTransactionCount(
@@ -693,6 +727,14 @@ export class FinancialServiceClientImpl implements FinancialService {
     const data = GetMelodyFinancialContextRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "GetMelodyFinancialContext", data);
     return promise.then((data) => GetMelodyFinancialContextResponse.decode(_m0.Reader.create(data)));
+  }
+
+  GetTransactionsForBankAccount(
+    request: GetTransactionsForBankAccountRequest,
+  ): Promise<GetTransactionsForBankAccountResponse> {
+    const data = GetTransactionsForBankAccountRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "GetTransactionsForBankAccount", data);
+    return promise.then((data) => GetTransactionsForBankAccountResponse.decode(_m0.Reader.create(data)));
   }
 }
 

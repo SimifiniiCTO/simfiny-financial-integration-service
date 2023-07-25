@@ -127,6 +127,10 @@
     - [GetUserCategoryMonthlyIncomeResponse](#financial_integration_service_api-v1-GetUserCategoryMonthlyIncomeResponse)
     - [ListTransactionAggregatesRequest](#financial_integration_service_api-v1-ListTransactionAggregatesRequest)
     - [ListTransactionAggregatesResponse](#financial_integration_service_api-v1-ListTransactionAggregatesResponse)
+    - [ListUserCategoryMonthlyExpenditureRequest](#financial_integration_service_api-v1-ListUserCategoryMonthlyExpenditureRequest)
+    - [ListUserCategoryMonthlyExpenditureResponse](#financial_integration_service_api-v1-ListUserCategoryMonthlyExpenditureResponse)
+    - [ListUserCategoryMonthlyIncomeRequest](#financial_integration_service_api-v1-ListUserCategoryMonthlyIncomeRequest)
+    - [ListUserCategoryMonthlyIncomeResponse](#financial_integration_service_api-v1-ListUserCategoryMonthlyIncomeResponse)
   
 - [financial_integration_service_api/v1/request_response_financial_service.proto](#financial_integration_service_api_v1_request_response_financial_service-proto)
     - [CreateBankAccountRequest](#financial_integration_service_api-v1-CreateBankAccountRequest)
@@ -186,6 +190,8 @@
     - [GetSmartGoalsByPocketIdResponse](#financial_integration_service_api-v1-GetSmartGoalsByPocketIdResponse)
     - [GetStudentLoanAccountRequest](#financial_integration_service_api-v1-GetStudentLoanAccountRequest)
     - [GetStudentLoanAccountResponse](#financial_integration_service_api-v1-GetStudentLoanAccountResponse)
+    - [GetTransactionsForBankAccountRequest](#financial_integration_service_api-v1-GetTransactionsForBankAccountRequest)
+    - [GetTransactionsForBankAccountResponse](#financial_integration_service_api-v1-GetTransactionsForBankAccountResponse)
     - [GetTransactionsRequest](#financial_integration_service_api-v1-GetTransactionsRequest)
     - [GetTransactionsResponse](#financial_integration_service_api-v1-GetTransactionsResponse)
     - [GetUserProfileRequest](#financial_integration_service_api-v1-GetUserProfileRequest)
@@ -2550,6 +2556,72 @@ CategoryMonthlyExpenditure
 
 
 
+
+<a name="financial_integration_service_api-v1-ListUserCategoryMonthlyExpenditureRequest"></a>
+
+### ListUserCategoryMonthlyExpenditureRequest
+CategoryMonthlyExpenditure
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| user_id | [uint64](#uint64) |  | User ID |
+| page_number | [int32](#int32) |  |  |
+| page_size | [int32](#int32) |  | Number of items to return per page. |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-ListUserCategoryMonthlyExpenditureResponse"></a>
+
+### ListUserCategoryMonthlyExpenditureResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| category_monthly_expenditure | [CategoryMonthlyExpenditure](#financial_integration_service_api-v1-CategoryMonthlyExpenditure) | repeated | List of CategoryMonthlyExpenditure records for the user |
+| next_page_number | [int32](#int32) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-ListUserCategoryMonthlyIncomeRequest"></a>
+
+### ListUserCategoryMonthlyIncomeRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| user_id | [uint64](#uint64) |  | User ID |
+| page_number | [int32](#int32) |  |  |
+| page_size | [int32](#int32) |  | Number of items to return per page. |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-ListUserCategoryMonthlyIncomeResponse"></a>
+
+### ListUserCategoryMonthlyIncomeResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| category_monthly_income | [CategoryMonthlyIncome](#financial_integration_service_api-v1-CategoryMonthlyIncome) | repeated | List of CategoryMonthlyExpenditure records for the user |
+| next_page_number | [int32](#int32) |  |  |
+
+
+
+
+
  
 
  
@@ -3449,6 +3521,40 @@ the `get bank account` request
 
 
 
+<a name="financial_integration_service_api-v1-GetTransactionsForBankAccountRequest"></a>
+
+### GetTransactionsForBankAccountRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| user_id | [uint64](#uint64) |  | The user id Validations: - user_id must be greater than 0 |
+| plaid_account_id | [string](#string) |  |  |
+| page_number | [uint64](#uint64) |  |  |
+| page_size | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-GetTransactionsForBankAccountResponse"></a>
+
+### GetTransactionsForBankAccountResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| transactions | [Transaction](#financial_integration_service_api-v1-Transaction) | repeated | The transactions |
+| next_page_number | [uint64](#uint64) |  |  |
+
+
+
+
+
+
 <a name="financial_integration_service_api-v1-GetTransactionsRequest"></a>
 
 ### GetTransactionsRequest
@@ -3980,7 +4086,9 @@ FinancialService API.
 | GetUserAccountBalanceHistory | [GetUserAccountBalanceHistoryRequest](#financial_integration_service_api-v1-GetUserAccountBalanceHistoryRequest) | [GetUserAccountBalanceHistoryResponse](#financial_integration_service_api-v1-GetUserAccountBalanceHistoryResponse) |  |
 | GetAccountBalanceHistory | [GetAccountBalanceHistoryRequest](#financial_integration_service_api-v1-GetAccountBalanceHistoryRequest) | [GetAccountBalanceHistoryResponse](#financial_integration_service_api-v1-GetAccountBalanceHistoryResponse) |  |
 | GetUserCategoryMonthlyExpenditure | [GetUserCategoryMonthlyExpenditureRequest](#financial_integration_service_api-v1-GetUserCategoryMonthlyExpenditureRequest) | [GetUserCategoryMonthlyExpenditureResponse](#financial_integration_service_api-v1-GetUserCategoryMonthlyExpenditureResponse) | Get user category monthly expenditure |
+| ListUserCategoryMonthlyExpenditure | [ListUserCategoryMonthlyExpenditureRequest](#financial_integration_service_api-v1-ListUserCategoryMonthlyExpenditureRequest) | [ListUserCategoryMonthlyExpenditureResponse](#financial_integration_service_api-v1-ListUserCategoryMonthlyExpenditureResponse) |  |
 | GetUserCategoryMonthlyIncome | [GetUserCategoryMonthlyIncomeRequest](#financial_integration_service_api-v1-GetUserCategoryMonthlyIncomeRequest) | [GetUserCategoryMonthlyIncomeResponse](#financial_integration_service_api-v1-GetUserCategoryMonthlyIncomeResponse) | Get CategoryMonthlyIncome by Category and User - This would return all CategoryMonthlyIncome records for a specific user for a specific personal finance category |
+| ListUserCategoryMonthlyIncome | [ListUserCategoryMonthlyIncomeRequest](#financial_integration_service_api-v1-ListUserCategoryMonthlyIncomeRequest) | [ListUserCategoryMonthlyIncomeResponse](#financial_integration_service_api-v1-ListUserCategoryMonthlyIncomeResponse) |  |
 | GetCategoryMonthlyTransactionCount | [GetCategoryMonthlyTransactionCountRequest](#financial_integration_service_api-v1-GetCategoryMonthlyTransactionCountRequest) | [GetCategoryMonthlyTransactionCountResponse](#financial_integration_service_api-v1-GetCategoryMonthlyTransactionCountResponse) | Get CategoryMonthlyTransactionCount by User - This would return all CategoryMonthlyTransactionCount records for a specific user |
 | GetDebtToIncomeRatio | [GetDebtToIncomeRatioRequest](#financial_integration_service_api-v1-GetDebtToIncomeRatioRequest) | [GetDebtToIncomeRatioResponse](#financial_integration_service_api-v1-GetDebtToIncomeRatioResponse) |  |
 | GetExpenseMetrics | [GetExpenseMetricsRequest](#financial_integration_service_api-v1-GetExpenseMetricsRequest) | [GetExpenseMetricsResponse](#financial_integration_service_api-v1-GetExpenseMetricsResponse) |  |
@@ -3997,6 +4105,7 @@ FinancialService API.
 | GetPaymentChannelMonthlyExpenditure | [GetPaymentChannelMonthlyExpenditureRequest](#financial_integration_service_api-v1-GetPaymentChannelMonthlyExpenditureRequest) | [GetPaymentChannelMonthlyExpenditureResponse](#financial_integration_service_api-v1-GetPaymentChannelMonthlyExpenditureResponse) |  |
 | GetTotalInvestmentBySecurity | [GetTotalInvestmentBySecurityRequest](#financial_integration_service_api-v1-GetTotalInvestmentBySecurityRequest) | [GetTotalInvestmentBySecurityResponse](#financial_integration_service_api-v1-GetTotalInvestmentBySecurityResponse) |  |
 | GetMelodyFinancialContext | [GetMelodyFinancialContextRequest](#financial_integration_service_api-v1-GetMelodyFinancialContextRequest) | [GetMelodyFinancialContextResponse](#financial_integration_service_api-v1-GetMelodyFinancialContextResponse) |  |
+| GetTransactionsForBankAccount | [GetTransactionsForBankAccountRequest](#financial_integration_service_api-v1-GetTransactionsForBankAccountRequest) | [GetTransactionsForBankAccountResponse](#financial_integration_service_api-v1-GetTransactionsForBankAccountResponse) |  |
 
  
 
