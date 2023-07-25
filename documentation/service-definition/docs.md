@@ -3108,6 +3108,7 @@ service to create a user profile
 | ----- | ---- | ----- | ----------- |
 | profile | [UserProfile](#financial_integration_service_api-v1-UserProfile) |  | User profile to create Validations: - cannot be nil hence required |
 | email | [string](#string) |  | the email of the account to create |
+| financial_context | [MelodyFinancialContext](#financial_integration_service_api-v1-MelodyFinancialContext) |  | financial context for the user |
 
 
 

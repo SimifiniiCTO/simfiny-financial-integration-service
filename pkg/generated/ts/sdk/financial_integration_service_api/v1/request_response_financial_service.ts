@@ -1,7 +1,7 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
 import { Any } from "../../google/protobuf/any";
-import { ReOccuringTransaction, Transaction } from "./clickhouse_financial_service";
+import { MelodyFinancialContext, ReOccuringTransaction, Transaction } from "./clickhouse_financial_service";
 import {
   BankAccount,
   Budget,
@@ -35,6 +35,8 @@ export interface CreateUserProfileRequest {
     | undefined;
   /** the email of the account to create */
   email: string;
+  /** financial context for the user */
+  financialContext: MelodyFinancialContext | undefined;
 }
 
 /**
@@ -815,7 +817,7 @@ export interface GetTransactionsForBankAccountResponse {
 }
 
 function createBaseCreateUserProfileRequest(): CreateUserProfileRequest {
-  return { profile: undefined, email: "" };
+  return { profile: undefined, email: "", financialContext: undefined };
 }
 
 export const CreateUserProfileRequest = {
@@ -825,6 +827,9 @@ export const CreateUserProfileRequest = {
     }
     if (message.email !== "") {
       writer.uint32(18).string(message.email);
+    }
+    if (message.financialContext !== undefined) {
+      MelodyFinancialContext.encode(message.financialContext, writer.uint32(26).fork()).ldelim();
     }
     return writer;
   },
@@ -850,6 +855,13 @@ export const CreateUserProfileRequest = {
 
           message.email = reader.string();
           continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.financialContext = MelodyFinancialContext.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -863,6 +875,9 @@ export const CreateUserProfileRequest = {
     return {
       profile: isSet(object.profile) ? UserProfile.fromJSON(object.profile) : undefined,
       email: isSet(object.email) ? String(object.email) : "",
+      financialContext: isSet(object.financialContext)
+        ? MelodyFinancialContext.fromJSON(object.financialContext)
+        : undefined,
     };
   },
 
@@ -873,6 +888,9 @@ export const CreateUserProfileRequest = {
     }
     if (message.email !== "") {
       obj.email = message.email;
+    }
+    if (message.financialContext !== undefined) {
+      obj.financialContext = MelodyFinancialContext.toJSON(message.financialContext);
     }
     return obj;
   },
@@ -887,6 +905,9 @@ export const CreateUserProfileRequest = {
       ? UserProfile.fromPartial(object.profile)
       : undefined;
     message.email = object.email ?? "";
+    message.financialContext = (object.financialContext !== undefined && object.financialContext !== null)
+      ? MelodyFinancialContext.fromPartial(object.financialContext)
+      : undefined;
     return message;
   },
 };

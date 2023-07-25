@@ -4914,12 +4914,17 @@
         "email": {
           "type": "string",
           "title": "the email of the account to create"
+        },
+        "financialContext": {
+          "$ref": "#/definitions/MelodyFinancialContext",
+          "title": "financial context for the user"
         }
       },
       "title": "CreateUserProfileRequest: Represents the request object invoked against the user\nservice to create a user profile",
       "required": [
         "profile",
-        "email"
+        "email",
+        "financialContext"
       ]
     },
     "CreateUserProfileResponse": {

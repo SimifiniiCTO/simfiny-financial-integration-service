@@ -40,6 +40,13 @@ message CreateUserProfileRequest {
     (validate.rules).string.email = true,
     (google.api.field_behavior) = REQUIRED
   ];
+
+
+  // financial context for the user
+  MelodyFinancialContext financial_context = 3 [
+    (validate.rules).message.required = true,
+    (google.api.field_behavior) = REQUIRED
+  ];
 }
 
 // CreateUserProfileResponse: Represents the response object returned as a response to
