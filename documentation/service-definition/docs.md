@@ -139,8 +139,6 @@
     - [ListIncomeMetricsResponse](#financial_integration_service_api-v1-ListIncomeMetricsResponse)
     - [ListMerchantMonthlyExpenditureRequest](#financial_integration_service_api-v1-ListMerchantMonthlyExpenditureRequest)
     - [ListMerchantMonthlyExpenditureResponse](#financial_integration_service_api-v1-ListMerchantMonthlyExpenditureResponse)
-    - [ListTransactionAggregatesRequest](#financial_integration_service_api-v1-ListTransactionAggregatesRequest)
-    - [ListTransactionAggregatesResponse](#financial_integration_service_api-v1-ListTransactionAggregatesResponse)
     - [ListUserCategoryMonthlyExpenditureRequest](#financial_integration_service_api-v1-ListUserCategoryMonthlyExpenditureRequest)
     - [ListUserCategoryMonthlyExpenditureResponse](#financial_integration_service_api-v1-ListUserCategoryMonthlyExpenditureResponse)
     - [ListUserCategoryMonthlyIncomeRequest](#financial_integration_service_api-v1-ListUserCategoryMonthlyIncomeRequest)
@@ -1883,8 +1881,8 @@ such as the id, user_id tied to the profile, and many more
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | plaid_account_id | [string](#string) |  | Account ID |
-| page_number | [int32](#int32) |  |  |
-| page_size | [int32](#int32) |  | Number of items to return per page. |
+| page_number | [int64](#int64) |  |  |
+| page_size | [int64](#int64) |  | Number of items to return per page. |
 
 
 
@@ -2167,8 +2165,8 @@ For example, for MonthlyBalance:
 | ----- | ---- | ----- | ----------- |
 | user_id | [uint64](#uint64) |  |  |
 | month | [uint32](#uint32) |  | optional |
-| page_number | [int32](#int32) |  |  |
-| page_size | [int32](#int32) |  | Number of items to return per page. |
+| page_number | [int64](#int64) |  |  |
+| page_size | [int64](#int64) |  | Number of items to return per page. |
 
 
 
@@ -2184,7 +2182,7 @@ For example, for MonthlyBalance:
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | monthly_balances | [MonthlyBalance](#financial_integration_service_api-v1-MonthlyBalance) | repeated |  |
-| next_page_number | [int32](#int32) |  |  |
+| next_page_number | [int64](#int64) |  |  |
 
 
 
@@ -2201,8 +2199,8 @@ GetMonthlyExpenditure RPC
 | ----- | ---- | ----- | ----------- |
 | user_id | [uint64](#uint64) |  |  |
 | month | [uint32](#uint32) |  |  |
-| page_number | [int32](#int32) |  |  |
-| page_size | [int32](#int32) |  | Number of items to return per page. |
+| page_number | [int64](#int64) |  |  |
+| page_size | [int64](#int64) |  | Number of items to return per page. |
 
 
 
@@ -2218,7 +2216,7 @@ GetMonthlyExpenditure RPC
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | monthly_expenditures | [MonthlyExpenditure](#financial_integration_service_api-v1-MonthlyExpenditure) | repeated |  |
-| next_page_number | [int32](#int32) |  |  |
+| next_page_number | [int64](#int64) |  |  |
 
 
 
@@ -2235,8 +2233,8 @@ GetMonthlyIncome RPC
 | ----- | ---- | ----- | ----------- |
 | user_id | [uint64](#uint64) |  |  |
 | month | [uint32](#uint32) |  |  |
-| page_number | [int32](#int32) |  |  |
-| page_size | [int32](#int32) |  | Number of items to return per page. |
+| page_number | [int64](#int64) |  |  |
+| page_size | [int64](#int64) |  | Number of items to return per page. |
 
 
 
@@ -2252,7 +2250,7 @@ GetMonthlyIncome RPC
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | monthly_incomes | [MonthlyIncome](#financial_integration_service_api-v1-MonthlyIncome) | repeated |  |
-| next_page_number | [int32](#int32) |  |  |
+| next_page_number | [int64](#int64) |  |  |
 
 
 
@@ -2269,8 +2267,8 @@ GetMonthlySavings RPC
 | ----- | ---- | ----- | ----------- |
 | user_id | [uint64](#uint64) |  |  |
 | month | [uint32](#uint32) |  |  |
-| page_number | [int32](#int32) |  |  |
-| page_size | [int32](#int32) |  | Number of items to return per page. |
+| page_number | [int64](#int64) |  |  |
+| page_size | [int64](#int64) |  | Number of items to return per page. |
 
 
 
@@ -2286,7 +2284,7 @@ GetMonthlySavings RPC
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | monthly_savings | [MonthlySavings](#financial_integration_service_api-v1-MonthlySavings) | repeated |  |
-| next_page_number | [int32](#int32) |  |  |
+| next_page_number | [int64](#int64) |  |  |
 
 
 
@@ -2304,8 +2302,8 @@ GetMonthlyTotalQuantityBySecurityAndUser RPC
 | user_id | [uint64](#uint64) |  |  |
 | month | [uint32](#uint32) |  |  |
 | security_id | [string](#string) |  |  |
-| page_number | [int32](#int32) |  |  |
-| page_size | [int32](#int32) |  | Number of items to return per page. |
+| page_number | [int64](#int64) |  |  |
+| page_size | [int64](#int64) |  | Number of items to return per page. |
 
 
 
@@ -2321,7 +2319,7 @@ GetMonthlyTotalQuantityBySecurityAndUser RPC
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | monthly_total_quantity_by_security_and_user | [MonthlyTotalQuantityBySecurityAndUser](#financial_integration_service_api-v1-MonthlyTotalQuantityBySecurityAndUser) | repeated |  |
-| next_page_number | [int32](#int32) |  |  |
+| next_page_number | [int64](#int64) |  |  |
 
 
 
@@ -2338,8 +2336,8 @@ GetMonthlyTransactionCount RPC
 | ----- | ---- | ----- | ----------- |
 | user_id | [uint64](#uint64) |  |  |
 | month | [uint32](#uint32) |  |  |
-| page_number | [int32](#int32) |  |  |
-| page_size | [int32](#int32) |  | Number of items to return per page. |
+| page_number | [int64](#int64) |  |  |
+| page_size | [int64](#int64) |  | Number of items to return per page. |
 
 
 
@@ -2355,7 +2353,7 @@ GetMonthlyTransactionCount RPC
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | monthly_transaction_counts | [MonthlyTransactionCount](#financial_integration_service_api-v1-MonthlyTransactionCount) | repeated |  |
-| next_page_number | [int32](#int32) |  |  |
+| next_page_number | [int64](#int64) |  |  |
 
 
 
@@ -2373,8 +2371,8 @@ GetPaymentChannelMonthlyExpenditure RPC
 | user_id | [uint64](#uint64) |  |  |
 | month | [uint32](#uint32) |  |  |
 | payment_channel | [string](#string) |  |  |
-| page_number | [int32](#int32) |  |  |
-| page_size | [int32](#int32) |  | Number of items to return per page. |
+| page_number | [int64](#int64) |  |  |
+| page_size | [int64](#int64) |  | Number of items to return per page. |
 
 
 
@@ -2390,7 +2388,7 @@ GetPaymentChannelMonthlyExpenditure RPC
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | payment_channel_monthly_expenditure | [PaymentChannelMonthlyExpenditure](#financial_integration_service_api-v1-PaymentChannelMonthlyExpenditure) | repeated |  |
-| next_page_number | [int32](#int32) |  |  |
+| next_page_number | [int64](#int64) |  |  |
 
 
 
@@ -2407,8 +2405,8 @@ GetTotalInvestmentBySecurity RPC
 | ----- | ---- | ----- | ----------- |
 | user_id | [uint64](#uint64) |  |  |
 | security_id | [string](#string) |  |  |
-| page_number | [int32](#int32) |  |  |
-| page_size | [int32](#int32) |  | Number of items to return per page. |
+| page_number | [int64](#int64) |  |  |
+| page_size | [int64](#int64) |  | Number of items to return per page. |
 
 
 
@@ -2424,7 +2422,7 @@ GetTotalInvestmentBySecurity RPC
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | total_investment_by_security | [TotalInvestmentBySecurity](#financial_integration_service_api-v1-TotalInvestmentBySecurity) | repeated |  |
-| next_page_number | [int32](#int32) |  |  |
+| next_page_number | [int64](#int64) |  |  |
 
 
 
@@ -2445,6 +2443,8 @@ transaction aggregates by month
 | location_city | [string](#string) |  |  |
 | payment_channel | [string](#string) |  |  |
 | merchant_name | [string](#string) |  |  |
+| page_number | [int64](#int64) |  |  |
+| page_size | [int64](#int64) |  | Number of items to return per page. |
 
 
 
@@ -2460,6 +2460,7 @@ transaction aggregates by month
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | transaction_aggregates | [TransactionAggregatesByMonth](#financial_integration_service_api-v1-TransactionAggregatesByMonth) | repeated |  |
+| next_page_number | [int64](#int64) |  |  |
 
 
 
@@ -2475,8 +2476,8 @@ Account Balance
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | user_id | [uint64](#uint64) |  | User ID |
-| page_number | [int32](#int32) |  |  |
-| page_size | [int32](#int32) |  | Number of items to return per page. |
+| page_number | [int64](#int64) |  |  |
+| page_size | [int64](#int64) |  | Number of items to return per page. |
 
 
 
@@ -2571,8 +2572,8 @@ CategoryMonthlyExpenditure
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | user_id | [uint64](#uint64) |  | has to be present and defined |
-| page_number | [int32](#int32) |  |  |
-| page_size | [int32](#int32) |  | Number of items to return per page. |
+| page_number | [int64](#int64) |  |  |
+| page_size | [int64](#int64) |  | Number of items to return per page. |
 
 
 
@@ -2588,7 +2589,7 @@ CategoryMonthlyExpenditure
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | category_monthly_transaction_count | [CategoryMonthlyTransactionCount](#financial_integration_service_api-v1-CategoryMonthlyTransactionCount) | repeated |  |
-| next_page_number | [int32](#int32) |  |  |
+| next_page_number | [int64](#int64) |  |  |
 
 
 
@@ -2604,8 +2605,8 @@ CategoryMonthlyExpenditure
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | user_id | [uint64](#uint64) |  |  |
-| page_number | [int32](#int32) |  |  |
-| page_size | [int32](#int32) |  | Number of items to return per page. |
+| page_number | [int64](#int64) |  |  |
+| page_size | [int64](#int64) |  | Number of items to return per page. |
 
 
 
@@ -2621,7 +2622,7 @@ CategoryMonthlyExpenditure
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | debt_to_income_ratios | [DebtToIncomeRatio](#financial_integration_service_api-v1-DebtToIncomeRatio) | repeated |  |
-| next_page_number | [int32](#int32) |  |  |
+| next_page_number | [int64](#int64) |  |  |
 
 
 
@@ -2637,8 +2638,8 @@ CategoryMonthlyExpenditure
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | user_id | [uint64](#uint64) |  |  |
-| page_number | [int32](#int32) |  |  |
-| page_size | [int32](#int32) |  | Number of items to return per page. |
+| page_number | [int64](#int64) |  |  |
+| page_size | [int64](#int64) |  | Number of items to return per page. |
 
 
 
@@ -2654,7 +2655,7 @@ CategoryMonthlyExpenditure
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | expense_metrics | [ExpenseMetrics](#financial_integration_service_api-v1-ExpenseMetrics) | repeated |  |
-| next_page_number | [int32](#int32) |  |  |
+| next_page_number | [int64](#int64) |  |  |
 
 
 
@@ -2670,8 +2671,8 @@ GetFinancialProfile RPC
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | user_id | [uint64](#uint64) |  |  |
-| page_number | [int32](#int32) |  |  |
-| page_size | [int32](#int32) |  | Number of items to return per page. |
+| page_number | [int64](#int64) |  |  |
+| page_size | [int64](#int64) |  | Number of items to return per page. |
 
 
 
@@ -2687,7 +2688,7 @@ GetFinancialProfile RPC
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | financial_profiles | [FinancialProfile](#financial_integration_service_api-v1-FinancialProfile) | repeated |  |
-| next_page_number | [int32](#int32) |  |  |
+| next_page_number | [int64](#int64) |  |  |
 
 
 
@@ -2703,8 +2704,8 @@ GetFinancialProfile RPC
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | user_id | [uint64](#uint64) |  |  |
-| page_number | [int32](#int32) |  |  |
-| page_size | [int32](#int32) |  | Number of items to return per page. |
+| page_number | [int64](#int64) |  |  |
+| page_size | [int64](#int64) |  | Number of items to return per page. |
 
 
 
@@ -2720,7 +2721,7 @@ GetFinancialProfile RPC
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | income_expense_ratios | [IncomeExpenseRatio](#financial_integration_service_api-v1-IncomeExpenseRatio) | repeated |  |
-| next_page_number | [int32](#int32) |  |  |
+| next_page_number | [int64](#int64) |  |  |
 
 
 
@@ -2736,8 +2737,8 @@ GetIncomeMetrics RPC
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | user_id | [uint64](#uint64) |  |  |
-| page_number | [int32](#int32) |  |  |
-| page_size | [int32](#int32) |  | Number of items to return per page. |
+| page_number | [int64](#int64) |  |  |
+| page_size | [int64](#int64) |  | Number of items to return per page. |
 
 
 
@@ -2753,7 +2754,7 @@ GetIncomeMetrics RPC
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | income_metrics | [IncomeMetrics](#financial_integration_service_api-v1-IncomeMetrics) | repeated |  |
-| next_page_number | [int32](#int32) |  |  |
+| next_page_number | [int64](#int64) |  |  |
 
 
 
@@ -2769,8 +2770,8 @@ GetIncomeMetrics RPC
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | user_id | [uint64](#uint64) |  |  |
-| page_number | [int32](#int32) |  |  |
-| page_size | [int32](#int32) |  | Number of items to return per page. |
+| page_number | [int64](#int64) |  |  |
+| page_size | [int64](#int64) |  | Number of items to return per page. |
 
 
 
@@ -2786,40 +2787,7 @@ GetIncomeMetrics RPC
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | merchant_monthly_expenditures | [MerchantMonthlyExpenditure](#financial_integration_service_api-v1-MerchantMonthlyExpenditure) | repeated |  |
-| next_page_number | [int32](#int32) |  |  |
-
-
-
-
-
-
-<a name="financial_integration_service_api-v1-ListTransactionAggregatesRequest"></a>
-
-### ListTransactionAggregatesRequest
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| user_id | [uint64](#uint64) |  |  |
-| page_number | [int32](#int32) |  |  |
-| page_size | [int32](#int32) |  | Number of items to return per page. |
-
-
-
-
-
-
-<a name="financial_integration_service_api-v1-ListTransactionAggregatesResponse"></a>
-
-### ListTransactionAggregatesResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| next_page_number | [string](#string) |  |  |
-| aggregates | [TransactionAggregatesByMonth](#financial_integration_service_api-v1-TransactionAggregatesByMonth) | repeated |  |
+| next_page_number | [int64](#int64) |  |  |
 
 
 
@@ -2835,8 +2803,8 @@ CategoryMonthlyExpenditure
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | user_id | [uint64](#uint64) |  | User ID |
-| page_number | [int32](#int32) |  |  |
-| page_size | [int32](#int32) |  | Number of items to return per page. |
+| page_number | [int64](#int64) |  |  |
+| page_size | [int64](#int64) |  | Number of items to return per page. |
 
 
 
@@ -2852,7 +2820,7 @@ CategoryMonthlyExpenditure
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | category_monthly_expenditure | [CategoryMonthlyExpenditure](#financial_integration_service_api-v1-CategoryMonthlyExpenditure) | repeated | List of CategoryMonthlyExpenditure records for the user |
-| next_page_number | [int32](#int32) |  |  |
+| next_page_number | [int64](#int64) |  |  |
 
 
 
@@ -2868,8 +2836,8 @@ CategoryMonthlyExpenditure
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | user_id | [uint64](#uint64) |  | User ID |
-| page_number | [int32](#int32) |  |  |
-| page_size | [int32](#int32) |  | Number of items to return per page. |
+| page_number | [int64](#int64) |  |  |
+| page_size | [int64](#int64) |  | Number of items to return per page. |
 
 
 
@@ -2885,7 +2853,7 @@ CategoryMonthlyExpenditure
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | category_monthly_income | [CategoryMonthlyIncome](#financial_integration_service_api-v1-CategoryMonthlyIncome) | repeated | List of CategoryMonthlyExpenditure records for the user |
-| next_page_number | [int32](#int32) |  |  |
+| next_page_number | [int64](#int64) |  |  |
 
 
 
@@ -4352,7 +4320,6 @@ FinancialService API.
 | StripeWebhook | [StripeWebhookRequest](#financial_integration_service_api-v1-StripeWebhookRequest) | [StripeWebhookResponse](#financial_integration_service_api-v1-StripeWebhookResponse) |  |
 | CreateSubscription | [CreateSubscriptionRequest](#financial_integration_service_api-v1-CreateSubscriptionRequest) | [CreateSubscriptionResponse](#financial_integration_service_api-v1-CreateSubscriptionResponse) |  |
 | GetTransactionAggregates | [GetTransactionAggregatesRequest](#financial_integration_service_api-v1-GetTransactionAggregatesRequest) | [GetTransactionAggregatesResponse](#financial_integration_service_api-v1-GetTransactionAggregatesResponse) | Transaction Aggregates By Queries |
-| ListTransactionAggregates | [ListTransactionAggregatesRequest](#financial_integration_service_api-v1-ListTransactionAggregatesRequest) | [ListTransactionAggregatesResponse](#financial_integration_service_api-v1-ListTransactionAggregatesResponse) |  |
 | GetUserAccountBalanceHistory | [GetUserAccountBalanceHistoryRequest](#financial_integration_service_api-v1-GetUserAccountBalanceHistoryRequest) | [GetUserAccountBalanceHistoryResponse](#financial_integration_service_api-v1-GetUserAccountBalanceHistoryResponse) |  |
 | GetAccountBalanceHistory | [GetAccountBalanceHistoryRequest](#financial_integration_service_api-v1-GetAccountBalanceHistoryRequest) | [GetAccountBalanceHistoryResponse](#financial_integration_service_api-v1-GetAccountBalanceHistoryResponse) |  |
 | GetUserCategoryMonthlyExpenditure | [GetUserCategoryMonthlyExpenditureRequest](#financial_integration_service_api-v1-GetUserCategoryMonthlyExpenditureRequest) | [GetUserCategoryMonthlyExpenditureResponse](#financial_integration_service_api-v1-GetUserCategoryMonthlyExpenditureResponse) | Get user category monthly expenditure |

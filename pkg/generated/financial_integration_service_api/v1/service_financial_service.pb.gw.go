@@ -2105,98 +2105,6 @@ func local_request_FinancialService_GetTransactionAggregates_0(ctx context.Conte
 
 }
 
-func request_FinancialService_ListTransactionAggregates_0(ctx context.Context, marshaler runtime.Marshaler, client FinancialServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ListTransactionAggregatesRequest
-	var metadata runtime.ServerMetadata
-
-	var (
-		val string
-		ok  bool
-		err error
-		_   = err
-	)
-
-	val, ok = pathParams["user_id"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "user_id")
-	}
-
-	protoReq.UserId, err = runtime.Uint64(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "user_id", err)
-	}
-
-	val, ok = pathParams["page_number"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_number")
-	}
-
-	protoReq.PageNumber, err = runtime.Int32(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_number", err)
-	}
-
-	val, ok = pathParams["page_size"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_size")
-	}
-
-	protoReq.PageSize, err = runtime.Int32(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_size", err)
-	}
-
-	msg, err := client.ListTransactionAggregates(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
-	return msg, metadata, err
-
-}
-
-func local_request_FinancialService_ListTransactionAggregates_0(ctx context.Context, marshaler runtime.Marshaler, server FinancialServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ListTransactionAggregatesRequest
-	var metadata runtime.ServerMetadata
-
-	var (
-		val string
-		ok  bool
-		err error
-		_   = err
-	)
-
-	val, ok = pathParams["user_id"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "user_id")
-	}
-
-	protoReq.UserId, err = runtime.Uint64(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "user_id", err)
-	}
-
-	val, ok = pathParams["page_number"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_number")
-	}
-
-	protoReq.PageNumber, err = runtime.Int32(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_number", err)
-	}
-
-	val, ok = pathParams["page_size"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_size")
-	}
-
-	protoReq.PageSize, err = runtime.Int32(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_size", err)
-	}
-
-	msg, err := server.ListTransactionAggregates(ctx, &protoReq)
-	return msg, metadata, err
-
-}
-
 func request_FinancialService_GetUserAccountBalanceHistory_0(ctx context.Context, marshaler runtime.Marshaler, client FinancialServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq GetUserAccountBalanceHistoryRequest
 	var metadata runtime.ServerMetadata
@@ -2223,7 +2131,7 @@ func request_FinancialService_GetUserAccountBalanceHistory_0(ctx context.Context
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_number")
 	}
 
-	protoReq.PageNumber, err = runtime.Int32(val)
+	protoReq.PageNumber, err = runtime.Int64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_number", err)
 	}
@@ -2233,7 +2141,7 @@ func request_FinancialService_GetUserAccountBalanceHistory_0(ctx context.Context
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_size")
 	}
 
-	protoReq.PageSize, err = runtime.Int32(val)
+	protoReq.PageSize, err = runtime.Int64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_size", err)
 	}
@@ -2269,7 +2177,7 @@ func local_request_FinancialService_GetUserAccountBalanceHistory_0(ctx context.C
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_number")
 	}
 
-	protoReq.PageNumber, err = runtime.Int32(val)
+	protoReq.PageNumber, err = runtime.Int64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_number", err)
 	}
@@ -2279,7 +2187,7 @@ func local_request_FinancialService_GetUserAccountBalanceHistory_0(ctx context.C
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_size")
 	}
 
-	protoReq.PageSize, err = runtime.Int32(val)
+	protoReq.PageSize, err = runtime.Int64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_size", err)
 	}
@@ -2315,7 +2223,7 @@ func request_FinancialService_GetAccountBalanceHistory_0(ctx context.Context, ma
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_number")
 	}
 
-	protoReq.PageNumber, err = runtime.Int32(val)
+	protoReq.PageNumber, err = runtime.Int64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_number", err)
 	}
@@ -2325,7 +2233,7 @@ func request_FinancialService_GetAccountBalanceHistory_0(ctx context.Context, ma
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_size")
 	}
 
-	protoReq.PageSize, err = runtime.Int32(val)
+	protoReq.PageSize, err = runtime.Int64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_size", err)
 	}
@@ -2361,7 +2269,7 @@ func local_request_FinancialService_GetAccountBalanceHistory_0(ctx context.Conte
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_number")
 	}
 
-	protoReq.PageNumber, err = runtime.Int32(val)
+	protoReq.PageNumber, err = runtime.Int64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_number", err)
 	}
@@ -2371,7 +2279,7 @@ func local_request_FinancialService_GetAccountBalanceHistory_0(ctx context.Conte
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_size")
 	}
 
-	protoReq.PageSize, err = runtime.Int32(val)
+	protoReq.PageSize, err = runtime.Int64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_size", err)
 	}
@@ -2477,7 +2385,7 @@ func request_FinancialService_ListUserCategoryMonthlyExpenditure_0(ctx context.C
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_number")
 	}
 
-	protoReq.PageNumber, err = runtime.Int32(val)
+	protoReq.PageNumber, err = runtime.Int64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_number", err)
 	}
@@ -2487,7 +2395,7 @@ func request_FinancialService_ListUserCategoryMonthlyExpenditure_0(ctx context.C
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_size")
 	}
 
-	protoReq.PageSize, err = runtime.Int32(val)
+	protoReq.PageSize, err = runtime.Int64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_size", err)
 	}
@@ -2523,7 +2431,7 @@ func local_request_FinancialService_ListUserCategoryMonthlyExpenditure_0(ctx con
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_number")
 	}
 
-	protoReq.PageNumber, err = runtime.Int32(val)
+	protoReq.PageNumber, err = runtime.Int64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_number", err)
 	}
@@ -2533,7 +2441,7 @@ func local_request_FinancialService_ListUserCategoryMonthlyExpenditure_0(ctx con
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_size")
 	}
 
-	protoReq.PageSize, err = runtime.Int32(val)
+	protoReq.PageSize, err = runtime.Int64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_size", err)
 	}
@@ -2639,7 +2547,7 @@ func request_FinancialService_ListUserCategoryMonthlyIncome_0(ctx context.Contex
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_number")
 	}
 
-	protoReq.PageNumber, err = runtime.Int32(val)
+	protoReq.PageNumber, err = runtime.Int64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_number", err)
 	}
@@ -2649,7 +2557,7 @@ func request_FinancialService_ListUserCategoryMonthlyIncome_0(ctx context.Contex
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_size")
 	}
 
-	protoReq.PageSize, err = runtime.Int32(val)
+	protoReq.PageSize, err = runtime.Int64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_size", err)
 	}
@@ -2685,7 +2593,7 @@ func local_request_FinancialService_ListUserCategoryMonthlyIncome_0(ctx context.
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_number")
 	}
 
-	protoReq.PageNumber, err = runtime.Int32(val)
+	protoReq.PageNumber, err = runtime.Int64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_number", err)
 	}
@@ -2695,7 +2603,7 @@ func local_request_FinancialService_ListUserCategoryMonthlyIncome_0(ctx context.
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_size")
 	}
 
-	protoReq.PageSize, err = runtime.Int32(val)
+	protoReq.PageSize, err = runtime.Int64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_size", err)
 	}
@@ -2801,7 +2709,7 @@ func request_FinancialService_ListCategoryMonthlyTransactionCount_0(ctx context.
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_number")
 	}
 
-	protoReq.PageNumber, err = runtime.Int32(val)
+	protoReq.PageNumber, err = runtime.Int64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_number", err)
 	}
@@ -2811,7 +2719,7 @@ func request_FinancialService_ListCategoryMonthlyTransactionCount_0(ctx context.
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_size")
 	}
 
-	protoReq.PageSize, err = runtime.Int32(val)
+	protoReq.PageSize, err = runtime.Int64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_size", err)
 	}
@@ -2847,7 +2755,7 @@ func local_request_FinancialService_ListCategoryMonthlyTransactionCount_0(ctx co
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_number")
 	}
 
-	protoReq.PageNumber, err = runtime.Int32(val)
+	protoReq.PageNumber, err = runtime.Int64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_number", err)
 	}
@@ -2857,7 +2765,7 @@ func local_request_FinancialService_ListCategoryMonthlyTransactionCount_0(ctx co
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_size")
 	}
 
-	protoReq.PageSize, err = runtime.Int32(val)
+	protoReq.PageSize, err = runtime.Int64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_size", err)
 	}
@@ -2963,7 +2871,7 @@ func request_FinancialService_ListDebtToIncomeRatio_0(ctx context.Context, marsh
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_number")
 	}
 
-	protoReq.PageNumber, err = runtime.Int32(val)
+	protoReq.PageNumber, err = runtime.Int64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_number", err)
 	}
@@ -2973,7 +2881,7 @@ func request_FinancialService_ListDebtToIncomeRatio_0(ctx context.Context, marsh
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_size")
 	}
 
-	protoReq.PageSize, err = runtime.Int32(val)
+	protoReq.PageSize, err = runtime.Int64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_size", err)
 	}
@@ -3009,7 +2917,7 @@ func local_request_FinancialService_ListDebtToIncomeRatio_0(ctx context.Context,
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_number")
 	}
 
-	protoReq.PageNumber, err = runtime.Int32(val)
+	protoReq.PageNumber, err = runtime.Int64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_number", err)
 	}
@@ -3019,7 +2927,7 @@ func local_request_FinancialService_ListDebtToIncomeRatio_0(ctx context.Context,
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_size")
 	}
 
-	protoReq.PageSize, err = runtime.Int32(val)
+	protoReq.PageSize, err = runtime.Int64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_size", err)
 	}
@@ -3125,7 +3033,7 @@ func request_FinancialService_ListExpenseMetrics_0(ctx context.Context, marshale
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_number")
 	}
 
-	protoReq.PageNumber, err = runtime.Int32(val)
+	protoReq.PageNumber, err = runtime.Int64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_number", err)
 	}
@@ -3135,7 +3043,7 @@ func request_FinancialService_ListExpenseMetrics_0(ctx context.Context, marshale
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_size")
 	}
 
-	protoReq.PageSize, err = runtime.Int32(val)
+	protoReq.PageSize, err = runtime.Int64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_size", err)
 	}
@@ -3171,7 +3079,7 @@ func local_request_FinancialService_ListExpenseMetrics_0(ctx context.Context, ma
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_number")
 	}
 
-	protoReq.PageNumber, err = runtime.Int32(val)
+	protoReq.PageNumber, err = runtime.Int64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_number", err)
 	}
@@ -3181,7 +3089,7 @@ func local_request_FinancialService_ListExpenseMetrics_0(ctx context.Context, ma
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_size")
 	}
 
-	protoReq.PageSize, err = runtime.Int32(val)
+	protoReq.PageSize, err = runtime.Int64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_size", err)
 	}
@@ -3287,7 +3195,7 @@ func request_FinancialService_ListFinancialProfile_0(ctx context.Context, marsha
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_number")
 	}
 
-	protoReq.PageNumber, err = runtime.Int32(val)
+	protoReq.PageNumber, err = runtime.Int64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_number", err)
 	}
@@ -3297,7 +3205,7 @@ func request_FinancialService_ListFinancialProfile_0(ctx context.Context, marsha
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_size")
 	}
 
-	protoReq.PageSize, err = runtime.Int32(val)
+	protoReq.PageSize, err = runtime.Int64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_size", err)
 	}
@@ -3333,7 +3241,7 @@ func local_request_FinancialService_ListFinancialProfile_0(ctx context.Context, 
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_number")
 	}
 
-	protoReq.PageNumber, err = runtime.Int32(val)
+	protoReq.PageNumber, err = runtime.Int64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_number", err)
 	}
@@ -3343,7 +3251,7 @@ func local_request_FinancialService_ListFinancialProfile_0(ctx context.Context, 
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_size")
 	}
 
-	protoReq.PageSize, err = runtime.Int32(val)
+	protoReq.PageSize, err = runtime.Int64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_size", err)
 	}
@@ -3449,7 +3357,7 @@ func request_FinancialService_ListIncomeExpenseRatio_0(ctx context.Context, mars
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_number")
 	}
 
-	protoReq.PageNumber, err = runtime.Int32(val)
+	protoReq.PageNumber, err = runtime.Int64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_number", err)
 	}
@@ -3459,7 +3367,7 @@ func request_FinancialService_ListIncomeExpenseRatio_0(ctx context.Context, mars
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_size")
 	}
 
-	protoReq.PageSize, err = runtime.Int32(val)
+	protoReq.PageSize, err = runtime.Int64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_size", err)
 	}
@@ -3495,7 +3403,7 @@ func local_request_FinancialService_ListIncomeExpenseRatio_0(ctx context.Context
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_number")
 	}
 
-	protoReq.PageNumber, err = runtime.Int32(val)
+	protoReq.PageNumber, err = runtime.Int64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_number", err)
 	}
@@ -3505,7 +3413,7 @@ func local_request_FinancialService_ListIncomeExpenseRatio_0(ctx context.Context
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_size")
 	}
 
-	protoReq.PageSize, err = runtime.Int32(val)
+	protoReq.PageSize, err = runtime.Int64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_size", err)
 	}
@@ -3611,7 +3519,7 @@ func request_FinancialService_ListIncomeMetrics_0(ctx context.Context, marshaler
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_number")
 	}
 
-	protoReq.PageNumber, err = runtime.Int32(val)
+	protoReq.PageNumber, err = runtime.Int64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_number", err)
 	}
@@ -3621,7 +3529,7 @@ func request_FinancialService_ListIncomeMetrics_0(ctx context.Context, marshaler
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_size")
 	}
 
-	protoReq.PageSize, err = runtime.Int32(val)
+	protoReq.PageSize, err = runtime.Int64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_size", err)
 	}
@@ -3657,7 +3565,7 @@ func local_request_FinancialService_ListIncomeMetrics_0(ctx context.Context, mar
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_number")
 	}
 
-	protoReq.PageNumber, err = runtime.Int32(val)
+	protoReq.PageNumber, err = runtime.Int64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_number", err)
 	}
@@ -3667,7 +3575,7 @@ func local_request_FinancialService_ListIncomeMetrics_0(ctx context.Context, mar
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_size")
 	}
 
-	protoReq.PageSize, err = runtime.Int32(val)
+	protoReq.PageSize, err = runtime.Int64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_size", err)
 	}
@@ -3773,7 +3681,7 @@ func request_FinancialService_ListMerchantMonthlyExpenditure_0(ctx context.Conte
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_number")
 	}
 
-	protoReq.PageNumber, err = runtime.Int32(val)
+	protoReq.PageNumber, err = runtime.Int64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_number", err)
 	}
@@ -3783,7 +3691,7 @@ func request_FinancialService_ListMerchantMonthlyExpenditure_0(ctx context.Conte
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_size")
 	}
 
-	protoReq.PageSize, err = runtime.Int32(val)
+	protoReq.PageSize, err = runtime.Int64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_size", err)
 	}
@@ -3819,7 +3727,7 @@ func local_request_FinancialService_ListMerchantMonthlyExpenditure_0(ctx context
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_number")
 	}
 
-	protoReq.PageNumber, err = runtime.Int32(val)
+	protoReq.PageNumber, err = runtime.Int64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_number", err)
 	}
@@ -3829,7 +3737,7 @@ func local_request_FinancialService_ListMerchantMonthlyExpenditure_0(ctx context
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_size")
 	}
 
-	protoReq.PageSize, err = runtime.Int32(val)
+	protoReq.PageSize, err = runtime.Int64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_size", err)
 	}
@@ -5644,31 +5552,6 @@ func RegisterFinancialServiceHandlerServer(ctx context.Context, mux *runtime.Ser
 
 	})
 
-	mux.Handle("GET", pattern_FinancialService_ListTransactionAggregates_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		ctx, cancel := context.WithCancel(req.Context())
-		defer cancel()
-		var stream runtime.ServerTransportStream
-		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/ListTransactionAggregates", runtime.WithHTTPPathPattern("/api/v1/analytics/transaction-aggregates/{user_id}/pagenumber/{page_number}/pagesize/{page_size}"))
-		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-			return
-		}
-		resp, md, err := local_request_FinancialService_ListTransactionAggregates_0(annotatedContext, inboundMarshaler, server, req, pathParams)
-		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
-		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
-			return
-		}
-
-		forward_FinancialService_ListTransactionAggregates_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
-	})
-
 	mux.Handle("GET", pattern_FinancialService_GetUserAccountBalanceHistory_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
@@ -7406,28 +7289,6 @@ func RegisterFinancialServiceHandlerClient(ctx context.Context, mux *runtime.Ser
 
 	})
 
-	mux.Handle("GET", pattern_FinancialService_ListTransactionAggregates_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		ctx, cancel := context.WithCancel(req.Context())
-		defer cancel()
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/ListTransactionAggregates", runtime.WithHTTPPathPattern("/api/v1/analytics/transaction-aggregates/{user_id}/pagenumber/{page_number}/pagesize/{page_size}"))
-		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-			return
-		}
-		resp, md, err := request_FinancialService_ListTransactionAggregates_0(annotatedContext, inboundMarshaler, client, req, pathParams)
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
-		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
-			return
-		}
-
-		forward_FinancialService_ListTransactionAggregates_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
-	})
-
 	mux.Handle("GET", pattern_FinancialService_GetUserAccountBalanceHistory_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
@@ -8178,8 +8039,6 @@ var (
 
 	pattern_FinancialService_GetTransactionAggregates_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"api", "v1", "analytics", "transaction-aggregates", "user_id"}, ""))
 
-	pattern_FinancialService_ListTransactionAggregates_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4, 2, 5, 1, 0, 4, 1, 5, 6, 2, 7, 1, 0, 4, 1, 5, 8}, []string{"api", "v1", "analytics", "transaction-aggregates", "user_id", "pagenumber", "page_number", "pagesize", "page_size"}, ""))
-
 	pattern_FinancialService_GetUserAccountBalanceHistory_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 2, 4, 1, 0, 4, 1, 5, 5, 2, 6, 1, 0, 4, 1, 5, 7, 2, 8, 1, 0, 4, 1, 5, 9}, []string{"api", "v1", "analytics", "balance-history", "user", "user_id", "pagenumber", "page_number", "pagesize", "page_size"}, ""))
 
 	pattern_FinancialService_GetAccountBalanceHistory_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 2, 4, 1, 0, 4, 1, 5, 5, 2, 6, 1, 0, 4, 1, 5, 7, 2, 8, 1, 0, 4, 1, 5, 9}, []string{"api", "v1", "analytics", "balance-history", "account", "plaid_account_id", "pagenumber", "page_number", "pagesize", "page_size"}, ""))
@@ -8327,8 +8186,6 @@ var (
 	forward_FinancialService_CreateSubscription_0 = runtime.ForwardResponseMessage
 
 	forward_FinancialService_GetTransactionAggregates_0 = runtime.ForwardResponseMessage
-
-	forward_FinancialService_ListTransactionAggregates_0 = runtime.ForwardResponseMessage
 
 	forward_FinancialService_GetUserAccountBalanceHistory_0 = runtime.ForwardResponseMessage
 

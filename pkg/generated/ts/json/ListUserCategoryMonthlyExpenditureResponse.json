@@ -12,7 +12,7 @@
                     "description": "List of CategoryMonthlyExpenditure records for the user"
                 },
                 "next_page_number": {
-                    "type": "integer"
+                    "type": "string"
                 }
             },
             "additionalProperties": true,

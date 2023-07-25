@@ -906,28 +906,6 @@ service FinancialService {
     };
   }
 
-  rpc ListTransactionAggregates(ListTransactionAggregatesRequest) returns (ListTransactionAggregatesResponse) {
-    option (google.api.http) = {
-      get: "/api/v1/analytics/transaction-aggregates/{user_id}/pagenumber/{page_number}/pagesize/{page_size}"
-    };
-
-    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      summary: "Returns the aggregated transactions for a user across all months in a paginated fashion"
-      tags: ["transaction-aggregates"]
-      operation_id: "ListTransactionAggregates"
-      description: "This API accepts user_id as an input parameter and returns the aggregated transactions for that user across all months, paginated."
-      responses: {
-        key: "200"
-        value: {
-          description: "A successful response."
-          schema: {
-            json_schema: {ref: ".api.v1.ListTransactionAggregatesResponse"}
-          }
-        }
-      }
-    };
-  }
-
   rpc GetUserAccountBalanceHistory(GetUserAccountBalanceHistoryRequest) returns (GetUserAccountBalanceHistoryResponse) {
     option (google.api.http) = {
       get: "/api/v1/analytics/balance-history/user/{user_id}/pagenumber/{page_number}/pagesize/{page_size}"

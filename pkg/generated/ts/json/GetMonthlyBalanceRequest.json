@@ -12,10 +12,10 @@
                     "description": "optional"
                 },
                 "page_number": {
-                    "type": "integer"
+                    "type": "string"
                 },
                 "page_size": {
-                    "type": "integer",
+                    "type": "string",
                     "description": "Number of items to return per page."
                 }
             },

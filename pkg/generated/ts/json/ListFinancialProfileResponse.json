@@ -11,7 +11,7 @@
                     "type": "array"
                 },
                 "next_page_number": {
-                    "type": "integer"
+                    "type": "string"
                 }
             },
             "additionalProperties": true,

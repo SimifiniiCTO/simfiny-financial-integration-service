@@ -57,8 +57,6 @@ import {
   ListIncomeMetricsResponse,
   ListMerchantMonthlyExpenditureRequest,
   ListMerchantMonthlyExpenditureResponse,
-  ListTransactionAggregatesRequest,
-  ListTransactionAggregatesResponse,
   ListUserCategoryMonthlyExpenditureRequest,
   ListUserCategoryMonthlyExpenditureResponse,
   ListUserCategoryMonthlyIncomeRequest,
@@ -201,7 +199,6 @@ export interface FinancialService {
   CreateSubscription(request: CreateSubscriptionRequest): Promise<CreateSubscriptionResponse>;
   /** Transaction Aggregates By Queries */
   GetTransactionAggregates(request: GetTransactionAggregatesRequest): Promise<GetTransactionAggregatesResponse>;
-  ListTransactionAggregates(request: ListTransactionAggregatesRequest): Promise<ListTransactionAggregatesResponse>;
   GetUserAccountBalanceHistory(
     request: GetUserAccountBalanceHistoryRequest,
   ): Promise<GetUserAccountBalanceHistoryResponse>;
@@ -314,7 +311,6 @@ export class FinancialServiceClientImpl implements FinancialService {
     this.StripeWebhook = this.StripeWebhook.bind(this);
     this.CreateSubscription = this.CreateSubscription.bind(this);
     this.GetTransactionAggregates = this.GetTransactionAggregates.bind(this);
-    this.ListTransactionAggregates = this.ListTransactionAggregates.bind(this);
     this.GetUserAccountBalanceHistory = this.GetUserAccountBalanceHistory.bind(this);
     this.GetAccountBalanceHistory = this.GetAccountBalanceHistory.bind(this);
     this.GetUserCategoryMonthlyExpenditure = this.GetUserCategoryMonthlyExpenditure.bind(this);
@@ -602,12 +598,6 @@ export class FinancialServiceClientImpl implements FinancialService {
     const data = GetTransactionAggregatesRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "GetTransactionAggregates", data);
     return promise.then((data) => GetTransactionAggregatesResponse.decode(_m0.Reader.create(data)));
-  }
-
-  ListTransactionAggregates(request: ListTransactionAggregatesRequest): Promise<ListTransactionAggregatesResponse> {
-    const data = ListTransactionAggregatesRequest.encode(request).finish();
-    const promise = this.rpc.request(this.service, "ListTransactionAggregates", data);
-    return promise.then((data) => ListTransactionAggregatesResponse.decode(_m0.Reader.create(data)));
   }
 
   GetUserAccountBalanceHistory(

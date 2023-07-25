@@ -62,7 +62,6 @@ const (
 	FinancialService_StripeWebhook_FullMethodName                            = "/financial_integration_service_api.v1.FinancialService/StripeWebhook"
 	FinancialService_CreateSubscription_FullMethodName                       = "/financial_integration_service_api.v1.FinancialService/CreateSubscription"
 	FinancialService_GetTransactionAggregates_FullMethodName                 = "/financial_integration_service_api.v1.FinancialService/GetTransactionAggregates"
-	FinancialService_ListTransactionAggregates_FullMethodName                = "/financial_integration_service_api.v1.FinancialService/ListTransactionAggregates"
 	FinancialService_GetUserAccountBalanceHistory_FullMethodName             = "/financial_integration_service_api.v1.FinancialService/GetUserAccountBalanceHistory"
 	FinancialService_GetAccountBalanceHistory_FullMethodName                 = "/financial_integration_service_api.v1.FinancialService/GetAccountBalanceHistory"
 	FinancialService_GetUserCategoryMonthlyExpenditure_FullMethodName        = "/financial_integration_service_api.v1.FinancialService/GetUserCategoryMonthlyExpenditure"
@@ -143,7 +142,6 @@ type FinancialServiceClient interface {
 	CreateSubscription(ctx context.Context, in *CreateSubscriptionRequest, opts ...grpc.CallOption) (*CreateSubscriptionResponse, error)
 	// Transaction Aggregates By Queries
 	GetTransactionAggregates(ctx context.Context, in *GetTransactionAggregatesRequest, opts ...grpc.CallOption) (*GetTransactionAggregatesResponse, error)
-	ListTransactionAggregates(ctx context.Context, in *ListTransactionAggregatesRequest, opts ...grpc.CallOption) (*ListTransactionAggregatesResponse, error)
 	GetUserAccountBalanceHistory(ctx context.Context, in *GetUserAccountBalanceHistoryRequest, opts ...grpc.CallOption) (*GetUserAccountBalanceHistoryResponse, error)
 	GetAccountBalanceHistory(ctx context.Context, in *GetAccountBalanceHistoryRequest, opts ...grpc.CallOption) (*GetAccountBalanceHistoryResponse, error)
 	// Get user category monthly expenditure
@@ -575,15 +573,6 @@ func (c *financialServiceClient) GetTransactionAggregates(ctx context.Context, i
 	return out, nil
 }
 
-func (c *financialServiceClient) ListTransactionAggregates(ctx context.Context, in *ListTransactionAggregatesRequest, opts ...grpc.CallOption) (*ListTransactionAggregatesResponse, error) {
-	out := new(ListTransactionAggregatesResponse)
-	err := c.cc.Invoke(ctx, FinancialService_ListTransactionAggregates_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *financialServiceClient) GetUserAccountBalanceHistory(ctx context.Context, in *GetUserAccountBalanceHistoryRequest, opts ...grpc.CallOption) (*GetUserAccountBalanceHistoryResponse, error) {
 	out := new(GetUserAccountBalanceHistoryResponse)
 	err := c.cc.Invoke(ctx, FinancialService_GetUserAccountBalanceHistory_FullMethodName, in, out, opts...)
@@ -902,7 +891,6 @@ type FinancialServiceServer interface {
 	CreateSubscription(context.Context, *CreateSubscriptionRequest) (*CreateSubscriptionResponse, error)
 	// Transaction Aggregates By Queries
 	GetTransactionAggregates(context.Context, *GetTransactionAggregatesRequest) (*GetTransactionAggregatesResponse, error)
-	ListTransactionAggregates(context.Context, *ListTransactionAggregatesRequest) (*ListTransactionAggregatesResponse, error)
 	GetUserAccountBalanceHistory(context.Context, *GetUserAccountBalanceHistoryRequest) (*GetUserAccountBalanceHistoryResponse, error)
 	GetAccountBalanceHistory(context.Context, *GetAccountBalanceHistoryRequest) (*GetAccountBalanceHistoryResponse, error)
 	// Get user category monthly expenditure
@@ -1072,9 +1060,6 @@ func (UnimplementedFinancialServiceServer) CreateSubscription(context.Context, *
 }
 func (UnimplementedFinancialServiceServer) GetTransactionAggregates(context.Context, *GetTransactionAggregatesRequest) (*GetTransactionAggregatesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetTransactionAggregates not implemented")
-}
-func (UnimplementedFinancialServiceServer) ListTransactionAggregates(context.Context, *ListTransactionAggregatesRequest) (*ListTransactionAggregatesResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListTransactionAggregates not implemented")
 }
 func (UnimplementedFinancialServiceServer) GetUserAccountBalanceHistory(context.Context, *GetUserAccountBalanceHistoryRequest) (*GetUserAccountBalanceHistoryResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserAccountBalanceHistory not implemented")
@@ -1953,24 +1938,6 @@ func _FinancialService_GetTransactionAggregates_Handler(srv interface{}, ctx con
 	return interceptor(ctx, in, info, handler)
 }
 
-func _FinancialService_ListTransactionAggregates_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListTransactionAggregatesRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(FinancialServiceServer).ListTransactionAggregates(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: FinancialService_ListTransactionAggregates_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FinancialServiceServer).ListTransactionAggregates(ctx, req.(*ListTransactionAggregatesRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _FinancialService_GetUserAccountBalanceHistory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetUserAccountBalanceHistoryRequest)
 	if err := dec(in); err != nil {
@@ -2689,10 +2656,6 @@ var FinancialService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetTransactionAggregates",
 			Handler:    _FinancialService_GetTransactionAggregates_Handler,
-		},
-		{
-			MethodName: "ListTransactionAggregates",
-			Handler:    _FinancialService_ListTransactionAggregates_Handler,
 		},
 		{
 			MethodName: "GetUserAccountBalanceHistory",

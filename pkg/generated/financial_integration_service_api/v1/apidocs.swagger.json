@@ -319,16 +319,16 @@
             "name": "pageNumber",
             "in": "path",
             "required": true,
-            "type": "integer",
-            "format": "int32"
+            "type": "string",
+            "format": "int64"
           },
           {
             "name": "pageSize",
             "description": "Number of items to return per page.",
             "in": "path",
             "required": true,
-            "type": "integer",
-            "format": "int32"
+            "type": "string",
+            "format": "int64"
           }
         ],
         "tags": [
@@ -386,16 +386,16 @@
             "name": "pageNumber",
             "in": "path",
             "required": true,
-            "type": "integer",
-            "format": "int32"
+            "type": "string",
+            "format": "int64"
           },
           {
             "name": "pageSize",
             "description": "Number of items to return per page.",
             "in": "path",
             "required": true,
-            "type": "integer",
-            "format": "int32"
+            "type": "string",
+            "format": "int64"
           }
         ],
         "tags": [
@@ -520,16 +520,16 @@
             "name": "pageNumber",
             "in": "path",
             "required": true,
-            "type": "integer",
-            "format": "int32"
+            "type": "string",
+            "format": "int64"
           },
           {
             "name": "pageSize",
             "description": "Number of items to return per page.",
             "in": "path",
             "required": true,
-            "type": "integer",
-            "format": "int32"
+            "type": "string",
+            "format": "int64"
           }
         ],
         "tags": [
@@ -650,16 +650,16 @@
             "name": "pageNumber",
             "in": "path",
             "required": true,
-            "type": "integer",
-            "format": "int32"
+            "type": "string",
+            "format": "int64"
           },
           {
             "name": "pageSize",
             "description": "Number of items to return per page.",
             "in": "path",
             "required": true,
-            "type": "integer",
-            "format": "int32"
+            "type": "string",
+            "format": "int64"
           }
         ],
         "tags": [
@@ -782,16 +782,16 @@
             "name": "pageNumber",
             "in": "path",
             "required": true,
-            "type": "integer",
-            "format": "int32"
+            "type": "string",
+            "format": "int64"
           },
           {
             "name": "pageSize",
             "description": "Number of items to return per page.",
             "in": "path",
             "required": true,
-            "type": "integer",
-            "format": "int32"
+            "type": "string",
+            "format": "int64"
           }
         ],
         "tags": [
@@ -905,16 +905,16 @@
             "name": "pageNumber",
             "in": "path",
             "required": true,
-            "type": "integer",
-            "format": "int32"
+            "type": "string",
+            "format": "int64"
           },
           {
             "name": "pageSize",
             "description": "Number of items to return per page.",
             "in": "path",
             "required": true,
-            "type": "integer",
-            "format": "int32"
+            "type": "string",
+            "format": "int64"
           }
         ],
         "tags": [
@@ -1035,16 +1035,16 @@
             "name": "pageNumber",
             "in": "path",
             "required": true,
-            "type": "integer",
-            "format": "int32"
+            "type": "string",
+            "format": "int64"
           },
           {
             "name": "pageSize",
             "description": "Number of items to return per page.",
             "in": "path",
             "required": true,
-            "type": "integer",
-            "format": "int32"
+            "type": "string",
+            "format": "int64"
           }
         ],
         "tags": [
@@ -1158,16 +1158,16 @@
             "name": "pageNumber",
             "in": "path",
             "required": true,
-            "type": "integer",
-            "format": "int32"
+            "type": "string",
+            "format": "int64"
           },
           {
             "name": "pageSize",
             "description": "Number of items to return per page.",
             "in": "path",
             "required": true,
-            "type": "integer",
-            "format": "int32"
+            "type": "string",
+            "format": "int64"
           }
         ],
         "tags": [
@@ -1281,16 +1281,16 @@
             "name": "pageNumber",
             "in": "path",
             "required": true,
-            "type": "integer",
-            "format": "int32"
+            "type": "string",
+            "format": "int64"
           },
           {
             "name": "pageSize",
             "description": "Number of items to return per page.",
             "in": "path",
             "required": true,
-            "type": "integer",
-            "format": "int32"
+            "type": "string",
+            "format": "int64"
           }
         ],
         "tags": [
@@ -1411,16 +1411,16 @@
             "name": "pageNumber",
             "in": "path",
             "required": true,
-            "type": "integer",
-            "format": "int32"
+            "type": "string",
+            "format": "int64"
           },
           {
             "name": "pageSize",
             "description": "Number of items to return per page.",
             "in": "path",
             "required": true,
-            "type": "integer",
-            "format": "int32"
+            "type": "string",
+            "format": "int64"
           }
         ],
         "tags": [
@@ -1591,16 +1591,16 @@
             "name": "pageNumber",
             "in": "path",
             "required": true,
-            "type": "integer",
-            "format": "int32"
+            "type": "string",
+            "format": "int64"
           },
           {
             "name": "pageSize",
             "description": "Number of items to return per page.",
             "in": "path",
             "required": true,
-            "type": "integer",
-            "format": "int32"
+            "type": "string",
+            "format": "int64"
           }
         ],
         "tags": [
@@ -1664,16 +1664,16 @@
             "name": "pageNumber",
             "in": "query",
             "required": false,
-            "type": "integer",
-            "format": "int32"
+            "type": "string",
+            "format": "int64"
           },
           {
             "name": "pageSize",
             "description": "Number of items to return per page.",
             "in": "query",
             "required": false,
-            "type": "integer",
-            "format": "int32"
+            "type": "string",
+            "format": "int64"
           }
         ],
         "tags": [
@@ -1736,16 +1736,16 @@
             "name": "pageNumber",
             "in": "query",
             "required": false,
-            "type": "integer",
-            "format": "int32"
+            "type": "string",
+            "format": "int64"
           },
           {
             "name": "pageSize",
             "description": "Number of items to return per page.",
             "in": "query",
             "required": false,
-            "type": "integer",
-            "format": "int32"
+            "type": "string",
+            "format": "int64"
           }
         ],
         "tags": [
@@ -1808,16 +1808,16 @@
             "name": "pageNumber",
             "in": "query",
             "required": false,
-            "type": "integer",
-            "format": "int32"
+            "type": "string",
+            "format": "int64"
           },
           {
             "name": "pageSize",
             "description": "Number of items to return per page.",
             "in": "query",
             "required": false,
-            "type": "integer",
-            "format": "int32"
+            "type": "string",
+            "format": "int64"
           }
         ],
         "tags": [
@@ -1880,16 +1880,16 @@
             "name": "pageNumber",
             "in": "query",
             "required": false,
-            "type": "integer",
-            "format": "int32"
+            "type": "string",
+            "format": "int64"
           },
           {
             "name": "pageSize",
             "description": "Number of items to return per page.",
             "in": "query",
             "required": false,
-            "type": "integer",
-            "format": "int32"
+            "type": "string",
+            "format": "int64"
           }
         ],
         "tags": [
@@ -1958,16 +1958,16 @@
             "name": "pageNumber",
             "in": "query",
             "required": false,
-            "type": "integer",
-            "format": "int32"
+            "type": "string",
+            "format": "int64"
           },
           {
             "name": "pageSize",
             "description": "Number of items to return per page.",
             "in": "query",
             "required": false,
-            "type": "integer",
-            "format": "int32"
+            "type": "string",
+            "format": "int64"
           }
         ],
         "tags": [
@@ -2030,16 +2030,16 @@
             "name": "pageNumber",
             "in": "query",
             "required": false,
-            "type": "integer",
-            "format": "int32"
+            "type": "string",
+            "format": "int64"
           },
           {
             "name": "pageSize",
             "description": "Number of items to return per page.",
             "in": "query",
             "required": false,
-            "type": "integer",
-            "format": "int32"
+            "type": "string",
+            "format": "int64"
           }
         ],
         "tags": [
@@ -2108,16 +2108,16 @@
             "name": "pageNumber",
             "in": "query",
             "required": false,
-            "type": "integer",
-            "format": "int32"
+            "type": "string",
+            "format": "int64"
           },
           {
             "name": "pageSize",
             "description": "Number of items to return per page.",
             "in": "query",
             "required": false,
-            "type": "integer",
-            "format": "int32"
+            "type": "string",
+            "format": "int64"
           }
         ],
         "tags": [
@@ -2179,16 +2179,16 @@
             "name": "pageNumber",
             "in": "query",
             "required": false,
-            "type": "integer",
-            "format": "int32"
+            "type": "string",
+            "format": "int64"
           },
           {
             "name": "pageSize",
             "description": "Number of items to return per page.",
             "in": "query",
             "required": false,
-            "type": "integer",
-            "format": "int32"
+            "type": "string",
+            "format": "int64"
           }
         ],
         "tags": [
@@ -2271,72 +2271,21 @@
             "in": "query",
             "required": false,
             "type": "string"
-          }
-        ],
-        "tags": [
-          "transaction-aggregates"
-        ]
-      }
-    },
-    "/api/v1/analytics/transaction-aggregates/{userId}/pagenumber/{pageNumber}/pagesize/{pageSize}": {
-      "get": {
-        "summary": "Returns the aggregated transactions for a user across all months in a paginated fashion",
-        "description": "This API accepts user_id as an input parameter and returns the aggregated transactions for that user across all months, paginated.",
-        "operationId": "ListTransactionAggregates",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": ".api.v1.ListTransactionAggregatesResponse"
-            }
-          },
-          "400": {
-            "description": "Request failed due to invalid input.",
-            "schema": {
-              "$ref": ".api.v1.ValidationErrorMessageResponse"
-            }
-          },
-          "404": {
-            "description": "Request failed due to incorrect path.",
-            "schema": {
-              "$ref": ".api.v1.PathUnknownErrorMessageResponse"
-            }
-          },
-          "500": {
-            "description": "Request failed due to internal server error.",
-            "schema": {
-              "$ref": ".api.v1.InternalErrorMessageResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "format": "uint64"
           },
           {
             "name": "pageNumber",
-            "in": "path",
-            "required": true,
-            "type": "integer",
-            "format": "int32"
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
           },
           {
             "name": "pageSize",
             "description": "Number of items to return per page.",
-            "in": "path",
-            "required": true,
-            "type": "integer",
-            "format": "int32"
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
           }
         ],
         "tags": [
@@ -5442,8 +5391,8 @@
           }
         },
         "nextPageNumber": {
-          "type": "integer",
-          "format": "int32"
+          "type": "string",
+          "format": "int64"
         }
       }
     },
@@ -5458,8 +5407,8 @@
           }
         },
         "nextPageNumber": {
-          "type": "integer",
-          "format": "int32"
+          "type": "string",
+          "format": "int64"
         }
       }
     },
@@ -5474,8 +5423,8 @@
           }
         },
         "nextPageNumber": {
-          "type": "integer",
-          "format": "int32"
+          "type": "string",
+          "format": "int64"
         }
       }
     },
@@ -5490,8 +5439,8 @@
           }
         },
         "nextPageNumber": {
-          "type": "integer",
-          "format": "int32"
+          "type": "string",
+          "format": "int64"
         }
       }
     },
@@ -5506,8 +5455,8 @@
           }
         },
         "nextPageNumber": {
-          "type": "integer",
-          "format": "int32"
+          "type": "string",
+          "format": "int64"
         }
       }
     },
@@ -5522,8 +5471,8 @@
           }
         },
         "nextPageNumber": {
-          "type": "integer",
-          "format": "int32"
+          "type": "string",
+          "format": "int64"
         }
       }
     },
@@ -5547,8 +5496,8 @@
           }
         },
         "nextPageNumber": {
-          "type": "integer",
-          "format": "int32"
+          "type": "string",
+          "format": "int64"
         }
       }
     },
@@ -5614,8 +5563,8 @@
           }
         },
         "nextPageNumber": {
-          "type": "integer",
-          "format": "int32"
+          "type": "string",
+          "format": "int64"
         }
       }
     },
@@ -5628,6 +5577,10 @@
             "type": "object",
             "$ref": "#/definitions/TransactionAggregatesByMonth"
           }
+        },
+        "nextPageNumber": {
+          "type": "string",
+          "format": "int64"
         }
       }
     },
@@ -6147,8 +6100,8 @@
           }
         },
         "nextPageNumber": {
-          "type": "integer",
-          "format": "int32"
+          "type": "string",
+          "format": "int64"
         }
       }
     },
@@ -6163,8 +6116,8 @@
           }
         },
         "nextPageNumber": {
-          "type": "integer",
-          "format": "int32"
+          "type": "string",
+          "format": "int64"
         }
       }
     },
@@ -6179,8 +6132,8 @@
           }
         },
         "nextPageNumber": {
-          "type": "integer",
-          "format": "int32"
+          "type": "string",
+          "format": "int64"
         }
       }
     },
@@ -6195,8 +6148,8 @@
           }
         },
         "nextPageNumber": {
-          "type": "integer",
-          "format": "int32"
+          "type": "string",
+          "format": "int64"
         }
       }
     },
@@ -6211,8 +6164,8 @@
           }
         },
         "nextPageNumber": {
-          "type": "integer",
-          "format": "int32"
+          "type": "string",
+          "format": "int64"
         }
       }
     },
@@ -6227,8 +6180,8 @@
           }
         },
         "nextPageNumber": {
-          "type": "integer",
-          "format": "int32"
+          "type": "string",
+          "format": "int64"
         }
       }
     },
@@ -6243,23 +6196,8 @@
           }
         },
         "nextPageNumber": {
-          "type": "integer",
-          "format": "int32"
-        }
-      }
-    },
-    "ListTransactionAggregatesResponse": {
-      "type": "object",
-      "properties": {
-        "nextPageNumber": {
-          "type": "string"
-        },
-        "aggregates": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/TransactionAggregatesByMonth"
-          }
+          "type": "string",
+          "format": "int64"
         }
       }
     },
@@ -6275,8 +6213,8 @@
           "title": "List of CategoryMonthlyExpenditure records for the user"
         },
         "nextPageNumber": {
-          "type": "integer",
-          "format": "int32"
+          "type": "string",
+          "format": "int64"
         }
       }
     },
@@ -6292,8 +6230,8 @@
           "title": "List of CategoryMonthlyExpenditure records for the user"
         },
         "nextPageNumber": {
-          "type": "integer",
-          "format": "int32"
+          "type": "string",
+          "format": "int64"
         }
       }
     },

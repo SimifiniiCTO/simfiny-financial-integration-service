@@ -34,22 +34,14 @@ export interface GetTransactionAggregatesRequest {
   locationCity: string;
   paymentChannel: string;
   merchantName: string;
-}
-
-export interface GetTransactionAggregatesResponse {
-  transactionAggregates: TransactionAggregatesByMonth[];
-}
-
-export interface ListTransactionAggregatesRequest {
-  userId: number;
   pageNumber: number;
   /** Number of items to return per page. */
   pageSize: number;
 }
 
-export interface ListTransactionAggregatesResponse {
-  nextPageNumber: string;
-  aggregates: TransactionAggregatesByMonth[];
+export interface GetTransactionAggregatesResponse {
+  transactionAggregates: TransactionAggregatesByMonth[];
+  nextPageNumber: number;
 }
 
 /** Account Balance */
@@ -434,6 +426,8 @@ function createBaseGetTransactionAggregatesRequest(): GetTransactionAggregatesRe
     locationCity: "",
     paymentChannel: "",
     merchantName: "",
+    pageNumber: 0,
+    pageSize: 0,
   };
 }
 
@@ -456,6 +450,12 @@ export const GetTransactionAggregatesRequest = {
     }
     if (message.merchantName !== "") {
       writer.uint32(50).string(message.merchantName);
+    }
+    if (message.pageNumber !== 0) {
+      writer.uint32(56).int64(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      writer.uint32(64).int64(message.pageSize);
     }
     return writer;
   },
@@ -509,6 +509,20 @@ export const GetTransactionAggregatesRequest = {
 
           message.merchantName = reader.string();
           continue;
+        case 7:
+          if (tag !== 56) {
+            break;
+          }
+
+          message.pageNumber = longToNumber(reader.int64() as Long);
+          continue;
+        case 8:
+          if (tag !== 64) {
+            break;
+          }
+
+          message.pageSize = longToNumber(reader.int64() as Long);
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -528,6 +542,8 @@ export const GetTransactionAggregatesRequest = {
       locationCity: isSet(object.locationCity) ? String(object.locationCity) : "",
       paymentChannel: isSet(object.paymentChannel) ? String(object.paymentChannel) : "",
       merchantName: isSet(object.merchantName) ? String(object.merchantName) : "",
+      pageNumber: isSet(object.pageNumber) ? Number(object.pageNumber) : 0,
+      pageSize: isSet(object.pageSize) ? Number(object.pageSize) : 0,
     };
   },
 
@@ -551,6 +567,12 @@ export const GetTransactionAggregatesRequest = {
     if (message.merchantName !== "") {
       obj.merchantName = message.merchantName;
     }
+    if (message.pageNumber !== 0) {
+      obj.pageNumber = Math.round(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      obj.pageSize = Math.round(message.pageSize);
+    }
     return obj;
   },
 
@@ -568,18 +590,23 @@ export const GetTransactionAggregatesRequest = {
     message.locationCity = object.locationCity ?? "";
     message.paymentChannel = object.paymentChannel ?? "";
     message.merchantName = object.merchantName ?? "";
+    message.pageNumber = object.pageNumber ?? 0;
+    message.pageSize = object.pageSize ?? 0;
     return message;
   },
 };
 
 function createBaseGetTransactionAggregatesResponse(): GetTransactionAggregatesResponse {
-  return { transactionAggregates: [] };
+  return { transactionAggregates: [], nextPageNumber: 0 };
 }
 
 export const GetTransactionAggregatesResponse = {
   encode(message: GetTransactionAggregatesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.transactionAggregates) {
       TransactionAggregatesByMonth.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.nextPageNumber !== 0) {
+      writer.uint32(16).int64(message.nextPageNumber);
     }
     return writer;
   },
@@ -598,6 +625,13 @@ export const GetTransactionAggregatesResponse = {
 
           message.transactionAggregates.push(TransactionAggregatesByMonth.decode(reader, reader.uint32()));
           continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.nextPageNumber = longToNumber(reader.int64() as Long);
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -612,6 +646,7 @@ export const GetTransactionAggregatesResponse = {
       transactionAggregates: Array.isArray(object?.transactionAggregates)
         ? object.transactionAggregates.map((e: any) => TransactionAggregatesByMonth.fromJSON(e))
         : [],
+      nextPageNumber: isSet(object.nextPageNumber) ? Number(object.nextPageNumber) : 0,
     };
   },
 
@@ -619,6 +654,9 @@ export const GetTransactionAggregatesResponse = {
     const obj: any = {};
     if (message.transactionAggregates?.length) {
       obj.transactionAggregates = message.transactionAggregates.map((e) => TransactionAggregatesByMonth.toJSON(e));
+    }
+    if (message.nextPageNumber !== 0) {
+      obj.nextPageNumber = Math.round(message.nextPageNumber);
     }
     return obj;
   },
@@ -635,181 +673,7 @@ export const GetTransactionAggregatesResponse = {
     const message = createBaseGetTransactionAggregatesResponse();
     message.transactionAggregates =
       object.transactionAggregates?.map((e) => TransactionAggregatesByMonth.fromPartial(e)) || [];
-    return message;
-  },
-};
-
-function createBaseListTransactionAggregatesRequest(): ListTransactionAggregatesRequest {
-  return { userId: 0, pageNumber: 0, pageSize: 0 };
-}
-
-export const ListTransactionAggregatesRequest = {
-  encode(message: ListTransactionAggregatesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.userId !== 0) {
-      writer.uint32(8).uint64(message.userId);
-    }
-    if (message.pageNumber !== 0) {
-      writer.uint32(16).int32(message.pageNumber);
-    }
-    if (message.pageSize !== 0) {
-      writer.uint32(24).int32(message.pageSize);
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): ListTransactionAggregatesRequest {
-    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseListTransactionAggregatesRequest();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          if (tag !== 8) {
-            break;
-          }
-
-          message.userId = longToNumber(reader.uint64() as Long);
-          continue;
-        case 2:
-          if (tag !== 16) {
-            break;
-          }
-
-          message.pageNumber = reader.int32();
-          continue;
-        case 3:
-          if (tag !== 24) {
-            break;
-          }
-
-          message.pageSize = reader.int32();
-          continue;
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skipType(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): ListTransactionAggregatesRequest {
-    return {
-      userId: isSet(object.userId) ? Number(object.userId) : 0,
-      pageNumber: isSet(object.pageNumber) ? Number(object.pageNumber) : 0,
-      pageSize: isSet(object.pageSize) ? Number(object.pageSize) : 0,
-    };
-  },
-
-  toJSON(message: ListTransactionAggregatesRequest): unknown {
-    const obj: any = {};
-    if (message.userId !== 0) {
-      obj.userId = Math.round(message.userId);
-    }
-    if (message.pageNumber !== 0) {
-      obj.pageNumber = Math.round(message.pageNumber);
-    }
-    if (message.pageSize !== 0) {
-      obj.pageSize = Math.round(message.pageSize);
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<ListTransactionAggregatesRequest>, I>>(
-    base?: I,
-  ): ListTransactionAggregatesRequest {
-    return ListTransactionAggregatesRequest.fromPartial(base ?? {});
-  },
-
-  fromPartial<I extends Exact<DeepPartial<ListTransactionAggregatesRequest>, I>>(
-    object: I,
-  ): ListTransactionAggregatesRequest {
-    const message = createBaseListTransactionAggregatesRequest();
-    message.userId = object.userId ?? 0;
-    message.pageNumber = object.pageNumber ?? 0;
-    message.pageSize = object.pageSize ?? 0;
-    return message;
-  },
-};
-
-function createBaseListTransactionAggregatesResponse(): ListTransactionAggregatesResponse {
-  return { nextPageNumber: "", aggregates: [] };
-}
-
-export const ListTransactionAggregatesResponse = {
-  encode(message: ListTransactionAggregatesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.nextPageNumber !== "") {
-      writer.uint32(10).string(message.nextPageNumber);
-    }
-    for (const v of message.aggregates) {
-      TransactionAggregatesByMonth.encode(v!, writer.uint32(18).fork()).ldelim();
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): ListTransactionAggregatesResponse {
-    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseListTransactionAggregatesResponse();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          if (tag !== 10) {
-            break;
-          }
-
-          message.nextPageNumber = reader.string();
-          continue;
-        case 2:
-          if (tag !== 18) {
-            break;
-          }
-
-          message.aggregates.push(TransactionAggregatesByMonth.decode(reader, reader.uint32()));
-          continue;
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skipType(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): ListTransactionAggregatesResponse {
-    return {
-      nextPageNumber: isSet(object.nextPageNumber) ? String(object.nextPageNumber) : "",
-      aggregates: Array.isArray(object?.aggregates)
-        ? object.aggregates.map((e: any) => TransactionAggregatesByMonth.fromJSON(e))
-        : [],
-    };
-  },
-
-  toJSON(message: ListTransactionAggregatesResponse): unknown {
-    const obj: any = {};
-    if (message.nextPageNumber !== "") {
-      obj.nextPageNumber = message.nextPageNumber;
-    }
-    if (message.aggregates?.length) {
-      obj.aggregates = message.aggregates.map((e) => TransactionAggregatesByMonth.toJSON(e));
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<ListTransactionAggregatesResponse>, I>>(
-    base?: I,
-  ): ListTransactionAggregatesResponse {
-    return ListTransactionAggregatesResponse.fromPartial(base ?? {});
-  },
-
-  fromPartial<I extends Exact<DeepPartial<ListTransactionAggregatesResponse>, I>>(
-    object: I,
-  ): ListTransactionAggregatesResponse {
-    const message = createBaseListTransactionAggregatesResponse();
-    message.nextPageNumber = object.nextPageNumber ?? "";
-    message.aggregates = object.aggregates?.map((e) => TransactionAggregatesByMonth.fromPartial(e)) || [];
+    message.nextPageNumber = object.nextPageNumber ?? 0;
     return message;
   },
 };
@@ -824,10 +688,10 @@ export const GetUserAccountBalanceHistoryRequest = {
       writer.uint32(8).uint64(message.userId);
     }
     if (message.pageNumber !== 0) {
-      writer.uint32(16).int32(message.pageNumber);
+      writer.uint32(16).int64(message.pageNumber);
     }
     if (message.pageSize !== 0) {
-      writer.uint32(24).int32(message.pageSize);
+      writer.uint32(24).int64(message.pageSize);
     }
     return writer;
   },
@@ -851,14 +715,14 @@ export const GetUserAccountBalanceHistoryRequest = {
             break;
           }
 
-          message.pageNumber = reader.int32();
+          message.pageNumber = longToNumber(reader.int64() as Long);
           continue;
         case 3:
           if (tag !== 24) {
             break;
           }
 
-          message.pageSize = reader.int32();
+          message.pageSize = longToNumber(reader.int64() as Long);
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -985,10 +849,10 @@ export const GetAccountBalanceHistoryRequest = {
       writer.uint32(10).string(message.plaidAccountId);
     }
     if (message.pageNumber !== 0) {
-      writer.uint32(16).int32(message.pageNumber);
+      writer.uint32(16).int64(message.pageNumber);
     }
     if (message.pageSize !== 0) {
-      writer.uint32(24).int32(message.pageSize);
+      writer.uint32(24).int64(message.pageSize);
     }
     return writer;
   },
@@ -1012,14 +876,14 @@ export const GetAccountBalanceHistoryRequest = {
             break;
           }
 
-          message.pageNumber = reader.int32();
+          message.pageNumber = longToNumber(reader.int64() as Long);
           continue;
         case 3:
           if (tag !== 24) {
             break;
           }
 
-          message.pageSize = reader.int32();
+          message.pageSize = longToNumber(reader.int64() as Long);
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1309,10 +1173,10 @@ export const ListUserCategoryMonthlyExpenditureRequest = {
       writer.uint32(8).uint64(message.userId);
     }
     if (message.pageNumber !== 0) {
-      writer.uint32(16).int32(message.pageNumber);
+      writer.uint32(16).int64(message.pageNumber);
     }
     if (message.pageSize !== 0) {
-      writer.uint32(24).int32(message.pageSize);
+      writer.uint32(24).int64(message.pageSize);
     }
     return writer;
   },
@@ -1336,14 +1200,14 @@ export const ListUserCategoryMonthlyExpenditureRequest = {
             break;
           }
 
-          message.pageNumber = reader.int32();
+          message.pageNumber = longToNumber(reader.int64() as Long);
           continue;
         case 3:
           if (tag !== 24) {
             break;
           }
 
-          message.pageSize = reader.int32();
+          message.pageSize = longToNumber(reader.int64() as Long);
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1403,7 +1267,7 @@ export const ListUserCategoryMonthlyExpenditureResponse = {
       CategoryMonthlyExpenditure.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     if (message.nextPageNumber !== 0) {
-      writer.uint32(16).int32(message.nextPageNumber);
+      writer.uint32(16).int64(message.nextPageNumber);
     }
     return writer;
   },
@@ -1427,7 +1291,7 @@ export const ListUserCategoryMonthlyExpenditureResponse = {
             break;
           }
 
-          message.nextPageNumber = reader.int32();
+          message.nextPageNumber = longToNumber(reader.int64() as Long);
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1650,10 +1514,10 @@ export const ListUserCategoryMonthlyIncomeRequest = {
       writer.uint32(8).uint64(message.userId);
     }
     if (message.pageNumber !== 0) {
-      writer.uint32(16).int32(message.pageNumber);
+      writer.uint32(16).int64(message.pageNumber);
     }
     if (message.pageSize !== 0) {
-      writer.uint32(24).int32(message.pageSize);
+      writer.uint32(24).int64(message.pageSize);
     }
     return writer;
   },
@@ -1677,14 +1541,14 @@ export const ListUserCategoryMonthlyIncomeRequest = {
             break;
           }
 
-          message.pageNumber = reader.int32();
+          message.pageNumber = longToNumber(reader.int64() as Long);
           continue;
         case 3:
           if (tag !== 24) {
             break;
           }
 
-          message.pageSize = reader.int32();
+          message.pageSize = longToNumber(reader.int64() as Long);
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1744,7 +1608,7 @@ export const ListUserCategoryMonthlyIncomeResponse = {
       CategoryMonthlyIncome.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     if (message.nextPageNumber !== 0) {
-      writer.uint32(16).int32(message.nextPageNumber);
+      writer.uint32(16).int64(message.nextPageNumber);
     }
     return writer;
   },
@@ -1768,7 +1632,7 @@ export const ListUserCategoryMonthlyIncomeResponse = {
             break;
           }
 
-          message.nextPageNumber = reader.int32();
+          message.nextPageNumber = longToNumber(reader.int64() as Long);
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1991,10 +1855,10 @@ export const ListCategoryMonthlyTransactionCountRequest = {
       writer.uint32(8).uint64(message.userId);
     }
     if (message.pageNumber !== 0) {
-      writer.uint32(16).int32(message.pageNumber);
+      writer.uint32(16).int64(message.pageNumber);
     }
     if (message.pageSize !== 0) {
-      writer.uint32(24).int32(message.pageSize);
+      writer.uint32(24).int64(message.pageSize);
     }
     return writer;
   },
@@ -2018,14 +1882,14 @@ export const ListCategoryMonthlyTransactionCountRequest = {
             break;
           }
 
-          message.pageNumber = reader.int32();
+          message.pageNumber = longToNumber(reader.int64() as Long);
           continue;
         case 3:
           if (tag !== 24) {
             break;
           }
 
-          message.pageSize = reader.int32();
+          message.pageSize = longToNumber(reader.int64() as Long);
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -2085,7 +1949,7 @@ export const ListCategoryMonthlyTransactionCountResponse = {
       CategoryMonthlyTransactionCount.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     if (message.nextPageNumber !== 0) {
-      writer.uint32(16).int32(message.nextPageNumber);
+      writer.uint32(16).int64(message.nextPageNumber);
     }
     return writer;
   },
@@ -2109,7 +1973,7 @@ export const ListCategoryMonthlyTransactionCountResponse = {
             break;
           }
 
-          message.nextPageNumber = reader.int32();
+          message.nextPageNumber = longToNumber(reader.int64() as Long);
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -2306,10 +2170,10 @@ export const ListDebtToIncomeRatioRequest = {
       writer.uint32(8).uint64(message.userId);
     }
     if (message.pageNumber !== 0) {
-      writer.uint32(16).int32(message.pageNumber);
+      writer.uint32(16).int64(message.pageNumber);
     }
     if (message.pageSize !== 0) {
-      writer.uint32(24).int32(message.pageSize);
+      writer.uint32(24).int64(message.pageSize);
     }
     return writer;
   },
@@ -2333,14 +2197,14 @@ export const ListDebtToIncomeRatioRequest = {
             break;
           }
 
-          message.pageNumber = reader.int32();
+          message.pageNumber = longToNumber(reader.int64() as Long);
           continue;
         case 3:
           if (tag !== 24) {
             break;
           }
 
-          message.pageSize = reader.int32();
+          message.pageSize = longToNumber(reader.int64() as Long);
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -2396,7 +2260,7 @@ export const ListDebtToIncomeRatioResponse = {
       DebtToIncomeRatio.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     if (message.nextPageNumber !== 0) {
-      writer.uint32(16).int32(message.nextPageNumber);
+      writer.uint32(16).int64(message.nextPageNumber);
     }
     return writer;
   },
@@ -2420,7 +2284,7 @@ export const ListDebtToIncomeRatioResponse = {
             break;
           }
 
-          message.nextPageNumber = reader.int32();
+          message.nextPageNumber = longToNumber(reader.int64() as Long);
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -2629,10 +2493,10 @@ export const ListExpenseMetricsRequest = {
       writer.uint32(8).uint64(message.userId);
     }
     if (message.pageNumber !== 0) {
-      writer.uint32(16).int32(message.pageNumber);
+      writer.uint32(16).int64(message.pageNumber);
     }
     if (message.pageSize !== 0) {
-      writer.uint32(24).int32(message.pageSize);
+      writer.uint32(24).int64(message.pageSize);
     }
     return writer;
   },
@@ -2656,14 +2520,14 @@ export const ListExpenseMetricsRequest = {
             break;
           }
 
-          message.pageNumber = reader.int32();
+          message.pageNumber = longToNumber(reader.int64() as Long);
           continue;
         case 3:
           if (tag !== 24) {
             break;
           }
 
-          message.pageSize = reader.int32();
+          message.pageSize = longToNumber(reader.int64() as Long);
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -2719,7 +2583,7 @@ export const ListExpenseMetricsResponse = {
       ExpenseMetrics.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     if (message.nextPageNumber !== 0) {
-      writer.uint32(16).int32(message.nextPageNumber);
+      writer.uint32(16).int64(message.nextPageNumber);
     }
     return writer;
   },
@@ -2743,7 +2607,7 @@ export const ListExpenseMetricsResponse = {
             break;
           }
 
-          message.nextPageNumber = reader.int32();
+          message.nextPageNumber = longToNumber(reader.int64() as Long);
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -2933,10 +2797,10 @@ export const ListFinancialProfileRequest = {
       writer.uint32(8).uint64(message.userId);
     }
     if (message.pageNumber !== 0) {
-      writer.uint32(16).int32(message.pageNumber);
+      writer.uint32(16).int64(message.pageNumber);
     }
     if (message.pageSize !== 0) {
-      writer.uint32(24).int32(message.pageSize);
+      writer.uint32(24).int64(message.pageSize);
     }
     return writer;
   },
@@ -2960,14 +2824,14 @@ export const ListFinancialProfileRequest = {
             break;
           }
 
-          message.pageNumber = reader.int32();
+          message.pageNumber = longToNumber(reader.int64() as Long);
           continue;
         case 3:
           if (tag !== 24) {
             break;
           }
 
-          message.pageSize = reader.int32();
+          message.pageSize = longToNumber(reader.int64() as Long);
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -3023,7 +2887,7 @@ export const ListFinancialProfileResponse = {
       FinancialProfile.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     if (message.nextPageNumber !== 0) {
-      writer.uint32(16).int32(message.nextPageNumber);
+      writer.uint32(16).int64(message.nextPageNumber);
     }
     return writer;
   },
@@ -3047,7 +2911,7 @@ export const ListFinancialProfileResponse = {
             break;
           }
 
-          message.nextPageNumber = reader.int32();
+          message.nextPageNumber = longToNumber(reader.int64() as Long);
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -3239,10 +3103,10 @@ export const ListIncomeExpenseRatioRequest = {
       writer.uint32(8).uint64(message.userId);
     }
     if (message.pageNumber !== 0) {
-      writer.uint32(16).int32(message.pageNumber);
+      writer.uint32(16).int64(message.pageNumber);
     }
     if (message.pageSize !== 0) {
-      writer.uint32(24).int32(message.pageSize);
+      writer.uint32(24).int64(message.pageSize);
     }
     return writer;
   },
@@ -3266,14 +3130,14 @@ export const ListIncomeExpenseRatioRequest = {
             break;
           }
 
-          message.pageNumber = reader.int32();
+          message.pageNumber = longToNumber(reader.int64() as Long);
           continue;
         case 3:
           if (tag !== 24) {
             break;
           }
 
-          message.pageSize = reader.int32();
+          message.pageSize = longToNumber(reader.int64() as Long);
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -3331,7 +3195,7 @@ export const ListIncomeExpenseRatioResponse = {
       IncomeExpenseRatio.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     if (message.nextPageNumber !== 0) {
-      writer.uint32(16).int32(message.nextPageNumber);
+      writer.uint32(16).int64(message.nextPageNumber);
     }
     return writer;
   },
@@ -3355,7 +3219,7 @@ export const ListIncomeExpenseRatioResponse = {
             break;
           }
 
-          message.nextPageNumber = reader.int32();
+          message.nextPageNumber = longToNumber(reader.int64() as Long);
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -3564,10 +3428,10 @@ export const ListIncomeMetricsRequest = {
       writer.uint32(8).uint64(message.userId);
     }
     if (message.pageNumber !== 0) {
-      writer.uint32(16).int32(message.pageNumber);
+      writer.uint32(16).int64(message.pageNumber);
     }
     if (message.pageSize !== 0) {
-      writer.uint32(24).int32(message.pageSize);
+      writer.uint32(24).int64(message.pageSize);
     }
     return writer;
   },
@@ -3591,14 +3455,14 @@ export const ListIncomeMetricsRequest = {
             break;
           }
 
-          message.pageNumber = reader.int32();
+          message.pageNumber = longToNumber(reader.int64() as Long);
           continue;
         case 3:
           if (tag !== 24) {
             break;
           }
 
-          message.pageSize = reader.int32();
+          message.pageSize = longToNumber(reader.int64() as Long);
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -3654,7 +3518,7 @@ export const ListIncomeMetricsResponse = {
       IncomeMetrics.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     if (message.nextPageNumber !== 0) {
-      writer.uint32(16).int32(message.nextPageNumber);
+      writer.uint32(16).int64(message.nextPageNumber);
     }
     return writer;
   },
@@ -3678,7 +3542,7 @@ export const ListIncomeMetricsResponse = {
             break;
           }
 
-          message.nextPageNumber = reader.int32();
+          message.nextPageNumber = longToNumber(reader.int64() as Long);
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -3894,10 +3758,10 @@ export const ListMerchantMonthlyExpenditureRequest = {
       writer.uint32(8).uint64(message.userId);
     }
     if (message.pageNumber !== 0) {
-      writer.uint32(16).int32(message.pageNumber);
+      writer.uint32(16).int64(message.pageNumber);
     }
     if (message.pageSize !== 0) {
-      writer.uint32(24).int32(message.pageSize);
+      writer.uint32(24).int64(message.pageSize);
     }
     return writer;
   },
@@ -3921,14 +3785,14 @@ export const ListMerchantMonthlyExpenditureRequest = {
             break;
           }
 
-          message.pageNumber = reader.int32();
+          message.pageNumber = longToNumber(reader.int64() as Long);
           continue;
         case 3:
           if (tag !== 24) {
             break;
           }
 
-          message.pageSize = reader.int32();
+          message.pageSize = longToNumber(reader.int64() as Long);
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -3988,7 +3852,7 @@ export const ListMerchantMonthlyExpenditureResponse = {
       MerchantMonthlyExpenditure.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     if (message.nextPageNumber !== 0) {
-      writer.uint32(16).int32(message.nextPageNumber);
+      writer.uint32(16).int64(message.nextPageNumber);
     }
     return writer;
   },
@@ -4012,7 +3876,7 @@ export const ListMerchantMonthlyExpenditureResponse = {
             break;
           }
 
-          message.nextPageNumber = reader.int32();
+          message.nextPageNumber = longToNumber(reader.int64() as Long);
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -4075,10 +3939,10 @@ export const GetMonthlyBalanceRequest = {
       writer.uint32(16).uint32(message.month);
     }
     if (message.pageNumber !== 0) {
-      writer.uint32(24).int32(message.pageNumber);
+      writer.uint32(24).int64(message.pageNumber);
     }
     if (message.pageSize !== 0) {
-      writer.uint32(32).int32(message.pageSize);
+      writer.uint32(32).int64(message.pageSize);
     }
     return writer;
   },
@@ -4109,14 +3973,14 @@ export const GetMonthlyBalanceRequest = {
             break;
           }
 
-          message.pageNumber = reader.int32();
+          message.pageNumber = longToNumber(reader.int64() as Long);
           continue;
         case 4:
           if (tag !== 32) {
             break;
           }
 
-          message.pageSize = reader.int32();
+          message.pageSize = longToNumber(reader.int64() as Long);
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -4177,7 +4041,7 @@ export const GetMonthlyBalanceResponse = {
       MonthlyBalance.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     if (message.nextPageNumber !== 0) {
-      writer.uint32(16).int32(message.nextPageNumber);
+      writer.uint32(16).int64(message.nextPageNumber);
     }
     return writer;
   },
@@ -4201,7 +4065,7 @@ export const GetMonthlyBalanceResponse = {
             break;
           }
 
-          message.nextPageNumber = reader.int32();
+          message.nextPageNumber = longToNumber(reader.int64() as Long);
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -4257,10 +4121,10 @@ export const GetMonthlyExpenditureRequest = {
       writer.uint32(16).uint32(message.month);
     }
     if (message.pageNumber !== 0) {
-      writer.uint32(24).int32(message.pageNumber);
+      writer.uint32(24).int64(message.pageNumber);
     }
     if (message.pageSize !== 0) {
-      writer.uint32(32).int32(message.pageSize);
+      writer.uint32(32).int64(message.pageSize);
     }
     return writer;
   },
@@ -4291,14 +4155,14 @@ export const GetMonthlyExpenditureRequest = {
             break;
           }
 
-          message.pageNumber = reader.int32();
+          message.pageNumber = longToNumber(reader.int64() as Long);
           continue;
         case 4:
           if (tag !== 32) {
             break;
           }
 
-          message.pageSize = reader.int32();
+          message.pageSize = longToNumber(reader.int64() as Long);
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -4359,7 +4223,7 @@ export const GetMonthlyExpenditureResponse = {
       MonthlyExpenditure.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     if (message.nextPageNumber !== 0) {
-      writer.uint32(16).int32(message.nextPageNumber);
+      writer.uint32(16).int64(message.nextPageNumber);
     }
     return writer;
   },
@@ -4383,7 +4247,7 @@ export const GetMonthlyExpenditureResponse = {
             break;
           }
 
-          message.nextPageNumber = reader.int32();
+          message.nextPageNumber = longToNumber(reader.int64() as Long);
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -4441,10 +4305,10 @@ export const GetMonthlyIncomeRequest = {
       writer.uint32(16).uint32(message.month);
     }
     if (message.pageNumber !== 0) {
-      writer.uint32(24).int32(message.pageNumber);
+      writer.uint32(24).int64(message.pageNumber);
     }
     if (message.pageSize !== 0) {
-      writer.uint32(32).int32(message.pageSize);
+      writer.uint32(32).int64(message.pageSize);
     }
     return writer;
   },
@@ -4475,14 +4339,14 @@ export const GetMonthlyIncomeRequest = {
             break;
           }
 
-          message.pageNumber = reader.int32();
+          message.pageNumber = longToNumber(reader.int64() as Long);
           continue;
         case 4:
           if (tag !== 32) {
             break;
           }
 
-          message.pageSize = reader.int32();
+          message.pageSize = longToNumber(reader.int64() as Long);
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -4543,7 +4407,7 @@ export const GetMonthlyIncomeResponse = {
       MonthlyIncome.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     if (message.nextPageNumber !== 0) {
-      writer.uint32(16).int32(message.nextPageNumber);
+      writer.uint32(16).int64(message.nextPageNumber);
     }
     return writer;
   },
@@ -4567,7 +4431,7 @@ export const GetMonthlyIncomeResponse = {
             break;
           }
 
-          message.nextPageNumber = reader.int32();
+          message.nextPageNumber = longToNumber(reader.int64() as Long);
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -4623,10 +4487,10 @@ export const GetMonthlySavingsRequest = {
       writer.uint32(16).uint32(message.month);
     }
     if (message.pageNumber !== 0) {
-      writer.uint32(24).int32(message.pageNumber);
+      writer.uint32(24).int64(message.pageNumber);
     }
     if (message.pageSize !== 0) {
-      writer.uint32(32).int32(message.pageSize);
+      writer.uint32(32).int64(message.pageSize);
     }
     return writer;
   },
@@ -4657,14 +4521,14 @@ export const GetMonthlySavingsRequest = {
             break;
           }
 
-          message.pageNumber = reader.int32();
+          message.pageNumber = longToNumber(reader.int64() as Long);
           continue;
         case 4:
           if (tag !== 32) {
             break;
           }
 
-          message.pageSize = reader.int32();
+          message.pageSize = longToNumber(reader.int64() as Long);
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -4725,7 +4589,7 @@ export const GetMonthlySavingsResponse = {
       MonthlySavings.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     if (message.nextPageNumber !== 0) {
-      writer.uint32(16).int32(message.nextPageNumber);
+      writer.uint32(16).int64(message.nextPageNumber);
     }
     return writer;
   },
@@ -4749,7 +4613,7 @@ export const GetMonthlySavingsResponse = {
             break;
           }
 
-          message.nextPageNumber = reader.int32();
+          message.nextPageNumber = longToNumber(reader.int64() as Long);
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -4811,10 +4675,10 @@ export const GetMonthlyTotalQuantityBySecurityAndUserRequest = {
       writer.uint32(26).string(message.securityId);
     }
     if (message.pageNumber !== 0) {
-      writer.uint32(32).int32(message.pageNumber);
+      writer.uint32(32).int64(message.pageNumber);
     }
     if (message.pageSize !== 0) {
-      writer.uint32(40).int32(message.pageSize);
+      writer.uint32(40).int64(message.pageSize);
     }
     return writer;
   },
@@ -4852,14 +4716,14 @@ export const GetMonthlyTotalQuantityBySecurityAndUserRequest = {
             break;
           }
 
-          message.pageNumber = reader.int32();
+          message.pageNumber = longToNumber(reader.int64() as Long);
           continue;
         case 5:
           if (tag !== 40) {
             break;
           }
 
-          message.pageSize = reader.int32();
+          message.pageSize = longToNumber(reader.int64() as Long);
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -4932,7 +4796,7 @@ export const GetMonthlyTotalQuantityBySecurityAndUserResponse = {
       MonthlyTotalQuantityBySecurityAndUser.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     if (message.nextPageNumber !== 0) {
-      writer.uint32(16).int32(message.nextPageNumber);
+      writer.uint32(16).int64(message.nextPageNumber);
     }
     return writer;
   },
@@ -4958,7 +4822,7 @@ export const GetMonthlyTotalQuantityBySecurityAndUserResponse = {
             break;
           }
 
-          message.nextPageNumber = reader.int32();
+          message.nextPageNumber = longToNumber(reader.int64() as Long);
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -5024,10 +4888,10 @@ export const GetMonthlyTransactionCountRequest = {
       writer.uint32(16).uint32(message.month);
     }
     if (message.pageNumber !== 0) {
-      writer.uint32(32).int32(message.pageNumber);
+      writer.uint32(32).int64(message.pageNumber);
     }
     if (message.pageSize !== 0) {
-      writer.uint32(40).int32(message.pageSize);
+      writer.uint32(40).int64(message.pageSize);
     }
     return writer;
   },
@@ -5058,14 +4922,14 @@ export const GetMonthlyTransactionCountRequest = {
             break;
           }
 
-          message.pageNumber = reader.int32();
+          message.pageNumber = longToNumber(reader.int64() as Long);
           continue;
         case 5:
           if (tag !== 40) {
             break;
           }
 
-          message.pageSize = reader.int32();
+          message.pageSize = longToNumber(reader.int64() as Long);
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -5130,7 +4994,7 @@ export const GetMonthlyTransactionCountResponse = {
       MonthlyTransactionCount.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     if (message.nextPageNumber !== 0) {
-      writer.uint32(16).int32(message.nextPageNumber);
+      writer.uint32(16).int64(message.nextPageNumber);
     }
     return writer;
   },
@@ -5154,7 +5018,7 @@ export const GetMonthlyTransactionCountResponse = {
             break;
           }
 
-          message.nextPageNumber = reader.int32();
+          message.nextPageNumber = longToNumber(reader.int64() as Long);
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -5218,10 +5082,10 @@ export const GetPaymentChannelMonthlyExpenditureRequest = {
       writer.uint32(26).string(message.paymentChannel);
     }
     if (message.pageNumber !== 0) {
-      writer.uint32(32).int32(message.pageNumber);
+      writer.uint32(32).int64(message.pageNumber);
     }
     if (message.pageSize !== 0) {
-      writer.uint32(40).int32(message.pageSize);
+      writer.uint32(40).int64(message.pageSize);
     }
     return writer;
   },
@@ -5259,14 +5123,14 @@ export const GetPaymentChannelMonthlyExpenditureRequest = {
             break;
           }
 
-          message.pageNumber = reader.int32();
+          message.pageNumber = longToNumber(reader.int64() as Long);
           continue;
         case 5:
           if (tag !== 40) {
             break;
           }
 
-          message.pageSize = reader.int32();
+          message.pageSize = longToNumber(reader.int64() as Long);
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -5336,7 +5200,7 @@ export const GetPaymentChannelMonthlyExpenditureResponse = {
       PaymentChannelMonthlyExpenditure.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     if (message.nextPageNumber !== 0) {
-      writer.uint32(16).int32(message.nextPageNumber);
+      writer.uint32(16).int64(message.nextPageNumber);
     }
     return writer;
   },
@@ -5362,7 +5226,7 @@ export const GetPaymentChannelMonthlyExpenditureResponse = {
             break;
           }
 
-          message.nextPageNumber = reader.int32();
+          message.nextPageNumber = longToNumber(reader.int64() as Long);
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -5425,10 +5289,10 @@ export const GetTotalInvestmentBySecurityRequest = {
       writer.uint32(18).string(message.securityId);
     }
     if (message.pageNumber !== 0) {
-      writer.uint32(32).int32(message.pageNumber);
+      writer.uint32(32).int64(message.pageNumber);
     }
     if (message.pageSize !== 0) {
-      writer.uint32(40).int32(message.pageSize);
+      writer.uint32(40).int64(message.pageSize);
     }
     return writer;
   },
@@ -5459,14 +5323,14 @@ export const GetTotalInvestmentBySecurityRequest = {
             break;
           }
 
-          message.pageNumber = reader.int32();
+          message.pageNumber = longToNumber(reader.int64() as Long);
           continue;
         case 5:
           if (tag !== 40) {
             break;
           }
 
-          message.pageSize = reader.int32();
+          message.pageSize = longToNumber(reader.int64() as Long);
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -5531,7 +5395,7 @@ export const GetTotalInvestmentBySecurityResponse = {
       TotalInvestmentBySecurity.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     if (message.nextPageNumber !== 0) {
-      writer.uint32(16).int32(message.nextPageNumber);
+      writer.uint32(16).int64(message.nextPageNumber);
     }
     return writer;
   },
@@ -5555,7 +5419,7 @@ export const GetTotalInvestmentBySecurityResponse = {
             break;
           }
 
-          message.nextPageNumber = reader.int32();
+          message.nextPageNumber = longToNumber(reader.int64() as Long);
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {

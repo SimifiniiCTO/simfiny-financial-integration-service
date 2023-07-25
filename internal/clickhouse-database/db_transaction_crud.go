@@ -503,7 +503,7 @@ func (*Db) sanitizePaginationParams(pageNumber int64, pageSize int64) (int64, in
 	if pageSize > 100 {
 		pageSize = 100
 	} else if pageSize <= 0 {
-		pageSize = 10
+		pageSize = 50
 	}
 	return pageNumber, pageSize
 }
