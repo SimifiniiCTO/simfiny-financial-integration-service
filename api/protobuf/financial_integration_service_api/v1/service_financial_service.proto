@@ -1547,10 +1547,10 @@ service FinancialService {
   rpc GetTransactionsForBankAccount(GetTransactionsForBankAccountRequest) returns (GetTransactionsForBankAccountResponse) {
     option (google.api.http) = {get: "/api/v1/transactions/{user_id}/plaid-account-id/{plaid_account_id}/pageNumber/{page_number}/pageSize/{page_size}"};
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      summary: "get transactions tied to a bank account"
+      summary: "get transactions tied to a bank account and account id"
       tags: ["transactions"]
       operation_id: "GetTransactions"
-      description: "This endpoint returns the transactions for a given user id"
+      description: "This endpoint returns the transactions for a given user id and a business account id"
       responses: {
         key: "200"
         value: {

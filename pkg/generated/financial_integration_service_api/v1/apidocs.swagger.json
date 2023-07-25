@@ -4356,8 +4356,8 @@
     },
     "/api/v1/transactions/{userId}/plaid-account-id/{plaidAccountId}/pageNumber/{pageNumber}/pageSize/{pageSize}": {
       "get": {
-        "summary": "get transactions tied to a bank account",
-        "description": "This endpoint returns the transactions for a given user id",
+        "summary": "get transactions tied to a bank account and account id",
+        "description": "This endpoint returns the transactions for a given user id and a business account id",
         "operationId": "GetTransactions",
         "responses": {
           "200": {
