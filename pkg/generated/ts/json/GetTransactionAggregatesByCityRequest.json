@@ -1,0 +1,20 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/GetTransactionAggregatesByCityRequest",
+    "definitions": {
+        "GetTransactionAggregatesByCityRequest": {
+            "properties": {
+                "user_id": {
+                    "type": "string"
+                },
+                "location_city": {
+                    "minLength": 1,
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Get Transaction Aggregates By City Request"
+        }
+    }
+}

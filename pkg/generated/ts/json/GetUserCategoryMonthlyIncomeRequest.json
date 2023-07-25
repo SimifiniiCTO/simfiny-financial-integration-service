@@ -1,0 +1,22 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/GetUserCategoryMonthlyIncomeRequest",
+    "definitions": {
+        "GetUserCategoryMonthlyIncomeRequest": {
+            "properties": {
+                "user_id": {
+                    "type": "string"
+                },
+                "personal_finance_category_primary": {
+                    "type": "string"
+                },
+                "month": {
+                    "type": "integer"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Get User Category Monthly Income Request"
+        }
+    }
+}

@@ -1,0 +1,21 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/GetMonthlyBalanceRequest",
+    "definitions": {
+        "GetMonthlyBalanceRequest": {
+            "properties": {
+                "user_id": {
+                    "type": "string"
+                },
+                "month": {
+                    "type": "integer",
+                    "description": "optional"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Get Monthly Balance Request",
+            "description": "For example, for MonthlyBalance:"
+        }
+    }
+}

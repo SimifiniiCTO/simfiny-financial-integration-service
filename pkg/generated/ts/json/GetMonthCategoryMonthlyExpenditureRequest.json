@@ -1,0 +1,17 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/GetMonthCategoryMonthlyExpenditureRequest",
+    "definitions": {
+        "GetMonthCategoryMonthlyExpenditureRequest": {
+            "properties": {
+                "month": {
+                    "type": "integer",
+                    "description": "Month in the format of YYYYMM"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Get Month Category Monthly Expenditure Request"
+        }
+    }
+}

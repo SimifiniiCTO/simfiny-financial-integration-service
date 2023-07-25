@@ -1082,313 +1082,6 @@ func (x *Transaction) GetCategories() []string {
 	return nil
 }
 
-type TransactionAmountByCountryMetric struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Country string  `protobuf:"bytes,1,opt,name=country,proto3" json:"country,omitempty"`
-	Amount  float64 `protobuf:"fixed64,2,opt,name=amount,proto3" json:"amount,omitempty"`
-}
-
-func (x *TransactionAmountByCountryMetric) Reset() {
-	*x = TransactionAmountByCountryMetric{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[3]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *TransactionAmountByCountryMetric) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*TransactionAmountByCountryMetric) ProtoMessage() {}
-
-func (x *TransactionAmountByCountryMetric) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[3]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use TransactionAmountByCountryMetric.ProtoReflect.Descriptor instead.
-func (*TransactionAmountByCountryMetric) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_clickhouse_financial_service_proto_rawDescGZIP(), []int{3}
-}
-
-func (x *TransactionAmountByCountryMetric) GetCountry() string {
-	if x != nil {
-		return x.Country
-	}
-	return ""
-}
-
-func (x *TransactionAmountByCountryMetric) GetAmount() float64 {
-	if x != nil {
-		return x.Amount
-	}
-	return 0
-}
-
-type AverageTransactionAmountByCategoryMetric struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Category string  `protobuf:"bytes,1,opt,name=category,proto3" json:"category,omitempty"`
-	Amount   float64 `protobuf:"fixed64,2,opt,name=amount,proto3" json:"amount,omitempty"`
-}
-
-func (x *AverageTransactionAmountByCategoryMetric) Reset() {
-	*x = AverageTransactionAmountByCategoryMetric{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[4]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *AverageTransactionAmountByCategoryMetric) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AverageTransactionAmountByCategoryMetric) ProtoMessage() {}
-
-func (x *AverageTransactionAmountByCategoryMetric) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[4]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AverageTransactionAmountByCategoryMetric.ProtoReflect.Descriptor instead.
-func (*AverageTransactionAmountByCategoryMetric) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_clickhouse_financial_service_proto_rawDescGZIP(), []int{4}
-}
-
-func (x *AverageTransactionAmountByCategoryMetric) GetCategory() string {
-	if x != nil {
-		return x.Category
-	}
-	return ""
-}
-
-func (x *AverageTransactionAmountByCategoryMetric) GetAmount() float64 {
-	if x != nil {
-		return x.Amount
-	}
-	return 0
-}
-
-type MonthlyTransactionCountByCategoryMetric struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Category string `protobuf:"bytes,1,opt,name=category,proto3" json:"category,omitempty"`
-	Count    uint32 `protobuf:"varint,2,opt,name=count,proto3" json:"count,omitempty"`
-	Month    string `protobuf:"bytes,3,opt,name=month,proto3" json:"month,omitempty"`
-}
-
-func (x *MonthlyTransactionCountByCategoryMetric) Reset() {
-	*x = MonthlyTransactionCountByCategoryMetric{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[5]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *MonthlyTransactionCountByCategoryMetric) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*MonthlyTransactionCountByCategoryMetric) ProtoMessage() {}
-
-func (x *MonthlyTransactionCountByCategoryMetric) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[5]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use MonthlyTransactionCountByCategoryMetric.ProtoReflect.Descriptor instead.
-func (*MonthlyTransactionCountByCategoryMetric) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_clickhouse_financial_service_proto_rawDescGZIP(), []int{5}
-}
-
-func (x *MonthlyTransactionCountByCategoryMetric) GetCategory() string {
-	if x != nil {
-		return x.Category
-	}
-	return ""
-}
-
-func (x *MonthlyTransactionCountByCategoryMetric) GetCount() uint32 {
-	if x != nil {
-		return x.Count
-	}
-	return 0
-}
-
-func (x *MonthlyTransactionCountByCategoryMetric) GetMonth() string {
-	if x != nil {
-		return x.Month
-	}
-	return ""
-}
-
-type TransactionCountByMerchantPaymentChannelMetric struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	MerchantName     string `protobuf:"bytes,1,opt,name=merchant_name,json=merchantName,proto3" json:"merchant_name,omitempty"`
-	PaymentChannel   string `protobuf:"bytes,2,opt,name=payment_channel,json=paymentChannel,proto3" json:"payment_channel,omitempty"`
-	TransactionCount uint32 `protobuf:"varint,3,opt,name=transaction_count,json=transactionCount,proto3" json:"transaction_count,omitempty"`
-}
-
-func (x *TransactionCountByMerchantPaymentChannelMetric) Reset() {
-	*x = TransactionCountByMerchantPaymentChannelMetric{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[6]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *TransactionCountByMerchantPaymentChannelMetric) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*TransactionCountByMerchantPaymentChannelMetric) ProtoMessage() {}
-
-func (x *TransactionCountByMerchantPaymentChannelMetric) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[6]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use TransactionCountByMerchantPaymentChannelMetric.ProtoReflect.Descriptor instead.
-func (*TransactionCountByMerchantPaymentChannelMetric) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_clickhouse_financial_service_proto_rawDescGZIP(), []int{6}
-}
-
-func (x *TransactionCountByMerchantPaymentChannelMetric) GetMerchantName() string {
-	if x != nil {
-		return x.MerchantName
-	}
-	return ""
-}
-
-func (x *TransactionCountByMerchantPaymentChannelMetric) GetPaymentChannel() string {
-	if x != nil {
-		return x.PaymentChannel
-	}
-	return ""
-}
-
-func (x *TransactionCountByMerchantPaymentChannelMetric) GetTransactionCount() uint32 {
-	if x != nil {
-		return x.TransactionCount
-	}
-	return 0
-}
-
-type TransactionAmountDistributionByCategoryMetric struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Category          string  `protobuf:"bytes,1,opt,name=category,proto3" json:"category,omitempty"`
-	Mean              float64 `protobuf:"fixed64,2,opt,name=mean,proto3" json:"mean,omitempty"`
-	Median            float64 `protobuf:"fixed64,3,opt,name=median,proto3" json:"median,omitempty"`
-	StandardDeviation float64 `protobuf:"fixed64,4,opt,name=standard_deviation,json=standardDeviation,proto3" json:"standard_deviation,omitempty"`
-}
-
-func (x *TransactionAmountDistributionByCategoryMetric) Reset() {
-	*x = TransactionAmountDistributionByCategoryMetric{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[7]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *TransactionAmountDistributionByCategoryMetric) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*TransactionAmountDistributionByCategoryMetric) ProtoMessage() {}
-
-func (x *TransactionAmountDistributionByCategoryMetric) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[7]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use TransactionAmountDistributionByCategoryMetric.ProtoReflect.Descriptor instead.
-func (*TransactionAmountDistributionByCategoryMetric) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_clickhouse_financial_service_proto_rawDescGZIP(), []int{7}
-}
-
-func (x *TransactionAmountDistributionByCategoryMetric) GetCategory() string {
-	if x != nil {
-		return x.Category
-	}
-	return ""
-}
-
-func (x *TransactionAmountDistributionByCategoryMetric) GetMean() float64 {
-	if x != nil {
-		return x.Mean
-	}
-	return 0
-}
-
-func (x *TransactionAmountDistributionByCategoryMetric) GetMedian() float64 {
-	if x != nil {
-		return x.Median
-	}
-	return 0
-}
-
-func (x *TransactionAmountDistributionByCategoryMetric) GetStandardDeviation() float64 {
-	if x != nil {
-		return x.StandardDeviation
-	}
-	return 0
-}
-
 // Account Balance History
 // This message is used to represent the balance history of an account.
 type AccountBalanceHistory struct {
@@ -1408,7 +1101,7 @@ type AccountBalanceHistory struct {
 func (x *AccountBalanceHistory) Reset() {
 	*x = AccountBalanceHistory{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[8]
+		mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[3]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1421,7 +1114,7 @@ func (x *AccountBalanceHistory) String() string {
 func (*AccountBalanceHistory) ProtoMessage() {}
 
 func (x *AccountBalanceHistory) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[8]
+	mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[3]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1434,7 +1127,7 @@ func (x *AccountBalanceHistory) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AccountBalanceHistory.ProtoReflect.Descriptor instead.
 func (*AccountBalanceHistory) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_clickhouse_financial_service_proto_rawDescGZIP(), []int{8}
+	return file_financial_integration_service_api_v1_clickhouse_financial_service_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *AccountBalanceHistory) GetTime() *timestamppb.Timestamp {
@@ -1508,7 +1201,7 @@ type CategoryMetricsFinancialSubProfile struct {
 func (x *CategoryMetricsFinancialSubProfile) Reset() {
 	*x = CategoryMetricsFinancialSubProfile{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[9]
+		mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[4]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1521,7 +1214,7 @@ func (x *CategoryMetricsFinancialSubProfile) String() string {
 func (*CategoryMetricsFinancialSubProfile) ProtoMessage() {}
 
 func (x *CategoryMetricsFinancialSubProfile) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[9]
+	mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1534,7 +1227,7 @@ func (x *CategoryMetricsFinancialSubProfile) ProtoReflect() protoreflect.Message
 
 // Deprecated: Use CategoryMetricsFinancialSubProfile.ProtoReflect.Descriptor instead.
 func (*CategoryMetricsFinancialSubProfile) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_clickhouse_financial_service_proto_rawDescGZIP(), []int{9}
+	return file_financial_integration_service_api_v1_clickhouse_financial_service_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *CategoryMetricsFinancialSubProfile) GetMonth() uint32 {
@@ -1623,7 +1316,7 @@ type CategoryMonthlyExpenditure struct {
 func (x *CategoryMonthlyExpenditure) Reset() {
 	*x = CategoryMonthlyExpenditure{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[10]
+		mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[5]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1636,7 +1329,7 @@ func (x *CategoryMonthlyExpenditure) String() string {
 func (*CategoryMonthlyExpenditure) ProtoMessage() {}
 
 func (x *CategoryMonthlyExpenditure) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[10]
+	mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[5]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1649,7 +1342,7 @@ func (x *CategoryMonthlyExpenditure) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CategoryMonthlyExpenditure.ProtoReflect.Descriptor instead.
 func (*CategoryMonthlyExpenditure) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_clickhouse_financial_service_proto_rawDescGZIP(), []int{10}
+	return file_financial_integration_service_api_v1_clickhouse_financial_service_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *CategoryMonthlyExpenditure) GetMonth() uint32 {
@@ -1696,7 +1389,7 @@ type CategoryMonthlyIncome struct {
 func (x *CategoryMonthlyIncome) Reset() {
 	*x = CategoryMonthlyIncome{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[11]
+		mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[6]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1709,7 +1402,7 @@ func (x *CategoryMonthlyIncome) String() string {
 func (*CategoryMonthlyIncome) ProtoMessage() {}
 
 func (x *CategoryMonthlyIncome) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[11]
+	mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[6]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1722,7 +1415,7 @@ func (x *CategoryMonthlyIncome) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CategoryMonthlyIncome.ProtoReflect.Descriptor instead.
 func (*CategoryMonthlyIncome) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_clickhouse_financial_service_proto_rawDescGZIP(), []int{11}
+	return file_financial_integration_service_api_v1_clickhouse_financial_service_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *CategoryMonthlyIncome) GetMonth() uint32 {
@@ -1769,7 +1462,7 @@ type CategoryMonthlyTransactionCount struct {
 func (x *CategoryMonthlyTransactionCount) Reset() {
 	*x = CategoryMonthlyTransactionCount{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[12]
+		mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[7]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1782,7 +1475,7 @@ func (x *CategoryMonthlyTransactionCount) String() string {
 func (*CategoryMonthlyTransactionCount) ProtoMessage() {}
 
 func (x *CategoryMonthlyTransactionCount) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[12]
+	mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[7]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1795,7 +1488,7 @@ func (x *CategoryMonthlyTransactionCount) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CategoryMonthlyTransactionCount.ProtoReflect.Descriptor instead.
 func (*CategoryMonthlyTransactionCount) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_clickhouse_financial_service_proto_rawDescGZIP(), []int{12}
+	return file_financial_integration_service_api_v1_clickhouse_financial_service_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *CategoryMonthlyTransactionCount) GetMonth() uint32 {
@@ -1841,7 +1534,7 @@ type DebtToIncomeRatio struct {
 func (x *DebtToIncomeRatio) Reset() {
 	*x = DebtToIncomeRatio{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[13]
+		mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[8]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1854,7 +1547,7 @@ func (x *DebtToIncomeRatio) String() string {
 func (*DebtToIncomeRatio) ProtoMessage() {}
 
 func (x *DebtToIncomeRatio) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[13]
+	mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[8]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1867,7 +1560,7 @@ func (x *DebtToIncomeRatio) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DebtToIncomeRatio.ProtoReflect.Descriptor instead.
 func (*DebtToIncomeRatio) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_clickhouse_financial_service_proto_rawDescGZIP(), []int{13}
+	return file_financial_integration_service_api_v1_clickhouse_financial_service_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *DebtToIncomeRatio) GetMonth() uint32 {
@@ -1908,7 +1601,7 @@ type ExpenseMetrics struct {
 func (x *ExpenseMetrics) Reset() {
 	*x = ExpenseMetrics{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[14]
+		mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[9]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1921,7 +1614,7 @@ func (x *ExpenseMetrics) String() string {
 func (*ExpenseMetrics) ProtoMessage() {}
 
 func (x *ExpenseMetrics) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[14]
+	mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[9]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1934,7 +1627,7 @@ func (x *ExpenseMetrics) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExpenseMetrics.ProtoReflect.Descriptor instead.
 func (*ExpenseMetrics) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_clickhouse_financial_service_proto_rawDescGZIP(), []int{14}
+	return file_financial_integration_service_api_v1_clickhouse_financial_service_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *ExpenseMetrics) GetMonth() uint32 {
@@ -1991,7 +1684,7 @@ type ExpenseMetricsFinancialSubProfileMetrics struct {
 func (x *ExpenseMetricsFinancialSubProfileMetrics) Reset() {
 	*x = ExpenseMetricsFinancialSubProfileMetrics{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[15]
+		mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[10]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2004,7 +1697,7 @@ func (x *ExpenseMetricsFinancialSubProfileMetrics) String() string {
 func (*ExpenseMetricsFinancialSubProfileMetrics) ProtoMessage() {}
 
 func (x *ExpenseMetricsFinancialSubProfileMetrics) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[15]
+	mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[10]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2017,7 +1710,7 @@ func (x *ExpenseMetricsFinancialSubProfileMetrics) ProtoReflect() protoreflect.M
 
 // Deprecated: Use ExpenseMetricsFinancialSubProfileMetrics.ProtoReflect.Descriptor instead.
 func (*ExpenseMetricsFinancialSubProfileMetrics) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_clickhouse_financial_service_proto_rawDescGZIP(), []int{15}
+	return file_financial_integration_service_api_v1_clickhouse_financial_service_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *ExpenseMetricsFinancialSubProfileMetrics) GetMonth() uint32 {
@@ -2087,7 +1780,7 @@ type FinancialProfile struct {
 func (x *FinancialProfile) Reset() {
 	*x = FinancialProfile{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[16]
+		mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[11]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2100,7 +1793,7 @@ func (x *FinancialProfile) String() string {
 func (*FinancialProfile) ProtoMessage() {}
 
 func (x *FinancialProfile) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[16]
+	mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[11]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2113,7 +1806,7 @@ func (x *FinancialProfile) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FinancialProfile.ProtoReflect.Descriptor instead.
 func (*FinancialProfile) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_clickhouse_financial_service_proto_rawDescGZIP(), []int{16}
+	return file_financial_integration_service_api_v1_clickhouse_financial_service_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *FinancialProfile) GetMonth() uint32 {
@@ -2173,7 +1866,7 @@ type IncomeExpenseRatio struct {
 func (x *IncomeExpenseRatio) Reset() {
 	*x = IncomeExpenseRatio{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[17]
+		mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[12]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2186,7 +1879,7 @@ func (x *IncomeExpenseRatio) String() string {
 func (*IncomeExpenseRatio) ProtoMessage() {}
 
 func (x *IncomeExpenseRatio) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[17]
+	mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[12]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2199,7 +1892,7 @@ func (x *IncomeExpenseRatio) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IncomeExpenseRatio.ProtoReflect.Descriptor instead.
 func (*IncomeExpenseRatio) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_clickhouse_financial_service_proto_rawDescGZIP(), []int{17}
+	return file_financial_integration_service_api_v1_clickhouse_financial_service_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *IncomeExpenseRatio) GetMonth() uint32 {
@@ -2240,7 +1933,7 @@ type IncomeMetrics struct {
 func (x *IncomeMetrics) Reset() {
 	*x = IncomeMetrics{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[18]
+		mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[13]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2253,7 +1946,7 @@ func (x *IncomeMetrics) String() string {
 func (*IncomeMetrics) ProtoMessage() {}
 
 func (x *IncomeMetrics) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[18]
+	mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[13]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2266,7 +1959,7 @@ func (x *IncomeMetrics) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IncomeMetrics.ProtoReflect.Descriptor instead.
 func (*IncomeMetrics) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_clickhouse_financial_service_proto_rawDescGZIP(), []int{18}
+	return file_financial_integration_service_api_v1_clickhouse_financial_service_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *IncomeMetrics) GetMonth() uint32 {
@@ -2323,7 +2016,7 @@ type IncomeMetricsFinancialSubProfile struct {
 func (x *IncomeMetricsFinancialSubProfile) Reset() {
 	*x = IncomeMetricsFinancialSubProfile{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[19]
+		mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[14]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2336,7 +2029,7 @@ func (x *IncomeMetricsFinancialSubProfile) String() string {
 func (*IncomeMetricsFinancialSubProfile) ProtoMessage() {}
 
 func (x *IncomeMetricsFinancialSubProfile) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[19]
+	mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[14]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2349,7 +2042,7 @@ func (x *IncomeMetricsFinancialSubProfile) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IncomeMetricsFinancialSubProfile.ProtoReflect.Descriptor instead.
 func (*IncomeMetricsFinancialSubProfile) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_clickhouse_financial_service_proto_rawDescGZIP(), []int{19}
+	return file_financial_integration_service_api_v1_clickhouse_financial_service_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *IncomeMetricsFinancialSubProfile) GetMonth() uint32 {
@@ -2422,7 +2115,7 @@ type LocationFinancialSubProfile struct {
 func (x *LocationFinancialSubProfile) Reset() {
 	*x = LocationFinancialSubProfile{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[20]
+		mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[15]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2435,7 +2128,7 @@ func (x *LocationFinancialSubProfile) String() string {
 func (*LocationFinancialSubProfile) ProtoMessage() {}
 
 func (x *LocationFinancialSubProfile) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[20]
+	mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[15]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2448,7 +2141,7 @@ func (x *LocationFinancialSubProfile) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LocationFinancialSubProfile.ProtoReflect.Descriptor instead.
 func (*LocationFinancialSubProfile) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_clickhouse_financial_service_proto_rawDescGZIP(), []int{20}
+	return file_financial_integration_service_api_v1_clickhouse_financial_service_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *LocationFinancialSubProfile) GetLocationCity() string {
@@ -2534,7 +2227,7 @@ type MerchantMetricsFinancialSubProfile struct {
 func (x *MerchantMetricsFinancialSubProfile) Reset() {
 	*x = MerchantMetricsFinancialSubProfile{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[21]
+		mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[16]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2547,7 +2240,7 @@ func (x *MerchantMetricsFinancialSubProfile) String() string {
 func (*MerchantMetricsFinancialSubProfile) ProtoMessage() {}
 
 func (x *MerchantMetricsFinancialSubProfile) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[21]
+	mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[16]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2560,7 +2253,7 @@ func (x *MerchantMetricsFinancialSubProfile) ProtoReflect() protoreflect.Message
 
 // Deprecated: Use MerchantMetricsFinancialSubProfile.ProtoReflect.Descriptor instead.
 func (*MerchantMetricsFinancialSubProfile) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_clickhouse_financial_service_proto_rawDescGZIP(), []int{21}
+	return file_financial_integration_service_api_v1_clickhouse_financial_service_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *MerchantMetricsFinancialSubProfile) GetMerchantName() string {
@@ -2635,7 +2328,7 @@ type MerchantMonthlyExpenditure struct {
 func (x *MerchantMonthlyExpenditure) Reset() {
 	*x = MerchantMonthlyExpenditure{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[22]
+		mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[17]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2648,7 +2341,7 @@ func (x *MerchantMonthlyExpenditure) String() string {
 func (*MerchantMonthlyExpenditure) ProtoMessage() {}
 
 func (x *MerchantMonthlyExpenditure) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[22]
+	mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[17]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2661,7 +2354,7 @@ func (x *MerchantMonthlyExpenditure) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MerchantMonthlyExpenditure.ProtoReflect.Descriptor instead.
 func (*MerchantMonthlyExpenditure) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_clickhouse_financial_service_proto_rawDescGZIP(), []int{22}
+	return file_financial_integration_service_api_v1_clickhouse_financial_service_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *MerchantMonthlyExpenditure) GetMonth() uint32 {
@@ -2707,7 +2400,7 @@ type MonthlyBalance struct {
 func (x *MonthlyBalance) Reset() {
 	*x = MonthlyBalance{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[23]
+		mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[18]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2720,7 +2413,7 @@ func (x *MonthlyBalance) String() string {
 func (*MonthlyBalance) ProtoMessage() {}
 
 func (x *MonthlyBalance) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[23]
+	mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[18]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2733,7 +2426,7 @@ func (x *MonthlyBalance) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MonthlyBalance.ProtoReflect.Descriptor instead.
 func (*MonthlyBalance) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_clickhouse_financial_service_proto_rawDescGZIP(), []int{23}
+	return file_financial_integration_service_api_v1_clickhouse_financial_service_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *MonthlyBalance) GetMonth() uint32 {
@@ -2772,7 +2465,7 @@ type MonthlyExpenditure struct {
 func (x *MonthlyExpenditure) Reset() {
 	*x = MonthlyExpenditure{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[24]
+		mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[19]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2785,7 +2478,7 @@ func (x *MonthlyExpenditure) String() string {
 func (*MonthlyExpenditure) ProtoMessage() {}
 
 func (x *MonthlyExpenditure) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[24]
+	mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[19]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2798,7 +2491,7 @@ func (x *MonthlyExpenditure) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MonthlyExpenditure.ProtoReflect.Descriptor instead.
 func (*MonthlyExpenditure) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_clickhouse_financial_service_proto_rawDescGZIP(), []int{24}
+	return file_financial_integration_service_api_v1_clickhouse_financial_service_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *MonthlyExpenditure) GetMonth() uint32 {
@@ -2837,7 +2530,7 @@ type MonthlyIncome struct {
 func (x *MonthlyIncome) Reset() {
 	*x = MonthlyIncome{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[25]
+		mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[20]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2850,7 +2543,7 @@ func (x *MonthlyIncome) String() string {
 func (*MonthlyIncome) ProtoMessage() {}
 
 func (x *MonthlyIncome) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[25]
+	mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[20]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2863,7 +2556,7 @@ func (x *MonthlyIncome) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MonthlyIncome.ProtoReflect.Descriptor instead.
 func (*MonthlyIncome) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_clickhouse_financial_service_proto_rawDescGZIP(), []int{25}
+	return file_financial_integration_service_api_v1_clickhouse_financial_service_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *MonthlyIncome) GetMonth() uint32 {
@@ -2902,7 +2595,7 @@ type MonthlySavings struct {
 func (x *MonthlySavings) Reset() {
 	*x = MonthlySavings{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[26]
+		mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[21]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2915,7 +2608,7 @@ func (x *MonthlySavings) String() string {
 func (*MonthlySavings) ProtoMessage() {}
 
 func (x *MonthlySavings) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[26]
+	mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[21]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2928,7 +2621,7 @@ func (x *MonthlySavings) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MonthlySavings.ProtoReflect.Descriptor instead.
 func (*MonthlySavings) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_clickhouse_financial_service_proto_rawDescGZIP(), []int{26}
+	return file_financial_integration_service_api_v1_clickhouse_financial_service_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *MonthlySavings) GetMonth() uint32 {
@@ -2968,7 +2661,7 @@ type MonthlyTotalQuantityBySecurityAndUser struct {
 func (x *MonthlyTotalQuantityBySecurityAndUser) Reset() {
 	*x = MonthlyTotalQuantityBySecurityAndUser{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[27]
+		mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[22]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2981,7 +2674,7 @@ func (x *MonthlyTotalQuantityBySecurityAndUser) String() string {
 func (*MonthlyTotalQuantityBySecurityAndUser) ProtoMessage() {}
 
 func (x *MonthlyTotalQuantityBySecurityAndUser) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[27]
+	mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[22]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2994,7 +2687,7 @@ func (x *MonthlyTotalQuantityBySecurityAndUser) ProtoReflect() protoreflect.Mess
 
 // Deprecated: Use MonthlyTotalQuantityBySecurityAndUser.ProtoReflect.Descriptor instead.
 func (*MonthlyTotalQuantityBySecurityAndUser) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_clickhouse_financial_service_proto_rawDescGZIP(), []int{27}
+	return file_financial_integration_service_api_v1_clickhouse_financial_service_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *MonthlyTotalQuantityBySecurityAndUser) GetMonth() uint32 {
@@ -3040,7 +2733,7 @@ type MonthlyTransactionCount struct {
 func (x *MonthlyTransactionCount) Reset() {
 	*x = MonthlyTransactionCount{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[28]
+		mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[23]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3053,7 +2746,7 @@ func (x *MonthlyTransactionCount) String() string {
 func (*MonthlyTransactionCount) ProtoMessage() {}
 
 func (x *MonthlyTransactionCount) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[28]
+	mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[23]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3066,7 +2759,7 @@ func (x *MonthlyTransactionCount) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MonthlyTransactionCount.ProtoReflect.Descriptor instead.
 func (*MonthlyTransactionCount) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_clickhouse_financial_service_proto_rawDescGZIP(), []int{28}
+	return file_financial_integration_service_api_v1_clickhouse_financial_service_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *MonthlyTransactionCount) GetMonth() uint32 {
@@ -3112,7 +2805,7 @@ type PaymentChannelMetricsFinancialSubProfile struct {
 func (x *PaymentChannelMetricsFinancialSubProfile) Reset() {
 	*x = PaymentChannelMetricsFinancialSubProfile{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[29]
+		mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[24]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3125,7 +2818,7 @@ func (x *PaymentChannelMetricsFinancialSubProfile) String() string {
 func (*PaymentChannelMetricsFinancialSubProfile) ProtoMessage() {}
 
 func (x *PaymentChannelMetricsFinancialSubProfile) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[29]
+	mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[24]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3138,7 +2831,7 @@ func (x *PaymentChannelMetricsFinancialSubProfile) ProtoReflect() protoreflect.M
 
 // Deprecated: Use PaymentChannelMetricsFinancialSubProfile.ProtoReflect.Descriptor instead.
 func (*PaymentChannelMetricsFinancialSubProfile) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_clickhouse_financial_service_proto_rawDescGZIP(), []int{29}
+	return file_financial_integration_service_api_v1_clickhouse_financial_service_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *PaymentChannelMetricsFinancialSubProfile) GetPaymentChannel() string {
@@ -3227,7 +2920,7 @@ type PaymentChannelMonthlyExpenditure struct {
 func (x *PaymentChannelMonthlyExpenditure) Reset() {
 	*x = PaymentChannelMonthlyExpenditure{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[30]
+		mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[25]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3240,7 +2933,7 @@ func (x *PaymentChannelMonthlyExpenditure) String() string {
 func (*PaymentChannelMonthlyExpenditure) ProtoMessage() {}
 
 func (x *PaymentChannelMonthlyExpenditure) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[30]
+	mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[25]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3253,7 +2946,7 @@ func (x *PaymentChannelMonthlyExpenditure) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PaymentChannelMonthlyExpenditure.ProtoReflect.Descriptor instead.
 func (*PaymentChannelMonthlyExpenditure) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_clickhouse_financial_service_proto_rawDescGZIP(), []int{30}
+	return file_financial_integration_service_api_v1_clickhouse_financial_service_proto_rawDescGZIP(), []int{25}
 }
 
 func (x *PaymentChannelMonthlyExpenditure) GetMonth() uint32 {
@@ -3299,7 +2992,7 @@ type TotalInvestmentBySecurity struct {
 func (x *TotalInvestmentBySecurity) Reset() {
 	*x = TotalInvestmentBySecurity{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[31]
+		mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[26]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3312,7 +3005,7 @@ func (x *TotalInvestmentBySecurity) String() string {
 func (*TotalInvestmentBySecurity) ProtoMessage() {}
 
 func (x *TotalInvestmentBySecurity) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[31]
+	mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[26]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3325,7 +3018,7 @@ func (x *TotalInvestmentBySecurity) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TotalInvestmentBySecurity.ProtoReflect.Descriptor instead.
 func (*TotalInvestmentBySecurity) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_clickhouse_financial_service_proto_rawDescGZIP(), []int{31}
+	return file_financial_integration_service_api_v1_clickhouse_financial_service_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *TotalInvestmentBySecurity) GetSecurityId() string {
@@ -3369,7 +3062,7 @@ type TransactionAggregatesByMonth struct {
 func (x *TransactionAggregatesByMonth) Reset() {
 	*x = TransactionAggregatesByMonth{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[32]
+		mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[27]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3382,7 +3075,7 @@ func (x *TransactionAggregatesByMonth) String() string {
 func (*TransactionAggregatesByMonth) ProtoMessage() {}
 
 func (x *TransactionAggregatesByMonth) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[32]
+	mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[27]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3395,7 +3088,7 @@ func (x *TransactionAggregatesByMonth) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TransactionAggregatesByMonth.ProtoReflect.Descriptor instead.
 func (*TransactionAggregatesByMonth) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_clickhouse_financial_service_proto_rawDescGZIP(), []int{32}
+	return file_financial_integration_service_api_v1_clickhouse_financial_service_proto_rawDescGZIP(), []int{27}
 }
 
 func (x *TransactionAggregatesByMonth) GetMonth() uint32 {
@@ -3473,7 +3166,7 @@ type UserFinancialHealthMetricsTable struct {
 func (x *UserFinancialHealthMetricsTable) Reset() {
 	*x = UserFinancialHealthMetricsTable{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[33]
+		mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[28]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3486,7 +3179,7 @@ func (x *UserFinancialHealthMetricsTable) String() string {
 func (*UserFinancialHealthMetricsTable) ProtoMessage() {}
 
 func (x *UserFinancialHealthMetricsTable) ProtoReflect() protoreflect.Message {
-	mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[33]
+	mi := &file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[28]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3499,7 +3192,7 @@ func (x *UserFinancialHealthMetricsTable) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserFinancialHealthMetricsTable.ProtoReflect.Descriptor instead.
 func (*UserFinancialHealthMetricsTable) Descriptor() ([]byte, []int) {
-	return file_financial_integration_service_api_v1_clickhouse_financial_service_proto_rawDescGZIP(), []int{33}
+	return file_financial_integration_service_api_v1_clickhouse_financial_service_proto_rawDescGZIP(), []int{28}
 }
 
 func (x *UserFinancialHealthMetricsTable) GetTime() *timestamppb.Timestamp {
@@ -3816,47 +3509,7 @@ var file_financial_integration_service_api_v1_clickhouse_financial_service_proto
 	0x6c, 0x50, 0x72, 0x6f, 0x70, 0x65, 0x72, 0x74, 0x69, 0x65, 0x73, 0x12, 0x1e, 0x0a, 0x0a, 0x63,
 	0x61, 0x74, 0x65, 0x67, 0x6f, 0x72, 0x69, 0x65, 0x73, 0x18, 0x2e, 0x20, 0x03, 0x28, 0x09, 0x52,
 	0x0a, 0x63, 0x61, 0x74, 0x65, 0x67, 0x6f, 0x72, 0x69, 0x65, 0x73, 0x3a, 0x06, 0xba, 0xb9, 0x19,
-	0x02, 0x08, 0x01, 0x22, 0x54, 0x0a, 0x20, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x61, 0x63, 0x74, 0x69,
-	0x6f, 0x6e, 0x41, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x42, 0x79, 0x43, 0x6f, 0x75, 0x6e, 0x74, 0x72,
-	0x79, 0x4d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x6f, 0x75, 0x6e, 0x74,
-	0x72, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x72,
-	0x79, 0x12, 0x16, 0x0a, 0x06, 0x61, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28,
-	0x01, 0x52, 0x06, 0x61, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x22, 0x5e, 0x0a, 0x28, 0x41, 0x76, 0x65,
-	0x72, 0x61, 0x67, 0x65, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x41,
-	0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x42, 0x79, 0x43, 0x61, 0x74, 0x65, 0x67, 0x6f, 0x72, 0x79, 0x4d,
-	0x65, 0x74, 0x72, 0x69, 0x63, 0x12, 0x1a, 0x0a, 0x08, 0x63, 0x61, 0x74, 0x65, 0x67, 0x6f, 0x72,
-	0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x63, 0x61, 0x74, 0x65, 0x67, 0x6f, 0x72,
-	0x79, 0x12, 0x16, 0x0a, 0x06, 0x61, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28,
-	0x01, 0x52, 0x06, 0x61, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x22, 0x71, 0x0a, 0x27, 0x4d, 0x6f, 0x6e,
-	0x74, 0x68, 0x6c, 0x79, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x43,
-	0x6f, 0x75, 0x6e, 0x74, 0x42, 0x79, 0x43, 0x61, 0x74, 0x65, 0x67, 0x6f, 0x72, 0x79, 0x4d, 0x65,
-	0x74, 0x72, 0x69, 0x63, 0x12, 0x1a, 0x0a, 0x08, 0x63, 0x61, 0x74, 0x65, 0x67, 0x6f, 0x72, 0x79,
-	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x63, 0x61, 0x74, 0x65, 0x67, 0x6f, 0x72, 0x79,
-	0x12, 0x14, 0x0a, 0x05, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0d, 0x52,
-	0x05, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x12, 0x14, 0x0a, 0x05, 0x6d, 0x6f, 0x6e, 0x74, 0x68, 0x18,
-	0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x6d, 0x6f, 0x6e, 0x74, 0x68, 0x22, 0xab, 0x01, 0x0a,
-	0x2e, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x43, 0x6f, 0x75, 0x6e,
-	0x74, 0x42, 0x79, 0x4d, 0x65, 0x72, 0x63, 0x68, 0x61, 0x6e, 0x74, 0x50, 0x61, 0x79, 0x6d, 0x65,
-	0x6e, 0x74, 0x43, 0x68, 0x61, 0x6e, 0x6e, 0x65, 0x6c, 0x4d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x12,
-	0x23, 0x0a, 0x0d, 0x6d, 0x65, 0x72, 0x63, 0x68, 0x61, 0x6e, 0x74, 0x5f, 0x6e, 0x61, 0x6d, 0x65,
-	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0c, 0x6d, 0x65, 0x72, 0x63, 0x68, 0x61, 0x6e, 0x74,
-	0x4e, 0x61, 0x6d, 0x65, 0x12, 0x27, 0x0a, 0x0f, 0x70, 0x61, 0x79, 0x6d, 0x65, 0x6e, 0x74, 0x5f,
-	0x63, 0x68, 0x61, 0x6e, 0x6e, 0x65, 0x6c, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0e, 0x70,
-	0x61, 0x79, 0x6d, 0x65, 0x6e, 0x74, 0x43, 0x68, 0x61, 0x6e, 0x6e, 0x65, 0x6c, 0x12, 0x2b, 0x0a,
-	0x11, 0x74, 0x72, 0x61, 0x6e, 0x73, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x63, 0x6f, 0x75,
-	0x6e, 0x74, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x10, 0x74, 0x72, 0x61, 0x6e, 0x73, 0x61,
-	0x63, 0x74, 0x69, 0x6f, 0x6e, 0x43, 0x6f, 0x75, 0x6e, 0x74, 0x22, 0xa6, 0x01, 0x0a, 0x2d, 0x54,
-	0x72, 0x61, 0x6e, 0x73, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x41, 0x6d, 0x6f, 0x75, 0x6e, 0x74,
-	0x44, 0x69, 0x73, 0x74, 0x72, 0x69, 0x62, 0x75, 0x74, 0x69, 0x6f, 0x6e, 0x42, 0x79, 0x43, 0x61,
-	0x74, 0x65, 0x67, 0x6f, 0x72, 0x79, 0x4d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x12, 0x1a, 0x0a, 0x08,
-	0x63, 0x61, 0x74, 0x65, 0x67, 0x6f, 0x72, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08,
-	0x63, 0x61, 0x74, 0x65, 0x67, 0x6f, 0x72, 0x79, 0x12, 0x12, 0x0a, 0x04, 0x6d, 0x65, 0x61, 0x6e,
-	0x18, 0x02, 0x20, 0x01, 0x28, 0x01, 0x52, 0x04, 0x6d, 0x65, 0x61, 0x6e, 0x12, 0x16, 0x0a, 0x06,
-	0x6d, 0x65, 0x64, 0x69, 0x61, 0x6e, 0x18, 0x03, 0x20, 0x01, 0x28, 0x01, 0x52, 0x06, 0x6d, 0x65,
-	0x64, 0x69, 0x61, 0x6e, 0x12, 0x2d, 0x0a, 0x12, 0x73, 0x74, 0x61, 0x6e, 0x64, 0x61, 0x72, 0x64,
-	0x5f, 0x64, 0x65, 0x76, 0x69, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x04, 0x20, 0x01, 0x28, 0x01,
-	0x52, 0x11, 0x73, 0x74, 0x61, 0x6e, 0x64, 0x61, 0x72, 0x64, 0x44, 0x65, 0x76, 0x69, 0x61, 0x74,
-	0x69, 0x6f, 0x6e, 0x22, 0xf6, 0x01, 0x0a, 0x15, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x42,
+	0x02, 0x08, 0x01, 0x22, 0xf6, 0x01, 0x0a, 0x15, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x42,
 	0x61, 0x6c, 0x61, 0x6e, 0x63, 0x65, 0x48, 0x69, 0x73, 0x74, 0x6f, 0x72, 0x79, 0x12, 0x2e, 0x0a,
 	0x04, 0x74, 0x69, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x67, 0x6f,
 	0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x54, 0x69,
@@ -4328,60 +3981,55 @@ func file_financial_integration_service_api_v1_clickhouse_financial_service_prot
 }
 
 var file_financial_integration_service_api_v1_clickhouse_financial_service_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
-var file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes = make([]protoimpl.MessageInfo, 34)
+var file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes = make([]protoimpl.MessageInfo, 29)
 var file_financial_integration_service_api_v1_clickhouse_financial_service_proto_goTypes = []interface{}{
-	(ReOccuringTransactionsFrequency)(0),                   // 0: financial_integration_service_api.v1.ReOccuringTransactionsFrequency
-	(ReOccuringTransactionsStatus)(0),                      // 1: financial_integration_service_api.v1.ReOccuringTransactionsStatus
-	(ReCurringFlow)(0),                                     // 2: financial_integration_service_api.v1.ReCurringFlow
-	(*InvestmentTransaction)(nil),                          // 3: financial_integration_service_api.v1.InvestmentTransaction
-	(*ReOccuringTransaction)(nil),                          // 4: financial_integration_service_api.v1.ReOccuringTransaction
-	(*Transaction)(nil),                                    // 5: financial_integration_service_api.v1.Transaction
-	(*TransactionAmountByCountryMetric)(nil),               // 6: financial_integration_service_api.v1.TransactionAmountByCountryMetric
-	(*AverageTransactionAmountByCategoryMetric)(nil),       // 7: financial_integration_service_api.v1.AverageTransactionAmountByCategoryMetric
-	(*MonthlyTransactionCountByCategoryMetric)(nil),        // 8: financial_integration_service_api.v1.MonthlyTransactionCountByCategoryMetric
-	(*TransactionCountByMerchantPaymentChannelMetric)(nil), // 9: financial_integration_service_api.v1.TransactionCountByMerchantPaymentChannelMetric
-	(*TransactionAmountDistributionByCategoryMetric)(nil),  // 10: financial_integration_service_api.v1.TransactionAmountDistributionByCategoryMetric
-	(*AccountBalanceHistory)(nil),                          // 11: financial_integration_service_api.v1.AccountBalanceHistory
-	(*CategoryMetricsFinancialSubProfile)(nil),             // 12: financial_integration_service_api.v1.CategoryMetricsFinancialSubProfile
-	(*CategoryMonthlyExpenditure)(nil),                     // 13: financial_integration_service_api.v1.CategoryMonthlyExpenditure
-	(*CategoryMonthlyIncome)(nil),                          // 14: financial_integration_service_api.v1.CategoryMonthlyIncome
-	(*CategoryMonthlyTransactionCount)(nil),                // 15: financial_integration_service_api.v1.CategoryMonthlyTransactionCount
-	(*DebtToIncomeRatio)(nil),                              // 16: financial_integration_service_api.v1.DebtToIncomeRatio
-	(*ExpenseMetrics)(nil),                                 // 17: financial_integration_service_api.v1.ExpenseMetrics
-	(*ExpenseMetricsFinancialSubProfileMetrics)(nil),       // 18: financial_integration_service_api.v1.ExpenseMetricsFinancialSubProfileMetrics
-	(*FinancialProfile)(nil),                               // 19: financial_integration_service_api.v1.FinancialProfile
-	(*IncomeExpenseRatio)(nil),                             // 20: financial_integration_service_api.v1.IncomeExpenseRatio
-	(*IncomeMetrics)(nil),                                  // 21: financial_integration_service_api.v1.IncomeMetrics
-	(*IncomeMetricsFinancialSubProfile)(nil),               // 22: financial_integration_service_api.v1.IncomeMetricsFinancialSubProfile
-	(*LocationFinancialSubProfile)(nil),                    // 23: financial_integration_service_api.v1.LocationFinancialSubProfile
-	(*MerchantMetricsFinancialSubProfile)(nil),             // 24: financial_integration_service_api.v1.MerchantMetricsFinancialSubProfile
-	(*MerchantMonthlyExpenditure)(nil),                     // 25: financial_integration_service_api.v1.MerchantMonthlyExpenditure
-	(*MonthlyBalance)(nil),                                 // 26: financial_integration_service_api.v1.MonthlyBalance
-	(*MonthlyExpenditure)(nil),                             // 27: financial_integration_service_api.v1.MonthlyExpenditure
-	(*MonthlyIncome)(nil),                                  // 28: financial_integration_service_api.v1.MonthlyIncome
-	(*MonthlySavings)(nil),                                 // 29: financial_integration_service_api.v1.MonthlySavings
-	(*MonthlyTotalQuantityBySecurityAndUser)(nil),          // 30: financial_integration_service_api.v1.MonthlyTotalQuantityBySecurityAndUser
-	(*MonthlyTransactionCount)(nil),                        // 31: financial_integration_service_api.v1.MonthlyTransactionCount
-	(*PaymentChannelMetricsFinancialSubProfile)(nil),       // 32: financial_integration_service_api.v1.PaymentChannelMetricsFinancialSubProfile
-	(*PaymentChannelMonthlyExpenditure)(nil),               // 33: financial_integration_service_api.v1.PaymentChannelMonthlyExpenditure
-	(*TotalInvestmentBySecurity)(nil),                      // 34: financial_integration_service_api.v1.TotalInvestmentBySecurity
-	(*TransactionAggregatesByMonth)(nil),                   // 35: financial_integration_service_api.v1.TransactionAggregatesByMonth
-	(*UserFinancialHealthMetricsTable)(nil),                // 36: financial_integration_service_api.v1.UserFinancialHealthMetricsTable
-	(*timestamppb.Timestamp)(nil),                          // 37: google.protobuf.Timestamp
-	(*anypb.Any)(nil),                                      // 38: google.protobuf.Any
+	(ReOccuringTransactionsFrequency)(0),             // 0: financial_integration_service_api.v1.ReOccuringTransactionsFrequency
+	(ReOccuringTransactionsStatus)(0),                // 1: financial_integration_service_api.v1.ReOccuringTransactionsStatus
+	(ReCurringFlow)(0),                               // 2: financial_integration_service_api.v1.ReCurringFlow
+	(*InvestmentTransaction)(nil),                    // 3: financial_integration_service_api.v1.InvestmentTransaction
+	(*ReOccuringTransaction)(nil),                    // 4: financial_integration_service_api.v1.ReOccuringTransaction
+	(*Transaction)(nil),                              // 5: financial_integration_service_api.v1.Transaction
+	(*AccountBalanceHistory)(nil),                    // 6: financial_integration_service_api.v1.AccountBalanceHistory
+	(*CategoryMetricsFinancialSubProfile)(nil),       // 7: financial_integration_service_api.v1.CategoryMetricsFinancialSubProfile
+	(*CategoryMonthlyExpenditure)(nil),               // 8: financial_integration_service_api.v1.CategoryMonthlyExpenditure
+	(*CategoryMonthlyIncome)(nil),                    // 9: financial_integration_service_api.v1.CategoryMonthlyIncome
+	(*CategoryMonthlyTransactionCount)(nil),          // 10: financial_integration_service_api.v1.CategoryMonthlyTransactionCount
+	(*DebtToIncomeRatio)(nil),                        // 11: financial_integration_service_api.v1.DebtToIncomeRatio
+	(*ExpenseMetrics)(nil),                           // 12: financial_integration_service_api.v1.ExpenseMetrics
+	(*ExpenseMetricsFinancialSubProfileMetrics)(nil), // 13: financial_integration_service_api.v1.ExpenseMetricsFinancialSubProfileMetrics
+	(*FinancialProfile)(nil),                         // 14: financial_integration_service_api.v1.FinancialProfile
+	(*IncomeExpenseRatio)(nil),                       // 15: financial_integration_service_api.v1.IncomeExpenseRatio
+	(*IncomeMetrics)(nil),                            // 16: financial_integration_service_api.v1.IncomeMetrics
+	(*IncomeMetricsFinancialSubProfile)(nil),         // 17: financial_integration_service_api.v1.IncomeMetricsFinancialSubProfile
+	(*LocationFinancialSubProfile)(nil),              // 18: financial_integration_service_api.v1.LocationFinancialSubProfile
+	(*MerchantMetricsFinancialSubProfile)(nil),       // 19: financial_integration_service_api.v1.MerchantMetricsFinancialSubProfile
+	(*MerchantMonthlyExpenditure)(nil),               // 20: financial_integration_service_api.v1.MerchantMonthlyExpenditure
+	(*MonthlyBalance)(nil),                           // 21: financial_integration_service_api.v1.MonthlyBalance
+	(*MonthlyExpenditure)(nil),                       // 22: financial_integration_service_api.v1.MonthlyExpenditure
+	(*MonthlyIncome)(nil),                            // 23: financial_integration_service_api.v1.MonthlyIncome
+	(*MonthlySavings)(nil),                           // 24: financial_integration_service_api.v1.MonthlySavings
+	(*MonthlyTotalQuantityBySecurityAndUser)(nil),    // 25: financial_integration_service_api.v1.MonthlyTotalQuantityBySecurityAndUser
+	(*MonthlyTransactionCount)(nil),                  // 26: financial_integration_service_api.v1.MonthlyTransactionCount
+	(*PaymentChannelMetricsFinancialSubProfile)(nil), // 27: financial_integration_service_api.v1.PaymentChannelMetricsFinancialSubProfile
+	(*PaymentChannelMonthlyExpenditure)(nil),         // 28: financial_integration_service_api.v1.PaymentChannelMonthlyExpenditure
+	(*TotalInvestmentBySecurity)(nil),                // 29: financial_integration_service_api.v1.TotalInvestmentBySecurity
+	(*TransactionAggregatesByMonth)(nil),             // 30: financial_integration_service_api.v1.TransactionAggregatesByMonth
+	(*UserFinancialHealthMetricsTable)(nil),          // 31: financial_integration_service_api.v1.UserFinancialHealthMetricsTable
+	(*timestamppb.Timestamp)(nil),                    // 32: google.protobuf.Timestamp
+	(*anypb.Any)(nil),                                // 33: google.protobuf.Any
 }
 var file_financial_integration_service_api_v1_clickhouse_financial_service_proto_depIdxs = []int32{
-	37, // 0: financial_integration_service_api.v1.InvestmentTransaction.time:type_name -> google.protobuf.Timestamp
-	38, // 1: financial_integration_service_api.v1.InvestmentTransaction.additional_properties:type_name -> google.protobuf.Any
+	32, // 0: financial_integration_service_api.v1.InvestmentTransaction.time:type_name -> google.protobuf.Timestamp
+	33, // 1: financial_integration_service_api.v1.InvestmentTransaction.additional_properties:type_name -> google.protobuf.Any
 	0,  // 2: financial_integration_service_api.v1.ReOccuringTransaction.frequency:type_name -> financial_integration_service_api.v1.ReOccuringTransactionsFrequency
 	1,  // 3: financial_integration_service_api.v1.ReOccuringTransaction.status:type_name -> financial_integration_service_api.v1.ReOccuringTransactionsStatus
 	2,  // 4: financial_integration_service_api.v1.ReOccuringTransaction.flow:type_name -> financial_integration_service_api.v1.ReCurringFlow
-	37, // 5: financial_integration_service_api.v1.ReOccuringTransaction.time:type_name -> google.protobuf.Timestamp
-	38, // 6: financial_integration_service_api.v1.ReOccuringTransaction.additional_properties:type_name -> google.protobuf.Any
-	37, // 7: financial_integration_service_api.v1.Transaction.time:type_name -> google.protobuf.Timestamp
-	38, // 8: financial_integration_service_api.v1.Transaction.additional_properties:type_name -> google.protobuf.Any
-	37, // 9: financial_integration_service_api.v1.AccountBalanceHistory.time:type_name -> google.protobuf.Timestamp
-	37, // 10: financial_integration_service_api.v1.UserFinancialHealthMetricsTable.time:type_name -> google.protobuf.Timestamp
+	32, // 5: financial_integration_service_api.v1.ReOccuringTransaction.time:type_name -> google.protobuf.Timestamp
+	33, // 6: financial_integration_service_api.v1.ReOccuringTransaction.additional_properties:type_name -> google.protobuf.Any
+	32, // 7: financial_integration_service_api.v1.Transaction.time:type_name -> google.protobuf.Timestamp
+	33, // 8: financial_integration_service_api.v1.Transaction.additional_properties:type_name -> google.protobuf.Any
+	32, // 9: financial_integration_service_api.v1.AccountBalanceHistory.time:type_name -> google.protobuf.Timestamp
+	32, // 10: financial_integration_service_api.v1.UserFinancialHealthMetricsTable.time:type_name -> google.protobuf.Timestamp
 	11, // [11:11] is the sub-list for method output_type
 	11, // [11:11] is the sub-list for method input_type
 	11, // [11:11] is the sub-list for extension type_name
@@ -4432,66 +4080,6 @@ func file_financial_integration_service_api_v1_clickhouse_financial_service_prot
 			}
 		}
 		file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*TransactionAmountByCountryMetric); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*AverageTransactionAmountByCategoryMetric); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*MonthlyTransactionCountByCategoryMetric); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*TransactionCountByMerchantPaymentChannelMetric); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*TransactionAmountDistributionByCategoryMetric); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*AccountBalanceHistory); i {
 			case 0:
 				return &v.state
@@ -4503,7 +4091,7 @@ func file_financial_integration_service_api_v1_clickhouse_financial_service_prot
 				return nil
 			}
 		}
-		file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
+		file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*CategoryMetricsFinancialSubProfile); i {
 			case 0:
 				return &v.state
@@ -4515,7 +4103,7 @@ func file_financial_integration_service_api_v1_clickhouse_financial_service_prot
 				return nil
 			}
 		}
-		file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
+		file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*CategoryMonthlyExpenditure); i {
 			case 0:
 				return &v.state
@@ -4527,7 +4115,7 @@ func file_financial_integration_service_api_v1_clickhouse_financial_service_prot
 				return nil
 			}
 		}
-		file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
+		file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*CategoryMonthlyIncome); i {
 			case 0:
 				return &v.state
@@ -4539,7 +4127,7 @@ func file_financial_integration_service_api_v1_clickhouse_financial_service_prot
 				return nil
 			}
 		}
-		file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
+		file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*CategoryMonthlyTransactionCount); i {
 			case 0:
 				return &v.state
@@ -4551,7 +4139,7 @@ func file_financial_integration_service_api_v1_clickhouse_financial_service_prot
 				return nil
 			}
 		}
-		file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
+		file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*DebtToIncomeRatio); i {
 			case 0:
 				return &v.state
@@ -4563,7 +4151,7 @@ func file_financial_integration_service_api_v1_clickhouse_financial_service_prot
 				return nil
 			}
 		}
-		file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
+		file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*ExpenseMetrics); i {
 			case 0:
 				return &v.state
@@ -4575,7 +4163,7 @@ func file_financial_integration_service_api_v1_clickhouse_financial_service_prot
 				return nil
 			}
 		}
-		file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
+		file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*ExpenseMetricsFinancialSubProfileMetrics); i {
 			case 0:
 				return &v.state
@@ -4587,7 +4175,7 @@ func file_financial_integration_service_api_v1_clickhouse_financial_service_prot
 				return nil
 			}
 		}
-		file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
+		file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*FinancialProfile); i {
 			case 0:
 				return &v.state
@@ -4599,7 +4187,7 @@ func file_financial_integration_service_api_v1_clickhouse_financial_service_prot
 				return nil
 			}
 		}
-		file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[17].Exporter = func(v interface{}, i int) interface{} {
+		file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*IncomeExpenseRatio); i {
 			case 0:
 				return &v.state
@@ -4611,7 +4199,7 @@ func file_financial_integration_service_api_v1_clickhouse_financial_service_prot
 				return nil
 			}
 		}
-		file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[18].Exporter = func(v interface{}, i int) interface{} {
+		file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*IncomeMetrics); i {
 			case 0:
 				return &v.state
@@ -4623,7 +4211,7 @@ func file_financial_integration_service_api_v1_clickhouse_financial_service_prot
 				return nil
 			}
 		}
-		file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[19].Exporter = func(v interface{}, i int) interface{} {
+		file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*IncomeMetricsFinancialSubProfile); i {
 			case 0:
 				return &v.state
@@ -4635,7 +4223,7 @@ func file_financial_integration_service_api_v1_clickhouse_financial_service_prot
 				return nil
 			}
 		}
-		file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[20].Exporter = func(v interface{}, i int) interface{} {
+		file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*LocationFinancialSubProfile); i {
 			case 0:
 				return &v.state
@@ -4647,7 +4235,7 @@ func file_financial_integration_service_api_v1_clickhouse_financial_service_prot
 				return nil
 			}
 		}
-		file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[21].Exporter = func(v interface{}, i int) interface{} {
+		file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*MerchantMetricsFinancialSubProfile); i {
 			case 0:
 				return &v.state
@@ -4659,7 +4247,7 @@ func file_financial_integration_service_api_v1_clickhouse_financial_service_prot
 				return nil
 			}
 		}
-		file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[22].Exporter = func(v interface{}, i int) interface{} {
+		file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[17].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*MerchantMonthlyExpenditure); i {
 			case 0:
 				return &v.state
@@ -4671,7 +4259,7 @@ func file_financial_integration_service_api_v1_clickhouse_financial_service_prot
 				return nil
 			}
 		}
-		file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[23].Exporter = func(v interface{}, i int) interface{} {
+		file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[18].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*MonthlyBalance); i {
 			case 0:
 				return &v.state
@@ -4683,7 +4271,7 @@ func file_financial_integration_service_api_v1_clickhouse_financial_service_prot
 				return nil
 			}
 		}
-		file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[24].Exporter = func(v interface{}, i int) interface{} {
+		file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[19].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*MonthlyExpenditure); i {
 			case 0:
 				return &v.state
@@ -4695,7 +4283,7 @@ func file_financial_integration_service_api_v1_clickhouse_financial_service_prot
 				return nil
 			}
 		}
-		file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[25].Exporter = func(v interface{}, i int) interface{} {
+		file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[20].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*MonthlyIncome); i {
 			case 0:
 				return &v.state
@@ -4707,7 +4295,7 @@ func file_financial_integration_service_api_v1_clickhouse_financial_service_prot
 				return nil
 			}
 		}
-		file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[26].Exporter = func(v interface{}, i int) interface{} {
+		file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[21].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*MonthlySavings); i {
 			case 0:
 				return &v.state
@@ -4719,7 +4307,7 @@ func file_financial_integration_service_api_v1_clickhouse_financial_service_prot
 				return nil
 			}
 		}
-		file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[27].Exporter = func(v interface{}, i int) interface{} {
+		file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[22].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*MonthlyTotalQuantityBySecurityAndUser); i {
 			case 0:
 				return &v.state
@@ -4731,7 +4319,7 @@ func file_financial_integration_service_api_v1_clickhouse_financial_service_prot
 				return nil
 			}
 		}
-		file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[28].Exporter = func(v interface{}, i int) interface{} {
+		file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[23].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*MonthlyTransactionCount); i {
 			case 0:
 				return &v.state
@@ -4743,7 +4331,7 @@ func file_financial_integration_service_api_v1_clickhouse_financial_service_prot
 				return nil
 			}
 		}
-		file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[29].Exporter = func(v interface{}, i int) interface{} {
+		file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[24].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*PaymentChannelMetricsFinancialSubProfile); i {
 			case 0:
 				return &v.state
@@ -4755,7 +4343,7 @@ func file_financial_integration_service_api_v1_clickhouse_financial_service_prot
 				return nil
 			}
 		}
-		file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[30].Exporter = func(v interface{}, i int) interface{} {
+		file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[25].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*PaymentChannelMonthlyExpenditure); i {
 			case 0:
 				return &v.state
@@ -4767,7 +4355,7 @@ func file_financial_integration_service_api_v1_clickhouse_financial_service_prot
 				return nil
 			}
 		}
-		file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[31].Exporter = func(v interface{}, i int) interface{} {
+		file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[26].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*TotalInvestmentBySecurity); i {
 			case 0:
 				return &v.state
@@ -4779,7 +4367,7 @@ func file_financial_integration_service_api_v1_clickhouse_financial_service_prot
 				return nil
 			}
 		}
-		file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[32].Exporter = func(v interface{}, i int) interface{} {
+		file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[27].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*TransactionAggregatesByMonth); i {
 			case 0:
 				return &v.state
@@ -4791,7 +4379,7 @@ func file_financial_integration_service_api_v1_clickhouse_financial_service_prot
 				return nil
 			}
 		}
-		file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[33].Exporter = func(v interface{}, i int) interface{} {
+		file_financial_integration_service_api_v1_clickhouse_financial_service_proto_msgTypes[28].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*UserFinancialHealthMetricsTable); i {
 			case 0:
 				return &v.state
@@ -4810,7 +4398,7 @@ func file_financial_integration_service_api_v1_clickhouse_financial_service_prot
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_financial_integration_service_api_v1_clickhouse_financial_service_proto_rawDesc,
 			NumEnums:      3,
-			NumMessages:   34,
+			NumMessages:   29,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

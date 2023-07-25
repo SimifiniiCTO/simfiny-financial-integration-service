@@ -1,0 +1,26 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/GetUserCategoryMonthlyExpenditureRequest",
+    "definitions": {
+        "GetUserCategoryMonthlyExpenditureRequest": {
+            "properties": {
+                "user_id": {
+                    "type": "string",
+                    "description": "User ID"
+                },
+                "personal_finance_category_primary": {
+                    "type": "string",
+                    "description": "Personal finance category"
+                },
+                "month": {
+                    "type": "integer",
+                    "description": "Month in the format of YYYYMM"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Get User Category Monthly Expenditure Request",
+            "description": "CategoryMonthlyExpenditure"
+        }
+    }
+}

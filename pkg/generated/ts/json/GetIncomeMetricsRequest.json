@@ -1,0 +1,25 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/GetIncomeMetricsRequest",
+    "definitions": {
+        "GetIncomeMetricsRequest": {
+            "properties": {
+                "user_id": {
+                    "type": "string"
+                },
+                "month": {
+                    "type": "integer",
+                    "description": "optional"
+                },
+                "personal_finance_category_primary": {
+                    "type": "string",
+                    "description": "optional"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Get Income Metrics Request",
+            "description": "GetIncomeMetrics RPC"
+        }
+    }
+}

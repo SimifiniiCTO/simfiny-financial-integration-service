@@ -1,0 +1,20 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/GetDebtToIncomeRatioRequest",
+    "definitions": {
+        "GetDebtToIncomeRatioRequest": {
+            "properties": {
+                "user_id": {
+                    "type": "string"
+                },
+                "month": {
+                    "type": "integer",
+                    "description": "optional"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Get Debt To Income Ratio Request"
+        }
+    }
+}

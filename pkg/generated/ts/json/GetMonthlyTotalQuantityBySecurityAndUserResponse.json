@@ -1,0 +1,39 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/GetMonthlyTotalQuantityBySecurityAndUserResponse",
+    "definitions": {
+        "GetMonthlyTotalQuantityBySecurityAndUserResponse": {
+            "properties": {
+                "monthly_total_quantity_by_security_and_user": {
+                    "items": {
+                        "$ref": "#/definitions/financial_integration_service_api.v1.MonthlyTotalQuantityBySecurityAndUser"
+                    },
+                    "type": "array"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Get Monthly Total Quantity By Security And User Response"
+        },
+        "financial_integration_service_api.v1.MonthlyTotalQuantityBySecurityAndUser": {
+            "properties": {
+                "month": {
+                    "type": "integer"
+                },
+                "security_id": {
+                    "type": "string"
+                },
+                "total_quantity": {
+                    "type": "number"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Monthly Total Quantity By Security And User",
+            "description": "MonthlyTotalQuantityBySecurityAndUser This message is used to represent the monthly total quantity of a security."
+        }
+    }
+}

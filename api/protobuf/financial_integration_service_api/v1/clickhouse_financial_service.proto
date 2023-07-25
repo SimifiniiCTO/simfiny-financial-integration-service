@@ -238,34 +238,6 @@ message Transaction {
     repeated string categories = 46;
 }
 
-message TransactionAmountByCountryMetric {
-    string country = 1;
-    double amount = 2;
-}
-
-message AverageTransactionAmountByCategoryMetric {
-    string category = 1;
-    double amount = 2;
-}
-
-message MonthlyTransactionCountByCategoryMetric {
-    string category = 1;
-    uint32 count = 2;
-    string month = 3;
-}
-
-message TransactionCountByMerchantPaymentChannelMetric {
-    string merchant_name = 1;
-    string payment_channel = 2;
-    uint32 transaction_count = 3;
-}
-
-message TransactionAmountDistributionByCategoryMetric {
-    string category = 1;
-    double mean = 2;
-    double median = 3;
-    double standard_deviation = 4;
-}
 
 // Account Balance History
 // This message is used to represent the balance history of an account.

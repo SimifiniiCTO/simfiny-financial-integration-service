@@ -1,0 +1,21 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/GetFinancialProfileRequest",
+    "definitions": {
+        "GetFinancialProfileRequest": {
+            "properties": {
+                "user_id": {
+                    "type": "string"
+                },
+                "month": {
+                    "type": "integer",
+                    "description": "optional"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Get Financial Profile Request",
+            "description": "GetFinancialProfile RPC"
+        }
+    }
+}

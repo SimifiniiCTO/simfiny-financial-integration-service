@@ -1,0 +1,18 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/GetUserAccountBalanceHistoryRequest",
+    "definitions": {
+        "GetUserAccountBalanceHistoryRequest": {
+            "properties": {
+                "user_id": {
+                    "type": "string",
+                    "description": "User ID"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Get User Account Balance History Request",
+            "description": "Account Balance"
+        }
+    }
+}

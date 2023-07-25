@@ -270,6 +270,756 @@
         ]
       }
     },
+    "/api/v1/analytics/balance-history/account/{plaidAccountId}": {
+      "get": {
+        "summary": "Returns the account balance history for an account",
+        "description": "This API could accept account_id as input parameters and return the account balance history for that account.",
+        "operationId": "GetAccountBalanceHistory",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": ".api.v1.GetAccountBalanceHistoryResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": ".api.v1.ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": ".api.v1.PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": ".api.v1.InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "plaidAccountId",
+            "description": "Account ID",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "balance-history"
+        ]
+      }
+    },
+    "/api/v1/analytics/balance-history/user/{userId}": {
+      "get": {
+        "summary": "Returns the account balance history for a user",
+        "description": "This API could accept user_id as input parameters and return the account balance history for that user.",
+        "operationId": "GetUserAccountBalanceHistory",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": ".api.v1.GetUserAccountBalanceHistoryResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": ".api.v1.ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": ".api.v1.PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": ".api.v1.InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "description": "User ID",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "balance-history"
+        ]
+      }
+    },
+    "/api/v1/analytics/category-monthly-expenditure/user/{userId}": {
+      "get": {
+        "summary": "Returns the monthly category expenditure for a user",
+        "description": "This API could accept user_id as an input parameter and return the monthly category expenditure for that user.",
+        "operationId": "GetUserCategoryMonthlyExpenditure",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": ".api.v1.GetUserCategoryMonthlyExpenditureResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": ".api.v1.ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": ".api.v1.PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": ".api.v1.InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "description": "User ID",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "personalFinanceCategoryPrimary",
+            "description": "Personal finance category",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "month",
+            "description": "Month in the format of YYYYMM",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "expenditure"
+        ]
+      }
+    },
+    "/api/v1/analytics/category-monthly-income/user/{userId}": {
+      "get": {
+        "summary": "Get monthly income by user for a specific category",
+        "operationId": "GetUserCategoryMonthlyIncome",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": ".api.v1.GetUserCategoryMonthlyIncomeResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": ".api.v1.ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": ".api.v1.PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": ".api.v1.InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "personalFinanceCategoryPrimary",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "month",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "income"
+        ]
+      }
+    },
+    "/api/v1/analytics/debt-to-income-ratio/{userId}": {
+      "get": {
+        "summary": "Get Debt-to-Income ratio by user and month",
+        "operationId": "GetDebtToIncomeRatio",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": ".api.v1.GetDebtToIncomeRatioResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": ".api.v1.ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": ".api.v1.PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": ".api.v1.InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "month",
+            "description": "optional",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "finance"
+        ]
+      }
+    },
+    "/api/v1/analytics/expenses/{userId}": {
+      "get": {
+        "summary": "Get Expense Metrics by user, month and category",
+        "operationId": "GetExpenseMetrics",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": ".api.v1.GetExpenseMetricsResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": ".api.v1.ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": ".api.v1.PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": ".api.v1.InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "month",
+            "description": "optonal",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "personalFinanceCategoryPrimary",
+            "description": "optional",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "finance"
+        ]
+      }
+    },
+    "/api/v1/analytics/finance-profile/{userId}": {
+      "get": {
+        "summary": "Get Financial Profile by user and month",
+        "operationId": "GetFinancialProfile",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": ".api.v1.GetFinancialProfileResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": ".api.v1.ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": ".api.v1.PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": ".api.v1.InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "month",
+            "description": "optional",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "finance"
+        ]
+      }
+    },
+    "/api/v1/analytics/income-expense-ratio/{userId}": {
+      "get": {
+        "summary": "Get Income Expense Ratio by user and month",
+        "operationId": "GetIncomeExpenseRatio",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": ".api.v1.GetIncomeExpenseRatioResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": ".api.v1.ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": ".api.v1.PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": ".api.v1.InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "month",
+            "description": "optional",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "finance"
+        ]
+      }
+    },
+    "/api/v1/analytics/income/{userId}": {
+      "get": {
+        "summary": "Get Income Metrics by user, month and category",
+        "operationId": "GetIncomeMetrics",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": ".api.v1.GetIncomeMetricsResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": ".api.v1.ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": ".api.v1.PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": ".api.v1.InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "month",
+            "description": "optional",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "personalFinanceCategoryPrimary",
+            "description": "optional",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "finance"
+        ]
+      }
+    },
+    "/api/v1/analytics/monthly-transaction-count/{userId}": {
+      "get": {
+        "summary": "Get monthly transaction count by user, month, and category",
+        "operationId": "GetCategoryMonthlyTransactionCount",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": ".api.v1.GetCategoryMonthlyTransactionCountResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": ".api.v1.ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": ".api.v1.PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": ".api.v1.InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "description": "has to be present and defined",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "month",
+            "description": "optional",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "personalFinanceCategoryPrimary",
+            "description": "optional",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "transactions"
+        ]
+      }
+    },
+    "/api/v1/analytics/transaction-aggregates/{userId}": {
+      "get": {
+        "summary": "Returns the aggregated transactions for a user and month",
+        "description": "This API could accept user_id and month as input parameters and return the aggregated transactions for that user and month.",
+        "operationId": "TransactionAggregates",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": ".api.v1.GetTransactionAggregatesResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": ".api.v1.ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": ".api.v1.PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": ".api.v1.InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "month",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "personalFinanceCategoryPrimary",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "locationCity",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "paymentChannel",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "merchantName",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "transaction-aggregates"
+        ]
+      }
+    },
+    "/api/v1/analytics/transaction-aggregates/{userId}/pagenumber/{pageNumber}/pagesize/{pageSize}": {
+      "get": {
+        "summary": "Returns the aggregated transactions for a user across all months in a paginated fashion",
+        "description": "This API accepts user_id as an input parameter and returns the aggregated transactions for that user across all months, paginated.",
+        "operationId": "ListTransactionAggregates",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": ".api.v1.ListTransactionAggregatesResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": ".api.v1.ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": ".api.v1.PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": ".api.v1.InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "pageNumber",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "pageSize",
+            "description": "Number of items to return per page.",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "transaction-aggregates"
+        ]
+      }
+    },
     "/api/v1/bank-account": {
       "put": {
         "summary": "update a bank account for a given user profile",
@@ -769,6 +1519,539 @@
         ],
         "tags": [
           "budget"
+        ]
+      }
+    },
+    "/api/v1/finance/balance/{userId}/{month}": {
+      "get": {
+        "summary": "Get Monthly Balance by user and month",
+        "operationId": "GetMonthlyBalance",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": ".api.v1.GetMonthlyBalanceResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": ".api.v1.ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": ".api.v1.PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": ".api.v1.InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "month",
+            "description": "optional",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "finance"
+        ]
+      }
+    },
+    "/api/v1/finance/expenditure/{userId}/{month}": {
+      "get": {
+        "summary": "Get Monthly Expenditure by user and month",
+        "operationId": "GetMonthlyExpenditure",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": ".api.v1.GetMonthlyExpenditureResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": ".api.v1.ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": ".api.v1.PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": ".api.v1.InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "month",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "finance"
+        ]
+      }
+    },
+    "/api/v1/finance/income/{userId}/{month}": {
+      "get": {
+        "summary": "Get Monthly Income by user and month",
+        "operationId": "GetMonthlyIncome",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": ".api.v1.GetMonthlyIncomeResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": ".api.v1.ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": ".api.v1.PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": ".api.v1.InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "month",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "finance"
+        ]
+      }
+    },
+    "/api/v1/finance/merchant-expenditure/{userId}/{month}/{merchantName}": {
+      "get": {
+        "summary": "Get Merchant Monthly Expenditure by user, month and merchant name",
+        "operationId": "GetMerchantMonthlyExpenditure",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": ".api.v1.GetMerchantMonthlyExpenditureResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": ".api.v1.ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": ".api.v1.PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": ".api.v1.InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "month",
+            "description": "optional",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "merchantName",
+            "description": "optional",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "finance"
+        ]
+      }
+    },
+    "/api/v1/finance/payment-channel-expenditure/{userId}/{month}/{paymentChannel}": {
+      "get": {
+        "summary": "Get Payment Channel Monthly Expenditure by user, month, and payment channel",
+        "operationId": "GetPaymentChannelMonthlyExpenditure",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": ".api.v1.GetPaymentChannelMonthlyExpenditureResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": ".api.v1.ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": ".api.v1.PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": ".api.v1.InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "month",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "paymentChannel",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "finance"
+        ]
+      }
+    },
+    "/api/v1/finance/savings/{userId}/{month}": {
+      "get": {
+        "summary": "Get Monthly Savings by user and month",
+        "operationId": "GetMonthlySavings",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": ".api.v1.GetMonthlySavingsResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": ".api.v1.ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": ".api.v1.PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": ".api.v1.InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "month",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "finance"
+        ]
+      }
+    },
+    "/api/v1/finance/security-quantity/{userId}/{month}/{securityId}": {
+      "get": {
+        "summary": "Get Monthly Total Quantity of Security by user, month and security",
+        "operationId": "GetMonthlyTotalQuantityBySecurityAndUser",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": ".api.v1.GetMonthlyTotalQuantityBySecurityAndUserResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": ".api.v1.ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": ".api.v1.PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": ".api.v1.InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "month",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "securityId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "finance"
+        ]
+      }
+    },
+    "/api/v1/finance/total-investment/{userId}/{securityId}": {
+      "get": {
+        "summary": "Get Total Investment by user and security",
+        "operationId": "GetTotalInvestmentBySecurity",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": ".api.v1.GetTotalInvestmentBySecurityResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": ".api.v1.ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": ".api.v1.PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": ".api.v1.InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "securityId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "finance"
+        ]
+      }
+    },
+    "/api/v1/finance/transaction-count/{userId}/{month}": {
+      "get": {
+        "summary": "Get Monthly Transaction Count by user and month",
+        "operationId": "GetMonthlyTransactionCount",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": ".api.v1.GetMonthlyTransactionCountResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": ".api.v1.ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": ".api.v1.PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": ".api.v1.InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "month",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "finance"
         ]
       }
     },
@@ -2282,6 +3565,37 @@
     }
   },
   "definitions": {
+    "AccountBalanceHistory": {
+      "type": "object",
+      "properties": {
+        "time": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "accountId": {
+          "type": "string"
+        },
+        "isoCurrencyCode": {
+          "type": "string"
+        },
+        "balance": {
+          "type": "number",
+          "format": "double"
+        },
+        "userId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "sign": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "id": {
+          "type": "string"
+        }
+      },
+      "description": "Account Balance History\nThis message is used to represent the balance history of an account."
+    },
     "Any": {
       "type": "object",
       "properties": {
@@ -2468,6 +3782,69 @@
         }
       },
       "description": "The Categories table stores information about the different categories of expenses or income,\nsuch as \"Housing\", \"Food\", \"Transportation\", and \"Entertainment\". Each category has one or more\nsubcategories, which are stored in the Subcategories table.\n\nFor example, the \"Housing\" category might have subcategories for \"Rent\", \"Utilities\", and \"Home Maintenance\"."
+    },
+    "CategoryMonthlyExpenditure": {
+      "type": "object",
+      "properties": {
+        "month": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "personalFinanceCategoryPrimary": {
+          "type": "string"
+        },
+        "totalSpending": {
+          "type": "number",
+          "format": "double"
+        },
+        "userId": {
+          "type": "string",
+          "format": "uint64"
+        }
+      },
+      "description": "CategoryMonthlyExpenditure represents the monthly expenditure of a category.\nThis message is used to represent the monthly expenditure of a category."
+    },
+    "CategoryMonthlyIncome": {
+      "type": "object",
+      "properties": {
+        "month": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "personalFinanceCategoryPrimary": {
+          "type": "string"
+        },
+        "totalIncome": {
+          "type": "number",
+          "format": "double"
+        },
+        "userId": {
+          "type": "string",
+          "format": "uint64"
+        }
+      },
+      "description": "CategoryMonthlyIncome\nThis message is used to represent the monthly income of a category."
+    },
+    "CategoryMonthlyTransactionCount": {
+      "type": "object",
+      "properties": {
+        "month": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "personalFinanceCategoryPrimary": {
+          "type": "string"
+        },
+        "transactionCount": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "userId": {
+          "type": "string",
+          "format": "uint64"
+        }
+      },
+      "description": "CategoryMonthlyTransactionCount\nThis message is used to represent the monthly transaction count of a category."
     },
     "CreateBankAccountResponse": {
       "type": "object",
@@ -2745,6 +4122,24 @@
         }
       }
     },
+    "DebtToIncomeRatio": {
+      "type": "object",
+      "properties": {
+        "month": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "ratio": {
+          "type": "number",
+          "format": "double"
+        },
+        "userId": {
+          "type": "string",
+          "format": "uint64"
+        }
+      },
+      "description": "DebtToIncomeRatio\nThis message is used to represent the debt to income ratio of a user."
+    },
     "DeleteBankAccountResponse": {
       "type": "object",
       "properties": {
@@ -2801,6 +4196,60 @@
       },
       "title": "DeleteUserProfileResponse: Represents the response object returned as a response to\nthe `delete user profile` request"
     },
+    "ExpenseMetrics": {
+      "type": "object",
+      "properties": {
+        "month": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "personalFinanceCategoryPrimary": {
+          "type": "string"
+        },
+        "transactionCount": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "totalExpenses": {
+          "type": "number",
+          "format": "double"
+        },
+        "userId": {
+          "type": "string",
+          "format": "uint64"
+        }
+      },
+      "description": "ExpenseMetrics\nThis message is used to represent the expense metrics of a user."
+    },
+    "FinancialProfile": {
+      "type": "object",
+      "properties": {
+        "month": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "totalIncome": {
+          "type": "number",
+          "format": "double"
+        },
+        "totalExpenses": {
+          "type": "number",
+          "format": "double"
+        },
+        "numberOfTransactions": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "mostExpensiveCategory": {
+          "type": "string"
+        },
+        "userId": {
+          "type": "string",
+          "format": "uint64"
+        }
+      },
+      "description": "FinancialProfile\nThis message is used to represent the financial profile of a user."
+    },
     "Forecast": {
       "type": "object",
       "properties": {
@@ -2826,6 +4275,19 @@
         }
       },
       "description": "The Forecast table stores information about each forecast generated for a particular goal,\nincluding the forecast date, the forecasted amount of money saved or invested for the\ngoal by the target date, and the variance between the forecasted and target amounts.\nThis allows the user to track how well they are progressing towards their goal and make adjustments as needed."
+    },
+    "GetAccountBalanceHistoryResponse": {
+      "type": "object",
+      "properties": {
+        "accountBalanceHistory": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/AccountBalanceHistory"
+          },
+          "title": "List of account balance history records for specific account"
+        }
+      }
     },
     "GetAllBudgetsResponse": {
       "type": "object",
@@ -2859,12 +4321,84 @@
         }
       }
     },
+    "GetCategoryMonthlyTransactionCountResponse": {
+      "type": "object",
+      "properties": {
+        "categoryMonthlyTransactionCount": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/CategoryMonthlyTransactionCount"
+          }
+        }
+      }
+    },
+    "GetDebtToIncomeRatioResponse": {
+      "type": "object",
+      "properties": {
+        "debtToIncomeRatios": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/DebtToIncomeRatio"
+          }
+        }
+      }
+    },
+    "GetExpenseMetricsResponse": {
+      "type": "object",
+      "properties": {
+        "expenseMetrics": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/ExpenseMetrics"
+          }
+        }
+      }
+    },
+    "GetFinancialProfileResponse": {
+      "type": "object",
+      "properties": {
+        "financialProfiles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/FinancialProfile"
+          }
+        }
+      }
+    },
     "GetForecastResponse": {
       "type": "object",
       "properties": {
         "forecast": {
           "$ref": "#/definitions/Forecast",
           "title": "The forecast"
+        }
+      }
+    },
+    "GetIncomeExpenseRatioResponse": {
+      "type": "object",
+      "properties": {
+        "incomeExpenseRatios": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/IncomeExpenseRatio"
+          }
+        }
+      }
+    },
+    "GetIncomeMetricsResponse": {
+      "type": "object",
+      "properties": {
+        "incomeMetrics": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/IncomeMetrics"
+          }
         }
       }
     },
@@ -2908,6 +4442,18 @@
         }
       }
     },
+    "GetMerchantMonthlyExpenditureResponse": {
+      "type": "object",
+      "properties": {
+        "merchantMonthlyExpenditures": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/MerchantMonthlyExpenditure"
+          }
+        }
+      }
+    },
     "GetMilestoneResponse": {
       "type": "object",
       "properties": {
@@ -2930,12 +4476,96 @@
         }
       }
     },
+    "GetMonthlyBalanceResponse": {
+      "type": "object",
+      "properties": {
+        "monthlyBalances": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/MonthlyBalance"
+          }
+        }
+      }
+    },
+    "GetMonthlyExpenditureResponse": {
+      "type": "object",
+      "properties": {
+        "monthlyExpenditures": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/MonthlyExpenditure"
+          }
+        }
+      }
+    },
+    "GetMonthlyIncomeResponse": {
+      "type": "object",
+      "properties": {
+        "monthlyIncomes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/MonthlyIncome"
+          }
+        }
+      }
+    },
+    "GetMonthlySavingsResponse": {
+      "type": "object",
+      "properties": {
+        "monthlySavings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/MonthlySavings"
+          }
+        }
+      }
+    },
+    "GetMonthlyTotalQuantityBySecurityAndUserResponse": {
+      "type": "object",
+      "properties": {
+        "monthlyTotalQuantityBySecurityAndUser": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/MonthlyTotalQuantityBySecurityAndUser"
+          }
+        }
+      }
+    },
+    "GetMonthlyTransactionCountResponse": {
+      "type": "object",
+      "properties": {
+        "monthlyTransactionCounts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/MonthlyTransactionCount"
+          }
+        }
+      }
+    },
     "GetMortgageAccountResponse": {
       "type": "object",
       "properties": {
         "mortageAccount": {
           "$ref": "#/definitions/MortgageAccount",
           "title": "The mortage account"
+        }
+      }
+    },
+    "GetPaymentChannelMonthlyExpenditureResponse": {
+      "type": "object",
+      "properties": {
+        "paymentChannelMonthlyExpenditure": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/PaymentChannelMonthlyExpenditure"
+          }
         }
       }
     },
@@ -2990,6 +4620,30 @@
         }
       }
     },
+    "GetTotalInvestmentBySecurityResponse": {
+      "type": "object",
+      "properties": {
+        "totalInvestmentBySecurity": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/TotalInvestmentBySecurity"
+          }
+        }
+      }
+    },
+    "GetTransactionAggregatesResponse": {
+      "type": "object",
+      "properties": {
+        "transactionAggregates": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/TransactionAggregatesByMonth"
+          }
+        }
+      }
+    },
     "GetTransactionsResponse": {
       "type": "object",
       "properties": {
@@ -3004,6 +4658,44 @@
         "nextPageNumber": {
           "type": "string",
           "format": "uint64"
+        }
+      }
+    },
+    "GetUserAccountBalanceHistoryResponse": {
+      "type": "object",
+      "properties": {
+        "accountBalanceHistory": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/AccountBalanceHistory"
+          },
+          "title": "List of account balance history records"
+        }
+      }
+    },
+    "GetUserCategoryMonthlyExpenditureResponse": {
+      "type": "object",
+      "properties": {
+        "categoryMonthlyExpenditure": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/CategoryMonthlyExpenditure"
+          },
+          "title": "List of CategoryMonthlyExpenditure records for the user"
+        }
+      }
+    },
+    "GetUserCategoryMonthlyIncomeResponse": {
+      "type": "object",
+      "properties": {
+        "categoryMonthlyIncome": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/CategoryMonthlyIncome"
+          }
         }
       }
     },
@@ -3034,6 +4726,49 @@
           "type": "boolean"
         }
       }
+    },
+    "IncomeExpenseRatio": {
+      "type": "object",
+      "properties": {
+        "month": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "ratio": {
+          "type": "number",
+          "format": "double"
+        },
+        "userId": {
+          "type": "string",
+          "format": "uint64"
+        }
+      },
+      "description": "IncomeExpenseRatio\nThis message is used to represent the income expense ratio of a user."
+    },
+    "IncomeMetrics": {
+      "type": "object",
+      "properties": {
+        "month": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "personalFinanceCategoryPrimary": {
+          "type": "string"
+        },
+        "transactionCount": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "totalIncome": {
+          "type": "number",
+          "format": "double"
+        },
+        "userId": {
+          "type": "string",
+          "format": "uint64"
+        }
+      },
+      "description": "IncomeMetrics\nThis message is used to represent the income metrics of a user."
     },
     "InvesmentHolding": {
       "type": "object",
@@ -3363,6 +5098,42 @@
       ],
       "default": "LINK_TYPE_UNSPECIFIED"
     },
+    "ListTransactionAggregatesResponse": {
+      "type": "object",
+      "properties": {
+        "nextPageNumber": {
+          "type": "string"
+        },
+        "aggregates": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/TransactionAggregatesByMonth"
+          }
+        }
+      }
+    },
+    "MerchantMonthlyExpenditure": {
+      "type": "object",
+      "properties": {
+        "month": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "merchantName": {
+          "type": "string"
+        },
+        "totalSpending": {
+          "type": "number",
+          "format": "double"
+        },
+        "userId": {
+          "type": "string",
+          "format": "uint64"
+        }
+      },
+      "description": "MerchantMonthlyExpenditure\nThis message is used to represent the monthly expenditure of a merchant."
+    },
     "Milestone": {
       "type": "object",
       "properties": {
@@ -3402,6 +5173,117 @@
         }
       },
       "title": "Milestone: represents a milestone in the context of simfinni. A financial milestone that is both smart\nand achievable. A milestone is a sub goal of a goal and is tied to a goal by the goal id"
+    },
+    "MonthlyBalance": {
+      "type": "object",
+      "properties": {
+        "month": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "netBalance": {
+          "type": "number",
+          "format": "double"
+        },
+        "userId": {
+          "type": "string",
+          "format": "uint64"
+        }
+      },
+      "description": "MonthlyBalance\nThis message is used to represent the monthly balance of a user."
+    },
+    "MonthlyExpenditure": {
+      "type": "object",
+      "properties": {
+        "month": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "totalSpending": {
+          "type": "number",
+          "format": "double"
+        },
+        "userId": {
+          "type": "string",
+          "format": "uint64"
+        }
+      },
+      "description": "MonthlyExpenditure\nThis message is used to represent the monthly expenditure of a user."
+    },
+    "MonthlyIncome": {
+      "type": "object",
+      "properties": {
+        "month": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "totalIncome": {
+          "type": "number",
+          "format": "double"
+        },
+        "userId": {
+          "type": "string",
+          "format": "uint64"
+        }
+      },
+      "description": "MonthlyIncome\nThis message is used to represent the monthly income of a user."
+    },
+    "MonthlySavings": {
+      "type": "object",
+      "properties": {
+        "month": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "netSavings": {
+          "type": "number",
+          "format": "double"
+        },
+        "userId": {
+          "type": "string",
+          "format": "uint64"
+        }
+      },
+      "description": "MonthlySavings\nThis message is used to represent the monthly savings of a user."
+    },
+    "MonthlyTotalQuantityBySecurityAndUser": {
+      "type": "object",
+      "properties": {
+        "month": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "securityId": {
+          "type": "string"
+        },
+        "totalQuantity": {
+          "type": "number",
+          "format": "double"
+        },
+        "userId": {
+          "type": "string",
+          "format": "uint64"
+        }
+      },
+      "description": "MonthlyTotalQuantityBySecurityAndUser\nThis message is used to represent the monthly total quantity of a security."
+    },
+    "MonthlyTransactionCount": {
+      "type": "object",
+      "properties": {
+        "month": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "transactionCount": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "userId": {
+          "type": "string",
+          "format": "uint64"
+        }
+      },
+      "description": "MonthlyTransactionCount\nThis message is used to represent the monthly transaction count of a user."
     },
     "MortgageAccount": {
       "type": "object",
@@ -3534,6 +5416,27 @@
           "title": "The transactions"
         }
       }
+    },
+    "PaymentChannelMonthlyExpenditure": {
+      "type": "object",
+      "properties": {
+        "month": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "paymentChannel": {
+          "type": "string"
+        },
+        "totalSpending": {
+          "type": "number",
+          "format": "double"
+        },
+        "userId": {
+          "type": "string",
+          "format": "uint64"
+        }
+      },
+      "description": "PaymentChannelMonthlyExpenditure\nThis message is used to represent the monthly expenditure of a payment channel."
     },
     "PlaidExchangeTokenRequest": {
       "type": "object",
@@ -4287,6 +6190,23 @@
         }
       }
     },
+    "TotalInvestmentBySecurity": {
+      "type": "object",
+      "properties": {
+        "securityId": {
+          "type": "string"
+        },
+        "totalInvestment": {
+          "type": "number",
+          "format": "double"
+        },
+        "userId": {
+          "type": "string",
+          "format": "uint64"
+        }
+      },
+      "description": "TotalInvestmentBySecurity\nThis message is used to represent the total investment of a security."
+    },
     "Transaction": {
       "type": "object",
       "properties": {
@@ -4452,6 +6372,40 @@
           }
         }
       }
+    },
+    "TransactionAggregatesByMonth": {
+      "type": "object",
+      "properties": {
+        "month": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "personalFinanceCategoryPrimary": {
+          "type": "string"
+        },
+        "locationCity": {
+          "type": "string"
+        },
+        "paymentChannel": {
+          "type": "string"
+        },
+        "merchantName": {
+          "type": "string"
+        },
+        "transactionCount": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "totalAmount": {
+          "type": "number",
+          "format": "double"
+        },
+        "userId": {
+          "type": "string",
+          "format": "uint64"
+        }
+      },
+      "description": "TransactionAggregatesByMonth\nThis message is used to represent the transaction aggregates of a user."
     },
     "UpdateBankAccountRequest": {
       "type": "object",

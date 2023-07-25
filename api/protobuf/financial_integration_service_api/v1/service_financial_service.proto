@@ -2,7 +2,9 @@ syntax = "proto3";
 
 package financial_integration_service_api.v1;
 
+import "financial_integration_service_api/v1/request_response_financial_analytics_service.proto";
 import "financial_integration_service_api/v1/request_response_financial_service.proto";
+
 import "google/api/annotations.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 
@@ -880,4 +882,455 @@ service FinancialService {
       }
     };
   }
+
+  // Transaction Aggregates By Queries
+  rpc GetTransactionAggregates(GetTransactionAggregatesRequest) returns (GetTransactionAggregatesResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/analytics/transaction-aggregates/{user_id}"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Returns the aggregated transactions for a user and month"
+      tags: ["transaction-aggregates"]
+      operation_id: "TransactionAggregates"
+      description: "This API could accept user_id and month as input parameters and return the aggregated transactions for that user and month."
+      responses: {
+        key: "200"
+        value: {
+          description: "A successful response."
+          schema: {
+            json_schema: {ref: ".api.v1.GetTransactionAggregatesResponse"}
+          }
+        }
+      }
+    };
+  }
+
+  rpc ListTransactionAggregates(ListTransactionAggregatesRequest) returns (ListTransactionAggregatesResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/analytics/transaction-aggregates/{user_id}/pagenumber/{page_number}/pagesize/{page_size}"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Returns the aggregated transactions for a user across all months in a paginated fashion"
+      tags: ["transaction-aggregates"]
+      operation_id: "ListTransactionAggregates"
+      description: "This API accepts user_id as an input parameter and returns the aggregated transactions for that user across all months, paginated."
+      responses: {
+        key: "200"
+        value: {
+          description: "A successful response."
+          schema: {
+            json_schema: {ref: ".api.v1.ListTransactionAggregatesResponse"}
+          }
+        }
+      }
+    };
+  }
+
+  rpc GetUserAccountBalanceHistory(GetUserAccountBalanceHistoryRequest) returns (GetUserAccountBalanceHistoryResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/analytics/balance-history/user/{user_id}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Returns the account balance history for a user"
+      tags: ["balance-history"]
+      operation_id: "GetUserAccountBalanceHistory"
+      description: "This API could accept user_id as input parameters and return the account balance history for that user."
+      responses: {
+        key: "200"
+        value: {
+          description: "A successful response."
+          schema: {
+            json_schema: {ref: ".api.v1.GetUserAccountBalanceHistoryResponse"}
+          }
+        }
+      }
+    };
+  }
+
+  rpc GetAccountBalanceHistory(GetAccountBalanceHistoryRequest) returns (GetAccountBalanceHistoryResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/analytics/balance-history/account/{plaid_account_id}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Returns the account balance history for an account"
+      tags: ["balance-history"]
+      operation_id: "GetAccountBalanceHistory"
+      description: "This API could accept account_id as input parameters and return the account balance history for that account."
+      responses: {
+        key: "200"
+        value: {
+          description: "A successful response."
+          schema: {
+            json_schema: {ref: ".api.v1.GetAccountBalanceHistoryResponse"}
+          }
+        }
+      }
+    };
+  }
+
+  // Get user category monthly expenditure
+  rpc GetUserCategoryMonthlyExpenditure(GetUserCategoryMonthlyExpenditureRequest) returns (GetUserCategoryMonthlyExpenditureResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/analytics/category-monthly-expenditure/user/{user_id}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Returns the monthly category expenditure for a user"
+      tags: ["expenditure"]
+      operation_id: "GetUserCategoryMonthlyExpenditure"
+      description: "This API could accept user_id as an input parameter and return the monthly category expenditure for that user."
+      responses: {
+        key: "200"
+        value: {
+          description: "A successful response."
+          schema: {
+            json_schema: {ref: ".api.v1.GetUserCategoryMonthlyExpenditureResponse"}
+          }
+        }
+      }
+    };
+  }
+
+
+  // Get CategoryMonthlyIncome by Category and User - This would return all CategoryMonthlyIncome records for a specific user for a specific personal finance category
+  rpc GetUserCategoryMonthlyIncome(GetUserCategoryMonthlyIncomeRequest) returns (GetUserCategoryMonthlyIncomeResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/analytics/category-monthly-income/user/{user_id}"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Get monthly income by user for a specific category"
+      tags: ["income"]
+      operation_id: "GetUserCategoryMonthlyIncome"
+      responses: {
+        key: "200"
+        value: {
+          description: "Successful operation"
+          schema: {
+            json_schema: {ref: ".api.v1.GetUserCategoryMonthlyIncomeResponse"}
+          }
+        }
+      }
+    };
+  }
+
+
+  // Get CategoryMonthlyTransactionCount by User - This would return all CategoryMonthlyTransactionCount records for a specific user
+  rpc GetCategoryMonthlyTransactionCount(GetCategoryMonthlyTransactionCountRequest) returns (GetCategoryMonthlyTransactionCountResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/analytics/monthly-transaction-count/{user_id}"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Get monthly transaction count by user, month, and category"
+      tags: ["transactions"]
+      operation_id: "GetCategoryMonthlyTransactionCount"
+      responses: {
+        key: "200"
+        value: {
+          description: "Successful operation"
+          schema: {
+            json_schema: {ref: ".api.v1.GetCategoryMonthlyTransactionCountResponse"}
+          }
+        }
+      }
+    };
+  }
+
+  rpc GetDebtToIncomeRatio(GetDebtToIncomeRatioRequest) returns (GetDebtToIncomeRatioResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/analytics/debt-to-income-ratio/{user_id}"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Get Debt-to-Income ratio by user and month"
+      tags: ["finance"]
+      operation_id: "GetDebtToIncomeRatio"
+      responses: {
+        key: "200"
+        value: {
+          description: "Successful operation"
+          schema: {
+            json_schema: {ref: ".api.v1.GetDebtToIncomeRatioResponse"}
+          }
+        }
+      }
+    };
+  }
+
+  rpc GetExpenseMetrics(GetExpenseMetricsRequest) returns (GetExpenseMetricsResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/analytics/expenses/{user_id}"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Get Expense Metrics by user, month and category"
+      tags: ["finance"]
+      operation_id: "GetExpenseMetrics"
+      responses: {
+        key: "200"
+        value: {
+          description: "Successful operation"
+          schema: {
+            json_schema: {ref: ".api.v1.GetExpenseMetricsResponse"}
+          }
+        }
+      }
+    };
+  }
+
+  rpc GetFinancialProfile(GetFinancialProfileRequest) returns (GetFinancialProfileResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/analytics/finance-profile/{user_id}"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Get Financial Profile by user and month"
+      tags: ["finance"]
+      operation_id: "GetFinancialProfile"
+      responses: {
+        key: "200"
+        value: {
+          description: "Successful operation"
+          schema: {
+            json_schema: {ref: ".api.v1.GetFinancialProfileResponse"}
+          }
+        }
+      }
+    };
+  }
+
+  rpc GetIncomeExpenseRatio(GetIncomeExpenseRatioRequest) returns (GetIncomeExpenseRatioResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/analytics/income-expense-ratio/{user_id}"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Get Income Expense Ratio by user and month"
+      tags: ["finance"]
+      operation_id: "GetIncomeExpenseRatio"
+      responses: {
+        key: "200"
+        value: {
+          description: "Successful operation"
+          schema: {
+            json_schema: {ref: ".api.v1.GetIncomeExpenseRatioResponse"}
+          }
+        }
+      }
+    };
+  }
+
+  rpc GetIncomeMetrics(GetIncomeMetricsRequest) returns (GetIncomeMetricsResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/analytics/income/{user_id}"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Get Income Metrics by user, month and category"
+      tags: ["finance"]
+      operation_id: "GetIncomeMetrics"
+      responses: {
+        key: "200"
+        value: {
+          description: "Successful operation"
+          schema: {
+            json_schema: {ref: ".api.v1.GetIncomeMetricsResponse"}
+          }
+        }
+      }
+    };
+  }
+
+  rpc GetMerchantMonthlyExpenditure(GetMerchantMonthlyExpenditureRequest) returns (GetMerchantMonthlyExpenditureResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/finance/merchant-expenditure/{user_id}/{month}/{merchant_name}"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Get Merchant Monthly Expenditure by user, month and merchant name"
+      tags: ["finance"]
+      operation_id: "GetMerchantMonthlyExpenditure"
+      responses: {
+        key: "200"
+        value: {
+          description: "Successful operation"
+          schema: {
+            json_schema: {ref: ".api.v1.GetMerchantMonthlyExpenditureResponse"}
+          }
+        }
+      }
+    };
+  }
+
+  rpc GetMonthlyBalance(GetMonthlyBalanceRequest) returns (GetMonthlyBalanceResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/finance/balance/{user_id}/{month}"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Get Monthly Balance by user and month"
+      tags: ["finance"]
+      operation_id: "GetMonthlyBalance"
+      responses: {
+        key: "200"
+        value: {
+          description: "Successful operation"
+          schema: {
+            json_schema: {ref: ".api.v1.GetMonthlyBalanceResponse"}
+          }
+        }
+      }
+    };
+  }
+
+  rpc GetMonthlyExpenditure(GetMonthlyExpenditureRequest) returns (GetMonthlyExpenditureResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/finance/expenditure/{user_id}/{month}"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Get Monthly Expenditure by user and month"
+      tags: ["finance"]
+      operation_id: "GetMonthlyExpenditure"
+      responses: {
+        key: "200"
+        value: {
+          description: "Successful operation"
+          schema: {
+            json_schema: {ref: ".api.v1.GetMonthlyExpenditureResponse"}
+          }
+        }
+      }
+    };
+  }
+
+  rpc GetMonthlyIncome(GetMonthlyIncomeRequest) returns (GetMonthlyIncomeResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/finance/income/{user_id}/{month}"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Get Monthly Income by user and month"
+      tags: ["finance"]
+      operation_id: "GetMonthlyIncome"
+      responses: {
+        key: "200"
+        value: {
+          description: "Successful operation"
+          schema: {
+            json_schema: {ref: ".api.v1.GetMonthlyIncomeResponse"}
+          }
+        }
+      }
+    };
+  }
+
+  rpc GetMonthlySavings(GetMonthlySavingsRequest) returns (GetMonthlySavingsResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/finance/savings/{user_id}/{month}"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Get Monthly Savings by user and month"
+      tags: ["finance"]
+      operation_id: "GetMonthlySavings"
+      responses: {
+        key: "200"
+        value: {
+          description: "Successful operation"
+          schema: {
+            json_schema: {ref: ".api.v1.GetMonthlySavingsResponse"}
+          }
+        }
+      }
+    };
+  }
+
+
+  rpc GetMonthlyTotalQuantityBySecurityAndUser(GetMonthlyTotalQuantityBySecurityAndUserRequest) returns (GetMonthlyTotalQuantityBySecurityAndUserResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/finance/security-quantity/{user_id}/{month}/{security_id}"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Get Monthly Total Quantity of Security by user, month and security"
+      tags: ["finance"]
+      operation_id: "GetMonthlyTotalQuantityBySecurityAndUser"
+      responses: {
+        key: "200"
+        value: {
+          description: "Successful operation"
+          schema: {
+            json_schema: {ref: ".api.v1.GetMonthlyTotalQuantityBySecurityAndUserResponse"}
+          }
+        }
+      }
+    };
+  }
+
+  rpc GetMonthlyTransactionCount(GetMonthlyTransactionCountRequest) returns (GetMonthlyTransactionCountResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/finance/transaction-count/{user_id}/{month}"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Get Monthly Transaction Count by user and month"
+      tags: ["finance"]
+      operation_id: "GetMonthlyTransactionCount"
+      responses: {
+        key: "200"
+        value: {
+          description: "Successful operation"
+          schema: {
+            json_schema: {ref: ".api.v1.GetMonthlyTransactionCountResponse"}
+          }
+        }
+      }
+    };
+  }
+
+  rpc GetPaymentChannelMonthlyExpenditure(GetPaymentChannelMonthlyExpenditureRequest) returns (GetPaymentChannelMonthlyExpenditureResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/finance/payment-channel-expenditure/{user_id}/{month}/{payment_channel}"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Get Payment Channel Monthly Expenditure by user, month, and payment channel"
+      tags: ["finance"]
+      operation_id: "GetPaymentChannelMonthlyExpenditure"
+      responses: {
+        key: "200"
+        value: {
+          description: "Successful operation"
+          schema: {
+            json_schema: {ref: ".api.v1.GetPaymentChannelMonthlyExpenditureResponse"}
+          }
+        }
+      }
+    };
+  }
+
+  rpc GetTotalInvestmentBySecurity(GetTotalInvestmentBySecurityRequest) returns (GetTotalInvestmentBySecurityResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/finance/total-investment/{user_id}/{security_id}"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Get Total Investment by user and security"
+      tags: ["finance"]
+      operation_id: "GetTotalInvestmentBySecurity"
+      responses: {
+        key: "200"
+        value: {
+          description: "Successful operation"
+          schema: {
+            json_schema: {ref: ".api.v1.GetTotalInvestmentBySecurityResponse"}
+          }
+        }
+      }
+    };
+  }
+
 }

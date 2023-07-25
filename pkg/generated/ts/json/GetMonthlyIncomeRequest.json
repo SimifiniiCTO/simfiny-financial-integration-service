@@ -1,0 +1,20 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/GetMonthlyIncomeRequest",
+    "definitions": {
+        "GetMonthlyIncomeRequest": {
+            "properties": {
+                "user_id": {
+                    "type": "string"
+                },
+                "month": {
+                    "type": "integer"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Get Monthly Income Request",
+            "description": "GetMonthlyIncome RPC"
+        }
+    }
+}
