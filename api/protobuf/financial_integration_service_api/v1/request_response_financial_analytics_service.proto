@@ -43,7 +43,7 @@ message ListTransactionAggregatesRequest {
     (validate.rules).uint64.gt = 0,
     (google.api.field_behavior) = REQUIRED
   ];
-  string page_number = 2;
+  int32 page_number = 2;
   int32 page_size = 3;  // Number of items to return per page.
 }
 
@@ -58,6 +58,8 @@ message GetUserAccountBalanceHistoryRequest {
     (validate.rules).uint64.gt = 0,
     (google.api.field_behavior) = REQUIRED
   ]; // User ID
+  int32 page_number = 2;
+  int32 page_size = 3;  // Number of items to return per page.
 }
 
 message GetUserAccountBalanceHistoryResponse {
@@ -66,12 +68,13 @@ message GetUserAccountBalanceHistoryResponse {
 
 message GetAccountBalanceHistoryRequest {
   string plaid_account_id = 1; // Account ID
+  int32 page_number = 2;
+  int32 page_size = 3;  // Number of items to return per page.
 }
 
 message GetAccountBalanceHistoryResponse {
   repeated AccountBalanceHistory account_balance_history = 1; // List of account balance history records for specific account
 }
-
 
 // CategoryMonthlyExpenditure
 message GetUserCategoryMonthlyExpenditureRequest {
@@ -81,7 +84,6 @@ message GetUserCategoryMonthlyExpenditureRequest {
   ]; // User ID
   string personal_finance_category_primary = 2; // Personal finance category
   uint32 month = 3; // Month in the format of YYYYMM
-
 }
 
 message GetUserCategoryMonthlyExpenditureResponse {
