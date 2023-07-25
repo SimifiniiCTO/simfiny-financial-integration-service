@@ -125,8 +125,6 @@
     - [GetUserCategoryMonthlyExpenditureResponse](#financial_integration_service_api-v1-GetUserCategoryMonthlyExpenditureResponse)
     - [GetUserCategoryMonthlyIncomeRequest](#financial_integration_service_api-v1-GetUserCategoryMonthlyIncomeRequest)
     - [GetUserCategoryMonthlyIncomeResponse](#financial_integration_service_api-v1-GetUserCategoryMonthlyIncomeResponse)
-    - [ListCategoryMonthlyTransactionCountRequest](#financial_integration_service_api-v1-ListCategoryMonthlyTransactionCountRequest)
-    - [ListCategoryMonthlyTransactionCountResponse](#financial_integration_service_api-v1-ListCategoryMonthlyTransactionCountResponse)
     - [ListDebtToIncomeRatioRequest](#financial_integration_service_api-v1-ListDebtToIncomeRatioRequest)
     - [ListDebtToIncomeRatioResponse](#financial_integration_service_api-v1-ListDebtToIncomeRatioResponse)
     - [ListExpenseMetricsRequest](#financial_integration_service_api-v1-ListExpenseMetricsRequest)
@@ -1911,6 +1909,8 @@ such as the id, user_id tied to the profile, and many more
 | user_id | [uint64](#uint64) |  | has to be present and defined |
 | month | [uint32](#uint32) |  | optional |
 | personal_finance_category_primary | [string](#string) |  | optional |
+| page_number | [int64](#int64) |  |  |
+| page_size | [int64](#int64) |  | Number of items to return per page. |
 
 
 
@@ -1926,6 +1926,7 @@ such as the id, user_id tied to the profile, and many more
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | category_monthly_transaction_count | [CategoryMonthlyTransactionCount](#financial_integration_service_api-v1-CategoryMonthlyTransactionCount) | repeated |  |
+| next_page_number | [int64](#int64) |  |  |
 
 
 
@@ -2558,39 +2559,6 @@ CategoryMonthlyExpenditure
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | category_monthly_income | [CategoryMonthlyIncome](#financial_integration_service_api-v1-CategoryMonthlyIncome) | repeated |  |
-| next_page_number | [int64](#int64) |  |  |
-
-
-
-
-
-
-<a name="financial_integration_service_api-v1-ListCategoryMonthlyTransactionCountRequest"></a>
-
-### ListCategoryMonthlyTransactionCountRequest
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| user_id | [uint64](#uint64) |  | has to be present and defined |
-| page_number | [int64](#int64) |  |  |
-| page_size | [int64](#int64) |  | Number of items to return per page. |
-
-
-
-
-
-
-<a name="financial_integration_service_api-v1-ListCategoryMonthlyTransactionCountResponse"></a>
-
-### ListCategoryMonthlyTransactionCountResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| category_monthly_transaction_count | [CategoryMonthlyTransactionCount](#financial_integration_service_api-v1-CategoryMonthlyTransactionCount) | repeated |  |
 | next_page_number | [int64](#int64) |  |  |
 
 
@@ -4261,7 +4229,6 @@ FinancialService API.
 | GetUserCategoryMonthlyExpenditure | [GetUserCategoryMonthlyExpenditureRequest](#financial_integration_service_api-v1-GetUserCategoryMonthlyExpenditureRequest) | [GetUserCategoryMonthlyExpenditureResponse](#financial_integration_service_api-v1-GetUserCategoryMonthlyExpenditureResponse) | Get user category monthly expenditure |
 | GetUserCategoryMonthlyIncome | [GetUserCategoryMonthlyIncomeRequest](#financial_integration_service_api-v1-GetUserCategoryMonthlyIncomeRequest) | [GetUserCategoryMonthlyIncomeResponse](#financial_integration_service_api-v1-GetUserCategoryMonthlyIncomeResponse) | Get CategoryMonthlyIncome by Category and User - This would return all CategoryMonthlyIncome records for a specific user for a specific personal finance category |
 | GetCategoryMonthlyTransactionCount | [GetCategoryMonthlyTransactionCountRequest](#financial_integration_service_api-v1-GetCategoryMonthlyTransactionCountRequest) | [GetCategoryMonthlyTransactionCountResponse](#financial_integration_service_api-v1-GetCategoryMonthlyTransactionCountResponse) | Get CategoryMonthlyTransactionCount by User - This would return all CategoryMonthlyTransactionCount records for a specific user |
-| ListCategoryMonthlyTransactionCount | [ListCategoryMonthlyTransactionCountRequest](#financial_integration_service_api-v1-ListCategoryMonthlyTransactionCountRequest) | [ListCategoryMonthlyTransactionCountResponse](#financial_integration_service_api-v1-ListCategoryMonthlyTransactionCountResponse) |  |
 | GetDebtToIncomeRatio | [GetDebtToIncomeRatioRequest](#financial_integration_service_api-v1-GetDebtToIncomeRatioRequest) | [GetDebtToIncomeRatioResponse](#financial_integration_service_api-v1-GetDebtToIncomeRatioResponse) |  |
 | ListDebtToIncomeRatio | [ListDebtToIncomeRatioRequest](#financial_integration_service_api-v1-ListDebtToIncomeRatioRequest) | [ListDebtToIncomeRatioResponse](#financial_integration_service_api-v1-ListDebtToIncomeRatioResponse) |  |
 | GetExpenseMetrics | [GetExpenseMetricsRequest](#financial_integration_service_api-v1-GetExpenseMetricsRequest) | [GetExpenseMetricsResponse](#financial_integration_service_api-v1-GetExpenseMetricsResponse) |  |

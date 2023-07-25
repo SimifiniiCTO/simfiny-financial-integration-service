@@ -481,7 +481,8 @@
           }
         ],
         "tags": [
-          "expenditure"
+          "category",
+          "expenditures"
         ]
       }
     },
@@ -559,6 +560,7 @@
           }
         ],
         "tags": [
+          "category",
           "income"
         ]
       }
@@ -622,75 +624,25 @@
             "in": "query",
             "required": false,
             "type": "string"
-          }
-        ],
-        "tags": [
-          "transactions"
-        ]
-      }
-    },
-    "/api/v1/analytics/category-monthly-transaction-count/{userId}/pagenumber/{pageNumber}/pagesize/{pageSize}": {
-      "get": {
-        "summary": "Get monthly transaction count by user, month, and category",
-        "operationId": "GetCategoryMonthlyTransactionCount",
-        "responses": {
-          "200": {
-            "description": "Successful operation",
-            "schema": {
-              "$ref": ".api.v1.GetCategoryMonthlyTransactionCountResponse"
-            }
-          },
-          "400": {
-            "description": "Request failed due to invalid input.",
-            "schema": {
-              "$ref": ".api.v1.ValidationErrorMessageResponse"
-            }
-          },
-          "404": {
-            "description": "Request failed due to incorrect path.",
-            "schema": {
-              "$ref": ".api.v1.PathUnknownErrorMessageResponse"
-            }
-          },
-          "500": {
-            "description": "Request failed due to internal server error.",
-            "schema": {
-              "$ref": ".api.v1.InternalErrorMessageResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "userId",
-            "description": "has to be present and defined",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "format": "uint64"
           },
           {
             "name": "pageNumber",
-            "in": "path",
-            "required": true,
+            "in": "query",
+            "required": false,
             "type": "string",
             "format": "int64"
           },
           {
             "name": "pageSize",
             "description": "Number of items to return per page.",
-            "in": "path",
-            "required": true,
+            "in": "query",
+            "required": false,
             "type": "string",
             "format": "int64"
           }
         ],
         "tags": [
+          "category",
           "transactions"
         ]
       }
@@ -5122,6 +5074,10 @@
             "type": "object",
             "$ref": "#/definitions/CategoryMonthlyTransactionCount"
           }
+        },
+        "nextPageNumber": {
+          "type": "string",
+          "format": "int64"
         }
       }
     },
@@ -5992,22 +5948,6 @@
         "LINK_TYPE_MANUAL"
       ],
       "default": "LINK_TYPE_UNSPECIFIED"
-    },
-    "ListCategoryMonthlyTransactionCountResponse": {
-      "type": "object",
-      "properties": {
-        "categoryMonthlyTransactionCount": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/CategoryMonthlyTransactionCount"
-          }
-        },
-        "nextPageNumber": {
-          "type": "string",
-          "format": "int64"
-        }
-      }
     },
     "ListDebtToIncomeRatioResponse": {
       "type": "object",

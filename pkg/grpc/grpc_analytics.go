@@ -8,12 +8,6 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (s *Server) GetCategoryMonthlyTransactionCount(context.Context, *proto.GetCategoryMonthlyTransactionCountRequest) (*proto.GetCategoryMonthlyTransactionCountResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetCategoryMonthlyTransactionCount not implemented")
-}
-func (s *Server) ListCategoryMonthlyTransactionCount(context.Context, *proto.ListCategoryMonthlyTransactionCountRequest) (*proto.ListCategoryMonthlyTransactionCountResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListCategoryMonthlyTransactionCount not implemented")
-}
 func (s *Server) GetDebtToIncomeRatio(context.Context, *proto.GetDebtToIncomeRatioRequest) (*proto.GetDebtToIncomeRatioResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetDebtToIncomeRatio not implemented")
 }

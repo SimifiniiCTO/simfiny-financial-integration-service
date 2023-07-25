@@ -111,21 +111,12 @@ export interface GetCategoryMonthlyTransactionCountRequest {
   month: number;
   /** optional */
   personalFinanceCategoryPrimary: string;
-}
-
-export interface GetCategoryMonthlyTransactionCountResponse {
-  categoryMonthlyTransactionCount: CategoryMonthlyTransactionCount[];
-}
-
-export interface ListCategoryMonthlyTransactionCountRequest {
-  /** has to be present and defined */
-  userId: number;
   pageNumber: number;
   /** Number of items to return per page. */
   pageSize: number;
 }
 
-export interface ListCategoryMonthlyTransactionCountResponse {
+export interface GetCategoryMonthlyTransactionCountResponse {
   categoryMonthlyTransactionCount: CategoryMonthlyTransactionCount[];
   nextPageNumber: number;
 }
@@ -1396,7 +1387,7 @@ export const GetUserCategoryMonthlyIncomeResponse = {
 };
 
 function createBaseGetCategoryMonthlyTransactionCountRequest(): GetCategoryMonthlyTransactionCountRequest {
-  return { userId: 0, month: 0, personalFinanceCategoryPrimary: "" };
+  return { userId: 0, month: 0, personalFinanceCategoryPrimary: "", pageNumber: 0, pageSize: 0 };
 }
 
 export const GetCategoryMonthlyTransactionCountRequest = {
@@ -1409,6 +1400,12 @@ export const GetCategoryMonthlyTransactionCountRequest = {
     }
     if (message.personalFinanceCategoryPrimary !== "") {
       writer.uint32(26).string(message.personalFinanceCategoryPrimary);
+    }
+    if (message.pageNumber !== 0) {
+      writer.uint32(32).int64(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      writer.uint32(40).int64(message.pageSize);
     }
     return writer;
   },
@@ -1441,6 +1438,20 @@ export const GetCategoryMonthlyTransactionCountRequest = {
 
           message.personalFinanceCategoryPrimary = reader.string();
           continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.pageNumber = longToNumber(reader.int64() as Long);
+          continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.pageSize = longToNumber(reader.int64() as Long);
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1457,6 +1468,8 @@ export const GetCategoryMonthlyTransactionCountRequest = {
       personalFinanceCategoryPrimary: isSet(object.personalFinanceCategoryPrimary)
         ? String(object.personalFinanceCategoryPrimary)
         : "",
+      pageNumber: isSet(object.pageNumber) ? Number(object.pageNumber) : 0,
+      pageSize: isSet(object.pageSize) ? Number(object.pageSize) : 0,
     };
   },
 
@@ -1470,6 +1483,12 @@ export const GetCategoryMonthlyTransactionCountRequest = {
     }
     if (message.personalFinanceCategoryPrimary !== "") {
       obj.personalFinanceCategoryPrimary = message.personalFinanceCategoryPrimary;
+    }
+    if (message.pageNumber !== 0) {
+      obj.pageNumber = Math.round(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      obj.pageSize = Math.round(message.pageSize);
     }
     return obj;
   },
@@ -1487,179 +1506,18 @@ export const GetCategoryMonthlyTransactionCountRequest = {
     message.userId = object.userId ?? 0;
     message.month = object.month ?? 0;
     message.personalFinanceCategoryPrimary = object.personalFinanceCategoryPrimary ?? "";
-    return message;
-  },
-};
-
-function createBaseGetCategoryMonthlyTransactionCountResponse(): GetCategoryMonthlyTransactionCountResponse {
-  return { categoryMonthlyTransactionCount: [] };
-}
-
-export const GetCategoryMonthlyTransactionCountResponse = {
-  encode(message: GetCategoryMonthlyTransactionCountResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    for (const v of message.categoryMonthlyTransactionCount) {
-      CategoryMonthlyTransactionCount.encode(v!, writer.uint32(10).fork()).ldelim();
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): GetCategoryMonthlyTransactionCountResponse {
-    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseGetCategoryMonthlyTransactionCountResponse();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          if (tag !== 10) {
-            break;
-          }
-
-          message.categoryMonthlyTransactionCount.push(CategoryMonthlyTransactionCount.decode(reader, reader.uint32()));
-          continue;
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skipType(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): GetCategoryMonthlyTransactionCountResponse {
-    return {
-      categoryMonthlyTransactionCount: Array.isArray(object?.categoryMonthlyTransactionCount)
-        ? object.categoryMonthlyTransactionCount.map((e: any) => CategoryMonthlyTransactionCount.fromJSON(e))
-        : [],
-    };
-  },
-
-  toJSON(message: GetCategoryMonthlyTransactionCountResponse): unknown {
-    const obj: any = {};
-    if (message.categoryMonthlyTransactionCount?.length) {
-      obj.categoryMonthlyTransactionCount = message.categoryMonthlyTransactionCount.map((e) =>
-        CategoryMonthlyTransactionCount.toJSON(e)
-      );
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<GetCategoryMonthlyTransactionCountResponse>, I>>(
-    base?: I,
-  ): GetCategoryMonthlyTransactionCountResponse {
-    return GetCategoryMonthlyTransactionCountResponse.fromPartial(base ?? {});
-  },
-
-  fromPartial<I extends Exact<DeepPartial<GetCategoryMonthlyTransactionCountResponse>, I>>(
-    object: I,
-  ): GetCategoryMonthlyTransactionCountResponse {
-    const message = createBaseGetCategoryMonthlyTransactionCountResponse();
-    message.categoryMonthlyTransactionCount =
-      object.categoryMonthlyTransactionCount?.map((e) => CategoryMonthlyTransactionCount.fromPartial(e)) || [];
-    return message;
-  },
-};
-
-function createBaseListCategoryMonthlyTransactionCountRequest(): ListCategoryMonthlyTransactionCountRequest {
-  return { userId: 0, pageNumber: 0, pageSize: 0 };
-}
-
-export const ListCategoryMonthlyTransactionCountRequest = {
-  encode(message: ListCategoryMonthlyTransactionCountRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.userId !== 0) {
-      writer.uint32(8).uint64(message.userId);
-    }
-    if (message.pageNumber !== 0) {
-      writer.uint32(16).int64(message.pageNumber);
-    }
-    if (message.pageSize !== 0) {
-      writer.uint32(24).int64(message.pageSize);
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): ListCategoryMonthlyTransactionCountRequest {
-    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseListCategoryMonthlyTransactionCountRequest();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          if (tag !== 8) {
-            break;
-          }
-
-          message.userId = longToNumber(reader.uint64() as Long);
-          continue;
-        case 2:
-          if (tag !== 16) {
-            break;
-          }
-
-          message.pageNumber = longToNumber(reader.int64() as Long);
-          continue;
-        case 3:
-          if (tag !== 24) {
-            break;
-          }
-
-          message.pageSize = longToNumber(reader.int64() as Long);
-          continue;
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skipType(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): ListCategoryMonthlyTransactionCountRequest {
-    return {
-      userId: isSet(object.userId) ? Number(object.userId) : 0,
-      pageNumber: isSet(object.pageNumber) ? Number(object.pageNumber) : 0,
-      pageSize: isSet(object.pageSize) ? Number(object.pageSize) : 0,
-    };
-  },
-
-  toJSON(message: ListCategoryMonthlyTransactionCountRequest): unknown {
-    const obj: any = {};
-    if (message.userId !== 0) {
-      obj.userId = Math.round(message.userId);
-    }
-    if (message.pageNumber !== 0) {
-      obj.pageNumber = Math.round(message.pageNumber);
-    }
-    if (message.pageSize !== 0) {
-      obj.pageSize = Math.round(message.pageSize);
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<ListCategoryMonthlyTransactionCountRequest>, I>>(
-    base?: I,
-  ): ListCategoryMonthlyTransactionCountRequest {
-    return ListCategoryMonthlyTransactionCountRequest.fromPartial(base ?? {});
-  },
-
-  fromPartial<I extends Exact<DeepPartial<ListCategoryMonthlyTransactionCountRequest>, I>>(
-    object: I,
-  ): ListCategoryMonthlyTransactionCountRequest {
-    const message = createBaseListCategoryMonthlyTransactionCountRequest();
-    message.userId = object.userId ?? 0;
     message.pageNumber = object.pageNumber ?? 0;
     message.pageSize = object.pageSize ?? 0;
     return message;
   },
 };
 
-function createBaseListCategoryMonthlyTransactionCountResponse(): ListCategoryMonthlyTransactionCountResponse {
+function createBaseGetCategoryMonthlyTransactionCountResponse(): GetCategoryMonthlyTransactionCountResponse {
   return { categoryMonthlyTransactionCount: [], nextPageNumber: 0 };
 }
 
-export const ListCategoryMonthlyTransactionCountResponse = {
-  encode(message: ListCategoryMonthlyTransactionCountResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const GetCategoryMonthlyTransactionCountResponse = {
+  encode(message: GetCategoryMonthlyTransactionCountResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.categoryMonthlyTransactionCount) {
       CategoryMonthlyTransactionCount.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -1669,10 +1527,10 @@ export const ListCategoryMonthlyTransactionCountResponse = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): ListCategoryMonthlyTransactionCountResponse {
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetCategoryMonthlyTransactionCountResponse {
     const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseListCategoryMonthlyTransactionCountResponse();
+    const message = createBaseGetCategoryMonthlyTransactionCountResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1699,7 +1557,7 @@ export const ListCategoryMonthlyTransactionCountResponse = {
     return message;
   },
 
-  fromJSON(object: any): ListCategoryMonthlyTransactionCountResponse {
+  fromJSON(object: any): GetCategoryMonthlyTransactionCountResponse {
     return {
       categoryMonthlyTransactionCount: Array.isArray(object?.categoryMonthlyTransactionCount)
         ? object.categoryMonthlyTransactionCount.map((e: any) => CategoryMonthlyTransactionCount.fromJSON(e))
@@ -1708,7 +1566,7 @@ export const ListCategoryMonthlyTransactionCountResponse = {
     };
   },
 
-  toJSON(message: ListCategoryMonthlyTransactionCountResponse): unknown {
+  toJSON(message: GetCategoryMonthlyTransactionCountResponse): unknown {
     const obj: any = {};
     if (message.categoryMonthlyTransactionCount?.length) {
       obj.categoryMonthlyTransactionCount = message.categoryMonthlyTransactionCount.map((e) =>
@@ -1721,16 +1579,16 @@ export const ListCategoryMonthlyTransactionCountResponse = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<ListCategoryMonthlyTransactionCountResponse>, I>>(
+  create<I extends Exact<DeepPartial<GetCategoryMonthlyTransactionCountResponse>, I>>(
     base?: I,
-  ): ListCategoryMonthlyTransactionCountResponse {
-    return ListCategoryMonthlyTransactionCountResponse.fromPartial(base ?? {});
+  ): GetCategoryMonthlyTransactionCountResponse {
+    return GetCategoryMonthlyTransactionCountResponse.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<ListCategoryMonthlyTransactionCountResponse>, I>>(
+  fromPartial<I extends Exact<DeepPartial<GetCategoryMonthlyTransactionCountResponse>, I>>(
     object: I,
-  ): ListCategoryMonthlyTransactionCountResponse {
-    const message = createBaseListCategoryMonthlyTransactionCountResponse();
+  ): GetCategoryMonthlyTransactionCountResponse {
+    const message = createBaseGetCategoryMonthlyTransactionCountResponse();
     message.categoryMonthlyTransactionCount =
       object.categoryMonthlyTransactionCount?.map((e) => CategoryMonthlyTransactionCount.fromPartial(e)) || [];
     message.nextPageNumber = object.nextPageNumber ?? 0;

@@ -2499,98 +2499,6 @@ func local_request_FinancialService_GetCategoryMonthlyTransactionCount_0(ctx con
 
 }
 
-func request_FinancialService_ListCategoryMonthlyTransactionCount_0(ctx context.Context, marshaler runtime.Marshaler, client FinancialServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ListCategoryMonthlyTransactionCountRequest
-	var metadata runtime.ServerMetadata
-
-	var (
-		val string
-		ok  bool
-		err error
-		_   = err
-	)
-
-	val, ok = pathParams["user_id"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "user_id")
-	}
-
-	protoReq.UserId, err = runtime.Uint64(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "user_id", err)
-	}
-
-	val, ok = pathParams["page_number"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_number")
-	}
-
-	protoReq.PageNumber, err = runtime.Int64(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_number", err)
-	}
-
-	val, ok = pathParams["page_size"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_size")
-	}
-
-	protoReq.PageSize, err = runtime.Int64(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_size", err)
-	}
-
-	msg, err := client.ListCategoryMonthlyTransactionCount(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
-	return msg, metadata, err
-
-}
-
-func local_request_FinancialService_ListCategoryMonthlyTransactionCount_0(ctx context.Context, marshaler runtime.Marshaler, server FinancialServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ListCategoryMonthlyTransactionCountRequest
-	var metadata runtime.ServerMetadata
-
-	var (
-		val string
-		ok  bool
-		err error
-		_   = err
-	)
-
-	val, ok = pathParams["user_id"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "user_id")
-	}
-
-	protoReq.UserId, err = runtime.Uint64(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "user_id", err)
-	}
-
-	val, ok = pathParams["page_number"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_number")
-	}
-
-	protoReq.PageNumber, err = runtime.Int64(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_number", err)
-	}
-
-	val, ok = pathParams["page_size"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_size")
-	}
-
-	protoReq.PageSize, err = runtime.Int64(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_size", err)
-	}
-
-	msg, err := server.ListCategoryMonthlyTransactionCount(ctx, &protoReq)
-	return msg, metadata, err
-
-}
-
 var (
 	filter_FinancialService_GetDebtToIncomeRatio_0 = &utilities.DoubleArray{Encoding: map[string]int{"user_id": 0, "userId": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
 )
@@ -5493,31 +5401,6 @@ func RegisterFinancialServiceHandlerServer(ctx context.Context, mux *runtime.Ser
 
 	})
 
-	mux.Handle("GET", pattern_FinancialService_ListCategoryMonthlyTransactionCount_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		ctx, cancel := context.WithCancel(req.Context())
-		defer cancel()
-		var stream runtime.ServerTransportStream
-		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/ListCategoryMonthlyTransactionCount", runtime.WithHTTPPathPattern("/api/v1/analytics/category-monthly-transaction-count/{user_id}/pagenumber/{page_number}/pagesize/{page_size}"))
-		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-			return
-		}
-		resp, md, err := local_request_FinancialService_ListCategoryMonthlyTransactionCount_0(annotatedContext, inboundMarshaler, server, req, pathParams)
-		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
-		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
-			return
-		}
-
-		forward_FinancialService_ListCategoryMonthlyTransactionCount_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
-	})
-
 	mux.Handle("GET", pattern_FinancialService_GetDebtToIncomeRatio_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
@@ -7165,28 +7048,6 @@ func RegisterFinancialServiceHandlerClient(ctx context.Context, mux *runtime.Ser
 
 	})
 
-	mux.Handle("GET", pattern_FinancialService_ListCategoryMonthlyTransactionCount_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		ctx, cancel := context.WithCancel(req.Context())
-		defer cancel()
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/ListCategoryMonthlyTransactionCount", runtime.WithHTTPPathPattern("/api/v1/analytics/category-monthly-transaction-count/{user_id}/pagenumber/{page_number}/pagesize/{page_size}"))
-		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-			return
-		}
-		resp, md, err := request_FinancialService_ListCategoryMonthlyTransactionCount_0(annotatedContext, inboundMarshaler, client, req, pathParams)
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
-		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
-			return
-		}
-
-		forward_FinancialService_ListCategoryMonthlyTransactionCount_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
-	})
-
 	mux.Handle("GET", pattern_FinancialService_GetDebtToIncomeRatio_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
@@ -7771,8 +7632,6 @@ var (
 
 	pattern_FinancialService_GetCategoryMonthlyTransactionCount_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"api", "v1", "analytics", "category-monthly-transaction-count", "user_id"}, ""))
 
-	pattern_FinancialService_ListCategoryMonthlyTransactionCount_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4, 2, 5, 1, 0, 4, 1, 5, 6, 2, 7, 1, 0, 4, 1, 5, 8}, []string{"api", "v1", "analytics", "category-monthly-transaction-count", "user_id", "pagenumber", "page_number", "pagesize", "page_size"}, ""))
-
 	pattern_FinancialService_GetDebtToIncomeRatio_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"api", "v1", "analytics", "debt-to-income-ratio", "user_id"}, ""))
 
 	pattern_FinancialService_ListDebtToIncomeRatio_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4, 2, 5, 1, 0, 4, 1, 5, 6, 2, 7, 1, 0, 4, 1, 5, 8}, []string{"api", "v1", "analytics", "debt-to-income-ratio", "user_id", "pagenumber", "page_number", "pagesize", "page_size"}, ""))
@@ -7914,8 +7773,6 @@ var (
 	forward_FinancialService_GetUserCategoryMonthlyIncome_0 = runtime.ForwardResponseMessage
 
 	forward_FinancialService_GetCategoryMonthlyTransactionCount_0 = runtime.ForwardResponseMessage
-
-	forward_FinancialService_ListCategoryMonthlyTransactionCount_0 = runtime.ForwardResponseMessage
 
 	forward_FinancialService_GetDebtToIncomeRatio_0 = runtime.ForwardResponseMessage
 

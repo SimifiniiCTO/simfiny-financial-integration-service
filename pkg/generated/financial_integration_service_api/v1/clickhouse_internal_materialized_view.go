@@ -133,6 +133,41 @@ func (source *CategoryMonthlyIncomeInternal) ConvertToProto() *CategoryMonthlyIn
 	}
 }
 
+type CategoryMonthlyTransactionCountInternal struct {
+	ch.CHModel                     `ch:"CategoryMonthlyTransactionCount,partition:toYYYYMM(time)"`
+	Month                          uint32 `ch:"Month,type:UInt32"`
+	PersonalFinanceCategoryPrimary string `ch:"PersonalFinanceCategoryPrimary,type:String"`
+	TransactionCount               uint32 `ch:"TransactionCount,type:UInt32"`
+	UserId                         uint64 `ch:"UserId,type:UInt64"`
+}
+
+func (source *CategoryMonthlyTransactionCountInternal) ConvertToORM() *CategoryMonthlyTransactionCountORM {
+	return &CategoryMonthlyTransactionCountORM{
+		Month:                          source.Month,
+		PersonalFinanceCategoryPrimary: source.PersonalFinanceCategoryPrimary,
+		TransactionCount:               source.TransactionCount,
+		UserId:                         source.UserId,
+	}
+}
+
+func (source *CategoryMonthlyTransactionCountORM) ConvertToInternal() *CategoryMonthlyTransactionCountInternal {
+	return &CategoryMonthlyTransactionCountInternal{
+		Month:                          source.Month,
+		PersonalFinanceCategoryPrimary: source.PersonalFinanceCategoryPrimary,
+		TransactionCount:               source.TransactionCount,
+		UserId:                         source.UserId,
+	}
+}
+
+func (source *CategoryMonthlyTransactionCountInternal) ConvertToProto() *CategoryMonthlyTransactionCount {
+	return &CategoryMonthlyTransactionCount{
+		Month:                          source.Month,
+		PersonalFinanceCategoryPrimary: source.PersonalFinanceCategoryPrimary,
+		TransactionCount:               source.TransactionCount,
+		UserId:                         source.UserId,
+	}
+}
+
 /*
 * This view will aggregate all expenses (transactions where the Amount is less than zero) by category and month.
 * If your definition of "expense metrics" is different, you might need to adjust the query accordingly.*

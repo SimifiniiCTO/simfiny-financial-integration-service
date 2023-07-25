@@ -955,7 +955,7 @@ service FinancialService {
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "Returns the monthly category expenditure for a user"
-      tags: ["expenditure"]
+      tags: ["category", "expenditures"]
       operation_id: "GetUserCategoryMonthlyExpenditure"
       description: "This API could accept user_id as an input parameter and return the monthly category expenditure for that user."
       responses: {
@@ -978,7 +978,7 @@ service FinancialService {
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "Get monthly income by user for a specific category"
-      tags: ["income"]
+      tags: ["category", "income"]
       operation_id: "GetUserCategoryMonthlyIncome"
       responses: {
         key: "200"
@@ -1000,28 +1000,7 @@ service FinancialService {
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "Get monthly transaction count by user, month, and category"
-      tags: ["transactions"]
-      operation_id: "GetCategoryMonthlyTransactionCount"
-      responses: {
-        key: "200"
-        value: {
-          description: "Successful operation"
-          schema: {
-            json_schema: {ref: ".api.v1.GetCategoryMonthlyTransactionCountResponse"}
-          }
-        }
-      }
-    };
-  }
-
-  rpc ListCategoryMonthlyTransactionCount(ListCategoryMonthlyTransactionCountRequest) returns (ListCategoryMonthlyTransactionCountResponse) {
-    option (google.api.http) = {
-      get: "/api/v1/analytics/category-monthly-transaction-count/{user_id}/pagenumber/{page_number}/pagesize/{page_size}"
-    };
-
-    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      summary: "Get monthly transaction count by user, month, and category"
-      tags: ["transactions"]
+      tags: ["category", "transactions"]
       operation_id: "GetCategoryMonthlyTransactionCount"
       responses: {
         key: "200"

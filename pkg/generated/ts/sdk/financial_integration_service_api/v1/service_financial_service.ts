@@ -43,8 +43,6 @@ import {
   GetUserCategoryMonthlyExpenditureResponse,
   GetUserCategoryMonthlyIncomeRequest,
   GetUserCategoryMonthlyIncomeResponse,
-  ListCategoryMonthlyTransactionCountRequest,
-  ListCategoryMonthlyTransactionCountResponse,
   ListDebtToIncomeRatioRequest,
   ListDebtToIncomeRatioResponse,
   ListExpenseMetricsRequest,
@@ -211,9 +209,6 @@ export interface FinancialService {
   GetCategoryMonthlyTransactionCount(
     request: GetCategoryMonthlyTransactionCountRequest,
   ): Promise<GetCategoryMonthlyTransactionCountResponse>;
-  ListCategoryMonthlyTransactionCount(
-    request: ListCategoryMonthlyTransactionCountRequest,
-  ): Promise<ListCategoryMonthlyTransactionCountResponse>;
   GetDebtToIncomeRatio(request: GetDebtToIncomeRatioRequest): Promise<GetDebtToIncomeRatioResponse>;
   ListDebtToIncomeRatio(request: ListDebtToIncomeRatioRequest): Promise<ListDebtToIncomeRatioResponse>;
   GetExpenseMetrics(request: GetExpenseMetricsRequest): Promise<GetExpenseMetricsResponse>;
@@ -306,7 +301,6 @@ export class FinancialServiceClientImpl implements FinancialService {
     this.GetUserCategoryMonthlyExpenditure = this.GetUserCategoryMonthlyExpenditure.bind(this);
     this.GetUserCategoryMonthlyIncome = this.GetUserCategoryMonthlyIncome.bind(this);
     this.GetCategoryMonthlyTransactionCount = this.GetCategoryMonthlyTransactionCount.bind(this);
-    this.ListCategoryMonthlyTransactionCount = this.ListCategoryMonthlyTransactionCount.bind(this);
     this.GetDebtToIncomeRatio = this.GetDebtToIncomeRatio.bind(this);
     this.ListDebtToIncomeRatio = this.ListDebtToIncomeRatio.bind(this);
     this.GetExpenseMetrics = this.GetExpenseMetrics.bind(this);
@@ -624,14 +618,6 @@ export class FinancialServiceClientImpl implements FinancialService {
     const data = GetCategoryMonthlyTransactionCountRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "GetCategoryMonthlyTransactionCount", data);
     return promise.then((data) => GetCategoryMonthlyTransactionCountResponse.decode(_m0.Reader.create(data)));
-  }
-
-  ListCategoryMonthlyTransactionCount(
-    request: ListCategoryMonthlyTransactionCountRequest,
-  ): Promise<ListCategoryMonthlyTransactionCountResponse> {
-    const data = ListCategoryMonthlyTransactionCountRequest.encode(request).finish();
-    const promise = this.rpc.request(this.service, "ListCategoryMonthlyTransactionCount", data);
-    return promise.then((data) => ListCategoryMonthlyTransactionCountResponse.decode(_m0.Reader.create(data)));
   }
 
   GetDebtToIncomeRatio(request: GetDebtToIncomeRatioRequest): Promise<GetDebtToIncomeRatioResponse> {

@@ -67,7 +67,6 @@ const (
 	FinancialService_GetUserCategoryMonthlyExpenditure_FullMethodName        = "/financial_integration_service_api.v1.FinancialService/GetUserCategoryMonthlyExpenditure"
 	FinancialService_GetUserCategoryMonthlyIncome_FullMethodName             = "/financial_integration_service_api.v1.FinancialService/GetUserCategoryMonthlyIncome"
 	FinancialService_GetCategoryMonthlyTransactionCount_FullMethodName       = "/financial_integration_service_api.v1.FinancialService/GetCategoryMonthlyTransactionCount"
-	FinancialService_ListCategoryMonthlyTransactionCount_FullMethodName      = "/financial_integration_service_api.v1.FinancialService/ListCategoryMonthlyTransactionCount"
 	FinancialService_GetDebtToIncomeRatio_FullMethodName                     = "/financial_integration_service_api.v1.FinancialService/GetDebtToIncomeRatio"
 	FinancialService_ListDebtToIncomeRatio_FullMethodName                    = "/financial_integration_service_api.v1.FinancialService/ListDebtToIncomeRatio"
 	FinancialService_GetExpenseMetrics_FullMethodName                        = "/financial_integration_service_api.v1.FinancialService/GetExpenseMetrics"
@@ -148,7 +147,6 @@ type FinancialServiceClient interface {
 	GetUserCategoryMonthlyIncome(ctx context.Context, in *GetUserCategoryMonthlyIncomeRequest, opts ...grpc.CallOption) (*GetUserCategoryMonthlyIncomeResponse, error)
 	// Get CategoryMonthlyTransactionCount by User - This would return all CategoryMonthlyTransactionCount records for a specific user
 	GetCategoryMonthlyTransactionCount(ctx context.Context, in *GetCategoryMonthlyTransactionCountRequest, opts ...grpc.CallOption) (*GetCategoryMonthlyTransactionCountResponse, error)
-	ListCategoryMonthlyTransactionCount(ctx context.Context, in *ListCategoryMonthlyTransactionCountRequest, opts ...grpc.CallOption) (*ListCategoryMonthlyTransactionCountResponse, error)
 	GetDebtToIncomeRatio(ctx context.Context, in *GetDebtToIncomeRatioRequest, opts ...grpc.CallOption) (*GetDebtToIncomeRatioResponse, error)
 	ListDebtToIncomeRatio(ctx context.Context, in *ListDebtToIncomeRatioRequest, opts ...grpc.CallOption) (*ListDebtToIncomeRatioResponse, error)
 	GetExpenseMetrics(ctx context.Context, in *GetExpenseMetricsRequest, opts ...grpc.CallOption) (*GetExpenseMetricsResponse, error)
@@ -614,15 +612,6 @@ func (c *financialServiceClient) GetCategoryMonthlyTransactionCount(ctx context.
 	return out, nil
 }
 
-func (c *financialServiceClient) ListCategoryMonthlyTransactionCount(ctx context.Context, in *ListCategoryMonthlyTransactionCountRequest, opts ...grpc.CallOption) (*ListCategoryMonthlyTransactionCountResponse, error) {
-	out := new(ListCategoryMonthlyTransactionCountResponse)
-	err := c.cc.Invoke(ctx, FinancialService_ListCategoryMonthlyTransactionCount_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *financialServiceClient) GetDebtToIncomeRatio(ctx context.Context, in *GetDebtToIncomeRatioRequest, opts ...grpc.CallOption) (*GetDebtToIncomeRatioResponse, error) {
 	out := new(GetDebtToIncomeRatioResponse)
 	err := c.cc.Invoke(ctx, FinancialService_GetDebtToIncomeRatio_FullMethodName, in, out, opts...)
@@ -877,7 +866,6 @@ type FinancialServiceServer interface {
 	GetUserCategoryMonthlyIncome(context.Context, *GetUserCategoryMonthlyIncomeRequest) (*GetUserCategoryMonthlyIncomeResponse, error)
 	// Get CategoryMonthlyTransactionCount by User - This would return all CategoryMonthlyTransactionCount records for a specific user
 	GetCategoryMonthlyTransactionCount(context.Context, *GetCategoryMonthlyTransactionCountRequest) (*GetCategoryMonthlyTransactionCountResponse, error)
-	ListCategoryMonthlyTransactionCount(context.Context, *ListCategoryMonthlyTransactionCountRequest) (*ListCategoryMonthlyTransactionCountResponse, error)
 	GetDebtToIncomeRatio(context.Context, *GetDebtToIncomeRatioRequest) (*GetDebtToIncomeRatioResponse, error)
 	ListDebtToIncomeRatio(context.Context, *ListDebtToIncomeRatioRequest) (*ListDebtToIncomeRatioResponse, error)
 	GetExpenseMetrics(context.Context, *GetExpenseMetricsRequest) (*GetExpenseMetricsResponse, error)
@@ -1051,9 +1039,6 @@ func (UnimplementedFinancialServiceServer) GetUserCategoryMonthlyIncome(context.
 }
 func (UnimplementedFinancialServiceServer) GetCategoryMonthlyTransactionCount(context.Context, *GetCategoryMonthlyTransactionCountRequest) (*GetCategoryMonthlyTransactionCountResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetCategoryMonthlyTransactionCount not implemented")
-}
-func (UnimplementedFinancialServiceServer) ListCategoryMonthlyTransactionCount(context.Context, *ListCategoryMonthlyTransactionCountRequest) (*ListCategoryMonthlyTransactionCountResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListCategoryMonthlyTransactionCount not implemented")
 }
 func (UnimplementedFinancialServiceServer) GetDebtToIncomeRatio(context.Context, *GetDebtToIncomeRatioRequest) (*GetDebtToIncomeRatioResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetDebtToIncomeRatio not implemented")
@@ -1998,24 +1983,6 @@ func _FinancialService_GetCategoryMonthlyTransactionCount_Handler(srv interface{
 	return interceptor(ctx, in, info, handler)
 }
 
-func _FinancialService_ListCategoryMonthlyTransactionCount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListCategoryMonthlyTransactionCountRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(FinancialServiceServer).ListCategoryMonthlyTransactionCount(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: FinancialService_ListCategoryMonthlyTransactionCount_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FinancialServiceServer).ListCategoryMonthlyTransactionCount(ctx, req.(*ListCategoryMonthlyTransactionCountRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _FinancialService_GetDebtToIncomeRatio_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetDebtToIncomeRatioRequest)
 	if err := dec(in); err != nil {
@@ -2610,10 +2577,6 @@ var FinancialService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetCategoryMonthlyTransactionCount",
 			Handler:    _FinancialService_GetCategoryMonthlyTransactionCount_Handler,
-		},
-		{
-			MethodName: "ListCategoryMonthlyTransactionCount",
-			Handler:    _FinancialService_ListCategoryMonthlyTransactionCount_Handler,
 		},
 		{
 			MethodName: "GetDebtToIncomeRatio",
