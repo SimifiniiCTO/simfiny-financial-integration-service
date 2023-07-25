@@ -7,7 +7,7 @@
 --
 -- SELECT 
 --     Month,
---     CategoryId,
+--     PersonalFinanceCategoryPrimary,
 --     LocationCity,
 --     PaymentChannel,
 --     MerchantName,
@@ -17,7 +17,7 @@
 --     TransactionAggregatesByMonth
 -- GROUP BY
 --     Month,
---     CategoryId,
+--     PersonalFinanceCategoryPrimary,
 --     LocationCity,
 --     PaymentChannel,
 --     MerchantName;

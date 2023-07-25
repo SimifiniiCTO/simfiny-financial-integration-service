@@ -4049,7 +4049,7 @@ func (m *TransactionAggregatesByMonth) validate(all bool) error {
 
 	// no validation rules for Month
 
-	// no validation rules for CategoryId
+	// no validation rules for PersonalFinanceCategoryPrimary
 
 	// no validation rules for LocationCity
 

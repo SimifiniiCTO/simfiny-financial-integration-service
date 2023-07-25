@@ -7,7 +7,7 @@
                 "month": {
                     "type": "integer"
                 },
-                "category_id": {
+                "personal_finance_category_primary": {
                     "type": "string"
                 },
                 "location_city": {

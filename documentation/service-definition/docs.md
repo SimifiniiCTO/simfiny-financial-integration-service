@@ -844,7 +844,7 @@ This message is used to represent the transaction aggregates of a user.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | month | [uint32](#uint32) |  |  |
-| category_id | [string](#string) |  |  |
+| personal_finance_category_primary | [string](#string) |  |  |
 | location_city | [string](#string) |  |  |
 | payment_channel | [string](#string) |  |  |
 | merchant_name | [string](#string) |  |  |

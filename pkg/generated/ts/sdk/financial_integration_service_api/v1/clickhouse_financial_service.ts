@@ -643,7 +643,7 @@ export interface TotalInvestmentBySecurity {
  */
 export interface TransactionAggregatesByMonth {
   month: number;
-  categoryId: string;
+  personalFinanceCategoryPrimary: string;
   locationCity: string;
   paymentChannel: string;
   merchantName: string;
@@ -5726,7 +5726,7 @@ export const TotalInvestmentBySecurity = {
 function createBaseTransactionAggregatesByMonth(): TransactionAggregatesByMonth {
   return {
     month: 0,
-    categoryId: "",
+    personalFinanceCategoryPrimary: "",
     locationCity: "",
     paymentChannel: "",
     merchantName: "",
@@ -5741,8 +5741,8 @@ export const TransactionAggregatesByMonth = {
     if (message.month !== 0) {
       writer.uint32(8).uint32(message.month);
     }
-    if (message.categoryId !== "") {
-      writer.uint32(18).string(message.categoryId);
+    if (message.personalFinanceCategoryPrimary !== "") {
+      writer.uint32(18).string(message.personalFinanceCategoryPrimary);
     }
     if (message.locationCity !== "") {
       writer.uint32(26).string(message.locationCity);
@@ -5784,7 +5784,7 @@ export const TransactionAggregatesByMonth = {
             break;
           }
 
-          message.categoryId = reader.string();
+          message.personalFinanceCategoryPrimary = reader.string();
           continue;
         case 3:
           if (tag !== 26) {
@@ -5840,7 +5840,9 @@ export const TransactionAggregatesByMonth = {
   fromJSON(object: any): TransactionAggregatesByMonth {
     return {
       month: isSet(object.month) ? Number(object.month) : 0,
-      categoryId: isSet(object.categoryId) ? String(object.categoryId) : "",
+      personalFinanceCategoryPrimary: isSet(object.personalFinanceCategoryPrimary)
+        ? String(object.personalFinanceCategoryPrimary)
+        : "",
       locationCity: isSet(object.locationCity) ? String(object.locationCity) : "",
       paymentChannel: isSet(object.paymentChannel) ? String(object.paymentChannel) : "",
       merchantName: isSet(object.merchantName) ? String(object.merchantName) : "",
@@ -5855,8 +5857,8 @@ export const TransactionAggregatesByMonth = {
     if (message.month !== 0) {
       obj.month = Math.round(message.month);
     }
-    if (message.categoryId !== "") {
-      obj.categoryId = message.categoryId;
+    if (message.personalFinanceCategoryPrimary !== "") {
+      obj.personalFinanceCategoryPrimary = message.personalFinanceCategoryPrimary;
     }
     if (message.locationCity !== "") {
       obj.locationCity = message.locationCity;
@@ -5886,7 +5888,7 @@ export const TransactionAggregatesByMonth = {
   fromPartial<I extends Exact<DeepPartial<TransactionAggregatesByMonth>, I>>(object: I): TransactionAggregatesByMonth {
     const message = createBaseTransactionAggregatesByMonth();
     message.month = object.month ?? 0;
-    message.categoryId = object.categoryId ?? "";
+    message.personalFinanceCategoryPrimary = object.personalFinanceCategoryPrimary ?? "";
     message.locationCity = object.locationCity ?? "";
     message.paymentChannel = object.paymentChannel ?? "";
     message.merchantName = object.merchantName ?? "";

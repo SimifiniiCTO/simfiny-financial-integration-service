@@ -542,7 +542,7 @@ message TotalInvestmentBySecurity {
 message TransactionAggregatesByMonth {
     option (gorm.opts) = {ormable: true};
     uint32 month = 1;
-    string category_id = 2;
+    string personal_finance_category_primary = 2;
     string location_city = 3;
     string payment_channel = 4;
     string merchant_name = 5;
