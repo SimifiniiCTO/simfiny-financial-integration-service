@@ -1,0 +1,38 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/MerchantMetricsFinancialSubProfile",
+    "definitions": {
+        "MerchantMetricsFinancialSubProfile": {
+            "properties": {
+                "merchant_name": {
+                    "type": "string"
+                },
+                "spent_last_week": {
+                    "type": "number"
+                },
+                "spent_last_two_weeks": {
+                    "type": "number"
+                },
+                "spent_last_month": {
+                    "type": "number"
+                },
+                "spent_last_six_months": {
+                    "type": "number"
+                },
+                "spent_last_year": {
+                    "type": "number"
+                },
+                "spent_last_two_years": {
+                    "type": "number"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Merchant Metrics Financial Sub Profile",
+            "description": "MerchantFinancialSubProfile This message is used to represent the financial sub profile of a merchant."
+        }
+    }
+}

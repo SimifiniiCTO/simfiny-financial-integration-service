@@ -6,13 +6,38 @@
 - [financial_integration_service_api/v1/clickhouse_financial_service.proto](#financial_integration_service_api_v1_clickhouse_financial_service-proto)
     - [AccountBalanceHistory](#financial_integration_service_api-v1-AccountBalanceHistory)
     - [AverageTransactionAmountByCategoryMetric](#financial_integration_service_api-v1-AverageTransactionAmountByCategoryMetric)
+    - [CategoryMetricsFinancialSubProfile](#financial_integration_service_api-v1-CategoryMetricsFinancialSubProfile)
+    - [CategoryMonthlyExpenditure](#financial_integration_service_api-v1-CategoryMonthlyExpenditure)
+    - [CategoryMonthlyIncome](#financial_integration_service_api-v1-CategoryMonthlyIncome)
+    - [CategoryMonthlyTransactionCount](#financial_integration_service_api-v1-CategoryMonthlyTransactionCount)
+    - [DebtToIncomeRatio](#financial_integration_service_api-v1-DebtToIncomeRatio)
+    - [ExpenseMetrics](#financial_integration_service_api-v1-ExpenseMetrics)
+    - [ExpenseMetricsFinancialSubProfileMetrics](#financial_integration_service_api-v1-ExpenseMetricsFinancialSubProfileMetrics)
+    - [FinancialProfile](#financial_integration_service_api-v1-FinancialProfile)
+    - [IncomeExpenseRatio](#financial_integration_service_api-v1-IncomeExpenseRatio)
+    - [IncomeMetrics](#financial_integration_service_api-v1-IncomeMetrics)
+    - [IncomeMetricsFinancialSubProfile](#financial_integration_service_api-v1-IncomeMetricsFinancialSubProfile)
     - [InvestmentTransaction](#financial_integration_service_api-v1-InvestmentTransaction)
+    - [LocationFinancialSubProfile](#financial_integration_service_api-v1-LocationFinancialSubProfile)
+    - [MerchantMetricsFinancialSubProfile](#financial_integration_service_api-v1-MerchantMetricsFinancialSubProfile)
+    - [MerchantMonthlyExpenditure](#financial_integration_service_api-v1-MerchantMonthlyExpenditure)
+    - [MonthlyBalance](#financial_integration_service_api-v1-MonthlyBalance)
+    - [MonthlyExpenditure](#financial_integration_service_api-v1-MonthlyExpenditure)
+    - [MonthlyIncome](#financial_integration_service_api-v1-MonthlyIncome)
+    - [MonthlySavings](#financial_integration_service_api-v1-MonthlySavings)
+    - [MonthlyTotalQuantityBySecurityAndUser](#financial_integration_service_api-v1-MonthlyTotalQuantityBySecurityAndUser)
+    - [MonthlyTransactionCount](#financial_integration_service_api-v1-MonthlyTransactionCount)
     - [MonthlyTransactionCountByCategoryMetric](#financial_integration_service_api-v1-MonthlyTransactionCountByCategoryMetric)
+    - [PaymentChannelMetricsFinancialSubProfile](#financial_integration_service_api-v1-PaymentChannelMetricsFinancialSubProfile)
+    - [PaymentChannelMonthlyExpenditure](#financial_integration_service_api-v1-PaymentChannelMonthlyExpenditure)
     - [ReOccuringTransaction](#financial_integration_service_api-v1-ReOccuringTransaction)
+    - [TotalInvestmentBySecurity](#financial_integration_service_api-v1-TotalInvestmentBySecurity)
     - [Transaction](#financial_integration_service_api-v1-Transaction)
+    - [TransactionAggregatesByMonth](#financial_integration_service_api-v1-TransactionAggregatesByMonth)
     - [TransactionAmountByCountryMetric](#financial_integration_service_api-v1-TransactionAmountByCountryMetric)
     - [TransactionAmountDistributionByCategoryMetric](#financial_integration_service_api-v1-TransactionAmountDistributionByCategoryMetric)
     - [TransactionCountByMerchantPaymentChannelMetric](#financial_integration_service_api-v1-TransactionCountByMerchantPaymentChannelMetric)
+    - [UserFinancialHealthMetricsTable](#financial_integration_service_api-v1-UserFinancialHealthMetricsTable)
   
     - [ReCurringFlow](#financial_integration_service_api-v1-ReCurringFlow)
     - [ReOccuringTransactionsFrequency](#financial_integration_service_api-v1-ReOccuringTransactionsFrequency)
@@ -166,7 +191,8 @@
 <a name="financial_integration_service_api-v1-AccountBalanceHistory"></a>
 
 ### AccountBalanceHistory
-
+Account Balance History
+This message is used to represent the balance history of an account.
 
 
 | Field | Type | Label | Description |
@@ -177,6 +203,7 @@
 | balance | [double](#double) |  |  |
 | user_id | [uint64](#uint64) |  |  |
 | sign | [uint32](#uint32) |  |  |
+| id | [string](#string) |  |  |
 
 
 
@@ -193,6 +220,229 @@
 | ----- | ---- | ----- | ----------- |
 | category | [string](#string) |  |  |
 | amount | [double](#double) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-CategoryMetricsFinancialSubProfile"></a>
+
+### CategoryMetricsFinancialSubProfile
+CategoryMetricsFinancialSubProfile
+This message is used to represent the financial sub profile of a category.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| month | [uint32](#uint32) |  |  |
+| personal_finance_category_primary | [string](#string) |  |  |
+| transaction_count | [uint64](#uint64) |  |  |
+| spent_last_week | [double](#double) |  |  |
+| spent_last_two_weeks | [double](#double) |  |  |
+| spent_last_month | [double](#double) |  |  |
+| spent_last_six_months | [double](#double) |  |  |
+| spent_last_year | [double](#double) |  |  |
+| spent_last_two_years | [double](#double) |  |  |
+| user_id | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-CategoryMonthlyExpenditure"></a>
+
+### CategoryMonthlyExpenditure
+CategoryMonthlyExpenditure represents the monthly expenditure of a category.
+This message is used to represent the monthly expenditure of a category.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| month | [uint32](#uint32) |  |  |
+| personal_finance_category_primary | [string](#string) |  |  |
+| total_spending | [double](#double) |  |  |
+| user_id | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-CategoryMonthlyIncome"></a>
+
+### CategoryMonthlyIncome
+CategoryMonthlyIncome
+This message is used to represent the monthly income of a category.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| month | [uint32](#uint32) |  |  |
+| personal_finance_category_primary | [string](#string) |  |  |
+| total_income | [double](#double) |  |  |
+| user_id | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-CategoryMonthlyTransactionCount"></a>
+
+### CategoryMonthlyTransactionCount
+CategoryMonthlyTransactionCount
+This message is used to represent the monthly transaction count of a category.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| month | [uint32](#uint32) |  |  |
+| personal_finance_category_primary | [string](#string) |  |  |
+| transaction_count | [uint32](#uint32) |  |  |
+| user_id | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-DebtToIncomeRatio"></a>
+
+### DebtToIncomeRatio
+DebtToIncomeRatio
+This message is used to represent the debt to income ratio of a user.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| month | [uint32](#uint32) |  |  |
+| ratio | [double](#double) |  |  |
+| user_id | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-ExpenseMetrics"></a>
+
+### ExpenseMetrics
+ExpenseMetrics
+This message is used to represent the expense metrics of a user.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| month | [uint32](#uint32) |  |  |
+| personal_finance_category_primary | [string](#string) |  |  |
+| transaction_count | [uint64](#uint64) |  |  |
+| total_expenses | [double](#double) |  |  |
+| user_id | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-ExpenseMetricsFinancialSubProfileMetrics"></a>
+
+### ExpenseMetricsFinancialSubProfileMetrics
+ExpenseMetricsFinancialSubProfileMetrics
+This message is used to represent the financial sub profile metrics of a user.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| month | [uint32](#uint32) |  |  |
+| spent_last_week | [double](#double) |  |  |
+| spent_last_month | [double](#double) |  |  |
+| spent_last_six_months | [double](#double) |  |  |
+| average_monthly_discretionary_spending | [double](#double) |  |  |
+| average_monthly_recurring_spending | [double](#double) |  |  |
+| user_id | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-FinancialProfile"></a>
+
+### FinancialProfile
+FinancialProfile
+This message is used to represent the financial profile of a user.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| month | [uint32](#uint32) |  |  |
+| total_income | [double](#double) |  |  |
+| total_expenses | [double](#double) |  |  |
+| number_of_transactions | [uint64](#uint64) |  |  |
+| most_expensive_category | [string](#string) |  |  |
+| user_id | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-IncomeExpenseRatio"></a>
+
+### IncomeExpenseRatio
+IncomeExpenseRatio
+This message is used to represent the income expense ratio of a user.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| month | [uint32](#uint32) |  |  |
+| ratio | [double](#double) |  |  |
+| user_id | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-IncomeMetrics"></a>
+
+### IncomeMetrics
+IncomeMetrics
+This message is used to represent the income metrics of a user.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| month | [uint32](#uint32) |  |  |
+| personal_finance_category_primary | [string](#string) |  |  |
+| transaction_count | [uint64](#uint64) |  |  |
+| total_income | [double](#double) |  |  |
+| user_id | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-IncomeMetricsFinancialSubProfile"></a>
+
+### IncomeMetricsFinancialSubProfile
+IncomeMetricsFinancialSubProfile
+This message is used to represent the financial sub profile of a user.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| month | [uint32](#uint32) |  |  |
+| income_last_two_weeks | [double](#double) |  |  |
+| income_last_month | [double](#double) |  |  |
+| income_last_two_months | [double](#double) |  |  |
+| income_last_six_months | [double](#double) |  |  |
+| income_last_year | [double](#double) |  |  |
+| user_id | [uint64](#uint64) |  |  |
 
 
 
@@ -234,6 +484,181 @@
 
 
 
+<a name="financial_integration_service_api-v1-LocationFinancialSubProfile"></a>
+
+### LocationFinancialSubProfile
+LocationFinancialSubProfile
+This message is used to represent the financial sub profile of a location.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| location_city | [string](#string) |  |  |
+| transaction_count | [uint64](#uint64) |  |  |
+| spent_last_week | [double](#double) |  |  |
+| spent_last_two_weeks | [double](#double) |  |  |
+| spent_last_month | [double](#double) |  |  |
+| spent_last_six_months | [double](#double) |  |  |
+| spent_last_year | [double](#double) |  |  |
+| spent_last_two_years | [double](#double) |  |  |
+| user_id | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-MerchantMetricsFinancialSubProfile"></a>
+
+### MerchantMetricsFinancialSubProfile
+MerchantFinancialSubProfile
+This message is used to represent the financial sub profile of a merchant.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| merchant_name | [string](#string) |  |  |
+| spent_last_week | [double](#double) |  |  |
+| spent_last_two_weeks | [double](#double) |  |  |
+| spent_last_month | [double](#double) |  |  |
+| spent_last_six_months | [double](#double) |  |  |
+| spent_last_year | [double](#double) |  |  |
+| spent_last_two_years | [double](#double) |  |  |
+| user_id | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-MerchantMonthlyExpenditure"></a>
+
+### MerchantMonthlyExpenditure
+MerchantMonthlyExpenditure
+This message is used to represent the monthly expenditure of a merchant.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| month | [uint32](#uint32) |  |  |
+| merchant_name | [string](#string) |  |  |
+| total_spending | [double](#double) |  |  |
+| user_id | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-MonthlyBalance"></a>
+
+### MonthlyBalance
+MonthlyBalance
+This message is used to represent the monthly balance of a user.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| month | [uint32](#uint32) |  |  |
+| net_balance | [double](#double) |  |  |
+| user_id | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-MonthlyExpenditure"></a>
+
+### MonthlyExpenditure
+MonthlyExpenditure
+This message is used to represent the monthly expenditure of a user.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| month | [uint32](#uint32) |  |  |
+| total_spending | [double](#double) |  |  |
+| user_id | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-MonthlyIncome"></a>
+
+### MonthlyIncome
+MonthlyIncome
+This message is used to represent the monthly income of a user.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| month | [uint32](#uint32) |  |  |
+| total_income | [double](#double) |  |  |
+| user_id | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-MonthlySavings"></a>
+
+### MonthlySavings
+MonthlySavings
+This message is used to represent the monthly savings of a user.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| month | [uint32](#uint32) |  |  |
+| net_savings | [double](#double) |  |  |
+| user_id | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-MonthlyTotalQuantityBySecurityAndUser"></a>
+
+### MonthlyTotalQuantityBySecurityAndUser
+MonthlyTotalQuantityBySecurityAndUser
+This message is used to represent the monthly total quantity of a security.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| month | [uint32](#uint32) |  |  |
+| security_id | [string](#string) |  |  |
+| total_quantity | [double](#double) |  |  |
+| user_id | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-MonthlyTransactionCount"></a>
+
+### MonthlyTransactionCount
+MonthlyTransactionCount
+This message is used to represent the monthly transaction count of a user.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| month | [uint32](#uint32) |  |  |
+| transaction_count | [uint64](#uint64) |  |  |
+| user_id | [uint64](#uint64) |  |  |
+
+
+
+
+
+
 <a name="financial_integration_service_api-v1-MonthlyTransactionCountByCategoryMetric"></a>
 
 ### MonthlyTransactionCountByCategoryMetric
@@ -245,6 +670,50 @@
 | category | [string](#string) |  |  |
 | count | [uint32](#uint32) |  |  |
 | month | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-PaymentChannelMetricsFinancialSubProfile"></a>
+
+### PaymentChannelMetricsFinancialSubProfile
+PaymentChannelMetricsFinancialSubProfile
+This message is used to represent the financial sub profile of a payment channel.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| payment_channel | [string](#string) |  |  |
+| spent_last_week | [double](#double) |  |  |
+| spent_last_two_weeks | [double](#double) |  |  |
+| spent_last_month | [double](#double) |  |  |
+| spent_last_six_months | [double](#double) |  |  |
+| spent_last_year | [double](#double) |  |  |
+| spent_last_two_years | [double](#double) |  |  |
+| user_id | [uint64](#uint64) |  |  |
+| month | [uint32](#uint32) |  |  |
+| transaction_count | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-PaymentChannelMonthlyExpenditure"></a>
+
+### PaymentChannelMonthlyExpenditure
+PaymentChannelMonthlyExpenditure
+This message is used to represent the monthly expenditure of a payment channel.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| month | [uint32](#uint32) |  |  |
+| payment_channel | [string](#string) |  |  |
+| total_spending | [double](#double) |  |  |
+| user_id | [uint64](#uint64) |  |  |
 
 
 
@@ -284,6 +753,24 @@
 | sign | [int32](#int32) |  |  |
 | time | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
 | additional_properties | [google.protobuf.Any](#google-protobuf-Any) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-TotalInvestmentBySecurity"></a>
+
+### TotalInvestmentBySecurity
+TotalInvestmentBySecurity
+This message is used to represent the total investment of a security.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| security_id | [string](#string) |  |  |
+| total_investment | [double](#double) |  |  |
+| user_id | [uint64](#uint64) |  |  |
 
 
 
@@ -347,6 +834,29 @@
 
 
 
+<a name="financial_integration_service_api-v1-TransactionAggregatesByMonth"></a>
+
+### TransactionAggregatesByMonth
+TransactionAggregatesByMonth
+This message is used to represent the transaction aggregates of a user.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| month | [uint32](#uint32) |  |  |
+| category_id | [string](#string) |  |  |
+| location_city | [string](#string) |  |  |
+| payment_channel | [string](#string) |  |  |
+| merchant_name | [string](#string) |  |  |
+| transaction_count | [uint64](#uint64) |  |  |
+| total_amount | [double](#double) |  |  |
+| user_id | [uint64](#uint64) |  |  |
+
+
+
+
+
+
 <a name="financial_integration_service_api-v1-TransactionAmountByCountryMetric"></a>
 
 ### TransactionAmountByCountryMetric
@@ -392,6 +902,28 @@
 | merchant_name | [string](#string) |  |  |
 | payment_channel | [string](#string) |  |  |
 | transaction_count | [uint32](#uint32) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-UserFinancialHealthMetricsTable"></a>
+
+### UserFinancialHealthMetricsTable
+UserFinancialHealthMetricsTable
+This message is used to represent the financial health metrics of a user.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| time | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+| user_id | [uint64](#uint64) |  |  |
+| monthly_income | [double](#double) |  |  |
+| monthly_expenses | [double](#double) |  |  |
+| transaction_diversity | [uint64](#uint64) |  |  |
+| debt_to_income_ratio | [double](#double) |  |  |
+| overdraft_frequency | [uint64](#uint64) |  |  |
 
 
 

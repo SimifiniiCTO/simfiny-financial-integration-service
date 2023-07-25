@@ -219,7 +219,7 @@ func (orm *TransactionORM) ConvertToInternal() *TransactionInternal {
 	return tx
 }
 
-type IncomeMetrics struct {
+type IncomeMetricsInternal struct {
 	ch.CHModel       `ch:"IncomeMetrics,partition:toYYYYMM(time)"`
 	Month            uint32
 	CategoryId       string

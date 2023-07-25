@@ -1,8 +1,8 @@
 /* eslint-disable */
-import * as Long from "long";
 import * as _m0 from "protobufjs/minimal";
 import { Duration } from "../google/protobuf/duration";
 import { Timestamp } from "../google/protobuf/timestamp";
+import Long = require("long");
 
 export const protobufPackage = "validate";
 
@@ -1362,33 +1362,72 @@ export const FieldRules = {
 
   toJSON(message: FieldRules): unknown {
     const obj: any = {};
-    message.message !== undefined && (obj.message = message.message ? MessageRules.toJSON(message.message) : undefined);
-    message.float !== undefined && (obj.float = message.float ? FloatRules.toJSON(message.float) : undefined);
-    message.double !== undefined && (obj.double = message.double ? DoubleRules.toJSON(message.double) : undefined);
-    message.int32 !== undefined && (obj.int32 = message.int32 ? Int32Rules.toJSON(message.int32) : undefined);
-    message.int64 !== undefined && (obj.int64 = message.int64 ? Int64Rules.toJSON(message.int64) : undefined);
-    message.uint32 !== undefined && (obj.uint32 = message.uint32 ? UInt32Rules.toJSON(message.uint32) : undefined);
-    message.uint64 !== undefined && (obj.uint64 = message.uint64 ? UInt64Rules.toJSON(message.uint64) : undefined);
-    message.sint32 !== undefined && (obj.sint32 = message.sint32 ? SInt32Rules.toJSON(message.sint32) : undefined);
-    message.sint64 !== undefined && (obj.sint64 = message.sint64 ? SInt64Rules.toJSON(message.sint64) : undefined);
-    message.fixed32 !== undefined && (obj.fixed32 = message.fixed32 ? Fixed32Rules.toJSON(message.fixed32) : undefined);
-    message.fixed64 !== undefined && (obj.fixed64 = message.fixed64 ? Fixed64Rules.toJSON(message.fixed64) : undefined);
-    message.sfixed32 !== undefined &&
-      (obj.sfixed32 = message.sfixed32 ? SFixed32Rules.toJSON(message.sfixed32) : undefined);
-    message.sfixed64 !== undefined &&
-      (obj.sfixed64 = message.sfixed64 ? SFixed64Rules.toJSON(message.sfixed64) : undefined);
-    message.bool !== undefined && (obj.bool = message.bool ? BoolRules.toJSON(message.bool) : undefined);
-    message.string !== undefined && (obj.string = message.string ? StringRules.toJSON(message.string) : undefined);
-    message.bytes !== undefined && (obj.bytes = message.bytes ? BytesRules.toJSON(message.bytes) : undefined);
-    message.enum !== undefined && (obj.enum = message.enum ? EnumRules.toJSON(message.enum) : undefined);
-    message.repeated !== undefined &&
-      (obj.repeated = message.repeated ? RepeatedRules.toJSON(message.repeated) : undefined);
-    message.map !== undefined && (obj.map = message.map ? MapRules.toJSON(message.map) : undefined);
-    message.any !== undefined && (obj.any = message.any ? AnyRules.toJSON(message.any) : undefined);
-    message.duration !== undefined &&
-      (obj.duration = message.duration ? DurationRules.toJSON(message.duration) : undefined);
-    message.timestamp !== undefined &&
-      (obj.timestamp = message.timestamp ? TimestampRules.toJSON(message.timestamp) : undefined);
+    if (message.message !== undefined) {
+      obj.message = MessageRules.toJSON(message.message);
+    }
+    if (message.float !== undefined) {
+      obj.float = FloatRules.toJSON(message.float);
+    }
+    if (message.double !== undefined) {
+      obj.double = DoubleRules.toJSON(message.double);
+    }
+    if (message.int32 !== undefined) {
+      obj.int32 = Int32Rules.toJSON(message.int32);
+    }
+    if (message.int64 !== undefined) {
+      obj.int64 = Int64Rules.toJSON(message.int64);
+    }
+    if (message.uint32 !== undefined) {
+      obj.uint32 = UInt32Rules.toJSON(message.uint32);
+    }
+    if (message.uint64 !== undefined) {
+      obj.uint64 = UInt64Rules.toJSON(message.uint64);
+    }
+    if (message.sint32 !== undefined) {
+      obj.sint32 = SInt32Rules.toJSON(message.sint32);
+    }
+    if (message.sint64 !== undefined) {
+      obj.sint64 = SInt64Rules.toJSON(message.sint64);
+    }
+    if (message.fixed32 !== undefined) {
+      obj.fixed32 = Fixed32Rules.toJSON(message.fixed32);
+    }
+    if (message.fixed64 !== undefined) {
+      obj.fixed64 = Fixed64Rules.toJSON(message.fixed64);
+    }
+    if (message.sfixed32 !== undefined) {
+      obj.sfixed32 = SFixed32Rules.toJSON(message.sfixed32);
+    }
+    if (message.sfixed64 !== undefined) {
+      obj.sfixed64 = SFixed64Rules.toJSON(message.sfixed64);
+    }
+    if (message.bool !== undefined) {
+      obj.bool = BoolRules.toJSON(message.bool);
+    }
+    if (message.string !== undefined) {
+      obj.string = StringRules.toJSON(message.string);
+    }
+    if (message.bytes !== undefined) {
+      obj.bytes = BytesRules.toJSON(message.bytes);
+    }
+    if (message.enum !== undefined) {
+      obj.enum = EnumRules.toJSON(message.enum);
+    }
+    if (message.repeated !== undefined) {
+      obj.repeated = RepeatedRules.toJSON(message.repeated);
+    }
+    if (message.map !== undefined) {
+      obj.map = MapRules.toJSON(message.map);
+    }
+    if (message.any !== undefined) {
+      obj.any = AnyRules.toJSON(message.any);
+    }
+    if (message.duration !== undefined) {
+      obj.duration = DurationRules.toJSON(message.duration);
+    }
+    if (message.timestamp !== undefined) {
+      obj.timestamp = TimestampRules.toJSON(message.timestamp);
+    }
     return obj;
   },
 
@@ -1604,22 +1643,30 @@ export const FloatRules = {
 
   toJSON(message: FloatRules): unknown {
     const obj: any = {};
-    message.const !== undefined && (obj.const = message.const);
-    message.lt !== undefined && (obj.lt = message.lt);
-    message.lte !== undefined && (obj.lte = message.lte);
-    message.gt !== undefined && (obj.gt = message.gt);
-    message.gte !== undefined && (obj.gte = message.gte);
-    if (message.in) {
-      obj.in = message.in.map((e) => e);
-    } else {
-      obj.in = [];
+    if (message.const !== 0) {
+      obj.const = message.const;
     }
-    if (message.notIn) {
-      obj.notIn = message.notIn.map((e) => e);
-    } else {
-      obj.notIn = [];
+    if (message.lt !== 0) {
+      obj.lt = message.lt;
     }
-    message.ignoreEmpty !== undefined && (obj.ignoreEmpty = message.ignoreEmpty);
+    if (message.lte !== 0) {
+      obj.lte = message.lte;
+    }
+    if (message.gt !== 0) {
+      obj.gt = message.gt;
+    }
+    if (message.gte !== 0) {
+      obj.gte = message.gte;
+    }
+    if (message.in?.length) {
+      obj.in = message.in;
+    }
+    if (message.notIn?.length) {
+      obj.notIn = message.notIn;
+    }
+    if (message.ignoreEmpty === true) {
+      obj.ignoreEmpty = message.ignoreEmpty;
+    }
     return obj;
   },
 
@@ -1785,22 +1832,30 @@ export const DoubleRules = {
 
   toJSON(message: DoubleRules): unknown {
     const obj: any = {};
-    message.const !== undefined && (obj.const = message.const);
-    message.lt !== undefined && (obj.lt = message.lt);
-    message.lte !== undefined && (obj.lte = message.lte);
-    message.gt !== undefined && (obj.gt = message.gt);
-    message.gte !== undefined && (obj.gte = message.gte);
-    if (message.in) {
-      obj.in = message.in.map((e) => e);
-    } else {
-      obj.in = [];
+    if (message.const !== 0) {
+      obj.const = message.const;
     }
-    if (message.notIn) {
-      obj.notIn = message.notIn.map((e) => e);
-    } else {
-      obj.notIn = [];
+    if (message.lt !== 0) {
+      obj.lt = message.lt;
     }
-    message.ignoreEmpty !== undefined && (obj.ignoreEmpty = message.ignoreEmpty);
+    if (message.lte !== 0) {
+      obj.lte = message.lte;
+    }
+    if (message.gt !== 0) {
+      obj.gt = message.gt;
+    }
+    if (message.gte !== 0) {
+      obj.gte = message.gte;
+    }
+    if (message.in?.length) {
+      obj.in = message.in;
+    }
+    if (message.notIn?.length) {
+      obj.notIn = message.notIn;
+    }
+    if (message.ignoreEmpty === true) {
+      obj.ignoreEmpty = message.ignoreEmpty;
+    }
     return obj;
   },
 
@@ -1966,22 +2021,30 @@ export const Int32Rules = {
 
   toJSON(message: Int32Rules): unknown {
     const obj: any = {};
-    message.const !== undefined && (obj.const = Math.round(message.const));
-    message.lt !== undefined && (obj.lt = Math.round(message.lt));
-    message.lte !== undefined && (obj.lte = Math.round(message.lte));
-    message.gt !== undefined && (obj.gt = Math.round(message.gt));
-    message.gte !== undefined && (obj.gte = Math.round(message.gte));
-    if (message.in) {
+    if (message.const !== 0) {
+      obj.const = Math.round(message.const);
+    }
+    if (message.lt !== 0) {
+      obj.lt = Math.round(message.lt);
+    }
+    if (message.lte !== 0) {
+      obj.lte = Math.round(message.lte);
+    }
+    if (message.gt !== 0) {
+      obj.gt = Math.round(message.gt);
+    }
+    if (message.gte !== 0) {
+      obj.gte = Math.round(message.gte);
+    }
+    if (message.in?.length) {
       obj.in = message.in.map((e) => Math.round(e));
-    } else {
-      obj.in = [];
     }
-    if (message.notIn) {
+    if (message.notIn?.length) {
       obj.notIn = message.notIn.map((e) => Math.round(e));
-    } else {
-      obj.notIn = [];
     }
-    message.ignoreEmpty !== undefined && (obj.ignoreEmpty = message.ignoreEmpty);
+    if (message.ignoreEmpty === true) {
+      obj.ignoreEmpty = message.ignoreEmpty;
+    }
     return obj;
   },
 
@@ -2147,22 +2210,30 @@ export const Int64Rules = {
 
   toJSON(message: Int64Rules): unknown {
     const obj: any = {};
-    message.const !== undefined && (obj.const = Math.round(message.const));
-    message.lt !== undefined && (obj.lt = Math.round(message.lt));
-    message.lte !== undefined && (obj.lte = Math.round(message.lte));
-    message.gt !== undefined && (obj.gt = Math.round(message.gt));
-    message.gte !== undefined && (obj.gte = Math.round(message.gte));
-    if (message.in) {
+    if (message.const !== 0) {
+      obj.const = Math.round(message.const);
+    }
+    if (message.lt !== 0) {
+      obj.lt = Math.round(message.lt);
+    }
+    if (message.lte !== 0) {
+      obj.lte = Math.round(message.lte);
+    }
+    if (message.gt !== 0) {
+      obj.gt = Math.round(message.gt);
+    }
+    if (message.gte !== 0) {
+      obj.gte = Math.round(message.gte);
+    }
+    if (message.in?.length) {
       obj.in = message.in.map((e) => Math.round(e));
-    } else {
-      obj.in = [];
     }
-    if (message.notIn) {
+    if (message.notIn?.length) {
       obj.notIn = message.notIn.map((e) => Math.round(e));
-    } else {
-      obj.notIn = [];
     }
-    message.ignoreEmpty !== undefined && (obj.ignoreEmpty = message.ignoreEmpty);
+    if (message.ignoreEmpty === true) {
+      obj.ignoreEmpty = message.ignoreEmpty;
+    }
     return obj;
   },
 
@@ -2328,22 +2399,30 @@ export const UInt32Rules = {
 
   toJSON(message: UInt32Rules): unknown {
     const obj: any = {};
-    message.const !== undefined && (obj.const = Math.round(message.const));
-    message.lt !== undefined && (obj.lt = Math.round(message.lt));
-    message.lte !== undefined && (obj.lte = Math.round(message.lte));
-    message.gt !== undefined && (obj.gt = Math.round(message.gt));
-    message.gte !== undefined && (obj.gte = Math.round(message.gte));
-    if (message.in) {
+    if (message.const !== 0) {
+      obj.const = Math.round(message.const);
+    }
+    if (message.lt !== 0) {
+      obj.lt = Math.round(message.lt);
+    }
+    if (message.lte !== 0) {
+      obj.lte = Math.round(message.lte);
+    }
+    if (message.gt !== 0) {
+      obj.gt = Math.round(message.gt);
+    }
+    if (message.gte !== 0) {
+      obj.gte = Math.round(message.gte);
+    }
+    if (message.in?.length) {
       obj.in = message.in.map((e) => Math.round(e));
-    } else {
-      obj.in = [];
     }
-    if (message.notIn) {
+    if (message.notIn?.length) {
       obj.notIn = message.notIn.map((e) => Math.round(e));
-    } else {
-      obj.notIn = [];
     }
-    message.ignoreEmpty !== undefined && (obj.ignoreEmpty = message.ignoreEmpty);
+    if (message.ignoreEmpty === true) {
+      obj.ignoreEmpty = message.ignoreEmpty;
+    }
     return obj;
   },
 
@@ -2509,22 +2588,30 @@ export const UInt64Rules = {
 
   toJSON(message: UInt64Rules): unknown {
     const obj: any = {};
-    message.const !== undefined && (obj.const = Math.round(message.const));
-    message.lt !== undefined && (obj.lt = Math.round(message.lt));
-    message.lte !== undefined && (obj.lte = Math.round(message.lte));
-    message.gt !== undefined && (obj.gt = Math.round(message.gt));
-    message.gte !== undefined && (obj.gte = Math.round(message.gte));
-    if (message.in) {
+    if (message.const !== 0) {
+      obj.const = Math.round(message.const);
+    }
+    if (message.lt !== 0) {
+      obj.lt = Math.round(message.lt);
+    }
+    if (message.lte !== 0) {
+      obj.lte = Math.round(message.lte);
+    }
+    if (message.gt !== 0) {
+      obj.gt = Math.round(message.gt);
+    }
+    if (message.gte !== 0) {
+      obj.gte = Math.round(message.gte);
+    }
+    if (message.in?.length) {
       obj.in = message.in.map((e) => Math.round(e));
-    } else {
-      obj.in = [];
     }
-    if (message.notIn) {
+    if (message.notIn?.length) {
       obj.notIn = message.notIn.map((e) => Math.round(e));
-    } else {
-      obj.notIn = [];
     }
-    message.ignoreEmpty !== undefined && (obj.ignoreEmpty = message.ignoreEmpty);
+    if (message.ignoreEmpty === true) {
+      obj.ignoreEmpty = message.ignoreEmpty;
+    }
     return obj;
   },
 
@@ -2690,22 +2777,30 @@ export const SInt32Rules = {
 
   toJSON(message: SInt32Rules): unknown {
     const obj: any = {};
-    message.const !== undefined && (obj.const = Math.round(message.const));
-    message.lt !== undefined && (obj.lt = Math.round(message.lt));
-    message.lte !== undefined && (obj.lte = Math.round(message.lte));
-    message.gt !== undefined && (obj.gt = Math.round(message.gt));
-    message.gte !== undefined && (obj.gte = Math.round(message.gte));
-    if (message.in) {
+    if (message.const !== 0) {
+      obj.const = Math.round(message.const);
+    }
+    if (message.lt !== 0) {
+      obj.lt = Math.round(message.lt);
+    }
+    if (message.lte !== 0) {
+      obj.lte = Math.round(message.lte);
+    }
+    if (message.gt !== 0) {
+      obj.gt = Math.round(message.gt);
+    }
+    if (message.gte !== 0) {
+      obj.gte = Math.round(message.gte);
+    }
+    if (message.in?.length) {
       obj.in = message.in.map((e) => Math.round(e));
-    } else {
-      obj.in = [];
     }
-    if (message.notIn) {
+    if (message.notIn?.length) {
       obj.notIn = message.notIn.map((e) => Math.round(e));
-    } else {
-      obj.notIn = [];
     }
-    message.ignoreEmpty !== undefined && (obj.ignoreEmpty = message.ignoreEmpty);
+    if (message.ignoreEmpty === true) {
+      obj.ignoreEmpty = message.ignoreEmpty;
+    }
     return obj;
   },
 
@@ -2871,22 +2966,30 @@ export const SInt64Rules = {
 
   toJSON(message: SInt64Rules): unknown {
     const obj: any = {};
-    message.const !== undefined && (obj.const = Math.round(message.const));
-    message.lt !== undefined && (obj.lt = Math.round(message.lt));
-    message.lte !== undefined && (obj.lte = Math.round(message.lte));
-    message.gt !== undefined && (obj.gt = Math.round(message.gt));
-    message.gte !== undefined && (obj.gte = Math.round(message.gte));
-    if (message.in) {
+    if (message.const !== 0) {
+      obj.const = Math.round(message.const);
+    }
+    if (message.lt !== 0) {
+      obj.lt = Math.round(message.lt);
+    }
+    if (message.lte !== 0) {
+      obj.lte = Math.round(message.lte);
+    }
+    if (message.gt !== 0) {
+      obj.gt = Math.round(message.gt);
+    }
+    if (message.gte !== 0) {
+      obj.gte = Math.round(message.gte);
+    }
+    if (message.in?.length) {
       obj.in = message.in.map((e) => Math.round(e));
-    } else {
-      obj.in = [];
     }
-    if (message.notIn) {
+    if (message.notIn?.length) {
       obj.notIn = message.notIn.map((e) => Math.round(e));
-    } else {
-      obj.notIn = [];
     }
-    message.ignoreEmpty !== undefined && (obj.ignoreEmpty = message.ignoreEmpty);
+    if (message.ignoreEmpty === true) {
+      obj.ignoreEmpty = message.ignoreEmpty;
+    }
     return obj;
   },
 
@@ -3052,22 +3155,30 @@ export const Fixed32Rules = {
 
   toJSON(message: Fixed32Rules): unknown {
     const obj: any = {};
-    message.const !== undefined && (obj.const = Math.round(message.const));
-    message.lt !== undefined && (obj.lt = Math.round(message.lt));
-    message.lte !== undefined && (obj.lte = Math.round(message.lte));
-    message.gt !== undefined && (obj.gt = Math.round(message.gt));
-    message.gte !== undefined && (obj.gte = Math.round(message.gte));
-    if (message.in) {
+    if (message.const !== 0) {
+      obj.const = Math.round(message.const);
+    }
+    if (message.lt !== 0) {
+      obj.lt = Math.round(message.lt);
+    }
+    if (message.lte !== 0) {
+      obj.lte = Math.round(message.lte);
+    }
+    if (message.gt !== 0) {
+      obj.gt = Math.round(message.gt);
+    }
+    if (message.gte !== 0) {
+      obj.gte = Math.round(message.gte);
+    }
+    if (message.in?.length) {
       obj.in = message.in.map((e) => Math.round(e));
-    } else {
-      obj.in = [];
     }
-    if (message.notIn) {
+    if (message.notIn?.length) {
       obj.notIn = message.notIn.map((e) => Math.round(e));
-    } else {
-      obj.notIn = [];
     }
-    message.ignoreEmpty !== undefined && (obj.ignoreEmpty = message.ignoreEmpty);
+    if (message.ignoreEmpty === true) {
+      obj.ignoreEmpty = message.ignoreEmpty;
+    }
     return obj;
   },
 
@@ -3233,22 +3344,30 @@ export const Fixed64Rules = {
 
   toJSON(message: Fixed64Rules): unknown {
     const obj: any = {};
-    message.const !== undefined && (obj.const = Math.round(message.const));
-    message.lt !== undefined && (obj.lt = Math.round(message.lt));
-    message.lte !== undefined && (obj.lte = Math.round(message.lte));
-    message.gt !== undefined && (obj.gt = Math.round(message.gt));
-    message.gte !== undefined && (obj.gte = Math.round(message.gte));
-    if (message.in) {
+    if (message.const !== 0) {
+      obj.const = Math.round(message.const);
+    }
+    if (message.lt !== 0) {
+      obj.lt = Math.round(message.lt);
+    }
+    if (message.lte !== 0) {
+      obj.lte = Math.round(message.lte);
+    }
+    if (message.gt !== 0) {
+      obj.gt = Math.round(message.gt);
+    }
+    if (message.gte !== 0) {
+      obj.gte = Math.round(message.gte);
+    }
+    if (message.in?.length) {
       obj.in = message.in.map((e) => Math.round(e));
-    } else {
-      obj.in = [];
     }
-    if (message.notIn) {
+    if (message.notIn?.length) {
       obj.notIn = message.notIn.map((e) => Math.round(e));
-    } else {
-      obj.notIn = [];
     }
-    message.ignoreEmpty !== undefined && (obj.ignoreEmpty = message.ignoreEmpty);
+    if (message.ignoreEmpty === true) {
+      obj.ignoreEmpty = message.ignoreEmpty;
+    }
     return obj;
   },
 
@@ -3414,22 +3533,30 @@ export const SFixed32Rules = {
 
   toJSON(message: SFixed32Rules): unknown {
     const obj: any = {};
-    message.const !== undefined && (obj.const = Math.round(message.const));
-    message.lt !== undefined && (obj.lt = Math.round(message.lt));
-    message.lte !== undefined && (obj.lte = Math.round(message.lte));
-    message.gt !== undefined && (obj.gt = Math.round(message.gt));
-    message.gte !== undefined && (obj.gte = Math.round(message.gte));
-    if (message.in) {
+    if (message.const !== 0) {
+      obj.const = Math.round(message.const);
+    }
+    if (message.lt !== 0) {
+      obj.lt = Math.round(message.lt);
+    }
+    if (message.lte !== 0) {
+      obj.lte = Math.round(message.lte);
+    }
+    if (message.gt !== 0) {
+      obj.gt = Math.round(message.gt);
+    }
+    if (message.gte !== 0) {
+      obj.gte = Math.round(message.gte);
+    }
+    if (message.in?.length) {
       obj.in = message.in.map((e) => Math.round(e));
-    } else {
-      obj.in = [];
     }
-    if (message.notIn) {
+    if (message.notIn?.length) {
       obj.notIn = message.notIn.map((e) => Math.round(e));
-    } else {
-      obj.notIn = [];
     }
-    message.ignoreEmpty !== undefined && (obj.ignoreEmpty = message.ignoreEmpty);
+    if (message.ignoreEmpty === true) {
+      obj.ignoreEmpty = message.ignoreEmpty;
+    }
     return obj;
   },
 
@@ -3595,22 +3722,30 @@ export const SFixed64Rules = {
 
   toJSON(message: SFixed64Rules): unknown {
     const obj: any = {};
-    message.const !== undefined && (obj.const = Math.round(message.const));
-    message.lt !== undefined && (obj.lt = Math.round(message.lt));
-    message.lte !== undefined && (obj.lte = Math.round(message.lte));
-    message.gt !== undefined && (obj.gt = Math.round(message.gt));
-    message.gte !== undefined && (obj.gte = Math.round(message.gte));
-    if (message.in) {
+    if (message.const !== 0) {
+      obj.const = Math.round(message.const);
+    }
+    if (message.lt !== 0) {
+      obj.lt = Math.round(message.lt);
+    }
+    if (message.lte !== 0) {
+      obj.lte = Math.round(message.lte);
+    }
+    if (message.gt !== 0) {
+      obj.gt = Math.round(message.gt);
+    }
+    if (message.gte !== 0) {
+      obj.gte = Math.round(message.gte);
+    }
+    if (message.in?.length) {
       obj.in = message.in.map((e) => Math.round(e));
-    } else {
-      obj.in = [];
     }
-    if (message.notIn) {
+    if (message.notIn?.length) {
       obj.notIn = message.notIn.map((e) => Math.round(e));
-    } else {
-      obj.notIn = [];
     }
-    message.ignoreEmpty !== undefined && (obj.ignoreEmpty = message.ignoreEmpty);
+    if (message.ignoreEmpty === true) {
+      obj.ignoreEmpty = message.ignoreEmpty;
+    }
     return obj;
   },
 
@@ -3673,7 +3808,9 @@ export const BoolRules = {
 
   toJSON(message: BoolRules): unknown {
     const obj: any = {};
-    message.const !== undefined && (obj.const = message.const);
+    if (message.const === true) {
+      obj.const = message.const;
+    }
     return obj;
   },
 
@@ -4033,43 +4170,84 @@ export const StringRules = {
 
   toJSON(message: StringRules): unknown {
     const obj: any = {};
-    message.const !== undefined && (obj.const = message.const);
-    message.len !== undefined && (obj.len = Math.round(message.len));
-    message.minLen !== undefined && (obj.minLen = Math.round(message.minLen));
-    message.maxLen !== undefined && (obj.maxLen = Math.round(message.maxLen));
-    message.lenBytes !== undefined && (obj.lenBytes = Math.round(message.lenBytes));
-    message.minBytes !== undefined && (obj.minBytes = Math.round(message.minBytes));
-    message.maxBytes !== undefined && (obj.maxBytes = Math.round(message.maxBytes));
-    message.pattern !== undefined && (obj.pattern = message.pattern);
-    message.prefix !== undefined && (obj.prefix = message.prefix);
-    message.suffix !== undefined && (obj.suffix = message.suffix);
-    message.contains !== undefined && (obj.contains = message.contains);
-    message.notContains !== undefined && (obj.notContains = message.notContains);
-    if (message.in) {
-      obj.in = message.in.map((e) => e);
-    } else {
-      obj.in = [];
+    if (message.const !== "") {
+      obj.const = message.const;
     }
-    if (message.notIn) {
-      obj.notIn = message.notIn.map((e) => e);
-    } else {
-      obj.notIn = [];
+    if (message.len !== 0) {
+      obj.len = Math.round(message.len);
     }
-    message.email !== undefined && (obj.email = message.email);
-    message.hostname !== undefined && (obj.hostname = message.hostname);
-    message.ip !== undefined && (obj.ip = message.ip);
-    message.ipv4 !== undefined && (obj.ipv4 = message.ipv4);
-    message.ipv6 !== undefined && (obj.ipv6 = message.ipv6);
-    message.uri !== undefined && (obj.uri = message.uri);
-    message.uriRef !== undefined && (obj.uriRef = message.uriRef);
-    message.address !== undefined && (obj.address = message.address);
-    message.uuid !== undefined && (obj.uuid = message.uuid);
-    message.wellKnownRegex !== undefined &&
-      (obj.wellKnownRegex = message.wellKnownRegex !== undefined
-        ? knownRegexToJSON(message.wellKnownRegex)
-        : undefined);
-    message.strict !== undefined && (obj.strict = message.strict);
-    message.ignoreEmpty !== undefined && (obj.ignoreEmpty = message.ignoreEmpty);
+    if (message.minLen !== 0) {
+      obj.minLen = Math.round(message.minLen);
+    }
+    if (message.maxLen !== 0) {
+      obj.maxLen = Math.round(message.maxLen);
+    }
+    if (message.lenBytes !== 0) {
+      obj.lenBytes = Math.round(message.lenBytes);
+    }
+    if (message.minBytes !== 0) {
+      obj.minBytes = Math.round(message.minBytes);
+    }
+    if (message.maxBytes !== 0) {
+      obj.maxBytes = Math.round(message.maxBytes);
+    }
+    if (message.pattern !== "") {
+      obj.pattern = message.pattern;
+    }
+    if (message.prefix !== "") {
+      obj.prefix = message.prefix;
+    }
+    if (message.suffix !== "") {
+      obj.suffix = message.suffix;
+    }
+    if (message.contains !== "") {
+      obj.contains = message.contains;
+    }
+    if (message.notContains !== "") {
+      obj.notContains = message.notContains;
+    }
+    if (message.in?.length) {
+      obj.in = message.in;
+    }
+    if (message.notIn?.length) {
+      obj.notIn = message.notIn;
+    }
+    if (message.email !== undefined) {
+      obj.email = message.email;
+    }
+    if (message.hostname !== undefined) {
+      obj.hostname = message.hostname;
+    }
+    if (message.ip !== undefined) {
+      obj.ip = message.ip;
+    }
+    if (message.ipv4 !== undefined) {
+      obj.ipv4 = message.ipv4;
+    }
+    if (message.ipv6 !== undefined) {
+      obj.ipv6 = message.ipv6;
+    }
+    if (message.uri !== undefined) {
+      obj.uri = message.uri;
+    }
+    if (message.uriRef !== undefined) {
+      obj.uriRef = message.uriRef;
+    }
+    if (message.address !== undefined) {
+      obj.address = message.address;
+    }
+    if (message.uuid !== undefined) {
+      obj.uuid = message.uuid;
+    }
+    if (message.wellKnownRegex !== undefined) {
+      obj.wellKnownRegex = knownRegexToJSON(message.wellKnownRegex);
+    }
+    if (message.strict === true) {
+      obj.strict = message.strict;
+    }
+    if (message.ignoreEmpty === true) {
+      obj.ignoreEmpty = message.ignoreEmpty;
+    }
     return obj;
   },
 
@@ -4310,32 +4488,48 @@ export const BytesRules = {
 
   toJSON(message: BytesRules): unknown {
     const obj: any = {};
-    message.const !== undefined &&
-      (obj.const = base64FromBytes(message.const !== undefined ? message.const : new Uint8Array(0)));
-    message.len !== undefined && (obj.len = Math.round(message.len));
-    message.minLen !== undefined && (obj.minLen = Math.round(message.minLen));
-    message.maxLen !== undefined && (obj.maxLen = Math.round(message.maxLen));
-    message.pattern !== undefined && (obj.pattern = message.pattern);
-    message.prefix !== undefined &&
-      (obj.prefix = base64FromBytes(message.prefix !== undefined ? message.prefix : new Uint8Array(0)));
-    message.suffix !== undefined &&
-      (obj.suffix = base64FromBytes(message.suffix !== undefined ? message.suffix : new Uint8Array(0)));
-    message.contains !== undefined &&
-      (obj.contains = base64FromBytes(message.contains !== undefined ? message.contains : new Uint8Array(0)));
-    if (message.in) {
-      obj.in = message.in.map((e) => base64FromBytes(e !== undefined ? e : new Uint8Array(0)));
-    } else {
-      obj.in = [];
+    if (message.const.length !== 0) {
+      obj.const = base64FromBytes(message.const);
     }
-    if (message.notIn) {
-      obj.notIn = message.notIn.map((e) => base64FromBytes(e !== undefined ? e : new Uint8Array(0)));
-    } else {
-      obj.notIn = [];
+    if (message.len !== 0) {
+      obj.len = Math.round(message.len);
     }
-    message.ip !== undefined && (obj.ip = message.ip);
-    message.ipv4 !== undefined && (obj.ipv4 = message.ipv4);
-    message.ipv6 !== undefined && (obj.ipv6 = message.ipv6);
-    message.ignoreEmpty !== undefined && (obj.ignoreEmpty = message.ignoreEmpty);
+    if (message.minLen !== 0) {
+      obj.minLen = Math.round(message.minLen);
+    }
+    if (message.maxLen !== 0) {
+      obj.maxLen = Math.round(message.maxLen);
+    }
+    if (message.pattern !== "") {
+      obj.pattern = message.pattern;
+    }
+    if (message.prefix.length !== 0) {
+      obj.prefix = base64FromBytes(message.prefix);
+    }
+    if (message.suffix.length !== 0) {
+      obj.suffix = base64FromBytes(message.suffix);
+    }
+    if (message.contains.length !== 0) {
+      obj.contains = base64FromBytes(message.contains);
+    }
+    if (message.in?.length) {
+      obj.in = message.in.map((e) => base64FromBytes(e));
+    }
+    if (message.notIn?.length) {
+      obj.notIn = message.notIn.map((e) => base64FromBytes(e));
+    }
+    if (message.ip !== undefined) {
+      obj.ip = message.ip;
+    }
+    if (message.ipv4 !== undefined) {
+      obj.ipv4 = message.ipv4;
+    }
+    if (message.ipv6 !== undefined) {
+      obj.ipv6 = message.ipv6;
+    }
+    if (message.ignoreEmpty === true) {
+      obj.ignoreEmpty = message.ignoreEmpty;
+    }
     return obj;
   },
 
@@ -4463,17 +4657,17 @@ export const EnumRules = {
 
   toJSON(message: EnumRules): unknown {
     const obj: any = {};
-    message.const !== undefined && (obj.const = Math.round(message.const));
-    message.definedOnly !== undefined && (obj.definedOnly = message.definedOnly);
-    if (message.in) {
-      obj.in = message.in.map((e) => Math.round(e));
-    } else {
-      obj.in = [];
+    if (message.const !== 0) {
+      obj.const = Math.round(message.const);
     }
-    if (message.notIn) {
+    if (message.definedOnly === true) {
+      obj.definedOnly = message.definedOnly;
+    }
+    if (message.in?.length) {
+      obj.in = message.in.map((e) => Math.round(e));
+    }
+    if (message.notIn?.length) {
       obj.notIn = message.notIn.map((e) => Math.round(e));
-    } else {
-      obj.notIn = [];
     }
     return obj;
   },
@@ -4546,8 +4740,12 @@ export const MessageRules = {
 
   toJSON(message: MessageRules): unknown {
     const obj: any = {};
-    message.skip !== undefined && (obj.skip = message.skip);
-    message.required !== undefined && (obj.required = message.required);
+    if (message.skip === true) {
+      obj.skip = message.skip;
+    }
+    if (message.required === true) {
+      obj.required = message.required;
+    }
     return obj;
   },
 
@@ -4650,11 +4848,21 @@ export const RepeatedRules = {
 
   toJSON(message: RepeatedRules): unknown {
     const obj: any = {};
-    message.minItems !== undefined && (obj.minItems = Math.round(message.minItems));
-    message.maxItems !== undefined && (obj.maxItems = Math.round(message.maxItems));
-    message.unique !== undefined && (obj.unique = message.unique);
-    message.items !== undefined && (obj.items = message.items ? FieldRules.toJSON(message.items) : undefined);
-    message.ignoreEmpty !== undefined && (obj.ignoreEmpty = message.ignoreEmpty);
+    if (message.minItems !== 0) {
+      obj.minItems = Math.round(message.minItems);
+    }
+    if (message.maxItems !== 0) {
+      obj.maxItems = Math.round(message.maxItems);
+    }
+    if (message.unique === true) {
+      obj.unique = message.unique;
+    }
+    if (message.items !== undefined) {
+      obj.items = FieldRules.toJSON(message.items);
+    }
+    if (message.ignoreEmpty === true) {
+      obj.ignoreEmpty = message.ignoreEmpty;
+    }
     return obj;
   },
 
@@ -4773,12 +4981,24 @@ export const MapRules = {
 
   toJSON(message: MapRules): unknown {
     const obj: any = {};
-    message.minPairs !== undefined && (obj.minPairs = Math.round(message.minPairs));
-    message.maxPairs !== undefined && (obj.maxPairs = Math.round(message.maxPairs));
-    message.noSparse !== undefined && (obj.noSparse = message.noSparse);
-    message.keys !== undefined && (obj.keys = message.keys ? FieldRules.toJSON(message.keys) : undefined);
-    message.values !== undefined && (obj.values = message.values ? FieldRules.toJSON(message.values) : undefined);
-    message.ignoreEmpty !== undefined && (obj.ignoreEmpty = message.ignoreEmpty);
+    if (message.minPairs !== 0) {
+      obj.minPairs = Math.round(message.minPairs);
+    }
+    if (message.maxPairs !== 0) {
+      obj.maxPairs = Math.round(message.maxPairs);
+    }
+    if (message.noSparse === true) {
+      obj.noSparse = message.noSparse;
+    }
+    if (message.keys !== undefined) {
+      obj.keys = FieldRules.toJSON(message.keys);
+    }
+    if (message.values !== undefined) {
+      obj.values = FieldRules.toJSON(message.values);
+    }
+    if (message.ignoreEmpty === true) {
+      obj.ignoreEmpty = message.ignoreEmpty;
+    }
     return obj;
   },
 
@@ -4867,16 +5087,14 @@ export const AnyRules = {
 
   toJSON(message: AnyRules): unknown {
     const obj: any = {};
-    message.required !== undefined && (obj.required = message.required);
-    if (message.in) {
-      obj.in = message.in.map((e) => e);
-    } else {
-      obj.in = [];
+    if (message.required === true) {
+      obj.required = message.required;
     }
-    if (message.notIn) {
-      obj.notIn = message.notIn.map((e) => e);
-    } else {
-      obj.notIn = [];
+    if (message.in?.length) {
+      obj.in = message.in;
+    }
+    if (message.notIn?.length) {
+      obj.notIn = message.notIn;
     }
     return obj;
   },
@@ -5023,21 +5241,29 @@ export const DurationRules = {
 
   toJSON(message: DurationRules): unknown {
     const obj: any = {};
-    message.required !== undefined && (obj.required = message.required);
-    message.const !== undefined && (obj.const = message.const ? Duration.toJSON(message.const) : undefined);
-    message.lt !== undefined && (obj.lt = message.lt ? Duration.toJSON(message.lt) : undefined);
-    message.lte !== undefined && (obj.lte = message.lte ? Duration.toJSON(message.lte) : undefined);
-    message.gt !== undefined && (obj.gt = message.gt ? Duration.toJSON(message.gt) : undefined);
-    message.gte !== undefined && (obj.gte = message.gte ? Duration.toJSON(message.gte) : undefined);
-    if (message.in) {
-      obj.in = message.in.map((e) => e ? Duration.toJSON(e) : undefined);
-    } else {
-      obj.in = [];
+    if (message.required === true) {
+      obj.required = message.required;
     }
-    if (message.notIn) {
-      obj.notIn = message.notIn.map((e) => e ? Duration.toJSON(e) : undefined);
-    } else {
-      obj.notIn = [];
+    if (message.const !== undefined) {
+      obj.const = Duration.toJSON(message.const);
+    }
+    if (message.lt !== undefined) {
+      obj.lt = Duration.toJSON(message.lt);
+    }
+    if (message.lte !== undefined) {
+      obj.lte = Duration.toJSON(message.lte);
+    }
+    if (message.gt !== undefined) {
+      obj.gt = Duration.toJSON(message.gt);
+    }
+    if (message.gte !== undefined) {
+      obj.gte = Duration.toJSON(message.gte);
+    }
+    if (message.in?.length) {
+      obj.in = message.in.map((e) => Duration.toJSON(e));
+    }
+    if (message.notIn?.length) {
+      obj.notIn = message.notIn.map((e) => Duration.toJSON(e));
     }
     return obj;
   },
@@ -5203,15 +5429,33 @@ export const TimestampRules = {
 
   toJSON(message: TimestampRules): unknown {
     const obj: any = {};
-    message.required !== undefined && (obj.required = message.required);
-    message.const !== undefined && (obj.const = message.const.toISOString());
-    message.lt !== undefined && (obj.lt = message.lt.toISOString());
-    message.lte !== undefined && (obj.lte = message.lte.toISOString());
-    message.gt !== undefined && (obj.gt = message.gt.toISOString());
-    message.gte !== undefined && (obj.gte = message.gte.toISOString());
-    message.ltNow !== undefined && (obj.ltNow = message.ltNow);
-    message.gtNow !== undefined && (obj.gtNow = message.gtNow);
-    message.within !== undefined && (obj.within = message.within ? Duration.toJSON(message.within) : undefined);
+    if (message.required === true) {
+      obj.required = message.required;
+    }
+    if (message.const !== undefined) {
+      obj.const = message.const.toISOString();
+    }
+    if (message.lt !== undefined) {
+      obj.lt = message.lt.toISOString();
+    }
+    if (message.lte !== undefined) {
+      obj.lte = message.lte.toISOString();
+    }
+    if (message.gt !== undefined) {
+      obj.gt = message.gt.toISOString();
+    }
+    if (message.gte !== undefined) {
+      obj.gte = message.gte.toISOString();
+    }
+    if (message.ltNow === true) {
+      obj.ltNow = message.ltNow;
+    }
+    if (message.gtNow === true) {
+      obj.gtNow = message.gtNow;
+    }
+    if (message.within !== undefined) {
+      obj.within = Duration.toJSON(message.within);
+    }
     return obj;
   },
 
@@ -5320,8 +5564,6 @@ function longToNumber(long: Long): number {
   return long.toNumber();
 }
 
-// If you get a compile-error about 'Constructor<Long> and ... have no overlap',
-// add '--ts_proto_opt=esModuleInterop=true' as a flag when calling 'protoc'.
 if (_m0.util.Long !== Long) {
   _m0.util.Long = Long as any;
   _m0.configure();

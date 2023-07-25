@@ -1,0 +1,29 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/ExpenseMetrics",
+    "definitions": {
+        "ExpenseMetrics": {
+            "properties": {
+                "month": {
+                    "type": "integer"
+                },
+                "personal_finance_category_primary": {
+                    "type": "string"
+                },
+                "transaction_count": {
+                    "type": "string"
+                },
+                "total_expenses": {
+                    "type": "number"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Expense Metrics",
+            "description": "ExpenseMetrics This message is used to represent the expense metrics of a user."
+        }
+    }
+}

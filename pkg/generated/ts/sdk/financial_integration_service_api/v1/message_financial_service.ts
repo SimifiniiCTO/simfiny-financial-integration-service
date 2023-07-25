@@ -1,6 +1,6 @@
 /* eslint-disable */
-import * as Long from "long";
 import * as _m0 from "protobufjs/minimal";
+import Long = require("long");
 
 export const protobufPackage = "financial_integration_service_api.v1";
 
@@ -1063,15 +1063,24 @@ export const StripeSubscription = {
 
   toJSON(message: StripeSubscription): unknown {
     const obj: any = {};
-    message.id !== undefined && (obj.id = Math.round(message.id));
-    message.stripeSubscriptionId !== undefined && (obj.stripeSubscriptionId = message.stripeSubscriptionId);
-    message.stripeSubscriptionStatus !== undefined &&
-      (obj.stripeSubscriptionStatus = stripeSubscriptionStatusToJSON(message.stripeSubscriptionStatus));
-    message.stripeSubscriptionActiveUntil !== undefined &&
-      (obj.stripeSubscriptionActiveUntil = message.stripeSubscriptionActiveUntil);
-    message.stripeWebhookLatestTimestamp !== undefined &&
-      (obj.stripeWebhookLatestTimestamp = message.stripeWebhookLatestTimestamp);
-    message.isTrialing !== undefined && (obj.isTrialing = message.isTrialing);
+    if (message.id !== 0) {
+      obj.id = Math.round(message.id);
+    }
+    if (message.stripeSubscriptionId !== "") {
+      obj.stripeSubscriptionId = message.stripeSubscriptionId;
+    }
+    if (message.stripeSubscriptionStatus !== 0) {
+      obj.stripeSubscriptionStatus = stripeSubscriptionStatusToJSON(message.stripeSubscriptionStatus);
+    }
+    if (message.stripeSubscriptionActiveUntil !== "") {
+      obj.stripeSubscriptionActiveUntil = message.stripeSubscriptionActiveUntil;
+    }
+    if (message.stripeWebhookLatestTimestamp !== "") {
+      obj.stripeWebhookLatestTimestamp = message.stripeWebhookLatestTimestamp;
+    }
+    if (message.isTrialing === true) {
+      obj.isTrialing = message.isTrialing;
+    }
     return obj;
   },
 
@@ -1180,16 +1189,20 @@ export const UserProfile = {
 
   toJSON(message: UserProfile): unknown {
     const obj: any = {};
-    message.id !== undefined && (obj.id = Math.round(message.id));
-    message.userId !== undefined && (obj.userId = Math.round(message.userId));
-    message.stripeCustomerId !== undefined && (obj.stripeCustomerId = message.stripeCustomerId);
-    message.stripeSubscriptions !== undefined && (obj.stripeSubscriptions = message.stripeSubscriptions
-      ? StripeSubscription.toJSON(message.stripeSubscriptions)
-      : undefined);
-    if (message.link) {
-      obj.link = message.link.map((e) => e ? Link.toJSON(e) : undefined);
-    } else {
-      obj.link = [];
+    if (message.id !== 0) {
+      obj.id = Math.round(message.id);
+    }
+    if (message.userId !== 0) {
+      obj.userId = Math.round(message.userId);
+    }
+    if (message.stripeCustomerId !== "") {
+      obj.stripeCustomerId = message.stripeCustomerId;
+    }
+    if (message.stripeSubscriptions !== undefined) {
+      obj.stripeSubscriptions = StripeSubscription.toJSON(message.stripeSubscriptions);
+    }
+    if (message.link?.length) {
+      obj.link = message.link.map((e) => Link.toJSON(e));
     }
     return obj;
   },
@@ -1532,52 +1545,75 @@ export const Link = {
 
   toJSON(message: Link): unknown {
     const obj: any = {};
-    message.id !== undefined && (obj.id = Math.round(message.id));
-    message.plaidSync !== undefined &&
-      (obj.plaidSync = message.plaidSync ? PlaidSync.toJSON(message.plaidSync) : undefined);
-    message.linkStatus !== undefined && (obj.linkStatus = linkStatusToJSON(message.linkStatus));
-    message.plaidLink !== undefined &&
-      (obj.plaidLink = message.plaidLink ? PlaidLink.toJSON(message.plaidLink) : undefined);
-    message.plaidNewAccountsAvailable !== undefined &&
-      (obj.plaidNewAccountsAvailable = message.plaidNewAccountsAvailable);
-    message.expirationDate !== undefined && (obj.expirationDate = message.expirationDate);
-    message.institutionName !== undefined && (obj.institutionName = message.institutionName);
-    message.customInstitutionName !== undefined && (obj.customInstitutionName = message.customInstitutionName);
-    message.description !== undefined && (obj.description = message.description);
-    message.lastManualSync !== undefined && (obj.lastManualSync = message.lastManualSync);
-    message.lastSuccessfulUpdate !== undefined && (obj.lastSuccessfulUpdate = message.lastSuccessfulUpdate);
-    message.token !== undefined && (obj.token = message.token ? Token.toJSON(message.token) : undefined);
-    if (message.bankAccounts) {
-      obj.bankAccounts = message.bankAccounts.map((e) => e ? BankAccount.toJSON(e) : undefined);
-    } else {
-      obj.bankAccounts = [];
+    if (message.id !== 0) {
+      obj.id = Math.round(message.id);
     }
-    if (message.investmentAccounts) {
-      obj.investmentAccounts = message.investmentAccounts.map((e) => e ? InvestmentAccount.toJSON(e) : undefined);
-    } else {
-      obj.investmentAccounts = [];
+    if (message.plaidSync !== undefined) {
+      obj.plaidSync = PlaidSync.toJSON(message.plaidSync);
     }
-    if (message.creditAccounts) {
-      obj.creditAccounts = message.creditAccounts.map((e) => e ? CreditAccount.toJSON(e) : undefined);
-    } else {
-      obj.creditAccounts = [];
+    if (message.linkStatus !== 0) {
+      obj.linkStatus = linkStatusToJSON(message.linkStatus);
     }
-    if (message.mortgageAccounts) {
-      obj.mortgageAccounts = message.mortgageAccounts.map((e) => e ? MortgageAccount.toJSON(e) : undefined);
-    } else {
-      obj.mortgageAccounts = [];
+    if (message.plaidLink !== undefined) {
+      obj.plaidLink = PlaidLink.toJSON(message.plaidLink);
     }
-    if (message.studentLoanAccounts) {
-      obj.studentLoanAccounts = message.studentLoanAccounts.map((e) => e ? StudentLoanAccount.toJSON(e) : undefined);
-    } else {
-      obj.studentLoanAccounts = [];
+    if (message.plaidNewAccountsAvailable === true) {
+      obj.plaidNewAccountsAvailable = message.plaidNewAccountsAvailable;
     }
-    message.plaidInstitutionId !== undefined && (obj.plaidInstitutionId = message.plaidInstitutionId);
-    message.linkType !== undefined && (obj.linkType = linkTypeToJSON(message.linkType));
-    message.errorCode !== undefined && (obj.errorCode = message.errorCode);
-    message.updatedAt !== undefined && (obj.updatedAt = message.updatedAt);
-    message.newAccountsAvailable !== undefined && (obj.newAccountsAvailable = message.newAccountsAvailable);
-    message.shouldBeUpdated !== undefined && (obj.shouldBeUpdated = message.shouldBeUpdated);
+    if (message.expirationDate !== "") {
+      obj.expirationDate = message.expirationDate;
+    }
+    if (message.institutionName !== "") {
+      obj.institutionName = message.institutionName;
+    }
+    if (message.customInstitutionName !== "") {
+      obj.customInstitutionName = message.customInstitutionName;
+    }
+    if (message.description !== "") {
+      obj.description = message.description;
+    }
+    if (message.lastManualSync !== "") {
+      obj.lastManualSync = message.lastManualSync;
+    }
+    if (message.lastSuccessfulUpdate !== "") {
+      obj.lastSuccessfulUpdate = message.lastSuccessfulUpdate;
+    }
+    if (message.token !== undefined) {
+      obj.token = Token.toJSON(message.token);
+    }
+    if (message.bankAccounts?.length) {
+      obj.bankAccounts = message.bankAccounts.map((e) => BankAccount.toJSON(e));
+    }
+    if (message.investmentAccounts?.length) {
+      obj.investmentAccounts = message.investmentAccounts.map((e) => InvestmentAccount.toJSON(e));
+    }
+    if (message.creditAccounts?.length) {
+      obj.creditAccounts = message.creditAccounts.map((e) => CreditAccount.toJSON(e));
+    }
+    if (message.mortgageAccounts?.length) {
+      obj.mortgageAccounts = message.mortgageAccounts.map((e) => MortgageAccount.toJSON(e));
+    }
+    if (message.studentLoanAccounts?.length) {
+      obj.studentLoanAccounts = message.studentLoanAccounts.map((e) => StudentLoanAccount.toJSON(e));
+    }
+    if (message.plaidInstitutionId !== "") {
+      obj.plaidInstitutionId = message.plaidInstitutionId;
+    }
+    if (message.linkType !== 0) {
+      obj.linkType = linkTypeToJSON(message.linkType);
+    }
+    if (message.errorCode !== "") {
+      obj.errorCode = message.errorCode;
+    }
+    if (message.updatedAt !== "") {
+      obj.updatedAt = message.updatedAt;
+    }
+    if (message.newAccountsAvailable === true) {
+      obj.newAccountsAvailable = message.newAccountsAvailable;
+    }
+    if (message.shouldBeUpdated === true) {
+      obj.shouldBeUpdated = message.shouldBeUpdated;
+    }
     return obj;
   },
 
@@ -1727,13 +1763,27 @@ export const PlaidSync = {
 
   toJSON(message: PlaidSync): unknown {
     const obj: any = {};
-    message.id !== undefined && (obj.id = Math.round(message.id));
-    message.timeStamp !== undefined && (obj.timeStamp = message.timeStamp);
-    message.trigger !== undefined && (obj.trigger = message.trigger);
-    message.nextCursor !== undefined && (obj.nextCursor = message.nextCursor);
-    message.added !== undefined && (obj.added = Math.round(message.added));
-    message.removed !== undefined && (obj.removed = Math.round(message.removed));
-    message.modified !== undefined && (obj.modified = Math.round(message.modified));
+    if (message.id !== 0) {
+      obj.id = Math.round(message.id);
+    }
+    if (message.timeStamp !== "") {
+      obj.timeStamp = message.timeStamp;
+    }
+    if (message.trigger !== "") {
+      obj.trigger = message.trigger;
+    }
+    if (message.nextCursor !== "") {
+      obj.nextCursor = message.nextCursor;
+    }
+    if (message.added !== 0) {
+      obj.added = Math.round(message.added);
+    }
+    if (message.removed !== 0) {
+      obj.removed = Math.round(message.removed);
+    }
+    if (message.modified !== 0) {
+      obj.modified = Math.round(message.modified);
+    }
     return obj;
   },
 
@@ -1841,11 +1891,21 @@ export const Token = {
 
   toJSON(message: Token): unknown {
     const obj: any = {};
-    message.id !== undefined && (obj.id = Math.round(message.id));
-    message.itemId !== undefined && (obj.itemId = message.itemId);
-    message.keyId !== undefined && (obj.keyId = message.keyId);
-    message.accessToken !== undefined && (obj.accessToken = message.accessToken);
-    message.version !== undefined && (obj.version = message.version);
+    if (message.id !== 0) {
+      obj.id = Math.round(message.id);
+    }
+    if (message.itemId !== "") {
+      obj.itemId = message.itemId;
+    }
+    if (message.keyId !== "") {
+      obj.keyId = message.keyId;
+    }
+    if (message.accessToken !== "") {
+      obj.accessToken = message.accessToken;
+    }
+    if (message.version !== "") {
+      obj.version = message.version;
+    }
     return obj;
   },
 
@@ -1981,17 +2041,27 @@ export const PlaidLink = {
 
   toJSON(message: PlaidLink): unknown {
     const obj: any = {};
-    message.id !== undefined && (obj.id = Math.round(message.id));
-    if (message.products) {
-      obj.products = message.products.map((e) => e);
-    } else {
-      obj.products = [];
+    if (message.id !== 0) {
+      obj.id = Math.round(message.id);
     }
-    message.webhookUrl !== undefined && (obj.webhookUrl = message.webhookUrl);
-    message.institutionId !== undefined && (obj.institutionId = message.institutionId);
-    message.institutionName !== undefined && (obj.institutionName = message.institutionName);
-    message.usePlaidSync !== undefined && (obj.usePlaidSync = message.usePlaidSync);
-    message.itemId !== undefined && (obj.itemId = message.itemId);
+    if (message.products?.length) {
+      obj.products = message.products;
+    }
+    if (message.webhookUrl !== "") {
+      obj.webhookUrl = message.webhookUrl;
+    }
+    if (message.institutionId !== "") {
+      obj.institutionId = message.institutionId;
+    }
+    if (message.institutionName !== "") {
+      obj.institutionName = message.institutionName;
+    }
+    if (message.usePlaidSync === true) {
+      obj.usePlaidSync = message.usePlaidSync;
+    }
+    if (message.itemId !== "") {
+      obj.itemId = message.itemId;
+    }
     return obj;
   },
 
@@ -2475,51 +2545,111 @@ export const StudentLoanAccount = {
 
   toJSON(message: StudentLoanAccount): unknown {
     const obj: any = {};
-    message.id !== undefined && (obj.id = Math.round(message.id));
-    message.plaidAccountId !== undefined && (obj.plaidAccountId = message.plaidAccountId);
-    if (message.disbursementDates) {
-      obj.disbursementDates = message.disbursementDates.map((e) => e);
-    } else {
-      obj.disbursementDates = [];
+    if (message.id !== 0) {
+      obj.id = Math.round(message.id);
     }
-    message.expectedPayoffDate !== undefined && (obj.expectedPayoffDate = message.expectedPayoffDate);
-    message.guarantor !== undefined && (obj.guarantor = message.guarantor);
-    message.interestRatePercentage !== undefined && (obj.interestRatePercentage = message.interestRatePercentage);
-    message.isOverdue !== undefined && (obj.isOverdue = message.isOverdue);
-    message.lastPaymentAmount !== undefined && (obj.lastPaymentAmount = message.lastPaymentAmount);
-    message.lastPaymentDate !== undefined && (obj.lastPaymentDate = message.lastPaymentDate);
-    message.lastStatementIssueDate !== undefined && (obj.lastStatementIssueDate = message.lastStatementIssueDate);
-    message.loanName !== undefined && (obj.loanName = message.loanName);
-    message.loanEndDate !== undefined && (obj.loanEndDate = message.loanEndDate);
-    message.minimumPaymentAmount !== undefined && (obj.minimumPaymentAmount = message.minimumPaymentAmount);
-    message.nextPaymentDueDate !== undefined && (obj.nextPaymentDueDate = message.nextPaymentDueDate);
-    message.originationDate !== undefined && (obj.originationDate = message.originationDate);
-    message.originationPrincipalAmount !== undefined &&
-      (obj.originationPrincipalAmount = message.originationPrincipalAmount);
-    message.outstandingInterestAmount !== undefined &&
-      (obj.outstandingInterestAmount = message.outstandingInterestAmount);
-    message.paymentReferenceNumber !== undefined && (obj.paymentReferenceNumber = message.paymentReferenceNumber);
-    message.sequenceNumber !== undefined && (obj.sequenceNumber = message.sequenceNumber);
-    message.ytdInterestPaid !== undefined && (obj.ytdInterestPaid = message.ytdInterestPaid);
-    message.ytdPrincipalPaid !== undefined && (obj.ytdPrincipalPaid = message.ytdPrincipalPaid);
-    message.loanType !== undefined && (obj.loanType = message.loanType);
-    message.pslfStatusEstimatedEligibilityDate !== undefined &&
-      (obj.pslfStatusEstimatedEligibilityDate = message.pslfStatusEstimatedEligibilityDate);
-    message.pslfStatusPaymentsMade !== undefined &&
-      (obj.pslfStatusPaymentsMade = Math.round(message.pslfStatusPaymentsMade));
-    message.pslfStatusPaymentsRemaining !== undefined &&
-      (obj.pslfStatusPaymentsRemaining = Math.round(message.pslfStatusPaymentsRemaining));
-    message.repaymentPlanType !== undefined && (obj.repaymentPlanType = message.repaymentPlanType);
-    message.repaymentPlanDescription !== undefined && (obj.repaymentPlanDescription = message.repaymentPlanDescription);
-    message.servicerAddressCity !== undefined && (obj.servicerAddressCity = message.servicerAddressCity);
-    message.servicerAddressPostalCode !== undefined &&
-      (obj.servicerAddressPostalCode = message.servicerAddressPostalCode);
-    message.servicerAddressState !== undefined && (obj.servicerAddressState = message.servicerAddressState);
-    message.servicerAddressStreet !== undefined && (obj.servicerAddressStreet = message.servicerAddressStreet);
-    message.servicerAddressRegion !== undefined && (obj.servicerAddressRegion = message.servicerAddressRegion);
-    message.servicerAddressCountry !== undefined && (obj.servicerAddressCountry = message.servicerAddressCountry);
-    message.userId !== undefined && (obj.userId = Math.round(message.userId));
-    message.name !== undefined && (obj.name = message.name);
+    if (message.plaidAccountId !== "") {
+      obj.plaidAccountId = message.plaidAccountId;
+    }
+    if (message.disbursementDates?.length) {
+      obj.disbursementDates = message.disbursementDates;
+    }
+    if (message.expectedPayoffDate !== "") {
+      obj.expectedPayoffDate = message.expectedPayoffDate;
+    }
+    if (message.guarantor !== "") {
+      obj.guarantor = message.guarantor;
+    }
+    if (message.interestRatePercentage !== 0) {
+      obj.interestRatePercentage = message.interestRatePercentage;
+    }
+    if (message.isOverdue === true) {
+      obj.isOverdue = message.isOverdue;
+    }
+    if (message.lastPaymentAmount !== 0) {
+      obj.lastPaymentAmount = message.lastPaymentAmount;
+    }
+    if (message.lastPaymentDate !== "") {
+      obj.lastPaymentDate = message.lastPaymentDate;
+    }
+    if (message.lastStatementIssueDate !== "") {
+      obj.lastStatementIssueDate = message.lastStatementIssueDate;
+    }
+    if (message.loanName !== "") {
+      obj.loanName = message.loanName;
+    }
+    if (message.loanEndDate !== "") {
+      obj.loanEndDate = message.loanEndDate;
+    }
+    if (message.minimumPaymentAmount !== 0) {
+      obj.minimumPaymentAmount = message.minimumPaymentAmount;
+    }
+    if (message.nextPaymentDueDate !== "") {
+      obj.nextPaymentDueDate = message.nextPaymentDueDate;
+    }
+    if (message.originationDate !== "") {
+      obj.originationDate = message.originationDate;
+    }
+    if (message.originationPrincipalAmount !== 0) {
+      obj.originationPrincipalAmount = message.originationPrincipalAmount;
+    }
+    if (message.outstandingInterestAmount !== 0) {
+      obj.outstandingInterestAmount = message.outstandingInterestAmount;
+    }
+    if (message.paymentReferenceNumber !== "") {
+      obj.paymentReferenceNumber = message.paymentReferenceNumber;
+    }
+    if (message.sequenceNumber !== "") {
+      obj.sequenceNumber = message.sequenceNumber;
+    }
+    if (message.ytdInterestPaid !== 0) {
+      obj.ytdInterestPaid = message.ytdInterestPaid;
+    }
+    if (message.ytdPrincipalPaid !== 0) {
+      obj.ytdPrincipalPaid = message.ytdPrincipalPaid;
+    }
+    if (message.loanType !== "") {
+      obj.loanType = message.loanType;
+    }
+    if (message.pslfStatusEstimatedEligibilityDate !== "") {
+      obj.pslfStatusEstimatedEligibilityDate = message.pslfStatusEstimatedEligibilityDate;
+    }
+    if (message.pslfStatusPaymentsMade !== 0) {
+      obj.pslfStatusPaymentsMade = Math.round(message.pslfStatusPaymentsMade);
+    }
+    if (message.pslfStatusPaymentsRemaining !== 0) {
+      obj.pslfStatusPaymentsRemaining = Math.round(message.pslfStatusPaymentsRemaining);
+    }
+    if (message.repaymentPlanType !== "") {
+      obj.repaymentPlanType = message.repaymentPlanType;
+    }
+    if (message.repaymentPlanDescription !== "") {
+      obj.repaymentPlanDescription = message.repaymentPlanDescription;
+    }
+    if (message.servicerAddressCity !== "") {
+      obj.servicerAddressCity = message.servicerAddressCity;
+    }
+    if (message.servicerAddressPostalCode !== "") {
+      obj.servicerAddressPostalCode = message.servicerAddressPostalCode;
+    }
+    if (message.servicerAddressState !== "") {
+      obj.servicerAddressState = message.servicerAddressState;
+    }
+    if (message.servicerAddressStreet !== "") {
+      obj.servicerAddressStreet = message.servicerAddressStreet;
+    }
+    if (message.servicerAddressRegion !== "") {
+      obj.servicerAddressRegion = message.servicerAddressRegion;
+    }
+    if (message.servicerAddressCountry !== "") {
+      obj.servicerAddressCountry = message.servicerAddressCountry;
+    }
+    if (message.userId !== 0) {
+      obj.userId = Math.round(message.userId);
+    }
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
     return obj;
   },
 
@@ -2841,30 +2971,66 @@ export const CreditAccount = {
 
   toJSON(message: CreditAccount): unknown {
     const obj: any = {};
-    message.id !== undefined && (obj.id = Math.round(message.id));
-    message.userId !== undefined && (obj.userId = Math.round(message.userId));
-    message.name !== undefined && (obj.name = message.name);
-    message.number !== undefined && (obj.number = message.number);
-    message.type !== undefined && (obj.type = message.type);
-    message.balance !== undefined && (obj.balance = message.balance);
-    message.currentFunds !== undefined && (obj.currentFunds = message.currentFunds);
-    message.balanceLimit !== undefined && (obj.balanceLimit = Math.round(message.balanceLimit));
-    message.plaidAccountId !== undefined && (obj.plaidAccountId = message.plaidAccountId);
-    message.subtype !== undefined && (obj.subtype = message.subtype);
-    message.isOverdue !== undefined && (obj.isOverdue = message.isOverdue);
-    message.lastPaymentAmount !== undefined && (obj.lastPaymentAmount = message.lastPaymentAmount);
-    message.lastPaymentDate !== undefined && (obj.lastPaymentDate = message.lastPaymentDate);
-    message.lastStatementIssueDate !== undefined && (obj.lastStatementIssueDate = message.lastStatementIssueDate);
-    message.minimumAmountDueDate !== undefined && (obj.minimumAmountDueDate = message.minimumAmountDueDate);
-    message.nextPaymentDate !== undefined && (obj.nextPaymentDate = message.nextPaymentDate);
-    if (message.aprs) {
-      obj.aprs = message.aprs.map((e) => e ? Apr.toJSON(e) : undefined);
-    } else {
-      obj.aprs = [];
+    if (message.id !== 0) {
+      obj.id = Math.round(message.id);
     }
-    message.lastStatementBalance !== undefined && (obj.lastStatementBalance = message.lastStatementBalance);
-    message.minimumPaymentAmount !== undefined && (obj.minimumPaymentAmount = message.minimumPaymentAmount);
-    message.nextPaymentDueDate !== undefined && (obj.nextPaymentDueDate = message.nextPaymentDueDate);
+    if (message.userId !== 0) {
+      obj.userId = Math.round(message.userId);
+    }
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    if (message.number !== "") {
+      obj.number = message.number;
+    }
+    if (message.type !== "") {
+      obj.type = message.type;
+    }
+    if (message.balance !== 0) {
+      obj.balance = message.balance;
+    }
+    if (message.currentFunds !== 0) {
+      obj.currentFunds = message.currentFunds;
+    }
+    if (message.balanceLimit !== 0) {
+      obj.balanceLimit = Math.round(message.balanceLimit);
+    }
+    if (message.plaidAccountId !== "") {
+      obj.plaidAccountId = message.plaidAccountId;
+    }
+    if (message.subtype !== "") {
+      obj.subtype = message.subtype;
+    }
+    if (message.isOverdue === true) {
+      obj.isOverdue = message.isOverdue;
+    }
+    if (message.lastPaymentAmount !== 0) {
+      obj.lastPaymentAmount = message.lastPaymentAmount;
+    }
+    if (message.lastPaymentDate !== "") {
+      obj.lastPaymentDate = message.lastPaymentDate;
+    }
+    if (message.lastStatementIssueDate !== "") {
+      obj.lastStatementIssueDate = message.lastStatementIssueDate;
+    }
+    if (message.minimumAmountDueDate !== 0) {
+      obj.minimumAmountDueDate = message.minimumAmountDueDate;
+    }
+    if (message.nextPaymentDate !== "") {
+      obj.nextPaymentDate = message.nextPaymentDate;
+    }
+    if (message.aprs?.length) {
+      obj.aprs = message.aprs.map((e) => Apr.toJSON(e));
+    }
+    if (message.lastStatementBalance !== 0) {
+      obj.lastStatementBalance = message.lastStatementBalance;
+    }
+    if (message.minimumPaymentAmount !== 0) {
+      obj.minimumPaymentAmount = message.minimumPaymentAmount;
+    }
+    if (message.nextPaymentDueDate !== "") {
+      obj.nextPaymentDueDate = message.nextPaymentDueDate;
+    }
     return obj;
   },
 
@@ -3321,41 +3487,102 @@ export const MortgageAccount = {
 
   toJSON(message: MortgageAccount): unknown {
     const obj: any = {};
-    message.id !== undefined && (obj.id = Math.round(message.id));
-    message.plaidAccountId !== undefined && (obj.plaidAccountId = message.plaidAccountId);
-    message.accountNumber !== undefined && (obj.accountNumber = message.accountNumber);
-    message.currentLateFee !== undefined && (obj.currentLateFee = message.currentLateFee);
-    message.escrowBalance !== undefined && (obj.escrowBalance = message.escrowBalance);
-    message.hasPmi !== undefined && (obj.hasPmi = message.hasPmi);
-    message.hasPrepaymentPenalty !== undefined && (obj.hasPrepaymentPenalty = message.hasPrepaymentPenalty);
-    message.lastPaymentAmount !== undefined && (obj.lastPaymentAmount = message.lastPaymentAmount);
-    message.lastPaymentDate !== undefined && (obj.lastPaymentDate = message.lastPaymentDate);
-    message.loanTerm !== undefined && (obj.loanTerm = message.loanTerm);
-    message.loanTypeDescription !== undefined && (obj.loanTypeDescription = message.loanTypeDescription);
-    message.maturityDate !== undefined && (obj.maturityDate = message.maturityDate);
-    message.nextMonthlyPayment !== undefined && (obj.nextMonthlyPayment = message.nextMonthlyPayment);
-    message.nextPaymentDueDate !== undefined && (obj.nextPaymentDueDate = message.nextPaymentDueDate);
-    message.originalPrincipalBalance !== undefined && (obj.originalPrincipalBalance = message.originalPrincipalBalance);
-    message.originalPropertyValue !== undefined && (obj.originalPropertyValue = message.originalPropertyValue);
-    message.outstandingPrincipalBalance !== undefined &&
-      (obj.outstandingPrincipalBalance = message.outstandingPrincipalBalance);
-    message.paymentAmount !== undefined && (obj.paymentAmount = message.paymentAmount);
-    message.paymentDate !== undefined && (obj.paymentDate = message.paymentDate);
-    message.originationDate !== undefined && (obj.originationDate = message.originationDate);
-    message.originationPrincipalAmount !== undefined &&
-      (obj.originationPrincipalAmount = message.originationPrincipalAmount);
-    message.pastDueAmount !== undefined && (obj.pastDueAmount = message.pastDueAmount);
-    message.ytdInterestPaid !== undefined && (obj.ytdInterestPaid = message.ytdInterestPaid);
-    message.ytdPrincipalPaid !== undefined && (obj.ytdPrincipalPaid = message.ytdPrincipalPaid);
-    message.propertyAddressCity !== undefined && (obj.propertyAddressCity = message.propertyAddressCity);
-    message.propertyAddressState !== undefined && (obj.propertyAddressState = message.propertyAddressState);
-    message.propertyAddressStreet !== undefined && (obj.propertyAddressStreet = message.propertyAddressStreet);
-    message.propertyAddressPostalCode !== undefined &&
-      (obj.propertyAddressPostalCode = message.propertyAddressPostalCode);
-    message.propertyRegion !== undefined && (obj.propertyRegion = message.propertyRegion);
-    message.propertyCountry !== undefined && (obj.propertyCountry = message.propertyCountry);
-    message.interestRatePercentage !== undefined && (obj.interestRatePercentage = message.interestRatePercentage);
-    message.interestRateType !== undefined && (obj.interestRateType = message.interestRateType);
+    if (message.id !== 0) {
+      obj.id = Math.round(message.id);
+    }
+    if (message.plaidAccountId !== "") {
+      obj.plaidAccountId = message.plaidAccountId;
+    }
+    if (message.accountNumber !== "") {
+      obj.accountNumber = message.accountNumber;
+    }
+    if (message.currentLateFee !== 0) {
+      obj.currentLateFee = message.currentLateFee;
+    }
+    if (message.escrowBalance !== 0) {
+      obj.escrowBalance = message.escrowBalance;
+    }
+    if (message.hasPmi === true) {
+      obj.hasPmi = message.hasPmi;
+    }
+    if (message.hasPrepaymentPenalty === true) {
+      obj.hasPrepaymentPenalty = message.hasPrepaymentPenalty;
+    }
+    if (message.lastPaymentAmount !== 0) {
+      obj.lastPaymentAmount = message.lastPaymentAmount;
+    }
+    if (message.lastPaymentDate !== "") {
+      obj.lastPaymentDate = message.lastPaymentDate;
+    }
+    if (message.loanTerm !== "") {
+      obj.loanTerm = message.loanTerm;
+    }
+    if (message.loanTypeDescription !== "") {
+      obj.loanTypeDescription = message.loanTypeDescription;
+    }
+    if (message.maturityDate !== "") {
+      obj.maturityDate = message.maturityDate;
+    }
+    if (message.nextMonthlyPayment !== 0) {
+      obj.nextMonthlyPayment = message.nextMonthlyPayment;
+    }
+    if (message.nextPaymentDueDate !== "") {
+      obj.nextPaymentDueDate = message.nextPaymentDueDate;
+    }
+    if (message.originalPrincipalBalance !== 0) {
+      obj.originalPrincipalBalance = message.originalPrincipalBalance;
+    }
+    if (message.originalPropertyValue !== 0) {
+      obj.originalPropertyValue = message.originalPropertyValue;
+    }
+    if (message.outstandingPrincipalBalance !== 0) {
+      obj.outstandingPrincipalBalance = message.outstandingPrincipalBalance;
+    }
+    if (message.paymentAmount !== 0) {
+      obj.paymentAmount = message.paymentAmount;
+    }
+    if (message.paymentDate !== "") {
+      obj.paymentDate = message.paymentDate;
+    }
+    if (message.originationDate !== "") {
+      obj.originationDate = message.originationDate;
+    }
+    if (message.originationPrincipalAmount !== 0) {
+      obj.originationPrincipalAmount = message.originationPrincipalAmount;
+    }
+    if (message.pastDueAmount !== 0) {
+      obj.pastDueAmount = message.pastDueAmount;
+    }
+    if (message.ytdInterestPaid !== 0) {
+      obj.ytdInterestPaid = message.ytdInterestPaid;
+    }
+    if (message.ytdPrincipalPaid !== 0) {
+      obj.ytdPrincipalPaid = message.ytdPrincipalPaid;
+    }
+    if (message.propertyAddressCity !== "") {
+      obj.propertyAddressCity = message.propertyAddressCity;
+    }
+    if (message.propertyAddressState !== "") {
+      obj.propertyAddressState = message.propertyAddressState;
+    }
+    if (message.propertyAddressStreet !== "") {
+      obj.propertyAddressStreet = message.propertyAddressStreet;
+    }
+    if (message.propertyAddressPostalCode !== "") {
+      obj.propertyAddressPostalCode = message.propertyAddressPostalCode;
+    }
+    if (message.propertyRegion !== "") {
+      obj.propertyRegion = message.propertyRegion;
+    }
+    if (message.propertyCountry !== "") {
+      obj.propertyCountry = message.propertyCountry;
+    }
+    if (message.interestRatePercentage !== 0) {
+      obj.interestRatePercentage = message.interestRatePercentage;
+    }
+    if (message.interestRateType !== "") {
+      obj.interestRateType = message.interestRateType;
+    }
     return obj;
   },
 
@@ -3580,25 +3807,41 @@ export const InvestmentAccount = {
 
   toJSON(message: InvestmentAccount): unknown {
     const obj: any = {};
-    message.id !== undefined && (obj.id = Math.round(message.id));
-    message.userId !== undefined && (obj.userId = Math.round(message.userId));
-    message.name !== undefined && (obj.name = message.name);
-    message.number !== undefined && (obj.number = message.number);
-    message.type !== undefined && (obj.type = message.type);
-    message.balance !== undefined && (obj.balance = message.balance);
-    message.currentFunds !== undefined && (obj.currentFunds = message.currentFunds);
-    message.balanceLimit !== undefined && (obj.balanceLimit = Math.round(message.balanceLimit));
-    message.plaidAccountId !== undefined && (obj.plaidAccountId = message.plaidAccountId);
-    message.subtype !== undefined && (obj.subtype = message.subtype);
-    if (message.holdings) {
-      obj.holdings = message.holdings.map((e) => e ? InvesmentHolding.toJSON(e) : undefined);
-    } else {
-      obj.holdings = [];
+    if (message.id !== 0) {
+      obj.id = Math.round(message.id);
     }
-    if (message.securities) {
-      obj.securities = message.securities.map((e) => e ? InvestmentSecurity.toJSON(e) : undefined);
-    } else {
-      obj.securities = [];
+    if (message.userId !== 0) {
+      obj.userId = Math.round(message.userId);
+    }
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    if (message.number !== "") {
+      obj.number = message.number;
+    }
+    if (message.type !== "") {
+      obj.type = message.type;
+    }
+    if (message.balance !== 0) {
+      obj.balance = message.balance;
+    }
+    if (message.currentFunds !== 0) {
+      obj.currentFunds = message.currentFunds;
+    }
+    if (message.balanceLimit !== 0) {
+      obj.balanceLimit = Math.round(message.balanceLimit);
+    }
+    if (message.plaidAccountId !== "") {
+      obj.plaidAccountId = message.plaidAccountId;
+    }
+    if (message.subtype !== "") {
+      obj.subtype = message.subtype;
+    }
+    if (message.holdings?.length) {
+      obj.holdings = message.holdings.map((e) => InvesmentHolding.toJSON(e));
+    }
+    if (message.securities?.length) {
+      obj.securities = message.securities.map((e) => InvestmentSecurity.toJSON(e));
     }
     return obj;
   },
@@ -3814,23 +4057,45 @@ export const BankAccount = {
 
   toJSON(message: BankAccount): unknown {
     const obj: any = {};
-    message.id !== undefined && (obj.id = Math.round(message.id));
-    message.userId !== undefined && (obj.userId = Math.round(message.userId));
-    message.name !== undefined && (obj.name = message.name);
-    message.number !== undefined && (obj.number = message.number);
-    message.type !== undefined && (obj.type = bankAccountTypeToJSON(message.type));
-    message.balance !== undefined && (obj.balance = message.balance);
-    message.currency !== undefined && (obj.currency = message.currency);
-    message.currentFunds !== undefined && (obj.currentFunds = message.currentFunds);
-    message.balanceLimit !== undefined && (obj.balanceLimit = Math.round(message.balanceLimit));
-    if (message.pockets) {
-      obj.pockets = message.pockets.map((e) => e ? Pocket.toJSON(e) : undefined);
-    } else {
-      obj.pockets = [];
+    if (message.id !== 0) {
+      obj.id = Math.round(message.id);
     }
-    message.plaidAccountId !== undefined && (obj.plaidAccountId = message.plaidAccountId);
-    message.subtype !== undefined && (obj.subtype = message.subtype);
-    message.status !== undefined && (obj.status = bankAccountStatusToJSON(message.status));
+    if (message.userId !== 0) {
+      obj.userId = Math.round(message.userId);
+    }
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    if (message.number !== "") {
+      obj.number = message.number;
+    }
+    if (message.type !== 0) {
+      obj.type = bankAccountTypeToJSON(message.type);
+    }
+    if (message.balance !== 0) {
+      obj.balance = message.balance;
+    }
+    if (message.currency !== "") {
+      obj.currency = message.currency;
+    }
+    if (message.currentFunds !== 0) {
+      obj.currentFunds = message.currentFunds;
+    }
+    if (message.balanceLimit !== 0) {
+      obj.balanceLimit = Math.round(message.balanceLimit);
+    }
+    if (message.pockets?.length) {
+      obj.pockets = message.pockets.map((e) => Pocket.toJSON(e));
+    }
+    if (message.plaidAccountId !== "") {
+      obj.plaidAccountId = message.plaidAccountId;
+    }
+    if (message.subtype !== "") {
+      obj.subtype = message.subtype;
+    }
+    if (message.status !== 0) {
+      obj.status = bankAccountStatusToJSON(message.status);
+    }
     return obj;
   },
 
@@ -3922,13 +4187,15 @@ export const Pocket = {
 
   toJSON(message: Pocket): unknown {
     const obj: any = {};
-    message.id !== undefined && (obj.id = Math.round(message.id));
-    if (message.goals) {
-      obj.goals = message.goals.map((e) => e ? SmartGoal.toJSON(e) : undefined);
-    } else {
-      obj.goals = [];
+    if (message.id !== 0) {
+      obj.id = Math.round(message.id);
     }
-    message.type !== undefined && (obj.type = pocketTypeToJSON(message.type));
+    if (message.goals?.length) {
+      obj.goals = message.goals.map((e) => SmartGoal.toJSON(e));
+    }
+    if (message.type !== 0) {
+      obj.type = pocketTypeToJSON(message.type);
+    }
     return obj;
   },
 
@@ -4134,24 +4401,45 @@ export const SmartGoal = {
 
   toJSON(message: SmartGoal): unknown {
     const obj: any = {};
-    message.id !== undefined && (obj.id = Math.round(message.id));
-    message.userId !== undefined && (obj.userId = Math.round(message.userId));
-    message.name !== undefined && (obj.name = message.name);
-    message.description !== undefined && (obj.description = message.description);
-    message.isCompleted !== undefined && (obj.isCompleted = message.isCompleted);
-    message.goalType !== undefined && (obj.goalType = goalTypeToJSON(message.goalType));
-    message.duration !== undefined && (obj.duration = message.duration);
-    message.startDate !== undefined && (obj.startDate = message.startDate);
-    message.endDate !== undefined && (obj.endDate = message.endDate);
-    message.targetAmount !== undefined && (obj.targetAmount = message.targetAmount);
-    message.currentAmount !== undefined && (obj.currentAmount = message.currentAmount);
-    if (message.milestones) {
-      obj.milestones = message.milestones.map((e) => e ? Milestone.toJSON(e) : undefined);
-    } else {
-      obj.milestones = [];
+    if (message.id !== 0) {
+      obj.id = Math.round(message.id);
     }
-    message.forecasts !== undefined &&
-      (obj.forecasts = message.forecasts ? Forecast.toJSON(message.forecasts) : undefined);
+    if (message.userId !== 0) {
+      obj.userId = Math.round(message.userId);
+    }
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    if (message.description !== "") {
+      obj.description = message.description;
+    }
+    if (message.isCompleted === true) {
+      obj.isCompleted = message.isCompleted;
+    }
+    if (message.goalType !== 0) {
+      obj.goalType = goalTypeToJSON(message.goalType);
+    }
+    if (message.duration !== "") {
+      obj.duration = message.duration;
+    }
+    if (message.startDate !== "") {
+      obj.startDate = message.startDate;
+    }
+    if (message.endDate !== "") {
+      obj.endDate = message.endDate;
+    }
+    if (message.targetAmount !== "") {
+      obj.targetAmount = message.targetAmount;
+    }
+    if (message.currentAmount !== "") {
+      obj.currentAmount = message.currentAmount;
+    }
+    if (message.milestones?.length) {
+      obj.milestones = message.milestones.map((e) => Milestone.toJSON(e));
+    }
+    if (message.forecasts !== undefined) {
+      obj.forecasts = Forecast.toJSON(message.forecasts);
+    }
     return obj;
   },
 
@@ -4256,10 +4544,18 @@ export const Forecast = {
 
   toJSON(message: Forecast): unknown {
     const obj: any = {};
-    message.id !== undefined && (obj.id = Math.round(message.id));
-    message.forecastedAmount !== undefined && (obj.forecastedAmount = message.forecastedAmount);
-    message.forecastedCompletionDate !== undefined && (obj.forecastedCompletionDate = message.forecastedCompletionDate);
-    message.varianceAmount !== undefined && (obj.varianceAmount = message.varianceAmount);
+    if (message.id !== 0) {
+      obj.id = Math.round(message.id);
+    }
+    if (message.forecastedAmount !== "") {
+      obj.forecastedAmount = message.forecastedAmount;
+    }
+    if (message.forecastedCompletionDate !== "") {
+      obj.forecastedCompletionDate = message.forecastedCompletionDate;
+    }
+    if (message.varianceAmount !== "") {
+      obj.varianceAmount = message.varianceAmount;
+    }
     return obj;
   },
 
@@ -4386,13 +4682,27 @@ export const Milestone = {
 
   toJSON(message: Milestone): unknown {
     const obj: any = {};
-    message.id !== undefined && (obj.id = Math.round(message.id));
-    message.name !== undefined && (obj.name = message.name);
-    message.description !== undefined && (obj.description = message.description);
-    message.targetDate !== undefined && (obj.targetDate = message.targetDate);
-    message.targetAmount !== undefined && (obj.targetAmount = message.targetAmount);
-    message.isCompleted !== undefined && (obj.isCompleted = message.isCompleted);
-    message.budget !== undefined && (obj.budget = message.budget ? Budget.toJSON(message.budget) : undefined);
+    if (message.id !== 0) {
+      obj.id = Math.round(message.id);
+    }
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    if (message.description !== "") {
+      obj.description = message.description;
+    }
+    if (message.targetDate !== "") {
+      obj.targetDate = message.targetDate;
+    }
+    if (message.targetAmount !== "") {
+      obj.targetAmount = message.targetAmount;
+    }
+    if (message.isCompleted === true) {
+      obj.isCompleted = message.isCompleted;
+    }
+    if (message.budget !== undefined) {
+      obj.budget = Budget.toJSON(message.budget);
+    }
     return obj;
   },
 
@@ -4513,12 +4823,24 @@ export const Budget = {
 
   toJSON(message: Budget): unknown {
     const obj: any = {};
-    message.id !== undefined && (obj.id = Math.round(message.id));
-    message.name !== undefined && (obj.name = message.name);
-    message.description !== undefined && (obj.description = message.description);
-    message.startDate !== undefined && (obj.startDate = message.startDate);
-    message.endDate !== undefined && (obj.endDate = message.endDate);
-    message.category !== undefined && (obj.category = message.category ? Category.toJSON(message.category) : undefined);
+    if (message.id !== 0) {
+      obj.id = Math.round(message.id);
+    }
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    if (message.description !== "") {
+      obj.description = message.description;
+    }
+    if (message.startDate !== "") {
+      obj.startDate = message.startDate;
+    }
+    if (message.endDate !== "") {
+      obj.endDate = message.endDate;
+    }
+    if (message.category !== undefined) {
+      obj.category = Category.toJSON(message.category);
+    }
     return obj;
   },
 
@@ -4616,13 +4938,17 @@ export const Category = {
 
   toJSON(message: Category): unknown {
     const obj: any = {};
-    message.id !== undefined && (obj.id = Math.round(message.id));
-    message.name !== undefined && (obj.name = message.name);
-    message.description !== undefined && (obj.description = message.description);
-    if (message.subcategories) {
-      obj.subcategories = message.subcategories.map((e) => e);
-    } else {
-      obj.subcategories = [];
+    if (message.id !== 0) {
+      obj.id = Math.round(message.id);
+    }
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    if (message.description !== "") {
+      obj.description = message.description;
+    }
+    if (message.subcategories?.length) {
+      obj.subcategories = message.subcategories;
     }
     return obj;
   },
@@ -4818,18 +5144,42 @@ export const InvesmentHolding = {
 
   toJSON(message: InvesmentHolding): unknown {
     const obj: any = {};
-    message.id !== undefined && (obj.id = Math.round(message.id));
-    message.name !== undefined && (obj.name = message.name);
-    message.plaidAccountId !== undefined && (obj.plaidAccountId = message.plaidAccountId);
-    message.costBasis !== undefined && (obj.costBasis = message.costBasis);
-    message.institutionPrice !== undefined && (obj.institutionPrice = message.institutionPrice);
-    message.institutionPriceAsOf !== undefined && (obj.institutionPriceAsOf = message.institutionPriceAsOf);
-    message.institutionPriceDatetime !== undefined && (obj.institutionPriceDatetime = message.institutionPriceDatetime);
-    message.institutionValue !== undefined && (obj.institutionValue = message.institutionValue);
-    message.isoCurrencyCode !== undefined && (obj.isoCurrencyCode = message.isoCurrencyCode);
-    message.quantity !== undefined && (obj.quantity = message.quantity);
-    message.securityId !== undefined && (obj.securityId = message.securityId);
-    message.unofficialCurrencyCode !== undefined && (obj.unofficialCurrencyCode = message.unofficialCurrencyCode);
+    if (message.id !== 0) {
+      obj.id = Math.round(message.id);
+    }
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    if (message.plaidAccountId !== "") {
+      obj.plaidAccountId = message.plaidAccountId;
+    }
+    if (message.costBasis !== 0) {
+      obj.costBasis = message.costBasis;
+    }
+    if (message.institutionPrice !== 0) {
+      obj.institutionPrice = message.institutionPrice;
+    }
+    if (message.institutionPriceAsOf !== "") {
+      obj.institutionPriceAsOf = message.institutionPriceAsOf;
+    }
+    if (message.institutionPriceDatetime !== "") {
+      obj.institutionPriceDatetime = message.institutionPriceDatetime;
+    }
+    if (message.institutionValue !== 0) {
+      obj.institutionValue = message.institutionValue;
+    }
+    if (message.isoCurrencyCode !== "") {
+      obj.isoCurrencyCode = message.isoCurrencyCode;
+    }
+    if (message.quantity !== 0) {
+      obj.quantity = message.quantity;
+    }
+    if (message.securityId !== "") {
+      obj.securityId = message.securityId;
+    }
+    if (message.unofficialCurrencyCode !== "") {
+      obj.unofficialCurrencyCode = message.unofficialCurrencyCode;
+    }
     return obj;
   },
 
@@ -5092,23 +5442,57 @@ export const InvestmentSecurity = {
 
   toJSON(message: InvestmentSecurity): unknown {
     const obj: any = {};
-    message.id !== undefined && (obj.id = Math.round(message.id));
-    message.closePrice !== undefined && (obj.closePrice = message.closePrice);
-    message.closePriceAsOf !== undefined && (obj.closePriceAsOf = message.closePriceAsOf);
-    message.cusip !== undefined && (obj.cusip = message.cusip);
-    message.institutionId !== undefined && (obj.institutionId = message.institutionId);
-    message.institutionSecurityId !== undefined && (obj.institutionSecurityId = message.institutionSecurityId);
-    message.isCashEquivalent !== undefined && (obj.isCashEquivalent = message.isCashEquivalent);
-    message.isin !== undefined && (obj.isin = message.isin);
-    message.isoCurrencyCode !== undefined && (obj.isoCurrencyCode = message.isoCurrencyCode);
-    message.name !== undefined && (obj.name = message.name);
-    message.proxySecurityId !== undefined && (obj.proxySecurityId = message.proxySecurityId);
-    message.securityId !== undefined && (obj.securityId = message.securityId);
-    message.sedol !== undefined && (obj.sedol = message.sedol);
-    message.tickerSymbol !== undefined && (obj.tickerSymbol = message.tickerSymbol);
-    message.type !== undefined && (obj.type = message.type);
-    message.unofficialCurrencyCode !== undefined && (obj.unofficialCurrencyCode = message.unofficialCurrencyCode);
-    message.updateDatetime !== undefined && (obj.updateDatetime = message.updateDatetime);
+    if (message.id !== 0) {
+      obj.id = Math.round(message.id);
+    }
+    if (message.closePrice !== 0) {
+      obj.closePrice = message.closePrice;
+    }
+    if (message.closePriceAsOf !== "") {
+      obj.closePriceAsOf = message.closePriceAsOf;
+    }
+    if (message.cusip !== "") {
+      obj.cusip = message.cusip;
+    }
+    if (message.institutionId !== "") {
+      obj.institutionId = message.institutionId;
+    }
+    if (message.institutionSecurityId !== "") {
+      obj.institutionSecurityId = message.institutionSecurityId;
+    }
+    if (message.isCashEquivalent === true) {
+      obj.isCashEquivalent = message.isCashEquivalent;
+    }
+    if (message.isin !== "") {
+      obj.isin = message.isin;
+    }
+    if (message.isoCurrencyCode !== "") {
+      obj.isoCurrencyCode = message.isoCurrencyCode;
+    }
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    if (message.proxySecurityId !== "") {
+      obj.proxySecurityId = message.proxySecurityId;
+    }
+    if (message.securityId !== "") {
+      obj.securityId = message.securityId;
+    }
+    if (message.sedol !== "") {
+      obj.sedol = message.sedol;
+    }
+    if (message.tickerSymbol !== "") {
+      obj.tickerSymbol = message.tickerSymbol;
+    }
+    if (message.type !== "") {
+      obj.type = message.type;
+    }
+    if (message.unofficialCurrencyCode !== "") {
+      obj.unofficialCurrencyCode = message.unofficialCurrencyCode;
+    }
+    if (message.updateDatetime !== "") {
+      obj.updateDatetime = message.updateDatetime;
+    }
     return obj;
   },
 
@@ -5226,11 +5610,21 @@ export const Apr = {
 
   toJSON(message: Apr): unknown {
     const obj: any = {};
-    message.id !== undefined && (obj.id = Math.round(message.id));
-    message.percentage !== undefined && (obj.percentage = message.percentage);
-    message.type !== undefined && (obj.type = message.type);
-    message.balanceSubjectToApr !== undefined && (obj.balanceSubjectToApr = message.balanceSubjectToApr);
-    message.interestChargeAmount !== undefined && (obj.interestChargeAmount = message.interestChargeAmount);
+    if (message.id !== 0) {
+      obj.id = Math.round(message.id);
+    }
+    if (message.percentage !== 0) {
+      obj.percentage = message.percentage;
+    }
+    if (message.type !== "") {
+      obj.type = message.type;
+    }
+    if (message.balanceSubjectToApr !== 0) {
+      obj.balanceSubjectToApr = message.balanceSubjectToApr;
+    }
+    if (message.interestChargeAmount !== 0) {
+      obj.interestChargeAmount = message.interestChargeAmount;
+    }
     return obj;
   },
 
@@ -5286,8 +5680,6 @@ function longToNumber(long: Long): number {
   return long.toNumber();
 }
 
-// If you get a compile-error about 'Constructor<Long> and ... have no overlap',
-// add '--ts_proto_opt=esModuleInterop=true' as a flag when calling 'protoc'.
 if (_m0.util.Long !== Long) {
   _m0.util.Long = Long as any;
   _m0.configure();

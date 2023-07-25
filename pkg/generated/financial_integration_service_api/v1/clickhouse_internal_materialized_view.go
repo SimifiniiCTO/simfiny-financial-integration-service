@@ -12,7 +12,7 @@ import (
 * six months, one year, or two years, you would filter this table in your queries. However, remember
 * that weeks do not align perfectly with months, so the results may not be exactly what you expect.
  */
-type TransactionAggregatesByMonth struct {
+type TransactionAggregatesByMonthInternal struct {
 	ch.CHModel       `ch:"partition:toYYYYMM(time)"`
 	Month            time.Time `ch:"type:Date"`
 	CategoryId       string    `ch:"type:String"`
@@ -27,7 +27,7 @@ type TransactionAggregatesByMonth struct {
 * This view will aggregate all expenses (transactions where the Amount is less than zero) by category and month.
 * If your definition of "expense metrics" is different, you might need to adjust the query accordingly.*
  */
-type ExpenseMetrics struct {
+type ExpenseMetricsInternal struct {
 	ch.CHModel       `ch:"partition:toYYYYMM(time)"`
 	Month            time.Time `ch:"type:Date"`
 	CategoryId       string    `ch:"type:String"`
