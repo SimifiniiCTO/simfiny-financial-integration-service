@@ -97,7 +97,21 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, userId, linkId 
 	if err != nil {
 		return nil, err
 	}
+
+	plaidAccountIds := make([]string, 0, len(plaidBankAccounts))
+	for _, plaidBankAccount := range plaidBankAccounts {
+		if plaidBankAccount.Subtype == "checking" || plaidBankAccount.Subtype == "savings" || plaidBankAccount.Subtype == "cd" || plaidBankAccount.Subtype == "money market" ||
+			plaidBankAccount.Subtype == "gic" || plaidBankAccount.Subtype == "prepaid" || plaidBankAccount.Subtype == "health" || plaidBankAccount.Subtype == "cash management" {
+			plaidAccountIds = append(plaidAccountIds, plaidBankAccount.PlaidAccountId)
+		}
+	}
+
 	th.logger.Info("bank accounts", zap.Any("account", plaidBankAccounts))
+
+	// lets sync recurring transactions
+	if err := th.queryAndStoreRecurringTransactions(ctx, accessToken, userId, linkId, plaidAccountIds); err != nil {
+		th.logger.Error("failed to sync recurring transactions", zap.Error(err))
+	}
 
 	// get the liability accounts
 	// TODO: need to figure out wether to update the existing investment account or add a new one
@@ -366,10 +380,10 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, userId, linkId 
 	var cursor *string
 	// get the last plaid sync
 
-	// lasPlaidSync := link.GetPlaidSync()
-	// if lasPlaidSync != nil {
-	// 	cursor = &lasPlaidSync.NextCursor
-	// }
+	lasPlaidSync := link.GetPlaidSync()
+	if lasPlaidSync != nil {
+		cursor = &lasPlaidSync.NextCursor
+	}
 
 	syncResult, err := plaidClient.Sync(ctx, cursor, &accessToken)
 	if err != nil {
@@ -506,6 +520,7 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, userId, linkId 
 	if len(transactionsToInsert) > 0 {
 		th.logger.Info("updating transactions", zap.Int("count", len(transactionsToInsert)))
 		if err := clickhouseClient.AddTransactions(ctx, &userId, transactionsToInsert); err != nil {
+			th.logger.Error("failed to insert transactions", zap.Error(err))
 			return nil, err
 		}
 	}

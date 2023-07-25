@@ -417,7 +417,7 @@ func (db *Db) GetUserReOccurringTransactions(ctx context.Context, userId *uint64
 	}
 
 	if len(result) == 0 {
-		return nil, fmt.Errorf("no transactions found")
+		return []*schema.ReOccuringTransaction{}, nil
 	}
 
 	results := make([]*schema.ReOccuringTransaction, 0, len(result))

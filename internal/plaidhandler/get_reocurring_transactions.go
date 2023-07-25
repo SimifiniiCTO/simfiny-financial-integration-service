@@ -9,6 +9,7 @@ import (
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/helper"
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 	"github.com/plaid/plaid-go/v14/plaid"
+	"go.uber.org/zap"
 	"google.golang.org/protobuf/types/known/anypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
@@ -87,13 +88,14 @@ func (p *PlaidWrapper) getRecurringTransactions(ctx context.Context, req *plaid.
 	transactions = append(transactions, inflowStreams...)
 	transactions = append(transactions, outflowStream...)
 
+	p.Logger.Info("successfully retrieved recurring transactions", zap.Any("transactions", len(transactions)))
 	return transactions, nil
 }
 
 func transactionStreamToRecurringTransactions(userId, linkId *uint64, streams []plaid.TransactionStream, flow schema.ReCurringFlow) []*schema.ReOccuringTransaction {
 	recurringTransactions := make([]*schema.ReOccuringTransaction, 0, len(streams))
 	for _, stream := range streams {
-		recurringTransactions = append(recurringTransactions, &schema.ReOccuringTransaction{
+		tx := &schema.ReOccuringTransaction{
 			AccountId:                       stream.GetAccountId(),
 			StreamId:                        stream.GetStreamId(),
 			CategoryId:                      stream.GetCategoryId(),
@@ -106,9 +108,7 @@ func transactionStreamToRecurringTransactions(userId, linkId *uint64, streams []
 			Frequency:                       getFrequency(stream.GetFrequency()),
 			TransactionIds:                  helper.SliceToCommaSeparatedString(stream.GetTransactionIds()),
 			AverageAmount:                   fmt.Sprintf("%f", *stream.GetAverageAmount().Amount),
-			AverageAmountIsoCurrencyCode:    *stream.GetAverageAmount().IsoCurrencyCode.Get(),
 			LastAmount:                      fmt.Sprintf("%f", *stream.LastAmount.Amount),
-			LastAmountIsoCurrencyCode:       *stream.GetLastAmount().IsoCurrencyCode.Get(),
 			IsActive:                        stream.GetIsActive(),
 			Status:                          getStatus(stream.GetStatus()),
 			UpdatedTime:                     time.Now().String(),
@@ -122,7 +122,17 @@ func transactionStreamToRecurringTransactions(userId, linkId *uint64, streams []
 				Nanos:   int32(time.Now().Nanosecond()),
 			},
 			AdditionalProperties: &anypb.Any{},
-		})
+		}
+
+		if stream.GetAverageAmount().Amount != nil {
+			tx.AverageAmount = fmt.Sprintf("%f", *stream.GetAverageAmount().Amount)
+		}
+
+		if stream.GetLastAmount().Amount != nil {
+			tx.LastAmount = fmt.Sprintf("%f", *stream.GetLastAmount().Amount)
+		}
+
+		recurringTransactions = append(recurringTransactions, tx)
 	}
 
 	return recurringTransactions

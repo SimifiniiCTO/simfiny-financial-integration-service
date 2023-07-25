@@ -7,6 +7,7 @@ import (
 	"github.com/SimifiniiCTO/asynq"
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 	"github.com/pkg/errors"
+	"go.uber.org/zap"
 )
 
 type PullUpdatedRecurringTransactionsTaskPayload struct {
@@ -46,10 +47,9 @@ func NewPullUpdatedReCurringTransactionsTask(userId, linkId uint64, accessToken 
 
 func (th *TaskHandler) RunPullUpdatedReCurringTransactionsTask(ctx context.Context, t *asynq.Task) error {
 	var (
-		payload          = &PullUpdatedRecurringTransactionsTaskPayload{}
-		postgresClient   = th.postgresDb
-		clickhouseClient = th.clickhouseDb
-		plaidClient      = th.plaidClient
+		payload        = &PullUpdatedRecurringTransactionsTaskPayload{}
+		postgresClient = th.postgresDb
+		plaidClient    = th.plaidClient
 	)
 
 	if err := json.Unmarshal(t.Payload(), payload); err != nil {
@@ -83,69 +83,104 @@ func (th *TaskHandler) RunPullUpdatedReCurringTransactionsTask(ctx context.Conte
 		return nil
 	}
 
+	if err := th.queryAndStoreRecurringTransactions(ctx, accessToken, userId, linkId, accountIds); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// TODO: Rework Query Logic
+func (th *TaskHandler) queryAndStoreRecurringTransactions(ctx context.Context, accessToken string, userId uint64, linkId uint64, accountIds []string) error {
 	// query the re-curring transactions for the given accountId
+	// get the existing re-occurring transactions from the database
+	// updated set of transactions
+	// new set of transactions
+	// deleted set of transactions
+	// copy the existing transaction id to the new transaction
+	// delete the re-occurring transactions from the database
+	// add the new re-occurring transactions to the database
+	// update the re-occurring transactions in the database
+	// add the transactions to the database
+	var (
+		plaidClient      = th.plaidClient
+		clickhouseClient = th.clickhouseDb
+	)
 	newOrUpdatedReCurringTxns, err := plaidClient.GetRecurringTransactionsForAccounts(ctx, &accessToken, &userId, &linkId, accountIds)
 	if err != nil {
+		th.logger.Error("error while getting re-occurring transactions from plaid", zap.Error(err))
 		return err
 	}
 
-	// get the existing re-occurring transactions from the database
+	th.logger.Info("new or updated re-occurring transactions", zap.Any("new_or_updated_recurring_txn_set", len(newOrUpdatedReCurringTxns)))
+
 	existingReCurringTxns, err := clickhouseClient.GetUserReOccurringTransactions(ctx, &userId)
 	if err != nil {
+		th.logger.Error("error while getting re-occurring transactions from database", zap.Error(err))
 		return err
 	}
 
-	// updated set of transactions
-	updatedRecurringTxnSet := make([]*schema.ReOccuringTransaction, len(existingReCurringTxns))
-	// new set of transactions
-	newRecurringTxnSet := make([]*schema.ReOccuringTransaction, len(existingReCurringTxns))
-	// deleted set of transactions
-	deletedRecurringTxnSet := make([]string, len(existingReCurringTxns))
+	th.logger.Info("existing re-occurring transactions", zap.Any("existing_recurring_txn_set", len(existingReCurringTxns)))
 
-	for _, newTxn := range newOrUpdatedReCurringTxns {
-		for idx, existingTxn := range existingReCurringTxns {
-			if newTxn.MerchantName == existingTxn.MerchantName &&
-				newTxn.Frequency == existingTxn.Frequency &&
-				newTxn.AverageAmount == existingTxn.AverageAmount &&
-				newTxn.PersonalFinanceCategoryDetailed == existingTxn.PersonalFinanceCategoryDetailed {
-				// copy the existing transaction id to the new transaction
-				updatedRecurringTxnSet = append(updatedRecurringTxnSet, copyOldtxnToNewtxn(existingTxn, newTxn))
-				break
-			} else if idx == len(existingReCurringTxns)-1 {
-				newTxn.UserId = userId
-				newTxn.LinkId = linkId
-				newRecurringTxnSet = append(newRecurringTxnSet, newTxn)
+	updatedRecurringTxnSet := make([]*schema.ReOccuringTransaction, 0, len(existingReCurringTxns))
+
+	newRecurringTxnSet := make([]*schema.ReOccuringTransaction, 0, len(existingReCurringTxns))
+
+	deletedRecurringTxnSet := make([]string, 0, len(existingReCurringTxns))
+
+	if len(existingReCurringTxns) == 0 {
+		newRecurringTxnSet = newOrUpdatedReCurringTxns
+	} else {
+		for _, newTxn := range newOrUpdatedReCurringTxns {
+			for idx, existingTxn := range existingReCurringTxns {
+				if newTxn.MerchantName == existingTxn.MerchantName &&
+					newTxn.Frequency == existingTxn.Frequency &&
+					newTxn.AverageAmount == existingTxn.AverageAmount &&
+					newTxn.PersonalFinanceCategoryDetailed == existingTxn.PersonalFinanceCategoryDetailed {
+
+					updatedRecurringTxnSet = append(updatedRecurringTxnSet, copyOldtxnToNewtxn(existingTxn, newTxn))
+					break
+				} else if idx == len(existingReCurringTxns)-1 {
+					newTxn.UserId = userId
+					newTxn.LinkId = linkId
+					newRecurringTxnSet = append(newRecurringTxnSet, newTxn)
+				}
 			}
 		}
 	}
 
-	for _, existingTxn := range existingReCurringTxns {
-		for idx, newTxn := range newOrUpdatedReCurringTxns {
-			if idx == len(newOrUpdatedReCurringTxns)-1 && newTxn.MerchantName != existingTxn.MerchantName &&
-				newTxn.Frequency != existingTxn.Frequency &&
-				newTxn.AverageAmount != existingTxn.AverageAmount &&
-				newTxn.PersonalFinanceCategoryDetailed != existingTxn.PersonalFinanceCategoryDetailed {
-				deletedRecurringTxnSet = append(deletedRecurringTxnSet, existingTxn.Id)
+	if len(updatedRecurringTxnSet) > 0 {
+		for _, existingTxn := range existingReCurringTxns {
+			for idx, newTxn := range newOrUpdatedReCurringTxns {
+				if idx == len(newOrUpdatedReCurringTxns)-1 && newTxn.MerchantName != existingTxn.MerchantName &&
+					newTxn.Frequency != existingTxn.Frequency &&
+					newTxn.AverageAmount != existingTxn.AverageAmount &&
+					newTxn.PersonalFinanceCategoryDetailed != existingTxn.PersonalFinanceCategoryDetailed {
+					deletedRecurringTxnSet = append(deletedRecurringTxnSet, existingTxn.Id)
+				}
 			}
 		}
 	}
 
 	if len(deletedRecurringTxnSet) > 0 {
-		// delete the re-occurring transactions from the database
+		th.logger.Info("deleting re-occurring transactions", zap.Any("deleted_recurring_txn_set", len(deletedRecurringTxnSet)))
 		if err := clickhouseClient.DeleteReOccurringTransactionsByIds(ctx, deletedRecurringTxnSet); err != nil {
 			return err
 		}
 	}
 
-	// add the new re-occurring transactions to the database
-	if err := clickhouseClient.AddReOccurringTransactions(ctx, &userId, newRecurringTxnSet); err != nil {
-		return err
+	if len(newRecurringTxnSet) > 0 {
+		th.logger.Info("adding new re-occurring transactions", zap.Any("new_recurring_txn_set", len(newRecurringTxnSet)))
+		if err := clickhouseClient.AddReOccurringTransactions(ctx, &userId, newRecurringTxnSet); err != nil {
+			return err
+		}
 	}
 
-	// update the re-occurring transactions in the database
-	// add the transactions to the database
-	if err := clickhouseClient.UpdateReOccurringTransactions(ctx, &userId, updatedRecurringTxnSet); err != nil {
-		return err
+	if len(updatedRecurringTxnSet) > 0 {
+		th.logger.Info("updating re-occurring transactions", zap.Any("updated_recurring_txn_set", len(updatedRecurringTxnSet)))
+		if err := clickhouseClient.UpdateReOccurringTransactions(ctx, &userId, updatedRecurringTxnSet); err != nil {
+			return err
+		}
 	}
 
 	return nil
