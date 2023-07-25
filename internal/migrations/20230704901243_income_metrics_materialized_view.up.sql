@@ -4,7 +4,7 @@ TO IncomeMetrics
 AS
 SELECT
     toYYYYMM(Time) as Month,
-    CategoryId,
+    PersonalFinanceCategoryPrimary,
     UserId,
     count() as TransactionCount,
     sum(Amount) as TotalIncome
@@ -14,5 +14,5 @@ WHERE
     Amount > 0
 GROUP BY
     Month,
-    CategoryId,
+    PersonalFinanceCategoryPrimary,
     UserId;

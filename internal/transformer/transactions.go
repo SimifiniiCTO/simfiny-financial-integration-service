@@ -2,6 +2,7 @@ package transformer
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/plaid/plaid-go/v14/plaid"
 	"google.golang.org/protobuf/types/known/timestamppb"
@@ -18,6 +19,19 @@ func NewTransactionFromPlaid(input *plaid.Transaction) (*schema.Transaction, err
 	location := input.GetLocation()
 	paymentMeta := input.GetPaymentMeta()
 	personalFinanceCategory := input.GetPersonalFinanceCategory()
+	layout := "2006-01-02" // replace with your time format
+	str := ""
+	if input.GetDate() != "" {
+		str = input.GetDate()
+	} else {
+		str = input.GetAuthorizedDate()
+	}
+
+	t, err := time.Parse(layout, str)
+	if err != nil {
+		fmt.Println(err)
+	}
+	timestamp := timestamppb.New(t)
 
 	tx := &schema.Transaction{
 		AccountId:                       input.GetAccountId(),
@@ -60,11 +74,8 @@ func NewTransactionFromPlaid(input *plaid.Transaction) (*schema.Transaction, err
 		PaymentMetaPpdId:                paymentMeta.GetPpdId(),
 		PaymentMetaReason:               paymentMeta.GetReason(),
 		PaymentMetaReferenceNumber:      paymentMeta.GetReferenceNumber(),
-		Time: &timestamppb.Timestamp{
-			Seconds: input.GetAuthorizedDatetime().UTC().Unix(),
-			Nanos:   int32(input.GetAuthorizedDatetime().Nanosecond()),
-		},
-		Categories: input.GetCategory(),
+		Time:                            timestamp,
+		Categories:                      input.GetCategory(),
 	}
 
 	return tx, nil

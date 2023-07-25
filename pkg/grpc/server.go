@@ -196,7 +196,10 @@ func (s *Server) registerBatchJobs() error {
 	// TODO: we enqueue the task to compute the net worth of all users across all accounts (this should run every 24 hours) (net worth)
 
 	// TODO: this should be config driven
-	entryId, err := s.Taskprocessor.EnqueueRecurringTask(context.Background(), syncAllAccountsBatchJob, taskprocessor.Every3Minutes)
+	entryId, err := s.Taskprocessor.EnqueueRecurringTask(
+		context.Background(),
+		syncAllAccountsBatchJob,
+		taskprocessor.Every30Seconds)
 	if err != nil {
 		return err
 	}

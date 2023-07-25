@@ -6,11 +6,11 @@ TO CategoryMonthlyIncome
 AS
 SELECT
     toYYYYMM(Time) as Month,
-    CategoryId,
+    PersonalFinanceCategoryPrimary,
     sum(Amount) as TotalIncome
 FROM
     TransactionInternal
 WHERE
     Amount > 0
 GROUP BY
-    Month, CategoryId;
+    Month, PersonalFinanceCategoryPrimary;

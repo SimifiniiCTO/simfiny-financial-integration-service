@@ -27,7 +27,7 @@ TO TransactionAggregatesByMonth
 AS
 SELECT
     toYYYYMM(Time) AS Month,
-    CategoryId,
+    PersonalFinanceCategoryPrimary,
     LocationCity,
     PaymentChannel,
     MerchantName,
@@ -38,7 +38,7 @@ FROM
     TransactionInternal
 GROUP BY
     Month,
-    CategoryId,
+    PersonalFinanceCategoryPrimary,
     LocationCity,
     PaymentChannel,
     UserId,

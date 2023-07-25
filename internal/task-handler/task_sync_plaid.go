@@ -13,7 +13,6 @@ import (
 	"github.com/labstack/gommon/log"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
-	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 type SyncPlaidTaskPayload struct {
@@ -366,6 +365,8 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, userId, linkId 
 
 	var cursor *string
 	// get the last plaid sync
+	// get the last plaid sync
+
 	lasPlaidSync := link.GetPlaidSync()
 	if lasPlaidSync != nil {
 		cursor = &lasPlaidSync.NextCursor
@@ -466,7 +467,7 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, userId, linkId 
 				PaymentMetaPpdId:                plaidTransaction.GetPaymentMetaPpdId(),
 				PaymentMetaReason:               plaidTransaction.GetPaymentMetaReason(),
 				PaymentMetaReferenceNumber:      plaidTransaction.GetPaymentMetaReferenceNumber(),
-				Time:                            timestamppb.New(plaidTransaction.Time.AsTime()),
+				Time:                            plaidTransaction.GetTime(),
 				Categories:                      plaidTransaction.GetCategories(),
 			}
 

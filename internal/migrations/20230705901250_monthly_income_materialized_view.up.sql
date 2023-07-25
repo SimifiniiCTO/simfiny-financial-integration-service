@@ -2,6 +2,7 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS MonthlyIncomeMV
 TO MonthlyIncome
 AS
 SELECT
+    UserId,
     toYYYYMM(Time) as Month,
     sum(Amount) as TotalIncome
 FROM
@@ -9,4 +10,5 @@ FROM
 WHERE
     Amount > 0
 GROUP BY
-    Month;
+    Month, 
+    UserId;

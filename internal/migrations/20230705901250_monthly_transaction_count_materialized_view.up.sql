@@ -2,9 +2,11 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS MonthlyTransactionCountMV
 TO MonthlyTransactionCount
 AS
 SELECT
-    toYYYYMM(Time) as Month,
-    count() as TransactionCount
+    toYYYYMM(Time) AS Month,
+    UserId,
+    count() AS TransactionCount
 FROM
     TransactionInternal
 GROUP BY
-    Month;
+    Month,
+    UserId;

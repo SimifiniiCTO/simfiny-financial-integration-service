@@ -2,6 +2,7 @@
 CREATE TABLE IF NOT EXISTS MonthlyIncome 
 (
     Month UInt32,
+    UserId UInt64,
     TotalIncome Float64
 ) 
 ENGINE = AggregatingMergeTree()

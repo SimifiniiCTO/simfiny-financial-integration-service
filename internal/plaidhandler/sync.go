@@ -57,6 +57,7 @@ func (p *PlaidWrapper) Sync(ctx context.Context, cursor, accessToken *string) (*
 			reqCtx.Cursor = cursor
 		}
 
+		// query the Plaid API for transactions
 		request := p.client.PlaidApi.
 			TransactionsSync(ctx).
 			TransactionsSyncRequest(reqCtx)

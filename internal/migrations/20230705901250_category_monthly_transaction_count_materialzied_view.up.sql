@@ -3,9 +3,10 @@ TO CategoryMonthlyTransactionCount
 AS
 SELECT
     toYYYYMM(Time) as Month,
-    CategoryId,
+    PersonalFinanceCategoryPrimary,
     count() as TransactionCount
 FROM
     TransactionInternal
 GROUP BY
-    Month;
+    Month,
+    PersonalFinanceCategoryPrimary;
