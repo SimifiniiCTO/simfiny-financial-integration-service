@@ -4,10 +4,11 @@ AS
 SELECT
     toYYYYMM(Time) as Month,
     MerchantName,
+    UserId UInt64,
     sum(Amount) as TotalSpending
 FROM
     TransactionInternal
 WHERE
     Amount < 0
 GROUP BY
-    Month, MerchantName;
+    Month, MerchantName, UserId;

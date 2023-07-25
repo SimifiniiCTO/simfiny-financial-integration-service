@@ -2,7 +2,8 @@
 CREATE TABLE IF NOT EXISTS MonthlyBalance 
 (
     Month UInt32,
-    NetBalance Float64
+    NetBalance Float64,
+    UserId UInt64
 ) 
 ENGINE = AggregatingMergeTree()
 PARTITION BY Month

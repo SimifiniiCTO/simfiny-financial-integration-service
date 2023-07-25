@@ -3,7 +3,8 @@ CREATE TABLE IF NOT EXISTS MerchantMonthlyExpenditure
 (
     Month UInt32,
     MerchantName String,
-    TotalSpending Float64
+    TotalSpending Float64,
+    UserId UInt64
 ) 
 ENGINE = AggregatingMergeTree()
 PARTITION BY Month

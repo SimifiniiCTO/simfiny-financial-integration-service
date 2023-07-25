@@ -131,19 +131,22 @@ func (th *TaskHandler) queryAndStoreRecurringTransactions(ctx context.Context, a
 	if len(existingReCurringTxns) == 0 {
 		newRecurringTxnSet = newOrUpdatedReCurringTxns
 	} else {
-		for _, newTxn := range newOrUpdatedReCurringTxns {
-			for idx, existingTxn := range existingReCurringTxns {
-				if newTxn.MerchantName == existingTxn.MerchantName &&
-					newTxn.Frequency == existingTxn.Frequency &&
-					newTxn.AverageAmount == existingTxn.AverageAmount &&
-					newTxn.PersonalFinanceCategoryDetailed == existingTxn.PersonalFinanceCategoryDetailed {
+		if len(newOrUpdatedReCurringTxns) > 0 {
+			for _, newTxn := range newOrUpdatedReCurringTxns {
+				for idx, existingTxn := range existingReCurringTxns {
+					if newTxn.MerchantName == existingTxn.MerchantName &&
+						newTxn.Frequency == existingTxn.Frequency &&
+						newTxn.AverageAmount == existingTxn.AverageAmount &&
+						newTxn.PersonalFinanceCategoryDetailed == existingTxn.PersonalFinanceCategoryDetailed {
 
-					updatedRecurringTxnSet = append(updatedRecurringTxnSet, copyOldtxnToNewtxn(existingTxn, newTxn))
-					break
-				} else if idx == len(existingReCurringTxns)-1 {
-					newTxn.UserId = userId
-					newTxn.LinkId = linkId
-					newRecurringTxnSet = append(newRecurringTxnSet, newTxn)
+						updatedRecurringTxnSet = append(updatedRecurringTxnSet, copyOldtxnToNewtxn(existingTxn, newTxn))
+						break
+					} else if idx == len(existingReCurringTxns)-1 {
+						newTxn.UserId = userId
+						newTxn.LinkId = linkId
+						newTxn.Sign = 1
+						newRecurringTxnSet = append(newRecurringTxnSet, newTxn)
+					}
 				}
 			}
 		}
@@ -210,5 +213,6 @@ func copyOldtxnToNewtxn(oldtxn *schema.ReOccuringTransaction, newtxn *schema.ReO
 		UserId:                          oldtxn.UserId,
 		LinkId:                          oldtxn.LinkId,
 		Id:                              oldtxn.Id,
+		Sign:                            0,
 	}
 }

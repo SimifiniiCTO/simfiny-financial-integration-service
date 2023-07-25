@@ -8,10 +8,11 @@ SELECT
     sumIf(Amount, Time >= now() - INTERVAL 1 MONTH) as SpentLastMonth,
     sumIf(Amount, Time >= now() - INTERVAL 6 MONTH) as SpentLastSixMonths,
     avgIf(Amount, Time >= now() - INTERVAL 1 MONTH) as AverageMonthlyDiscretionarySpending,
-    avgIf(Amount, Time >= now() - INTERVAL 1 MONTH AND PaymentMetaPaymentMethod = 'Recurring') as AverageMonthlyRecurringSpending
+    avgIf(Amount, Time >= now() - INTERVAL 1 MONTH AND PaymentMetaPaymentMethod = 'Recurring') as AverageMonthlyRecurringSpending,
+    UserId
 FROM
     TransactionInternal
 WHERE
     Amount > 0
 GROUP BY
-    Month;
+    Month, UserId;

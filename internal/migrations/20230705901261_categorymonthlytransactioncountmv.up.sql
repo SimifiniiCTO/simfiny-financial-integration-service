@@ -4,9 +4,11 @@ AS
 SELECT
     toYYYYMM(Time) as Month,
     PersonalFinanceCategoryPrimary,
+    UserId,
     count() as TransactionCount
 FROM
     TransactionInternal
 GROUP BY
     Month,
-    PersonalFinanceCategoryPrimary;
+    PersonalFinanceCategoryPrimary,
+    UserId;

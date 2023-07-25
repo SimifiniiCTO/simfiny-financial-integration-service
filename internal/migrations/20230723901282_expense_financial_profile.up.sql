@@ -5,7 +5,8 @@ CREATE TABLE IF NOT EXISTS ExpenseMetricsFinancialSubProfileMetrics
     SpentLastMonth Float64,
     SpentLastSixMonths Float64,
     AverageMonthlyDiscretionarySpending Float64,
-    AverageMonthlyRecurringSpending Float64
+    AverageMonthlyRecurringSpending Float64,
+    UserId UInt64
 )
 ENGINE = AggregatingMergeTree()
 PARTITION BY Month

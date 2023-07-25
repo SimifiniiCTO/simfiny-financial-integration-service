@@ -5,7 +5,8 @@ CREATE TABLE IF NOT EXISTS IncomeMetricsFinancialSubProfile
     IncomeLastMonth Float64,
     IncomeLastTwoMonths Float64,
     IncomeLastSixMonths Float64,
-    IncomeLastYear Float64
+    IncomeLastYear Float64,
+    UserId UInt64
 )
 ENGINE = AggregatingMergeTree()
 PARTITION BY Month

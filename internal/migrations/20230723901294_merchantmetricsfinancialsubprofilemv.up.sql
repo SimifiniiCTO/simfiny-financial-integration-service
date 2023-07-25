@@ -5,6 +5,7 @@ AS
 SELECT
     toYYYYMM(Time) as Month,
     MerchantName,
+    UserId,
     sumIf(Amount, Time >= now() - INTERVAL 1 WEEK) as SpentLastWeek,
     sumIf(Amount, Time >= now() - INTERVAL 2 WEEK) as SpentLastTwoWeeks,
     sumIf(Amount, Time >= now() - INTERVAL 1 MONTH) as SpentLastMonth,
@@ -16,4 +17,4 @@ FROM
 WHERE
     Amount > 0
 GROUP BY
-    Month, MerchantName;
+    Month, MerchantName, UserId;

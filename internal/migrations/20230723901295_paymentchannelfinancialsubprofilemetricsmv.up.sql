@@ -5,6 +5,7 @@ AS
 SELECT
     toYYYYMM(Time) as Month,
     PaymentChannel,
+    UserId,
     count() as TransactionCount,
     sumIf(Amount, Time >= now() - INTERVAL 1 WEEK) as SpentLastWeek,
     sumIf(Amount, Time >= now() - INTERVAL 2 WEEK) as SpentLastTwoWeeks,
@@ -17,4 +18,4 @@ FROM
 WHERE
     Amount > 0
 GROUP BY
-    Month, PaymentChannel;
+    Month, PaymentChannel, UserId;

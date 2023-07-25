@@ -3,7 +3,8 @@ CREATE TABLE IF NOT EXISTS CategoryMonthlyExpenditure
 (
     Month UInt32,
     PersonalFinanceCategoryPrimary String,
-    TotalSpending Float64
+    TotalSpending Float64,
+    UserId UInt64
 ) 
 ENGINE = AggregatingMergeTree()
 PARTITION BY Month

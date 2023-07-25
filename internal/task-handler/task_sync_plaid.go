@@ -127,6 +127,16 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, userId, linkId 
 		} else {
 			th.logger.Error("failed to get investment accounts", zap.Error(err))
 		}
+
+		// get the investment account ids
+		investmentAccountIds := make([]string, 0, len(link.InvestmentAccounts))
+		for _, investmentAccount := range link.InvestmentAccounts {
+			investmentAccountIds = append(investmentAccountIds, investmentAccount.PlaidAccountId)
+		}
+
+		if err := th.queryInvestmentTransactions(ctx, accessToken, userId, link, investmentAccountIds); err != nil {
+			th.logger.Error("failed to get investment account transactions", zap.Error(err))
+		}
 	}
 
 	// link contains liability accounts hence sync them

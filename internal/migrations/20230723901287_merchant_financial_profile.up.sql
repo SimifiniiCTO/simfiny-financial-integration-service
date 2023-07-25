@@ -7,7 +7,8 @@ CREATE TABLE IF NOT EXISTS MerchantMetricsFinancialSubProfile
     SpentLastMonth Float64,
     SpentLastSixMonths Float64,
     SpentLastYear Float64,
-    SpentLastTwoYears Float64
+    SpentLastTwoYears Float64,
+    UserId UInt64
 )
 ENGINE = AggregatingMergeTree()
 PARTITION BY Month
