@@ -3,47 +3,77 @@ package grpc
 import (
 	"context"
 
+	clickhousedatabase "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/clickhouse-database"
 	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
-func (s *Server) GetDebtToIncomeRatio(context.Context, *proto.GetDebtToIncomeRatioRequest) (*proto.GetDebtToIncomeRatioResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetDebtToIncomeRatio not implemented")
+func (s *Server) GetUserAccountBalanceHistory(context.Context, *proto.GetUserAccountBalanceHistoryRequest) (*proto.GetUserAccountBalanceHistoryResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserAccountBalanceHistory not implemented")
 }
-func (s *Server) ListDebtToIncomeRatio(context.Context, *proto.ListDebtToIncomeRatioRequest) (*proto.ListDebtToIncomeRatioResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListDebtToIncomeRatio not implemented")
+
+func (s *Server) GetDebtToIncomeRatio(ctx context.Context, req *proto.GetDebtToIncomeRatioRequest) (*proto.GetDebtToIncomeRatioResponse, error) {
+	// perform validations
+	if req == nil {
+		return nil, status.Error(codes.InvalidArgument, "missing request")
+	}
+
+	if err := req.ValidateAll(); err != nil {
+		return nil, status.Error(codes.InvalidArgument, err.Error())
+	}
+
+	ctx, cancel := context.WithTimeout(ctx, s.config.RpcTimeout)
+	defer cancel()
+
+	// instrument operation
+	if s.instrumentation != nil {
+		txn := s.instrumentation.GetTraceFromContext(ctx)
+		span := s.instrumentation.StartSegment(txn, "grpc-get-debt-to-income-ratio")
+		defer span.End()
+	}
+
+	// perform operation
+	res, nextPageNumber, err := s.
+		clickhouseConn.
+		GetDebtToIncomeRatio(
+			ctx,
+			&req.UserId,
+			&clickhousedatabase.DebtToIncomeParams{
+				Month:      req.Month,
+				PageSize:   uint64(req.PageSize),
+				PageNumber: uint64(req.PageNumber),
+			})
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	return &proto.GetDebtToIncomeRatioResponse{
+		DebtToIncomeRatios: res,
+		NextPageNumber:     nextPageNumber,
+	}, nil
 }
+
 func (s *Server) GetExpenseMetrics(context.Context, *proto.GetExpenseMetricsRequest) (*proto.GetExpenseMetricsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetExpenseMetrics not implemented")
 }
-func (s *Server) ListExpenseMetrics(context.Context, *proto.ListExpenseMetricsRequest) (*proto.ListExpenseMetricsResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListExpenseMetrics not implemented")
-}
+
 func (s *Server) GetFinancialProfile(context.Context, *proto.GetFinancialProfileRequest) (*proto.GetFinancialProfileResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetFinancialProfile not implemented")
 }
-func (s *Server) ListFinancialProfile(context.Context, *proto.ListFinancialProfileRequest) (*proto.ListFinancialProfileResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListFinancialProfile not implemented")
-}
+
 func (s *Server) GetIncomeExpenseRatio(context.Context, *proto.GetIncomeExpenseRatioRequest) (*proto.GetIncomeExpenseRatioResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetIncomeExpenseRatio not implemented")
 }
-func (s *Server) ListIncomeExpenseRatio(context.Context, *proto.ListIncomeExpenseRatioRequest) (*proto.ListIncomeExpenseRatioResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListIncomeExpenseRatio not implemented")
-}
+
 func (s *Server) GetIncomeMetrics(context.Context, *proto.GetIncomeMetricsRequest) (*proto.GetIncomeMetricsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetIncomeMetrics not implemented")
 }
-func (s *Server) ListIncomeMetrics(context.Context, *proto.ListIncomeMetricsRequest) (*proto.ListIncomeMetricsResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListIncomeMetrics not implemented")
-}
+
 func (s *Server) GetMerchantMonthlyExpenditure(context.Context, *proto.GetMerchantMonthlyExpenditureRequest) (*proto.GetMerchantMonthlyExpenditureResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetMerchantMonthlyExpenditure not implemented")
 }
-func (s *Server) ListMerchantMonthlyExpenditure(context.Context, *proto.ListMerchantMonthlyExpenditureRequest) (*proto.ListMerchantMonthlyExpenditureResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListMerchantMonthlyExpenditure not implemented")
-}
+
 func (s *Server) GetMonthlyBalance(context.Context, *proto.GetMonthlyBalanceRequest) (*proto.GetMonthlyBalanceResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetMonthlyBalance not implemented")
 }

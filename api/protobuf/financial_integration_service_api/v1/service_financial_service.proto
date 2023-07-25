@@ -1035,51 +1035,9 @@ service FinancialService {
     };
   }
 
-  rpc ListDebtToIncomeRatio(ListDebtToIncomeRatioRequest) returns (ListDebtToIncomeRatioResponse) {
-    option (google.api.http) = {
-      get: "/api/v1/analytics/debt-to-income-ratio/{user_id}/pagenumber/{page_number}/pagesize/{page_size}"
-    };
-
-    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      summary: "Get Debt-to-Income ratio by user and month"
-      tags: ["finance"]
-      operation_id: "GetDebtToIncomeRatio"
-      responses: {
-        key: "200"
-        value: {
-          description: "Successful operation"
-          schema: {
-            json_schema: {ref: ".api.v1.GetDebtToIncomeRatioResponse"}
-          }
-        }
-      }
-    };
-  }
-
   rpc GetExpenseMetrics(GetExpenseMetricsRequest) returns (GetExpenseMetricsResponse) {
     option (google.api.http) = {
       get: "/api/v1/analytics/expenses/{user_id}"
-    };
-
-    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      summary: "Get Expense Metrics by user, month and category"
-      tags: ["finance"]
-      operation_id: "GetExpenseMetrics"
-      responses: {
-        key: "200"
-        value: {
-          description: "Successful operation"
-          schema: {
-            json_schema: {ref: ".api.v1.GetExpenseMetricsResponse"}
-          }
-        }
-      }
-    };
-  }
-
-  rpc ListExpenseMetrics(ListExpenseMetricsRequest) returns (ListExpenseMetricsResponse) {
-    option (google.api.http) = {
-      get: "/api/v1/analytics/expenses/{user_id}/pagenumber/{page_number}/pagesize/{page_size}"
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
@@ -1119,27 +1077,6 @@ service FinancialService {
     };
   }
 
-  rpc ListFinancialProfile(ListFinancialProfileRequest) returns (ListFinancialProfileResponse) {
-    option (google.api.http) = {
-      get: "/api/v1/analytics/finance-profile/{user_id}/pagenumber/{page_number}/pagesize/{page_size}"
-    };
-
-    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      summary: "Get Financial Profile by user and month"
-      tags: ["finance"]
-      operation_id: "GetFinancialProfile"
-      responses: {
-        key: "200"
-        value: {
-          description: "Successful operation"
-          schema: {
-            json_schema: {ref: ".api.v1.ListFinancialProfileResponse"}
-          }
-        }
-      }
-    };
-  }
-
   rpc GetIncomeExpenseRatio(GetIncomeExpenseRatioRequest) returns (GetIncomeExpenseRatioResponse) {
     option (google.api.http) = {
       get: "/api/v1/analytics/income-expense-ratio/{user_id}"
@@ -1161,52 +1098,9 @@ service FinancialService {
     };
   }
 
-  rpc ListIncomeExpenseRatio(ListIncomeExpenseRatioRequest) returns (ListIncomeExpenseRatioResponse) {
-    option (google.api.http) = {
-      get: "/api/v1/analytics/income-expense-ratio/{user_id}/pagenumber/{page_number}/pagesize/{page_size}"
-    };
-
-    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      summary: "Get Income Expense Ratio by user and month"
-      tags: ["finance"]
-      operation_id: "GetIncomeExpenseRatio"
-      responses: {
-        key: "200"
-        value: {
-          description: "Successful operation"
-          schema: {
-            json_schema: {ref: ".api.v1.GetIncomeExpenseRatioResponse"}
-          }
-        }
-      }
-    };
-  }
-
-
   rpc GetIncomeMetrics(GetIncomeMetricsRequest) returns (GetIncomeMetricsResponse) {
     option (google.api.http) = {
       get: "/api/v1/analytics/income/{user_id}"
-    };
-
-    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      summary: "Get Income Metrics by user, month and category"
-      tags: ["finance"]
-      operation_id: "GetIncomeMetrics"
-      responses: {
-        key: "200"
-        value: {
-          description: "Successful operation"
-          schema: {
-            json_schema: {ref: ".api.v1.GetIncomeMetricsResponse"}
-          }
-        }
-      }
-    };
-  }
-
-  rpc ListIncomeMetrics(ListIncomeMetricsRequest) returns (ListIncomeMetricsResponse) {
-    option (google.api.http) = {
-      get: "/api/v1/analytics/income/{user_id}/pagenumber/{page_number}/pagesize/{page_size}"
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
@@ -1240,27 +1134,6 @@ service FinancialService {
           description: "Successful operation"
           schema: {
             json_schema: {ref: ".api.v1.GetMerchantMonthlyExpenditureResponse"}
-          }
-        }
-      }
-    };
-  }
-
-  rpc ListMerchantMonthlyExpenditure(ListMerchantMonthlyExpenditureRequest) returns (ListMerchantMonthlyExpenditureResponse) {
-    option (google.api.http) = {
-      get: "/api/v1/analytics/merchant-monthly-expenditure/{user_id}/pagenumber/{page_number}/pagesize/{page_size}"
-    };
-
-    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      summary: "Get Merchant Monthly Expenditure by user, month and merchant name"
-      tags: ["finance"]
-      operation_id: "ListMerchantMonthlyExpenditureResponse"
-      responses: {
-        key: "200"
-        value: {
-          description: "Successful operation"
-          schema: {
-            json_schema: {ref: ".api.v1.ListMerchantMonthlyExpenditureResponse"}
           }
         }
       }

@@ -68,17 +68,11 @@ const (
 	FinancialService_GetUserCategoryMonthlyIncome_FullMethodName             = "/financial_integration_service_api.v1.FinancialService/GetUserCategoryMonthlyIncome"
 	FinancialService_GetCategoryMonthlyTransactionCount_FullMethodName       = "/financial_integration_service_api.v1.FinancialService/GetCategoryMonthlyTransactionCount"
 	FinancialService_GetDebtToIncomeRatio_FullMethodName                     = "/financial_integration_service_api.v1.FinancialService/GetDebtToIncomeRatio"
-	FinancialService_ListDebtToIncomeRatio_FullMethodName                    = "/financial_integration_service_api.v1.FinancialService/ListDebtToIncomeRatio"
 	FinancialService_GetExpenseMetrics_FullMethodName                        = "/financial_integration_service_api.v1.FinancialService/GetExpenseMetrics"
-	FinancialService_ListExpenseMetrics_FullMethodName                       = "/financial_integration_service_api.v1.FinancialService/ListExpenseMetrics"
 	FinancialService_GetFinancialProfile_FullMethodName                      = "/financial_integration_service_api.v1.FinancialService/GetFinancialProfile"
-	FinancialService_ListFinancialProfile_FullMethodName                     = "/financial_integration_service_api.v1.FinancialService/ListFinancialProfile"
 	FinancialService_GetIncomeExpenseRatio_FullMethodName                    = "/financial_integration_service_api.v1.FinancialService/GetIncomeExpenseRatio"
-	FinancialService_ListIncomeExpenseRatio_FullMethodName                   = "/financial_integration_service_api.v1.FinancialService/ListIncomeExpenseRatio"
 	FinancialService_GetIncomeMetrics_FullMethodName                         = "/financial_integration_service_api.v1.FinancialService/GetIncomeMetrics"
-	FinancialService_ListIncomeMetrics_FullMethodName                        = "/financial_integration_service_api.v1.FinancialService/ListIncomeMetrics"
 	FinancialService_GetMerchantMonthlyExpenditure_FullMethodName            = "/financial_integration_service_api.v1.FinancialService/GetMerchantMonthlyExpenditure"
-	FinancialService_ListMerchantMonthlyExpenditure_FullMethodName           = "/financial_integration_service_api.v1.FinancialService/ListMerchantMonthlyExpenditure"
 	FinancialService_GetMonthlyBalance_FullMethodName                        = "/financial_integration_service_api.v1.FinancialService/GetMonthlyBalance"
 	FinancialService_GetMonthlyExpenditure_FullMethodName                    = "/financial_integration_service_api.v1.FinancialService/GetMonthlyExpenditure"
 	FinancialService_GetMonthlyIncome_FullMethodName                         = "/financial_integration_service_api.v1.FinancialService/GetMonthlyIncome"
@@ -148,17 +142,11 @@ type FinancialServiceClient interface {
 	// Get CategoryMonthlyTransactionCount by User - This would return all CategoryMonthlyTransactionCount records for a specific user
 	GetCategoryMonthlyTransactionCount(ctx context.Context, in *GetCategoryMonthlyTransactionCountRequest, opts ...grpc.CallOption) (*GetCategoryMonthlyTransactionCountResponse, error)
 	GetDebtToIncomeRatio(ctx context.Context, in *GetDebtToIncomeRatioRequest, opts ...grpc.CallOption) (*GetDebtToIncomeRatioResponse, error)
-	ListDebtToIncomeRatio(ctx context.Context, in *ListDebtToIncomeRatioRequest, opts ...grpc.CallOption) (*ListDebtToIncomeRatioResponse, error)
 	GetExpenseMetrics(ctx context.Context, in *GetExpenseMetricsRequest, opts ...grpc.CallOption) (*GetExpenseMetricsResponse, error)
-	ListExpenseMetrics(ctx context.Context, in *ListExpenseMetricsRequest, opts ...grpc.CallOption) (*ListExpenseMetricsResponse, error)
 	GetFinancialProfile(ctx context.Context, in *GetFinancialProfileRequest, opts ...grpc.CallOption) (*GetFinancialProfileResponse, error)
-	ListFinancialProfile(ctx context.Context, in *ListFinancialProfileRequest, opts ...grpc.CallOption) (*ListFinancialProfileResponse, error)
 	GetIncomeExpenseRatio(ctx context.Context, in *GetIncomeExpenseRatioRequest, opts ...grpc.CallOption) (*GetIncomeExpenseRatioResponse, error)
-	ListIncomeExpenseRatio(ctx context.Context, in *ListIncomeExpenseRatioRequest, opts ...grpc.CallOption) (*ListIncomeExpenseRatioResponse, error)
 	GetIncomeMetrics(ctx context.Context, in *GetIncomeMetricsRequest, opts ...grpc.CallOption) (*GetIncomeMetricsResponse, error)
-	ListIncomeMetrics(ctx context.Context, in *ListIncomeMetricsRequest, opts ...grpc.CallOption) (*ListIncomeMetricsResponse, error)
 	GetMerchantMonthlyExpenditure(ctx context.Context, in *GetMerchantMonthlyExpenditureRequest, opts ...grpc.CallOption) (*GetMerchantMonthlyExpenditureResponse, error)
-	ListMerchantMonthlyExpenditure(ctx context.Context, in *ListMerchantMonthlyExpenditureRequest, opts ...grpc.CallOption) (*ListMerchantMonthlyExpenditureResponse, error)
 	// @here
 	GetMonthlyBalance(ctx context.Context, in *GetMonthlyBalanceRequest, opts ...grpc.CallOption) (*GetMonthlyBalanceResponse, error)
 	GetMonthlyExpenditure(ctx context.Context, in *GetMonthlyExpenditureRequest, opts ...grpc.CallOption) (*GetMonthlyExpenditureResponse, error)
@@ -621,27 +609,9 @@ func (c *financialServiceClient) GetDebtToIncomeRatio(ctx context.Context, in *G
 	return out, nil
 }
 
-func (c *financialServiceClient) ListDebtToIncomeRatio(ctx context.Context, in *ListDebtToIncomeRatioRequest, opts ...grpc.CallOption) (*ListDebtToIncomeRatioResponse, error) {
-	out := new(ListDebtToIncomeRatioResponse)
-	err := c.cc.Invoke(ctx, FinancialService_ListDebtToIncomeRatio_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *financialServiceClient) GetExpenseMetrics(ctx context.Context, in *GetExpenseMetricsRequest, opts ...grpc.CallOption) (*GetExpenseMetricsResponse, error) {
 	out := new(GetExpenseMetricsResponse)
 	err := c.cc.Invoke(ctx, FinancialService_GetExpenseMetrics_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *financialServiceClient) ListExpenseMetrics(ctx context.Context, in *ListExpenseMetricsRequest, opts ...grpc.CallOption) (*ListExpenseMetricsResponse, error) {
-	out := new(ListExpenseMetricsResponse)
-	err := c.cc.Invoke(ctx, FinancialService_ListExpenseMetrics_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -657,27 +627,9 @@ func (c *financialServiceClient) GetFinancialProfile(ctx context.Context, in *Ge
 	return out, nil
 }
 
-func (c *financialServiceClient) ListFinancialProfile(ctx context.Context, in *ListFinancialProfileRequest, opts ...grpc.CallOption) (*ListFinancialProfileResponse, error) {
-	out := new(ListFinancialProfileResponse)
-	err := c.cc.Invoke(ctx, FinancialService_ListFinancialProfile_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *financialServiceClient) GetIncomeExpenseRatio(ctx context.Context, in *GetIncomeExpenseRatioRequest, opts ...grpc.CallOption) (*GetIncomeExpenseRatioResponse, error) {
 	out := new(GetIncomeExpenseRatioResponse)
 	err := c.cc.Invoke(ctx, FinancialService_GetIncomeExpenseRatio_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *financialServiceClient) ListIncomeExpenseRatio(ctx context.Context, in *ListIncomeExpenseRatioRequest, opts ...grpc.CallOption) (*ListIncomeExpenseRatioResponse, error) {
-	out := new(ListIncomeExpenseRatioResponse)
-	err := c.cc.Invoke(ctx, FinancialService_ListIncomeExpenseRatio_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -693,27 +645,9 @@ func (c *financialServiceClient) GetIncomeMetrics(ctx context.Context, in *GetIn
 	return out, nil
 }
 
-func (c *financialServiceClient) ListIncomeMetrics(ctx context.Context, in *ListIncomeMetricsRequest, opts ...grpc.CallOption) (*ListIncomeMetricsResponse, error) {
-	out := new(ListIncomeMetricsResponse)
-	err := c.cc.Invoke(ctx, FinancialService_ListIncomeMetrics_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *financialServiceClient) GetMerchantMonthlyExpenditure(ctx context.Context, in *GetMerchantMonthlyExpenditureRequest, opts ...grpc.CallOption) (*GetMerchantMonthlyExpenditureResponse, error) {
 	out := new(GetMerchantMonthlyExpenditureResponse)
 	err := c.cc.Invoke(ctx, FinancialService_GetMerchantMonthlyExpenditure_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *financialServiceClient) ListMerchantMonthlyExpenditure(ctx context.Context, in *ListMerchantMonthlyExpenditureRequest, opts ...grpc.CallOption) (*ListMerchantMonthlyExpenditureResponse, error) {
-	out := new(ListMerchantMonthlyExpenditureResponse)
-	err := c.cc.Invoke(ctx, FinancialService_ListMerchantMonthlyExpenditure_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -867,17 +801,11 @@ type FinancialServiceServer interface {
 	// Get CategoryMonthlyTransactionCount by User - This would return all CategoryMonthlyTransactionCount records for a specific user
 	GetCategoryMonthlyTransactionCount(context.Context, *GetCategoryMonthlyTransactionCountRequest) (*GetCategoryMonthlyTransactionCountResponse, error)
 	GetDebtToIncomeRatio(context.Context, *GetDebtToIncomeRatioRequest) (*GetDebtToIncomeRatioResponse, error)
-	ListDebtToIncomeRatio(context.Context, *ListDebtToIncomeRatioRequest) (*ListDebtToIncomeRatioResponse, error)
 	GetExpenseMetrics(context.Context, *GetExpenseMetricsRequest) (*GetExpenseMetricsResponse, error)
-	ListExpenseMetrics(context.Context, *ListExpenseMetricsRequest) (*ListExpenseMetricsResponse, error)
 	GetFinancialProfile(context.Context, *GetFinancialProfileRequest) (*GetFinancialProfileResponse, error)
-	ListFinancialProfile(context.Context, *ListFinancialProfileRequest) (*ListFinancialProfileResponse, error)
 	GetIncomeExpenseRatio(context.Context, *GetIncomeExpenseRatioRequest) (*GetIncomeExpenseRatioResponse, error)
-	ListIncomeExpenseRatio(context.Context, *ListIncomeExpenseRatioRequest) (*ListIncomeExpenseRatioResponse, error)
 	GetIncomeMetrics(context.Context, *GetIncomeMetricsRequest) (*GetIncomeMetricsResponse, error)
-	ListIncomeMetrics(context.Context, *ListIncomeMetricsRequest) (*ListIncomeMetricsResponse, error)
 	GetMerchantMonthlyExpenditure(context.Context, *GetMerchantMonthlyExpenditureRequest) (*GetMerchantMonthlyExpenditureResponse, error)
-	ListMerchantMonthlyExpenditure(context.Context, *ListMerchantMonthlyExpenditureRequest) (*ListMerchantMonthlyExpenditureResponse, error)
 	// @here
 	GetMonthlyBalance(context.Context, *GetMonthlyBalanceRequest) (*GetMonthlyBalanceResponse, error)
 	GetMonthlyExpenditure(context.Context, *GetMonthlyExpenditureRequest) (*GetMonthlyExpenditureResponse, error)
@@ -1043,38 +971,20 @@ func (UnimplementedFinancialServiceServer) GetCategoryMonthlyTransactionCount(co
 func (UnimplementedFinancialServiceServer) GetDebtToIncomeRatio(context.Context, *GetDebtToIncomeRatioRequest) (*GetDebtToIncomeRatioResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetDebtToIncomeRatio not implemented")
 }
-func (UnimplementedFinancialServiceServer) ListDebtToIncomeRatio(context.Context, *ListDebtToIncomeRatioRequest) (*ListDebtToIncomeRatioResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListDebtToIncomeRatio not implemented")
-}
 func (UnimplementedFinancialServiceServer) GetExpenseMetrics(context.Context, *GetExpenseMetricsRequest) (*GetExpenseMetricsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetExpenseMetrics not implemented")
-}
-func (UnimplementedFinancialServiceServer) ListExpenseMetrics(context.Context, *ListExpenseMetricsRequest) (*ListExpenseMetricsResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListExpenseMetrics not implemented")
 }
 func (UnimplementedFinancialServiceServer) GetFinancialProfile(context.Context, *GetFinancialProfileRequest) (*GetFinancialProfileResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetFinancialProfile not implemented")
 }
-func (UnimplementedFinancialServiceServer) ListFinancialProfile(context.Context, *ListFinancialProfileRequest) (*ListFinancialProfileResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListFinancialProfile not implemented")
-}
 func (UnimplementedFinancialServiceServer) GetIncomeExpenseRatio(context.Context, *GetIncomeExpenseRatioRequest) (*GetIncomeExpenseRatioResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetIncomeExpenseRatio not implemented")
-}
-func (UnimplementedFinancialServiceServer) ListIncomeExpenseRatio(context.Context, *ListIncomeExpenseRatioRequest) (*ListIncomeExpenseRatioResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListIncomeExpenseRatio not implemented")
 }
 func (UnimplementedFinancialServiceServer) GetIncomeMetrics(context.Context, *GetIncomeMetricsRequest) (*GetIncomeMetricsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetIncomeMetrics not implemented")
 }
-func (UnimplementedFinancialServiceServer) ListIncomeMetrics(context.Context, *ListIncomeMetricsRequest) (*ListIncomeMetricsResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListIncomeMetrics not implemented")
-}
 func (UnimplementedFinancialServiceServer) GetMerchantMonthlyExpenditure(context.Context, *GetMerchantMonthlyExpenditureRequest) (*GetMerchantMonthlyExpenditureResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetMerchantMonthlyExpenditure not implemented")
-}
-func (UnimplementedFinancialServiceServer) ListMerchantMonthlyExpenditure(context.Context, *ListMerchantMonthlyExpenditureRequest) (*ListMerchantMonthlyExpenditureResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListMerchantMonthlyExpenditure not implemented")
 }
 func (UnimplementedFinancialServiceServer) GetMonthlyBalance(context.Context, *GetMonthlyBalanceRequest) (*GetMonthlyBalanceResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetMonthlyBalance not implemented")
@@ -2001,24 +1911,6 @@ func _FinancialService_GetDebtToIncomeRatio_Handler(srv interface{}, ctx context
 	return interceptor(ctx, in, info, handler)
 }
 
-func _FinancialService_ListDebtToIncomeRatio_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListDebtToIncomeRatioRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(FinancialServiceServer).ListDebtToIncomeRatio(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: FinancialService_ListDebtToIncomeRatio_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FinancialServiceServer).ListDebtToIncomeRatio(ctx, req.(*ListDebtToIncomeRatioRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _FinancialService_GetExpenseMetrics_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetExpenseMetricsRequest)
 	if err := dec(in); err != nil {
@@ -2033,24 +1925,6 @@ func _FinancialService_GetExpenseMetrics_Handler(srv interface{}, ctx context.Co
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(FinancialServiceServer).GetExpenseMetrics(ctx, req.(*GetExpenseMetricsRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _FinancialService_ListExpenseMetrics_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListExpenseMetricsRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(FinancialServiceServer).ListExpenseMetrics(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: FinancialService_ListExpenseMetrics_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FinancialServiceServer).ListExpenseMetrics(ctx, req.(*ListExpenseMetricsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2073,24 +1947,6 @@ func _FinancialService_GetFinancialProfile_Handler(srv interface{}, ctx context.
 	return interceptor(ctx, in, info, handler)
 }
 
-func _FinancialService_ListFinancialProfile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListFinancialProfileRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(FinancialServiceServer).ListFinancialProfile(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: FinancialService_ListFinancialProfile_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FinancialServiceServer).ListFinancialProfile(ctx, req.(*ListFinancialProfileRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _FinancialService_GetIncomeExpenseRatio_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetIncomeExpenseRatioRequest)
 	if err := dec(in); err != nil {
@@ -2105,24 +1961,6 @@ func _FinancialService_GetIncomeExpenseRatio_Handler(srv interface{}, ctx contex
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(FinancialServiceServer).GetIncomeExpenseRatio(ctx, req.(*GetIncomeExpenseRatioRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _FinancialService_ListIncomeExpenseRatio_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListIncomeExpenseRatioRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(FinancialServiceServer).ListIncomeExpenseRatio(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: FinancialService_ListIncomeExpenseRatio_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FinancialServiceServer).ListIncomeExpenseRatio(ctx, req.(*ListIncomeExpenseRatioRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2145,24 +1983,6 @@ func _FinancialService_GetIncomeMetrics_Handler(srv interface{}, ctx context.Con
 	return interceptor(ctx, in, info, handler)
 }
 
-func _FinancialService_ListIncomeMetrics_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListIncomeMetricsRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(FinancialServiceServer).ListIncomeMetrics(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: FinancialService_ListIncomeMetrics_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FinancialServiceServer).ListIncomeMetrics(ctx, req.(*ListIncomeMetricsRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _FinancialService_GetMerchantMonthlyExpenditure_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetMerchantMonthlyExpenditureRequest)
 	if err := dec(in); err != nil {
@@ -2177,24 +1997,6 @@ func _FinancialService_GetMerchantMonthlyExpenditure_Handler(srv interface{}, ct
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(FinancialServiceServer).GetMerchantMonthlyExpenditure(ctx, req.(*GetMerchantMonthlyExpenditureRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _FinancialService_ListMerchantMonthlyExpenditure_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListMerchantMonthlyExpenditureRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(FinancialServiceServer).ListMerchantMonthlyExpenditure(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: FinancialService_ListMerchantMonthlyExpenditure_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FinancialServiceServer).ListMerchantMonthlyExpenditure(ctx, req.(*ListMerchantMonthlyExpenditureRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2583,48 +2385,24 @@ var FinancialService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _FinancialService_GetDebtToIncomeRatio_Handler,
 		},
 		{
-			MethodName: "ListDebtToIncomeRatio",
-			Handler:    _FinancialService_ListDebtToIncomeRatio_Handler,
-		},
-		{
 			MethodName: "GetExpenseMetrics",
 			Handler:    _FinancialService_GetExpenseMetrics_Handler,
-		},
-		{
-			MethodName: "ListExpenseMetrics",
-			Handler:    _FinancialService_ListExpenseMetrics_Handler,
 		},
 		{
 			MethodName: "GetFinancialProfile",
 			Handler:    _FinancialService_GetFinancialProfile_Handler,
 		},
 		{
-			MethodName: "ListFinancialProfile",
-			Handler:    _FinancialService_ListFinancialProfile_Handler,
-		},
-		{
 			MethodName: "GetIncomeExpenseRatio",
 			Handler:    _FinancialService_GetIncomeExpenseRatio_Handler,
-		},
-		{
-			MethodName: "ListIncomeExpenseRatio",
-			Handler:    _FinancialService_ListIncomeExpenseRatio_Handler,
 		},
 		{
 			MethodName: "GetIncomeMetrics",
 			Handler:    _FinancialService_GetIncomeMetrics_Handler,
 		},
 		{
-			MethodName: "ListIncomeMetrics",
-			Handler:    _FinancialService_ListIncomeMetrics_Handler,
-		},
-		{
 			MethodName: "GetMerchantMonthlyExpenditure",
 			Handler:    _FinancialService_GetMerchantMonthlyExpenditure_Handler,
-		},
-		{
-			MethodName: "ListMerchantMonthlyExpenditure",
-			Handler:    _FinancialService_ListMerchantMonthlyExpenditure_Handler,
 		},
 		{
 			MethodName: "GetMonthlyBalance",

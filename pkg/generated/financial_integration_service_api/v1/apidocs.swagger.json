@@ -698,69 +698,19 @@
             "required": false,
             "type": "integer",
             "format": "int64"
-          }
-        ],
-        "tags": [
-          "finance"
-        ]
-      }
-    },
-    "/api/v1/analytics/debt-to-income-ratio/{userId}/pagenumber/{pageNumber}/pagesize/{pageSize}": {
-      "get": {
-        "summary": "Get Debt-to-Income ratio by user and month",
-        "operationId": "GetDebtToIncomeRatio",
-        "responses": {
-          "200": {
-            "description": "Successful operation",
-            "schema": {
-              "$ref": ".api.v1.GetDebtToIncomeRatioResponse"
-            }
-          },
-          "400": {
-            "description": "Request failed due to invalid input.",
-            "schema": {
-              "$ref": ".api.v1.ValidationErrorMessageResponse"
-            }
-          },
-          "404": {
-            "description": "Request failed due to incorrect path.",
-            "schema": {
-              "$ref": ".api.v1.PathUnknownErrorMessageResponse"
-            }
-          },
-          "500": {
-            "description": "Request failed due to internal server error.",
-            "schema": {
-              "$ref": ".api.v1.InternalErrorMessageResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "format": "uint64"
           },
           {
             "name": "pageNumber",
-            "in": "path",
-            "required": true,
+            "in": "query",
+            "required": false,
             "type": "string",
             "format": "int64"
           },
           {
             "name": "pageSize",
             "description": "Number of items to return per page.",
-            "in": "path",
-            "required": true,
+            "in": "query",
+            "required": false,
             "type": "string",
             "format": "int64"
           }
@@ -828,69 +778,19 @@
             "in": "query",
             "required": false,
             "type": "string"
-          }
-        ],
-        "tags": [
-          "finance"
-        ]
-      }
-    },
-    "/api/v1/analytics/expenses/{userId}/pagenumber/{pageNumber}/pagesize/{pageSize}": {
-      "get": {
-        "summary": "Get Expense Metrics by user, month and category",
-        "operationId": "GetExpenseMetrics",
-        "responses": {
-          "200": {
-            "description": "Successful operation",
-            "schema": {
-              "$ref": ".api.v1.GetExpenseMetricsResponse"
-            }
-          },
-          "400": {
-            "description": "Request failed due to invalid input.",
-            "schema": {
-              "$ref": ".api.v1.ValidationErrorMessageResponse"
-            }
-          },
-          "404": {
-            "description": "Request failed due to incorrect path.",
-            "schema": {
-              "$ref": ".api.v1.PathUnknownErrorMessageResponse"
-            }
-          },
-          "500": {
-            "description": "Request failed due to internal server error.",
-            "schema": {
-              "$ref": ".api.v1.InternalErrorMessageResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "format": "uint64"
           },
           {
             "name": "pageNumber",
-            "in": "path",
-            "required": true,
+            "in": "query",
+            "required": false,
             "type": "string",
             "format": "int64"
           },
           {
             "name": "pageSize",
             "description": "Number of items to return per page.",
-            "in": "path",
-            "required": true,
+            "in": "query",
+            "required": false,
             "type": "string",
             "format": "int64"
           }
@@ -951,69 +851,19 @@
             "required": false,
             "type": "integer",
             "format": "int64"
-          }
-        ],
-        "tags": [
-          "finance"
-        ]
-      }
-    },
-    "/api/v1/analytics/finance-profile/{userId}/pagenumber/{pageNumber}/pagesize/{pageSize}": {
-      "get": {
-        "summary": "Get Financial Profile by user and month",
-        "operationId": "GetFinancialProfile",
-        "responses": {
-          "200": {
-            "description": "Successful operation",
-            "schema": {
-              "$ref": ".api.v1.ListFinancialProfileResponse"
-            }
-          },
-          "400": {
-            "description": "Request failed due to invalid input.",
-            "schema": {
-              "$ref": ".api.v1.ValidationErrorMessageResponse"
-            }
-          },
-          "404": {
-            "description": "Request failed due to incorrect path.",
-            "schema": {
-              "$ref": ".api.v1.PathUnknownErrorMessageResponse"
-            }
-          },
-          "500": {
-            "description": "Request failed due to internal server error.",
-            "schema": {
-              "$ref": ".api.v1.InternalErrorMessageResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "format": "uint64"
           },
           {
             "name": "pageNumber",
-            "in": "path",
-            "required": true,
+            "in": "query",
+            "required": false,
             "type": "string",
             "format": "int64"
           },
           {
             "name": "pageSize",
             "description": "Number of items to return per page.",
-            "in": "path",
-            "required": true,
+            "in": "query",
+            "required": false,
             "type": "string",
             "format": "int64"
           }
@@ -1074,69 +924,19 @@
             "required": false,
             "type": "integer",
             "format": "int64"
-          }
-        ],
-        "tags": [
-          "finance"
-        ]
-      }
-    },
-    "/api/v1/analytics/income-expense-ratio/{userId}/pagenumber/{pageNumber}/pagesize/{pageSize}": {
-      "get": {
-        "summary": "Get Income Expense Ratio by user and month",
-        "operationId": "GetIncomeExpenseRatio",
-        "responses": {
-          "200": {
-            "description": "Successful operation",
-            "schema": {
-              "$ref": ".api.v1.GetIncomeExpenseRatioResponse"
-            }
-          },
-          "400": {
-            "description": "Request failed due to invalid input.",
-            "schema": {
-              "$ref": ".api.v1.ValidationErrorMessageResponse"
-            }
-          },
-          "404": {
-            "description": "Request failed due to incorrect path.",
-            "schema": {
-              "$ref": ".api.v1.PathUnknownErrorMessageResponse"
-            }
-          },
-          "500": {
-            "description": "Request failed due to internal server error.",
-            "schema": {
-              "$ref": ".api.v1.InternalErrorMessageResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "format": "uint64"
           },
           {
             "name": "pageNumber",
-            "in": "path",
-            "required": true,
+            "in": "query",
+            "required": false,
             "type": "string",
             "format": "int64"
           },
           {
             "name": "pageSize",
             "description": "Number of items to return per page.",
-            "in": "path",
-            "required": true,
+            "in": "query",
+            "required": false,
             "type": "string",
             "format": "int64"
           }
@@ -1204,69 +1004,19 @@
             "in": "query",
             "required": false,
             "type": "string"
-          }
-        ],
-        "tags": [
-          "finance"
-        ]
-      }
-    },
-    "/api/v1/analytics/income/{userId}/pagenumber/{pageNumber}/pagesize/{pageSize}": {
-      "get": {
-        "summary": "Get Income Metrics by user, month and category",
-        "operationId": "GetIncomeMetrics",
-        "responses": {
-          "200": {
-            "description": "Successful operation",
-            "schema": {
-              "$ref": ".api.v1.GetIncomeMetricsResponse"
-            }
-          },
-          "400": {
-            "description": "Request failed due to invalid input.",
-            "schema": {
-              "$ref": ".api.v1.ValidationErrorMessageResponse"
-            }
-          },
-          "404": {
-            "description": "Request failed due to incorrect path.",
-            "schema": {
-              "$ref": ".api.v1.PathUnknownErrorMessageResponse"
-            }
-          },
-          "500": {
-            "description": "Request failed due to internal server error.",
-            "schema": {
-              "$ref": ".api.v1.InternalErrorMessageResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "format": "uint64"
           },
           {
             "name": "pageNumber",
-            "in": "path",
-            "required": true,
+            "in": "query",
+            "required": false,
             "type": "string",
             "format": "int64"
           },
           {
             "name": "pageSize",
             "description": "Number of items to return per page.",
-            "in": "path",
-            "required": true,
+            "in": "query",
+            "required": false,
             "type": "string",
             "format": "int64"
           }
@@ -1384,69 +1134,19 @@
             "in": "query",
             "required": false,
             "type": "string"
-          }
-        ],
-        "tags": [
-          "finance"
-        ]
-      }
-    },
-    "/api/v1/analytics/merchant-monthly-expenditure/{userId}/pagenumber/{pageNumber}/pagesize/{pageSize}": {
-      "get": {
-        "summary": "Get Merchant Monthly Expenditure by user, month and merchant name",
-        "operationId": "ListMerchantMonthlyExpenditureResponse",
-        "responses": {
-          "200": {
-            "description": "Successful operation",
-            "schema": {
-              "$ref": ".api.v1.ListMerchantMonthlyExpenditureResponse"
-            }
-          },
-          "400": {
-            "description": "Request failed due to invalid input.",
-            "schema": {
-              "$ref": ".api.v1.ValidationErrorMessageResponse"
-            }
-          },
-          "404": {
-            "description": "Request failed due to incorrect path.",
-            "schema": {
-              "$ref": ".api.v1.PathUnknownErrorMessageResponse"
-            }
-          },
-          "500": {
-            "description": "Request failed due to internal server error.",
-            "schema": {
-              "$ref": ".api.v1.InternalErrorMessageResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "format": "uint64"
           },
           {
             "name": "pageNumber",
-            "in": "path",
-            "required": true,
+            "in": "query",
+            "required": false,
             "type": "string",
             "format": "int64"
           },
           {
             "name": "pageSize",
             "description": "Number of items to return per page.",
-            "in": "path",
-            "required": true,
+            "in": "query",
+            "required": false,
             "type": "string",
             "format": "int64"
           }
@@ -5090,6 +4790,10 @@
             "type": "object",
             "$ref": "#/definitions/DebtToIncomeRatio"
           }
+        },
+        "nextPageNumber": {
+          "type": "string",
+          "format": "int64"
         }
       }
     },
@@ -5102,6 +4806,10 @@
             "type": "object",
             "$ref": "#/definitions/ExpenseMetrics"
           }
+        },
+        "nextPageNumber": {
+          "type": "string",
+          "format": "int64"
         }
       }
     },
@@ -5114,6 +4822,10 @@
             "type": "object",
             "$ref": "#/definitions/FinancialProfile"
           }
+        },
+        "nextPageNumber": {
+          "type": "string",
+          "format": "int64"
         }
       }
     },
@@ -5135,6 +4847,10 @@
             "type": "object",
             "$ref": "#/definitions/IncomeExpenseRatio"
           }
+        },
+        "nextPageNumber": {
+          "type": "string",
+          "format": "int64"
         }
       }
     },
@@ -5147,6 +4863,10 @@
             "type": "object",
             "$ref": "#/definitions/IncomeMetrics"
           }
+        },
+        "nextPageNumber": {
+          "type": "string",
+          "format": "int64"
         }
       }
     },
@@ -5207,6 +4927,10 @@
             "type": "object",
             "$ref": "#/definitions/MerchantMonthlyExpenditure"
           }
+        },
+        "nextPageNumber": {
+          "type": "string",
+          "format": "int64"
         }
       }
     },
@@ -5948,102 +5672,6 @@
         "LINK_TYPE_MANUAL"
       ],
       "default": "LINK_TYPE_UNSPECIFIED"
-    },
-    "ListDebtToIncomeRatioResponse": {
-      "type": "object",
-      "properties": {
-        "debtToIncomeRatios": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/DebtToIncomeRatio"
-          }
-        },
-        "nextPageNumber": {
-          "type": "string",
-          "format": "int64"
-        }
-      }
-    },
-    "ListExpenseMetricsResponse": {
-      "type": "object",
-      "properties": {
-        "expenseMetrics": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/ExpenseMetrics"
-          }
-        },
-        "nextPageNumber": {
-          "type": "string",
-          "format": "int64"
-        }
-      }
-    },
-    "ListFinancialProfileResponse": {
-      "type": "object",
-      "properties": {
-        "financialProfiles": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/FinancialProfile"
-          }
-        },
-        "nextPageNumber": {
-          "type": "string",
-          "format": "int64"
-        }
-      }
-    },
-    "ListIncomeExpenseRatioResponse": {
-      "type": "object",
-      "properties": {
-        "incomeExpenseRatios": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/IncomeExpenseRatio"
-          }
-        },
-        "nextPageNumber": {
-          "type": "string",
-          "format": "int64"
-        }
-      }
-    },
-    "ListIncomeMetricsResponse": {
-      "type": "object",
-      "properties": {
-        "incomeMetrics": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/IncomeMetrics"
-          }
-        },
-        "nextPageNumber": {
-          "type": "string",
-          "format": "int64"
-        }
-      }
-    },
-    "ListMerchantMonthlyExpenditureResponse": {
-      "type": "object",
-      "properties": {
-        "merchantMonthlyExpenditures": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/MerchantMonthlyExpenditure"
-          }
-        },
-        "nextPageNumber": {
-          "type": "string",
-          "format": "int64"
-        }
-      }
     },
     "LocationFinancialSubProfile": {
       "type": "object",

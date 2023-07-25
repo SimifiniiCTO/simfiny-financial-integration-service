@@ -168,6 +168,37 @@ func (source *CategoryMonthlyTransactionCountInternal) ConvertToProto() *Categor
 	}
 }
 
+type DebtToIncomeRatioInternal struct {
+	ch.CHModel `ch:"DebtToIncomeRatio,partition:toYYYYMM(time)"`
+	Month      uint32  `ch:"Month,type:UInt32"`
+	Ratio      float64 `ch:"Ratio,type:Float64"`
+	UserId     uint64  `ch:"UserId,type:UInt64"`
+}
+
+func (source *DebtToIncomeRatioInternal) ConvertToORM() *DebtToIncomeRatioORM {
+	return &DebtToIncomeRatioORM{
+		Month:  source.Month,
+		Ratio:  source.Ratio,
+		UserId: source.UserId,
+	}
+}
+
+func (source *DebtToIncomeRatioORM) ConvertToInternal() *DebtToIncomeRatioInternal {
+	return &DebtToIncomeRatioInternal{
+		Month:  source.Month,
+		Ratio:  source.Ratio,
+		UserId: source.UserId,
+	}
+}
+
+func (source *DebtToIncomeRatioInternal) ConvertToProto() *DebtToIncomeRatio {
+	return &DebtToIncomeRatio{
+		Month:  source.Month,
+		Ratio:  source.Ratio,
+		UserId: source.UserId,
+	}
+}
+
 /*
 * This view will aggregate all expenses (transactions where the Amount is less than zero) by category and month.
 * If your definition of "expense metrics" is different, you might need to adjust the query accordingly.*

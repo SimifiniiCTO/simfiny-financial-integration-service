@@ -125,20 +125,12 @@ export interface GetDebtToIncomeRatioRequest {
   userId: number;
   /** optional */
   month: number;
-}
-
-export interface GetDebtToIncomeRatioResponse {
-  debtToIncomeRatios: DebtToIncomeRatio[];
-}
-
-export interface ListDebtToIncomeRatioRequest {
-  userId: number;
   pageNumber: number;
   /** Number of items to return per page. */
   pageSize: number;
 }
 
-export interface ListDebtToIncomeRatioResponse {
+export interface GetDebtToIncomeRatioResponse {
   debtToIncomeRatios: DebtToIncomeRatio[];
   nextPageNumber: number;
 }
@@ -149,20 +141,12 @@ export interface GetExpenseMetricsRequest {
   month: number;
   /** optional */
   personalFinanceCategoryPrimary: string;
-}
-
-export interface GetExpenseMetricsResponse {
-  expenseMetrics: ExpenseMetrics[];
-}
-
-export interface ListExpenseMetricsRequest {
-  userId: number;
   pageNumber: number;
   /** Number of items to return per page. */
   pageSize: number;
 }
 
-export interface ListExpenseMetricsResponse {
+export interface GetExpenseMetricsResponse {
   expenseMetrics: ExpenseMetrics[];
   nextPageNumber: number;
 }
@@ -172,21 +156,12 @@ export interface GetFinancialProfileRequest {
   userId: number;
   /** optional */
   month: number;
-}
-
-export interface GetFinancialProfileResponse {
-  financialProfiles: FinancialProfile[];
-}
-
-/** GetFinancialProfile RPC */
-export interface ListFinancialProfileRequest {
-  userId: number;
   pageNumber: number;
   /** Number of items to return per page. */
   pageSize: number;
 }
 
-export interface ListFinancialProfileResponse {
+export interface GetFinancialProfileResponse {
   financialProfiles: FinancialProfile[];
   nextPageNumber: number;
 }
@@ -196,20 +171,12 @@ export interface GetIncomeExpenseRatioRequest {
   userId: number;
   /** optional */
   month: number;
-}
-
-export interface GetIncomeExpenseRatioResponse {
-  incomeExpenseRatios: IncomeExpenseRatio[];
-}
-
-export interface ListIncomeExpenseRatioRequest {
-  userId: number;
   pageNumber: number;
   /** Number of items to return per page. */
   pageSize: number;
 }
 
-export interface ListIncomeExpenseRatioResponse {
+export interface GetIncomeExpenseRatioResponse {
   incomeExpenseRatios: IncomeExpenseRatio[];
   nextPageNumber: number;
 }
@@ -221,21 +188,12 @@ export interface GetIncomeMetricsRequest {
   month: number;
   /** optional */
   personalFinanceCategoryPrimary: string;
-}
-
-export interface GetIncomeMetricsResponse {
-  incomeMetrics: IncomeMetrics[];
-}
-
-/** GetIncomeMetrics RPC */
-export interface ListIncomeMetricsRequest {
-  userId: number;
   pageNumber: number;
   /** Number of items to return per page. */
   pageSize: number;
 }
 
-export interface ListIncomeMetricsResponse {
+export interface GetIncomeMetricsResponse {
   incomeMetrics: IncomeMetrics[];
   nextPageNumber: number;
 }
@@ -247,20 +205,12 @@ export interface GetMerchantMonthlyExpenditureRequest {
   month: number;
   /** optional */
   merchantName: string;
-}
-
-export interface GetMerchantMonthlyExpenditureResponse {
-  merchantMonthlyExpenditures: MerchantMonthlyExpenditure[];
-}
-
-export interface ListMerchantMonthlyExpenditureRequest {
-  userId: number;
   pageNumber: number;
   /** Number of items to return per page. */
   pageSize: number;
 }
 
-export interface ListMerchantMonthlyExpenditureResponse {
+export interface GetMerchantMonthlyExpenditureResponse {
   merchantMonthlyExpenditures: MerchantMonthlyExpenditure[];
   nextPageNumber: number;
 }
@@ -1597,7 +1547,7 @@ export const GetCategoryMonthlyTransactionCountResponse = {
 };
 
 function createBaseGetDebtToIncomeRatioRequest(): GetDebtToIncomeRatioRequest {
-  return { userId: 0, month: 0 };
+  return { userId: 0, month: 0, pageNumber: 0, pageSize: 0 };
 }
 
 export const GetDebtToIncomeRatioRequest = {
@@ -1607,6 +1557,12 @@ export const GetDebtToIncomeRatioRequest = {
     }
     if (message.month !== 0) {
       writer.uint32(16).uint32(message.month);
+    }
+    if (message.pageNumber !== 0) {
+      writer.uint32(24).int64(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      writer.uint32(32).int64(message.pageSize);
     }
     return writer;
   },
@@ -1632,148 +1588,15 @@ export const GetDebtToIncomeRatioRequest = {
 
           message.month = reader.uint32();
           continue;
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skipType(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): GetDebtToIncomeRatioRequest {
-    return {
-      userId: isSet(object.userId) ? Number(object.userId) : 0,
-      month: isSet(object.month) ? Number(object.month) : 0,
-    };
-  },
-
-  toJSON(message: GetDebtToIncomeRatioRequest): unknown {
-    const obj: any = {};
-    if (message.userId !== 0) {
-      obj.userId = Math.round(message.userId);
-    }
-    if (message.month !== 0) {
-      obj.month = Math.round(message.month);
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<GetDebtToIncomeRatioRequest>, I>>(base?: I): GetDebtToIncomeRatioRequest {
-    return GetDebtToIncomeRatioRequest.fromPartial(base ?? {});
-  },
-
-  fromPartial<I extends Exact<DeepPartial<GetDebtToIncomeRatioRequest>, I>>(object: I): GetDebtToIncomeRatioRequest {
-    const message = createBaseGetDebtToIncomeRatioRequest();
-    message.userId = object.userId ?? 0;
-    message.month = object.month ?? 0;
-    return message;
-  },
-};
-
-function createBaseGetDebtToIncomeRatioResponse(): GetDebtToIncomeRatioResponse {
-  return { debtToIncomeRatios: [] };
-}
-
-export const GetDebtToIncomeRatioResponse = {
-  encode(message: GetDebtToIncomeRatioResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    for (const v of message.debtToIncomeRatios) {
-      DebtToIncomeRatio.encode(v!, writer.uint32(10).fork()).ldelim();
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): GetDebtToIncomeRatioResponse {
-    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseGetDebtToIncomeRatioResponse();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          if (tag !== 10) {
-            break;
-          }
-
-          message.debtToIncomeRatios.push(DebtToIncomeRatio.decode(reader, reader.uint32()));
-          continue;
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skipType(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): GetDebtToIncomeRatioResponse {
-    return {
-      debtToIncomeRatios: Array.isArray(object?.debtToIncomeRatios)
-        ? object.debtToIncomeRatios.map((e: any) => DebtToIncomeRatio.fromJSON(e))
-        : [],
-    };
-  },
-
-  toJSON(message: GetDebtToIncomeRatioResponse): unknown {
-    const obj: any = {};
-    if (message.debtToIncomeRatios?.length) {
-      obj.debtToIncomeRatios = message.debtToIncomeRatios.map((e) => DebtToIncomeRatio.toJSON(e));
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<GetDebtToIncomeRatioResponse>, I>>(base?: I): GetDebtToIncomeRatioResponse {
-    return GetDebtToIncomeRatioResponse.fromPartial(base ?? {});
-  },
-
-  fromPartial<I extends Exact<DeepPartial<GetDebtToIncomeRatioResponse>, I>>(object: I): GetDebtToIncomeRatioResponse {
-    const message = createBaseGetDebtToIncomeRatioResponse();
-    message.debtToIncomeRatios = object.debtToIncomeRatios?.map((e) => DebtToIncomeRatio.fromPartial(e)) || [];
-    return message;
-  },
-};
-
-function createBaseListDebtToIncomeRatioRequest(): ListDebtToIncomeRatioRequest {
-  return { userId: 0, pageNumber: 0, pageSize: 0 };
-}
-
-export const ListDebtToIncomeRatioRequest = {
-  encode(message: ListDebtToIncomeRatioRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.userId !== 0) {
-      writer.uint32(8).uint64(message.userId);
-    }
-    if (message.pageNumber !== 0) {
-      writer.uint32(16).int64(message.pageNumber);
-    }
-    if (message.pageSize !== 0) {
-      writer.uint32(24).int64(message.pageSize);
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): ListDebtToIncomeRatioRequest {
-    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseListDebtToIncomeRatioRequest();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          if (tag !== 8) {
-            break;
-          }
-
-          message.userId = longToNumber(reader.uint64() as Long);
-          continue;
-        case 2:
-          if (tag !== 16) {
+        case 3:
+          if (tag !== 24) {
             break;
           }
 
           message.pageNumber = longToNumber(reader.int64() as Long);
           continue;
-        case 3:
-          if (tag !== 24) {
+        case 4:
+          if (tag !== 32) {
             break;
           }
 
@@ -1788,18 +1611,22 @@ export const ListDebtToIncomeRatioRequest = {
     return message;
   },
 
-  fromJSON(object: any): ListDebtToIncomeRatioRequest {
+  fromJSON(object: any): GetDebtToIncomeRatioRequest {
     return {
       userId: isSet(object.userId) ? Number(object.userId) : 0,
+      month: isSet(object.month) ? Number(object.month) : 0,
       pageNumber: isSet(object.pageNumber) ? Number(object.pageNumber) : 0,
       pageSize: isSet(object.pageSize) ? Number(object.pageSize) : 0,
     };
   },
 
-  toJSON(message: ListDebtToIncomeRatioRequest): unknown {
+  toJSON(message: GetDebtToIncomeRatioRequest): unknown {
     const obj: any = {};
     if (message.userId !== 0) {
       obj.userId = Math.round(message.userId);
+    }
+    if (message.month !== 0) {
+      obj.month = Math.round(message.month);
     }
     if (message.pageNumber !== 0) {
       obj.pageNumber = Math.round(message.pageNumber);
@@ -1810,25 +1637,26 @@ export const ListDebtToIncomeRatioRequest = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<ListDebtToIncomeRatioRequest>, I>>(base?: I): ListDebtToIncomeRatioRequest {
-    return ListDebtToIncomeRatioRequest.fromPartial(base ?? {});
+  create<I extends Exact<DeepPartial<GetDebtToIncomeRatioRequest>, I>>(base?: I): GetDebtToIncomeRatioRequest {
+    return GetDebtToIncomeRatioRequest.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<ListDebtToIncomeRatioRequest>, I>>(object: I): ListDebtToIncomeRatioRequest {
-    const message = createBaseListDebtToIncomeRatioRequest();
+  fromPartial<I extends Exact<DeepPartial<GetDebtToIncomeRatioRequest>, I>>(object: I): GetDebtToIncomeRatioRequest {
+    const message = createBaseGetDebtToIncomeRatioRequest();
     message.userId = object.userId ?? 0;
+    message.month = object.month ?? 0;
     message.pageNumber = object.pageNumber ?? 0;
     message.pageSize = object.pageSize ?? 0;
     return message;
   },
 };
 
-function createBaseListDebtToIncomeRatioResponse(): ListDebtToIncomeRatioResponse {
+function createBaseGetDebtToIncomeRatioResponse(): GetDebtToIncomeRatioResponse {
   return { debtToIncomeRatios: [], nextPageNumber: 0 };
 }
 
-export const ListDebtToIncomeRatioResponse = {
-  encode(message: ListDebtToIncomeRatioResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const GetDebtToIncomeRatioResponse = {
+  encode(message: GetDebtToIncomeRatioResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.debtToIncomeRatios) {
       DebtToIncomeRatio.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -1838,10 +1666,10 @@ export const ListDebtToIncomeRatioResponse = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): ListDebtToIncomeRatioResponse {
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetDebtToIncomeRatioResponse {
     const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseListDebtToIncomeRatioResponse();
+    const message = createBaseGetDebtToIncomeRatioResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1868,7 +1696,7 @@ export const ListDebtToIncomeRatioResponse = {
     return message;
   },
 
-  fromJSON(object: any): ListDebtToIncomeRatioResponse {
+  fromJSON(object: any): GetDebtToIncomeRatioResponse {
     return {
       debtToIncomeRatios: Array.isArray(object?.debtToIncomeRatios)
         ? object.debtToIncomeRatios.map((e: any) => DebtToIncomeRatio.fromJSON(e))
@@ -1877,7 +1705,7 @@ export const ListDebtToIncomeRatioResponse = {
     };
   },
 
-  toJSON(message: ListDebtToIncomeRatioResponse): unknown {
+  toJSON(message: GetDebtToIncomeRatioResponse): unknown {
     const obj: any = {};
     if (message.debtToIncomeRatios?.length) {
       obj.debtToIncomeRatios = message.debtToIncomeRatios.map((e) => DebtToIncomeRatio.toJSON(e));
@@ -1888,14 +1716,12 @@ export const ListDebtToIncomeRatioResponse = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<ListDebtToIncomeRatioResponse>, I>>(base?: I): ListDebtToIncomeRatioResponse {
-    return ListDebtToIncomeRatioResponse.fromPartial(base ?? {});
+  create<I extends Exact<DeepPartial<GetDebtToIncomeRatioResponse>, I>>(base?: I): GetDebtToIncomeRatioResponse {
+    return GetDebtToIncomeRatioResponse.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<ListDebtToIncomeRatioResponse>, I>>(
-    object: I,
-  ): ListDebtToIncomeRatioResponse {
-    const message = createBaseListDebtToIncomeRatioResponse();
+  fromPartial<I extends Exact<DeepPartial<GetDebtToIncomeRatioResponse>, I>>(object: I): GetDebtToIncomeRatioResponse {
+    const message = createBaseGetDebtToIncomeRatioResponse();
     message.debtToIncomeRatios = object.debtToIncomeRatios?.map((e) => DebtToIncomeRatio.fromPartial(e)) || [];
     message.nextPageNumber = object.nextPageNumber ?? 0;
     return message;
@@ -1903,7 +1729,7 @@ export const ListDebtToIncomeRatioResponse = {
 };
 
 function createBaseGetExpenseMetricsRequest(): GetExpenseMetricsRequest {
-  return { userId: 0, month: 0, personalFinanceCategoryPrimary: "" };
+  return { userId: 0, month: 0, personalFinanceCategoryPrimary: "", pageNumber: 0, pageSize: 0 };
 }
 
 export const GetExpenseMetricsRequest = {
@@ -1916,6 +1742,12 @@ export const GetExpenseMetricsRequest = {
     }
     if (message.personalFinanceCategoryPrimary !== "") {
       writer.uint32(26).string(message.personalFinanceCategoryPrimary);
+    }
+    if (message.pageNumber !== 0) {
+      writer.uint32(32).int64(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      writer.uint32(40).int64(message.pageSize);
     }
     return writer;
   },
@@ -1948,6 +1780,20 @@ export const GetExpenseMetricsRequest = {
 
           message.personalFinanceCategoryPrimary = reader.string();
           continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.pageNumber = longToNumber(reader.int64() as Long);
+          continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.pageSize = longToNumber(reader.int64() as Long);
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1964,6 +1810,8 @@ export const GetExpenseMetricsRequest = {
       personalFinanceCategoryPrimary: isSet(object.personalFinanceCategoryPrimary)
         ? String(object.personalFinanceCategoryPrimary)
         : "",
+      pageNumber: isSet(object.pageNumber) ? Number(object.pageNumber) : 0,
+      pageSize: isSet(object.pageSize) ? Number(object.pageSize) : 0,
     };
   },
 
@@ -1978,6 +1826,12 @@ export const GetExpenseMetricsRequest = {
     if (message.personalFinanceCategoryPrimary !== "") {
       obj.personalFinanceCategoryPrimary = message.personalFinanceCategoryPrimary;
     }
+    if (message.pageNumber !== 0) {
+      obj.pageNumber = Math.round(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      obj.pageSize = Math.round(message.pageSize);
+    }
     return obj;
   },
 
@@ -1990,168 +1844,18 @@ export const GetExpenseMetricsRequest = {
     message.userId = object.userId ?? 0;
     message.month = object.month ?? 0;
     message.personalFinanceCategoryPrimary = object.personalFinanceCategoryPrimary ?? "";
-    return message;
-  },
-};
-
-function createBaseGetExpenseMetricsResponse(): GetExpenseMetricsResponse {
-  return { expenseMetrics: [] };
-}
-
-export const GetExpenseMetricsResponse = {
-  encode(message: GetExpenseMetricsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    for (const v of message.expenseMetrics) {
-      ExpenseMetrics.encode(v!, writer.uint32(10).fork()).ldelim();
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): GetExpenseMetricsResponse {
-    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseGetExpenseMetricsResponse();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          if (tag !== 10) {
-            break;
-          }
-
-          message.expenseMetrics.push(ExpenseMetrics.decode(reader, reader.uint32()));
-          continue;
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skipType(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): GetExpenseMetricsResponse {
-    return {
-      expenseMetrics: Array.isArray(object?.expenseMetrics)
-        ? object.expenseMetrics.map((e: any) => ExpenseMetrics.fromJSON(e))
-        : [],
-    };
-  },
-
-  toJSON(message: GetExpenseMetricsResponse): unknown {
-    const obj: any = {};
-    if (message.expenseMetrics?.length) {
-      obj.expenseMetrics = message.expenseMetrics.map((e) => ExpenseMetrics.toJSON(e));
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<GetExpenseMetricsResponse>, I>>(base?: I): GetExpenseMetricsResponse {
-    return GetExpenseMetricsResponse.fromPartial(base ?? {});
-  },
-
-  fromPartial<I extends Exact<DeepPartial<GetExpenseMetricsResponse>, I>>(object: I): GetExpenseMetricsResponse {
-    const message = createBaseGetExpenseMetricsResponse();
-    message.expenseMetrics = object.expenseMetrics?.map((e) => ExpenseMetrics.fromPartial(e)) || [];
-    return message;
-  },
-};
-
-function createBaseListExpenseMetricsRequest(): ListExpenseMetricsRequest {
-  return { userId: 0, pageNumber: 0, pageSize: 0 };
-}
-
-export const ListExpenseMetricsRequest = {
-  encode(message: ListExpenseMetricsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.userId !== 0) {
-      writer.uint32(8).uint64(message.userId);
-    }
-    if (message.pageNumber !== 0) {
-      writer.uint32(16).int64(message.pageNumber);
-    }
-    if (message.pageSize !== 0) {
-      writer.uint32(24).int64(message.pageSize);
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): ListExpenseMetricsRequest {
-    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseListExpenseMetricsRequest();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          if (tag !== 8) {
-            break;
-          }
-
-          message.userId = longToNumber(reader.uint64() as Long);
-          continue;
-        case 2:
-          if (tag !== 16) {
-            break;
-          }
-
-          message.pageNumber = longToNumber(reader.int64() as Long);
-          continue;
-        case 3:
-          if (tag !== 24) {
-            break;
-          }
-
-          message.pageSize = longToNumber(reader.int64() as Long);
-          continue;
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skipType(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): ListExpenseMetricsRequest {
-    return {
-      userId: isSet(object.userId) ? Number(object.userId) : 0,
-      pageNumber: isSet(object.pageNumber) ? Number(object.pageNumber) : 0,
-      pageSize: isSet(object.pageSize) ? Number(object.pageSize) : 0,
-    };
-  },
-
-  toJSON(message: ListExpenseMetricsRequest): unknown {
-    const obj: any = {};
-    if (message.userId !== 0) {
-      obj.userId = Math.round(message.userId);
-    }
-    if (message.pageNumber !== 0) {
-      obj.pageNumber = Math.round(message.pageNumber);
-    }
-    if (message.pageSize !== 0) {
-      obj.pageSize = Math.round(message.pageSize);
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<ListExpenseMetricsRequest>, I>>(base?: I): ListExpenseMetricsRequest {
-    return ListExpenseMetricsRequest.fromPartial(base ?? {});
-  },
-
-  fromPartial<I extends Exact<DeepPartial<ListExpenseMetricsRequest>, I>>(object: I): ListExpenseMetricsRequest {
-    const message = createBaseListExpenseMetricsRequest();
-    message.userId = object.userId ?? 0;
     message.pageNumber = object.pageNumber ?? 0;
     message.pageSize = object.pageSize ?? 0;
     return message;
   },
 };
 
-function createBaseListExpenseMetricsResponse(): ListExpenseMetricsResponse {
+function createBaseGetExpenseMetricsResponse(): GetExpenseMetricsResponse {
   return { expenseMetrics: [], nextPageNumber: 0 };
 }
 
-export const ListExpenseMetricsResponse = {
-  encode(message: ListExpenseMetricsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const GetExpenseMetricsResponse = {
+  encode(message: GetExpenseMetricsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.expenseMetrics) {
       ExpenseMetrics.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -2161,10 +1865,10 @@ export const ListExpenseMetricsResponse = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): ListExpenseMetricsResponse {
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetExpenseMetricsResponse {
     const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseListExpenseMetricsResponse();
+    const message = createBaseGetExpenseMetricsResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -2191,7 +1895,7 @@ export const ListExpenseMetricsResponse = {
     return message;
   },
 
-  fromJSON(object: any): ListExpenseMetricsResponse {
+  fromJSON(object: any): GetExpenseMetricsResponse {
     return {
       expenseMetrics: Array.isArray(object?.expenseMetrics)
         ? object.expenseMetrics.map((e: any) => ExpenseMetrics.fromJSON(e))
@@ -2200,7 +1904,7 @@ export const ListExpenseMetricsResponse = {
     };
   },
 
-  toJSON(message: ListExpenseMetricsResponse): unknown {
+  toJSON(message: GetExpenseMetricsResponse): unknown {
     const obj: any = {};
     if (message.expenseMetrics?.length) {
       obj.expenseMetrics = message.expenseMetrics.map((e) => ExpenseMetrics.toJSON(e));
@@ -2211,12 +1915,12 @@ export const ListExpenseMetricsResponse = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<ListExpenseMetricsResponse>, I>>(base?: I): ListExpenseMetricsResponse {
-    return ListExpenseMetricsResponse.fromPartial(base ?? {});
+  create<I extends Exact<DeepPartial<GetExpenseMetricsResponse>, I>>(base?: I): GetExpenseMetricsResponse {
+    return GetExpenseMetricsResponse.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<ListExpenseMetricsResponse>, I>>(object: I): ListExpenseMetricsResponse {
-    const message = createBaseListExpenseMetricsResponse();
+  fromPartial<I extends Exact<DeepPartial<GetExpenseMetricsResponse>, I>>(object: I): GetExpenseMetricsResponse {
+    const message = createBaseGetExpenseMetricsResponse();
     message.expenseMetrics = object.expenseMetrics?.map((e) => ExpenseMetrics.fromPartial(e)) || [];
     message.nextPageNumber = object.nextPageNumber ?? 0;
     return message;
@@ -2224,7 +1928,7 @@ export const ListExpenseMetricsResponse = {
 };
 
 function createBaseGetFinancialProfileRequest(): GetFinancialProfileRequest {
-  return { userId: 0, month: 0 };
+  return { userId: 0, month: 0, pageNumber: 0, pageSize: 0 };
 }
 
 export const GetFinancialProfileRequest = {
@@ -2234,6 +1938,12 @@ export const GetFinancialProfileRequest = {
     }
     if (message.month !== 0) {
       writer.uint32(16).uint32(message.month);
+    }
+    if (message.pageNumber !== 0) {
+      writer.uint32(24).int64(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      writer.uint32(32).int64(message.pageSize);
     }
     return writer;
   },
@@ -2259,148 +1969,15 @@ export const GetFinancialProfileRequest = {
 
           message.month = reader.uint32();
           continue;
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skipType(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): GetFinancialProfileRequest {
-    return {
-      userId: isSet(object.userId) ? Number(object.userId) : 0,
-      month: isSet(object.month) ? Number(object.month) : 0,
-    };
-  },
-
-  toJSON(message: GetFinancialProfileRequest): unknown {
-    const obj: any = {};
-    if (message.userId !== 0) {
-      obj.userId = Math.round(message.userId);
-    }
-    if (message.month !== 0) {
-      obj.month = Math.round(message.month);
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<GetFinancialProfileRequest>, I>>(base?: I): GetFinancialProfileRequest {
-    return GetFinancialProfileRequest.fromPartial(base ?? {});
-  },
-
-  fromPartial<I extends Exact<DeepPartial<GetFinancialProfileRequest>, I>>(object: I): GetFinancialProfileRequest {
-    const message = createBaseGetFinancialProfileRequest();
-    message.userId = object.userId ?? 0;
-    message.month = object.month ?? 0;
-    return message;
-  },
-};
-
-function createBaseGetFinancialProfileResponse(): GetFinancialProfileResponse {
-  return { financialProfiles: [] };
-}
-
-export const GetFinancialProfileResponse = {
-  encode(message: GetFinancialProfileResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    for (const v of message.financialProfiles) {
-      FinancialProfile.encode(v!, writer.uint32(10).fork()).ldelim();
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): GetFinancialProfileResponse {
-    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseGetFinancialProfileResponse();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          if (tag !== 10) {
-            break;
-          }
-
-          message.financialProfiles.push(FinancialProfile.decode(reader, reader.uint32()));
-          continue;
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skipType(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): GetFinancialProfileResponse {
-    return {
-      financialProfiles: Array.isArray(object?.financialProfiles)
-        ? object.financialProfiles.map((e: any) => FinancialProfile.fromJSON(e))
-        : [],
-    };
-  },
-
-  toJSON(message: GetFinancialProfileResponse): unknown {
-    const obj: any = {};
-    if (message.financialProfiles?.length) {
-      obj.financialProfiles = message.financialProfiles.map((e) => FinancialProfile.toJSON(e));
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<GetFinancialProfileResponse>, I>>(base?: I): GetFinancialProfileResponse {
-    return GetFinancialProfileResponse.fromPartial(base ?? {});
-  },
-
-  fromPartial<I extends Exact<DeepPartial<GetFinancialProfileResponse>, I>>(object: I): GetFinancialProfileResponse {
-    const message = createBaseGetFinancialProfileResponse();
-    message.financialProfiles = object.financialProfiles?.map((e) => FinancialProfile.fromPartial(e)) || [];
-    return message;
-  },
-};
-
-function createBaseListFinancialProfileRequest(): ListFinancialProfileRequest {
-  return { userId: 0, pageNumber: 0, pageSize: 0 };
-}
-
-export const ListFinancialProfileRequest = {
-  encode(message: ListFinancialProfileRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.userId !== 0) {
-      writer.uint32(8).uint64(message.userId);
-    }
-    if (message.pageNumber !== 0) {
-      writer.uint32(16).int64(message.pageNumber);
-    }
-    if (message.pageSize !== 0) {
-      writer.uint32(24).int64(message.pageSize);
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): ListFinancialProfileRequest {
-    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseListFinancialProfileRequest();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          if (tag !== 8) {
-            break;
-          }
-
-          message.userId = longToNumber(reader.uint64() as Long);
-          continue;
-        case 2:
-          if (tag !== 16) {
+        case 3:
+          if (tag !== 24) {
             break;
           }
 
           message.pageNumber = longToNumber(reader.int64() as Long);
           continue;
-        case 3:
-          if (tag !== 24) {
+        case 4:
+          if (tag !== 32) {
             break;
           }
 
@@ -2415,18 +1992,22 @@ export const ListFinancialProfileRequest = {
     return message;
   },
 
-  fromJSON(object: any): ListFinancialProfileRequest {
+  fromJSON(object: any): GetFinancialProfileRequest {
     return {
       userId: isSet(object.userId) ? Number(object.userId) : 0,
+      month: isSet(object.month) ? Number(object.month) : 0,
       pageNumber: isSet(object.pageNumber) ? Number(object.pageNumber) : 0,
       pageSize: isSet(object.pageSize) ? Number(object.pageSize) : 0,
     };
   },
 
-  toJSON(message: ListFinancialProfileRequest): unknown {
+  toJSON(message: GetFinancialProfileRequest): unknown {
     const obj: any = {};
     if (message.userId !== 0) {
       obj.userId = Math.round(message.userId);
+    }
+    if (message.month !== 0) {
+      obj.month = Math.round(message.month);
     }
     if (message.pageNumber !== 0) {
       obj.pageNumber = Math.round(message.pageNumber);
@@ -2437,25 +2018,26 @@ export const ListFinancialProfileRequest = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<ListFinancialProfileRequest>, I>>(base?: I): ListFinancialProfileRequest {
-    return ListFinancialProfileRequest.fromPartial(base ?? {});
+  create<I extends Exact<DeepPartial<GetFinancialProfileRequest>, I>>(base?: I): GetFinancialProfileRequest {
+    return GetFinancialProfileRequest.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<ListFinancialProfileRequest>, I>>(object: I): ListFinancialProfileRequest {
-    const message = createBaseListFinancialProfileRequest();
+  fromPartial<I extends Exact<DeepPartial<GetFinancialProfileRequest>, I>>(object: I): GetFinancialProfileRequest {
+    const message = createBaseGetFinancialProfileRequest();
     message.userId = object.userId ?? 0;
+    message.month = object.month ?? 0;
     message.pageNumber = object.pageNumber ?? 0;
     message.pageSize = object.pageSize ?? 0;
     return message;
   },
 };
 
-function createBaseListFinancialProfileResponse(): ListFinancialProfileResponse {
+function createBaseGetFinancialProfileResponse(): GetFinancialProfileResponse {
   return { financialProfiles: [], nextPageNumber: 0 };
 }
 
-export const ListFinancialProfileResponse = {
-  encode(message: ListFinancialProfileResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const GetFinancialProfileResponse = {
+  encode(message: GetFinancialProfileResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.financialProfiles) {
       FinancialProfile.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -2465,10 +2047,10 @@ export const ListFinancialProfileResponse = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): ListFinancialProfileResponse {
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetFinancialProfileResponse {
     const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseListFinancialProfileResponse();
+    const message = createBaseGetFinancialProfileResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -2495,7 +2077,7 @@ export const ListFinancialProfileResponse = {
     return message;
   },
 
-  fromJSON(object: any): ListFinancialProfileResponse {
+  fromJSON(object: any): GetFinancialProfileResponse {
     return {
       financialProfiles: Array.isArray(object?.financialProfiles)
         ? object.financialProfiles.map((e: any) => FinancialProfile.fromJSON(e))
@@ -2504,7 +2086,7 @@ export const ListFinancialProfileResponse = {
     };
   },
 
-  toJSON(message: ListFinancialProfileResponse): unknown {
+  toJSON(message: GetFinancialProfileResponse): unknown {
     const obj: any = {};
     if (message.financialProfiles?.length) {
       obj.financialProfiles = message.financialProfiles.map((e) => FinancialProfile.toJSON(e));
@@ -2515,12 +2097,12 @@ export const ListFinancialProfileResponse = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<ListFinancialProfileResponse>, I>>(base?: I): ListFinancialProfileResponse {
-    return ListFinancialProfileResponse.fromPartial(base ?? {});
+  create<I extends Exact<DeepPartial<GetFinancialProfileResponse>, I>>(base?: I): GetFinancialProfileResponse {
+    return GetFinancialProfileResponse.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<ListFinancialProfileResponse>, I>>(object: I): ListFinancialProfileResponse {
-    const message = createBaseListFinancialProfileResponse();
+  fromPartial<I extends Exact<DeepPartial<GetFinancialProfileResponse>, I>>(object: I): GetFinancialProfileResponse {
+    const message = createBaseGetFinancialProfileResponse();
     message.financialProfiles = object.financialProfiles?.map((e) => FinancialProfile.fromPartial(e)) || [];
     message.nextPageNumber = object.nextPageNumber ?? 0;
     return message;
@@ -2528,7 +2110,7 @@ export const ListFinancialProfileResponse = {
 };
 
 function createBaseGetIncomeExpenseRatioRequest(): GetIncomeExpenseRatioRequest {
-  return { userId: 0, month: 0 };
+  return { userId: 0, month: 0, pageNumber: 0, pageSize: 0 };
 }
 
 export const GetIncomeExpenseRatioRequest = {
@@ -2538,6 +2120,12 @@ export const GetIncomeExpenseRatioRequest = {
     }
     if (message.month !== 0) {
       writer.uint32(16).uint32(message.month);
+    }
+    if (message.pageNumber !== 0) {
+      writer.uint32(24).int64(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      writer.uint32(32).int64(message.pageSize);
     }
     return writer;
   },
@@ -2563,150 +2151,15 @@ export const GetIncomeExpenseRatioRequest = {
 
           message.month = reader.uint32();
           continue;
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skipType(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): GetIncomeExpenseRatioRequest {
-    return {
-      userId: isSet(object.userId) ? Number(object.userId) : 0,
-      month: isSet(object.month) ? Number(object.month) : 0,
-    };
-  },
-
-  toJSON(message: GetIncomeExpenseRatioRequest): unknown {
-    const obj: any = {};
-    if (message.userId !== 0) {
-      obj.userId = Math.round(message.userId);
-    }
-    if (message.month !== 0) {
-      obj.month = Math.round(message.month);
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<GetIncomeExpenseRatioRequest>, I>>(base?: I): GetIncomeExpenseRatioRequest {
-    return GetIncomeExpenseRatioRequest.fromPartial(base ?? {});
-  },
-
-  fromPartial<I extends Exact<DeepPartial<GetIncomeExpenseRatioRequest>, I>>(object: I): GetIncomeExpenseRatioRequest {
-    const message = createBaseGetIncomeExpenseRatioRequest();
-    message.userId = object.userId ?? 0;
-    message.month = object.month ?? 0;
-    return message;
-  },
-};
-
-function createBaseGetIncomeExpenseRatioResponse(): GetIncomeExpenseRatioResponse {
-  return { incomeExpenseRatios: [] };
-}
-
-export const GetIncomeExpenseRatioResponse = {
-  encode(message: GetIncomeExpenseRatioResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    for (const v of message.incomeExpenseRatios) {
-      IncomeExpenseRatio.encode(v!, writer.uint32(10).fork()).ldelim();
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): GetIncomeExpenseRatioResponse {
-    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseGetIncomeExpenseRatioResponse();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          if (tag !== 10) {
-            break;
-          }
-
-          message.incomeExpenseRatios.push(IncomeExpenseRatio.decode(reader, reader.uint32()));
-          continue;
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skipType(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): GetIncomeExpenseRatioResponse {
-    return {
-      incomeExpenseRatios: Array.isArray(object?.incomeExpenseRatios)
-        ? object.incomeExpenseRatios.map((e: any) => IncomeExpenseRatio.fromJSON(e))
-        : [],
-    };
-  },
-
-  toJSON(message: GetIncomeExpenseRatioResponse): unknown {
-    const obj: any = {};
-    if (message.incomeExpenseRatios?.length) {
-      obj.incomeExpenseRatios = message.incomeExpenseRatios.map((e) => IncomeExpenseRatio.toJSON(e));
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<GetIncomeExpenseRatioResponse>, I>>(base?: I): GetIncomeExpenseRatioResponse {
-    return GetIncomeExpenseRatioResponse.fromPartial(base ?? {});
-  },
-
-  fromPartial<I extends Exact<DeepPartial<GetIncomeExpenseRatioResponse>, I>>(
-    object: I,
-  ): GetIncomeExpenseRatioResponse {
-    const message = createBaseGetIncomeExpenseRatioResponse();
-    message.incomeExpenseRatios = object.incomeExpenseRatios?.map((e) => IncomeExpenseRatio.fromPartial(e)) || [];
-    return message;
-  },
-};
-
-function createBaseListIncomeExpenseRatioRequest(): ListIncomeExpenseRatioRequest {
-  return { userId: 0, pageNumber: 0, pageSize: 0 };
-}
-
-export const ListIncomeExpenseRatioRequest = {
-  encode(message: ListIncomeExpenseRatioRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.userId !== 0) {
-      writer.uint32(8).uint64(message.userId);
-    }
-    if (message.pageNumber !== 0) {
-      writer.uint32(16).int64(message.pageNumber);
-    }
-    if (message.pageSize !== 0) {
-      writer.uint32(24).int64(message.pageSize);
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): ListIncomeExpenseRatioRequest {
-    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseListIncomeExpenseRatioRequest();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          if (tag !== 8) {
-            break;
-          }
-
-          message.userId = longToNumber(reader.uint64() as Long);
-          continue;
-        case 2:
-          if (tag !== 16) {
+        case 3:
+          if (tag !== 24) {
             break;
           }
 
           message.pageNumber = longToNumber(reader.int64() as Long);
           continue;
-        case 3:
-          if (tag !== 24) {
+        case 4:
+          if (tag !== 32) {
             break;
           }
 
@@ -2721,18 +2174,22 @@ export const ListIncomeExpenseRatioRequest = {
     return message;
   },
 
-  fromJSON(object: any): ListIncomeExpenseRatioRequest {
+  fromJSON(object: any): GetIncomeExpenseRatioRequest {
     return {
       userId: isSet(object.userId) ? Number(object.userId) : 0,
+      month: isSet(object.month) ? Number(object.month) : 0,
       pageNumber: isSet(object.pageNumber) ? Number(object.pageNumber) : 0,
       pageSize: isSet(object.pageSize) ? Number(object.pageSize) : 0,
     };
   },
 
-  toJSON(message: ListIncomeExpenseRatioRequest): unknown {
+  toJSON(message: GetIncomeExpenseRatioRequest): unknown {
     const obj: any = {};
     if (message.userId !== 0) {
       obj.userId = Math.round(message.userId);
+    }
+    if (message.month !== 0) {
+      obj.month = Math.round(message.month);
     }
     if (message.pageNumber !== 0) {
       obj.pageNumber = Math.round(message.pageNumber);
@@ -2743,27 +2200,26 @@ export const ListIncomeExpenseRatioRequest = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<ListIncomeExpenseRatioRequest>, I>>(base?: I): ListIncomeExpenseRatioRequest {
-    return ListIncomeExpenseRatioRequest.fromPartial(base ?? {});
+  create<I extends Exact<DeepPartial<GetIncomeExpenseRatioRequest>, I>>(base?: I): GetIncomeExpenseRatioRequest {
+    return GetIncomeExpenseRatioRequest.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<ListIncomeExpenseRatioRequest>, I>>(
-    object: I,
-  ): ListIncomeExpenseRatioRequest {
-    const message = createBaseListIncomeExpenseRatioRequest();
+  fromPartial<I extends Exact<DeepPartial<GetIncomeExpenseRatioRequest>, I>>(object: I): GetIncomeExpenseRatioRequest {
+    const message = createBaseGetIncomeExpenseRatioRequest();
     message.userId = object.userId ?? 0;
+    message.month = object.month ?? 0;
     message.pageNumber = object.pageNumber ?? 0;
     message.pageSize = object.pageSize ?? 0;
     return message;
   },
 };
 
-function createBaseListIncomeExpenseRatioResponse(): ListIncomeExpenseRatioResponse {
+function createBaseGetIncomeExpenseRatioResponse(): GetIncomeExpenseRatioResponse {
   return { incomeExpenseRatios: [], nextPageNumber: 0 };
 }
 
-export const ListIncomeExpenseRatioResponse = {
-  encode(message: ListIncomeExpenseRatioResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const GetIncomeExpenseRatioResponse = {
+  encode(message: GetIncomeExpenseRatioResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.incomeExpenseRatios) {
       IncomeExpenseRatio.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -2773,10 +2229,10 @@ export const ListIncomeExpenseRatioResponse = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): ListIncomeExpenseRatioResponse {
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetIncomeExpenseRatioResponse {
     const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseListIncomeExpenseRatioResponse();
+    const message = createBaseGetIncomeExpenseRatioResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -2803,7 +2259,7 @@ export const ListIncomeExpenseRatioResponse = {
     return message;
   },
 
-  fromJSON(object: any): ListIncomeExpenseRatioResponse {
+  fromJSON(object: any): GetIncomeExpenseRatioResponse {
     return {
       incomeExpenseRatios: Array.isArray(object?.incomeExpenseRatios)
         ? object.incomeExpenseRatios.map((e: any) => IncomeExpenseRatio.fromJSON(e))
@@ -2812,7 +2268,7 @@ export const ListIncomeExpenseRatioResponse = {
     };
   },
 
-  toJSON(message: ListIncomeExpenseRatioResponse): unknown {
+  toJSON(message: GetIncomeExpenseRatioResponse): unknown {
     const obj: any = {};
     if (message.incomeExpenseRatios?.length) {
       obj.incomeExpenseRatios = message.incomeExpenseRatios.map((e) => IncomeExpenseRatio.toJSON(e));
@@ -2823,14 +2279,14 @@ export const ListIncomeExpenseRatioResponse = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<ListIncomeExpenseRatioResponse>, I>>(base?: I): ListIncomeExpenseRatioResponse {
-    return ListIncomeExpenseRatioResponse.fromPartial(base ?? {});
+  create<I extends Exact<DeepPartial<GetIncomeExpenseRatioResponse>, I>>(base?: I): GetIncomeExpenseRatioResponse {
+    return GetIncomeExpenseRatioResponse.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<ListIncomeExpenseRatioResponse>, I>>(
+  fromPartial<I extends Exact<DeepPartial<GetIncomeExpenseRatioResponse>, I>>(
     object: I,
-  ): ListIncomeExpenseRatioResponse {
-    const message = createBaseListIncomeExpenseRatioResponse();
+  ): GetIncomeExpenseRatioResponse {
+    const message = createBaseGetIncomeExpenseRatioResponse();
     message.incomeExpenseRatios = object.incomeExpenseRatios?.map((e) => IncomeExpenseRatio.fromPartial(e)) || [];
     message.nextPageNumber = object.nextPageNumber ?? 0;
     return message;
@@ -2838,7 +2294,7 @@ export const ListIncomeExpenseRatioResponse = {
 };
 
 function createBaseGetIncomeMetricsRequest(): GetIncomeMetricsRequest {
-  return { userId: 0, month: 0, personalFinanceCategoryPrimary: "" };
+  return { userId: 0, month: 0, personalFinanceCategoryPrimary: "", pageNumber: 0, pageSize: 0 };
 }
 
 export const GetIncomeMetricsRequest = {
@@ -2851,6 +2307,12 @@ export const GetIncomeMetricsRequest = {
     }
     if (message.personalFinanceCategoryPrimary !== "") {
       writer.uint32(26).string(message.personalFinanceCategoryPrimary);
+    }
+    if (message.pageNumber !== 0) {
+      writer.uint32(32).int64(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      writer.uint32(40).int64(message.pageSize);
     }
     return writer;
   },
@@ -2883,6 +2345,20 @@ export const GetIncomeMetricsRequest = {
 
           message.personalFinanceCategoryPrimary = reader.string();
           continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.pageNumber = longToNumber(reader.int64() as Long);
+          continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.pageSize = longToNumber(reader.int64() as Long);
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -2899,6 +2375,8 @@ export const GetIncomeMetricsRequest = {
       personalFinanceCategoryPrimary: isSet(object.personalFinanceCategoryPrimary)
         ? String(object.personalFinanceCategoryPrimary)
         : "",
+      pageNumber: isSet(object.pageNumber) ? Number(object.pageNumber) : 0,
+      pageSize: isSet(object.pageSize) ? Number(object.pageSize) : 0,
     };
   },
 
@@ -2913,6 +2391,12 @@ export const GetIncomeMetricsRequest = {
     if (message.personalFinanceCategoryPrimary !== "") {
       obj.personalFinanceCategoryPrimary = message.personalFinanceCategoryPrimary;
     }
+    if (message.pageNumber !== 0) {
+      obj.pageNumber = Math.round(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      obj.pageSize = Math.round(message.pageSize);
+    }
     return obj;
   },
 
@@ -2925,168 +2409,18 @@ export const GetIncomeMetricsRequest = {
     message.userId = object.userId ?? 0;
     message.month = object.month ?? 0;
     message.personalFinanceCategoryPrimary = object.personalFinanceCategoryPrimary ?? "";
-    return message;
-  },
-};
-
-function createBaseGetIncomeMetricsResponse(): GetIncomeMetricsResponse {
-  return { incomeMetrics: [] };
-}
-
-export const GetIncomeMetricsResponse = {
-  encode(message: GetIncomeMetricsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    for (const v of message.incomeMetrics) {
-      IncomeMetrics.encode(v!, writer.uint32(10).fork()).ldelim();
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): GetIncomeMetricsResponse {
-    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseGetIncomeMetricsResponse();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          if (tag !== 10) {
-            break;
-          }
-
-          message.incomeMetrics.push(IncomeMetrics.decode(reader, reader.uint32()));
-          continue;
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skipType(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): GetIncomeMetricsResponse {
-    return {
-      incomeMetrics: Array.isArray(object?.incomeMetrics)
-        ? object.incomeMetrics.map((e: any) => IncomeMetrics.fromJSON(e))
-        : [],
-    };
-  },
-
-  toJSON(message: GetIncomeMetricsResponse): unknown {
-    const obj: any = {};
-    if (message.incomeMetrics?.length) {
-      obj.incomeMetrics = message.incomeMetrics.map((e) => IncomeMetrics.toJSON(e));
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<GetIncomeMetricsResponse>, I>>(base?: I): GetIncomeMetricsResponse {
-    return GetIncomeMetricsResponse.fromPartial(base ?? {});
-  },
-
-  fromPartial<I extends Exact<DeepPartial<GetIncomeMetricsResponse>, I>>(object: I): GetIncomeMetricsResponse {
-    const message = createBaseGetIncomeMetricsResponse();
-    message.incomeMetrics = object.incomeMetrics?.map((e) => IncomeMetrics.fromPartial(e)) || [];
-    return message;
-  },
-};
-
-function createBaseListIncomeMetricsRequest(): ListIncomeMetricsRequest {
-  return { userId: 0, pageNumber: 0, pageSize: 0 };
-}
-
-export const ListIncomeMetricsRequest = {
-  encode(message: ListIncomeMetricsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.userId !== 0) {
-      writer.uint32(8).uint64(message.userId);
-    }
-    if (message.pageNumber !== 0) {
-      writer.uint32(16).int64(message.pageNumber);
-    }
-    if (message.pageSize !== 0) {
-      writer.uint32(24).int64(message.pageSize);
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): ListIncomeMetricsRequest {
-    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseListIncomeMetricsRequest();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          if (tag !== 8) {
-            break;
-          }
-
-          message.userId = longToNumber(reader.uint64() as Long);
-          continue;
-        case 2:
-          if (tag !== 16) {
-            break;
-          }
-
-          message.pageNumber = longToNumber(reader.int64() as Long);
-          continue;
-        case 3:
-          if (tag !== 24) {
-            break;
-          }
-
-          message.pageSize = longToNumber(reader.int64() as Long);
-          continue;
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skipType(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): ListIncomeMetricsRequest {
-    return {
-      userId: isSet(object.userId) ? Number(object.userId) : 0,
-      pageNumber: isSet(object.pageNumber) ? Number(object.pageNumber) : 0,
-      pageSize: isSet(object.pageSize) ? Number(object.pageSize) : 0,
-    };
-  },
-
-  toJSON(message: ListIncomeMetricsRequest): unknown {
-    const obj: any = {};
-    if (message.userId !== 0) {
-      obj.userId = Math.round(message.userId);
-    }
-    if (message.pageNumber !== 0) {
-      obj.pageNumber = Math.round(message.pageNumber);
-    }
-    if (message.pageSize !== 0) {
-      obj.pageSize = Math.round(message.pageSize);
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<ListIncomeMetricsRequest>, I>>(base?: I): ListIncomeMetricsRequest {
-    return ListIncomeMetricsRequest.fromPartial(base ?? {});
-  },
-
-  fromPartial<I extends Exact<DeepPartial<ListIncomeMetricsRequest>, I>>(object: I): ListIncomeMetricsRequest {
-    const message = createBaseListIncomeMetricsRequest();
-    message.userId = object.userId ?? 0;
     message.pageNumber = object.pageNumber ?? 0;
     message.pageSize = object.pageSize ?? 0;
     return message;
   },
 };
 
-function createBaseListIncomeMetricsResponse(): ListIncomeMetricsResponse {
+function createBaseGetIncomeMetricsResponse(): GetIncomeMetricsResponse {
   return { incomeMetrics: [], nextPageNumber: 0 };
 }
 
-export const ListIncomeMetricsResponse = {
-  encode(message: ListIncomeMetricsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const GetIncomeMetricsResponse = {
+  encode(message: GetIncomeMetricsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.incomeMetrics) {
       IncomeMetrics.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -3096,10 +2430,10 @@ export const ListIncomeMetricsResponse = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): ListIncomeMetricsResponse {
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetIncomeMetricsResponse {
     const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseListIncomeMetricsResponse();
+    const message = createBaseGetIncomeMetricsResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -3126,7 +2460,7 @@ export const ListIncomeMetricsResponse = {
     return message;
   },
 
-  fromJSON(object: any): ListIncomeMetricsResponse {
+  fromJSON(object: any): GetIncomeMetricsResponse {
     return {
       incomeMetrics: Array.isArray(object?.incomeMetrics)
         ? object.incomeMetrics.map((e: any) => IncomeMetrics.fromJSON(e))
@@ -3135,7 +2469,7 @@ export const ListIncomeMetricsResponse = {
     };
   },
 
-  toJSON(message: ListIncomeMetricsResponse): unknown {
+  toJSON(message: GetIncomeMetricsResponse): unknown {
     const obj: any = {};
     if (message.incomeMetrics?.length) {
       obj.incomeMetrics = message.incomeMetrics.map((e) => IncomeMetrics.toJSON(e));
@@ -3146,12 +2480,12 @@ export const ListIncomeMetricsResponse = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<ListIncomeMetricsResponse>, I>>(base?: I): ListIncomeMetricsResponse {
-    return ListIncomeMetricsResponse.fromPartial(base ?? {});
+  create<I extends Exact<DeepPartial<GetIncomeMetricsResponse>, I>>(base?: I): GetIncomeMetricsResponse {
+    return GetIncomeMetricsResponse.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<ListIncomeMetricsResponse>, I>>(object: I): ListIncomeMetricsResponse {
-    const message = createBaseListIncomeMetricsResponse();
+  fromPartial<I extends Exact<DeepPartial<GetIncomeMetricsResponse>, I>>(object: I): GetIncomeMetricsResponse {
+    const message = createBaseGetIncomeMetricsResponse();
     message.incomeMetrics = object.incomeMetrics?.map((e) => IncomeMetrics.fromPartial(e)) || [];
     message.nextPageNumber = object.nextPageNumber ?? 0;
     return message;
@@ -3159,7 +2493,7 @@ export const ListIncomeMetricsResponse = {
 };
 
 function createBaseGetMerchantMonthlyExpenditureRequest(): GetMerchantMonthlyExpenditureRequest {
-  return { userId: 0, month: 0, merchantName: "" };
+  return { userId: 0, month: 0, merchantName: "", pageNumber: 0, pageSize: 0 };
 }
 
 export const GetMerchantMonthlyExpenditureRequest = {
@@ -3172,6 +2506,12 @@ export const GetMerchantMonthlyExpenditureRequest = {
     }
     if (message.merchantName !== "") {
       writer.uint32(26).string(message.merchantName);
+    }
+    if (message.pageNumber !== 0) {
+      writer.uint32(32).int64(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      writer.uint32(40).int64(message.pageSize);
     }
     return writer;
   },
@@ -3204,6 +2544,20 @@ export const GetMerchantMonthlyExpenditureRequest = {
 
           message.merchantName = reader.string();
           continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.pageNumber = longToNumber(reader.int64() as Long);
+          continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.pageSize = longToNumber(reader.int64() as Long);
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -3218,6 +2572,8 @@ export const GetMerchantMonthlyExpenditureRequest = {
       userId: isSet(object.userId) ? Number(object.userId) : 0,
       month: isSet(object.month) ? Number(object.month) : 0,
       merchantName: isSet(object.merchantName) ? String(object.merchantName) : "",
+      pageNumber: isSet(object.pageNumber) ? Number(object.pageNumber) : 0,
+      pageSize: isSet(object.pageSize) ? Number(object.pageSize) : 0,
     };
   },
 
@@ -3231,6 +2587,12 @@ export const GetMerchantMonthlyExpenditureRequest = {
     }
     if (message.merchantName !== "") {
       obj.merchantName = message.merchantName;
+    }
+    if (message.pageNumber !== 0) {
+      obj.pageNumber = Math.round(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      obj.pageSize = Math.round(message.pageSize);
     }
     return obj;
   },
@@ -3248,179 +2610,18 @@ export const GetMerchantMonthlyExpenditureRequest = {
     message.userId = object.userId ?? 0;
     message.month = object.month ?? 0;
     message.merchantName = object.merchantName ?? "";
-    return message;
-  },
-};
-
-function createBaseGetMerchantMonthlyExpenditureResponse(): GetMerchantMonthlyExpenditureResponse {
-  return { merchantMonthlyExpenditures: [] };
-}
-
-export const GetMerchantMonthlyExpenditureResponse = {
-  encode(message: GetMerchantMonthlyExpenditureResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    for (const v of message.merchantMonthlyExpenditures) {
-      MerchantMonthlyExpenditure.encode(v!, writer.uint32(10).fork()).ldelim();
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): GetMerchantMonthlyExpenditureResponse {
-    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseGetMerchantMonthlyExpenditureResponse();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          if (tag !== 10) {
-            break;
-          }
-
-          message.merchantMonthlyExpenditures.push(MerchantMonthlyExpenditure.decode(reader, reader.uint32()));
-          continue;
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skipType(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): GetMerchantMonthlyExpenditureResponse {
-    return {
-      merchantMonthlyExpenditures: Array.isArray(object?.merchantMonthlyExpenditures)
-        ? object.merchantMonthlyExpenditures.map((e: any) => MerchantMonthlyExpenditure.fromJSON(e))
-        : [],
-    };
-  },
-
-  toJSON(message: GetMerchantMonthlyExpenditureResponse): unknown {
-    const obj: any = {};
-    if (message.merchantMonthlyExpenditures?.length) {
-      obj.merchantMonthlyExpenditures = message.merchantMonthlyExpenditures.map((e) =>
-        MerchantMonthlyExpenditure.toJSON(e)
-      );
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<GetMerchantMonthlyExpenditureResponse>, I>>(
-    base?: I,
-  ): GetMerchantMonthlyExpenditureResponse {
-    return GetMerchantMonthlyExpenditureResponse.fromPartial(base ?? {});
-  },
-
-  fromPartial<I extends Exact<DeepPartial<GetMerchantMonthlyExpenditureResponse>, I>>(
-    object: I,
-  ): GetMerchantMonthlyExpenditureResponse {
-    const message = createBaseGetMerchantMonthlyExpenditureResponse();
-    message.merchantMonthlyExpenditures =
-      object.merchantMonthlyExpenditures?.map((e) => MerchantMonthlyExpenditure.fromPartial(e)) || [];
-    return message;
-  },
-};
-
-function createBaseListMerchantMonthlyExpenditureRequest(): ListMerchantMonthlyExpenditureRequest {
-  return { userId: 0, pageNumber: 0, pageSize: 0 };
-}
-
-export const ListMerchantMonthlyExpenditureRequest = {
-  encode(message: ListMerchantMonthlyExpenditureRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.userId !== 0) {
-      writer.uint32(8).uint64(message.userId);
-    }
-    if (message.pageNumber !== 0) {
-      writer.uint32(16).int64(message.pageNumber);
-    }
-    if (message.pageSize !== 0) {
-      writer.uint32(24).int64(message.pageSize);
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): ListMerchantMonthlyExpenditureRequest {
-    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseListMerchantMonthlyExpenditureRequest();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          if (tag !== 8) {
-            break;
-          }
-
-          message.userId = longToNumber(reader.uint64() as Long);
-          continue;
-        case 2:
-          if (tag !== 16) {
-            break;
-          }
-
-          message.pageNumber = longToNumber(reader.int64() as Long);
-          continue;
-        case 3:
-          if (tag !== 24) {
-            break;
-          }
-
-          message.pageSize = longToNumber(reader.int64() as Long);
-          continue;
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skipType(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): ListMerchantMonthlyExpenditureRequest {
-    return {
-      userId: isSet(object.userId) ? Number(object.userId) : 0,
-      pageNumber: isSet(object.pageNumber) ? Number(object.pageNumber) : 0,
-      pageSize: isSet(object.pageSize) ? Number(object.pageSize) : 0,
-    };
-  },
-
-  toJSON(message: ListMerchantMonthlyExpenditureRequest): unknown {
-    const obj: any = {};
-    if (message.userId !== 0) {
-      obj.userId = Math.round(message.userId);
-    }
-    if (message.pageNumber !== 0) {
-      obj.pageNumber = Math.round(message.pageNumber);
-    }
-    if (message.pageSize !== 0) {
-      obj.pageSize = Math.round(message.pageSize);
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<ListMerchantMonthlyExpenditureRequest>, I>>(
-    base?: I,
-  ): ListMerchantMonthlyExpenditureRequest {
-    return ListMerchantMonthlyExpenditureRequest.fromPartial(base ?? {});
-  },
-
-  fromPartial<I extends Exact<DeepPartial<ListMerchantMonthlyExpenditureRequest>, I>>(
-    object: I,
-  ): ListMerchantMonthlyExpenditureRequest {
-    const message = createBaseListMerchantMonthlyExpenditureRequest();
-    message.userId = object.userId ?? 0;
     message.pageNumber = object.pageNumber ?? 0;
     message.pageSize = object.pageSize ?? 0;
     return message;
   },
 };
 
-function createBaseListMerchantMonthlyExpenditureResponse(): ListMerchantMonthlyExpenditureResponse {
+function createBaseGetMerchantMonthlyExpenditureResponse(): GetMerchantMonthlyExpenditureResponse {
   return { merchantMonthlyExpenditures: [], nextPageNumber: 0 };
 }
 
-export const ListMerchantMonthlyExpenditureResponse = {
-  encode(message: ListMerchantMonthlyExpenditureResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const GetMerchantMonthlyExpenditureResponse = {
+  encode(message: GetMerchantMonthlyExpenditureResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.merchantMonthlyExpenditures) {
       MerchantMonthlyExpenditure.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -3430,10 +2631,10 @@ export const ListMerchantMonthlyExpenditureResponse = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): ListMerchantMonthlyExpenditureResponse {
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetMerchantMonthlyExpenditureResponse {
     const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseListMerchantMonthlyExpenditureResponse();
+    const message = createBaseGetMerchantMonthlyExpenditureResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -3460,7 +2661,7 @@ export const ListMerchantMonthlyExpenditureResponse = {
     return message;
   },
 
-  fromJSON(object: any): ListMerchantMonthlyExpenditureResponse {
+  fromJSON(object: any): GetMerchantMonthlyExpenditureResponse {
     return {
       merchantMonthlyExpenditures: Array.isArray(object?.merchantMonthlyExpenditures)
         ? object.merchantMonthlyExpenditures.map((e: any) => MerchantMonthlyExpenditure.fromJSON(e))
@@ -3469,7 +2670,7 @@ export const ListMerchantMonthlyExpenditureResponse = {
     };
   },
 
-  toJSON(message: ListMerchantMonthlyExpenditureResponse): unknown {
+  toJSON(message: GetMerchantMonthlyExpenditureResponse): unknown {
     const obj: any = {};
     if (message.merchantMonthlyExpenditures?.length) {
       obj.merchantMonthlyExpenditures = message.merchantMonthlyExpenditures.map((e) =>
@@ -3482,16 +2683,16 @@ export const ListMerchantMonthlyExpenditureResponse = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<ListMerchantMonthlyExpenditureResponse>, I>>(
+  create<I extends Exact<DeepPartial<GetMerchantMonthlyExpenditureResponse>, I>>(
     base?: I,
-  ): ListMerchantMonthlyExpenditureResponse {
-    return ListMerchantMonthlyExpenditureResponse.fromPartial(base ?? {});
+  ): GetMerchantMonthlyExpenditureResponse {
+    return GetMerchantMonthlyExpenditureResponse.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<ListMerchantMonthlyExpenditureResponse>, I>>(
+  fromPartial<I extends Exact<DeepPartial<GetMerchantMonthlyExpenditureResponse>, I>>(
     object: I,
-  ): ListMerchantMonthlyExpenditureResponse {
-    const message = createBaseListMerchantMonthlyExpenditureResponse();
+  ): GetMerchantMonthlyExpenditureResponse {
+    const message = createBaseGetMerchantMonthlyExpenditureResponse();
     message.merchantMonthlyExpenditures =
       object.merchantMonthlyExpenditures?.map((e) => MerchantMonthlyExpenditure.fromPartial(e)) || [];
     message.nextPageNumber = object.nextPageNumber ?? 0;

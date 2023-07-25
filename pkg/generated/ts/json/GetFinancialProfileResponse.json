@@ -9,6 +9,9 @@
                         "$ref": "#/definitions/financial_integration_service_api.v1.FinancialProfile"
                     },
                     "type": "array"
+                },
+                "next_page_number": {
+                    "type": "string"
                 }
             },
             "additionalProperties": true,
