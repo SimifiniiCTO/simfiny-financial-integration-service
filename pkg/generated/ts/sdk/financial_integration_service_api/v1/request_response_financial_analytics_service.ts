@@ -10,6 +10,7 @@ import {
   FinancialProfile,
   IncomeExpenseRatio,
   IncomeMetrics,
+  MelodyFinancialContext,
   MerchantMonthlyExpenditure,
   MonthlyBalance,
   MonthlyExpenditure,
@@ -267,6 +268,14 @@ export interface GetTotalInvestmentBySecurityRequest {
 
 export interface GetTotalInvestmentBySecurityResponse {
   totalInvestmentBySecurity: TotalInvestmentBySecurity[];
+}
+
+export interface GetMelodyFinancialContextRequest {
+  userId: number;
+}
+
+export interface GetMelodyFinancialContextResponse {
+  melodyFinancialContext: MelodyFinancialContext | undefined;
 }
 
 function createBaseGetTransactionAggregatesRequest(): GetTransactionAggregatesRequest {
@@ -3531,6 +3540,137 @@ export const GetTotalInvestmentBySecurityResponse = {
     const message = createBaseGetTotalInvestmentBySecurityResponse();
     message.totalInvestmentBySecurity =
       object.totalInvestmentBySecurity?.map((e) => TotalInvestmentBySecurity.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseGetMelodyFinancialContextRequest(): GetMelodyFinancialContextRequest {
+  return { userId: 0 };
+}
+
+export const GetMelodyFinancialContextRequest = {
+  encode(message: GetMelodyFinancialContextRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.userId !== 0) {
+      writer.uint32(8).uint64(message.userId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetMelodyFinancialContextRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetMelodyFinancialContextRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.userId = longToNumber(reader.uint64() as Long);
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetMelodyFinancialContextRequest {
+    return { userId: isSet(object.userId) ? Number(object.userId) : 0 };
+  },
+
+  toJSON(message: GetMelodyFinancialContextRequest): unknown {
+    const obj: any = {};
+    if (message.userId !== 0) {
+      obj.userId = Math.round(message.userId);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetMelodyFinancialContextRequest>, I>>(
+    base?: I,
+  ): GetMelodyFinancialContextRequest {
+    return GetMelodyFinancialContextRequest.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<GetMelodyFinancialContextRequest>, I>>(
+    object: I,
+  ): GetMelodyFinancialContextRequest {
+    const message = createBaseGetMelodyFinancialContextRequest();
+    message.userId = object.userId ?? 0;
+    return message;
+  },
+};
+
+function createBaseGetMelodyFinancialContextResponse(): GetMelodyFinancialContextResponse {
+  return { melodyFinancialContext: undefined };
+}
+
+export const GetMelodyFinancialContextResponse = {
+  encode(message: GetMelodyFinancialContextResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.melodyFinancialContext !== undefined) {
+      MelodyFinancialContext.encode(message.melodyFinancialContext, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetMelodyFinancialContextResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetMelodyFinancialContextResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.melodyFinancialContext = MelodyFinancialContext.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetMelodyFinancialContextResponse {
+    return {
+      melodyFinancialContext: isSet(object.melodyFinancialContext)
+        ? MelodyFinancialContext.fromJSON(object.melodyFinancialContext)
+        : undefined,
+    };
+  },
+
+  toJSON(message: GetMelodyFinancialContextResponse): unknown {
+    const obj: any = {};
+    if (message.melodyFinancialContext !== undefined) {
+      obj.melodyFinancialContext = MelodyFinancialContext.toJSON(message.melodyFinancialContext);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetMelodyFinancialContextResponse>, I>>(
+    base?: I,
+  ): GetMelodyFinancialContextResponse {
+    return GetMelodyFinancialContextResponse.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<GetMelodyFinancialContextResponse>, I>>(
+    object: I,
+  ): GetMelodyFinancialContextResponse {
+    const message = createBaseGetMelodyFinancialContextResponse();
+    message.melodyFinancialContext =
+      (object.melodyFinancialContext !== undefined && object.melodyFinancialContext !== null)
+        ? MelodyFinancialContext.fromPartial(object.melodyFinancialContext)
+        : undefined;
     return message;
   },
 };

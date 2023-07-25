@@ -18,6 +18,7 @@
     - [IncomeMetricsFinancialSubProfile](#financial_integration_service_api-v1-IncomeMetricsFinancialSubProfile)
     - [InvestmentTransaction](#financial_integration_service_api-v1-InvestmentTransaction)
     - [LocationFinancialSubProfile](#financial_integration_service_api-v1-LocationFinancialSubProfile)
+    - [MelodyFinancialContext](#financial_integration_service_api-v1-MelodyFinancialContext)
     - [MerchantMetricsFinancialSubProfile](#financial_integration_service_api-v1-MerchantMetricsFinancialSubProfile)
     - [MerchantMonthlyExpenditure](#financial_integration_service_api-v1-MerchantMonthlyExpenditure)
     - [MonthlyBalance](#financial_integration_service_api-v1-MonthlyBalance)
@@ -96,6 +97,8 @@
     - [GetIncomeExpenseRatioResponse](#financial_integration_service_api-v1-GetIncomeExpenseRatioResponse)
     - [GetIncomeMetricsRequest](#financial_integration_service_api-v1-GetIncomeMetricsRequest)
     - [GetIncomeMetricsResponse](#financial_integration_service_api-v1-GetIncomeMetricsResponse)
+    - [GetMelodyFinancialContextRequest](#financial_integration_service_api-v1-GetMelodyFinancialContextRequest)
+    - [GetMelodyFinancialContextResponse](#financial_integration_service_api-v1-GetMelodyFinancialContextResponse)
     - [GetMerchantMonthlyExpenditureRequest](#financial_integration_service_api-v1-GetMerchantMonthlyExpenditureRequest)
     - [GetMerchantMonthlyExpenditureResponse](#financial_integration_service_api-v1-GetMerchantMonthlyExpenditureResponse)
     - [GetMonthlyBalanceRequest](#financial_integration_service_api-v1-GetMonthlyBalanceRequest)
@@ -525,6 +528,27 @@ This message is used to represent the financial sub profile of a location.
 | spent_last_year | [double](#double) |  |  |
 | spent_last_two_years | [double](#double) |  |  |
 | user_id | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-MelodyFinancialContext"></a>
+
+### MelodyFinancialContext
+MelodyFinancialContext represents the financial context of a user.
+This message is used to represent the financial context of a user.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| categories | [CategoryMetricsFinancialSubProfile](#financial_integration_service_api-v1-CategoryMetricsFinancialSubProfile) |  |  |
+| expenses | [ExpenseMetricsFinancialSubProfileMetrics](#financial_integration_service_api-v1-ExpenseMetricsFinancialSubProfileMetrics) |  |  |
+| income | [IncomeMetricsFinancialSubProfile](#financial_integration_service_api-v1-IncomeMetricsFinancialSubProfile) |  |  |
+| locations | [LocationFinancialSubProfile](#financial_integration_service_api-v1-LocationFinancialSubProfile) |  |  |
+| merchants | [MerchantMetricsFinancialSubProfile](#financial_integration_service_api-v1-MerchantMetricsFinancialSubProfile) |  |  |
+| payment_channels | [PaymentChannelMetricsFinancialSubProfile](#financial_integration_service_api-v1-PaymentChannelMetricsFinancialSubProfile) |  |  |
 
 
 
@@ -2045,6 +2069,36 @@ GetIncomeMetrics RPC
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | income_metrics | [IncomeMetrics](#financial_integration_service_api-v1-IncomeMetrics) | repeated |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-GetMelodyFinancialContextRequest"></a>
+
+### GetMelodyFinancialContextRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| user_id | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-GetMelodyFinancialContextResponse"></a>
+
+### GetMelodyFinancialContextResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| melody_financial_context | [MelodyFinancialContext](#financial_integration_service_api-v1-MelodyFinancialContext) |  |  |
 
 
 
@@ -3942,6 +3996,7 @@ FinancialService API.
 | GetMonthlyTransactionCount | [GetMonthlyTransactionCountRequest](#financial_integration_service_api-v1-GetMonthlyTransactionCountRequest) | [GetMonthlyTransactionCountResponse](#financial_integration_service_api-v1-GetMonthlyTransactionCountResponse) |  |
 | GetPaymentChannelMonthlyExpenditure | [GetPaymentChannelMonthlyExpenditureRequest](#financial_integration_service_api-v1-GetPaymentChannelMonthlyExpenditureRequest) | [GetPaymentChannelMonthlyExpenditureResponse](#financial_integration_service_api-v1-GetPaymentChannelMonthlyExpenditureResponse) |  |
 | GetTotalInvestmentBySecurity | [GetTotalInvestmentBySecurityRequest](#financial_integration_service_api-v1-GetTotalInvestmentBySecurityRequest) | [GetTotalInvestmentBySecurityResponse](#financial_integration_service_api-v1-GetTotalInvestmentBySecurityResponse) |  |
+| GetMelodyFinancialContext | [GetMelodyFinancialContextRequest](#financial_integration_service_api-v1-GetMelodyFinancialContextRequest) | [GetMelodyFinancialContextResponse](#financial_integration_service_api-v1-GetMelodyFinancialContextResponse) |  |
 
  
 

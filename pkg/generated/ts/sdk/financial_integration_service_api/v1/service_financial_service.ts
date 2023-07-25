@@ -15,6 +15,8 @@ import {
   GetIncomeExpenseRatioResponse,
   GetIncomeMetricsRequest,
   GetIncomeMetricsResponse,
+  GetMelodyFinancialContextRequest,
+  GetMelodyFinancialContextResponse,
   GetMerchantMonthlyExpenditureRequest,
   GetMerchantMonthlyExpenditureResponse,
   GetMonthlyBalanceRequest,
@@ -218,6 +220,7 @@ export interface FinancialService {
   GetTotalInvestmentBySecurity(
     request: GetTotalInvestmentBySecurityRequest,
   ): Promise<GetTotalInvestmentBySecurityResponse>;
+  GetMelodyFinancialContext(request: GetMelodyFinancialContextRequest): Promise<GetMelodyFinancialContextResponse>;
 }
 
 export const FinancialServiceServiceName = "financial_integration_service_api.v1.FinancialService";
@@ -290,6 +293,7 @@ export class FinancialServiceClientImpl implements FinancialService {
     this.GetMonthlyTransactionCount = this.GetMonthlyTransactionCount.bind(this);
     this.GetPaymentChannelMonthlyExpenditure = this.GetPaymentChannelMonthlyExpenditure.bind(this);
     this.GetTotalInvestmentBySecurity = this.GetTotalInvestmentBySecurity.bind(this);
+    this.GetMelodyFinancialContext = this.GetMelodyFinancialContext.bind(this);
   }
   PlaidInitiateTokenExchange(request: PlaidInitiateTokenExchangeRequest): Promise<PlaidInitiateTokenExchangeResponse> {
     const data = PlaidInitiateTokenExchangeRequest.encode(request).finish();
@@ -683,6 +687,12 @@ export class FinancialServiceClientImpl implements FinancialService {
     const data = GetTotalInvestmentBySecurityRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "GetTotalInvestmentBySecurity", data);
     return promise.then((data) => GetTotalInvestmentBySecurityResponse.decode(_m0.Reader.create(data)));
+  }
+
+  GetMelodyFinancialContext(request: GetMelodyFinancialContextRequest): Promise<GetMelodyFinancialContextResponse> {
+    const data = GetMelodyFinancialContextRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "GetMelodyFinancialContext", data);
+    return promise.then((data) => GetMelodyFinancialContextResponse.decode(_m0.Reader.create(data)));
   }
 }
 

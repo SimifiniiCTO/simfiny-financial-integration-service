@@ -1333,4 +1333,24 @@ service FinancialService {
     };
   }
 
+  rpc GetMelodyFinancialContext(GetMelodyFinancialContextRequest) returns (GetMelodyFinancialContextResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/finance/melody-financial-context/{user_id}"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Get Melody Financial Context"
+      tags: ["finance"]
+      operation_id: "GetMelodyFinancialContext"
+      responses: {
+        key: "200"
+        value: {
+          description: "Successful operation"
+          schema: {
+            json_schema: {ref: ".api.v1.GetMelodyFinancialContextResponse"}
+          }
+        }
+      }
+    };
+  }
 }

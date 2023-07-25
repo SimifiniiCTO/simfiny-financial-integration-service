@@ -1725,6 +1725,56 @@
         ]
       }
     },
+    "/api/v1/finance/melody-financial-context/{userId}": {
+      "get": {
+        "summary": "Get Melody Financial Context",
+        "operationId": "GetMelodyFinancialContext",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": ".api.v1.GetMelodyFinancialContextResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": ".api.v1.ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": ".api.v1.PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": ".api.v1.InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "finance"
+        ]
+      }
+    },
     "/api/v1/finance/merchant-expenditure/{userId}/{month}/{merchantName}": {
       "get": {
         "summary": "Get Merchant Monthly Expenditure by user, month and merchant name",
@@ -3814,6 +3864,51 @@
       },
       "description": "The Categories table stores information about the different categories of expenses or income,\nsuch as \"Housing\", \"Food\", \"Transportation\", and \"Entertainment\". Each category has one or more\nsubcategories, which are stored in the Subcategories table.\n\nFor example, the \"Housing\" category might have subcategories for \"Rent\", \"Utilities\", and \"Home Maintenance\"."
     },
+    "CategoryMetricsFinancialSubProfile": {
+      "type": "object",
+      "properties": {
+        "month": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "personalFinanceCategoryPrimary": {
+          "type": "string"
+        },
+        "transactionCount": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "spentLastWeek": {
+          "type": "number",
+          "format": "double"
+        },
+        "spentLastTwoWeeks": {
+          "type": "number",
+          "format": "double"
+        },
+        "spentLastMonth": {
+          "type": "number",
+          "format": "double"
+        },
+        "spentLastSixMonths": {
+          "type": "number",
+          "format": "double"
+        },
+        "spentLastYear": {
+          "type": "number",
+          "format": "double"
+        },
+        "spentLastTwoYears": {
+          "type": "number",
+          "format": "double"
+        },
+        "userId": {
+          "type": "string",
+          "format": "uint64"
+        }
+      },
+      "description": "CategoryMetricsFinancialSubProfile\nThis message is used to represent the financial sub profile of a category."
+    },
     "CategoryMonthlyExpenditure": {
       "type": "object",
       "properties": {
@@ -4252,6 +4347,40 @@
       },
       "description": "ExpenseMetrics\nThis message is used to represent the expense metrics of a user."
     },
+    "ExpenseMetricsFinancialSubProfileMetrics": {
+      "type": "object",
+      "properties": {
+        "month": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "spentLastWeek": {
+          "type": "number",
+          "format": "double"
+        },
+        "spentLastMonth": {
+          "type": "number",
+          "format": "double"
+        },
+        "spentLastSixMonths": {
+          "type": "number",
+          "format": "double"
+        },
+        "averageMonthlyDiscretionarySpending": {
+          "type": "number",
+          "format": "double"
+        },
+        "averageMonthlyRecurringSpending": {
+          "type": "number",
+          "format": "double"
+        },
+        "userId": {
+          "type": "string",
+          "format": "uint64"
+        }
+      },
+      "description": "ExpenseMetricsFinancialSubProfileMetrics\nThis message is used to represent the financial sub profile metrics of a user."
+    },
     "FinancialProfile": {
       "type": "object",
       "properties": {
@@ -4470,6 +4599,14 @@
             "$ref": "#/definitions/Link"
           },
           "title": "The links"
+        }
+      }
+    },
+    "GetMelodyFinancialContextResponse": {
+      "type": "object",
+      "properties": {
+        "melodyFinancialContext": {
+          "$ref": "#/definitions/MelodyFinancialContext"
         }
       }
     },
@@ -4800,6 +4937,40 @@
         }
       },
       "description": "IncomeMetrics\nThis message is used to represent the income metrics of a user."
+    },
+    "IncomeMetricsFinancialSubProfile": {
+      "type": "object",
+      "properties": {
+        "month": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "incomeLastTwoWeeks": {
+          "type": "number",
+          "format": "double"
+        },
+        "incomeLastMonth": {
+          "type": "number",
+          "format": "double"
+        },
+        "incomeLastTwoMonths": {
+          "type": "number",
+          "format": "double"
+        },
+        "incomeLastSixMonths": {
+          "type": "number",
+          "format": "double"
+        },
+        "incomeLastYear": {
+          "type": "number",
+          "format": "double"
+        },
+        "userId": {
+          "type": "string",
+          "format": "uint64"
+        }
+      },
+      "description": "IncomeMetricsFinancialSubProfile\nThis message is used to represent the financial sub profile of a user."
     },
     "InvesmentHolding": {
       "type": "object",
@@ -5144,6 +5315,108 @@
         }
       }
     },
+    "LocationFinancialSubProfile": {
+      "type": "object",
+      "properties": {
+        "locationCity": {
+          "type": "string"
+        },
+        "transactionCount": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "spentLastWeek": {
+          "type": "number",
+          "format": "double"
+        },
+        "spentLastTwoWeeks": {
+          "type": "number",
+          "format": "double"
+        },
+        "spentLastMonth": {
+          "type": "number",
+          "format": "double"
+        },
+        "spentLastSixMonths": {
+          "type": "number",
+          "format": "double"
+        },
+        "spentLastYear": {
+          "type": "number",
+          "format": "double"
+        },
+        "spentLastTwoYears": {
+          "type": "number",
+          "format": "double"
+        },
+        "userId": {
+          "type": "string",
+          "format": "uint64"
+        }
+      },
+      "description": "LocationFinancialSubProfile\nThis message is used to represent the financial sub profile of a location."
+    },
+    "MelodyFinancialContext": {
+      "type": "object",
+      "properties": {
+        "categories": {
+          "$ref": "#/definitions/CategoryMetricsFinancialSubProfile"
+        },
+        "expenses": {
+          "$ref": "#/definitions/ExpenseMetricsFinancialSubProfileMetrics"
+        },
+        "income": {
+          "$ref": "#/definitions/IncomeMetricsFinancialSubProfile"
+        },
+        "locations": {
+          "$ref": "#/definitions/LocationFinancialSubProfile"
+        },
+        "merchants": {
+          "$ref": "#/definitions/MerchantMetricsFinancialSubProfile"
+        },
+        "paymentChannels": {
+          "$ref": "#/definitions/PaymentChannelMetricsFinancialSubProfile"
+        }
+      },
+      "description": "MelodyFinancialContext represents the financial context of a user.\nThis message is used to represent the financial context of a user."
+    },
+    "MerchantMetricsFinancialSubProfile": {
+      "type": "object",
+      "properties": {
+        "merchantName": {
+          "type": "string"
+        },
+        "spentLastWeek": {
+          "type": "number",
+          "format": "double"
+        },
+        "spentLastTwoWeeks": {
+          "type": "number",
+          "format": "double"
+        },
+        "spentLastMonth": {
+          "type": "number",
+          "format": "double"
+        },
+        "spentLastSixMonths": {
+          "type": "number",
+          "format": "double"
+        },
+        "spentLastYear": {
+          "type": "number",
+          "format": "double"
+        },
+        "spentLastTwoYears": {
+          "type": "number",
+          "format": "double"
+        },
+        "userId": {
+          "type": "string",
+          "format": "uint64"
+        }
+      },
+      "description": "MerchantFinancialSubProfile\nThis message is used to represent the financial sub profile of a merchant."
+    },
     "MerchantMonthlyExpenditure": {
       "type": "object",
       "properties": {
@@ -5447,6 +5720,51 @@
           "title": "The transactions"
         }
       }
+    },
+    "PaymentChannelMetricsFinancialSubProfile": {
+      "type": "object",
+      "properties": {
+        "paymentChannel": {
+          "type": "string"
+        },
+        "spentLastWeek": {
+          "type": "number",
+          "format": "double"
+        },
+        "spentLastTwoWeeks": {
+          "type": "number",
+          "format": "double"
+        },
+        "spentLastMonth": {
+          "type": "number",
+          "format": "double"
+        },
+        "spentLastSixMonths": {
+          "type": "number",
+          "format": "double"
+        },
+        "spentLastYear": {
+          "type": "number",
+          "format": "double"
+        },
+        "spentLastTwoYears": {
+          "type": "number",
+          "format": "double"
+        },
+        "userId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "month": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "transactionCount": {
+          "type": "string",
+          "format": "uint64"
+        }
+      },
+      "description": "PaymentChannelMetricsFinancialSubProfile\nThis message is used to represent the financial sub profile of a payment channel."
     },
     "PaymentChannelMonthlyExpenditure": {
       "type": "object",

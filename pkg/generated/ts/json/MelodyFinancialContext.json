@@ -1,0 +1,239 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/MelodyFinancialContext",
+    "definitions": {
+        "MelodyFinancialContext": {
+            "properties": {
+                "categories": {
+                    "$ref": "#/definitions/financial_integration_service_api.v1.CategoryMetricsFinancialSubProfile",
+                    "additionalProperties": true
+                },
+                "expenses": {
+                    "$ref": "#/definitions/financial_integration_service_api.v1.ExpenseMetricsFinancialSubProfileMetrics",
+                    "additionalProperties": true
+                },
+                "income": {
+                    "$ref": "#/definitions/financial_integration_service_api.v1.IncomeMetricsFinancialSubProfile",
+                    "additionalProperties": true
+                },
+                "locations": {
+                    "$ref": "#/definitions/financial_integration_service_api.v1.LocationFinancialSubProfile",
+                    "additionalProperties": true
+                },
+                "merchants": {
+                    "$ref": "#/definitions/financial_integration_service_api.v1.MerchantMetricsFinancialSubProfile",
+                    "additionalProperties": true
+                },
+                "payment_channels": {
+                    "$ref": "#/definitions/financial_integration_service_api.v1.PaymentChannelMetricsFinancialSubProfile",
+                    "additionalProperties": true
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Melody Financial Context",
+            "description": "MelodyFinancialContext represents the financial context of a user. This message is used to represent the financial context of a user."
+        },
+        "financial_integration_service_api.v1.CategoryMetricsFinancialSubProfile": {
+            "properties": {
+                "month": {
+                    "type": "integer"
+                },
+                "personal_finance_category_primary": {
+                    "type": "string"
+                },
+                "transaction_count": {
+                    "type": "string"
+                },
+                "spent_last_week": {
+                    "type": "number"
+                },
+                "spent_last_two_weeks": {
+                    "type": "number"
+                },
+                "spent_last_month": {
+                    "type": "number"
+                },
+                "spent_last_six_months": {
+                    "type": "number"
+                },
+                "spent_last_year": {
+                    "type": "number"
+                },
+                "spent_last_two_years": {
+                    "type": "number"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Category Metrics Financial Sub Profile",
+            "description": "CategoryMetricsFinancialSubProfile This message is used to represent the financial sub profile of a category."
+        },
+        "financial_integration_service_api.v1.ExpenseMetricsFinancialSubProfileMetrics": {
+            "properties": {
+                "month": {
+                    "type": "integer"
+                },
+                "spent_last_week": {
+                    "type": "number"
+                },
+                "spent_last_month": {
+                    "type": "number"
+                },
+                "spent_last_six_months": {
+                    "type": "number"
+                },
+                "average_monthly_discretionary_spending": {
+                    "type": "number"
+                },
+                "average_monthly_recurring_spending": {
+                    "type": "number"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Expense Metrics Financial Sub Profile Metrics",
+            "description": "ExpenseMetricsFinancialSubProfileMetrics This message is used to represent the financial sub profile metrics of a user."
+        },
+        "financial_integration_service_api.v1.IncomeMetricsFinancialSubProfile": {
+            "properties": {
+                "month": {
+                    "type": "integer"
+                },
+                "income_last_two_weeks": {
+                    "type": "number"
+                },
+                "income_last_month": {
+                    "type": "number"
+                },
+                "income_last_two_months": {
+                    "type": "number"
+                },
+                "income_last_six_months": {
+                    "type": "number"
+                },
+                "income_last_year": {
+                    "type": "number"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Income Metrics Financial Sub Profile",
+            "description": "IncomeMetricsFinancialSubProfile This message is used to represent the financial sub profile of a user."
+        },
+        "financial_integration_service_api.v1.LocationFinancialSubProfile": {
+            "properties": {
+                "location_city": {
+                    "type": "string"
+                },
+                "transaction_count": {
+                    "type": "string"
+                },
+                "spent_last_week": {
+                    "type": "number"
+                },
+                "spent_last_two_weeks": {
+                    "type": "number"
+                },
+                "spent_last_month": {
+                    "type": "number"
+                },
+                "spent_last_six_months": {
+                    "type": "number"
+                },
+                "spent_last_year": {
+                    "type": "number"
+                },
+                "spent_last_two_years": {
+                    "type": "number"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Location Financial Sub Profile",
+            "description": "LocationFinancialSubProfile This message is used to represent the financial sub profile of a location."
+        },
+        "financial_integration_service_api.v1.MerchantMetricsFinancialSubProfile": {
+            "properties": {
+                "merchant_name": {
+                    "type": "string"
+                },
+                "spent_last_week": {
+                    "type": "number"
+                },
+                "spent_last_two_weeks": {
+                    "type": "number"
+                },
+                "spent_last_month": {
+                    "type": "number"
+                },
+                "spent_last_six_months": {
+                    "type": "number"
+                },
+                "spent_last_year": {
+                    "type": "number"
+                },
+                "spent_last_two_years": {
+                    "type": "number"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Merchant Metrics Financial Sub Profile",
+            "description": "MerchantFinancialSubProfile This message is used to represent the financial sub profile of a merchant."
+        },
+        "financial_integration_service_api.v1.PaymentChannelMetricsFinancialSubProfile": {
+            "properties": {
+                "payment_channel": {
+                    "type": "string"
+                },
+                "spent_last_week": {
+                    "type": "number"
+                },
+                "spent_last_two_weeks": {
+                    "type": "number"
+                },
+                "spent_last_month": {
+                    "type": "number"
+                },
+                "spent_last_six_months": {
+                    "type": "number"
+                },
+                "spent_last_year": {
+                    "type": "number"
+                },
+                "spent_last_two_years": {
+                    "type": "number"
+                },
+                "user_id": {
+                    "type": "string"
+                },
+                "month": {
+                    "type": "integer"
+                },
+                "transaction_count": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Payment Channel Metrics Financial Sub Profile",
+            "description": "PaymentChannelMetricsFinancialSubProfile This message is used to represent the financial sub profile of a payment channel."
+        }
+    }
+}

@@ -535,3 +535,14 @@ message UserFinancialHealthMetricsTable {
     double debt_to_income_ratio = 6;
     uint64 overdraft_frequency = 7;
 }
+
+// MelodyFinancialContext represents the financial context of a user.
+// This message is used to represent the financial context of a user.
+message MelodyFinancialContext{
+   CategoryMetricsFinancialSubProfile categories = 1;
+   ExpenseMetricsFinancialSubProfileMetrics expenses = 2;
+   IncomeMetricsFinancialSubProfile income = 3;
+   LocationFinancialSubProfile locations = 4;
+   MerchantMetricsFinancialSubProfile merchants = 5;
+   PaymentChannelMetricsFinancialSubProfile payment_channels = 6;
+}

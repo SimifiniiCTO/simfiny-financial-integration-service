@@ -5423,3 +5423,244 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = GetTotalInvestmentBySecurityResponseValidationError{}
+
+// Validate checks the field values on GetMelodyFinancialContextRequest with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the first error encountered is returned, or nil if there are
+// no violations.
+func (m *GetMelodyFinancialContextRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GetMelodyFinancialContextRequest with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the result is a list of violation errors wrapped in
+// GetMelodyFinancialContextRequestMultiError, or nil if none found.
+func (m *GetMelodyFinancialContextRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GetMelodyFinancialContextRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for UserId
+
+	if len(errors) > 0 {
+		return GetMelodyFinancialContextRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// GetMelodyFinancialContextRequestMultiError is an error wrapping multiple
+// validation errors returned by
+// GetMelodyFinancialContextRequest.ValidateAll() if the designated
+// constraints aren't met.
+type GetMelodyFinancialContextRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GetMelodyFinancialContextRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GetMelodyFinancialContextRequestMultiError) AllErrors() []error { return m }
+
+// GetMelodyFinancialContextRequestValidationError is the validation error
+// returned by GetMelodyFinancialContextRequest.Validate if the designated
+// constraints aren't met.
+type GetMelodyFinancialContextRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetMelodyFinancialContextRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetMelodyFinancialContextRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetMelodyFinancialContextRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetMelodyFinancialContextRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetMelodyFinancialContextRequestValidationError) ErrorName() string {
+	return "GetMelodyFinancialContextRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetMelodyFinancialContextRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetMelodyFinancialContextRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetMelodyFinancialContextRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetMelodyFinancialContextRequestValidationError{}
+
+// Validate checks the field values on GetMelodyFinancialContextResponse with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the first error encountered is returned, or nil if there are
+// no violations.
+func (m *GetMelodyFinancialContextResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GetMelodyFinancialContextResponse
+// with the rules defined in the proto definition for this message. If any
+// rules are violated, the result is a list of violation errors wrapped in
+// GetMelodyFinancialContextResponseMultiError, or nil if none found.
+func (m *GetMelodyFinancialContextResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GetMelodyFinancialContextResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if all {
+		switch v := interface{}(m.GetMelodyFinancialContext()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, GetMelodyFinancialContextResponseValidationError{
+					field:  "MelodyFinancialContext",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, GetMelodyFinancialContextResponseValidationError{
+					field:  "MelodyFinancialContext",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetMelodyFinancialContext()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return GetMelodyFinancialContextResponseValidationError{
+				field:  "MelodyFinancialContext",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return GetMelodyFinancialContextResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// GetMelodyFinancialContextResponseMultiError is an error wrapping multiple
+// validation errors returned by
+// GetMelodyFinancialContextResponse.ValidateAll() if the designated
+// constraints aren't met.
+type GetMelodyFinancialContextResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GetMelodyFinancialContextResponseMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GetMelodyFinancialContextResponseMultiError) AllErrors() []error { return m }
+
+// GetMelodyFinancialContextResponseValidationError is the validation error
+// returned by GetMelodyFinancialContextResponse.Validate if the designated
+// constraints aren't met.
+type GetMelodyFinancialContextResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetMelodyFinancialContextResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetMelodyFinancialContextResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetMelodyFinancialContextResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetMelodyFinancialContextResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetMelodyFinancialContextResponseValidationError) ErrorName() string {
+	return "GetMelodyFinancialContextResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetMelodyFinancialContextResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetMelodyFinancialContextResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetMelodyFinancialContextResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetMelodyFinancialContextResponseValidationError{}

@@ -303,3 +303,11 @@ message GetTotalInvestmentBySecurityRequest {
 message GetTotalInvestmentBySecurityResponse {
   repeated TotalInvestmentBySecurity total_investment_by_security = 1;
 }
+
+message GetMelodyFinancialContextRequest {
+  uint64 user_id = 1;
+}
+
+message GetMelodyFinancialContextResponse {
+  MelodyFinancialContext melody_financial_context = 1;
+}

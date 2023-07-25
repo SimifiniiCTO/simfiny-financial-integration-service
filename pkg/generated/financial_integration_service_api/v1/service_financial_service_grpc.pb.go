@@ -82,6 +82,7 @@ const (
 	FinancialService_GetMonthlyTransactionCount_FullMethodName               = "/financial_integration_service_api.v1.FinancialService/GetMonthlyTransactionCount"
 	FinancialService_GetPaymentChannelMonthlyExpenditure_FullMethodName      = "/financial_integration_service_api.v1.FinancialService/GetPaymentChannelMonthlyExpenditure"
 	FinancialService_GetTotalInvestmentBySecurity_FullMethodName             = "/financial_integration_service_api.v1.FinancialService/GetTotalInvestmentBySecurity"
+	FinancialService_GetMelodyFinancialContext_FullMethodName                = "/financial_integration_service_api.v1.FinancialService/GetMelodyFinancialContext"
 )
 
 // FinancialServiceClient is the client API for FinancialService service.
@@ -155,6 +156,7 @@ type FinancialServiceClient interface {
 	GetMonthlyTransactionCount(ctx context.Context, in *GetMonthlyTransactionCountRequest, opts ...grpc.CallOption) (*GetMonthlyTransactionCountResponse, error)
 	GetPaymentChannelMonthlyExpenditure(ctx context.Context, in *GetPaymentChannelMonthlyExpenditureRequest, opts ...grpc.CallOption) (*GetPaymentChannelMonthlyExpenditureResponse, error)
 	GetTotalInvestmentBySecurity(ctx context.Context, in *GetTotalInvestmentBySecurityRequest, opts ...grpc.CallOption) (*GetTotalInvestmentBySecurityResponse, error)
+	GetMelodyFinancialContext(ctx context.Context, in *GetMelodyFinancialContextRequest, opts ...grpc.CallOption) (*GetMelodyFinancialContextResponse, error)
 }
 
 type financialServiceClient struct {
@@ -732,6 +734,15 @@ func (c *financialServiceClient) GetTotalInvestmentBySecurity(ctx context.Contex
 	return out, nil
 }
 
+func (c *financialServiceClient) GetMelodyFinancialContext(ctx context.Context, in *GetMelodyFinancialContextRequest, opts ...grpc.CallOption) (*GetMelodyFinancialContextResponse, error) {
+	out := new(GetMelodyFinancialContextResponse)
+	err := c.cc.Invoke(ctx, FinancialService_GetMelodyFinancialContext_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // FinancialServiceServer is the server API for FinancialService service.
 // All implementations must embed UnimplementedFinancialServiceServer
 // for forward compatibility
@@ -803,6 +814,7 @@ type FinancialServiceServer interface {
 	GetMonthlyTransactionCount(context.Context, *GetMonthlyTransactionCountRequest) (*GetMonthlyTransactionCountResponse, error)
 	GetPaymentChannelMonthlyExpenditure(context.Context, *GetPaymentChannelMonthlyExpenditureRequest) (*GetPaymentChannelMonthlyExpenditureResponse, error)
 	GetTotalInvestmentBySecurity(context.Context, *GetTotalInvestmentBySecurityRequest) (*GetTotalInvestmentBySecurityResponse, error)
+	GetMelodyFinancialContext(context.Context, *GetMelodyFinancialContextRequest) (*GetMelodyFinancialContextResponse, error)
 	mustEmbedUnimplementedFinancialServiceServer()
 }
 
@@ -998,6 +1010,9 @@ func (UnimplementedFinancialServiceServer) GetPaymentChannelMonthlyExpenditure(c
 }
 func (UnimplementedFinancialServiceServer) GetTotalInvestmentBySecurity(context.Context, *GetTotalInvestmentBySecurityRequest) (*GetTotalInvestmentBySecurityResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetTotalInvestmentBySecurity not implemented")
+}
+func (UnimplementedFinancialServiceServer) GetMelodyFinancialContext(context.Context, *GetMelodyFinancialContextRequest) (*GetMelodyFinancialContextResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMelodyFinancialContext not implemented")
 }
 func (UnimplementedFinancialServiceServer) mustEmbedUnimplementedFinancialServiceServer() {}
 
@@ -2146,6 +2161,24 @@ func _FinancialService_GetTotalInvestmentBySecurity_Handler(srv interface{}, ctx
 	return interceptor(ctx, in, info, handler)
 }
 
+func _FinancialService_GetMelodyFinancialContext_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetMelodyFinancialContextRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FinancialServiceServer).GetMelodyFinancialContext(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FinancialService_GetMelodyFinancialContext_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FinancialServiceServer).GetMelodyFinancialContext(ctx, req.(*GetMelodyFinancialContextRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // FinancialService_ServiceDesc is the grpc.ServiceDesc for FinancialService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -2404,6 +2437,10 @@ var FinancialService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetTotalInvestmentBySecurity",
 			Handler:    _FinancialService_GetTotalInvestmentBySecurity_Handler,
+		},
+		{
+			MethodName: "GetMelodyFinancialContext",
+			Handler:    _FinancialService_GetMelodyFinancialContext_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
