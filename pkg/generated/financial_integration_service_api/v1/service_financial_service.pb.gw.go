@@ -2131,7 +2131,7 @@ func request_FinancialService_ListTransactionAggregates_0(ctx context.Context, m
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_number")
 	}
 
-	protoReq.PageNumber, err = runtime.String(val)
+	protoReq.PageNumber, err = runtime.Int32(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_number", err)
 	}
@@ -2177,7 +2177,7 @@ func local_request_FinancialService_ListTransactionAggregates_0(ctx context.Cont
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_number")
 	}
 
-	protoReq.PageNumber, err = runtime.String(val)
+	protoReq.PageNumber, err = runtime.Int32(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_number", err)
 	}
@@ -2218,6 +2218,26 @@ func request_FinancialService_GetUserAccountBalanceHistory_0(ctx context.Context
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "user_id", err)
 	}
 
+	val, ok = pathParams["page_number"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_number")
+	}
+
+	protoReq.PageNumber, err = runtime.Int32(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_number", err)
+	}
+
+	val, ok = pathParams["page_size"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_size")
+	}
+
+	protoReq.PageSize, err = runtime.Int32(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_size", err)
+	}
+
 	msg, err := client.GetUserAccountBalanceHistory(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
@@ -2242,6 +2262,26 @@ func local_request_FinancialService_GetUserAccountBalanceHistory_0(ctx context.C
 	protoReq.UserId, err = runtime.Uint64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "user_id", err)
+	}
+
+	val, ok = pathParams["page_number"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_number")
+	}
+
+	protoReq.PageNumber, err = runtime.Int32(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_number", err)
+	}
+
+	val, ok = pathParams["page_size"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_size")
+	}
+
+	protoReq.PageSize, err = runtime.Int32(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_size", err)
 	}
 
 	msg, err := server.GetUserAccountBalanceHistory(ctx, &protoReq)
@@ -2270,6 +2310,26 @@ func request_FinancialService_GetAccountBalanceHistory_0(ctx context.Context, ma
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "plaid_account_id", err)
 	}
 
+	val, ok = pathParams["page_number"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_number")
+	}
+
+	protoReq.PageNumber, err = runtime.Int32(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_number", err)
+	}
+
+	val, ok = pathParams["page_size"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_size")
+	}
+
+	protoReq.PageSize, err = runtime.Int32(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_size", err)
+	}
+
 	msg, err := client.GetAccountBalanceHistory(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
@@ -2294,6 +2354,26 @@ func local_request_FinancialService_GetAccountBalanceHistory_0(ctx context.Conte
 	protoReq.PlaidAccountId, err = runtime.String(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "plaid_account_id", err)
+	}
+
+	val, ok = pathParams["page_number"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_number")
+	}
+
+	protoReq.PageNumber, err = runtime.Int32(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_number", err)
+	}
+
+	val, ok = pathParams["page_size"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "page_size")
+	}
+
+	protoReq.PageSize, err = runtime.Int32(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "page_size", err)
 	}
 
 	msg, err := server.GetAccountBalanceHistory(ctx, &protoReq)
@@ -4683,7 +4763,7 @@ func RegisterFinancialServiceHandlerServer(ctx context.Context, mux *runtime.Ser
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/GetUserAccountBalanceHistory", runtime.WithHTTPPathPattern("/api/v1/analytics/balance-history/user/{user_id}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/GetUserAccountBalanceHistory", runtime.WithHTTPPathPattern("/api/v1/analytics/balance-history/user/{user_id}/pagenumber/{page_number}/pagesize/{page_size}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -4708,7 +4788,7 @@ func RegisterFinancialServiceHandlerServer(ctx context.Context, mux *runtime.Ser
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/GetAccountBalanceHistory", runtime.WithHTTPPathPattern("/api/v1/analytics/balance-history/account/{plaid_account_id}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/GetAccountBalanceHistory", runtime.WithHTTPPathPattern("/api/v1/analytics/balance-history/account/{plaid_account_id}/pagenumber/{page_number}/pagesize/{page_size}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -6165,7 +6245,7 @@ func RegisterFinancialServiceHandlerClient(ctx context.Context, mux *runtime.Ser
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/GetUserAccountBalanceHistory", runtime.WithHTTPPathPattern("/api/v1/analytics/balance-history/user/{user_id}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/GetUserAccountBalanceHistory", runtime.WithHTTPPathPattern("/api/v1/analytics/balance-history/user/{user_id}/pagenumber/{page_number}/pagesize/{page_size}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -6187,7 +6267,7 @@ func RegisterFinancialServiceHandlerClient(ctx context.Context, mux *runtime.Ser
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/GetAccountBalanceHistory", runtime.WithHTTPPathPattern("/api/v1/analytics/balance-history/account/{plaid_account_id}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/GetAccountBalanceHistory", runtime.WithHTTPPathPattern("/api/v1/analytics/balance-history/account/{plaid_account_id}/pagenumber/{page_number}/pagesize/{page_size}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -6669,9 +6749,9 @@ var (
 
 	pattern_FinancialService_ListTransactionAggregates_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4, 2, 5, 1, 0, 4, 1, 5, 6, 2, 7, 1, 0, 4, 1, 5, 8}, []string{"api", "v1", "analytics", "transaction-aggregates", "user_id", "pagenumber", "page_number", "pagesize", "page_size"}, ""))
 
-	pattern_FinancialService_GetUserAccountBalanceHistory_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 2, 4, 1, 0, 4, 1, 5, 5}, []string{"api", "v1", "analytics", "balance-history", "user", "user_id"}, ""))
+	pattern_FinancialService_GetUserAccountBalanceHistory_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 2, 4, 1, 0, 4, 1, 5, 5, 2, 6, 1, 0, 4, 1, 5, 7, 2, 8, 1, 0, 4, 1, 5, 9}, []string{"api", "v1", "analytics", "balance-history", "user", "user_id", "pagenumber", "page_number", "pagesize", "page_size"}, ""))
 
-	pattern_FinancialService_GetAccountBalanceHistory_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 2, 4, 1, 0, 4, 1, 5, 5}, []string{"api", "v1", "analytics", "balance-history", "account", "plaid_account_id"}, ""))
+	pattern_FinancialService_GetAccountBalanceHistory_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 2, 4, 1, 0, 4, 1, 5, 5, 2, 6, 1, 0, 4, 1, 5, 7, 2, 8, 1, 0, 4, 1, 5, 9}, []string{"api", "v1", "analytics", "balance-history", "account", "plaid_account_id", "pagenumber", "page_number", "pagesize", "page_size"}, ""))
 
 	pattern_FinancialService_GetUserCategoryMonthlyExpenditure_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 2, 4, 1, 0, 4, 1, 5, 5}, []string{"api", "v1", "analytics", "category-monthly-expenditure", "user", "user_id"}, ""))
 

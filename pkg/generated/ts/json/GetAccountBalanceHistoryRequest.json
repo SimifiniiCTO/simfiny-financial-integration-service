@@ -7,6 +7,13 @@
                 "plaid_account_id": {
                     "type": "string",
                     "description": "Account ID"
+                },
+                "page_number": {
+                    "type": "integer"
+                },
+                "page_size": {
+                    "type": "integer",
+                    "description": "Number of items to return per page."
                 }
             },
             "additionalProperties": true,

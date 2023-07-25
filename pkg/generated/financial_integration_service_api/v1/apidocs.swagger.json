@@ -270,7 +270,7 @@
         ]
       }
     },
-    "/api/v1/analytics/balance-history/account/{plaidAccountId}": {
+    "/api/v1/analytics/balance-history/account/{plaidAccountId}/pagenumber/{pageNumber}/pagesize/{pageSize}": {
       "get": {
         "summary": "Returns the account balance history for an account",
         "description": "This API could accept account_id as input parameters and return the account balance history for that account.",
@@ -314,6 +314,21 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "pageNumber",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "description": "Number of items to return per page.",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
           }
         ],
         "tags": [
@@ -321,7 +336,7 @@
         ]
       }
     },
-    "/api/v1/analytics/balance-history/user/{userId}": {
+    "/api/v1/analytics/balance-history/user/{userId}/pagenumber/{pageNumber}/pagesize/{pageSize}": {
       "get": {
         "summary": "Returns the account balance history for a user",
         "description": "This API could accept user_id as input parameters and return the account balance history for that user.",
@@ -366,6 +381,21 @@
             "required": true,
             "type": "string",
             "format": "uint64"
+          },
+          {
+            "name": "pageNumber",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "description": "Number of items to return per page.",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
           }
         ],
         "tags": [
@@ -1004,7 +1034,8 @@
             "name": "pageNumber",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "integer",
+            "format": "int32"
           },
           {
             "name": "pageSize",

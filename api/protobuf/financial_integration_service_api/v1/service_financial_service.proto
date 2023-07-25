@@ -930,7 +930,7 @@ service FinancialService {
 
   rpc GetUserAccountBalanceHistory(GetUserAccountBalanceHistoryRequest) returns (GetUserAccountBalanceHistoryResponse) {
     option (google.api.http) = {
-      get: "/api/v1/analytics/balance-history/user/{user_id}"
+      get: "/api/v1/analytics/balance-history/user/{user_id}/pagenumber/{page_number}/pagesize/{page_size}"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "Returns the account balance history for a user"
@@ -951,7 +951,7 @@ service FinancialService {
 
   rpc GetAccountBalanceHistory(GetAccountBalanceHistoryRequest) returns (GetAccountBalanceHistoryResponse) {
     option (google.api.http) = {
-      get: "/api/v1/analytics/balance-history/account/{plaid_account_id}"
+      get: "/api/v1/analytics/balance-history/account/{plaid_account_id}/pagenumber/{page_number}/pagesize/{page_size}"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "Returns the account balance history for an account"

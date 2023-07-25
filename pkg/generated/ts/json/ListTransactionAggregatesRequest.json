@@ -8,7 +8,7 @@
                     "type": "string"
                 },
                 "page_number": {
-                    "type": "string"
+                    "type": "integer"
                 },
                 "page_size": {
                     "type": "integer",

@@ -1839,6 +1839,8 @@ such as the id, user_id tied to the profile, and many more
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | plaid_account_id | [string](#string) |  | Account ID |
+| page_number | [int32](#int32) |  |  |
+| page_size | [int32](#int32) |  | Number of items to return per page. |
 
 
 
@@ -2375,6 +2377,8 @@ Account Balance
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | user_id | [uint64](#uint64) |  | User ID |
+| page_number | [int32](#int32) |  |  |
+| page_size | [int32](#int32) |  | Number of items to return per page. |
 
 
 
@@ -2469,7 +2473,7 @@ CategoryMonthlyExpenditure
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | user_id | [uint64](#uint64) |  |  |
-| page_number | [string](#string) |  |  |
+| page_number | [int32](#int32) |  |  |
 | page_size | [int32](#int32) |  | Number of items to return per page. |
 
 

@@ -41,7 +41,7 @@ export interface GetTransactionAggregatesResponse {
 
 export interface ListTransactionAggregatesRequest {
   userId: number;
-  pageNumber: string;
+  pageNumber: number;
   /** Number of items to return per page. */
   pageSize: number;
 }
@@ -55,6 +55,9 @@ export interface ListTransactionAggregatesResponse {
 export interface GetUserAccountBalanceHistoryRequest {
   /** User ID */
   userId: number;
+  pageNumber: number;
+  /** Number of items to return per page. */
+  pageSize: number;
 }
 
 export interface GetUserAccountBalanceHistoryResponse {
@@ -65,6 +68,9 @@ export interface GetUserAccountBalanceHistoryResponse {
 export interface GetAccountBalanceHistoryRequest {
   /** Account ID */
   plaidAccountId: string;
+  pageNumber: number;
+  /** Number of items to return per page. */
+  pageSize: number;
 }
 
 export interface GetAccountBalanceHistoryResponse {
@@ -477,7 +483,7 @@ export const GetTransactionAggregatesResponse = {
 };
 
 function createBaseListTransactionAggregatesRequest(): ListTransactionAggregatesRequest {
-  return { userId: 0, pageNumber: "", pageSize: 0 };
+  return { userId: 0, pageNumber: 0, pageSize: 0 };
 }
 
 export const ListTransactionAggregatesRequest = {
@@ -485,8 +491,8 @@ export const ListTransactionAggregatesRequest = {
     if (message.userId !== 0) {
       writer.uint32(8).uint64(message.userId);
     }
-    if (message.pageNumber !== "") {
-      writer.uint32(18).string(message.pageNumber);
+    if (message.pageNumber !== 0) {
+      writer.uint32(16).int32(message.pageNumber);
     }
     if (message.pageSize !== 0) {
       writer.uint32(24).int32(message.pageSize);
@@ -509,11 +515,11 @@ export const ListTransactionAggregatesRequest = {
           message.userId = longToNumber(reader.uint64() as Long);
           continue;
         case 2:
-          if (tag !== 18) {
+          if (tag !== 16) {
             break;
           }
 
-          message.pageNumber = reader.string();
+          message.pageNumber = reader.int32();
           continue;
         case 3:
           if (tag !== 24) {
@@ -534,7 +540,7 @@ export const ListTransactionAggregatesRequest = {
   fromJSON(object: any): ListTransactionAggregatesRequest {
     return {
       userId: isSet(object.userId) ? Number(object.userId) : 0,
-      pageNumber: isSet(object.pageNumber) ? String(object.pageNumber) : "",
+      pageNumber: isSet(object.pageNumber) ? Number(object.pageNumber) : 0,
       pageSize: isSet(object.pageSize) ? Number(object.pageSize) : 0,
     };
   },
@@ -544,8 +550,8 @@ export const ListTransactionAggregatesRequest = {
     if (message.userId !== 0) {
       obj.userId = Math.round(message.userId);
     }
-    if (message.pageNumber !== "") {
-      obj.pageNumber = message.pageNumber;
+    if (message.pageNumber !== 0) {
+      obj.pageNumber = Math.round(message.pageNumber);
     }
     if (message.pageSize !== 0) {
       obj.pageSize = Math.round(message.pageSize);
@@ -564,7 +570,7 @@ export const ListTransactionAggregatesRequest = {
   ): ListTransactionAggregatesRequest {
     const message = createBaseListTransactionAggregatesRequest();
     message.userId = object.userId ?? 0;
-    message.pageNumber = object.pageNumber ?? "";
+    message.pageNumber = object.pageNumber ?? 0;
     message.pageSize = object.pageSize ?? 0;
     return message;
   },
@@ -652,13 +658,19 @@ export const ListTransactionAggregatesResponse = {
 };
 
 function createBaseGetUserAccountBalanceHistoryRequest(): GetUserAccountBalanceHistoryRequest {
-  return { userId: 0 };
+  return { userId: 0, pageNumber: 0, pageSize: 0 };
 }
 
 export const GetUserAccountBalanceHistoryRequest = {
   encode(message: GetUserAccountBalanceHistoryRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.userId !== 0) {
       writer.uint32(8).uint64(message.userId);
+    }
+    if (message.pageNumber !== 0) {
+      writer.uint32(16).int32(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      writer.uint32(24).int32(message.pageSize);
     }
     return writer;
   },
@@ -677,6 +689,20 @@ export const GetUserAccountBalanceHistoryRequest = {
 
           message.userId = longToNumber(reader.uint64() as Long);
           continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.pageNumber = reader.int32();
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.pageSize = reader.int32();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -687,13 +713,23 @@ export const GetUserAccountBalanceHistoryRequest = {
   },
 
   fromJSON(object: any): GetUserAccountBalanceHistoryRequest {
-    return { userId: isSet(object.userId) ? Number(object.userId) : 0 };
+    return {
+      userId: isSet(object.userId) ? Number(object.userId) : 0,
+      pageNumber: isSet(object.pageNumber) ? Number(object.pageNumber) : 0,
+      pageSize: isSet(object.pageSize) ? Number(object.pageSize) : 0,
+    };
   },
 
   toJSON(message: GetUserAccountBalanceHistoryRequest): unknown {
     const obj: any = {};
     if (message.userId !== 0) {
       obj.userId = Math.round(message.userId);
+    }
+    if (message.pageNumber !== 0) {
+      obj.pageNumber = Math.round(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      obj.pageSize = Math.round(message.pageSize);
     }
     return obj;
   },
@@ -709,6 +745,8 @@ export const GetUserAccountBalanceHistoryRequest = {
   ): GetUserAccountBalanceHistoryRequest {
     const message = createBaseGetUserAccountBalanceHistoryRequest();
     message.userId = object.userId ?? 0;
+    message.pageNumber = object.pageNumber ?? 0;
+    message.pageSize = object.pageSize ?? 0;
     return message;
   },
 };
@@ -781,13 +819,19 @@ export const GetUserAccountBalanceHistoryResponse = {
 };
 
 function createBaseGetAccountBalanceHistoryRequest(): GetAccountBalanceHistoryRequest {
-  return { plaidAccountId: "" };
+  return { plaidAccountId: "", pageNumber: 0, pageSize: 0 };
 }
 
 export const GetAccountBalanceHistoryRequest = {
   encode(message: GetAccountBalanceHistoryRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.plaidAccountId !== "") {
       writer.uint32(10).string(message.plaidAccountId);
+    }
+    if (message.pageNumber !== 0) {
+      writer.uint32(16).int32(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      writer.uint32(24).int32(message.pageSize);
     }
     return writer;
   },
@@ -806,6 +850,20 @@ export const GetAccountBalanceHistoryRequest = {
 
           message.plaidAccountId = reader.string();
           continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.pageNumber = reader.int32();
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.pageSize = reader.int32();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -816,13 +874,23 @@ export const GetAccountBalanceHistoryRequest = {
   },
 
   fromJSON(object: any): GetAccountBalanceHistoryRequest {
-    return { plaidAccountId: isSet(object.plaidAccountId) ? String(object.plaidAccountId) : "" };
+    return {
+      plaidAccountId: isSet(object.plaidAccountId) ? String(object.plaidAccountId) : "",
+      pageNumber: isSet(object.pageNumber) ? Number(object.pageNumber) : 0,
+      pageSize: isSet(object.pageSize) ? Number(object.pageSize) : 0,
+    };
   },
 
   toJSON(message: GetAccountBalanceHistoryRequest): unknown {
     const obj: any = {};
     if (message.plaidAccountId !== "") {
       obj.plaidAccountId = message.plaidAccountId;
+    }
+    if (message.pageNumber !== 0) {
+      obj.pageNumber = Math.round(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      obj.pageSize = Math.round(message.pageSize);
     }
     return obj;
   },
@@ -836,6 +904,8 @@ export const GetAccountBalanceHistoryRequest = {
   ): GetAccountBalanceHistoryRequest {
     const message = createBaseGetAccountBalanceHistoryRequest();
     message.plaidAccountId = object.plaidAccountId ?? "";
+    message.pageNumber = object.pageNumber ?? 0;
+    message.pageSize = object.pageSize ?? 0;
     return message;
   },
 };

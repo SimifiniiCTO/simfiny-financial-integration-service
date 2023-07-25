@@ -593,6 +593,10 @@ func (m *GetUserAccountBalanceHistoryRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
+	// no validation rules for PageNumber
+
+	// no validation rules for PageSize
+
 	if len(errors) > 0 {
 		return GetUserAccountBalanceHistoryRequestMultiError(errors)
 	}
@@ -837,6 +841,10 @@ func (m *GetAccountBalanceHistoryRequest) validate(all bool) error {
 	var errors []error
 
 	// no validation rules for PlaidAccountId
+
+	// no validation rules for PageNumber
+
+	// no validation rules for PageSize
 
 	if len(errors) > 0 {
 		return GetAccountBalanceHistoryRequestMultiError(errors)
