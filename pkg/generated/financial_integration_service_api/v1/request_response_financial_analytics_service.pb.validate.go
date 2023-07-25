@@ -2371,6 +2371,269 @@ var _ interface {
 	ErrorName() string
 } = GetCategoryMonthlyTransactionCountResponseValidationError{}
 
+// Validate checks the field values on
+// ListCategoryMonthlyTransactionCountRequest with the rules defined in the
+// proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *ListCategoryMonthlyTransactionCountRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on
+// ListCategoryMonthlyTransactionCountRequest with the rules defined in the
+// proto definition for this message. If any rules are violated, the result is
+// a list of violation errors wrapped in
+// ListCategoryMonthlyTransactionCountRequestMultiError, or nil if none found.
+func (m *ListCategoryMonthlyTransactionCountRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ListCategoryMonthlyTransactionCountRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if m.GetUserId() <= 0 {
+		err := ListCategoryMonthlyTransactionCountRequestValidationError{
+			field:  "UserId",
+			reason: "value must be greater than 0",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	// no validation rules for PageNumber
+
+	// no validation rules for PageSize
+
+	if len(errors) > 0 {
+		return ListCategoryMonthlyTransactionCountRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// ListCategoryMonthlyTransactionCountRequestMultiError is an error wrapping
+// multiple validation errors returned by
+// ListCategoryMonthlyTransactionCountRequest.ValidateAll() if the designated
+// constraints aren't met.
+type ListCategoryMonthlyTransactionCountRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ListCategoryMonthlyTransactionCountRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ListCategoryMonthlyTransactionCountRequestMultiError) AllErrors() []error { return m }
+
+// ListCategoryMonthlyTransactionCountRequestValidationError is the validation
+// error returned by ListCategoryMonthlyTransactionCountRequest.Validate if
+// the designated constraints aren't met.
+type ListCategoryMonthlyTransactionCountRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ListCategoryMonthlyTransactionCountRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ListCategoryMonthlyTransactionCountRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ListCategoryMonthlyTransactionCountRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ListCategoryMonthlyTransactionCountRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ListCategoryMonthlyTransactionCountRequestValidationError) ErrorName() string {
+	return "ListCategoryMonthlyTransactionCountRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ListCategoryMonthlyTransactionCountRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sListCategoryMonthlyTransactionCountRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ListCategoryMonthlyTransactionCountRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ListCategoryMonthlyTransactionCountRequestValidationError{}
+
+// Validate checks the field values on
+// ListCategoryMonthlyTransactionCountResponse with the rules defined in the
+// proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *ListCategoryMonthlyTransactionCountResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on
+// ListCategoryMonthlyTransactionCountResponse with the rules defined in the
+// proto definition for this message. If any rules are violated, the result is
+// a list of violation errors wrapped in
+// ListCategoryMonthlyTransactionCountResponseMultiError, or nil if none found.
+func (m *ListCategoryMonthlyTransactionCountResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ListCategoryMonthlyTransactionCountResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	for idx, item := range m.GetCategoryMonthlyTransactionCount() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ListCategoryMonthlyTransactionCountResponseValidationError{
+						field:  fmt.Sprintf("CategoryMonthlyTransactionCount[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ListCategoryMonthlyTransactionCountResponseValidationError{
+						field:  fmt.Sprintf("CategoryMonthlyTransactionCount[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ListCategoryMonthlyTransactionCountResponseValidationError{
+					field:  fmt.Sprintf("CategoryMonthlyTransactionCount[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	// no validation rules for NextPageNumber
+
+	if len(errors) > 0 {
+		return ListCategoryMonthlyTransactionCountResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// ListCategoryMonthlyTransactionCountResponseMultiError is an error wrapping
+// multiple validation errors returned by
+// ListCategoryMonthlyTransactionCountResponse.ValidateAll() if the designated
+// constraints aren't met.
+type ListCategoryMonthlyTransactionCountResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ListCategoryMonthlyTransactionCountResponseMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ListCategoryMonthlyTransactionCountResponseMultiError) AllErrors() []error { return m }
+
+// ListCategoryMonthlyTransactionCountResponseValidationError is the validation
+// error returned by ListCategoryMonthlyTransactionCountResponse.Validate if
+// the designated constraints aren't met.
+type ListCategoryMonthlyTransactionCountResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ListCategoryMonthlyTransactionCountResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ListCategoryMonthlyTransactionCountResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ListCategoryMonthlyTransactionCountResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ListCategoryMonthlyTransactionCountResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ListCategoryMonthlyTransactionCountResponseValidationError) ErrorName() string {
+	return "ListCategoryMonthlyTransactionCountResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ListCategoryMonthlyTransactionCountResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sListCategoryMonthlyTransactionCountResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ListCategoryMonthlyTransactionCountResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ListCategoryMonthlyTransactionCountResponseValidationError{}
+
 // Validate checks the field values on GetDebtToIncomeRatioRequest with the
 // rules defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
@@ -2623,6 +2886,263 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = GetDebtToIncomeRatioResponseValidationError{}
+
+// Validate checks the field values on ListDebtToIncomeRatioRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ListDebtToIncomeRatioRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ListDebtToIncomeRatioRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ListDebtToIncomeRatioRequestMultiError, or nil if none found.
+func (m *ListDebtToIncomeRatioRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ListDebtToIncomeRatioRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if m.GetUserId() <= 0 {
+		err := ListDebtToIncomeRatioRequestValidationError{
+			field:  "UserId",
+			reason: "value must be greater than 0",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	// no validation rules for PageNumber
+
+	// no validation rules for PageSize
+
+	if len(errors) > 0 {
+		return ListDebtToIncomeRatioRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// ListDebtToIncomeRatioRequestMultiError is an error wrapping multiple
+// validation errors returned by ListDebtToIncomeRatioRequest.ValidateAll() if
+// the designated constraints aren't met.
+type ListDebtToIncomeRatioRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ListDebtToIncomeRatioRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ListDebtToIncomeRatioRequestMultiError) AllErrors() []error { return m }
+
+// ListDebtToIncomeRatioRequestValidationError is the validation error returned
+// by ListDebtToIncomeRatioRequest.Validate if the designated constraints
+// aren't met.
+type ListDebtToIncomeRatioRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ListDebtToIncomeRatioRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ListDebtToIncomeRatioRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ListDebtToIncomeRatioRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ListDebtToIncomeRatioRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ListDebtToIncomeRatioRequestValidationError) ErrorName() string {
+	return "ListDebtToIncomeRatioRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ListDebtToIncomeRatioRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sListDebtToIncomeRatioRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ListDebtToIncomeRatioRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ListDebtToIncomeRatioRequestValidationError{}
+
+// Validate checks the field values on ListDebtToIncomeRatioResponse with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ListDebtToIncomeRatioResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ListDebtToIncomeRatioResponse with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the result is a list of violation errors wrapped in
+// ListDebtToIncomeRatioResponseMultiError, or nil if none found.
+func (m *ListDebtToIncomeRatioResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ListDebtToIncomeRatioResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	for idx, item := range m.GetDebtToIncomeRatios() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ListDebtToIncomeRatioResponseValidationError{
+						field:  fmt.Sprintf("DebtToIncomeRatios[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ListDebtToIncomeRatioResponseValidationError{
+						field:  fmt.Sprintf("DebtToIncomeRatios[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ListDebtToIncomeRatioResponseValidationError{
+					field:  fmt.Sprintf("DebtToIncomeRatios[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	// no validation rules for NextPageNumber
+
+	if len(errors) > 0 {
+		return ListDebtToIncomeRatioResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// ListDebtToIncomeRatioResponseMultiError is an error wrapping multiple
+// validation errors returned by ListDebtToIncomeRatioResponse.ValidateAll()
+// if the designated constraints aren't met.
+type ListDebtToIncomeRatioResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ListDebtToIncomeRatioResponseMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ListDebtToIncomeRatioResponseMultiError) AllErrors() []error { return m }
+
+// ListDebtToIncomeRatioResponseValidationError is the validation error
+// returned by ListDebtToIncomeRatioResponse.Validate if the designated
+// constraints aren't met.
+type ListDebtToIncomeRatioResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ListDebtToIncomeRatioResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ListDebtToIncomeRatioResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ListDebtToIncomeRatioResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ListDebtToIncomeRatioResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ListDebtToIncomeRatioResponseValidationError) ErrorName() string {
+	return "ListDebtToIncomeRatioResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ListDebtToIncomeRatioResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sListDebtToIncomeRatioResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ListDebtToIncomeRatioResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ListDebtToIncomeRatioResponseValidationError{}
 
 // Validate checks the field values on GetExpenseMetricsRequest with the rules
 // defined in the proto definition for this message. If any rules are
@@ -2877,6 +3397,261 @@ var _ interface {
 	ErrorName() string
 } = GetExpenseMetricsResponseValidationError{}
 
+// Validate checks the field values on ListExpenseMetricsRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ListExpenseMetricsRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ListExpenseMetricsRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ListExpenseMetricsRequestMultiError, or nil if none found.
+func (m *ListExpenseMetricsRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ListExpenseMetricsRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if m.GetUserId() <= 0 {
+		err := ListExpenseMetricsRequestValidationError{
+			field:  "UserId",
+			reason: "value must be greater than 0",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	// no validation rules for PageNumber
+
+	// no validation rules for PageSize
+
+	if len(errors) > 0 {
+		return ListExpenseMetricsRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// ListExpenseMetricsRequestMultiError is an error wrapping multiple validation
+// errors returned by ListExpenseMetricsRequest.ValidateAll() if the
+// designated constraints aren't met.
+type ListExpenseMetricsRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ListExpenseMetricsRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ListExpenseMetricsRequestMultiError) AllErrors() []error { return m }
+
+// ListExpenseMetricsRequestValidationError is the validation error returned by
+// ListExpenseMetricsRequest.Validate if the designated constraints aren't met.
+type ListExpenseMetricsRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ListExpenseMetricsRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ListExpenseMetricsRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ListExpenseMetricsRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ListExpenseMetricsRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ListExpenseMetricsRequestValidationError) ErrorName() string {
+	return "ListExpenseMetricsRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ListExpenseMetricsRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sListExpenseMetricsRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ListExpenseMetricsRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ListExpenseMetricsRequestValidationError{}
+
+// Validate checks the field values on ListExpenseMetricsResponse with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ListExpenseMetricsResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ListExpenseMetricsResponse with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ListExpenseMetricsResponseMultiError, or nil if none found.
+func (m *ListExpenseMetricsResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ListExpenseMetricsResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	for idx, item := range m.GetExpenseMetrics() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ListExpenseMetricsResponseValidationError{
+						field:  fmt.Sprintf("ExpenseMetrics[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ListExpenseMetricsResponseValidationError{
+						field:  fmt.Sprintf("ExpenseMetrics[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ListExpenseMetricsResponseValidationError{
+					field:  fmt.Sprintf("ExpenseMetrics[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	// no validation rules for NextPageNumber
+
+	if len(errors) > 0 {
+		return ListExpenseMetricsResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// ListExpenseMetricsResponseMultiError is an error wrapping multiple
+// validation errors returned by ListExpenseMetricsResponse.ValidateAll() if
+// the designated constraints aren't met.
+type ListExpenseMetricsResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ListExpenseMetricsResponseMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ListExpenseMetricsResponseMultiError) AllErrors() []error { return m }
+
+// ListExpenseMetricsResponseValidationError is the validation error returned
+// by ListExpenseMetricsResponse.Validate if the designated constraints aren't met.
+type ListExpenseMetricsResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ListExpenseMetricsResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ListExpenseMetricsResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ListExpenseMetricsResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ListExpenseMetricsResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ListExpenseMetricsResponseValidationError) ErrorName() string {
+	return "ListExpenseMetricsResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ListExpenseMetricsResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sListExpenseMetricsResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ListExpenseMetricsResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ListExpenseMetricsResponseValidationError{}
+
 // Validate checks the field values on GetFinancialProfileRequest with the
 // rules defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
@@ -3128,6 +3903,263 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = GetFinancialProfileResponseValidationError{}
+
+// Validate checks the field values on ListFinancialProfileRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ListFinancialProfileRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ListFinancialProfileRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ListFinancialProfileRequestMultiError, or nil if none found.
+func (m *ListFinancialProfileRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ListFinancialProfileRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if m.GetUserId() <= 0 {
+		err := ListFinancialProfileRequestValidationError{
+			field:  "UserId",
+			reason: "value must be greater than 0",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	// no validation rules for PageNumber
+
+	// no validation rules for PageSize
+
+	if len(errors) > 0 {
+		return ListFinancialProfileRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// ListFinancialProfileRequestMultiError is an error wrapping multiple
+// validation errors returned by ListFinancialProfileRequest.ValidateAll() if
+// the designated constraints aren't met.
+type ListFinancialProfileRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ListFinancialProfileRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ListFinancialProfileRequestMultiError) AllErrors() []error { return m }
+
+// ListFinancialProfileRequestValidationError is the validation error returned
+// by ListFinancialProfileRequest.Validate if the designated constraints
+// aren't met.
+type ListFinancialProfileRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ListFinancialProfileRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ListFinancialProfileRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ListFinancialProfileRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ListFinancialProfileRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ListFinancialProfileRequestValidationError) ErrorName() string {
+	return "ListFinancialProfileRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ListFinancialProfileRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sListFinancialProfileRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ListFinancialProfileRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ListFinancialProfileRequestValidationError{}
+
+// Validate checks the field values on ListFinancialProfileResponse with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ListFinancialProfileResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ListFinancialProfileResponse with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ListFinancialProfileResponseMultiError, or nil if none found.
+func (m *ListFinancialProfileResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ListFinancialProfileResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	for idx, item := range m.GetFinancialProfiles() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ListFinancialProfileResponseValidationError{
+						field:  fmt.Sprintf("FinancialProfiles[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ListFinancialProfileResponseValidationError{
+						field:  fmt.Sprintf("FinancialProfiles[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ListFinancialProfileResponseValidationError{
+					field:  fmt.Sprintf("FinancialProfiles[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	// no validation rules for NextPageNumber
+
+	if len(errors) > 0 {
+		return ListFinancialProfileResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// ListFinancialProfileResponseMultiError is an error wrapping multiple
+// validation errors returned by ListFinancialProfileResponse.ValidateAll() if
+// the designated constraints aren't met.
+type ListFinancialProfileResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ListFinancialProfileResponseMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ListFinancialProfileResponseMultiError) AllErrors() []error { return m }
+
+// ListFinancialProfileResponseValidationError is the validation error returned
+// by ListFinancialProfileResponse.Validate if the designated constraints
+// aren't met.
+type ListFinancialProfileResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ListFinancialProfileResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ListFinancialProfileResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ListFinancialProfileResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ListFinancialProfileResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ListFinancialProfileResponseValidationError) ErrorName() string {
+	return "ListFinancialProfileResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ListFinancialProfileResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sListFinancialProfileResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ListFinancialProfileResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ListFinancialProfileResponseValidationError{}
 
 // Validate checks the field values on GetIncomeExpenseRatioRequest with the
 // rules defined in the proto definition for this message. If any rules are
@@ -3382,6 +4414,263 @@ var _ interface {
 	ErrorName() string
 } = GetIncomeExpenseRatioResponseValidationError{}
 
+// Validate checks the field values on ListIncomeExpenseRatioRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ListIncomeExpenseRatioRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ListIncomeExpenseRatioRequest with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the result is a list of violation errors wrapped in
+// ListIncomeExpenseRatioRequestMultiError, or nil if none found.
+func (m *ListIncomeExpenseRatioRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ListIncomeExpenseRatioRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if m.GetUserId() <= 0 {
+		err := ListIncomeExpenseRatioRequestValidationError{
+			field:  "UserId",
+			reason: "value must be greater than 0",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	// no validation rules for PageNumber
+
+	// no validation rules for PageSize
+
+	if len(errors) > 0 {
+		return ListIncomeExpenseRatioRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// ListIncomeExpenseRatioRequestMultiError is an error wrapping multiple
+// validation errors returned by ListIncomeExpenseRatioRequest.ValidateAll()
+// if the designated constraints aren't met.
+type ListIncomeExpenseRatioRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ListIncomeExpenseRatioRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ListIncomeExpenseRatioRequestMultiError) AllErrors() []error { return m }
+
+// ListIncomeExpenseRatioRequestValidationError is the validation error
+// returned by ListIncomeExpenseRatioRequest.Validate if the designated
+// constraints aren't met.
+type ListIncomeExpenseRatioRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ListIncomeExpenseRatioRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ListIncomeExpenseRatioRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ListIncomeExpenseRatioRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ListIncomeExpenseRatioRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ListIncomeExpenseRatioRequestValidationError) ErrorName() string {
+	return "ListIncomeExpenseRatioRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ListIncomeExpenseRatioRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sListIncomeExpenseRatioRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ListIncomeExpenseRatioRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ListIncomeExpenseRatioRequestValidationError{}
+
+// Validate checks the field values on ListIncomeExpenseRatioResponse with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ListIncomeExpenseRatioResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ListIncomeExpenseRatioResponse with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the result is a list of violation errors wrapped in
+// ListIncomeExpenseRatioResponseMultiError, or nil if none found.
+func (m *ListIncomeExpenseRatioResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ListIncomeExpenseRatioResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	for idx, item := range m.GetIncomeExpenseRatios() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ListIncomeExpenseRatioResponseValidationError{
+						field:  fmt.Sprintf("IncomeExpenseRatios[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ListIncomeExpenseRatioResponseValidationError{
+						field:  fmt.Sprintf("IncomeExpenseRatios[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ListIncomeExpenseRatioResponseValidationError{
+					field:  fmt.Sprintf("IncomeExpenseRatios[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	// no validation rules for NextPageNumber
+
+	if len(errors) > 0 {
+		return ListIncomeExpenseRatioResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// ListIncomeExpenseRatioResponseMultiError is an error wrapping multiple
+// validation errors returned by ListIncomeExpenseRatioResponse.ValidateAll()
+// if the designated constraints aren't met.
+type ListIncomeExpenseRatioResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ListIncomeExpenseRatioResponseMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ListIncomeExpenseRatioResponseMultiError) AllErrors() []error { return m }
+
+// ListIncomeExpenseRatioResponseValidationError is the validation error
+// returned by ListIncomeExpenseRatioResponse.Validate if the designated
+// constraints aren't met.
+type ListIncomeExpenseRatioResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ListIncomeExpenseRatioResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ListIncomeExpenseRatioResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ListIncomeExpenseRatioResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ListIncomeExpenseRatioResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ListIncomeExpenseRatioResponseValidationError) ErrorName() string {
+	return "ListIncomeExpenseRatioResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ListIncomeExpenseRatioResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sListIncomeExpenseRatioResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ListIncomeExpenseRatioResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ListIncomeExpenseRatioResponseValidationError{}
+
 // Validate checks the field values on GetIncomeMetricsRequest with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
@@ -3634,6 +4923,261 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = GetIncomeMetricsResponseValidationError{}
+
+// Validate checks the field values on ListIncomeMetricsRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ListIncomeMetricsRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ListIncomeMetricsRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ListIncomeMetricsRequestMultiError, or nil if none found.
+func (m *ListIncomeMetricsRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ListIncomeMetricsRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if m.GetUserId() <= 0 {
+		err := ListIncomeMetricsRequestValidationError{
+			field:  "UserId",
+			reason: "value must be greater than 0",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	// no validation rules for PageNumber
+
+	// no validation rules for PageSize
+
+	if len(errors) > 0 {
+		return ListIncomeMetricsRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// ListIncomeMetricsRequestMultiError is an error wrapping multiple validation
+// errors returned by ListIncomeMetricsRequest.ValidateAll() if the designated
+// constraints aren't met.
+type ListIncomeMetricsRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ListIncomeMetricsRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ListIncomeMetricsRequestMultiError) AllErrors() []error { return m }
+
+// ListIncomeMetricsRequestValidationError is the validation error returned by
+// ListIncomeMetricsRequest.Validate if the designated constraints aren't met.
+type ListIncomeMetricsRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ListIncomeMetricsRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ListIncomeMetricsRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ListIncomeMetricsRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ListIncomeMetricsRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ListIncomeMetricsRequestValidationError) ErrorName() string {
+	return "ListIncomeMetricsRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ListIncomeMetricsRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sListIncomeMetricsRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ListIncomeMetricsRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ListIncomeMetricsRequestValidationError{}
+
+// Validate checks the field values on ListIncomeMetricsResponse with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ListIncomeMetricsResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ListIncomeMetricsResponse with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ListIncomeMetricsResponseMultiError, or nil if none found.
+func (m *ListIncomeMetricsResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ListIncomeMetricsResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	for idx, item := range m.GetIncomeMetrics() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ListIncomeMetricsResponseValidationError{
+						field:  fmt.Sprintf("IncomeMetrics[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ListIncomeMetricsResponseValidationError{
+						field:  fmt.Sprintf("IncomeMetrics[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ListIncomeMetricsResponseValidationError{
+					field:  fmt.Sprintf("IncomeMetrics[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	// no validation rules for NextPageNumber
+
+	if len(errors) > 0 {
+		return ListIncomeMetricsResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// ListIncomeMetricsResponseMultiError is an error wrapping multiple validation
+// errors returned by ListIncomeMetricsResponse.ValidateAll() if the
+// designated constraints aren't met.
+type ListIncomeMetricsResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ListIncomeMetricsResponseMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ListIncomeMetricsResponseMultiError) AllErrors() []error { return m }
+
+// ListIncomeMetricsResponseValidationError is the validation error returned by
+// ListIncomeMetricsResponse.Validate if the designated constraints aren't met.
+type ListIncomeMetricsResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ListIncomeMetricsResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ListIncomeMetricsResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ListIncomeMetricsResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ListIncomeMetricsResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ListIncomeMetricsResponseValidationError) ErrorName() string {
+	return "ListIncomeMetricsResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ListIncomeMetricsResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sListIncomeMetricsResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ListIncomeMetricsResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ListIncomeMetricsResponseValidationError{}
 
 // Validate checks the field values on GetMerchantMonthlyExpenditureRequest
 // with the rules defined in the proto definition for this message. If any
@@ -3894,6 +5438,268 @@ var _ interface {
 	ErrorName() string
 } = GetMerchantMonthlyExpenditureResponseValidationError{}
 
+// Validate checks the field values on ListMerchantMonthlyExpenditureRequest
+// with the rules defined in the proto definition for this message. If any
+// rules are violated, the first error encountered is returned, or nil if
+// there are no violations.
+func (m *ListMerchantMonthlyExpenditureRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ListMerchantMonthlyExpenditureRequest
+// with the rules defined in the proto definition for this message. If any
+// rules are violated, the result is a list of violation errors wrapped in
+// ListMerchantMonthlyExpenditureRequestMultiError, or nil if none found.
+func (m *ListMerchantMonthlyExpenditureRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ListMerchantMonthlyExpenditureRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if m.GetUserId() <= 0 {
+		err := ListMerchantMonthlyExpenditureRequestValidationError{
+			field:  "UserId",
+			reason: "value must be greater than 0",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	// no validation rules for PageNumber
+
+	// no validation rules for PageSize
+
+	if len(errors) > 0 {
+		return ListMerchantMonthlyExpenditureRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// ListMerchantMonthlyExpenditureRequestMultiError is an error wrapping
+// multiple validation errors returned by
+// ListMerchantMonthlyExpenditureRequest.ValidateAll() if the designated
+// constraints aren't met.
+type ListMerchantMonthlyExpenditureRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ListMerchantMonthlyExpenditureRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ListMerchantMonthlyExpenditureRequestMultiError) AllErrors() []error { return m }
+
+// ListMerchantMonthlyExpenditureRequestValidationError is the validation error
+// returned by ListMerchantMonthlyExpenditureRequest.Validate if the
+// designated constraints aren't met.
+type ListMerchantMonthlyExpenditureRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ListMerchantMonthlyExpenditureRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ListMerchantMonthlyExpenditureRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ListMerchantMonthlyExpenditureRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ListMerchantMonthlyExpenditureRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ListMerchantMonthlyExpenditureRequestValidationError) ErrorName() string {
+	return "ListMerchantMonthlyExpenditureRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ListMerchantMonthlyExpenditureRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sListMerchantMonthlyExpenditureRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ListMerchantMonthlyExpenditureRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ListMerchantMonthlyExpenditureRequestValidationError{}
+
+// Validate checks the field values on ListMerchantMonthlyExpenditureResponse
+// with the rules defined in the proto definition for this message. If any
+// rules are violated, the first error encountered is returned, or nil if
+// there are no violations.
+func (m *ListMerchantMonthlyExpenditureResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on
+// ListMerchantMonthlyExpenditureResponse with the rules defined in the proto
+// definition for this message. If any rules are violated, the result is a
+// list of violation errors wrapped in
+// ListMerchantMonthlyExpenditureResponseMultiError, or nil if none found.
+func (m *ListMerchantMonthlyExpenditureResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ListMerchantMonthlyExpenditureResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	for idx, item := range m.GetMerchantMonthlyExpenditures() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ListMerchantMonthlyExpenditureResponseValidationError{
+						field:  fmt.Sprintf("MerchantMonthlyExpenditures[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ListMerchantMonthlyExpenditureResponseValidationError{
+						field:  fmt.Sprintf("MerchantMonthlyExpenditures[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ListMerchantMonthlyExpenditureResponseValidationError{
+					field:  fmt.Sprintf("MerchantMonthlyExpenditures[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	// no validation rules for NextPageNumber
+
+	if len(errors) > 0 {
+		return ListMerchantMonthlyExpenditureResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// ListMerchantMonthlyExpenditureResponseMultiError is an error wrapping
+// multiple validation errors returned by
+// ListMerchantMonthlyExpenditureResponse.ValidateAll() if the designated
+// constraints aren't met.
+type ListMerchantMonthlyExpenditureResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ListMerchantMonthlyExpenditureResponseMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ListMerchantMonthlyExpenditureResponseMultiError) AllErrors() []error { return m }
+
+// ListMerchantMonthlyExpenditureResponseValidationError is the validation
+// error returned by ListMerchantMonthlyExpenditureResponse.Validate if the
+// designated constraints aren't met.
+type ListMerchantMonthlyExpenditureResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ListMerchantMonthlyExpenditureResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ListMerchantMonthlyExpenditureResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ListMerchantMonthlyExpenditureResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ListMerchantMonthlyExpenditureResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ListMerchantMonthlyExpenditureResponseValidationError) ErrorName() string {
+	return "ListMerchantMonthlyExpenditureResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ListMerchantMonthlyExpenditureResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sListMerchantMonthlyExpenditureResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ListMerchantMonthlyExpenditureResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ListMerchantMonthlyExpenditureResponseValidationError{}
+
 // Validate checks the field values on GetMonthlyBalanceRequest with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
@@ -3928,6 +5734,10 @@ func (m *GetMonthlyBalanceRequest) validate(all bool) error {
 	}
 
 	// no validation rules for Month
+
+	// no validation rules for PageNumber
+
+	// no validation rules for PageSize
 
 	if len(errors) > 0 {
 		return GetMonthlyBalanceRequestMultiError(errors)
@@ -4065,6 +5875,8 @@ func (m *GetMonthlyBalanceResponse) validate(all bool) error {
 
 	}
 
+	// no validation rules for NextPageNumber
+
 	if len(errors) > 0 {
 		return GetMonthlyBalanceResponseMultiError(errors)
 	}
@@ -4179,6 +5991,10 @@ func (m *GetMonthlyExpenditureRequest) validate(all bool) error {
 	}
 
 	// no validation rules for Month
+
+	// no validation rules for PageNumber
+
+	// no validation rules for PageSize
 
 	if len(errors) > 0 {
 		return GetMonthlyExpenditureRequestMultiError(errors)
@@ -4317,6 +6133,8 @@ func (m *GetMonthlyExpenditureResponse) validate(all bool) error {
 
 	}
 
+	// no validation rules for NextPageNumber
+
 	if len(errors) > 0 {
 		return GetMonthlyExpenditureResponseMultiError(errors)
 	}
@@ -4432,6 +6250,10 @@ func (m *GetMonthlyIncomeRequest) validate(all bool) error {
 	}
 
 	// no validation rules for Month
+
+	// no validation rules for PageNumber
+
+	// no validation rules for PageSize
 
 	if len(errors) > 0 {
 		return GetMonthlyIncomeRequestMultiError(errors)
@@ -4569,6 +6391,8 @@ func (m *GetMonthlyIncomeResponse) validate(all bool) error {
 
 	}
 
+	// no validation rules for NextPageNumber
+
 	if len(errors) > 0 {
 		return GetMonthlyIncomeResponseMultiError(errors)
 	}
@@ -4683,6 +6507,10 @@ func (m *GetMonthlySavingsRequest) validate(all bool) error {
 	}
 
 	// no validation rules for Month
+
+	// no validation rules for PageNumber
+
+	// no validation rules for PageSize
 
 	if len(errors) > 0 {
 		return GetMonthlySavingsRequestMultiError(errors)
@@ -4820,6 +6648,8 @@ func (m *GetMonthlySavingsResponse) validate(all bool) error {
 
 	}
 
+	// no validation rules for NextPageNumber
+
 	if len(errors) > 0 {
 		return GetMonthlySavingsResponseMultiError(errors)
 	}
@@ -4938,6 +6768,10 @@ func (m *GetMonthlyTotalQuantityBySecurityAndUserRequest) validate(all bool) err
 	// no validation rules for Month
 
 	// no validation rules for SecurityId
+
+	// no validation rules for PageNumber
+
+	// no validation rules for PageSize
 
 	if len(errors) > 0 {
 		return GetMonthlyTotalQuantityBySecurityAndUserRequestMultiError(errors)
@@ -5084,6 +6918,8 @@ func (m *GetMonthlyTotalQuantityBySecurityAndUserResponse) validate(all bool) er
 
 	}
 
+	// no validation rules for NextPageNumber
+
 	if len(errors) > 0 {
 		return GetMonthlyTotalQuantityBySecurityAndUserResponseMultiError(errors)
 	}
@@ -5208,6 +7044,10 @@ func (m *GetMonthlyTransactionCountRequest) validate(all bool) error {
 	}
 
 	// no validation rules for Month
+
+	// no validation rules for PageNumber
+
+	// no validation rules for PageSize
 
 	if len(errors) > 0 {
 		return GetMonthlyTransactionCountRequestMultiError(errors)
@@ -5348,6 +7188,8 @@ func (m *GetMonthlyTransactionCountResponse) validate(all bool) error {
 
 	}
 
+	// no validation rules for NextPageNumber
+
 	if len(errors) > 0 {
 		return GetMonthlyTransactionCountResponseMultiError(errors)
 	}
@@ -5468,6 +7310,10 @@ func (m *GetPaymentChannelMonthlyExpenditureRequest) validate(all bool) error {
 	// no validation rules for Month
 
 	// no validation rules for PaymentChannel
+
+	// no validation rules for PageNumber
+
+	// no validation rules for PageSize
 
 	if len(errors) > 0 {
 		return GetPaymentChannelMonthlyExpenditureRequestMultiError(errors)
@@ -5609,6 +7455,8 @@ func (m *GetPaymentChannelMonthlyExpenditureResponse) validate(all bool) error {
 
 	}
 
+	// no validation rules for NextPageNumber
+
 	if len(errors) > 0 {
 		return GetPaymentChannelMonthlyExpenditureResponseMultiError(errors)
 	}
@@ -5726,6 +7574,10 @@ func (m *GetTotalInvestmentBySecurityRequest) validate(all bool) error {
 	}
 
 	// no validation rules for SecurityId
+
+	// no validation rules for PageNumber
+
+	// no validation rules for PageSize
 
 	if len(errors) > 0 {
 		return GetTotalInvestmentBySecurityRequestMultiError(errors)
@@ -5865,6 +7717,8 @@ func (m *GetTotalInvestmentBySecurityResponse) validate(all bool) error {
 		}
 
 	}
+
+	// no validation rules for NextPageNumber
 
 	if len(errors) > 0 {
 		return GetTotalInvestmentBySecurityResponseMultiError(errors)

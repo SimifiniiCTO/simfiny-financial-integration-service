@@ -1,12 +1,12 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "$ref": "#/definitions/GetMonthlyExpenditureResponse",
+    "$ref": "#/definitions/ListDebtToIncomeRatioResponse",
     "definitions": {
-        "GetMonthlyExpenditureResponse": {
+        "ListDebtToIncomeRatioResponse": {
             "properties": {
-                "monthly_expenditures": {
+                "debt_to_income_ratios": {
                     "items": {
-                        "$ref": "#/definitions/financial_integration_service_api.v1.MonthlyExpenditure"
+                        "$ref": "#/definitions/financial_integration_service_api.v1.DebtToIncomeRatio"
                     },
                     "type": "array"
                 },
@@ -16,14 +16,14 @@
             },
             "additionalProperties": true,
             "type": "object",
-            "title": "Get Monthly Expenditure Response"
+            "title": "List Debt To Income Ratio Response"
         },
-        "financial_integration_service_api.v1.MonthlyExpenditure": {
+        "financial_integration_service_api.v1.DebtToIncomeRatio": {
             "properties": {
                 "month": {
                     "type": "integer"
                 },
-                "total_spending": {
+                "ratio": {
                     "type": "number"
                 },
                 "user_id": {
@@ -32,8 +32,8 @@
             },
             "additionalProperties": true,
             "type": "object",
-            "title": "Monthly Expenditure",
-            "description": "MonthlyExpenditure This message is used to represent the monthly expenditure of a user."
+            "title": "Debt To Income Ratio",
+            "description": "DebtToIncomeRatio This message is used to represent the debt to income ratio of a user."
         }
     }
 }

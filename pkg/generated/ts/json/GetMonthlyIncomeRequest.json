@@ -9,6 +9,13 @@
                 },
                 "month": {
                     "type": "integer"
+                },
+                "page_number": {
+                    "type": "integer"
+                },
+                "page_size": {
+                    "type": "integer",
+                    "description": "Number of items to return per page."
                 }
             },
             "additionalProperties": true,

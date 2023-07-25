@@ -146,6 +146,19 @@ export interface GetCategoryMonthlyTransactionCountResponse {
   categoryMonthlyTransactionCount: CategoryMonthlyTransactionCount[];
 }
 
+export interface ListCategoryMonthlyTransactionCountRequest {
+  /** has to be present and defined */
+  userId: number;
+  pageNumber: number;
+  /** Number of items to return per page. */
+  pageSize: number;
+}
+
+export interface ListCategoryMonthlyTransactionCountResponse {
+  categoryMonthlyTransactionCount: CategoryMonthlyTransactionCount[];
+  nextPageNumber: number;
+}
+
 export interface GetDebtToIncomeRatioRequest {
   userId: number;
   /** optional */
@@ -154,6 +167,18 @@ export interface GetDebtToIncomeRatioRequest {
 
 export interface GetDebtToIncomeRatioResponse {
   debtToIncomeRatios: DebtToIncomeRatio[];
+}
+
+export interface ListDebtToIncomeRatioRequest {
+  userId: number;
+  pageNumber: number;
+  /** Number of items to return per page. */
+  pageSize: number;
+}
+
+export interface ListDebtToIncomeRatioResponse {
+  debtToIncomeRatios: DebtToIncomeRatio[];
+  nextPageNumber: number;
 }
 
 export interface GetExpenseMetricsRequest {
@@ -168,6 +193,18 @@ export interface GetExpenseMetricsResponse {
   expenseMetrics: ExpenseMetrics[];
 }
 
+export interface ListExpenseMetricsRequest {
+  userId: number;
+  pageNumber: number;
+  /** Number of items to return per page. */
+  pageSize: number;
+}
+
+export interface ListExpenseMetricsResponse {
+  expenseMetrics: ExpenseMetrics[];
+  nextPageNumber: number;
+}
+
 /** GetFinancialProfile RPC */
 export interface GetFinancialProfileRequest {
   userId: number;
@@ -179,6 +216,19 @@ export interface GetFinancialProfileResponse {
   financialProfiles: FinancialProfile[];
 }
 
+/** GetFinancialProfile RPC */
+export interface ListFinancialProfileRequest {
+  userId: number;
+  pageNumber: number;
+  /** Number of items to return per page. */
+  pageSize: number;
+}
+
+export interface ListFinancialProfileResponse {
+  financialProfiles: FinancialProfile[];
+  nextPageNumber: number;
+}
+
 /** GetIncomeExpenseRatio RPC */
 export interface GetIncomeExpenseRatioRequest {
   userId: number;
@@ -188,6 +238,18 @@ export interface GetIncomeExpenseRatioRequest {
 
 export interface GetIncomeExpenseRatioResponse {
   incomeExpenseRatios: IncomeExpenseRatio[];
+}
+
+export interface ListIncomeExpenseRatioRequest {
+  userId: number;
+  pageNumber: number;
+  /** Number of items to return per page. */
+  pageSize: number;
+}
+
+export interface ListIncomeExpenseRatioResponse {
+  incomeExpenseRatios: IncomeExpenseRatio[];
+  nextPageNumber: number;
 }
 
 /** GetIncomeMetrics RPC */
@@ -203,6 +265,19 @@ export interface GetIncomeMetricsResponse {
   incomeMetrics: IncomeMetrics[];
 }
 
+/** GetIncomeMetrics RPC */
+export interface ListIncomeMetricsRequest {
+  userId: number;
+  pageNumber: number;
+  /** Number of items to return per page. */
+  pageSize: number;
+}
+
+export interface ListIncomeMetricsResponse {
+  incomeMetrics: IncomeMetrics[];
+  nextPageNumber: number;
+}
+
 /** GetMerchantMonthlyExpenditure RPC */
 export interface GetMerchantMonthlyExpenditureRequest {
   userId: number;
@@ -216,45 +291,73 @@ export interface GetMerchantMonthlyExpenditureResponse {
   merchantMonthlyExpenditures: MerchantMonthlyExpenditure[];
 }
 
+export interface ListMerchantMonthlyExpenditureRequest {
+  userId: number;
+  pageNumber: number;
+  /** Number of items to return per page. */
+  pageSize: number;
+}
+
+export interface ListMerchantMonthlyExpenditureResponse {
+  merchantMonthlyExpenditures: MerchantMonthlyExpenditure[];
+  nextPageNumber: number;
+}
+
 /** For example, for MonthlyBalance: */
 export interface GetMonthlyBalanceRequest {
   userId: number;
   /** optional */
   month: number;
+  pageNumber: number;
+  /** Number of items to return per page. */
+  pageSize: number;
 }
 
 export interface GetMonthlyBalanceResponse {
   monthlyBalances: MonthlyBalance[];
+  nextPageNumber: number;
 }
 
 /** GetMonthlyExpenditure RPC */
 export interface GetMonthlyExpenditureRequest {
   userId: number;
   month: number;
+  pageNumber: number;
+  /** Number of items to return per page. */
+  pageSize: number;
 }
 
 export interface GetMonthlyExpenditureResponse {
   monthlyExpenditures: MonthlyExpenditure[];
+  nextPageNumber: number;
 }
 
 /** GetMonthlyIncome RPC */
 export interface GetMonthlyIncomeRequest {
   userId: number;
   month: number;
+  pageNumber: number;
+  /** Number of items to return per page. */
+  pageSize: number;
 }
 
 export interface GetMonthlyIncomeResponse {
   monthlyIncomes: MonthlyIncome[];
+  nextPageNumber: number;
 }
 
 /** GetMonthlySavings RPC */
 export interface GetMonthlySavingsRequest {
   userId: number;
   month: number;
+  pageNumber: number;
+  /** Number of items to return per page. */
+  pageSize: number;
 }
 
 export interface GetMonthlySavingsResponse {
   monthlySavings: MonthlySavings[];
+  nextPageNumber: number;
 }
 
 /** GetMonthlyTotalQuantityBySecurityAndUser RPC */
@@ -262,20 +365,28 @@ export interface GetMonthlyTotalQuantityBySecurityAndUserRequest {
   userId: number;
   month: number;
   securityId: string;
+  pageNumber: number;
+  /** Number of items to return per page. */
+  pageSize: number;
 }
 
 export interface GetMonthlyTotalQuantityBySecurityAndUserResponse {
   monthlyTotalQuantityBySecurityAndUser: MonthlyTotalQuantityBySecurityAndUser[];
+  nextPageNumber: number;
 }
 
 /** GetMonthlyTransactionCount RPC */
 export interface GetMonthlyTransactionCountRequest {
   userId: number;
   month: number;
+  pageNumber: number;
+  /** Number of items to return per page. */
+  pageSize: number;
 }
 
 export interface GetMonthlyTransactionCountResponse {
   monthlyTransactionCounts: MonthlyTransactionCount[];
+  nextPageNumber: number;
 }
 
 /** GetPaymentChannelMonthlyExpenditure RPC */
@@ -283,20 +394,28 @@ export interface GetPaymentChannelMonthlyExpenditureRequest {
   userId: number;
   month: number;
   paymentChannel: string;
+  pageNumber: number;
+  /** Number of items to return per page. */
+  pageSize: number;
 }
 
 export interface GetPaymentChannelMonthlyExpenditureResponse {
   paymentChannelMonthlyExpenditure: PaymentChannelMonthlyExpenditure[];
+  nextPageNumber: number;
 }
 
 /** GetTotalInvestmentBySecurity RPC */
 export interface GetTotalInvestmentBySecurityRequest {
   userId: number;
   securityId: string;
+  pageNumber: number;
+  /** Number of items to return per page. */
+  pageSize: number;
 }
 
 export interface GetTotalInvestmentBySecurityResponse {
   totalInvestmentBySecurity: TotalInvestmentBySecurity[];
+  nextPageNumber: number;
 }
 
 export interface GetMelodyFinancialContextRequest {
@@ -1862,6 +1981,184 @@ export const GetCategoryMonthlyTransactionCountResponse = {
   },
 };
 
+function createBaseListCategoryMonthlyTransactionCountRequest(): ListCategoryMonthlyTransactionCountRequest {
+  return { userId: 0, pageNumber: 0, pageSize: 0 };
+}
+
+export const ListCategoryMonthlyTransactionCountRequest = {
+  encode(message: ListCategoryMonthlyTransactionCountRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.userId !== 0) {
+      writer.uint32(8).uint64(message.userId);
+    }
+    if (message.pageNumber !== 0) {
+      writer.uint32(16).int32(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      writer.uint32(24).int32(message.pageSize);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ListCategoryMonthlyTransactionCountRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListCategoryMonthlyTransactionCountRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.userId = longToNumber(reader.uint64() as Long);
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.pageNumber = reader.int32();
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.pageSize = reader.int32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListCategoryMonthlyTransactionCountRequest {
+    return {
+      userId: isSet(object.userId) ? Number(object.userId) : 0,
+      pageNumber: isSet(object.pageNumber) ? Number(object.pageNumber) : 0,
+      pageSize: isSet(object.pageSize) ? Number(object.pageSize) : 0,
+    };
+  },
+
+  toJSON(message: ListCategoryMonthlyTransactionCountRequest): unknown {
+    const obj: any = {};
+    if (message.userId !== 0) {
+      obj.userId = Math.round(message.userId);
+    }
+    if (message.pageNumber !== 0) {
+      obj.pageNumber = Math.round(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      obj.pageSize = Math.round(message.pageSize);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListCategoryMonthlyTransactionCountRequest>, I>>(
+    base?: I,
+  ): ListCategoryMonthlyTransactionCountRequest {
+    return ListCategoryMonthlyTransactionCountRequest.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ListCategoryMonthlyTransactionCountRequest>, I>>(
+    object: I,
+  ): ListCategoryMonthlyTransactionCountRequest {
+    const message = createBaseListCategoryMonthlyTransactionCountRequest();
+    message.userId = object.userId ?? 0;
+    message.pageNumber = object.pageNumber ?? 0;
+    message.pageSize = object.pageSize ?? 0;
+    return message;
+  },
+};
+
+function createBaseListCategoryMonthlyTransactionCountResponse(): ListCategoryMonthlyTransactionCountResponse {
+  return { categoryMonthlyTransactionCount: [], nextPageNumber: 0 };
+}
+
+export const ListCategoryMonthlyTransactionCountResponse = {
+  encode(message: ListCategoryMonthlyTransactionCountResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.categoryMonthlyTransactionCount) {
+      CategoryMonthlyTransactionCount.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.nextPageNumber !== 0) {
+      writer.uint32(16).int32(message.nextPageNumber);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ListCategoryMonthlyTransactionCountResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListCategoryMonthlyTransactionCountResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.categoryMonthlyTransactionCount.push(CategoryMonthlyTransactionCount.decode(reader, reader.uint32()));
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.nextPageNumber = reader.int32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListCategoryMonthlyTransactionCountResponse {
+    return {
+      categoryMonthlyTransactionCount: Array.isArray(object?.categoryMonthlyTransactionCount)
+        ? object.categoryMonthlyTransactionCount.map((e: any) => CategoryMonthlyTransactionCount.fromJSON(e))
+        : [],
+      nextPageNumber: isSet(object.nextPageNumber) ? Number(object.nextPageNumber) : 0,
+    };
+  },
+
+  toJSON(message: ListCategoryMonthlyTransactionCountResponse): unknown {
+    const obj: any = {};
+    if (message.categoryMonthlyTransactionCount?.length) {
+      obj.categoryMonthlyTransactionCount = message.categoryMonthlyTransactionCount.map((e) =>
+        CategoryMonthlyTransactionCount.toJSON(e)
+      );
+    }
+    if (message.nextPageNumber !== 0) {
+      obj.nextPageNumber = Math.round(message.nextPageNumber);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListCategoryMonthlyTransactionCountResponse>, I>>(
+    base?: I,
+  ): ListCategoryMonthlyTransactionCountResponse {
+    return ListCategoryMonthlyTransactionCountResponse.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ListCategoryMonthlyTransactionCountResponse>, I>>(
+    object: I,
+  ): ListCategoryMonthlyTransactionCountResponse {
+    const message = createBaseListCategoryMonthlyTransactionCountResponse();
+    message.categoryMonthlyTransactionCount =
+      object.categoryMonthlyTransactionCount?.map((e) => CategoryMonthlyTransactionCount.fromPartial(e)) || [];
+    message.nextPageNumber = object.nextPageNumber ?? 0;
+    return message;
+  },
+};
+
 function createBaseGetDebtToIncomeRatioRequest(): GetDebtToIncomeRatioRequest {
   return { userId: 0, month: 0 };
 }
@@ -1995,6 +2292,175 @@ export const GetDebtToIncomeRatioResponse = {
   fromPartial<I extends Exact<DeepPartial<GetDebtToIncomeRatioResponse>, I>>(object: I): GetDebtToIncomeRatioResponse {
     const message = createBaseGetDebtToIncomeRatioResponse();
     message.debtToIncomeRatios = object.debtToIncomeRatios?.map((e) => DebtToIncomeRatio.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseListDebtToIncomeRatioRequest(): ListDebtToIncomeRatioRequest {
+  return { userId: 0, pageNumber: 0, pageSize: 0 };
+}
+
+export const ListDebtToIncomeRatioRequest = {
+  encode(message: ListDebtToIncomeRatioRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.userId !== 0) {
+      writer.uint32(8).uint64(message.userId);
+    }
+    if (message.pageNumber !== 0) {
+      writer.uint32(16).int32(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      writer.uint32(24).int32(message.pageSize);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ListDebtToIncomeRatioRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListDebtToIncomeRatioRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.userId = longToNumber(reader.uint64() as Long);
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.pageNumber = reader.int32();
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.pageSize = reader.int32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListDebtToIncomeRatioRequest {
+    return {
+      userId: isSet(object.userId) ? Number(object.userId) : 0,
+      pageNumber: isSet(object.pageNumber) ? Number(object.pageNumber) : 0,
+      pageSize: isSet(object.pageSize) ? Number(object.pageSize) : 0,
+    };
+  },
+
+  toJSON(message: ListDebtToIncomeRatioRequest): unknown {
+    const obj: any = {};
+    if (message.userId !== 0) {
+      obj.userId = Math.round(message.userId);
+    }
+    if (message.pageNumber !== 0) {
+      obj.pageNumber = Math.round(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      obj.pageSize = Math.round(message.pageSize);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListDebtToIncomeRatioRequest>, I>>(base?: I): ListDebtToIncomeRatioRequest {
+    return ListDebtToIncomeRatioRequest.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ListDebtToIncomeRatioRequest>, I>>(object: I): ListDebtToIncomeRatioRequest {
+    const message = createBaseListDebtToIncomeRatioRequest();
+    message.userId = object.userId ?? 0;
+    message.pageNumber = object.pageNumber ?? 0;
+    message.pageSize = object.pageSize ?? 0;
+    return message;
+  },
+};
+
+function createBaseListDebtToIncomeRatioResponse(): ListDebtToIncomeRatioResponse {
+  return { debtToIncomeRatios: [], nextPageNumber: 0 };
+}
+
+export const ListDebtToIncomeRatioResponse = {
+  encode(message: ListDebtToIncomeRatioResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.debtToIncomeRatios) {
+      DebtToIncomeRatio.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.nextPageNumber !== 0) {
+      writer.uint32(16).int32(message.nextPageNumber);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ListDebtToIncomeRatioResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListDebtToIncomeRatioResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.debtToIncomeRatios.push(DebtToIncomeRatio.decode(reader, reader.uint32()));
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.nextPageNumber = reader.int32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListDebtToIncomeRatioResponse {
+    return {
+      debtToIncomeRatios: Array.isArray(object?.debtToIncomeRatios)
+        ? object.debtToIncomeRatios.map((e: any) => DebtToIncomeRatio.fromJSON(e))
+        : [],
+      nextPageNumber: isSet(object.nextPageNumber) ? Number(object.nextPageNumber) : 0,
+    };
+  },
+
+  toJSON(message: ListDebtToIncomeRatioResponse): unknown {
+    const obj: any = {};
+    if (message.debtToIncomeRatios?.length) {
+      obj.debtToIncomeRatios = message.debtToIncomeRatios.map((e) => DebtToIncomeRatio.toJSON(e));
+    }
+    if (message.nextPageNumber !== 0) {
+      obj.nextPageNumber = Math.round(message.nextPageNumber);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListDebtToIncomeRatioResponse>, I>>(base?: I): ListDebtToIncomeRatioResponse {
+    return ListDebtToIncomeRatioResponse.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ListDebtToIncomeRatioResponse>, I>>(
+    object: I,
+  ): ListDebtToIncomeRatioResponse {
+    const message = createBaseListDebtToIncomeRatioResponse();
+    message.debtToIncomeRatios = object.debtToIncomeRatios?.map((e) => DebtToIncomeRatio.fromPartial(e)) || [];
+    message.nextPageNumber = object.nextPageNumber ?? 0;
     return message;
   },
 };
@@ -2153,6 +2619,173 @@ export const GetExpenseMetricsResponse = {
   },
 };
 
+function createBaseListExpenseMetricsRequest(): ListExpenseMetricsRequest {
+  return { userId: 0, pageNumber: 0, pageSize: 0 };
+}
+
+export const ListExpenseMetricsRequest = {
+  encode(message: ListExpenseMetricsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.userId !== 0) {
+      writer.uint32(8).uint64(message.userId);
+    }
+    if (message.pageNumber !== 0) {
+      writer.uint32(16).int32(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      writer.uint32(24).int32(message.pageSize);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ListExpenseMetricsRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListExpenseMetricsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.userId = longToNumber(reader.uint64() as Long);
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.pageNumber = reader.int32();
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.pageSize = reader.int32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListExpenseMetricsRequest {
+    return {
+      userId: isSet(object.userId) ? Number(object.userId) : 0,
+      pageNumber: isSet(object.pageNumber) ? Number(object.pageNumber) : 0,
+      pageSize: isSet(object.pageSize) ? Number(object.pageSize) : 0,
+    };
+  },
+
+  toJSON(message: ListExpenseMetricsRequest): unknown {
+    const obj: any = {};
+    if (message.userId !== 0) {
+      obj.userId = Math.round(message.userId);
+    }
+    if (message.pageNumber !== 0) {
+      obj.pageNumber = Math.round(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      obj.pageSize = Math.round(message.pageSize);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListExpenseMetricsRequest>, I>>(base?: I): ListExpenseMetricsRequest {
+    return ListExpenseMetricsRequest.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ListExpenseMetricsRequest>, I>>(object: I): ListExpenseMetricsRequest {
+    const message = createBaseListExpenseMetricsRequest();
+    message.userId = object.userId ?? 0;
+    message.pageNumber = object.pageNumber ?? 0;
+    message.pageSize = object.pageSize ?? 0;
+    return message;
+  },
+};
+
+function createBaseListExpenseMetricsResponse(): ListExpenseMetricsResponse {
+  return { expenseMetrics: [], nextPageNumber: 0 };
+}
+
+export const ListExpenseMetricsResponse = {
+  encode(message: ListExpenseMetricsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.expenseMetrics) {
+      ExpenseMetrics.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.nextPageNumber !== 0) {
+      writer.uint32(16).int32(message.nextPageNumber);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ListExpenseMetricsResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListExpenseMetricsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.expenseMetrics.push(ExpenseMetrics.decode(reader, reader.uint32()));
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.nextPageNumber = reader.int32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListExpenseMetricsResponse {
+    return {
+      expenseMetrics: Array.isArray(object?.expenseMetrics)
+        ? object.expenseMetrics.map((e: any) => ExpenseMetrics.fromJSON(e))
+        : [],
+      nextPageNumber: isSet(object.nextPageNumber) ? Number(object.nextPageNumber) : 0,
+    };
+  },
+
+  toJSON(message: ListExpenseMetricsResponse): unknown {
+    const obj: any = {};
+    if (message.expenseMetrics?.length) {
+      obj.expenseMetrics = message.expenseMetrics.map((e) => ExpenseMetrics.toJSON(e));
+    }
+    if (message.nextPageNumber !== 0) {
+      obj.nextPageNumber = Math.round(message.nextPageNumber);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListExpenseMetricsResponse>, I>>(base?: I): ListExpenseMetricsResponse {
+    return ListExpenseMetricsResponse.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ListExpenseMetricsResponse>, I>>(object: I): ListExpenseMetricsResponse {
+    const message = createBaseListExpenseMetricsResponse();
+    message.expenseMetrics = object.expenseMetrics?.map((e) => ExpenseMetrics.fromPartial(e)) || [];
+    message.nextPageNumber = object.nextPageNumber ?? 0;
+    return message;
+  },
+};
+
 function createBaseGetFinancialProfileRequest(): GetFinancialProfileRequest {
   return { userId: 0, month: 0 };
 }
@@ -2286,6 +2919,173 @@ export const GetFinancialProfileResponse = {
   fromPartial<I extends Exact<DeepPartial<GetFinancialProfileResponse>, I>>(object: I): GetFinancialProfileResponse {
     const message = createBaseGetFinancialProfileResponse();
     message.financialProfiles = object.financialProfiles?.map((e) => FinancialProfile.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseListFinancialProfileRequest(): ListFinancialProfileRequest {
+  return { userId: 0, pageNumber: 0, pageSize: 0 };
+}
+
+export const ListFinancialProfileRequest = {
+  encode(message: ListFinancialProfileRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.userId !== 0) {
+      writer.uint32(8).uint64(message.userId);
+    }
+    if (message.pageNumber !== 0) {
+      writer.uint32(16).int32(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      writer.uint32(24).int32(message.pageSize);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ListFinancialProfileRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListFinancialProfileRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.userId = longToNumber(reader.uint64() as Long);
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.pageNumber = reader.int32();
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.pageSize = reader.int32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListFinancialProfileRequest {
+    return {
+      userId: isSet(object.userId) ? Number(object.userId) : 0,
+      pageNumber: isSet(object.pageNumber) ? Number(object.pageNumber) : 0,
+      pageSize: isSet(object.pageSize) ? Number(object.pageSize) : 0,
+    };
+  },
+
+  toJSON(message: ListFinancialProfileRequest): unknown {
+    const obj: any = {};
+    if (message.userId !== 0) {
+      obj.userId = Math.round(message.userId);
+    }
+    if (message.pageNumber !== 0) {
+      obj.pageNumber = Math.round(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      obj.pageSize = Math.round(message.pageSize);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListFinancialProfileRequest>, I>>(base?: I): ListFinancialProfileRequest {
+    return ListFinancialProfileRequest.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ListFinancialProfileRequest>, I>>(object: I): ListFinancialProfileRequest {
+    const message = createBaseListFinancialProfileRequest();
+    message.userId = object.userId ?? 0;
+    message.pageNumber = object.pageNumber ?? 0;
+    message.pageSize = object.pageSize ?? 0;
+    return message;
+  },
+};
+
+function createBaseListFinancialProfileResponse(): ListFinancialProfileResponse {
+  return { financialProfiles: [], nextPageNumber: 0 };
+}
+
+export const ListFinancialProfileResponse = {
+  encode(message: ListFinancialProfileResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.financialProfiles) {
+      FinancialProfile.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.nextPageNumber !== 0) {
+      writer.uint32(16).int32(message.nextPageNumber);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ListFinancialProfileResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListFinancialProfileResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.financialProfiles.push(FinancialProfile.decode(reader, reader.uint32()));
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.nextPageNumber = reader.int32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListFinancialProfileResponse {
+    return {
+      financialProfiles: Array.isArray(object?.financialProfiles)
+        ? object.financialProfiles.map((e: any) => FinancialProfile.fromJSON(e))
+        : [],
+      nextPageNumber: isSet(object.nextPageNumber) ? Number(object.nextPageNumber) : 0,
+    };
+  },
+
+  toJSON(message: ListFinancialProfileResponse): unknown {
+    const obj: any = {};
+    if (message.financialProfiles?.length) {
+      obj.financialProfiles = message.financialProfiles.map((e) => FinancialProfile.toJSON(e));
+    }
+    if (message.nextPageNumber !== 0) {
+      obj.nextPageNumber = Math.round(message.nextPageNumber);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListFinancialProfileResponse>, I>>(base?: I): ListFinancialProfileResponse {
+    return ListFinancialProfileResponse.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ListFinancialProfileResponse>, I>>(object: I): ListFinancialProfileResponse {
+    const message = createBaseListFinancialProfileResponse();
+    message.financialProfiles = object.financialProfiles?.map((e) => FinancialProfile.fromPartial(e)) || [];
+    message.nextPageNumber = object.nextPageNumber ?? 0;
     return message;
   },
 };
@@ -2425,6 +3225,177 @@ export const GetIncomeExpenseRatioResponse = {
   ): GetIncomeExpenseRatioResponse {
     const message = createBaseGetIncomeExpenseRatioResponse();
     message.incomeExpenseRatios = object.incomeExpenseRatios?.map((e) => IncomeExpenseRatio.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseListIncomeExpenseRatioRequest(): ListIncomeExpenseRatioRequest {
+  return { userId: 0, pageNumber: 0, pageSize: 0 };
+}
+
+export const ListIncomeExpenseRatioRequest = {
+  encode(message: ListIncomeExpenseRatioRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.userId !== 0) {
+      writer.uint32(8).uint64(message.userId);
+    }
+    if (message.pageNumber !== 0) {
+      writer.uint32(16).int32(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      writer.uint32(24).int32(message.pageSize);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ListIncomeExpenseRatioRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListIncomeExpenseRatioRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.userId = longToNumber(reader.uint64() as Long);
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.pageNumber = reader.int32();
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.pageSize = reader.int32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListIncomeExpenseRatioRequest {
+    return {
+      userId: isSet(object.userId) ? Number(object.userId) : 0,
+      pageNumber: isSet(object.pageNumber) ? Number(object.pageNumber) : 0,
+      pageSize: isSet(object.pageSize) ? Number(object.pageSize) : 0,
+    };
+  },
+
+  toJSON(message: ListIncomeExpenseRatioRequest): unknown {
+    const obj: any = {};
+    if (message.userId !== 0) {
+      obj.userId = Math.round(message.userId);
+    }
+    if (message.pageNumber !== 0) {
+      obj.pageNumber = Math.round(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      obj.pageSize = Math.round(message.pageSize);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListIncomeExpenseRatioRequest>, I>>(base?: I): ListIncomeExpenseRatioRequest {
+    return ListIncomeExpenseRatioRequest.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ListIncomeExpenseRatioRequest>, I>>(
+    object: I,
+  ): ListIncomeExpenseRatioRequest {
+    const message = createBaseListIncomeExpenseRatioRequest();
+    message.userId = object.userId ?? 0;
+    message.pageNumber = object.pageNumber ?? 0;
+    message.pageSize = object.pageSize ?? 0;
+    return message;
+  },
+};
+
+function createBaseListIncomeExpenseRatioResponse(): ListIncomeExpenseRatioResponse {
+  return { incomeExpenseRatios: [], nextPageNumber: 0 };
+}
+
+export const ListIncomeExpenseRatioResponse = {
+  encode(message: ListIncomeExpenseRatioResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.incomeExpenseRatios) {
+      IncomeExpenseRatio.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.nextPageNumber !== 0) {
+      writer.uint32(16).int32(message.nextPageNumber);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ListIncomeExpenseRatioResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListIncomeExpenseRatioResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.incomeExpenseRatios.push(IncomeExpenseRatio.decode(reader, reader.uint32()));
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.nextPageNumber = reader.int32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListIncomeExpenseRatioResponse {
+    return {
+      incomeExpenseRatios: Array.isArray(object?.incomeExpenseRatios)
+        ? object.incomeExpenseRatios.map((e: any) => IncomeExpenseRatio.fromJSON(e))
+        : [],
+      nextPageNumber: isSet(object.nextPageNumber) ? Number(object.nextPageNumber) : 0,
+    };
+  },
+
+  toJSON(message: ListIncomeExpenseRatioResponse): unknown {
+    const obj: any = {};
+    if (message.incomeExpenseRatios?.length) {
+      obj.incomeExpenseRatios = message.incomeExpenseRatios.map((e) => IncomeExpenseRatio.toJSON(e));
+    }
+    if (message.nextPageNumber !== 0) {
+      obj.nextPageNumber = Math.round(message.nextPageNumber);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListIncomeExpenseRatioResponse>, I>>(base?: I): ListIncomeExpenseRatioResponse {
+    return ListIncomeExpenseRatioResponse.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ListIncomeExpenseRatioResponse>, I>>(
+    object: I,
+  ): ListIncomeExpenseRatioResponse {
+    const message = createBaseListIncomeExpenseRatioResponse();
+    message.incomeExpenseRatios = object.incomeExpenseRatios?.map((e) => IncomeExpenseRatio.fromPartial(e)) || [];
+    message.nextPageNumber = object.nextPageNumber ?? 0;
     return message;
   },
 };
@@ -2579,6 +3550,173 @@ export const GetIncomeMetricsResponse = {
   fromPartial<I extends Exact<DeepPartial<GetIncomeMetricsResponse>, I>>(object: I): GetIncomeMetricsResponse {
     const message = createBaseGetIncomeMetricsResponse();
     message.incomeMetrics = object.incomeMetrics?.map((e) => IncomeMetrics.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseListIncomeMetricsRequest(): ListIncomeMetricsRequest {
+  return { userId: 0, pageNumber: 0, pageSize: 0 };
+}
+
+export const ListIncomeMetricsRequest = {
+  encode(message: ListIncomeMetricsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.userId !== 0) {
+      writer.uint32(8).uint64(message.userId);
+    }
+    if (message.pageNumber !== 0) {
+      writer.uint32(16).int32(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      writer.uint32(24).int32(message.pageSize);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ListIncomeMetricsRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListIncomeMetricsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.userId = longToNumber(reader.uint64() as Long);
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.pageNumber = reader.int32();
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.pageSize = reader.int32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListIncomeMetricsRequest {
+    return {
+      userId: isSet(object.userId) ? Number(object.userId) : 0,
+      pageNumber: isSet(object.pageNumber) ? Number(object.pageNumber) : 0,
+      pageSize: isSet(object.pageSize) ? Number(object.pageSize) : 0,
+    };
+  },
+
+  toJSON(message: ListIncomeMetricsRequest): unknown {
+    const obj: any = {};
+    if (message.userId !== 0) {
+      obj.userId = Math.round(message.userId);
+    }
+    if (message.pageNumber !== 0) {
+      obj.pageNumber = Math.round(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      obj.pageSize = Math.round(message.pageSize);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListIncomeMetricsRequest>, I>>(base?: I): ListIncomeMetricsRequest {
+    return ListIncomeMetricsRequest.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ListIncomeMetricsRequest>, I>>(object: I): ListIncomeMetricsRequest {
+    const message = createBaseListIncomeMetricsRequest();
+    message.userId = object.userId ?? 0;
+    message.pageNumber = object.pageNumber ?? 0;
+    message.pageSize = object.pageSize ?? 0;
+    return message;
+  },
+};
+
+function createBaseListIncomeMetricsResponse(): ListIncomeMetricsResponse {
+  return { incomeMetrics: [], nextPageNumber: 0 };
+}
+
+export const ListIncomeMetricsResponse = {
+  encode(message: ListIncomeMetricsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.incomeMetrics) {
+      IncomeMetrics.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.nextPageNumber !== 0) {
+      writer.uint32(16).int32(message.nextPageNumber);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ListIncomeMetricsResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListIncomeMetricsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.incomeMetrics.push(IncomeMetrics.decode(reader, reader.uint32()));
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.nextPageNumber = reader.int32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListIncomeMetricsResponse {
+    return {
+      incomeMetrics: Array.isArray(object?.incomeMetrics)
+        ? object.incomeMetrics.map((e: any) => IncomeMetrics.fromJSON(e))
+        : [],
+      nextPageNumber: isSet(object.nextPageNumber) ? Number(object.nextPageNumber) : 0,
+    };
+  },
+
+  toJSON(message: ListIncomeMetricsResponse): unknown {
+    const obj: any = {};
+    if (message.incomeMetrics?.length) {
+      obj.incomeMetrics = message.incomeMetrics.map((e) => IncomeMetrics.toJSON(e));
+    }
+    if (message.nextPageNumber !== 0) {
+      obj.nextPageNumber = Math.round(message.nextPageNumber);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListIncomeMetricsResponse>, I>>(base?: I): ListIncomeMetricsResponse {
+    return ListIncomeMetricsResponse.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ListIncomeMetricsResponse>, I>>(object: I): ListIncomeMetricsResponse {
+    const message = createBaseListIncomeMetricsResponse();
+    message.incomeMetrics = object.incomeMetrics?.map((e) => IncomeMetrics.fromPartial(e)) || [];
+    message.nextPageNumber = object.nextPageNumber ?? 0;
     return message;
   },
 };
@@ -2746,8 +3884,186 @@ export const GetMerchantMonthlyExpenditureResponse = {
   },
 };
 
+function createBaseListMerchantMonthlyExpenditureRequest(): ListMerchantMonthlyExpenditureRequest {
+  return { userId: 0, pageNumber: 0, pageSize: 0 };
+}
+
+export const ListMerchantMonthlyExpenditureRequest = {
+  encode(message: ListMerchantMonthlyExpenditureRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.userId !== 0) {
+      writer.uint32(8).uint64(message.userId);
+    }
+    if (message.pageNumber !== 0) {
+      writer.uint32(16).int32(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      writer.uint32(24).int32(message.pageSize);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ListMerchantMonthlyExpenditureRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListMerchantMonthlyExpenditureRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.userId = longToNumber(reader.uint64() as Long);
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.pageNumber = reader.int32();
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.pageSize = reader.int32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListMerchantMonthlyExpenditureRequest {
+    return {
+      userId: isSet(object.userId) ? Number(object.userId) : 0,
+      pageNumber: isSet(object.pageNumber) ? Number(object.pageNumber) : 0,
+      pageSize: isSet(object.pageSize) ? Number(object.pageSize) : 0,
+    };
+  },
+
+  toJSON(message: ListMerchantMonthlyExpenditureRequest): unknown {
+    const obj: any = {};
+    if (message.userId !== 0) {
+      obj.userId = Math.round(message.userId);
+    }
+    if (message.pageNumber !== 0) {
+      obj.pageNumber = Math.round(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      obj.pageSize = Math.round(message.pageSize);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListMerchantMonthlyExpenditureRequest>, I>>(
+    base?: I,
+  ): ListMerchantMonthlyExpenditureRequest {
+    return ListMerchantMonthlyExpenditureRequest.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ListMerchantMonthlyExpenditureRequest>, I>>(
+    object: I,
+  ): ListMerchantMonthlyExpenditureRequest {
+    const message = createBaseListMerchantMonthlyExpenditureRequest();
+    message.userId = object.userId ?? 0;
+    message.pageNumber = object.pageNumber ?? 0;
+    message.pageSize = object.pageSize ?? 0;
+    return message;
+  },
+};
+
+function createBaseListMerchantMonthlyExpenditureResponse(): ListMerchantMonthlyExpenditureResponse {
+  return { merchantMonthlyExpenditures: [], nextPageNumber: 0 };
+}
+
+export const ListMerchantMonthlyExpenditureResponse = {
+  encode(message: ListMerchantMonthlyExpenditureResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.merchantMonthlyExpenditures) {
+      MerchantMonthlyExpenditure.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.nextPageNumber !== 0) {
+      writer.uint32(16).int32(message.nextPageNumber);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ListMerchantMonthlyExpenditureResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListMerchantMonthlyExpenditureResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.merchantMonthlyExpenditures.push(MerchantMonthlyExpenditure.decode(reader, reader.uint32()));
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.nextPageNumber = reader.int32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListMerchantMonthlyExpenditureResponse {
+    return {
+      merchantMonthlyExpenditures: Array.isArray(object?.merchantMonthlyExpenditures)
+        ? object.merchantMonthlyExpenditures.map((e: any) => MerchantMonthlyExpenditure.fromJSON(e))
+        : [],
+      nextPageNumber: isSet(object.nextPageNumber) ? Number(object.nextPageNumber) : 0,
+    };
+  },
+
+  toJSON(message: ListMerchantMonthlyExpenditureResponse): unknown {
+    const obj: any = {};
+    if (message.merchantMonthlyExpenditures?.length) {
+      obj.merchantMonthlyExpenditures = message.merchantMonthlyExpenditures.map((e) =>
+        MerchantMonthlyExpenditure.toJSON(e)
+      );
+    }
+    if (message.nextPageNumber !== 0) {
+      obj.nextPageNumber = Math.round(message.nextPageNumber);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListMerchantMonthlyExpenditureResponse>, I>>(
+    base?: I,
+  ): ListMerchantMonthlyExpenditureResponse {
+    return ListMerchantMonthlyExpenditureResponse.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ListMerchantMonthlyExpenditureResponse>, I>>(
+    object: I,
+  ): ListMerchantMonthlyExpenditureResponse {
+    const message = createBaseListMerchantMonthlyExpenditureResponse();
+    message.merchantMonthlyExpenditures =
+      object.merchantMonthlyExpenditures?.map((e) => MerchantMonthlyExpenditure.fromPartial(e)) || [];
+    message.nextPageNumber = object.nextPageNumber ?? 0;
+    return message;
+  },
+};
+
 function createBaseGetMonthlyBalanceRequest(): GetMonthlyBalanceRequest {
-  return { userId: 0, month: 0 };
+  return { userId: 0, month: 0, pageNumber: 0, pageSize: 0 };
 }
 
 export const GetMonthlyBalanceRequest = {
@@ -2757,6 +4073,12 @@ export const GetMonthlyBalanceRequest = {
     }
     if (message.month !== 0) {
       writer.uint32(16).uint32(message.month);
+    }
+    if (message.pageNumber !== 0) {
+      writer.uint32(24).int32(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      writer.uint32(32).int32(message.pageSize);
     }
     return writer;
   },
@@ -2782,6 +4104,20 @@ export const GetMonthlyBalanceRequest = {
 
           message.month = reader.uint32();
           continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.pageNumber = reader.int32();
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.pageSize = reader.int32();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -2795,6 +4131,8 @@ export const GetMonthlyBalanceRequest = {
     return {
       userId: isSet(object.userId) ? Number(object.userId) : 0,
       month: isSet(object.month) ? Number(object.month) : 0,
+      pageNumber: isSet(object.pageNumber) ? Number(object.pageNumber) : 0,
+      pageSize: isSet(object.pageSize) ? Number(object.pageSize) : 0,
     };
   },
 
@@ -2805,6 +4143,12 @@ export const GetMonthlyBalanceRequest = {
     }
     if (message.month !== 0) {
       obj.month = Math.round(message.month);
+    }
+    if (message.pageNumber !== 0) {
+      obj.pageNumber = Math.round(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      obj.pageSize = Math.round(message.pageSize);
     }
     return obj;
   },
@@ -2817,18 +4161,23 @@ export const GetMonthlyBalanceRequest = {
     const message = createBaseGetMonthlyBalanceRequest();
     message.userId = object.userId ?? 0;
     message.month = object.month ?? 0;
+    message.pageNumber = object.pageNumber ?? 0;
+    message.pageSize = object.pageSize ?? 0;
     return message;
   },
 };
 
 function createBaseGetMonthlyBalanceResponse(): GetMonthlyBalanceResponse {
-  return { monthlyBalances: [] };
+  return { monthlyBalances: [], nextPageNumber: 0 };
 }
 
 export const GetMonthlyBalanceResponse = {
   encode(message: GetMonthlyBalanceResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.monthlyBalances) {
       MonthlyBalance.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.nextPageNumber !== 0) {
+      writer.uint32(16).int32(message.nextPageNumber);
     }
     return writer;
   },
@@ -2847,6 +4196,13 @@ export const GetMonthlyBalanceResponse = {
 
           message.monthlyBalances.push(MonthlyBalance.decode(reader, reader.uint32()));
           continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.nextPageNumber = reader.int32();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -2861,6 +4217,7 @@ export const GetMonthlyBalanceResponse = {
       monthlyBalances: Array.isArray(object?.monthlyBalances)
         ? object.monthlyBalances.map((e: any) => MonthlyBalance.fromJSON(e))
         : [],
+      nextPageNumber: isSet(object.nextPageNumber) ? Number(object.nextPageNumber) : 0,
     };
   },
 
@@ -2868,6 +4225,9 @@ export const GetMonthlyBalanceResponse = {
     const obj: any = {};
     if (message.monthlyBalances?.length) {
       obj.monthlyBalances = message.monthlyBalances.map((e) => MonthlyBalance.toJSON(e));
+    }
+    if (message.nextPageNumber !== 0) {
+      obj.nextPageNumber = Math.round(message.nextPageNumber);
     }
     return obj;
   },
@@ -2879,12 +4239,13 @@ export const GetMonthlyBalanceResponse = {
   fromPartial<I extends Exact<DeepPartial<GetMonthlyBalanceResponse>, I>>(object: I): GetMonthlyBalanceResponse {
     const message = createBaseGetMonthlyBalanceResponse();
     message.monthlyBalances = object.monthlyBalances?.map((e) => MonthlyBalance.fromPartial(e)) || [];
+    message.nextPageNumber = object.nextPageNumber ?? 0;
     return message;
   },
 };
 
 function createBaseGetMonthlyExpenditureRequest(): GetMonthlyExpenditureRequest {
-  return { userId: 0, month: 0 };
+  return { userId: 0, month: 0, pageNumber: 0, pageSize: 0 };
 }
 
 export const GetMonthlyExpenditureRequest = {
@@ -2894,6 +4255,12 @@ export const GetMonthlyExpenditureRequest = {
     }
     if (message.month !== 0) {
       writer.uint32(16).uint32(message.month);
+    }
+    if (message.pageNumber !== 0) {
+      writer.uint32(24).int32(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      writer.uint32(32).int32(message.pageSize);
     }
     return writer;
   },
@@ -2919,6 +4286,20 @@ export const GetMonthlyExpenditureRequest = {
 
           message.month = reader.uint32();
           continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.pageNumber = reader.int32();
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.pageSize = reader.int32();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -2932,6 +4313,8 @@ export const GetMonthlyExpenditureRequest = {
     return {
       userId: isSet(object.userId) ? Number(object.userId) : 0,
       month: isSet(object.month) ? Number(object.month) : 0,
+      pageNumber: isSet(object.pageNumber) ? Number(object.pageNumber) : 0,
+      pageSize: isSet(object.pageSize) ? Number(object.pageSize) : 0,
     };
   },
 
@@ -2942,6 +4325,12 @@ export const GetMonthlyExpenditureRequest = {
     }
     if (message.month !== 0) {
       obj.month = Math.round(message.month);
+    }
+    if (message.pageNumber !== 0) {
+      obj.pageNumber = Math.round(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      obj.pageSize = Math.round(message.pageSize);
     }
     return obj;
   },
@@ -2954,18 +4343,23 @@ export const GetMonthlyExpenditureRequest = {
     const message = createBaseGetMonthlyExpenditureRequest();
     message.userId = object.userId ?? 0;
     message.month = object.month ?? 0;
+    message.pageNumber = object.pageNumber ?? 0;
+    message.pageSize = object.pageSize ?? 0;
     return message;
   },
 };
 
 function createBaseGetMonthlyExpenditureResponse(): GetMonthlyExpenditureResponse {
-  return { monthlyExpenditures: [] };
+  return { monthlyExpenditures: [], nextPageNumber: 0 };
 }
 
 export const GetMonthlyExpenditureResponse = {
   encode(message: GetMonthlyExpenditureResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.monthlyExpenditures) {
       MonthlyExpenditure.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.nextPageNumber !== 0) {
+      writer.uint32(16).int32(message.nextPageNumber);
     }
     return writer;
   },
@@ -2984,6 +4378,13 @@ export const GetMonthlyExpenditureResponse = {
 
           message.monthlyExpenditures.push(MonthlyExpenditure.decode(reader, reader.uint32()));
           continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.nextPageNumber = reader.int32();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -2998,6 +4399,7 @@ export const GetMonthlyExpenditureResponse = {
       monthlyExpenditures: Array.isArray(object?.monthlyExpenditures)
         ? object.monthlyExpenditures.map((e: any) => MonthlyExpenditure.fromJSON(e))
         : [],
+      nextPageNumber: isSet(object.nextPageNumber) ? Number(object.nextPageNumber) : 0,
     };
   },
 
@@ -3005,6 +4407,9 @@ export const GetMonthlyExpenditureResponse = {
     const obj: any = {};
     if (message.monthlyExpenditures?.length) {
       obj.monthlyExpenditures = message.monthlyExpenditures.map((e) => MonthlyExpenditure.toJSON(e));
+    }
+    if (message.nextPageNumber !== 0) {
+      obj.nextPageNumber = Math.round(message.nextPageNumber);
     }
     return obj;
   },
@@ -3018,12 +4423,13 @@ export const GetMonthlyExpenditureResponse = {
   ): GetMonthlyExpenditureResponse {
     const message = createBaseGetMonthlyExpenditureResponse();
     message.monthlyExpenditures = object.monthlyExpenditures?.map((e) => MonthlyExpenditure.fromPartial(e)) || [];
+    message.nextPageNumber = object.nextPageNumber ?? 0;
     return message;
   },
 };
 
 function createBaseGetMonthlyIncomeRequest(): GetMonthlyIncomeRequest {
-  return { userId: 0, month: 0 };
+  return { userId: 0, month: 0, pageNumber: 0, pageSize: 0 };
 }
 
 export const GetMonthlyIncomeRequest = {
@@ -3033,6 +4439,12 @@ export const GetMonthlyIncomeRequest = {
     }
     if (message.month !== 0) {
       writer.uint32(16).uint32(message.month);
+    }
+    if (message.pageNumber !== 0) {
+      writer.uint32(24).int32(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      writer.uint32(32).int32(message.pageSize);
     }
     return writer;
   },
@@ -3058,6 +4470,20 @@ export const GetMonthlyIncomeRequest = {
 
           message.month = reader.uint32();
           continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.pageNumber = reader.int32();
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.pageSize = reader.int32();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -3071,6 +4497,8 @@ export const GetMonthlyIncomeRequest = {
     return {
       userId: isSet(object.userId) ? Number(object.userId) : 0,
       month: isSet(object.month) ? Number(object.month) : 0,
+      pageNumber: isSet(object.pageNumber) ? Number(object.pageNumber) : 0,
+      pageSize: isSet(object.pageSize) ? Number(object.pageSize) : 0,
     };
   },
 
@@ -3081,6 +4509,12 @@ export const GetMonthlyIncomeRequest = {
     }
     if (message.month !== 0) {
       obj.month = Math.round(message.month);
+    }
+    if (message.pageNumber !== 0) {
+      obj.pageNumber = Math.round(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      obj.pageSize = Math.round(message.pageSize);
     }
     return obj;
   },
@@ -3093,18 +4527,23 @@ export const GetMonthlyIncomeRequest = {
     const message = createBaseGetMonthlyIncomeRequest();
     message.userId = object.userId ?? 0;
     message.month = object.month ?? 0;
+    message.pageNumber = object.pageNumber ?? 0;
+    message.pageSize = object.pageSize ?? 0;
     return message;
   },
 };
 
 function createBaseGetMonthlyIncomeResponse(): GetMonthlyIncomeResponse {
-  return { monthlyIncomes: [] };
+  return { monthlyIncomes: [], nextPageNumber: 0 };
 }
 
 export const GetMonthlyIncomeResponse = {
   encode(message: GetMonthlyIncomeResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.monthlyIncomes) {
       MonthlyIncome.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.nextPageNumber !== 0) {
+      writer.uint32(16).int32(message.nextPageNumber);
     }
     return writer;
   },
@@ -3123,6 +4562,13 @@ export const GetMonthlyIncomeResponse = {
 
           message.monthlyIncomes.push(MonthlyIncome.decode(reader, reader.uint32()));
           continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.nextPageNumber = reader.int32();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -3137,6 +4583,7 @@ export const GetMonthlyIncomeResponse = {
       monthlyIncomes: Array.isArray(object?.monthlyIncomes)
         ? object.monthlyIncomes.map((e: any) => MonthlyIncome.fromJSON(e))
         : [],
+      nextPageNumber: isSet(object.nextPageNumber) ? Number(object.nextPageNumber) : 0,
     };
   },
 
@@ -3144,6 +4591,9 @@ export const GetMonthlyIncomeResponse = {
     const obj: any = {};
     if (message.monthlyIncomes?.length) {
       obj.monthlyIncomes = message.monthlyIncomes.map((e) => MonthlyIncome.toJSON(e));
+    }
+    if (message.nextPageNumber !== 0) {
+      obj.nextPageNumber = Math.round(message.nextPageNumber);
     }
     return obj;
   },
@@ -3155,12 +4605,13 @@ export const GetMonthlyIncomeResponse = {
   fromPartial<I extends Exact<DeepPartial<GetMonthlyIncomeResponse>, I>>(object: I): GetMonthlyIncomeResponse {
     const message = createBaseGetMonthlyIncomeResponse();
     message.monthlyIncomes = object.monthlyIncomes?.map((e) => MonthlyIncome.fromPartial(e)) || [];
+    message.nextPageNumber = object.nextPageNumber ?? 0;
     return message;
   },
 };
 
 function createBaseGetMonthlySavingsRequest(): GetMonthlySavingsRequest {
-  return { userId: 0, month: 0 };
+  return { userId: 0, month: 0, pageNumber: 0, pageSize: 0 };
 }
 
 export const GetMonthlySavingsRequest = {
@@ -3170,6 +4621,12 @@ export const GetMonthlySavingsRequest = {
     }
     if (message.month !== 0) {
       writer.uint32(16).uint32(message.month);
+    }
+    if (message.pageNumber !== 0) {
+      writer.uint32(24).int32(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      writer.uint32(32).int32(message.pageSize);
     }
     return writer;
   },
@@ -3195,6 +4652,20 @@ export const GetMonthlySavingsRequest = {
 
           message.month = reader.uint32();
           continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.pageNumber = reader.int32();
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.pageSize = reader.int32();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -3208,6 +4679,8 @@ export const GetMonthlySavingsRequest = {
     return {
       userId: isSet(object.userId) ? Number(object.userId) : 0,
       month: isSet(object.month) ? Number(object.month) : 0,
+      pageNumber: isSet(object.pageNumber) ? Number(object.pageNumber) : 0,
+      pageSize: isSet(object.pageSize) ? Number(object.pageSize) : 0,
     };
   },
 
@@ -3218,6 +4691,12 @@ export const GetMonthlySavingsRequest = {
     }
     if (message.month !== 0) {
       obj.month = Math.round(message.month);
+    }
+    if (message.pageNumber !== 0) {
+      obj.pageNumber = Math.round(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      obj.pageSize = Math.round(message.pageSize);
     }
     return obj;
   },
@@ -3230,18 +4709,23 @@ export const GetMonthlySavingsRequest = {
     const message = createBaseGetMonthlySavingsRequest();
     message.userId = object.userId ?? 0;
     message.month = object.month ?? 0;
+    message.pageNumber = object.pageNumber ?? 0;
+    message.pageSize = object.pageSize ?? 0;
     return message;
   },
 };
 
 function createBaseGetMonthlySavingsResponse(): GetMonthlySavingsResponse {
-  return { monthlySavings: [] };
+  return { monthlySavings: [], nextPageNumber: 0 };
 }
 
 export const GetMonthlySavingsResponse = {
   encode(message: GetMonthlySavingsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.monthlySavings) {
       MonthlySavings.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.nextPageNumber !== 0) {
+      writer.uint32(16).int32(message.nextPageNumber);
     }
     return writer;
   },
@@ -3260,6 +4744,13 @@ export const GetMonthlySavingsResponse = {
 
           message.monthlySavings.push(MonthlySavings.decode(reader, reader.uint32()));
           continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.nextPageNumber = reader.int32();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -3274,6 +4765,7 @@ export const GetMonthlySavingsResponse = {
       monthlySavings: Array.isArray(object?.monthlySavings)
         ? object.monthlySavings.map((e: any) => MonthlySavings.fromJSON(e))
         : [],
+      nextPageNumber: isSet(object.nextPageNumber) ? Number(object.nextPageNumber) : 0,
     };
   },
 
@@ -3281,6 +4773,9 @@ export const GetMonthlySavingsResponse = {
     const obj: any = {};
     if (message.monthlySavings?.length) {
       obj.monthlySavings = message.monthlySavings.map((e) => MonthlySavings.toJSON(e));
+    }
+    if (message.nextPageNumber !== 0) {
+      obj.nextPageNumber = Math.round(message.nextPageNumber);
     }
     return obj;
   },
@@ -3292,12 +4787,13 @@ export const GetMonthlySavingsResponse = {
   fromPartial<I extends Exact<DeepPartial<GetMonthlySavingsResponse>, I>>(object: I): GetMonthlySavingsResponse {
     const message = createBaseGetMonthlySavingsResponse();
     message.monthlySavings = object.monthlySavings?.map((e) => MonthlySavings.fromPartial(e)) || [];
+    message.nextPageNumber = object.nextPageNumber ?? 0;
     return message;
   },
 };
 
 function createBaseGetMonthlyTotalQuantityBySecurityAndUserRequest(): GetMonthlyTotalQuantityBySecurityAndUserRequest {
-  return { userId: 0, month: 0, securityId: "" };
+  return { userId: 0, month: 0, securityId: "", pageNumber: 0, pageSize: 0 };
 }
 
 export const GetMonthlyTotalQuantityBySecurityAndUserRequest = {
@@ -3313,6 +4809,12 @@ export const GetMonthlyTotalQuantityBySecurityAndUserRequest = {
     }
     if (message.securityId !== "") {
       writer.uint32(26).string(message.securityId);
+    }
+    if (message.pageNumber !== 0) {
+      writer.uint32(32).int32(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      writer.uint32(40).int32(message.pageSize);
     }
     return writer;
   },
@@ -3345,6 +4847,20 @@ export const GetMonthlyTotalQuantityBySecurityAndUserRequest = {
 
           message.securityId = reader.string();
           continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.pageNumber = reader.int32();
+          continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.pageSize = reader.int32();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -3359,6 +4875,8 @@ export const GetMonthlyTotalQuantityBySecurityAndUserRequest = {
       userId: isSet(object.userId) ? Number(object.userId) : 0,
       month: isSet(object.month) ? Number(object.month) : 0,
       securityId: isSet(object.securityId) ? String(object.securityId) : "",
+      pageNumber: isSet(object.pageNumber) ? Number(object.pageNumber) : 0,
+      pageSize: isSet(object.pageSize) ? Number(object.pageSize) : 0,
     };
   },
 
@@ -3372,6 +4890,12 @@ export const GetMonthlyTotalQuantityBySecurityAndUserRequest = {
     }
     if (message.securityId !== "") {
       obj.securityId = message.securityId;
+    }
+    if (message.pageNumber !== 0) {
+      obj.pageNumber = Math.round(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      obj.pageSize = Math.round(message.pageSize);
     }
     return obj;
   },
@@ -3389,12 +4913,14 @@ export const GetMonthlyTotalQuantityBySecurityAndUserRequest = {
     message.userId = object.userId ?? 0;
     message.month = object.month ?? 0;
     message.securityId = object.securityId ?? "";
+    message.pageNumber = object.pageNumber ?? 0;
+    message.pageSize = object.pageSize ?? 0;
     return message;
   },
 };
 
 function createBaseGetMonthlyTotalQuantityBySecurityAndUserResponse(): GetMonthlyTotalQuantityBySecurityAndUserResponse {
-  return { monthlyTotalQuantityBySecurityAndUser: [] };
+  return { monthlyTotalQuantityBySecurityAndUser: [], nextPageNumber: 0 };
 }
 
 export const GetMonthlyTotalQuantityBySecurityAndUserResponse = {
@@ -3404,6 +4930,9 @@ export const GetMonthlyTotalQuantityBySecurityAndUserResponse = {
   ): _m0.Writer {
     for (const v of message.monthlyTotalQuantityBySecurityAndUser) {
       MonthlyTotalQuantityBySecurityAndUser.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.nextPageNumber !== 0) {
+      writer.uint32(16).int32(message.nextPageNumber);
     }
     return writer;
   },
@@ -3424,6 +4953,13 @@ export const GetMonthlyTotalQuantityBySecurityAndUserResponse = {
             MonthlyTotalQuantityBySecurityAndUser.decode(reader, reader.uint32()),
           );
           continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.nextPageNumber = reader.int32();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -3440,6 +4976,7 @@ export const GetMonthlyTotalQuantityBySecurityAndUserResponse = {
           MonthlyTotalQuantityBySecurityAndUser.fromJSON(e)
         )
         : [],
+      nextPageNumber: isSet(object.nextPageNumber) ? Number(object.nextPageNumber) : 0,
     };
   },
 
@@ -3449,6 +4986,9 @@ export const GetMonthlyTotalQuantityBySecurityAndUserResponse = {
       obj.monthlyTotalQuantityBySecurityAndUser = message.monthlyTotalQuantityBySecurityAndUser.map((e) =>
         MonthlyTotalQuantityBySecurityAndUser.toJSON(e)
       );
+    }
+    if (message.nextPageNumber !== 0) {
+      obj.nextPageNumber = Math.round(message.nextPageNumber);
     }
     return obj;
   },
@@ -3466,12 +5006,13 @@ export const GetMonthlyTotalQuantityBySecurityAndUserResponse = {
     message.monthlyTotalQuantityBySecurityAndUser =
       object.monthlyTotalQuantityBySecurityAndUser?.map((e) => MonthlyTotalQuantityBySecurityAndUser.fromPartial(e)) ||
       [];
+    message.nextPageNumber = object.nextPageNumber ?? 0;
     return message;
   },
 };
 
 function createBaseGetMonthlyTransactionCountRequest(): GetMonthlyTransactionCountRequest {
-  return { userId: 0, month: 0 };
+  return { userId: 0, month: 0, pageNumber: 0, pageSize: 0 };
 }
 
 export const GetMonthlyTransactionCountRequest = {
@@ -3481,6 +5022,12 @@ export const GetMonthlyTransactionCountRequest = {
     }
     if (message.month !== 0) {
       writer.uint32(16).uint32(message.month);
+    }
+    if (message.pageNumber !== 0) {
+      writer.uint32(32).int32(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      writer.uint32(40).int32(message.pageSize);
     }
     return writer;
   },
@@ -3506,6 +5053,20 @@ export const GetMonthlyTransactionCountRequest = {
 
           message.month = reader.uint32();
           continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.pageNumber = reader.int32();
+          continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.pageSize = reader.int32();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -3519,6 +5080,8 @@ export const GetMonthlyTransactionCountRequest = {
     return {
       userId: isSet(object.userId) ? Number(object.userId) : 0,
       month: isSet(object.month) ? Number(object.month) : 0,
+      pageNumber: isSet(object.pageNumber) ? Number(object.pageNumber) : 0,
+      pageSize: isSet(object.pageSize) ? Number(object.pageSize) : 0,
     };
   },
 
@@ -3529,6 +5092,12 @@ export const GetMonthlyTransactionCountRequest = {
     }
     if (message.month !== 0) {
       obj.month = Math.round(message.month);
+    }
+    if (message.pageNumber !== 0) {
+      obj.pageNumber = Math.round(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      obj.pageSize = Math.round(message.pageSize);
     }
     return obj;
   },
@@ -3545,18 +5114,23 @@ export const GetMonthlyTransactionCountRequest = {
     const message = createBaseGetMonthlyTransactionCountRequest();
     message.userId = object.userId ?? 0;
     message.month = object.month ?? 0;
+    message.pageNumber = object.pageNumber ?? 0;
+    message.pageSize = object.pageSize ?? 0;
     return message;
   },
 };
 
 function createBaseGetMonthlyTransactionCountResponse(): GetMonthlyTransactionCountResponse {
-  return { monthlyTransactionCounts: [] };
+  return { monthlyTransactionCounts: [], nextPageNumber: 0 };
 }
 
 export const GetMonthlyTransactionCountResponse = {
   encode(message: GetMonthlyTransactionCountResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.monthlyTransactionCounts) {
       MonthlyTransactionCount.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.nextPageNumber !== 0) {
+      writer.uint32(16).int32(message.nextPageNumber);
     }
     return writer;
   },
@@ -3575,6 +5149,13 @@ export const GetMonthlyTransactionCountResponse = {
 
           message.monthlyTransactionCounts.push(MonthlyTransactionCount.decode(reader, reader.uint32()));
           continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.nextPageNumber = reader.int32();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -3589,6 +5170,7 @@ export const GetMonthlyTransactionCountResponse = {
       monthlyTransactionCounts: Array.isArray(object?.monthlyTransactionCounts)
         ? object.monthlyTransactionCounts.map((e: any) => MonthlyTransactionCount.fromJSON(e))
         : [],
+      nextPageNumber: isSet(object.nextPageNumber) ? Number(object.nextPageNumber) : 0,
     };
   },
 
@@ -3596,6 +5178,9 @@ export const GetMonthlyTransactionCountResponse = {
     const obj: any = {};
     if (message.monthlyTransactionCounts?.length) {
       obj.monthlyTransactionCounts = message.monthlyTransactionCounts.map((e) => MonthlyTransactionCount.toJSON(e));
+    }
+    if (message.nextPageNumber !== 0) {
+      obj.nextPageNumber = Math.round(message.nextPageNumber);
     }
     return obj;
   },
@@ -3612,12 +5197,13 @@ export const GetMonthlyTransactionCountResponse = {
     const message = createBaseGetMonthlyTransactionCountResponse();
     message.monthlyTransactionCounts =
       object.monthlyTransactionCounts?.map((e) => MonthlyTransactionCount.fromPartial(e)) || [];
+    message.nextPageNumber = object.nextPageNumber ?? 0;
     return message;
   },
 };
 
 function createBaseGetPaymentChannelMonthlyExpenditureRequest(): GetPaymentChannelMonthlyExpenditureRequest {
-  return { userId: 0, month: 0, paymentChannel: "" };
+  return { userId: 0, month: 0, paymentChannel: "", pageNumber: 0, pageSize: 0 };
 }
 
 export const GetPaymentChannelMonthlyExpenditureRequest = {
@@ -3630,6 +5216,12 @@ export const GetPaymentChannelMonthlyExpenditureRequest = {
     }
     if (message.paymentChannel !== "") {
       writer.uint32(26).string(message.paymentChannel);
+    }
+    if (message.pageNumber !== 0) {
+      writer.uint32(32).int32(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      writer.uint32(40).int32(message.pageSize);
     }
     return writer;
   },
@@ -3662,6 +5254,20 @@ export const GetPaymentChannelMonthlyExpenditureRequest = {
 
           message.paymentChannel = reader.string();
           continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.pageNumber = reader.int32();
+          continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.pageSize = reader.int32();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -3676,6 +5282,8 @@ export const GetPaymentChannelMonthlyExpenditureRequest = {
       userId: isSet(object.userId) ? Number(object.userId) : 0,
       month: isSet(object.month) ? Number(object.month) : 0,
       paymentChannel: isSet(object.paymentChannel) ? String(object.paymentChannel) : "",
+      pageNumber: isSet(object.pageNumber) ? Number(object.pageNumber) : 0,
+      pageSize: isSet(object.pageSize) ? Number(object.pageSize) : 0,
     };
   },
 
@@ -3689,6 +5297,12 @@ export const GetPaymentChannelMonthlyExpenditureRequest = {
     }
     if (message.paymentChannel !== "") {
       obj.paymentChannel = message.paymentChannel;
+    }
+    if (message.pageNumber !== 0) {
+      obj.pageNumber = Math.round(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      obj.pageSize = Math.round(message.pageSize);
     }
     return obj;
   },
@@ -3706,18 +5320,23 @@ export const GetPaymentChannelMonthlyExpenditureRequest = {
     message.userId = object.userId ?? 0;
     message.month = object.month ?? 0;
     message.paymentChannel = object.paymentChannel ?? "";
+    message.pageNumber = object.pageNumber ?? 0;
+    message.pageSize = object.pageSize ?? 0;
     return message;
   },
 };
 
 function createBaseGetPaymentChannelMonthlyExpenditureResponse(): GetPaymentChannelMonthlyExpenditureResponse {
-  return { paymentChannelMonthlyExpenditure: [] };
+  return { paymentChannelMonthlyExpenditure: [], nextPageNumber: 0 };
 }
 
 export const GetPaymentChannelMonthlyExpenditureResponse = {
   encode(message: GetPaymentChannelMonthlyExpenditureResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.paymentChannelMonthlyExpenditure) {
       PaymentChannelMonthlyExpenditure.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.nextPageNumber !== 0) {
+      writer.uint32(16).int32(message.nextPageNumber);
     }
     return writer;
   },
@@ -3738,6 +5357,13 @@ export const GetPaymentChannelMonthlyExpenditureResponse = {
             PaymentChannelMonthlyExpenditure.decode(reader, reader.uint32()),
           );
           continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.nextPageNumber = reader.int32();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -3752,6 +5378,7 @@ export const GetPaymentChannelMonthlyExpenditureResponse = {
       paymentChannelMonthlyExpenditure: Array.isArray(object?.paymentChannelMonthlyExpenditure)
         ? object.paymentChannelMonthlyExpenditure.map((e: any) => PaymentChannelMonthlyExpenditure.fromJSON(e))
         : [],
+      nextPageNumber: isSet(object.nextPageNumber) ? Number(object.nextPageNumber) : 0,
     };
   },
 
@@ -3761,6 +5388,9 @@ export const GetPaymentChannelMonthlyExpenditureResponse = {
       obj.paymentChannelMonthlyExpenditure = message.paymentChannelMonthlyExpenditure.map((e) =>
         PaymentChannelMonthlyExpenditure.toJSON(e)
       );
+    }
+    if (message.nextPageNumber !== 0) {
+      obj.nextPageNumber = Math.round(message.nextPageNumber);
     }
     return obj;
   },
@@ -3777,12 +5407,13 @@ export const GetPaymentChannelMonthlyExpenditureResponse = {
     const message = createBaseGetPaymentChannelMonthlyExpenditureResponse();
     message.paymentChannelMonthlyExpenditure =
       object.paymentChannelMonthlyExpenditure?.map((e) => PaymentChannelMonthlyExpenditure.fromPartial(e)) || [];
+    message.nextPageNumber = object.nextPageNumber ?? 0;
     return message;
   },
 };
 
 function createBaseGetTotalInvestmentBySecurityRequest(): GetTotalInvestmentBySecurityRequest {
-  return { userId: 0, securityId: "" };
+  return { userId: 0, securityId: "", pageNumber: 0, pageSize: 0 };
 }
 
 export const GetTotalInvestmentBySecurityRequest = {
@@ -3792,6 +5423,12 @@ export const GetTotalInvestmentBySecurityRequest = {
     }
     if (message.securityId !== "") {
       writer.uint32(18).string(message.securityId);
+    }
+    if (message.pageNumber !== 0) {
+      writer.uint32(32).int32(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      writer.uint32(40).int32(message.pageSize);
     }
     return writer;
   },
@@ -3817,6 +5454,20 @@ export const GetTotalInvestmentBySecurityRequest = {
 
           message.securityId = reader.string();
           continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.pageNumber = reader.int32();
+          continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.pageSize = reader.int32();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -3830,6 +5481,8 @@ export const GetTotalInvestmentBySecurityRequest = {
     return {
       userId: isSet(object.userId) ? Number(object.userId) : 0,
       securityId: isSet(object.securityId) ? String(object.securityId) : "",
+      pageNumber: isSet(object.pageNumber) ? Number(object.pageNumber) : 0,
+      pageSize: isSet(object.pageSize) ? Number(object.pageSize) : 0,
     };
   },
 
@@ -3840,6 +5493,12 @@ export const GetTotalInvestmentBySecurityRequest = {
     }
     if (message.securityId !== "") {
       obj.securityId = message.securityId;
+    }
+    if (message.pageNumber !== 0) {
+      obj.pageNumber = Math.round(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      obj.pageSize = Math.round(message.pageSize);
     }
     return obj;
   },
@@ -3856,18 +5515,23 @@ export const GetTotalInvestmentBySecurityRequest = {
     const message = createBaseGetTotalInvestmentBySecurityRequest();
     message.userId = object.userId ?? 0;
     message.securityId = object.securityId ?? "";
+    message.pageNumber = object.pageNumber ?? 0;
+    message.pageSize = object.pageSize ?? 0;
     return message;
   },
 };
 
 function createBaseGetTotalInvestmentBySecurityResponse(): GetTotalInvestmentBySecurityResponse {
-  return { totalInvestmentBySecurity: [] };
+  return { totalInvestmentBySecurity: [], nextPageNumber: 0 };
 }
 
 export const GetTotalInvestmentBySecurityResponse = {
   encode(message: GetTotalInvestmentBySecurityResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.totalInvestmentBySecurity) {
       TotalInvestmentBySecurity.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.nextPageNumber !== 0) {
+      writer.uint32(16).int32(message.nextPageNumber);
     }
     return writer;
   },
@@ -3886,6 +5550,13 @@ export const GetTotalInvestmentBySecurityResponse = {
 
           message.totalInvestmentBySecurity.push(TotalInvestmentBySecurity.decode(reader, reader.uint32()));
           continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.nextPageNumber = reader.int32();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -3900,6 +5571,7 @@ export const GetTotalInvestmentBySecurityResponse = {
       totalInvestmentBySecurity: Array.isArray(object?.totalInvestmentBySecurity)
         ? object.totalInvestmentBySecurity.map((e: any) => TotalInvestmentBySecurity.fromJSON(e))
         : [],
+      nextPageNumber: isSet(object.nextPageNumber) ? Number(object.nextPageNumber) : 0,
     };
   },
 
@@ -3907,6 +5579,9 @@ export const GetTotalInvestmentBySecurityResponse = {
     const obj: any = {};
     if (message.totalInvestmentBySecurity?.length) {
       obj.totalInvestmentBySecurity = message.totalInvestmentBySecurity.map((e) => TotalInvestmentBySecurity.toJSON(e));
+    }
+    if (message.nextPageNumber !== 0) {
+      obj.nextPageNumber = Math.round(message.nextPageNumber);
     }
     return obj;
   },
@@ -3923,6 +5598,7 @@ export const GetTotalInvestmentBySecurityResponse = {
     const message = createBaseGetTotalInvestmentBySecurityResponse();
     message.totalInvestmentBySecurity =
       object.totalInvestmentBySecurity?.map((e) => TotalInvestmentBySecurity.fromPartial(e)) || [];
+    message.nextPageNumber = object.nextPageNumber ?? 0;
     return message;
   },
 };

@@ -1,12 +1,12 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "$ref": "#/definitions/GetMonthlyExpenditureResponse",
+    "$ref": "#/definitions/ListMerchantMonthlyExpenditureResponse",
     "definitions": {
-        "GetMonthlyExpenditureResponse": {
+        "ListMerchantMonthlyExpenditureResponse": {
             "properties": {
-                "monthly_expenditures": {
+                "merchant_monthly_expenditures": {
                     "items": {
-                        "$ref": "#/definitions/financial_integration_service_api.v1.MonthlyExpenditure"
+                        "$ref": "#/definitions/financial_integration_service_api.v1.MerchantMonthlyExpenditure"
                     },
                     "type": "array"
                 },
@@ -16,12 +16,15 @@
             },
             "additionalProperties": true,
             "type": "object",
-            "title": "Get Monthly Expenditure Response"
+            "title": "List Merchant Monthly Expenditure Response"
         },
-        "financial_integration_service_api.v1.MonthlyExpenditure": {
+        "financial_integration_service_api.v1.MerchantMonthlyExpenditure": {
             "properties": {
                 "month": {
                     "type": "integer"
+                },
+                "merchant_name": {
+                    "type": "string"
                 },
                 "total_spending": {
                     "type": "number"
@@ -32,8 +35,8 @@
             },
             "additionalProperties": true,
             "type": "object",
-            "title": "Monthly Expenditure",
-            "description": "MonthlyExpenditure This message is used to represent the monthly expenditure of a user."
+            "title": "Merchant Monthly Expenditure",
+            "description": "MerchantMonthlyExpenditure This message is used to represent the monthly expenditure of a merchant."
         }
     }
 }

@@ -1,12 +1,12 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "$ref": "#/definitions/GetMonthlyExpenditureResponse",
+    "$ref": "#/definitions/ListIncomeExpenseRatioResponse",
     "definitions": {
-        "GetMonthlyExpenditureResponse": {
+        "ListIncomeExpenseRatioResponse": {
             "properties": {
-                "monthly_expenditures": {
+                "income_expense_ratios": {
                     "items": {
-                        "$ref": "#/definitions/financial_integration_service_api.v1.MonthlyExpenditure"
+                        "$ref": "#/definitions/financial_integration_service_api.v1.IncomeExpenseRatio"
                     },
                     "type": "array"
                 },
@@ -16,14 +16,14 @@
             },
             "additionalProperties": true,
             "type": "object",
-            "title": "Get Monthly Expenditure Response"
+            "title": "List Income Expense Ratio Response"
         },
-        "financial_integration_service_api.v1.MonthlyExpenditure": {
+        "financial_integration_service_api.v1.IncomeExpenseRatio": {
             "properties": {
                 "month": {
                     "type": "integer"
                 },
-                "total_spending": {
+                "ratio": {
                     "type": "number"
                 },
                 "user_id": {
@@ -32,8 +32,8 @@
             },
             "additionalProperties": true,
             "type": "object",
-            "title": "Monthly Expenditure",
-            "description": "MonthlyExpenditure This message is used to represent the monthly expenditure of a user."
+            "title": "Income Expense Ratio",
+            "description": "IncomeExpenseRatio This message is used to represent the income expense ratio of a user."
         }
     }
 }

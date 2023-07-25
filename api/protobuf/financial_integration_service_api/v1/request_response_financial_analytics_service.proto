@@ -118,6 +118,7 @@ message GetUserCategoryMonthlyIncomeResponse {
   repeated CategoryMonthlyIncome category_monthly_income = 1;
 }
 
+
 message ListUserCategoryMonthlyIncomeRequest {
   uint64 user_id = 1 [
     (validate.rules).uint64.gt = 0,
@@ -145,6 +146,20 @@ message GetCategoryMonthlyTransactionCountResponse {
   repeated CategoryMonthlyTransactionCount category_monthly_transaction_count = 1;
 }
 
+message ListCategoryMonthlyTransactionCountRequest {
+  uint64 user_id = 1 [
+    (validate.rules).uint64.gt = 0,
+    (google.api.field_behavior) = REQUIRED
+  ]; // has to be present and defined
+  int32 page_number = 2;
+  int32 page_size = 3;  // Number of items to return per page.
+}
+
+message ListCategoryMonthlyTransactionCountResponse {
+  repeated CategoryMonthlyTransactionCount category_monthly_transaction_count = 1;
+  int32 next_page_number = 2;
+}
+
 message GetDebtToIncomeRatioRequest {
   uint64 user_id = 1 [
     (validate.rules).uint64.gt = 0,
@@ -155,6 +170,20 @@ message GetDebtToIncomeRatioRequest {
 
 message GetDebtToIncomeRatioResponse {
   repeated DebtToIncomeRatio debt_to_income_ratios = 1;
+}
+
+message ListDebtToIncomeRatioRequest {
+  uint64 user_id = 1 [
+    (validate.rules).uint64.gt = 0,
+    (google.api.field_behavior) = REQUIRED
+  ];
+  int32 page_number = 2;
+  int32 page_size = 3;  // Number of items to return per page.
+}
+
+message ListDebtToIncomeRatioResponse {
+  repeated DebtToIncomeRatio debt_to_income_ratios = 1;
+  int32 next_page_number = 2;
 }
 
 message GetExpenseMetricsRequest {
@@ -170,6 +199,20 @@ message GetExpenseMetricsResponse {
   repeated ExpenseMetrics expense_metrics = 1;
 }
 
+message ListExpenseMetricsRequest {
+  uint64 user_id = 1 [
+    (validate.rules).uint64.gt = 0,
+    (google.api.field_behavior) = REQUIRED
+  ];
+  int32 page_number = 2;
+  int32 page_size = 3;  // Number of items to return per page.
+}
+
+message ListExpenseMetricsResponse {
+  repeated ExpenseMetrics expense_metrics = 1;
+  int32 next_page_number = 2;
+}
+
 // GetFinancialProfile RPC
 message GetFinancialProfileRequest {
   uint64 user_id = 1 [
@@ -181,6 +224,21 @@ message GetFinancialProfileRequest {
 
 message GetFinancialProfileResponse {
   repeated FinancialProfile financial_profiles = 1;
+}
+
+// GetFinancialProfile RPC
+message ListFinancialProfileRequest {
+  uint64 user_id = 1 [
+    (validate.rules).uint64.gt = 0,
+    (google.api.field_behavior) = REQUIRED
+  ];
+  int32 page_number = 2;
+  int32 page_size = 3;  // Number of items to return per page.
+}
+
+message ListFinancialProfileResponse {
+  repeated FinancialProfile financial_profiles = 1;
+  int32 next_page_number = 2;
 }
 
 // GetIncomeExpenseRatio RPC
@@ -196,6 +254,20 @@ message GetIncomeExpenseRatioResponse {
   repeated IncomeExpenseRatio income_expense_ratios = 1;
 }
 
+message ListIncomeExpenseRatioRequest {
+  uint64 user_id = 1 [
+    (validate.rules).uint64.gt = 0,
+    (google.api.field_behavior) = REQUIRED
+  ];
+  int32 page_number = 2;
+  int32 page_size = 3;  // Number of items to return per page.
+}
+
+message ListIncomeExpenseRatioResponse {
+  repeated IncomeExpenseRatio income_expense_ratios = 1;
+  int32 next_page_number = 2;
+}
+
 // GetIncomeMetrics RPC
 message GetIncomeMetricsRequest {
   uint64 user_id = 1 [
@@ -208,6 +280,21 @@ message GetIncomeMetricsRequest {
 
 message GetIncomeMetricsResponse {
   repeated IncomeMetrics income_metrics = 1;
+}
+
+// GetIncomeMetrics RPC
+message ListIncomeMetricsRequest {
+  uint64 user_id = 1 [
+    (validate.rules).uint64.gt = 0,
+    (google.api.field_behavior) = REQUIRED
+  ];
+  int32 page_number = 2;
+  int32 page_size = 3;  // Number of items to return per page.
+}
+
+message ListIncomeMetricsResponse {
+  repeated IncomeMetrics income_metrics = 1;
+  int32 next_page_number = 2;
 }
 
 // GetMerchantMonthlyExpenditure RPC
@@ -225,6 +312,20 @@ message GetMerchantMonthlyExpenditureResponse {
   repeated MerchantMonthlyExpenditure merchant_monthly_expenditures = 1;
 }
 
+message ListMerchantMonthlyExpenditureRequest {
+  uint64 user_id = 1 [
+    (validate.rules).uint64.gt = 0,
+    (google.api.field_behavior) = REQUIRED,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}
+  ];
+  int32 page_number = 2;
+  int32 page_size = 3;  // Number of items to return per page.
+}
+
+message ListMerchantMonthlyExpenditureResponse {
+  repeated MerchantMonthlyExpenditure merchant_monthly_expenditures = 1;
+  int32 next_page_number = 2;
+}
 
 // For example, for MonthlyBalance:
 message GetMonthlyBalanceRequest {
@@ -234,10 +335,13 @@ message GetMonthlyBalanceRequest {
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}
   ];
   uint32 month = 2; // optional
+  int32 page_number = 3;
+  int32 page_size = 4;  // Number of items to return per page.
 }
 
 message GetMonthlyBalanceResponse {
   repeated MonthlyBalance monthly_balances = 1;
+  int32 next_page_number = 2;
 }
 
 // GetMonthlyExpenditure RPC
@@ -247,10 +351,13 @@ message GetMonthlyExpenditureRequest {
     (google.api.field_behavior) = REQUIRED
   ];
   uint32 month = 2;
+  int32 page_number = 3;
+  int32 page_size = 4;  // Number of items to return per page.
 }
 
 message GetMonthlyExpenditureResponse {
   repeated MonthlyExpenditure monthly_expenditures = 1;
+  int32 next_page_number = 2;
 }
 
 // GetMonthlyIncome RPC
@@ -260,10 +367,13 @@ message GetMonthlyIncomeRequest {
     (google.api.field_behavior) = REQUIRED
   ];
   uint32 month = 2;
+  int32 page_number = 3;
+  int32 page_size = 4;  // Number of items to return per page.
 }
 
 message GetMonthlyIncomeResponse {
   repeated MonthlyIncome monthly_incomes = 1;
+  int32 next_page_number = 2;
 }
 
 // GetMonthlySavings RPC
@@ -273,10 +383,13 @@ message GetMonthlySavingsRequest {
     (google.api.field_behavior) = REQUIRED
   ];
   uint32 month = 2;
+  int32 page_number = 3;
+  int32 page_size = 4;  // Number of items to return per page.
 }
 
 message GetMonthlySavingsResponse {
   repeated MonthlySavings monthly_savings = 1;
+  int32 next_page_number = 2;
 }
 
 // GetMonthlyTotalQuantityBySecurityAndUser RPC
@@ -287,10 +400,13 @@ message GetMonthlyTotalQuantityBySecurityAndUserRequest {
   ];
   uint32 month = 2;
   string security_id = 3;
+  int32 page_number = 4;
+  int32 page_size = 5;  // Number of items to return per page.
 }
 
 message GetMonthlyTotalQuantityBySecurityAndUserResponse {
   repeated MonthlyTotalQuantityBySecurityAndUser monthly_total_quantity_by_security_and_user = 1;
+  int32 next_page_number = 2;
 }
 
 // GetMonthlyTransactionCount RPC
@@ -300,10 +416,13 @@ message GetMonthlyTransactionCountRequest {
     (google.api.field_behavior) = REQUIRED
   ];
   uint32 month = 2;
+  int32 page_number = 4;
+  int32 page_size = 5;  // Number of items to return per page.
 }
 
 message GetMonthlyTransactionCountResponse {
   repeated MonthlyTransactionCount monthly_transaction_counts = 1;
+  int32 next_page_number = 2;
 }
 
 // GetPaymentChannelMonthlyExpenditure RPC
@@ -314,10 +433,13 @@ message GetPaymentChannelMonthlyExpenditureRequest {
   ];
   uint32 month = 2;
   string payment_channel = 3;
+  int32 page_number = 4;
+  int32 page_size = 5;  // Number of items to return per page.
 }
 
 message GetPaymentChannelMonthlyExpenditureResponse {
   repeated PaymentChannelMonthlyExpenditure payment_channel_monthly_expenditure = 1;
+  int32 next_page_number = 2;
 }
 
 // GetTotalInvestmentBySecurity RPC
@@ -327,10 +449,13 @@ message GetTotalInvestmentBySecurityRequest {
     (google.api.field_behavior) = REQUIRED
   ];
   string security_id = 2;
+  int32 page_number = 4;
+  int32 page_size = 5;  // Number of items to return per page.
 }
 
 message GetTotalInvestmentBySecurityResponse {
   repeated TotalInvestmentBySecurity total_investment_by_security = 1;
+  int32 next_page_number = 2;
 }
 
 message GetMelodyFinancialContextRequest {

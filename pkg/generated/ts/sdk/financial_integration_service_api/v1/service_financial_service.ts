@@ -43,6 +43,20 @@ import {
   GetUserCategoryMonthlyExpenditureResponse,
   GetUserCategoryMonthlyIncomeRequest,
   GetUserCategoryMonthlyIncomeResponse,
+  ListCategoryMonthlyTransactionCountRequest,
+  ListCategoryMonthlyTransactionCountResponse,
+  ListDebtToIncomeRatioRequest,
+  ListDebtToIncomeRatioResponse,
+  ListExpenseMetricsRequest,
+  ListExpenseMetricsResponse,
+  ListFinancialProfileRequest,
+  ListFinancialProfileResponse,
+  ListIncomeExpenseRatioRequest,
+  ListIncomeExpenseRatioResponse,
+  ListIncomeMetricsRequest,
+  ListIncomeMetricsResponse,
+  ListMerchantMonthlyExpenditureRequest,
+  ListMerchantMonthlyExpenditureResponse,
   ListTransactionAggregatesRequest,
   ListTransactionAggregatesResponse,
   ListUserCategoryMonthlyExpenditureRequest,
@@ -210,14 +224,26 @@ export interface FinancialService {
   GetCategoryMonthlyTransactionCount(
     request: GetCategoryMonthlyTransactionCountRequest,
   ): Promise<GetCategoryMonthlyTransactionCountResponse>;
+  ListCategoryMonthlyTransactionCount(
+    request: ListCategoryMonthlyTransactionCountRequest,
+  ): Promise<ListCategoryMonthlyTransactionCountResponse>;
   GetDebtToIncomeRatio(request: GetDebtToIncomeRatioRequest): Promise<GetDebtToIncomeRatioResponse>;
+  ListDebtToIncomeRatio(request: ListDebtToIncomeRatioRequest): Promise<ListDebtToIncomeRatioResponse>;
   GetExpenseMetrics(request: GetExpenseMetricsRequest): Promise<GetExpenseMetricsResponse>;
+  ListExpenseMetrics(request: ListExpenseMetricsRequest): Promise<ListExpenseMetricsResponse>;
   GetFinancialProfile(request: GetFinancialProfileRequest): Promise<GetFinancialProfileResponse>;
+  ListFinancialProfile(request: ListFinancialProfileRequest): Promise<ListFinancialProfileResponse>;
   GetIncomeExpenseRatio(request: GetIncomeExpenseRatioRequest): Promise<GetIncomeExpenseRatioResponse>;
+  ListIncomeExpenseRatio(request: ListIncomeExpenseRatioRequest): Promise<ListIncomeExpenseRatioResponse>;
   GetIncomeMetrics(request: GetIncomeMetricsRequest): Promise<GetIncomeMetricsResponse>;
+  ListIncomeMetrics(request: ListIncomeMetricsRequest): Promise<ListIncomeMetricsResponse>;
   GetMerchantMonthlyExpenditure(
     request: GetMerchantMonthlyExpenditureRequest,
   ): Promise<GetMerchantMonthlyExpenditureResponse>;
+  ListMerchantMonthlyExpenditure(
+    request: ListMerchantMonthlyExpenditureRequest,
+  ): Promise<ListMerchantMonthlyExpenditureResponse>;
+  /** @here */
   GetMonthlyBalance(request: GetMonthlyBalanceRequest): Promise<GetMonthlyBalanceResponse>;
   GetMonthlyExpenditure(request: GetMonthlyExpenditureRequest): Promise<GetMonthlyExpenditureResponse>;
   GetMonthlyIncome(request: GetMonthlyIncomeRequest): Promise<GetMonthlyIncomeResponse>;
@@ -296,12 +322,19 @@ export class FinancialServiceClientImpl implements FinancialService {
     this.GetUserCategoryMonthlyIncome = this.GetUserCategoryMonthlyIncome.bind(this);
     this.ListUserCategoryMonthlyIncome = this.ListUserCategoryMonthlyIncome.bind(this);
     this.GetCategoryMonthlyTransactionCount = this.GetCategoryMonthlyTransactionCount.bind(this);
+    this.ListCategoryMonthlyTransactionCount = this.ListCategoryMonthlyTransactionCount.bind(this);
     this.GetDebtToIncomeRatio = this.GetDebtToIncomeRatio.bind(this);
+    this.ListDebtToIncomeRatio = this.ListDebtToIncomeRatio.bind(this);
     this.GetExpenseMetrics = this.GetExpenseMetrics.bind(this);
+    this.ListExpenseMetrics = this.ListExpenseMetrics.bind(this);
     this.GetFinancialProfile = this.GetFinancialProfile.bind(this);
+    this.ListFinancialProfile = this.ListFinancialProfile.bind(this);
     this.GetIncomeExpenseRatio = this.GetIncomeExpenseRatio.bind(this);
+    this.ListIncomeExpenseRatio = this.ListIncomeExpenseRatio.bind(this);
     this.GetIncomeMetrics = this.GetIncomeMetrics.bind(this);
+    this.ListIncomeMetrics = this.ListIncomeMetrics.bind(this);
     this.GetMerchantMonthlyExpenditure = this.GetMerchantMonthlyExpenditure.bind(this);
+    this.ListMerchantMonthlyExpenditure = this.ListMerchantMonthlyExpenditure.bind(this);
     this.GetMonthlyBalance = this.GetMonthlyBalance.bind(this);
     this.GetMonthlyExpenditure = this.GetMonthlyExpenditure.bind(this);
     this.GetMonthlyIncome = this.GetMonthlyIncome.bind(this);
@@ -631,10 +664,24 @@ export class FinancialServiceClientImpl implements FinancialService {
     return promise.then((data) => GetCategoryMonthlyTransactionCountResponse.decode(_m0.Reader.create(data)));
   }
 
+  ListCategoryMonthlyTransactionCount(
+    request: ListCategoryMonthlyTransactionCountRequest,
+  ): Promise<ListCategoryMonthlyTransactionCountResponse> {
+    const data = ListCategoryMonthlyTransactionCountRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "ListCategoryMonthlyTransactionCount", data);
+    return promise.then((data) => ListCategoryMonthlyTransactionCountResponse.decode(_m0.Reader.create(data)));
+  }
+
   GetDebtToIncomeRatio(request: GetDebtToIncomeRatioRequest): Promise<GetDebtToIncomeRatioResponse> {
     const data = GetDebtToIncomeRatioRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "GetDebtToIncomeRatio", data);
     return promise.then((data) => GetDebtToIncomeRatioResponse.decode(_m0.Reader.create(data)));
+  }
+
+  ListDebtToIncomeRatio(request: ListDebtToIncomeRatioRequest): Promise<ListDebtToIncomeRatioResponse> {
+    const data = ListDebtToIncomeRatioRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "ListDebtToIncomeRatio", data);
+    return promise.then((data) => ListDebtToIncomeRatioResponse.decode(_m0.Reader.create(data)));
   }
 
   GetExpenseMetrics(request: GetExpenseMetricsRequest): Promise<GetExpenseMetricsResponse> {
@@ -643,10 +690,22 @@ export class FinancialServiceClientImpl implements FinancialService {
     return promise.then((data) => GetExpenseMetricsResponse.decode(_m0.Reader.create(data)));
   }
 
+  ListExpenseMetrics(request: ListExpenseMetricsRequest): Promise<ListExpenseMetricsResponse> {
+    const data = ListExpenseMetricsRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "ListExpenseMetrics", data);
+    return promise.then((data) => ListExpenseMetricsResponse.decode(_m0.Reader.create(data)));
+  }
+
   GetFinancialProfile(request: GetFinancialProfileRequest): Promise<GetFinancialProfileResponse> {
     const data = GetFinancialProfileRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "GetFinancialProfile", data);
     return promise.then((data) => GetFinancialProfileResponse.decode(_m0.Reader.create(data)));
+  }
+
+  ListFinancialProfile(request: ListFinancialProfileRequest): Promise<ListFinancialProfileResponse> {
+    const data = ListFinancialProfileRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "ListFinancialProfile", data);
+    return promise.then((data) => ListFinancialProfileResponse.decode(_m0.Reader.create(data)));
   }
 
   GetIncomeExpenseRatio(request: GetIncomeExpenseRatioRequest): Promise<GetIncomeExpenseRatioResponse> {
@@ -655,10 +714,22 @@ export class FinancialServiceClientImpl implements FinancialService {
     return promise.then((data) => GetIncomeExpenseRatioResponse.decode(_m0.Reader.create(data)));
   }
 
+  ListIncomeExpenseRatio(request: ListIncomeExpenseRatioRequest): Promise<ListIncomeExpenseRatioResponse> {
+    const data = ListIncomeExpenseRatioRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "ListIncomeExpenseRatio", data);
+    return promise.then((data) => ListIncomeExpenseRatioResponse.decode(_m0.Reader.create(data)));
+  }
+
   GetIncomeMetrics(request: GetIncomeMetricsRequest): Promise<GetIncomeMetricsResponse> {
     const data = GetIncomeMetricsRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "GetIncomeMetrics", data);
     return promise.then((data) => GetIncomeMetricsResponse.decode(_m0.Reader.create(data)));
+  }
+
+  ListIncomeMetrics(request: ListIncomeMetricsRequest): Promise<ListIncomeMetricsResponse> {
+    const data = ListIncomeMetricsRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "ListIncomeMetrics", data);
+    return promise.then((data) => ListIncomeMetricsResponse.decode(_m0.Reader.create(data)));
   }
 
   GetMerchantMonthlyExpenditure(
@@ -667,6 +738,14 @@ export class FinancialServiceClientImpl implements FinancialService {
     const data = GetMerchantMonthlyExpenditureRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "GetMerchantMonthlyExpenditure", data);
     return promise.then((data) => GetMerchantMonthlyExpenditureResponse.decode(_m0.Reader.create(data)));
+  }
+
+  ListMerchantMonthlyExpenditure(
+    request: ListMerchantMonthlyExpenditureRequest,
+  ): Promise<ListMerchantMonthlyExpenditureResponse> {
+    const data = ListMerchantMonthlyExpenditureRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "ListMerchantMonthlyExpenditure", data);
+    return promise.then((data) => ListMerchantMonthlyExpenditureResponse.decode(_m0.Reader.create(data)));
   }
 
   GetMonthlyBalance(request: GetMonthlyBalanceRequest): Promise<GetMonthlyBalanceResponse> {

@@ -1,16 +1,10 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "$ref": "#/definitions/GetPaymentChannelMonthlyExpenditureRequest",
+    "$ref": "#/definitions/ListFinancialProfileRequest",
     "definitions": {
-        "GetPaymentChannelMonthlyExpenditureRequest": {
+        "ListFinancialProfileRequest": {
             "properties": {
                 "user_id": {
-                    "type": "string"
-                },
-                "month": {
-                    "type": "integer"
-                },
-                "payment_channel": {
                     "type": "string"
                 },
                 "page_number": {
@@ -23,8 +17,8 @@
             },
             "additionalProperties": true,
             "type": "object",
-            "title": "Get Payment Channel Monthly Expenditure Request",
-            "description": "GetPaymentChannelMonthlyExpenditure RPC"
+            "title": "List Financial Profile Request",
+            "description": "GetFinancialProfile RPC"
         }
     }
 }

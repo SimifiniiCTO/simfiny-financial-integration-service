@@ -9,6 +9,9 @@
                         "$ref": "#/definitions/financial_integration_service_api.v1.MonthlySavings"
                     },
                     "type": "array"
+                },
+                "next_page_number": {
+                    "type": "integer"
                 }
             },
             "additionalProperties": true,

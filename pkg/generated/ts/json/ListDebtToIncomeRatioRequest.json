@@ -1,16 +1,10 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "$ref": "#/definitions/GetPaymentChannelMonthlyExpenditureRequest",
+    "$ref": "#/definitions/ListDebtToIncomeRatioRequest",
     "definitions": {
-        "GetPaymentChannelMonthlyExpenditureRequest": {
+        "ListDebtToIncomeRatioRequest": {
             "properties": {
                 "user_id": {
-                    "type": "string"
-                },
-                "month": {
-                    "type": "integer"
-                },
-                "payment_channel": {
                     "type": "string"
                 },
                 "page_number": {
@@ -23,8 +17,7 @@
             },
             "additionalProperties": true,
             "type": "object",
-            "title": "Get Payment Channel Monthly Expenditure Request",
-            "description": "GetPaymentChannelMonthlyExpenditure RPC"
+            "title": "List Debt To Income Ratio Request"
         }
     }
 }

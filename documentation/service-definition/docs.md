@@ -125,6 +125,20 @@
     - [GetUserCategoryMonthlyExpenditureResponse](#financial_integration_service_api-v1-GetUserCategoryMonthlyExpenditureResponse)
     - [GetUserCategoryMonthlyIncomeRequest](#financial_integration_service_api-v1-GetUserCategoryMonthlyIncomeRequest)
     - [GetUserCategoryMonthlyIncomeResponse](#financial_integration_service_api-v1-GetUserCategoryMonthlyIncomeResponse)
+    - [ListCategoryMonthlyTransactionCountRequest](#financial_integration_service_api-v1-ListCategoryMonthlyTransactionCountRequest)
+    - [ListCategoryMonthlyTransactionCountResponse](#financial_integration_service_api-v1-ListCategoryMonthlyTransactionCountResponse)
+    - [ListDebtToIncomeRatioRequest](#financial_integration_service_api-v1-ListDebtToIncomeRatioRequest)
+    - [ListDebtToIncomeRatioResponse](#financial_integration_service_api-v1-ListDebtToIncomeRatioResponse)
+    - [ListExpenseMetricsRequest](#financial_integration_service_api-v1-ListExpenseMetricsRequest)
+    - [ListExpenseMetricsResponse](#financial_integration_service_api-v1-ListExpenseMetricsResponse)
+    - [ListFinancialProfileRequest](#financial_integration_service_api-v1-ListFinancialProfileRequest)
+    - [ListFinancialProfileResponse](#financial_integration_service_api-v1-ListFinancialProfileResponse)
+    - [ListIncomeExpenseRatioRequest](#financial_integration_service_api-v1-ListIncomeExpenseRatioRequest)
+    - [ListIncomeExpenseRatioResponse](#financial_integration_service_api-v1-ListIncomeExpenseRatioResponse)
+    - [ListIncomeMetricsRequest](#financial_integration_service_api-v1-ListIncomeMetricsRequest)
+    - [ListIncomeMetricsResponse](#financial_integration_service_api-v1-ListIncomeMetricsResponse)
+    - [ListMerchantMonthlyExpenditureRequest](#financial_integration_service_api-v1-ListMerchantMonthlyExpenditureRequest)
+    - [ListMerchantMonthlyExpenditureResponse](#financial_integration_service_api-v1-ListMerchantMonthlyExpenditureResponse)
     - [ListTransactionAggregatesRequest](#financial_integration_service_api-v1-ListTransactionAggregatesRequest)
     - [ListTransactionAggregatesResponse](#financial_integration_service_api-v1-ListTransactionAggregatesResponse)
     - [ListUserCategoryMonthlyExpenditureRequest](#financial_integration_service_api-v1-ListUserCategoryMonthlyExpenditureRequest)
@@ -2153,6 +2167,8 @@ For example, for MonthlyBalance:
 | ----- | ---- | ----- | ----------- |
 | user_id | [uint64](#uint64) |  |  |
 | month | [uint32](#uint32) |  | optional |
+| page_number | [int32](#int32) |  |  |
+| page_size | [int32](#int32) |  | Number of items to return per page. |
 
 
 
@@ -2168,6 +2184,7 @@ For example, for MonthlyBalance:
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | monthly_balances | [MonthlyBalance](#financial_integration_service_api-v1-MonthlyBalance) | repeated |  |
+| next_page_number | [int32](#int32) |  |  |
 
 
 
@@ -2184,6 +2201,8 @@ GetMonthlyExpenditure RPC
 | ----- | ---- | ----- | ----------- |
 | user_id | [uint64](#uint64) |  |  |
 | month | [uint32](#uint32) |  |  |
+| page_number | [int32](#int32) |  |  |
+| page_size | [int32](#int32) |  | Number of items to return per page. |
 
 
 
@@ -2199,6 +2218,7 @@ GetMonthlyExpenditure RPC
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | monthly_expenditures | [MonthlyExpenditure](#financial_integration_service_api-v1-MonthlyExpenditure) | repeated |  |
+| next_page_number | [int32](#int32) |  |  |
 
 
 
@@ -2215,6 +2235,8 @@ GetMonthlyIncome RPC
 | ----- | ---- | ----- | ----------- |
 | user_id | [uint64](#uint64) |  |  |
 | month | [uint32](#uint32) |  |  |
+| page_number | [int32](#int32) |  |  |
+| page_size | [int32](#int32) |  | Number of items to return per page. |
 
 
 
@@ -2230,6 +2252,7 @@ GetMonthlyIncome RPC
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | monthly_incomes | [MonthlyIncome](#financial_integration_service_api-v1-MonthlyIncome) | repeated |  |
+| next_page_number | [int32](#int32) |  |  |
 
 
 
@@ -2246,6 +2269,8 @@ GetMonthlySavings RPC
 | ----- | ---- | ----- | ----------- |
 | user_id | [uint64](#uint64) |  |  |
 | month | [uint32](#uint32) |  |  |
+| page_number | [int32](#int32) |  |  |
+| page_size | [int32](#int32) |  | Number of items to return per page. |
 
 
 
@@ -2261,6 +2286,7 @@ GetMonthlySavings RPC
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | monthly_savings | [MonthlySavings](#financial_integration_service_api-v1-MonthlySavings) | repeated |  |
+| next_page_number | [int32](#int32) |  |  |
 
 
 
@@ -2278,6 +2304,8 @@ GetMonthlyTotalQuantityBySecurityAndUser RPC
 | user_id | [uint64](#uint64) |  |  |
 | month | [uint32](#uint32) |  |  |
 | security_id | [string](#string) |  |  |
+| page_number | [int32](#int32) |  |  |
+| page_size | [int32](#int32) |  | Number of items to return per page. |
 
 
 
@@ -2293,6 +2321,7 @@ GetMonthlyTotalQuantityBySecurityAndUser RPC
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | monthly_total_quantity_by_security_and_user | [MonthlyTotalQuantityBySecurityAndUser](#financial_integration_service_api-v1-MonthlyTotalQuantityBySecurityAndUser) | repeated |  |
+| next_page_number | [int32](#int32) |  |  |
 
 
 
@@ -2309,6 +2338,8 @@ GetMonthlyTransactionCount RPC
 | ----- | ---- | ----- | ----------- |
 | user_id | [uint64](#uint64) |  |  |
 | month | [uint32](#uint32) |  |  |
+| page_number | [int32](#int32) |  |  |
+| page_size | [int32](#int32) |  | Number of items to return per page. |
 
 
 
@@ -2324,6 +2355,7 @@ GetMonthlyTransactionCount RPC
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | monthly_transaction_counts | [MonthlyTransactionCount](#financial_integration_service_api-v1-MonthlyTransactionCount) | repeated |  |
+| next_page_number | [int32](#int32) |  |  |
 
 
 
@@ -2341,6 +2373,8 @@ GetPaymentChannelMonthlyExpenditure RPC
 | user_id | [uint64](#uint64) |  |  |
 | month | [uint32](#uint32) |  |  |
 | payment_channel | [string](#string) |  |  |
+| page_number | [int32](#int32) |  |  |
+| page_size | [int32](#int32) |  | Number of items to return per page. |
 
 
 
@@ -2356,6 +2390,7 @@ GetPaymentChannelMonthlyExpenditure RPC
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | payment_channel_monthly_expenditure | [PaymentChannelMonthlyExpenditure](#financial_integration_service_api-v1-PaymentChannelMonthlyExpenditure) | repeated |  |
+| next_page_number | [int32](#int32) |  |  |
 
 
 
@@ -2372,6 +2407,8 @@ GetTotalInvestmentBySecurity RPC
 | ----- | ---- | ----- | ----------- |
 | user_id | [uint64](#uint64) |  |  |
 | security_id | [string](#string) |  |  |
+| page_number | [int32](#int32) |  |  |
+| page_size | [int32](#int32) |  | Number of items to return per page. |
 
 
 
@@ -2387,6 +2424,7 @@ GetTotalInvestmentBySecurity RPC
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | total_investment_by_security | [TotalInvestmentBySecurity](#financial_integration_service_api-v1-TotalInvestmentBySecurity) | repeated |  |
+| next_page_number | [int32](#int32) |  |  |
 
 
 
@@ -2518,6 +2556,237 @@ CategoryMonthlyExpenditure
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | category_monthly_income | [CategoryMonthlyIncome](#financial_integration_service_api-v1-CategoryMonthlyIncome) | repeated |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-ListCategoryMonthlyTransactionCountRequest"></a>
+
+### ListCategoryMonthlyTransactionCountRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| user_id | [uint64](#uint64) |  | has to be present and defined |
+| page_number | [int32](#int32) |  |  |
+| page_size | [int32](#int32) |  | Number of items to return per page. |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-ListCategoryMonthlyTransactionCountResponse"></a>
+
+### ListCategoryMonthlyTransactionCountResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| category_monthly_transaction_count | [CategoryMonthlyTransactionCount](#financial_integration_service_api-v1-CategoryMonthlyTransactionCount) | repeated |  |
+| next_page_number | [int32](#int32) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-ListDebtToIncomeRatioRequest"></a>
+
+### ListDebtToIncomeRatioRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| user_id | [uint64](#uint64) |  |  |
+| page_number | [int32](#int32) |  |  |
+| page_size | [int32](#int32) |  | Number of items to return per page. |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-ListDebtToIncomeRatioResponse"></a>
+
+### ListDebtToIncomeRatioResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| debt_to_income_ratios | [DebtToIncomeRatio](#financial_integration_service_api-v1-DebtToIncomeRatio) | repeated |  |
+| next_page_number | [int32](#int32) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-ListExpenseMetricsRequest"></a>
+
+### ListExpenseMetricsRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| user_id | [uint64](#uint64) |  |  |
+| page_number | [int32](#int32) |  |  |
+| page_size | [int32](#int32) |  | Number of items to return per page. |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-ListExpenseMetricsResponse"></a>
+
+### ListExpenseMetricsResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| expense_metrics | [ExpenseMetrics](#financial_integration_service_api-v1-ExpenseMetrics) | repeated |  |
+| next_page_number | [int32](#int32) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-ListFinancialProfileRequest"></a>
+
+### ListFinancialProfileRequest
+GetFinancialProfile RPC
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| user_id | [uint64](#uint64) |  |  |
+| page_number | [int32](#int32) |  |  |
+| page_size | [int32](#int32) |  | Number of items to return per page. |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-ListFinancialProfileResponse"></a>
+
+### ListFinancialProfileResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| financial_profiles | [FinancialProfile](#financial_integration_service_api-v1-FinancialProfile) | repeated |  |
+| next_page_number | [int32](#int32) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-ListIncomeExpenseRatioRequest"></a>
+
+### ListIncomeExpenseRatioRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| user_id | [uint64](#uint64) |  |  |
+| page_number | [int32](#int32) |  |  |
+| page_size | [int32](#int32) |  | Number of items to return per page. |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-ListIncomeExpenseRatioResponse"></a>
+
+### ListIncomeExpenseRatioResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| income_expense_ratios | [IncomeExpenseRatio](#financial_integration_service_api-v1-IncomeExpenseRatio) | repeated |  |
+| next_page_number | [int32](#int32) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-ListIncomeMetricsRequest"></a>
+
+### ListIncomeMetricsRequest
+GetIncomeMetrics RPC
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| user_id | [uint64](#uint64) |  |  |
+| page_number | [int32](#int32) |  |  |
+| page_size | [int32](#int32) |  | Number of items to return per page. |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-ListIncomeMetricsResponse"></a>
+
+### ListIncomeMetricsResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| income_metrics | [IncomeMetrics](#financial_integration_service_api-v1-IncomeMetrics) | repeated |  |
+| next_page_number | [int32](#int32) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-ListMerchantMonthlyExpenditureRequest"></a>
+
+### ListMerchantMonthlyExpenditureRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| user_id | [uint64](#uint64) |  |  |
+| page_number | [int32](#int32) |  |  |
+| page_size | [int32](#int32) |  | Number of items to return per page. |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-ListMerchantMonthlyExpenditureResponse"></a>
+
+### ListMerchantMonthlyExpenditureResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| merchant_monthly_expenditures | [MerchantMonthlyExpenditure](#financial_integration_service_api-v1-MerchantMonthlyExpenditure) | repeated |  |
+| next_page_number | [int32](#int32) |  |  |
 
 
 
@@ -4090,13 +4359,20 @@ FinancialService API.
 | GetUserCategoryMonthlyIncome | [GetUserCategoryMonthlyIncomeRequest](#financial_integration_service_api-v1-GetUserCategoryMonthlyIncomeRequest) | [GetUserCategoryMonthlyIncomeResponse](#financial_integration_service_api-v1-GetUserCategoryMonthlyIncomeResponse) | Get CategoryMonthlyIncome by Category and User - This would return all CategoryMonthlyIncome records for a specific user for a specific personal finance category |
 | ListUserCategoryMonthlyIncome | [ListUserCategoryMonthlyIncomeRequest](#financial_integration_service_api-v1-ListUserCategoryMonthlyIncomeRequest) | [ListUserCategoryMonthlyIncomeResponse](#financial_integration_service_api-v1-ListUserCategoryMonthlyIncomeResponse) |  |
 | GetCategoryMonthlyTransactionCount | [GetCategoryMonthlyTransactionCountRequest](#financial_integration_service_api-v1-GetCategoryMonthlyTransactionCountRequest) | [GetCategoryMonthlyTransactionCountResponse](#financial_integration_service_api-v1-GetCategoryMonthlyTransactionCountResponse) | Get CategoryMonthlyTransactionCount by User - This would return all CategoryMonthlyTransactionCount records for a specific user |
+| ListCategoryMonthlyTransactionCount | [ListCategoryMonthlyTransactionCountRequest](#financial_integration_service_api-v1-ListCategoryMonthlyTransactionCountRequest) | [ListCategoryMonthlyTransactionCountResponse](#financial_integration_service_api-v1-ListCategoryMonthlyTransactionCountResponse) |  |
 | GetDebtToIncomeRatio | [GetDebtToIncomeRatioRequest](#financial_integration_service_api-v1-GetDebtToIncomeRatioRequest) | [GetDebtToIncomeRatioResponse](#financial_integration_service_api-v1-GetDebtToIncomeRatioResponse) |  |
+| ListDebtToIncomeRatio | [ListDebtToIncomeRatioRequest](#financial_integration_service_api-v1-ListDebtToIncomeRatioRequest) | [ListDebtToIncomeRatioResponse](#financial_integration_service_api-v1-ListDebtToIncomeRatioResponse) |  |
 | GetExpenseMetrics | [GetExpenseMetricsRequest](#financial_integration_service_api-v1-GetExpenseMetricsRequest) | [GetExpenseMetricsResponse](#financial_integration_service_api-v1-GetExpenseMetricsResponse) |  |
+| ListExpenseMetrics | [ListExpenseMetricsRequest](#financial_integration_service_api-v1-ListExpenseMetricsRequest) | [ListExpenseMetricsResponse](#financial_integration_service_api-v1-ListExpenseMetricsResponse) |  |
 | GetFinancialProfile | [GetFinancialProfileRequest](#financial_integration_service_api-v1-GetFinancialProfileRequest) | [GetFinancialProfileResponse](#financial_integration_service_api-v1-GetFinancialProfileResponse) |  |
+| ListFinancialProfile | [ListFinancialProfileRequest](#financial_integration_service_api-v1-ListFinancialProfileRequest) | [ListFinancialProfileResponse](#financial_integration_service_api-v1-ListFinancialProfileResponse) |  |
 | GetIncomeExpenseRatio | [GetIncomeExpenseRatioRequest](#financial_integration_service_api-v1-GetIncomeExpenseRatioRequest) | [GetIncomeExpenseRatioResponse](#financial_integration_service_api-v1-GetIncomeExpenseRatioResponse) |  |
+| ListIncomeExpenseRatio | [ListIncomeExpenseRatioRequest](#financial_integration_service_api-v1-ListIncomeExpenseRatioRequest) | [ListIncomeExpenseRatioResponse](#financial_integration_service_api-v1-ListIncomeExpenseRatioResponse) |  |
 | GetIncomeMetrics | [GetIncomeMetricsRequest](#financial_integration_service_api-v1-GetIncomeMetricsRequest) | [GetIncomeMetricsResponse](#financial_integration_service_api-v1-GetIncomeMetricsResponse) |  |
+| ListIncomeMetrics | [ListIncomeMetricsRequest](#financial_integration_service_api-v1-ListIncomeMetricsRequest) | [ListIncomeMetricsResponse](#financial_integration_service_api-v1-ListIncomeMetricsResponse) |  |
 | GetMerchantMonthlyExpenditure | [GetMerchantMonthlyExpenditureRequest](#financial_integration_service_api-v1-GetMerchantMonthlyExpenditureRequest) | [GetMerchantMonthlyExpenditureResponse](#financial_integration_service_api-v1-GetMerchantMonthlyExpenditureResponse) |  |
-| GetMonthlyBalance | [GetMonthlyBalanceRequest](#financial_integration_service_api-v1-GetMonthlyBalanceRequest) | [GetMonthlyBalanceResponse](#financial_integration_service_api-v1-GetMonthlyBalanceResponse) |  |
+| ListMerchantMonthlyExpenditure | [ListMerchantMonthlyExpenditureRequest](#financial_integration_service_api-v1-ListMerchantMonthlyExpenditureRequest) | [ListMerchantMonthlyExpenditureResponse](#financial_integration_service_api-v1-ListMerchantMonthlyExpenditureResponse) |  |
+| GetMonthlyBalance | [GetMonthlyBalanceRequest](#financial_integration_service_api-v1-GetMonthlyBalanceRequest) | [GetMonthlyBalanceResponse](#financial_integration_service_api-v1-GetMonthlyBalanceResponse) | @here |
 | GetMonthlyExpenditure | [GetMonthlyExpenditureRequest](#financial_integration_service_api-v1-GetMonthlyExpenditureRequest) | [GetMonthlyExpenditureResponse](#financial_integration_service_api-v1-GetMonthlyExpenditureResponse) |  |
 | GetMonthlyIncome | [GetMonthlyIncomeRequest](#financial_integration_service_api-v1-GetMonthlyIncomeRequest) | [GetMonthlyIncomeResponse](#financial_integration_service_api-v1-GetMonthlyIncomeResponse) |  |
 | GetMonthlySavings | [GetMonthlySavingsRequest](#financial_integration_service_api-v1-GetMonthlySavingsRequest) | [GetMonthlySavingsResponse](#financial_integration_service_api-v1-GetMonthlySavingsResponse) |  |
