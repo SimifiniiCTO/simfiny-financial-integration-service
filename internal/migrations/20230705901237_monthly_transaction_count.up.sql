@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS MonthlyTransactionCount
 (
     Month Date,
     UserId UInt64,
-    TransactionCount AggregateFunction(count)
+    TransactionCount UInt64
 ) ENGINE = AggregatingMergeTree()
 PARTITION BY toYYYYMM(Month)
 ORDER BY (Month, UserId);

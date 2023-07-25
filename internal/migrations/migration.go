@@ -78,6 +78,8 @@ func (m *MigrationEngine) Migrate(ctx context.Context) error {
 		return err
 	}
 
+	fmt.Printf("applied %d migrations\n", len(group.Migrations))
+
 	if group.IsZero() {
 		fmt.Printf("there are no new migrations to run (database is up to date)\n")
 		return nil

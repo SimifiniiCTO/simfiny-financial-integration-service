@@ -365,12 +365,11 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, userId, linkId 
 
 	var cursor *string
 	// get the last plaid sync
-	// get the last plaid sync
 
-	lasPlaidSync := link.GetPlaidSync()
-	if lasPlaidSync != nil {
-		cursor = &lasPlaidSync.NextCursor
-	}
+	// lasPlaidSync := link.GetPlaidSync()
+	// if lasPlaidSync != nil {
+	// 	cursor = &lasPlaidSync.NextCursor
+	// }
 
 	syncResult, err := plaidClient.Sync(ctx, cursor, &accessToken)
 	if err != nil {
