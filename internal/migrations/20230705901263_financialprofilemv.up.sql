@@ -1,4 +1,5 @@
 CREATE MATERIALIZED VIEW IF NOT EXISTS FinancialProfileMV
+TO FinancialProfile
 AS
 SELECT
     toYYYYMM(Time) as Month,
