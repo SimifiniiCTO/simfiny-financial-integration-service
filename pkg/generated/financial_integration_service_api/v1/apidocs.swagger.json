@@ -463,71 +463,19 @@
             "required": false,
             "type": "integer",
             "format": "int64"
-          }
-        ],
-        "tags": [
-          "expenditure"
-        ]
-      }
-    },
-    "/api/v1/analytics/category-monthly-expenditure/user/{userId}/pagenumber/{pageNumber}/pagesize/{pageSize}": {
-      "get": {
-        "summary": "Returns the monthly category expenditure for a user in a paginated fashion",
-        "description": "This API could accept user_id as an input parameter and return the monthly category expenditure for that user.",
-        "operationId": "GetUserCategoryMonthlyExpenditure",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": ".api.v1.ListUserCategoryMonthlyExpenditureResponse"
-            }
-          },
-          "400": {
-            "description": "Request failed due to invalid input.",
-            "schema": {
-              "$ref": ".api.v1.ValidationErrorMessageResponse"
-            }
-          },
-          "404": {
-            "description": "Request failed due to incorrect path.",
-            "schema": {
-              "$ref": ".api.v1.PathUnknownErrorMessageResponse"
-            }
-          },
-          "500": {
-            "description": "Request failed due to internal server error.",
-            "schema": {
-              "$ref": ".api.v1.InternalErrorMessageResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "userId",
-            "description": "User ID",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "format": "uint64"
           },
           {
             "name": "pageNumber",
-            "in": "path",
-            "required": true,
+            "in": "query",
+            "required": false,
             "type": "string",
             "format": "int64"
           },
           {
             "name": "pageSize",
             "description": "Number of items to return per page.",
-            "in": "path",
-            "required": true,
+            "in": "query",
+            "required": false,
             "type": "string",
             "format": "int64"
           }
@@ -593,77 +541,25 @@
             "required": false,
             "type": "integer",
             "format": "int64"
-          }
-        ],
-        "tags": [
-          "income"
-        ]
-      }
-    },
-    "/api/v1/analytics/category-monthly-income/user/{userId}/pagenumber/{pageNumber}/pagesize/{pageSize}": {
-      "get": {
-        "summary": "Returns the monthly category Income for a user in a paginated fashion",
-        "description": "This API could accept user_id as an input parameter and return the monthly category Income for that user.",
-        "operationId": "GetUserCategoryMonthlyIncome",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": ".api.v1.ListUserCategoryMonthlyIncomeResponse"
-            }
-          },
-          "400": {
-            "description": "Request failed due to invalid input.",
-            "schema": {
-              "$ref": ".api.v1.ValidationErrorMessageResponse"
-            }
-          },
-          "404": {
-            "description": "Request failed due to incorrect path.",
-            "schema": {
-              "$ref": ".api.v1.PathUnknownErrorMessageResponse"
-            }
-          },
-          "500": {
-            "description": "Request failed due to internal server error.",
-            "schema": {
-              "$ref": ".api.v1.InternalErrorMessageResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "userId",
-            "description": "User ID",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "format": "uint64"
           },
           {
             "name": "pageNumber",
-            "in": "path",
-            "required": true,
+            "in": "query",
+            "required": false,
             "type": "string",
             "format": "int64"
           },
           {
             "name": "pageSize",
             "description": "Number of items to return per page.",
-            "in": "path",
-            "required": true,
+            "in": "query",
+            "required": false,
             "type": "string",
             "format": "int64"
           }
         ],
         "tags": [
-          "Income"
+          "income"
         ]
       }
     },
@@ -5641,6 +5537,10 @@
             "$ref": "#/definitions/CategoryMonthlyExpenditure"
           },
           "title": "List of CategoryMonthlyExpenditure records for the user"
+        },
+        "nextPageNumber": {
+          "type": "string",
+          "format": "int64"
         }
       }
     },
@@ -5653,6 +5553,10 @@
             "type": "object",
             "$ref": "#/definitions/CategoryMonthlyIncome"
           }
+        },
+        "nextPageNumber": {
+          "type": "string",
+          "format": "int64"
         }
       }
     },
@@ -6194,40 +6098,6 @@
             "type": "object",
             "$ref": "#/definitions/MerchantMonthlyExpenditure"
           }
-        },
-        "nextPageNumber": {
-          "type": "string",
-          "format": "int64"
-        }
-      }
-    },
-    "ListUserCategoryMonthlyExpenditureResponse": {
-      "type": "object",
-      "properties": {
-        "categoryMonthlyExpenditure": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/CategoryMonthlyExpenditure"
-          },
-          "title": "List of CategoryMonthlyExpenditure records for the user"
-        },
-        "nextPageNumber": {
-          "type": "string",
-          "format": "int64"
-        }
-      }
-    },
-    "ListUserCategoryMonthlyIncomeResponse": {
-      "type": "object",
-      "properties": {
-        "categoryMonthlyIncome": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/CategoryMonthlyIncome"
-          },
-          "title": "List of CategoryMonthlyExpenditure records for the user"
         },
         "nextPageNumber": {
           "type": "string",

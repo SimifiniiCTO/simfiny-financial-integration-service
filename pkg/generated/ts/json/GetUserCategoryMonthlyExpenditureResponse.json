@@ -10,6 +10,9 @@
                     },
                     "type": "array",
                     "description": "List of CategoryMonthlyExpenditure records for the user"
+                },
+                "next_page_number": {
+                    "type": "string"
                 }
             },
             "additionalProperties": true,

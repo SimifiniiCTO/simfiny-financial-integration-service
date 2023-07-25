@@ -8,24 +8,6 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (s *Server) GetUserAccountBalanceHistory(context.Context, *proto.GetUserAccountBalanceHistoryRequest) (*proto.GetUserAccountBalanceHistoryResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetUserAccountBalanceHistory not implemented")
-}
-func (s *Server) GetAccountBalanceHistory(context.Context, *proto.GetAccountBalanceHistoryRequest) (*proto.GetAccountBalanceHistoryResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetAccountBalanceHistory not implemented")
-}
-func (s *Server) GetUserCategoryMonthlyExpenditure(context.Context, *proto.GetUserCategoryMonthlyExpenditureRequest) (*proto.GetUserCategoryMonthlyExpenditureResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetUserCategoryMonthlyExpenditure not implemented")
-}
-func (s *Server) ListUserCategoryMonthlyExpenditure(context.Context, *proto.ListUserCategoryMonthlyExpenditureRequest) (*proto.ListUserCategoryMonthlyExpenditureResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListUserCategoryMonthlyExpenditure not implemented")
-}
-func (s *Server) GetUserCategoryMonthlyIncome(context.Context, *proto.GetUserCategoryMonthlyIncomeRequest) (*proto.GetUserCategoryMonthlyIncomeResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetUserCategoryMonthlyIncome not implemented")
-}
-func (s *Server) ListUserCategoryMonthlyIncome(context.Context, *proto.ListUserCategoryMonthlyIncomeRequest) (*proto.ListUserCategoryMonthlyIncomeResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListUserCategoryMonthlyIncome not implemented")
-}
 func (s *Server) GetCategoryMonthlyTransactionCount(context.Context, *proto.GetCategoryMonthlyTransactionCountRequest) (*proto.GetCategoryMonthlyTransactionCountResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetCategoryMonthlyTransactionCount not implemented")
 }

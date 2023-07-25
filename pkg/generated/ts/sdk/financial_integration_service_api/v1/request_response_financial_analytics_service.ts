@@ -79,23 +79,12 @@ export interface GetUserCategoryMonthlyExpenditureRequest {
   personalFinanceCategoryPrimary: string;
   /** Month in the format of YYYYMM */
   month: number;
-}
-
-export interface GetUserCategoryMonthlyExpenditureResponse {
-  /** List of CategoryMonthlyExpenditure records for the user */
-  categoryMonthlyExpenditure: CategoryMonthlyExpenditure[];
-}
-
-/** CategoryMonthlyExpenditure */
-export interface ListUserCategoryMonthlyExpenditureRequest {
-  /** User ID */
-  userId: number;
   pageNumber: number;
   /** Number of items to return per page. */
   pageSize: number;
 }
 
-export interface ListUserCategoryMonthlyExpenditureResponse {
+export interface GetUserCategoryMonthlyExpenditureResponse {
   /** List of CategoryMonthlyExpenditure records for the user */
   categoryMonthlyExpenditure: CategoryMonthlyExpenditure[];
   nextPageNumber: number;
@@ -105,22 +94,12 @@ export interface GetUserCategoryMonthlyIncomeRequest {
   userId: number;
   personalFinanceCategoryPrimary: string;
   month: number;
-}
-
-export interface GetUserCategoryMonthlyIncomeResponse {
-  categoryMonthlyIncome: CategoryMonthlyIncome[];
-}
-
-export interface ListUserCategoryMonthlyIncomeRequest {
-  /** User ID */
-  userId: number;
   pageNumber: number;
   /** Number of items to return per page. */
   pageSize: number;
 }
 
-export interface ListUserCategoryMonthlyIncomeResponse {
-  /** List of CategoryMonthlyExpenditure records for the user */
+export interface GetUserCategoryMonthlyIncomeResponse {
   categoryMonthlyIncome: CategoryMonthlyIncome[];
   nextPageNumber: number;
 }
@@ -999,7 +978,7 @@ export const GetAccountBalanceHistoryResponse = {
 };
 
 function createBaseGetUserCategoryMonthlyExpenditureRequest(): GetUserCategoryMonthlyExpenditureRequest {
-  return { userId: 0, personalFinanceCategoryPrimary: "", month: 0 };
+  return { userId: 0, personalFinanceCategoryPrimary: "", month: 0, pageNumber: 0, pageSize: 0 };
 }
 
 export const GetUserCategoryMonthlyExpenditureRequest = {
@@ -1012,6 +991,12 @@ export const GetUserCategoryMonthlyExpenditureRequest = {
     }
     if (message.month !== 0) {
       writer.uint32(24).uint32(message.month);
+    }
+    if (message.pageNumber !== 0) {
+      writer.uint32(32).int64(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      writer.uint32(40).int64(message.pageSize);
     }
     return writer;
   },
@@ -1044,6 +1029,20 @@ export const GetUserCategoryMonthlyExpenditureRequest = {
 
           message.month = reader.uint32();
           continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.pageNumber = longToNumber(reader.int64() as Long);
+          continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.pageSize = longToNumber(reader.int64() as Long);
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1060,6 +1059,8 @@ export const GetUserCategoryMonthlyExpenditureRequest = {
         ? String(object.personalFinanceCategoryPrimary)
         : "",
       month: isSet(object.month) ? Number(object.month) : 0,
+      pageNumber: isSet(object.pageNumber) ? Number(object.pageNumber) : 0,
+      pageSize: isSet(object.pageSize) ? Number(object.pageSize) : 0,
     };
   },
 
@@ -1073,6 +1074,12 @@ export const GetUserCategoryMonthlyExpenditureRequest = {
     }
     if (message.month !== 0) {
       obj.month = Math.round(message.month);
+    }
+    if (message.pageNumber !== 0) {
+      obj.pageNumber = Math.round(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      obj.pageSize = Math.round(message.pageSize);
     }
     return obj;
   },
@@ -1090,179 +1097,18 @@ export const GetUserCategoryMonthlyExpenditureRequest = {
     message.userId = object.userId ?? 0;
     message.personalFinanceCategoryPrimary = object.personalFinanceCategoryPrimary ?? "";
     message.month = object.month ?? 0;
-    return message;
-  },
-};
-
-function createBaseGetUserCategoryMonthlyExpenditureResponse(): GetUserCategoryMonthlyExpenditureResponse {
-  return { categoryMonthlyExpenditure: [] };
-}
-
-export const GetUserCategoryMonthlyExpenditureResponse = {
-  encode(message: GetUserCategoryMonthlyExpenditureResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    for (const v of message.categoryMonthlyExpenditure) {
-      CategoryMonthlyExpenditure.encode(v!, writer.uint32(10).fork()).ldelim();
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): GetUserCategoryMonthlyExpenditureResponse {
-    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseGetUserCategoryMonthlyExpenditureResponse();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          if (tag !== 10) {
-            break;
-          }
-
-          message.categoryMonthlyExpenditure.push(CategoryMonthlyExpenditure.decode(reader, reader.uint32()));
-          continue;
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skipType(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): GetUserCategoryMonthlyExpenditureResponse {
-    return {
-      categoryMonthlyExpenditure: Array.isArray(object?.categoryMonthlyExpenditure)
-        ? object.categoryMonthlyExpenditure.map((e: any) => CategoryMonthlyExpenditure.fromJSON(e))
-        : [],
-    };
-  },
-
-  toJSON(message: GetUserCategoryMonthlyExpenditureResponse): unknown {
-    const obj: any = {};
-    if (message.categoryMonthlyExpenditure?.length) {
-      obj.categoryMonthlyExpenditure = message.categoryMonthlyExpenditure.map((e) =>
-        CategoryMonthlyExpenditure.toJSON(e)
-      );
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<GetUserCategoryMonthlyExpenditureResponse>, I>>(
-    base?: I,
-  ): GetUserCategoryMonthlyExpenditureResponse {
-    return GetUserCategoryMonthlyExpenditureResponse.fromPartial(base ?? {});
-  },
-
-  fromPartial<I extends Exact<DeepPartial<GetUserCategoryMonthlyExpenditureResponse>, I>>(
-    object: I,
-  ): GetUserCategoryMonthlyExpenditureResponse {
-    const message = createBaseGetUserCategoryMonthlyExpenditureResponse();
-    message.categoryMonthlyExpenditure =
-      object.categoryMonthlyExpenditure?.map((e) => CategoryMonthlyExpenditure.fromPartial(e)) || [];
-    return message;
-  },
-};
-
-function createBaseListUserCategoryMonthlyExpenditureRequest(): ListUserCategoryMonthlyExpenditureRequest {
-  return { userId: 0, pageNumber: 0, pageSize: 0 };
-}
-
-export const ListUserCategoryMonthlyExpenditureRequest = {
-  encode(message: ListUserCategoryMonthlyExpenditureRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.userId !== 0) {
-      writer.uint32(8).uint64(message.userId);
-    }
-    if (message.pageNumber !== 0) {
-      writer.uint32(16).int64(message.pageNumber);
-    }
-    if (message.pageSize !== 0) {
-      writer.uint32(24).int64(message.pageSize);
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): ListUserCategoryMonthlyExpenditureRequest {
-    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseListUserCategoryMonthlyExpenditureRequest();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          if (tag !== 8) {
-            break;
-          }
-
-          message.userId = longToNumber(reader.uint64() as Long);
-          continue;
-        case 2:
-          if (tag !== 16) {
-            break;
-          }
-
-          message.pageNumber = longToNumber(reader.int64() as Long);
-          continue;
-        case 3:
-          if (tag !== 24) {
-            break;
-          }
-
-          message.pageSize = longToNumber(reader.int64() as Long);
-          continue;
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skipType(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): ListUserCategoryMonthlyExpenditureRequest {
-    return {
-      userId: isSet(object.userId) ? Number(object.userId) : 0,
-      pageNumber: isSet(object.pageNumber) ? Number(object.pageNumber) : 0,
-      pageSize: isSet(object.pageSize) ? Number(object.pageSize) : 0,
-    };
-  },
-
-  toJSON(message: ListUserCategoryMonthlyExpenditureRequest): unknown {
-    const obj: any = {};
-    if (message.userId !== 0) {
-      obj.userId = Math.round(message.userId);
-    }
-    if (message.pageNumber !== 0) {
-      obj.pageNumber = Math.round(message.pageNumber);
-    }
-    if (message.pageSize !== 0) {
-      obj.pageSize = Math.round(message.pageSize);
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<ListUserCategoryMonthlyExpenditureRequest>, I>>(
-    base?: I,
-  ): ListUserCategoryMonthlyExpenditureRequest {
-    return ListUserCategoryMonthlyExpenditureRequest.fromPartial(base ?? {});
-  },
-
-  fromPartial<I extends Exact<DeepPartial<ListUserCategoryMonthlyExpenditureRequest>, I>>(
-    object: I,
-  ): ListUserCategoryMonthlyExpenditureRequest {
-    const message = createBaseListUserCategoryMonthlyExpenditureRequest();
-    message.userId = object.userId ?? 0;
     message.pageNumber = object.pageNumber ?? 0;
     message.pageSize = object.pageSize ?? 0;
     return message;
   },
 };
 
-function createBaseListUserCategoryMonthlyExpenditureResponse(): ListUserCategoryMonthlyExpenditureResponse {
+function createBaseGetUserCategoryMonthlyExpenditureResponse(): GetUserCategoryMonthlyExpenditureResponse {
   return { categoryMonthlyExpenditure: [], nextPageNumber: 0 };
 }
 
-export const ListUserCategoryMonthlyExpenditureResponse = {
-  encode(message: ListUserCategoryMonthlyExpenditureResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const GetUserCategoryMonthlyExpenditureResponse = {
+  encode(message: GetUserCategoryMonthlyExpenditureResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.categoryMonthlyExpenditure) {
       CategoryMonthlyExpenditure.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -1272,10 +1118,10 @@ export const ListUserCategoryMonthlyExpenditureResponse = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): ListUserCategoryMonthlyExpenditureResponse {
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetUserCategoryMonthlyExpenditureResponse {
     const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseListUserCategoryMonthlyExpenditureResponse();
+    const message = createBaseGetUserCategoryMonthlyExpenditureResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1302,7 +1148,7 @@ export const ListUserCategoryMonthlyExpenditureResponse = {
     return message;
   },
 
-  fromJSON(object: any): ListUserCategoryMonthlyExpenditureResponse {
+  fromJSON(object: any): GetUserCategoryMonthlyExpenditureResponse {
     return {
       categoryMonthlyExpenditure: Array.isArray(object?.categoryMonthlyExpenditure)
         ? object.categoryMonthlyExpenditure.map((e: any) => CategoryMonthlyExpenditure.fromJSON(e))
@@ -1311,7 +1157,7 @@ export const ListUserCategoryMonthlyExpenditureResponse = {
     };
   },
 
-  toJSON(message: ListUserCategoryMonthlyExpenditureResponse): unknown {
+  toJSON(message: GetUserCategoryMonthlyExpenditureResponse): unknown {
     const obj: any = {};
     if (message.categoryMonthlyExpenditure?.length) {
       obj.categoryMonthlyExpenditure = message.categoryMonthlyExpenditure.map((e) =>
@@ -1324,16 +1170,16 @@ export const ListUserCategoryMonthlyExpenditureResponse = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<ListUserCategoryMonthlyExpenditureResponse>, I>>(
+  create<I extends Exact<DeepPartial<GetUserCategoryMonthlyExpenditureResponse>, I>>(
     base?: I,
-  ): ListUserCategoryMonthlyExpenditureResponse {
-    return ListUserCategoryMonthlyExpenditureResponse.fromPartial(base ?? {});
+  ): GetUserCategoryMonthlyExpenditureResponse {
+    return GetUserCategoryMonthlyExpenditureResponse.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<ListUserCategoryMonthlyExpenditureResponse>, I>>(
+  fromPartial<I extends Exact<DeepPartial<GetUserCategoryMonthlyExpenditureResponse>, I>>(
     object: I,
-  ): ListUserCategoryMonthlyExpenditureResponse {
-    const message = createBaseListUserCategoryMonthlyExpenditureResponse();
+  ): GetUserCategoryMonthlyExpenditureResponse {
+    const message = createBaseGetUserCategoryMonthlyExpenditureResponse();
     message.categoryMonthlyExpenditure =
       object.categoryMonthlyExpenditure?.map((e) => CategoryMonthlyExpenditure.fromPartial(e)) || [];
     message.nextPageNumber = object.nextPageNumber ?? 0;
@@ -1342,7 +1188,7 @@ export const ListUserCategoryMonthlyExpenditureResponse = {
 };
 
 function createBaseGetUserCategoryMonthlyIncomeRequest(): GetUserCategoryMonthlyIncomeRequest {
-  return { userId: 0, personalFinanceCategoryPrimary: "", month: 0 };
+  return { userId: 0, personalFinanceCategoryPrimary: "", month: 0, pageNumber: 0, pageSize: 0 };
 }
 
 export const GetUserCategoryMonthlyIncomeRequest = {
@@ -1355,6 +1201,12 @@ export const GetUserCategoryMonthlyIncomeRequest = {
     }
     if (message.month !== 0) {
       writer.uint32(24).uint32(message.month);
+    }
+    if (message.pageNumber !== 0) {
+      writer.uint32(32).int64(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      writer.uint32(40).int64(message.pageSize);
     }
     return writer;
   },
@@ -1387,6 +1239,20 @@ export const GetUserCategoryMonthlyIncomeRequest = {
 
           message.month = reader.uint32();
           continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.pageNumber = longToNumber(reader.int64() as Long);
+          continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.pageSize = longToNumber(reader.int64() as Long);
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1403,6 +1269,8 @@ export const GetUserCategoryMonthlyIncomeRequest = {
         ? String(object.personalFinanceCategoryPrimary)
         : "",
       month: isSet(object.month) ? Number(object.month) : 0,
+      pageNumber: isSet(object.pageNumber) ? Number(object.pageNumber) : 0,
+      pageSize: isSet(object.pageSize) ? Number(object.pageSize) : 0,
     };
   },
 
@@ -1416,6 +1284,12 @@ export const GetUserCategoryMonthlyIncomeRequest = {
     }
     if (message.month !== 0) {
       obj.month = Math.round(message.month);
+    }
+    if (message.pageNumber !== 0) {
+      obj.pageNumber = Math.round(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      obj.pageSize = Math.round(message.pageSize);
     }
     return obj;
   },
@@ -1433,177 +1307,18 @@ export const GetUserCategoryMonthlyIncomeRequest = {
     message.userId = object.userId ?? 0;
     message.personalFinanceCategoryPrimary = object.personalFinanceCategoryPrimary ?? "";
     message.month = object.month ?? 0;
-    return message;
-  },
-};
-
-function createBaseGetUserCategoryMonthlyIncomeResponse(): GetUserCategoryMonthlyIncomeResponse {
-  return { categoryMonthlyIncome: [] };
-}
-
-export const GetUserCategoryMonthlyIncomeResponse = {
-  encode(message: GetUserCategoryMonthlyIncomeResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    for (const v of message.categoryMonthlyIncome) {
-      CategoryMonthlyIncome.encode(v!, writer.uint32(10).fork()).ldelim();
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): GetUserCategoryMonthlyIncomeResponse {
-    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseGetUserCategoryMonthlyIncomeResponse();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          if (tag !== 10) {
-            break;
-          }
-
-          message.categoryMonthlyIncome.push(CategoryMonthlyIncome.decode(reader, reader.uint32()));
-          continue;
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skipType(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): GetUserCategoryMonthlyIncomeResponse {
-    return {
-      categoryMonthlyIncome: Array.isArray(object?.categoryMonthlyIncome)
-        ? object.categoryMonthlyIncome.map((e: any) => CategoryMonthlyIncome.fromJSON(e))
-        : [],
-    };
-  },
-
-  toJSON(message: GetUserCategoryMonthlyIncomeResponse): unknown {
-    const obj: any = {};
-    if (message.categoryMonthlyIncome?.length) {
-      obj.categoryMonthlyIncome = message.categoryMonthlyIncome.map((e) => CategoryMonthlyIncome.toJSON(e));
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<GetUserCategoryMonthlyIncomeResponse>, I>>(
-    base?: I,
-  ): GetUserCategoryMonthlyIncomeResponse {
-    return GetUserCategoryMonthlyIncomeResponse.fromPartial(base ?? {});
-  },
-
-  fromPartial<I extends Exact<DeepPartial<GetUserCategoryMonthlyIncomeResponse>, I>>(
-    object: I,
-  ): GetUserCategoryMonthlyIncomeResponse {
-    const message = createBaseGetUserCategoryMonthlyIncomeResponse();
-    message.categoryMonthlyIncome = object.categoryMonthlyIncome?.map((e) => CategoryMonthlyIncome.fromPartial(e)) ||
-      [];
-    return message;
-  },
-};
-
-function createBaseListUserCategoryMonthlyIncomeRequest(): ListUserCategoryMonthlyIncomeRequest {
-  return { userId: 0, pageNumber: 0, pageSize: 0 };
-}
-
-export const ListUserCategoryMonthlyIncomeRequest = {
-  encode(message: ListUserCategoryMonthlyIncomeRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.userId !== 0) {
-      writer.uint32(8).uint64(message.userId);
-    }
-    if (message.pageNumber !== 0) {
-      writer.uint32(16).int64(message.pageNumber);
-    }
-    if (message.pageSize !== 0) {
-      writer.uint32(24).int64(message.pageSize);
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): ListUserCategoryMonthlyIncomeRequest {
-    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseListUserCategoryMonthlyIncomeRequest();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          if (tag !== 8) {
-            break;
-          }
-
-          message.userId = longToNumber(reader.uint64() as Long);
-          continue;
-        case 2:
-          if (tag !== 16) {
-            break;
-          }
-
-          message.pageNumber = longToNumber(reader.int64() as Long);
-          continue;
-        case 3:
-          if (tag !== 24) {
-            break;
-          }
-
-          message.pageSize = longToNumber(reader.int64() as Long);
-          continue;
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skipType(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): ListUserCategoryMonthlyIncomeRequest {
-    return {
-      userId: isSet(object.userId) ? Number(object.userId) : 0,
-      pageNumber: isSet(object.pageNumber) ? Number(object.pageNumber) : 0,
-      pageSize: isSet(object.pageSize) ? Number(object.pageSize) : 0,
-    };
-  },
-
-  toJSON(message: ListUserCategoryMonthlyIncomeRequest): unknown {
-    const obj: any = {};
-    if (message.userId !== 0) {
-      obj.userId = Math.round(message.userId);
-    }
-    if (message.pageNumber !== 0) {
-      obj.pageNumber = Math.round(message.pageNumber);
-    }
-    if (message.pageSize !== 0) {
-      obj.pageSize = Math.round(message.pageSize);
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<ListUserCategoryMonthlyIncomeRequest>, I>>(
-    base?: I,
-  ): ListUserCategoryMonthlyIncomeRequest {
-    return ListUserCategoryMonthlyIncomeRequest.fromPartial(base ?? {});
-  },
-
-  fromPartial<I extends Exact<DeepPartial<ListUserCategoryMonthlyIncomeRequest>, I>>(
-    object: I,
-  ): ListUserCategoryMonthlyIncomeRequest {
-    const message = createBaseListUserCategoryMonthlyIncomeRequest();
-    message.userId = object.userId ?? 0;
     message.pageNumber = object.pageNumber ?? 0;
     message.pageSize = object.pageSize ?? 0;
     return message;
   },
 };
 
-function createBaseListUserCategoryMonthlyIncomeResponse(): ListUserCategoryMonthlyIncomeResponse {
+function createBaseGetUserCategoryMonthlyIncomeResponse(): GetUserCategoryMonthlyIncomeResponse {
   return { categoryMonthlyIncome: [], nextPageNumber: 0 };
 }
 
-export const ListUserCategoryMonthlyIncomeResponse = {
-  encode(message: ListUserCategoryMonthlyIncomeResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const GetUserCategoryMonthlyIncomeResponse = {
+  encode(message: GetUserCategoryMonthlyIncomeResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.categoryMonthlyIncome) {
       CategoryMonthlyIncome.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -1613,10 +1328,10 @@ export const ListUserCategoryMonthlyIncomeResponse = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): ListUserCategoryMonthlyIncomeResponse {
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetUserCategoryMonthlyIncomeResponse {
     const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseListUserCategoryMonthlyIncomeResponse();
+    const message = createBaseGetUserCategoryMonthlyIncomeResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1643,7 +1358,7 @@ export const ListUserCategoryMonthlyIncomeResponse = {
     return message;
   },
 
-  fromJSON(object: any): ListUserCategoryMonthlyIncomeResponse {
+  fromJSON(object: any): GetUserCategoryMonthlyIncomeResponse {
     return {
       categoryMonthlyIncome: Array.isArray(object?.categoryMonthlyIncome)
         ? object.categoryMonthlyIncome.map((e: any) => CategoryMonthlyIncome.fromJSON(e))
@@ -1652,7 +1367,7 @@ export const ListUserCategoryMonthlyIncomeResponse = {
     };
   },
 
-  toJSON(message: ListUserCategoryMonthlyIncomeResponse): unknown {
+  toJSON(message: GetUserCategoryMonthlyIncomeResponse): unknown {
     const obj: any = {};
     if (message.categoryMonthlyIncome?.length) {
       obj.categoryMonthlyIncome = message.categoryMonthlyIncome.map((e) => CategoryMonthlyIncome.toJSON(e));
@@ -1663,16 +1378,16 @@ export const ListUserCategoryMonthlyIncomeResponse = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<ListUserCategoryMonthlyIncomeResponse>, I>>(
+  create<I extends Exact<DeepPartial<GetUserCategoryMonthlyIncomeResponse>, I>>(
     base?: I,
-  ): ListUserCategoryMonthlyIncomeResponse {
-    return ListUserCategoryMonthlyIncomeResponse.fromPartial(base ?? {});
+  ): GetUserCategoryMonthlyIncomeResponse {
+    return GetUserCategoryMonthlyIncomeResponse.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<ListUserCategoryMonthlyIncomeResponse>, I>>(
+  fromPartial<I extends Exact<DeepPartial<GetUserCategoryMonthlyIncomeResponse>, I>>(
     object: I,
-  ): ListUserCategoryMonthlyIncomeResponse {
-    const message = createBaseListUserCategoryMonthlyIncomeResponse();
+  ): GetUserCategoryMonthlyIncomeResponse {
+    const message = createBaseGetUserCategoryMonthlyIncomeResponse();
     message.categoryMonthlyIncome = object.categoryMonthlyIncome?.map((e) => CategoryMonthlyIncome.fromPartial(e)) ||
       [];
     message.nextPageNumber = object.nextPageNumber ?? 0;

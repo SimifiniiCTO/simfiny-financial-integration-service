@@ -63,6 +63,76 @@ func (source *TransactionAggregatesByMonthInternal) ConvertToProto() *Transactio
 	}
 }
 
+type CategoryMonthlyExpenditureInternal struct {
+	ch.CHModel                     `ch:"CategoryMonthlyExpenditure,partition:toYYYYMM(time)"`
+	Month                          uint32  `ch:"Month,type:UInt32"`
+	PersonalFinanceCategoryPrimary string  `ch:"PersonalFinanceCategoryPrimary,type:String"`
+	TotalSpending                  float64 `ch:"TotalSpending,type:Float64"`
+	UserId                         uint64  `ch:"UserId,type:UInt64"`
+}
+
+func (source *CategoryMonthlyExpenditureInternal) ConvertToORM() *CategoryMonthlyExpenditureORM {
+	return &CategoryMonthlyExpenditureORM{
+		Month:                          source.Month,
+		PersonalFinanceCategoryPrimary: source.PersonalFinanceCategoryPrimary,
+		TotalSpending:                  source.TotalSpending,
+		UserId:                         source.UserId,
+	}
+}
+
+func (source *CategoryMonthlyExpenditureORM) ConvertToInternal() *CategoryMonthlyExpenditureInternal {
+	return &CategoryMonthlyExpenditureInternal{
+		Month:                          source.Month,
+		PersonalFinanceCategoryPrimary: source.PersonalFinanceCategoryPrimary,
+		TotalSpending:                  source.TotalSpending,
+		UserId:                         source.UserId,
+	}
+}
+
+func (source *CategoryMonthlyExpenditureInternal) ConvertToProto() *CategoryMonthlyExpenditure {
+	return &CategoryMonthlyExpenditure{
+		Month:                          source.Month,
+		PersonalFinanceCategoryPrimary: source.PersonalFinanceCategoryPrimary,
+		TotalSpending:                  source.TotalSpending,
+		UserId:                         source.UserId,
+	}
+}
+
+type CategoryMonthlyIncomeInternal struct {
+	ch.CHModel                     `ch:"CategoryMonthlyIncome,partition:toYYYYMM(time)"`
+	Month                          uint32  `ch:"Month,type:UInt32"`
+	PersonalFinanceCategoryPrimary string  `ch:"PersonalFinanceCategoryPrimary,type:String"`
+	TotalIncome                    float64 `ch:"TotalIncome,type:Float64"`
+	UserId                         uint64  `ch:"UserId,type:UInt64"`
+}
+
+func (source *CategoryMonthlyIncomeInternal) ConvertToORM() *CategoryMonthlyIncomeORM {
+	return &CategoryMonthlyIncomeORM{
+		Month:                          source.Month,
+		PersonalFinanceCategoryPrimary: source.PersonalFinanceCategoryPrimary,
+		TotalIncome:                    source.TotalIncome,
+		UserId:                         source.UserId,
+	}
+}
+
+func (source *CategoryMonthlyIncomeORM) ConvertToInternal() *CategoryMonthlyIncomeInternal {
+	return &CategoryMonthlyIncomeInternal{
+		Month:                          source.Month,
+		PersonalFinanceCategoryPrimary: source.PersonalFinanceCategoryPrimary,
+		TotalIncome:                    source.TotalIncome,
+		UserId:                         source.UserId,
+	}
+}
+
+func (source *CategoryMonthlyIncomeInternal) ConvertToProto() *CategoryMonthlyIncome {
+	return &CategoryMonthlyIncome{
+		Month:                          source.Month,
+		PersonalFinanceCategoryPrimary: source.PersonalFinanceCategoryPrimary,
+		TotalIncome:                    source.TotalIncome,
+		UserId:                         source.UserId,
+	}
+}
+
 /*
 * This view will aggregate all expenses (transactions where the Amount is less than zero) by category and month.
 * If your definition of "expense metrics" is different, you might need to adjust the query accordingly.*
