@@ -283,6 +283,367 @@ func (source *FinancialProfileInternal) ConvertToProto() *FinancialProfile {
 	}
 }
 
+type IncomeExpenseRatioInternal struct {
+	ch.CHModel `ch:"IncomeExpenseRatio,partition:toYYYYMM(time)"`
+	Month      uint32  `ch:"Month,type:UInt32"`
+	Ratio      float64 `ch:"Ratio,type:Float64"`
+	UserId     uint64  `ch:"UserId,type:UInt64"`
+}
+
+func (source *IncomeExpenseRatioInternal) ConvertToORM() *IncomeExpenseRatioORM {
+	return &IncomeExpenseRatioORM{
+		Month:  source.Month,
+		Ratio:  source.Ratio,
+		UserId: source.UserId,
+	}
+}
+
+func (source *IncomeExpenseRatioORM) ConvertToInternal() *IncomeExpenseRatioInternal {
+	return &IncomeExpenseRatioInternal{
+		Month:  source.Month,
+		Ratio:  source.Ratio,
+		UserId: source.UserId,
+	}
+}
+
+func (source *IncomeExpenseRatioInternal) ConvertToProto() *IncomeExpenseRatio {
+	return &IncomeExpenseRatio{
+		Month:  source.Month,
+		Ratio:  source.Ratio,
+		UserId: source.UserId,
+	}
+}
+
+type IncomeMetricsInternal struct {
+	ch.CHModel                     `ch:"IncomeMetrics,partition:toYYYYMM(time)"`
+	Month                          uint32  `ch:"Month,type:UInt32"`
+	PersonalFinanceCategoryPrimary string  `ch:"PersonalFinanceCategoryPrimary,type:String"`
+	TransactionCount               uint64  `ch:"TransactionCount,type:UInt64"`
+	TotalIncome                    float32 `ch:"TotalIncome,type:Float32"`
+	UserId                         uint64  `ch:"UserId,type:UInt64"`
+}
+
+func (source *IncomeMetricsInternal) ConvertToORM() *IncomeMetricsORM {
+	return &IncomeMetricsORM{
+		Month:                          source.Month,
+		PersonalFinanceCategoryPrimary: source.PersonalFinanceCategoryPrimary,
+		TotalIncome:                    float64(source.TotalIncome),
+		TransactionCount:               source.TransactionCount,
+		UserId:                         source.UserId,
+	}
+}
+
+func (source *IncomeMetricsORM) ConvertToInternal() *IncomeMetricsInternal {
+	return &IncomeMetricsInternal{
+		Month:                          source.Month,
+		PersonalFinanceCategoryPrimary: source.PersonalFinanceCategoryPrimary,
+		TotalIncome:                    float32(source.TotalIncome),
+		TransactionCount:               source.TransactionCount,
+		UserId:                         source.UserId,
+	}
+}
+
+func (source *IncomeMetricsInternal) ConvertToProto() *IncomeMetrics {
+	return &IncomeMetrics{
+		Month:                          source.Month,
+		PersonalFinanceCategoryPrimary: source.PersonalFinanceCategoryPrimary,
+		TotalIncome:                    float64(source.TotalIncome),
+		TransactionCount:               source.TransactionCount,
+		UserId:                         source.UserId,
+	}
+}
+
+type MerchantMonthlyExpenditureInternal struct {
+	ch.CHModel    `ch:"MerchantMonthlyExpenditure,partition:toYYYYMM(time)"`
+	Month         uint32  `ch:"Month,type:UInt32"`
+	MerchantName  string  `ch:"MerchantName,type:String"`
+	TotalSpending float64 `ch:"TotalSpending,type:Float64"`
+	UserId        uint64  `ch:"UserId,type:UInt64"`
+}
+
+func (source *MerchantMonthlyExpenditureInternal) ConvertToORM() *MerchantMonthlyExpenditureORM {
+	return &MerchantMonthlyExpenditureORM{
+		Month:         source.Month,
+		MerchantName:  source.MerchantName,
+		TotalSpending: source.TotalSpending,
+		UserId:        source.UserId,
+	}
+}
+
+func (source *MerchantMonthlyExpenditureORM) ConvertToInternal() *MerchantMonthlyExpenditureInternal {
+	return &MerchantMonthlyExpenditureInternal{
+		Month:         source.Month,
+		MerchantName:  source.MerchantName,
+		TotalSpending: source.TotalSpending,
+		UserId:        source.UserId,
+	}
+}
+
+func (source *MerchantMonthlyExpenditureInternal) ConvertToProto() *MerchantMonthlyExpenditure {
+	return &MerchantMonthlyExpenditure{
+		Month:         source.Month,
+		MerchantName:  source.MerchantName,
+		TotalSpending: source.TotalSpending,
+		UserId:        source.UserId,
+	}
+}
+
+type MonthlyBalanceInternal struct {
+	ch.CHModel `ch:"MonthlyBalance,partition:toYYYYMM(time)"`
+	Month      uint32  `ch:"Month,type:UInt32"`
+	NetBalance float64 `ch:"NetBalance,type:Float64"`
+	UserId     uint64  `ch:"UserId,type:UInt64"`
+}
+
+func (source *MonthlyBalanceInternal) ConvertToORM() *MonthlyBalanceORM {
+	return &MonthlyBalanceORM{
+		Month:      source.Month,
+		NetBalance: source.NetBalance,
+		UserId:     source.UserId,
+	}
+}
+
+func (source *MonthlyBalanceORM) ConvertToInternal() *MonthlyBalanceInternal {
+	return &MonthlyBalanceInternal{
+		Month:      source.Month,
+		NetBalance: source.NetBalance,
+		UserId:     source.UserId,
+	}
+}
+
+func (source *MonthlyBalanceInternal) ConvertToProto() *MonthlyBalance {
+	return &MonthlyBalance{
+		Month:      source.Month,
+		NetBalance: source.NetBalance,
+		UserId:     source.UserId,
+	}
+}
+
+type MonthlyExpenditureInternal struct {
+	ch.CHModel    `ch:"MonthlyExpenditure,partition:toYYYYMM(time)"`
+	Month         uint32  `ch:"Month,type:UInt32"`
+	TotalSpending float64 `ch:"TotalSpent,type:Float64"`
+	UserId        uint64  `ch:"UserId,type:UInt64"`
+}
+
+func (source *MonthlyExpenditureInternal) ConvertToORM() *MonthlyExpenditureORM {
+	return &MonthlyExpenditureORM{
+		Month:         source.Month,
+		TotalSpending: source.TotalSpending,
+		UserId:        source.UserId,
+	}
+}
+
+func (source *MonthlyExpenditureORM) ConvertToInternal() *MonthlyExpenditureInternal {
+	return &MonthlyExpenditureInternal{
+		Month:         source.Month,
+		TotalSpending: source.TotalSpending,
+		UserId:        source.UserId,
+	}
+}
+
+func (source *MonthlyExpenditureInternal) ConvertToProto() *MonthlyExpenditure {
+	return &MonthlyExpenditure{
+		Month:         source.Month,
+		TotalSpending: source.TotalSpending,
+		UserId:        source.UserId,
+	}
+}
+
+type MonthlyIncomeInternal struct {
+	ch.CHModel  `ch:"MonthlyIncome,partition:toYYYYMM(time)"`
+	Month       uint32  `ch:"Month,type:UInt32"`
+	TotalIncome float64 `ch:"TotalIncome,type:Float64"`
+	UserId      uint64  `ch:"UserId,type:UInt64"`
+}
+
+func (source *MonthlyIncomeInternal) ConvertToORM() *MonthlyIncomeORM {
+	return &MonthlyIncomeORM{
+		Month:       source.Month,
+		TotalIncome: source.TotalIncome,
+		UserId:      source.UserId,
+	}
+}
+
+func (source *MonthlyIncomeORM) ConvertToInternal() *MonthlyIncomeInternal {
+	return &MonthlyIncomeInternal{
+		Month:       source.Month,
+		TotalIncome: source.TotalIncome,
+		UserId:      source.UserId,
+	}
+}
+
+func (source *MonthlyIncomeInternal) ConvertToProto() *MonthlyIncome {
+	return &MonthlyIncome{
+		Month:       source.Month,
+		TotalIncome: source.TotalIncome,
+		UserId:      source.UserId,
+	}
+}
+
+type MonthlySavingsInternal struct {
+	ch.CHModel `ch:"MonthlySavings,partition:toYYYYMM(time)"`
+	Month      uint32  `ch:"Month,type:UInt32"`
+	NetSavings float64 `ch:"NetSavings,type:Float64"`
+	UserId     uint64  `ch:"UserId,type:UInt64"`
+}
+
+func (source *MonthlySavingsInternal) ConvertToORM() *MonthlySavingsORM {
+	return &MonthlySavingsORM{
+		Month:      source.Month,
+		NetSavings: source.NetSavings,
+		UserId:     source.UserId,
+	}
+}
+
+func (source *MonthlySavingsORM) ConvertToInternal() *MonthlySavingsInternal {
+	return &MonthlySavingsInternal{
+		Month:      source.Month,
+		NetSavings: source.NetSavings,
+		UserId:     source.UserId,
+	}
+}
+
+func (source *MonthlySavingsInternal) ConvertToProto() *MonthlySavings {
+	return &MonthlySavings{
+		Month:      source.Month,
+		NetSavings: source.NetSavings,
+		UserId:     source.UserId,
+	}
+}
+
+type MonthlyTotalQuantityBySecurityAndUserInternal struct {
+	ch.CHModel    `ch:"MonthlyTotalQuantityBySecurityAndUser,partition:toYYYYMM(time)"`
+	Month         uint32  `ch:"Month,type:UInt32"`
+	SecurityId    string  `ch:"SecurityId,type:String"`
+	TotalQuantity float64 `ch:"TotalQuantity,type:Float64"`
+	UserId        uint64  `ch:"UserId,type:UInt64"`
+}
+
+func (source *MonthlyTotalQuantityBySecurityAndUserInternal) ConvertToORM() *MonthlyTotalQuantityBySecurityAndUserORM {
+	return &MonthlyTotalQuantityBySecurityAndUserORM{
+		Month:         source.Month,
+		SecurityId:    source.SecurityId,
+		TotalQuantity: source.TotalQuantity,
+		UserId:        source.UserId,
+	}
+}
+
+func (source *MonthlyTotalQuantityBySecurityAndUserORM) ConvertToInternal() *MonthlyTotalQuantityBySecurityAndUserInternal {
+	return &MonthlyTotalQuantityBySecurityAndUserInternal{
+		Month:         source.Month,
+		SecurityId:    source.SecurityId,
+		TotalQuantity: source.TotalQuantity,
+		UserId:        source.UserId,
+	}
+}
+
+func (source *MonthlyTotalQuantityBySecurityAndUserInternal) ConvertToProto() *MonthlyTotalQuantityBySecurityAndUser {
+	return &MonthlyTotalQuantityBySecurityAndUser{
+		Month:         source.Month,
+		SecurityId:    source.SecurityId,
+		TotalQuantity: source.TotalQuantity,
+		UserId:        source.UserId,
+	}
+}
+
+type MonthlyTransactionCountInternal struct {
+	ch.CHModel       `ch:"MonthlyTransactionCount,partition:toYYYYMM(time)"`
+	Month            uint32 `ch:"Month,type:UInt32"`
+	TransactionCount uint64 `ch:"TransactionCount,type:UInt64"`
+	UserId           uint64 `ch:"UserId,type:UInt64"`
+}
+
+func (source *MonthlyTransactionCountInternal) ConvertToORM() *MonthlyTransactionCountORM {
+	return &MonthlyTransactionCountORM{
+		Month:            source.Month,
+		TransactionCount: source.TransactionCount,
+		UserId:           source.UserId,
+	}
+}
+
+func (source *MonthlyTransactionCountORM) ConvertToInternal() *MonthlyTransactionCountInternal {
+	return &MonthlyTransactionCountInternal{
+		Month:            source.Month,
+		TransactionCount: source.TransactionCount,
+		UserId:           source.UserId,
+	}
+}
+
+func (source *MonthlyTransactionCountInternal) ConvertToProto() *MonthlyTransactionCount {
+	return &MonthlyTransactionCount{
+		Month:            source.Month,
+		TransactionCount: source.TransactionCount,
+		UserId:           source.UserId,
+	}
+}
+
+type PaymentChannelMonthlyExpenditureInternal struct {
+	ch.CHModel     `ch:"PaymentChannelMonthlyExpenditure,partition:toYYYYMM(time)"`
+	Month          uint32  `ch:"Month,type:UInt32"`
+	PaymentChannel string  `ch:"PaymentChannel,type:String"`
+	TotalSpending  float64 `ch:"TotalSpending,type:Float64"`
+	UserId         uint64  `ch:"UserId,type:UInt64"`
+}
+
+func (source *PaymentChannelMonthlyExpenditureInternal) ConvertToORM() *PaymentChannelMonthlyExpenditureORM {
+	return &PaymentChannelMonthlyExpenditureORM{
+		Month:          source.Month,
+		PaymentChannel: source.PaymentChannel,
+		TotalSpending:  source.TotalSpending,
+		UserId:         source.UserId,
+	}
+}
+
+func (source *PaymentChannelMonthlyExpenditureORM) ConvertToInternal() *PaymentChannelMonthlyExpenditureInternal {
+	return &PaymentChannelMonthlyExpenditureInternal{
+		Month:          source.Month,
+		PaymentChannel: source.PaymentChannel,
+		TotalSpending:  source.TotalSpending,
+		UserId:         source.UserId,
+	}
+}
+
+func (source *PaymentChannelMonthlyExpenditureInternal) ConvertToProto() *PaymentChannelMonthlyExpenditure {
+	return &PaymentChannelMonthlyExpenditure{
+		Month:          source.Month,
+		PaymentChannel: source.PaymentChannel,
+		TotalSpending:  source.TotalSpending,
+		UserId:         source.UserId,
+	}
+}
+
+type TotalInvestmentBySecurityInternal struct {
+	ch.CHModel      `ch:"TotalInvestmentBySecurity,partition:toYYYYMM(time)"`
+	SecurityId      string  `ch:"SecurityId,type:String"`
+	TotalInvestment float64 `ch:"TotalInvestment,type:Float64"`
+	UserId          uint64  `ch:"UserId,type:UInt64"`
+}
+
+func (source *TotalInvestmentBySecurityInternal) ConvertToORM() *TotalInvestmentBySecurityORM {
+	return &TotalInvestmentBySecurityORM{
+		SecurityId:      source.SecurityId,
+		TotalInvestment: source.TotalInvestment,
+		UserId:          source.UserId,
+	}
+}
+
+func (source *TotalInvestmentBySecurityORM) ConvertToInternal() *TotalInvestmentBySecurityInternal {
+	return &TotalInvestmentBySecurityInternal{
+		SecurityId:      source.SecurityId,
+		TotalInvestment: source.TotalInvestment,
+		UserId:          source.UserId,
+	}
+}
+
+func (source *TotalInvestmentBySecurityInternal) ConvertToProto() *TotalInvestmentBySecurity {
+	return &TotalInvestmentBySecurity{
+		SecurityId:      source.SecurityId,
+		TotalInvestment: source.TotalInvestment,
+		UserId:          source.UserId,
+	}
+}
+
 type CategoryMetricsFinancialSubProfileInternal struct {
 	ch.CHModel                     `ch:"partition:toYYYYMM(time)"`
 	Month                          uint32  `ch:"type:UInt32"`

@@ -218,12 +218,3 @@ func (orm *TransactionORM) ConvertToInternal() *TransactionInternal {
 
 	return tx
 }
-
-type IncomeMetricsInternal struct {
-	ch.CHModel       `ch:"IncomeMetrics,partition:toYYYYMM(time)"`
-	Month            uint32
-	CategoryId       string
-	TransactionCount uint64  `ch:"type:UInt64"`
-	TotalIncome      float64 `ch:"type:Float32"`
-	UseId            uint64  `ch:"type:UInt64"`
-}
