@@ -309,10 +309,11 @@ func (db *Db) GetIncomeMetrics(ctx context.Context, userId *uint64, params *Inco
 }
 
 type BaseParams struct {
-	Month        uint32
-	MerchantName string
-	PageSize     uint64
-	PageNumber   uint64
+	Month          uint32
+	MerchantName   string
+	PaymentChannel string
+	PageSize       uint64
+	PageNumber     uint64
 }
 
 func clickhouseQueryBuilder(params *BaseParams, query *ch.SelectQuery) {
@@ -322,6 +323,10 @@ func clickhouseQueryBuilder(params *BaseParams, query *ch.SelectQuery) {
 
 	if params.MerchantName != "" {
 		query = query.Where("MerchantName = ?", params.MerchantName)
+	}
+
+	if params.PaymentChannel != "" {
+		query = query.Where("PaymentChannel = ?", params.PaymentChannel)
 	}
 }
 
@@ -565,6 +570,106 @@ func (db *Db) GetMonthlyBalance(ctx context.Context, userId *uint64, params *Bas
 
 	txs := make([]*schema.MonthlyBalance, 0, len(monthlyBalances))
 	for _, record := range monthlyBalances {
+		record := record.ConvertToProto()
+		txs = append(txs, record)
+	}
+
+	return txs, nextPageNumber, nil
+}
+
+func (db *Db) GetMonthlyTransactionCount(ctx context.Context, userId *uint64, params *BaseParams) ([]*schema.MonthlyTransactionCount, int64, error) {
+	var (
+		nextPageNumber          int64
+		monthlyTransactionCount []schema.MonthlyTransactionCountInternal
+	)
+
+	if span := db.startDatastoreSpan(ctx, "dbtxn-get-monthly-transaction-count"); span != nil {
+		defer span.End()
+	}
+
+	if userId == nil {
+		return nil, 0, fmt.Errorf("user ID cannot be nil")
+	}
+
+	if params == nil {
+		return nil, 0, fmt.Errorf("params cannot be nil")
+	}
+
+	// ensure only the month is used for the query
+	params.MerchantName = ""
+
+	pageNumber, pageSize := db.sanitizePaginationParams(int64(params.PageNumber), int64(params.PageSize))
+	if pageNumber == 0 {
+		nextPageNumber = 2
+	} else {
+		nextPageNumber = pageNumber + 1
+	}
+
+	offset := int(pageSize * (pageNumber - 1))
+	queryLimit := int(pageSize)
+	selectQuery := db.queryEngine.NewSelect().Model(&monthlyTransactionCount).Offset(offset).Limit(queryLimit)
+	clickhouseQueryBuilder(params, selectQuery)
+	// sort by month in descending order
+	if err := selectQuery.Order("Month DESC").Scan(ctx); err != nil {
+		return nil, 0, err
+	}
+
+	if len(monthlyTransactionCount) == 0 {
+		return nil, 0, fmt.Errorf("no records found")
+	}
+
+	txs := make([]*schema.MonthlyTransactionCount, 0, len(monthlyTransactionCount))
+	for _, record := range monthlyTransactionCount {
+		record := record.ConvertToProto()
+		txs = append(txs, record)
+	}
+
+	return txs, nextPageNumber, nil
+}
+
+func (db *Db) GetMonthlyPaymentChannelExpenditure(ctx context.Context, userId *uint64, params *BaseParams) ([]*schema.PaymentChannelMonthlyExpenditure, int64, error) {
+	var (
+		nextPageNumber                    int64
+		paymentChannelMonthlyExpenditures []schema.PaymentChannelMonthlyExpenditureInternal
+	)
+
+	if span := db.startDatastoreSpan(ctx, "dbtxn-get-monthly-payment-channel-expenditures"); span != nil {
+		defer span.End()
+	}
+
+	if userId == nil {
+		return nil, 0, fmt.Errorf("user ID cannot be nil")
+	}
+
+	if params == nil {
+		return nil, 0, fmt.Errorf("params cannot be nil")
+	}
+
+	// ensure only the month is used for the query
+	params.MerchantName = ""
+
+	pageNumber, pageSize := db.sanitizePaginationParams(int64(params.PageNumber), int64(params.PageSize))
+	if pageNumber == 0 {
+		nextPageNumber = 2
+	} else {
+		nextPageNumber = pageNumber + 1
+	}
+
+	offset := int(pageSize * (pageNumber - 1))
+	queryLimit := int(pageSize)
+	selectQuery := db.queryEngine.NewSelect().Model(&paymentChannelMonthlyExpenditures).Offset(offset).Limit(queryLimit)
+	clickhouseQueryBuilder(params, selectQuery)
+	// sort by month in descending order
+	if err := selectQuery.Order("Month DESC").Scan(ctx); err != nil {
+		return nil, 0, err
+	}
+
+	if len(paymentChannelMonthlyExpenditures) == 0 {
+		return nil, 0, fmt.Errorf("no records found")
+	}
+
+	txs := make([]*schema.PaymentChannelMonthlyExpenditure, 0, len(paymentChannelMonthlyExpenditures))
+	for _, record := range paymentChannelMonthlyExpenditures {
 		record := record.ConvertToProto()
 		txs = append(txs, record)
 	}
