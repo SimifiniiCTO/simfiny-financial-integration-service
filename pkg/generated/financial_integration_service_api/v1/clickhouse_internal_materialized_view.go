@@ -1,8 +1,6 @@
 package financial_integration_service_apiv1
 
 import (
-	time "time"
-
 	"github.com/uptrace/go-clickhouse/ch"
 )
 
@@ -204,11 +202,42 @@ func (source *DebtToIncomeRatioInternal) ConvertToProto() *DebtToIncomeRatio {
 * If your definition of "expense metrics" is different, you might need to adjust the query accordingly.*
  */
 type ExpenseMetricsInternal struct {
-	ch.CHModel       `ch:"partition:toYYYYMM(time)"`
-	Month            time.Time `ch:"type:Date"`
-	CategoryId       string    `ch:"type:String"`
-	TransactionCount uint64    `ch:"type:UInt64"`
-	TotalExpenses    float64   `ch:"type:Float64"`
+	ch.CHModel                     `ch:"ExpenseMetrics,partition:toYYYYMM(time)"`
+	Month                          uint32  `ch:"Month,type:UInt32"`
+	PersonalFinanceCategoryPrimary string  `ch:"PersonalFinanceCategoryPrimary,type:String"`
+	TransactionCount               uint64  `ch:"TransactionCount,type:UInt64"`
+	TotalExpenses                  float64 `ch:"TotalExpenses,type:Float64"`
+	UserId                         uint64  `ch:"UserId,type:UInt64"`
+}
+
+func (source *ExpenseMetricsInternal) ConvertToORM() *ExpenseMetricsORM {
+	return &ExpenseMetricsORM{
+		Month:                          source.Month,
+		PersonalFinanceCategoryPrimary: source.PersonalFinanceCategoryPrimary,
+		TotalExpenses:                  source.TotalExpenses,
+		TransactionCount:               source.TransactionCount,
+		UserId:                         source.UserId,
+	}
+}
+
+func (source *ExpenseMetricsORM) ConvertToInternal() *ExpenseMetricsInternal {
+	return &ExpenseMetricsInternal{
+		Month:                          source.Month,
+		PersonalFinanceCategoryPrimary: source.PersonalFinanceCategoryPrimary,
+		TotalExpenses:                  source.TotalExpenses,
+		TransactionCount:               source.TransactionCount,
+		UserId:                         source.UserId,
+	}
+}
+
+func (source *ExpenseMetricsInternal) ConvertToProto() *ExpenseMetrics {
+	return &ExpenseMetrics{
+		Month:                          source.Month,
+		PersonalFinanceCategoryPrimary: source.PersonalFinanceCategoryPrimary,
+		TotalExpenses:                  source.TotalExpenses,
+		TransactionCount:               source.TransactionCount,
+		UserId:                         source.UserId,
+	}
 }
 
 type CategoryMetricsFinancialSubProfileInternal struct {
