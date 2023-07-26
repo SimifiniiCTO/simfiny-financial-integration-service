@@ -33,7 +33,7 @@ func (s *Server) GetMelodyFinancialContext(ctx context.Context, req *proto.GetMe
 		clickhouseConn.
 		GetFinancialContextForCurrentMonth(
 			ctx,
-			&req.UserId, 4)
+			&req.UserId, 5)
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}

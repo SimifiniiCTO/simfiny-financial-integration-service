@@ -705,27 +705,27 @@ func (db *Db) GetFinancialContextForCurrentMonth(ctx context.Context, userId *ui
 	}
 
 	// query for all the profile based on the user ID
-	if err := db.queryEngine.NewSelect().Model(&categoryProfiles).Where("UserId = ? AND Month = ?", *userId, getCurrentMonthRepresentation()).Scan(ctx); err != nil {
+	if err := db.queryEngine.NewSelect().Model(&categoryProfiles).Where("UserId = ? AND Month = ?", *userId, getCurrentMonthRepresentation()).Order("TransactionCount DESC").Scan(ctx); err != nil {
 		return nil, err
 	}
 
-	if err := db.queryEngine.NewSelect().Model(&expenseProfiles).Where("UserId = ? AND Month = ?", *userId, getCurrentMonthRepresentation()).Scan(ctx); err != nil {
+	if err := db.queryEngine.NewSelect().Model(&expenseProfiles).Where("UserId = ? AND Month = ?", *userId, getCurrentMonthRepresentation()).Order("SpentLastMonth DESC").Scan(ctx); err != nil {
 		return nil, err
 	}
 
-	if err := db.queryEngine.NewSelect().Model(&incomeProfiles).Where("UserId = ? AND Month = ?", *userId, getCurrentMonthRepresentation()).Scan(ctx); err != nil {
+	if err := db.queryEngine.NewSelect().Model(&incomeProfiles).Where("UserId = ? AND Month = ?", *userId, getCurrentMonthRepresentation()).Order("IncomeLastMonth DESC").Scan(ctx); err != nil {
 		return nil, err
 	}
 
-	if err := db.queryEngine.NewSelect().Model(&locationProfiles).Where("UserId = ? AND Month = ?", *userId, getCurrentMonthRepresentation()).Scan(ctx); err != nil {
+	if err := db.queryEngine.NewSelect().Model(&locationProfiles).Where("UserId = ? AND Month = ?", *userId, getCurrentMonthRepresentation()).Order("TransactionCount DESC").Scan(ctx); err != nil {
 		return nil, err
 	}
 
-	if err := db.queryEngine.NewSelect().Model(&merchantProfiles).Where("UserId = ? AND Month = ?", *userId, getCurrentMonthRepresentation()).Scan(ctx); err != nil {
+	if err := db.queryEngine.NewSelect().Model(&merchantProfiles).Where("UserId = ? AND Month = ?", *userId, getCurrentMonthRepresentation()).Order("SpentLastMonth DESC").Scan(ctx); err != nil {
 		return nil, err
 	}
 
-	if err := db.queryEngine.NewSelect().Model(&paymentChannelsProfiles).Where("UserId = ? AND Month = ?", *userId, getCurrentMonthRepresentation()).Scan(ctx); err != nil {
+	if err := db.queryEngine.NewSelect().Model(&paymentChannelsProfiles).Where("UserId = ? AND Month = ?", *userId, getCurrentMonthRepresentation()).Order("TransactionCount DESC").Scan(ctx); err != nil {
 		return nil, err
 	}
 
