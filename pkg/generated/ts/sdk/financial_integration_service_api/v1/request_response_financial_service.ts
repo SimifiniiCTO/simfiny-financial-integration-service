@@ -35,8 +35,6 @@ export interface CreateUserProfileRequest {
     | undefined;
   /** the email of the account to create */
   email: string;
-  /** financial context for the user */
-  financialContext: MelodyFinancialContext | undefined;
 }
 
 /**
@@ -66,7 +64,11 @@ export interface GetUserProfileRequest {
  * the `get user profile` request
  */
 export interface GetUserProfileResponse {
-  profile: UserProfile | undefined;
+  profile:
+    | UserProfile
+    | undefined;
+  /** financial context for the user */
+  financialContext: MelodyFinancialContext | undefined;
 }
 
 /**
@@ -817,7 +819,7 @@ export interface GetTransactionsForBankAccountResponse {
 }
 
 function createBaseCreateUserProfileRequest(): CreateUserProfileRequest {
-  return { profile: undefined, email: "", financialContext: undefined };
+  return { profile: undefined, email: "" };
 }
 
 export const CreateUserProfileRequest = {
@@ -827,9 +829,6 @@ export const CreateUserProfileRequest = {
     }
     if (message.email !== "") {
       writer.uint32(18).string(message.email);
-    }
-    if (message.financialContext !== undefined) {
-      MelodyFinancialContext.encode(message.financialContext, writer.uint32(26).fork()).ldelim();
     }
     return writer;
   },
@@ -855,13 +854,6 @@ export const CreateUserProfileRequest = {
 
           message.email = reader.string();
           continue;
-        case 3:
-          if (tag !== 26) {
-            break;
-          }
-
-          message.financialContext = MelodyFinancialContext.decode(reader, reader.uint32());
-          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -875,9 +867,6 @@ export const CreateUserProfileRequest = {
     return {
       profile: isSet(object.profile) ? UserProfile.fromJSON(object.profile) : undefined,
       email: isSet(object.email) ? String(object.email) : "",
-      financialContext: isSet(object.financialContext)
-        ? MelodyFinancialContext.fromJSON(object.financialContext)
-        : undefined,
     };
   },
 
@@ -888,9 +877,6 @@ export const CreateUserProfileRequest = {
     }
     if (message.email !== "") {
       obj.email = message.email;
-    }
-    if (message.financialContext !== undefined) {
-      obj.financialContext = MelodyFinancialContext.toJSON(message.financialContext);
     }
     return obj;
   },
@@ -905,9 +891,6 @@ export const CreateUserProfileRequest = {
       ? UserProfile.fromPartial(object.profile)
       : undefined;
     message.email = object.email ?? "";
-    message.financialContext = (object.financialContext !== undefined && object.financialContext !== null)
-      ? MelodyFinancialContext.fromPartial(object.financialContext)
-      : undefined;
     return message;
   },
 };
@@ -1029,13 +1012,16 @@ export const GetUserProfileRequest = {
 };
 
 function createBaseGetUserProfileResponse(): GetUserProfileResponse {
-  return { profile: undefined };
+  return { profile: undefined, financialContext: undefined };
 }
 
 export const GetUserProfileResponse = {
   encode(message: GetUserProfileResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.profile !== undefined) {
       UserProfile.encode(message.profile, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.financialContext !== undefined) {
+      MelodyFinancialContext.encode(message.financialContext, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -1054,6 +1040,13 @@ export const GetUserProfileResponse = {
 
           message.profile = UserProfile.decode(reader, reader.uint32());
           continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.financialContext = MelodyFinancialContext.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1064,13 +1057,21 @@ export const GetUserProfileResponse = {
   },
 
   fromJSON(object: any): GetUserProfileResponse {
-    return { profile: isSet(object.profile) ? UserProfile.fromJSON(object.profile) : undefined };
+    return {
+      profile: isSet(object.profile) ? UserProfile.fromJSON(object.profile) : undefined,
+      financialContext: isSet(object.financialContext)
+        ? MelodyFinancialContext.fromJSON(object.financialContext)
+        : undefined,
+    };
   },
 
   toJSON(message: GetUserProfileResponse): unknown {
     const obj: any = {};
     if (message.profile !== undefined) {
       obj.profile = UserProfile.toJSON(message.profile);
+    }
+    if (message.financialContext !== undefined) {
+      obj.financialContext = MelodyFinancialContext.toJSON(message.financialContext);
     }
     return obj;
   },
@@ -1083,6 +1084,9 @@ export const GetUserProfileResponse = {
     const message = createBaseGetUserProfileResponse();
     message.profile = (object.profile !== undefined && object.profile !== null)
       ? UserProfile.fromPartial(object.profile)
+      : undefined;
+    message.financialContext = (object.financialContext !== undefined && object.financialContext !== null)
+      ? MelodyFinancialContext.fromPartial(object.financialContext)
       : undefined;
     return message;
   },
