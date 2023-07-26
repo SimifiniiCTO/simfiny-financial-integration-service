@@ -21,6 +21,12 @@ type ExpenseMetricsParams struct {
 	PageNumber                     uint64
 }
 
+type FinancialProfileParams struct {
+	Month      uint32
+	PageSize   uint64
+	PageNumber uint64
+}
+
 func (db *Db) GetDebtToIncomeRatio(ctx context.Context, userId *uint64, params *DebtToIncomeParams) ([]*schema.DebtToIncomeRatio, int64, error) {
 	var (
 		nextPageNumber       int64
@@ -122,6 +128,58 @@ func (db *Db) GetExpenseMetrics(ctx context.Context, userId *uint64, params *Exp
 
 	txs := make([]*schema.ExpenseMetrics, 0, len(expenseMetrics))
 	for _, record := range expenseMetrics {
+		record := record.ConvertToProto()
+		txs = append(txs, record)
+	}
+
+	return txs, nextPageNumber, nil
+}
+
+func (db *Db) GetFinancialProfile(ctx context.Context, userId *uint64, params *FinancialProfileParams) ([]*schema.FinancialProfile, int64, error) {
+	var (
+		nextPageNumber       int64
+		financialProfile     []schema.FinancialProfileInternal
+		buildClickHouseQuery = func(params *FinancialProfileParams, query *ch.SelectQuery) {
+			if params.Month != 0 {
+				query = query.Where("Month = ?", params.Month)
+			}
+		}
+	)
+
+	if span := db.startDatastoreSpan(ctx, "dbtxn-get-financial-profile"); span != nil {
+		defer span.End()
+	}
+
+	if userId == nil {
+		return nil, 0, fmt.Errorf("user ID cannot be nil")
+	}
+
+	if params == nil {
+		return nil, 0, fmt.Errorf("params cannot be nil")
+	}
+
+	pageNumber, pageSize := db.sanitizePaginationParams(int64(params.PageNumber), int64(params.PageSize))
+	if pageNumber == 0 {
+		nextPageNumber = 2
+	} else {
+		nextPageNumber = pageNumber + 1
+	}
+
+	offset := int(pageSize * (pageNumber - 1))
+	queryLimit := int(pageSize)
+	selectQuery := db.queryEngine.NewSelect().Model(&financialProfile).Offset(offset).Limit(queryLimit)
+	buildClickHouseQuery(params, selectQuery)
+	// sort by month in descending order
+	if err := selectQuery.Order("Month DESC").Scan(ctx); err != nil {
+		return nil, 0, err
+	}
+
+	if len(financialProfile) == 0 {
+		return nil, 0, fmt.Errorf("no records found")
+	}
+
+	txs := make([]*schema.FinancialProfile, 0, len(financialProfile))
+	for _, record := range financialProfile {
 		record := record.ConvertToProto()
 		txs = append(txs, record)
 	}

@@ -240,6 +240,49 @@ func (source *ExpenseMetricsInternal) ConvertToProto() *ExpenseMetrics {
 	}
 }
 
+type FinancialProfileInternal struct {
+	ch.CHModel            `ch:"FinancialProfile,partition:toYYYYMM(time)"`
+	Month                 uint32  `ch:"Month,type:UInt32"`
+	TotalIncome           float64 `ch:"TotalIncome,type:Float64"`
+	TotalExpenses         float64 `ch:"TotalExpenses,type:Float64"`
+	NumberOfTransactions  uint64  `ch:"NumberOfTransactions,type:UInt64"`
+	MostExpensiveCategory string  `ch:"MostExpensiveCategory,type:String"`
+	UserId                uint64  `ch:"UserId,type:UInt64"`
+}
+
+func (source *FinancialProfileInternal) ConvertToORM() *FinancialProfileORM {
+	return &FinancialProfileORM{
+		Month:                 source.Month,
+		MostExpensiveCategory: source.MostExpensiveCategory,
+		NumberOfTransactions:  source.NumberOfTransactions,
+		TotalExpenses:         source.TotalExpenses,
+		TotalIncome:           source.TotalIncome,
+		UserId:                source.UserId,
+	}
+}
+
+func (source *FinancialProfileORM) ConvertToInternal() *FinancialProfileInternal {
+	return &FinancialProfileInternal{
+		Month:                 source.Month,
+		MostExpensiveCategory: source.MostExpensiveCategory,
+		NumberOfTransactions:  source.NumberOfTransactions,
+		TotalExpenses:         source.TotalExpenses,
+		TotalIncome:           source.TotalIncome,
+		UserId:                source.UserId,
+	}
+}
+
+func (source *FinancialProfileInternal) ConvertToProto() *FinancialProfile {
+	return &FinancialProfile{
+		Month:                 source.Month,
+		MostExpensiveCategory: source.MostExpensiveCategory,
+		NumberOfTransactions:  source.NumberOfTransactions,
+		TotalExpenses:         source.TotalExpenses,
+		TotalIncome:           source.TotalIncome,
+		UserId:                source.UserId,
+	}
+}
+
 type CategoryMetricsFinancialSubProfileInternal struct {
 	ch.CHModel                     `ch:"partition:toYYYYMM(time)"`
 	Month                          uint32  `ch:"type:UInt32"`

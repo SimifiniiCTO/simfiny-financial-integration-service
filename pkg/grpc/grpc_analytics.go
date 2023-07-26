@@ -96,8 +96,45 @@ func (s *Server) GetExpenseMetrics(ctx context.Context, req *proto.GetExpenseMet
 	}, nil
 }
 
-func (s *Server) GetFinancialProfile(context.Context, *proto.GetFinancialProfileRequest) (*proto.GetFinancialProfileResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetFinancialProfile not implemented")
+func (s *Server) GetFinancialProfile(ctx context.Context, req *proto.GetFinancialProfileRequest) (*proto.GetFinancialProfileResponse, error) {
+	// perform validations
+	if req == nil {
+		return nil, status.Error(codes.InvalidArgument, "missing request")
+	}
+
+	if err := req.ValidateAll(); err != nil {
+		return nil, status.Error(codes.InvalidArgument, err.Error())
+	}
+
+	ctx, cancel := context.WithTimeout(ctx, s.config.RpcTimeout)
+	defer cancel()
+
+	// instrument operation
+	if s.instrumentation != nil {
+		txn := s.instrumentation.GetTraceFromContext(ctx)
+		span := s.instrumentation.StartSegment(txn, "grpc-get-financial-profile")
+		defer span.End()
+	}
+
+	// perform operation
+	res, nextPageNumber, err := s.
+		clickhouseConn.
+		GetFinancialProfile(
+			ctx,
+			&req.UserId,
+			&clickhousedatabase.FinancialProfileParams{
+				Month:      req.Month,
+				PageSize:   uint64(req.PageSize),
+				PageNumber: uint64(req.PageNumber),
+			})
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	return &proto.GetFinancialProfileResponse{
+		FinancialProfiles: res,
+		NextPageNumber:    nextPageNumber,
+	}, nil
 }
 
 func (s *Server) GetIncomeExpenseRatio(context.Context, *proto.GetIncomeExpenseRatioRequest) (*proto.GetIncomeExpenseRatioResponse, error) {
