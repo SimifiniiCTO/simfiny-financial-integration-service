@@ -421,3 +421,153 @@ func (db *Db) GetMonthlyExpenditure(ctx context.Context, userId *uint64, params 
 
 	return txs, nextPageNumber, nil
 }
+
+func (db *Db) GetMonthlyIncome(ctx context.Context, userId *uint64, params *BaseParams) ([]*schema.MonthlyIncome, int64, error) {
+	var (
+		nextPageNumber int64
+		monthlyIncomes []schema.MonthlyIncomeInternal
+	)
+
+	if span := db.startDatastoreSpan(ctx, "dbtxn-get-monthly-income"); span != nil {
+		defer span.End()
+	}
+
+	if userId == nil {
+		return nil, 0, fmt.Errorf("user ID cannot be nil")
+	}
+
+	if params == nil {
+		return nil, 0, fmt.Errorf("params cannot be nil")
+	}
+
+	// ensure only the month is used for the query
+	params.MerchantName = ""
+
+	pageNumber, pageSize := db.sanitizePaginationParams(int64(params.PageNumber), int64(params.PageSize))
+	if pageNumber == 0 {
+		nextPageNumber = 2
+	} else {
+		nextPageNumber = pageNumber + 1
+	}
+
+	offset := int(pageSize * (pageNumber - 1))
+	queryLimit := int(pageSize)
+	selectQuery := db.queryEngine.NewSelect().Model(&monthlyIncomes).Offset(offset).Limit(queryLimit)
+	clickhouseQueryBuilder(params, selectQuery)
+	// sort by month in descending order
+	if err := selectQuery.Order("Month DESC").Scan(ctx); err != nil {
+		return nil, 0, err
+	}
+
+	if len(monthlyIncomes) == 0 {
+		return nil, 0, fmt.Errorf("no records found")
+	}
+
+	txs := make([]*schema.MonthlyIncome, 0, len(monthlyIncomes))
+	for _, record := range monthlyIncomes {
+		record := record.ConvertToProto()
+		txs = append(txs, record)
+	}
+
+	return txs, nextPageNumber, nil
+}
+
+func (db *Db) GetMonthlySavings(ctx context.Context, userId *uint64, params *BaseParams) ([]*schema.MonthlySavings, int64, error) {
+	var (
+		nextPageNumber int64
+		monthlySavings []schema.MonthlySavingsInternal
+	)
+
+	if span := db.startDatastoreSpan(ctx, "dbtxn-get-monthly-savings"); span != nil {
+		defer span.End()
+	}
+
+	if userId == nil {
+		return nil, 0, fmt.Errorf("user ID cannot be nil")
+	}
+
+	if params == nil {
+		return nil, 0, fmt.Errorf("params cannot be nil")
+	}
+
+	// ensure only the month is used for the query
+	params.MerchantName = ""
+
+	pageNumber, pageSize := db.sanitizePaginationParams(int64(params.PageNumber), int64(params.PageSize))
+	if pageNumber == 0 {
+		nextPageNumber = 2
+	} else {
+		nextPageNumber = pageNumber + 1
+	}
+
+	offset := int(pageSize * (pageNumber - 1))
+	queryLimit := int(pageSize)
+	selectQuery := db.queryEngine.NewSelect().Model(&monthlySavings).Offset(offset).Limit(queryLimit)
+	clickhouseQueryBuilder(params, selectQuery)
+	// sort by month in descending order
+	if err := selectQuery.Order("Month DESC").Scan(ctx); err != nil {
+		return nil, 0, err
+	}
+
+	if len(monthlySavings) == 0 {
+		return nil, 0, fmt.Errorf("no records found")
+	}
+
+	txs := make([]*schema.MonthlySavings, 0, len(monthlySavings))
+	for _, record := range monthlySavings {
+		record := record.ConvertToProto()
+		txs = append(txs, record)
+	}
+
+	return txs, nextPageNumber, nil
+}
+
+func (db *Db) GetMonthlyBalance(ctx context.Context, userId *uint64, params *BaseParams) ([]*schema.MonthlyBalance, int64, error) {
+	var (
+		nextPageNumber  int64
+		monthlyBalances []schema.MonthlyBalanceInternal
+	)
+
+	if span := db.startDatastoreSpan(ctx, "dbtxn-get-monthly-balance"); span != nil {
+		defer span.End()
+	}
+
+	if userId == nil {
+		return nil, 0, fmt.Errorf("user ID cannot be nil")
+	}
+
+	if params == nil {
+		return nil, 0, fmt.Errorf("params cannot be nil")
+	}
+
+	// ensure only the month is used for the query
+	params.MerchantName = ""
+
+	pageNumber, pageSize := db.sanitizePaginationParams(int64(params.PageNumber), int64(params.PageSize))
+	if pageNumber == 0 {
+		nextPageNumber = 2
+	} else {
+		nextPageNumber = pageNumber + 1
+	}
+
+	offset := int(pageSize * (pageNumber - 1))
+	queryLimit := int(pageSize)
+	selectQuery := db.queryEngine.NewSelect().Model(&monthlyBalances).Offset(offset).Limit(queryLimit)
+	clickhouseQueryBuilder(params, selectQuery)
+	// sort by month in descending order
+	if err := selectQuery.Order("Month DESC").Scan(ctx); err != nil {
+		return nil, 0, err
+	}
+
+	if len(monthlyBalances) == 0 {
+		return nil, 0, fmt.Errorf("no records found")
+	}
+
+	txs := make([]*schema.MonthlyBalance, 0, len(monthlyBalances))
+	for _, record := range monthlyBalances {
+		record := record.ConvertToProto()
+		txs = append(txs, record)
+	}
+
+	return txs, nextPageNumber, nil
+}

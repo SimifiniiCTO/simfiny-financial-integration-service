@@ -13,11 +13,8 @@ func (s *Server) GetUserAccountBalanceHistory(context.Context, *proto.GetUserAcc
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserAccountBalanceHistory not implemented")
 }
 
-func (s *Server) GetMonthlyBalance(context.Context, *proto.GetMonthlyBalanceRequest) (*proto.GetMonthlyBalanceResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetMonthlyBalance not implemented")
-}
-
-func (s *Server) GetMonthlyExpenditure(ctx context.Context, req *proto.GetMonthlyExpenditureRequest) (*proto.GetMonthlyExpenditureResponse, error) {
+func (s *Server) GetMonthlyBalance(ctx context.Context, req *proto.GetMonthlyBalanceRequest) (*proto.GetMonthlyBalanceResponse, error) {
+	// perform validations
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "missing request")
 	}
@@ -32,13 +29,13 @@ func (s *Server) GetMonthlyExpenditure(ctx context.Context, req *proto.GetMonthl
 	// instrument operation
 	if s.instrumentation != nil {
 		txn := s.instrumentation.GetTraceFromContext(ctx)
-		span := s.instrumentation.StartSegment(txn, "grpc-get-monthly-expenditure")
+		span := s.instrumentation.StartSegment(txn, "grpc-get-monthly-balance")
 		defer span.End()
 	}
 
 	res, nextPageNumber, err := s.
 		clickhouseConn.
-		GetMonthlyExpenditure(
+		GetMonthlyBalance(
 			ctx,
 			&req.UserId,
 			&clickhousedatabase.BaseParams{
@@ -51,18 +48,12 @@ func (s *Server) GetMonthlyExpenditure(ctx context.Context, req *proto.GetMonthl
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	return &proto.GetMonthlyExpenditureResponse{
-		MonthlyExpenditures: res,
-		NextPageNumber:      nextPageNumber,
+	return &proto.GetMonthlyBalanceResponse{
+		MonthlyBalances: res,
+		NextPageNumber:  nextPageNumber,
 	}, nil
 }
 
-func (s *Server) GetMonthlyIncome(context.Context, *proto.GetMonthlyIncomeRequest) (*proto.GetMonthlyIncomeResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetMonthlyIncome not implemented")
-}
-func (s *Server) GetMonthlySavings(context.Context, *proto.GetMonthlySavingsRequest) (*proto.GetMonthlySavingsResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetMonthlySavings not implemented")
-}
 func (s *Server) GetMonthlyTotalQuantityBySecurityAndUser(context.Context, *proto.GetMonthlyTotalQuantityBySecurityAndUserRequest) (*proto.GetMonthlyTotalQuantityBySecurityAndUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetMonthlyTotalQuantityBySecurityAndUser not implemented")
 }
