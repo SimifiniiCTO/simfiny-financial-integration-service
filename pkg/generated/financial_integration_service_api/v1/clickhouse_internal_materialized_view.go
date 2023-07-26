@@ -750,7 +750,7 @@ func (source *IncomeMetricsFinancialSubProfileInternal) ConvertToProto() *Income
 	}
 }
 
-type ExpenseMetricsFinancialSubProfileInternal struct {
+type ExpenseMetricsFinancialSubProfileMetricsInternal struct {
 	ch.CHModel                          `ch:"ExpenseMetricsFinancialSubProfileMetrics,partition:toYYYYMM(time)"`
 	Month                               uint32  `ch:"Month,type:UInt32"`
 	SpentLastWeek                       float64 `ch:"SpentLastWeek,type:Float64"`
@@ -761,7 +761,7 @@ type ExpenseMetricsFinancialSubProfileInternal struct {
 	UserId                              uint64  `ch:"UserId,type:UInt64"`
 }
 
-func (source *ExpenseMetricsFinancialSubProfileInternal) ConvertToORM() *ExpenseMetricsFinancialSubProfileMetricsORM {
+func (source *ExpenseMetricsFinancialSubProfileMetricsInternal) ConvertToORM() *ExpenseMetricsFinancialSubProfileMetricsORM {
 	return &ExpenseMetricsFinancialSubProfileMetricsORM{
 		AverageMonthlyDiscretionarySpending: source.AverageMonthlyDiscretionarySpending,
 		AverageMonthlyRecurringSpending:     source.AverageMonthlyRecurringSpending,
@@ -773,8 +773,8 @@ func (source *ExpenseMetricsFinancialSubProfileInternal) ConvertToORM() *Expense
 	}
 }
 
-func (source *ExpenseMetricsFinancialSubProfileMetricsORM) ConvertToInternal() *ExpenseMetricsFinancialSubProfileInternal {
-	return &ExpenseMetricsFinancialSubProfileInternal{
+func (source *ExpenseMetricsFinancialSubProfileMetricsORM) ConvertToInternal() *ExpenseMetricsFinancialSubProfileMetricsInternal {
+	return &ExpenseMetricsFinancialSubProfileMetricsInternal{
 		Month:                               source.Month,
 		AverageMonthlyDiscretionarySpending: source.AverageMonthlyDiscretionarySpending,
 		AverageMonthlyRecurringSpending:     source.AverageMonthlyRecurringSpending,
@@ -785,7 +785,7 @@ func (source *ExpenseMetricsFinancialSubProfileMetricsORM) ConvertToInternal() *
 	}
 }
 
-func (source *ExpenseMetricsFinancialSubProfileInternal) ConvertToProto() *ExpenseMetricsFinancialSubProfileMetrics {
+func (source *ExpenseMetricsFinancialSubProfileMetricsInternal) ConvertToProto() *ExpenseMetricsFinancialSubProfileMetrics {
 	return &ExpenseMetricsFinancialSubProfileMetrics{
 		Month:                               source.Month,
 		SpentLastWeek:                       source.SpentLastWeek,
@@ -912,7 +912,7 @@ func (source *MerchantMetricsFinancialSubProfileInternal) ConvertToProto() *Merc
 }
 
 type PaymentChannelMetricsFinancialSubProfileInternal struct {
-	ch.CHModel         `ch:"LocationFinancialSubProfile,partition:toYYYYMM(time)"`
+	ch.CHModel         `ch:"PaymentChannelMetricsFinancialSubProfile,partition:toYYYYMM(time)"`
 	Month              uint32  `ch:"Month,type:UInt32"`
 	PaymentChannel     string  `ch:"PaymentChannel,type:String"`
 	TransactionCount   uint64  `ch:"TransactionCount,type:UInt64"`

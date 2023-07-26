@@ -644,12 +644,12 @@ export interface UserFinancialHealthMetricsTable {
  * This message is used to represent the financial context of a user.
  */
 export interface MelodyFinancialContext {
-  categories: CategoryMetricsFinancialSubProfile | undefined;
-  expenses: ExpenseMetricsFinancialSubProfileMetrics | undefined;
-  income: IncomeMetricsFinancialSubProfile | undefined;
-  locations: LocationFinancialSubProfile | undefined;
-  merchants: MerchantMetricsFinancialSubProfile | undefined;
-  paymentChannels: PaymentChannelMetricsFinancialSubProfile | undefined;
+  categories: CategoryMetricsFinancialSubProfile[];
+  expenses: ExpenseMetricsFinancialSubProfileMetrics[];
+  income: IncomeMetricsFinancialSubProfile[];
+  locations: LocationFinancialSubProfile[];
+  merchants: MerchantMetricsFinancialSubProfile[];
+  paymentChannels: PaymentChannelMetricsFinancialSubProfile[];
 }
 
 function createBaseInvestmentTransaction(): InvestmentTransaction {
@@ -5620,35 +5620,28 @@ export const UserFinancialHealthMetricsTable = {
 };
 
 function createBaseMelodyFinancialContext(): MelodyFinancialContext {
-  return {
-    categories: undefined,
-    expenses: undefined,
-    income: undefined,
-    locations: undefined,
-    merchants: undefined,
-    paymentChannels: undefined,
-  };
+  return { categories: [], expenses: [], income: [], locations: [], merchants: [], paymentChannels: [] };
 }
 
 export const MelodyFinancialContext = {
   encode(message: MelodyFinancialContext, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.categories !== undefined) {
-      CategoryMetricsFinancialSubProfile.encode(message.categories, writer.uint32(10).fork()).ldelim();
+    for (const v of message.categories) {
+      CategoryMetricsFinancialSubProfile.encode(v!, writer.uint32(10).fork()).ldelim();
     }
-    if (message.expenses !== undefined) {
-      ExpenseMetricsFinancialSubProfileMetrics.encode(message.expenses, writer.uint32(18).fork()).ldelim();
+    for (const v of message.expenses) {
+      ExpenseMetricsFinancialSubProfileMetrics.encode(v!, writer.uint32(18).fork()).ldelim();
     }
-    if (message.income !== undefined) {
-      IncomeMetricsFinancialSubProfile.encode(message.income, writer.uint32(26).fork()).ldelim();
+    for (const v of message.income) {
+      IncomeMetricsFinancialSubProfile.encode(v!, writer.uint32(26).fork()).ldelim();
     }
-    if (message.locations !== undefined) {
-      LocationFinancialSubProfile.encode(message.locations, writer.uint32(34).fork()).ldelim();
+    for (const v of message.locations) {
+      LocationFinancialSubProfile.encode(v!, writer.uint32(34).fork()).ldelim();
     }
-    if (message.merchants !== undefined) {
-      MerchantMetricsFinancialSubProfile.encode(message.merchants, writer.uint32(42).fork()).ldelim();
+    for (const v of message.merchants) {
+      MerchantMetricsFinancialSubProfile.encode(v!, writer.uint32(42).fork()).ldelim();
     }
-    if (message.paymentChannels !== undefined) {
-      PaymentChannelMetricsFinancialSubProfile.encode(message.paymentChannels, writer.uint32(50).fork()).ldelim();
+    for (const v of message.paymentChannels) {
+      PaymentChannelMetricsFinancialSubProfile.encode(v!, writer.uint32(50).fork()).ldelim();
     }
     return writer;
   },
@@ -5665,42 +5658,42 @@ export const MelodyFinancialContext = {
             break;
           }
 
-          message.categories = CategoryMetricsFinancialSubProfile.decode(reader, reader.uint32());
+          message.categories.push(CategoryMetricsFinancialSubProfile.decode(reader, reader.uint32()));
           continue;
         case 2:
           if (tag !== 18) {
             break;
           }
 
-          message.expenses = ExpenseMetricsFinancialSubProfileMetrics.decode(reader, reader.uint32());
+          message.expenses.push(ExpenseMetricsFinancialSubProfileMetrics.decode(reader, reader.uint32()));
           continue;
         case 3:
           if (tag !== 26) {
             break;
           }
 
-          message.income = IncomeMetricsFinancialSubProfile.decode(reader, reader.uint32());
+          message.income.push(IncomeMetricsFinancialSubProfile.decode(reader, reader.uint32()));
           continue;
         case 4:
           if (tag !== 34) {
             break;
           }
 
-          message.locations = LocationFinancialSubProfile.decode(reader, reader.uint32());
+          message.locations.push(LocationFinancialSubProfile.decode(reader, reader.uint32()));
           continue;
         case 5:
           if (tag !== 42) {
             break;
           }
 
-          message.merchants = MerchantMetricsFinancialSubProfile.decode(reader, reader.uint32());
+          message.merchants.push(MerchantMetricsFinancialSubProfile.decode(reader, reader.uint32()));
           continue;
         case 6:
           if (tag !== 50) {
             break;
           }
 
-          message.paymentChannels = PaymentChannelMetricsFinancialSubProfile.decode(reader, reader.uint32());
+          message.paymentChannels.push(PaymentChannelMetricsFinancialSubProfile.decode(reader, reader.uint32()));
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -5713,36 +5706,46 @@ export const MelodyFinancialContext = {
 
   fromJSON(object: any): MelodyFinancialContext {
     return {
-      categories: isSet(object.categories) ? CategoryMetricsFinancialSubProfile.fromJSON(object.categories) : undefined,
-      expenses: isSet(object.expenses) ? ExpenseMetricsFinancialSubProfileMetrics.fromJSON(object.expenses) : undefined,
-      income: isSet(object.income) ? IncomeMetricsFinancialSubProfile.fromJSON(object.income) : undefined,
-      locations: isSet(object.locations) ? LocationFinancialSubProfile.fromJSON(object.locations) : undefined,
-      merchants: isSet(object.merchants) ? MerchantMetricsFinancialSubProfile.fromJSON(object.merchants) : undefined,
-      paymentChannels: isSet(object.paymentChannels)
-        ? PaymentChannelMetricsFinancialSubProfile.fromJSON(object.paymentChannels)
-        : undefined,
+      categories: Array.isArray(object?.categories)
+        ? object.categories.map((e: any) => CategoryMetricsFinancialSubProfile.fromJSON(e))
+        : [],
+      expenses: Array.isArray(object?.expenses)
+        ? object.expenses.map((e: any) => ExpenseMetricsFinancialSubProfileMetrics.fromJSON(e))
+        : [],
+      income: Array.isArray(object?.income)
+        ? object.income.map((e: any) => IncomeMetricsFinancialSubProfile.fromJSON(e))
+        : [],
+      locations: Array.isArray(object?.locations)
+        ? object.locations.map((e: any) => LocationFinancialSubProfile.fromJSON(e))
+        : [],
+      merchants: Array.isArray(object?.merchants)
+        ? object.merchants.map((e: any) => MerchantMetricsFinancialSubProfile.fromJSON(e))
+        : [],
+      paymentChannels: Array.isArray(object?.paymentChannels)
+        ? object.paymentChannels.map((e: any) => PaymentChannelMetricsFinancialSubProfile.fromJSON(e))
+        : [],
     };
   },
 
   toJSON(message: MelodyFinancialContext): unknown {
     const obj: any = {};
-    if (message.categories !== undefined) {
-      obj.categories = CategoryMetricsFinancialSubProfile.toJSON(message.categories);
+    if (message.categories?.length) {
+      obj.categories = message.categories.map((e) => CategoryMetricsFinancialSubProfile.toJSON(e));
     }
-    if (message.expenses !== undefined) {
-      obj.expenses = ExpenseMetricsFinancialSubProfileMetrics.toJSON(message.expenses);
+    if (message.expenses?.length) {
+      obj.expenses = message.expenses.map((e) => ExpenseMetricsFinancialSubProfileMetrics.toJSON(e));
     }
-    if (message.income !== undefined) {
-      obj.income = IncomeMetricsFinancialSubProfile.toJSON(message.income);
+    if (message.income?.length) {
+      obj.income = message.income.map((e) => IncomeMetricsFinancialSubProfile.toJSON(e));
     }
-    if (message.locations !== undefined) {
-      obj.locations = LocationFinancialSubProfile.toJSON(message.locations);
+    if (message.locations?.length) {
+      obj.locations = message.locations.map((e) => LocationFinancialSubProfile.toJSON(e));
     }
-    if (message.merchants !== undefined) {
-      obj.merchants = MerchantMetricsFinancialSubProfile.toJSON(message.merchants);
+    if (message.merchants?.length) {
+      obj.merchants = message.merchants.map((e) => MerchantMetricsFinancialSubProfile.toJSON(e));
     }
-    if (message.paymentChannels !== undefined) {
-      obj.paymentChannels = PaymentChannelMetricsFinancialSubProfile.toJSON(message.paymentChannels);
+    if (message.paymentChannels?.length) {
+      obj.paymentChannels = message.paymentChannels.map((e) => PaymentChannelMetricsFinancialSubProfile.toJSON(e));
     }
     return obj;
   },
@@ -5753,24 +5756,13 @@ export const MelodyFinancialContext = {
 
   fromPartial<I extends Exact<DeepPartial<MelodyFinancialContext>, I>>(object: I): MelodyFinancialContext {
     const message = createBaseMelodyFinancialContext();
-    message.categories = (object.categories !== undefined && object.categories !== null)
-      ? CategoryMetricsFinancialSubProfile.fromPartial(object.categories)
-      : undefined;
-    message.expenses = (object.expenses !== undefined && object.expenses !== null)
-      ? ExpenseMetricsFinancialSubProfileMetrics.fromPartial(object.expenses)
-      : undefined;
-    message.income = (object.income !== undefined && object.income !== null)
-      ? IncomeMetricsFinancialSubProfile.fromPartial(object.income)
-      : undefined;
-    message.locations = (object.locations !== undefined && object.locations !== null)
-      ? LocationFinancialSubProfile.fromPartial(object.locations)
-      : undefined;
-    message.merchants = (object.merchants !== undefined && object.merchants !== null)
-      ? MerchantMetricsFinancialSubProfile.fromPartial(object.merchants)
-      : undefined;
-    message.paymentChannels = (object.paymentChannels !== undefined && object.paymentChannels !== null)
-      ? PaymentChannelMetricsFinancialSubProfile.fromPartial(object.paymentChannels)
-      : undefined;
+    message.categories = object.categories?.map((e) => CategoryMetricsFinancialSubProfile.fromPartial(e)) || [];
+    message.expenses = object.expenses?.map((e) => ExpenseMetricsFinancialSubProfileMetrics.fromPartial(e)) || [];
+    message.income = object.income?.map((e) => IncomeMetricsFinancialSubProfile.fromPartial(e)) || [];
+    message.locations = object.locations?.map((e) => LocationFinancialSubProfile.fromPartial(e)) || [];
+    message.merchants = object.merchants?.map((e) => MerchantMetricsFinancialSubProfile.fromPartial(e)) || [];
+    message.paymentChannels =
+      object.paymentChannels?.map((e) => PaymentChannelMetricsFinancialSubProfile.fromPartial(e)) || [];
     return message;
   },
 };

@@ -544,12 +544,12 @@ This message is used to represent the financial context of a user.
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| categories | [CategoryMetricsFinancialSubProfile](#financial_integration_service_api-v1-CategoryMetricsFinancialSubProfile) |  |  |
-| expenses | [ExpenseMetricsFinancialSubProfileMetrics](#financial_integration_service_api-v1-ExpenseMetricsFinancialSubProfileMetrics) |  |  |
-| income | [IncomeMetricsFinancialSubProfile](#financial_integration_service_api-v1-IncomeMetricsFinancialSubProfile) |  |  |
-| locations | [LocationFinancialSubProfile](#financial_integration_service_api-v1-LocationFinancialSubProfile) |  |  |
-| merchants | [MerchantMetricsFinancialSubProfile](#financial_integration_service_api-v1-MerchantMetricsFinancialSubProfile) |  |  |
-| payment_channels | [PaymentChannelMetricsFinancialSubProfile](#financial_integration_service_api-v1-PaymentChannelMetricsFinancialSubProfile) |  |  |
+| categories | [CategoryMetricsFinancialSubProfile](#financial_integration_service_api-v1-CategoryMetricsFinancialSubProfile) | repeated |  |
+| expenses | [ExpenseMetricsFinancialSubProfileMetrics](#financial_integration_service_api-v1-ExpenseMetricsFinancialSubProfileMetrics) | repeated |  |
+| income | [IncomeMetricsFinancialSubProfile](#financial_integration_service_api-v1-IncomeMetricsFinancialSubProfile) | repeated |  |
+| locations | [LocationFinancialSubProfile](#financial_integration_service_api-v1-LocationFinancialSubProfile) | repeated |  |
+| merchants | [MerchantMetricsFinancialSubProfile](#financial_integration_service_api-v1-MerchantMetricsFinancialSubProfile) | repeated |  |
+| payment_channels | [PaymentChannelMetricsFinancialSubProfile](#financial_integration_service_api-v1-PaymentChannelMetricsFinancialSubProfile) | repeated |  |
 
 
 

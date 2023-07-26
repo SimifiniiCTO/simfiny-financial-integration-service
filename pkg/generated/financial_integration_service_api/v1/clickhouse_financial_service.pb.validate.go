@@ -3751,178 +3751,208 @@ func (m *MelodyFinancialContext) validate(all bool) error {
 
 	var errors []error
 
-	if all {
-		switch v := interface{}(m.GetCategories()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, MelodyFinancialContextValidationError{
-					field:  "Categories",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
+	for idx, item := range m.GetCategories() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, MelodyFinancialContextValidationError{
+						field:  fmt.Sprintf("Categories[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, MelodyFinancialContextValidationError{
+						field:  fmt.Sprintf("Categories[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
 			}
-		case interface{ Validate() error }:
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
-				errors = append(errors, MelodyFinancialContextValidationError{
-					field:  "Categories",
+				return MelodyFinancialContextValidationError{
+					field:  fmt.Sprintf("Categories[%v]", idx),
 					reason: "embedded message failed validation",
 					cause:  err,
-				})
+				}
 			}
 		}
-	} else if v, ok := interface{}(m.GetCategories()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return MelodyFinancialContextValidationError{
-				field:  "Categories",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
+
 	}
 
-	if all {
-		switch v := interface{}(m.GetExpenses()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, MelodyFinancialContextValidationError{
-					field:  "Expenses",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
+	for idx, item := range m.GetExpenses() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, MelodyFinancialContextValidationError{
+						field:  fmt.Sprintf("Expenses[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, MelodyFinancialContextValidationError{
+						field:  fmt.Sprintf("Expenses[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
 			}
-		case interface{ Validate() error }:
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
-				errors = append(errors, MelodyFinancialContextValidationError{
-					field:  "Expenses",
+				return MelodyFinancialContextValidationError{
+					field:  fmt.Sprintf("Expenses[%v]", idx),
 					reason: "embedded message failed validation",
 					cause:  err,
-				})
+				}
 			}
 		}
-	} else if v, ok := interface{}(m.GetExpenses()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return MelodyFinancialContextValidationError{
-				field:  "Expenses",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
+
 	}
 
-	if all {
-		switch v := interface{}(m.GetIncome()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, MelodyFinancialContextValidationError{
-					field:  "Income",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
+	for idx, item := range m.GetIncome() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, MelodyFinancialContextValidationError{
+						field:  fmt.Sprintf("Income[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, MelodyFinancialContextValidationError{
+						field:  fmt.Sprintf("Income[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
 			}
-		case interface{ Validate() error }:
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
-				errors = append(errors, MelodyFinancialContextValidationError{
-					field:  "Income",
+				return MelodyFinancialContextValidationError{
+					field:  fmt.Sprintf("Income[%v]", idx),
 					reason: "embedded message failed validation",
 					cause:  err,
-				})
+				}
 			}
 		}
-	} else if v, ok := interface{}(m.GetIncome()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return MelodyFinancialContextValidationError{
-				field:  "Income",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
+
 	}
 
-	if all {
-		switch v := interface{}(m.GetLocations()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, MelodyFinancialContextValidationError{
-					field:  "Locations",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
+	for idx, item := range m.GetLocations() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, MelodyFinancialContextValidationError{
+						field:  fmt.Sprintf("Locations[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, MelodyFinancialContextValidationError{
+						field:  fmt.Sprintf("Locations[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
 			}
-		case interface{ Validate() error }:
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
-				errors = append(errors, MelodyFinancialContextValidationError{
-					field:  "Locations",
+				return MelodyFinancialContextValidationError{
+					field:  fmt.Sprintf("Locations[%v]", idx),
 					reason: "embedded message failed validation",
 					cause:  err,
-				})
+				}
 			}
 		}
-	} else if v, ok := interface{}(m.GetLocations()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return MelodyFinancialContextValidationError{
-				field:  "Locations",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
+
 	}
 
-	if all {
-		switch v := interface{}(m.GetMerchants()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, MelodyFinancialContextValidationError{
-					field:  "Merchants",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
+	for idx, item := range m.GetMerchants() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, MelodyFinancialContextValidationError{
+						field:  fmt.Sprintf("Merchants[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, MelodyFinancialContextValidationError{
+						field:  fmt.Sprintf("Merchants[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
 			}
-		case interface{ Validate() error }:
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
-				errors = append(errors, MelodyFinancialContextValidationError{
-					field:  "Merchants",
+				return MelodyFinancialContextValidationError{
+					field:  fmt.Sprintf("Merchants[%v]", idx),
 					reason: "embedded message failed validation",
 					cause:  err,
-				})
+				}
 			}
 		}
-	} else if v, ok := interface{}(m.GetMerchants()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return MelodyFinancialContextValidationError{
-				field:  "Merchants",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
+
 	}
 
-	if all {
-		switch v := interface{}(m.GetPaymentChannels()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, MelodyFinancialContextValidationError{
-					field:  "PaymentChannels",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
+	for idx, item := range m.GetPaymentChannels() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, MelodyFinancialContextValidationError{
+						field:  fmt.Sprintf("PaymentChannels[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, MelodyFinancialContextValidationError{
+						field:  fmt.Sprintf("PaymentChannels[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
 			}
-		case interface{ Validate() error }:
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
-				errors = append(errors, MelodyFinancialContextValidationError{
-					field:  "PaymentChannels",
+				return MelodyFinancialContextValidationError{
+					field:  fmt.Sprintf("PaymentChannels[%v]", idx),
 					reason: "embedded message failed validation",
 					cause:  err,
-				})
+				}
 			}
 		}
-	} else if v, ok := interface{}(m.GetPaymentChannels()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return MelodyFinancialContextValidationError{
-				field:  "PaymentChannels",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
+
 	}
 
 	if len(errors) > 0 {

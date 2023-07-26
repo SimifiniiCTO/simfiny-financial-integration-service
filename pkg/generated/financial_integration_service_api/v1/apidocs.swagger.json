@@ -5722,22 +5722,46 @@
       "type": "object",
       "properties": {
         "categories": {
-          "$ref": "#/definitions/CategoryMetricsFinancialSubProfile"
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/CategoryMetricsFinancialSubProfile"
+          }
         },
         "expenses": {
-          "$ref": "#/definitions/ExpenseMetricsFinancialSubProfileMetrics"
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/ExpenseMetricsFinancialSubProfileMetrics"
+          }
         },
         "income": {
-          "$ref": "#/definitions/IncomeMetricsFinancialSubProfile"
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/IncomeMetricsFinancialSubProfile"
+          }
         },
         "locations": {
-          "$ref": "#/definitions/LocationFinancialSubProfile"
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/LocationFinancialSubProfile"
+          }
         },
         "merchants": {
-          "$ref": "#/definitions/MerchantMetricsFinancialSubProfile"
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/MerchantMetricsFinancialSubProfile"
+          }
         },
         "paymentChannels": {
-          "$ref": "#/definitions/PaymentChannelMetricsFinancialSubProfile"
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/PaymentChannelMetricsFinancialSubProfile"
+          }
         }
       },
       "description": "MelodyFinancialContext represents the financial context of a user.\nThis message is used to represent the financial context of a user."

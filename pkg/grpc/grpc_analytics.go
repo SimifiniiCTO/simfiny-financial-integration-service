@@ -80,27 +80,3 @@ func (s *Server) GetUserAccountBalanceHistory(ctx context.Context, req *proto.Ge
 
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserAccountBalanceHistory not implemented")
 }
-
-func (s *Server) GetMelodyFinancialContext(ctx context.Context, req *proto.GetMelodyFinancialContextRequest) (*proto.GetMelodyFinancialContextResponse, error) {
-
-	// perform validations
-	if req == nil {
-		return nil, status.Error(codes.InvalidArgument, "missing request")
-	}
-
-	if err := req.ValidateAll(); err != nil {
-		return nil, status.Error(codes.InvalidArgument, err.Error())
-	}
-
-	ctx, cancel := context.WithTimeout(ctx, s.config.RpcTimeout)
-	defer cancel()
-
-	// instrument operation
-	if s.instrumentation != nil {
-		txn := s.instrumentation.GetTraceFromContext(ctx)
-		span := s.instrumentation.StartSegment(txn, "grpc-get-financial-context")
-		defer span.End()
-	}
-
-	return nil, status.Errorf(codes.Unimplemented, "method GetMelodyFinancialContext not implemented")
-}

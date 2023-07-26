@@ -5,28 +5,40 @@
         "MelodyFinancialContext": {
             "properties": {
                 "categories": {
-                    "$ref": "#/definitions/financial_integration_service_api.v1.CategoryMetricsFinancialSubProfile",
-                    "additionalProperties": true
+                    "items": {
+                        "$ref": "#/definitions/financial_integration_service_api.v1.CategoryMetricsFinancialSubProfile"
+                    },
+                    "type": "array"
                 },
                 "expenses": {
-                    "$ref": "#/definitions/financial_integration_service_api.v1.ExpenseMetricsFinancialSubProfileMetrics",
-                    "additionalProperties": true
+                    "items": {
+                        "$ref": "#/definitions/financial_integration_service_api.v1.ExpenseMetricsFinancialSubProfileMetrics"
+                    },
+                    "type": "array"
                 },
                 "income": {
-                    "$ref": "#/definitions/financial_integration_service_api.v1.IncomeMetricsFinancialSubProfile",
-                    "additionalProperties": true
+                    "items": {
+                        "$ref": "#/definitions/financial_integration_service_api.v1.IncomeMetricsFinancialSubProfile"
+                    },
+                    "type": "array"
                 },
                 "locations": {
-                    "$ref": "#/definitions/financial_integration_service_api.v1.LocationFinancialSubProfile",
-                    "additionalProperties": true
+                    "items": {
+                        "$ref": "#/definitions/financial_integration_service_api.v1.LocationFinancialSubProfile"
+                    },
+                    "type": "array"
                 },
                 "merchants": {
-                    "$ref": "#/definitions/financial_integration_service_api.v1.MerchantMetricsFinancialSubProfile",
-                    "additionalProperties": true
+                    "items": {
+                        "$ref": "#/definitions/financial_integration_service_api.v1.MerchantMetricsFinancialSubProfile"
+                    },
+                    "type": "array"
                 },
                 "payment_channels": {
-                    "$ref": "#/definitions/financial_integration_service_api.v1.PaymentChannelMetricsFinancialSubProfile",
-                    "additionalProperties": true
+                    "items": {
+                        "$ref": "#/definitions/financial_integration_service_api.v1.PaymentChannelMetricsFinancialSubProfile"
+                    },
+                    "type": "array"
                 }
             },
             "additionalProperties": true,
