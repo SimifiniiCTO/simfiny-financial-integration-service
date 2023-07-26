@@ -1,0 +1,45 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/ListIncomeMetricsResponse",
+    "definitions": {
+        "ListIncomeMetricsResponse": {
+            "properties": {
+                "income_metrics": {
+                    "items": {
+                        "$ref": "#/definitions/financial_integration_service_api.v1.IncomeMetrics"
+                    },
+                    "type": "array"
+                },
+                "next_page_number": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "List Income Metrics Response"
+        },
+        "financial_integration_service_api.v1.IncomeMetrics": {
+            "properties": {
+                "month": {
+                    "type": "integer"
+                },
+                "personal_finance_category_primary": {
+                    "type": "string"
+                },
+                "transaction_count": {
+                    "type": "string"
+                },
+                "total_income": {
+                    "type": "number"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Income Metrics",
+            "description": "IncomeMetrics This message is used to represent the income metrics of a user."
+        }
+    }
+}

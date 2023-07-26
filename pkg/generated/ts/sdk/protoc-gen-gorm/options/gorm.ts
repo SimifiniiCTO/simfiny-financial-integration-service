@@ -240,14 +240,18 @@ export const GormMessageOptions = {
 
   toJSON(message: GormMessageOptions): unknown {
     const obj: any = {};
-    message.ormable !== undefined && (obj.ormable = message.ormable);
-    if (message.include) {
-      obj.include = message.include.map((e) => e ? ExtraField.toJSON(e) : undefined);
-    } else {
-      obj.include = [];
+    if (message.ormable === true) {
+      obj.ormable = message.ormable;
     }
-    message.table !== undefined && (obj.table = message.table);
-    message.multiAccount !== undefined && (obj.multiAccount = message.multiAccount);
+    if (message.include?.length) {
+      obj.include = message.include.map((e) => ExtraField.toJSON(e));
+    }
+    if (message.table !== "") {
+      obj.table = message.table;
+    }
+    if (message.multiAccount === true) {
+      obj.multiAccount = message.multiAccount;
+    }
     return obj;
   },
 
@@ -341,10 +345,18 @@ export const ExtraField = {
 
   toJSON(message: ExtraField): unknown {
     const obj: any = {};
-    message.type !== undefined && (obj.type = message.type);
-    message.name !== undefined && (obj.name = message.name);
-    message.tag !== undefined && (obj.tag = message.tag ? GormTag.toJSON(message.tag) : undefined);
-    message.package !== undefined && (obj.package = message.package);
+    if (message.type !== "") {
+      obj.type = message.type;
+    }
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    if (message.tag !== undefined) {
+      obj.tag = GormTag.toJSON(message.tag);
+    }
+    if (message.package !== "") {
+      obj.package = message.package;
+    }
     return obj;
   },
 
@@ -479,16 +491,27 @@ export const GormFieldOptions = {
 
   toJSON(message: GormFieldOptions): unknown {
     const obj: any = {};
-    message.tag !== undefined && (obj.tag = message.tag ? GormTag.toJSON(message.tag) : undefined);
-    message.drop !== undefined && (obj.drop = message.drop);
-    message.hasOne !== undefined && (obj.hasOne = message.hasOne ? HasOneOptions.toJSON(message.hasOne) : undefined);
-    message.belongsTo !== undefined &&
-      (obj.belongsTo = message.belongsTo ? BelongsToOptions.toJSON(message.belongsTo) : undefined);
-    message.hasMany !== undefined &&
-      (obj.hasMany = message.hasMany ? HasManyOptions.toJSON(message.hasMany) : undefined);
-    message.manyToMany !== undefined &&
-      (obj.manyToMany = message.manyToMany ? ManyToManyOptions.toJSON(message.manyToMany) : undefined);
-    message.referenceOf !== undefined && (obj.referenceOf = message.referenceOf);
+    if (message.tag !== undefined) {
+      obj.tag = GormTag.toJSON(message.tag);
+    }
+    if (message.drop === true) {
+      obj.drop = message.drop;
+    }
+    if (message.hasOne !== undefined) {
+      obj.hasOne = HasOneOptions.toJSON(message.hasOne);
+    }
+    if (message.belongsTo !== undefined) {
+      obj.belongsTo = BelongsToOptions.toJSON(message.belongsTo);
+    }
+    if (message.hasMany !== undefined) {
+      obj.hasMany = HasManyOptions.toJSON(message.hasMany);
+    }
+    if (message.manyToMany !== undefined) {
+      obj.manyToMany = ManyToManyOptions.toJSON(message.manyToMany);
+    }
+    if (message.referenceOf !== "") {
+      obj.referenceOf = message.referenceOf;
+    }
     return obj;
   },
 
@@ -846,33 +869,78 @@ export const GormTag = {
 
   toJSON(message: GormTag): unknown {
     const obj: any = {};
-    message.column !== undefined && (obj.column = message.column);
-    message.type !== undefined && (obj.type = message.type);
-    message.size !== undefined && (obj.size = Math.round(message.size));
-    message.precision !== undefined && (obj.precision = Math.round(message.precision));
-    message.primaryKey !== undefined && (obj.primaryKey = message.primaryKey);
-    message.unique !== undefined && (obj.unique = message.unique);
-    message.default !== undefined && (obj.default = message.default);
-    message.notNull !== undefined && (obj.notNull = message.notNull);
-    message.autoIncrement !== undefined && (obj.autoIncrement = message.autoIncrement);
-    message.index !== undefined && (obj.index = message.index);
-    message.uniqueIndex !== undefined && (obj.uniqueIndex = message.uniqueIndex);
-    message.embedded !== undefined && (obj.embedded = message.embedded);
-    message.embeddedPrefix !== undefined && (obj.embeddedPrefix = message.embeddedPrefix);
-    message.ignore !== undefined && (obj.ignore = message.ignore);
-    message.foreignkey !== undefined && (obj.foreignkey = message.foreignkey);
-    message.associationForeignkey !== undefined && (obj.associationForeignkey = message.associationForeignkey);
-    message.manyToMany !== undefined && (obj.manyToMany = message.manyToMany);
-    message.jointableForeignkey !== undefined && (obj.jointableForeignkey = message.jointableForeignkey);
-    message.associationJointableForeignkey !== undefined &&
-      (obj.associationJointableForeignkey = message.associationJointableForeignkey);
-    message.disableAssociationAutoupdate !== undefined &&
-      (obj.disableAssociationAutoupdate = message.disableAssociationAutoupdate);
-    message.disableAssociationAutocreate !== undefined &&
-      (obj.disableAssociationAutocreate = message.disableAssociationAutocreate);
-    message.associationSaveReference !== undefined && (obj.associationSaveReference = message.associationSaveReference);
-    message.preload !== undefined && (obj.preload = message.preload);
-    message.serializer !== undefined && (obj.serializer = message.serializer);
+    if (message.column !== "") {
+      obj.column = message.column;
+    }
+    if (message.type !== "") {
+      obj.type = message.type;
+    }
+    if (message.size !== 0) {
+      obj.size = Math.round(message.size);
+    }
+    if (message.precision !== 0) {
+      obj.precision = Math.round(message.precision);
+    }
+    if (message.primaryKey === true) {
+      obj.primaryKey = message.primaryKey;
+    }
+    if (message.unique === true) {
+      obj.unique = message.unique;
+    }
+    if (message.default !== "") {
+      obj.default = message.default;
+    }
+    if (message.notNull === true) {
+      obj.notNull = message.notNull;
+    }
+    if (message.autoIncrement === true) {
+      obj.autoIncrement = message.autoIncrement;
+    }
+    if (message.index !== "") {
+      obj.index = message.index;
+    }
+    if (message.uniqueIndex !== "") {
+      obj.uniqueIndex = message.uniqueIndex;
+    }
+    if (message.embedded === true) {
+      obj.embedded = message.embedded;
+    }
+    if (message.embeddedPrefix !== "") {
+      obj.embeddedPrefix = message.embeddedPrefix;
+    }
+    if (message.ignore === true) {
+      obj.ignore = message.ignore;
+    }
+    if (message.foreignkey !== "") {
+      obj.foreignkey = message.foreignkey;
+    }
+    if (message.associationForeignkey !== "") {
+      obj.associationForeignkey = message.associationForeignkey;
+    }
+    if (message.manyToMany !== "") {
+      obj.manyToMany = message.manyToMany;
+    }
+    if (message.jointableForeignkey !== "") {
+      obj.jointableForeignkey = message.jointableForeignkey;
+    }
+    if (message.associationJointableForeignkey !== "") {
+      obj.associationJointableForeignkey = message.associationJointableForeignkey;
+    }
+    if (message.disableAssociationAutoupdate === true) {
+      obj.disableAssociationAutoupdate = message.disableAssociationAutoupdate;
+    }
+    if (message.disableAssociationAutocreate === true) {
+      obj.disableAssociationAutocreate = message.disableAssociationAutocreate;
+    }
+    if (message.associationSaveReference === true) {
+      obj.associationSaveReference = message.associationSaveReference;
+    }
+    if (message.preload === true) {
+      obj.preload = message.preload;
+    }
+    if (message.serializer !== "") {
+      obj.serializer = message.serializer;
+    }
     return obj;
   },
 
@@ -1069,19 +1137,36 @@ export const HasOneOptions = {
 
   toJSON(message: HasOneOptions): unknown {
     const obj: any = {};
-    message.foreignkey !== undefined && (obj.foreignkey = message.foreignkey);
-    message.foreignkeyTag !== undefined &&
-      (obj.foreignkeyTag = message.foreignkeyTag ? GormTag.toJSON(message.foreignkeyTag) : undefined);
-    message.associationForeignkey !== undefined && (obj.associationForeignkey = message.associationForeignkey);
-    message.disableAssociationAutoupdate !== undefined &&
-      (obj.disableAssociationAutoupdate = message.disableAssociationAutoupdate);
-    message.disableAssociationAutocreate !== undefined &&
-      (obj.disableAssociationAutocreate = message.disableAssociationAutocreate);
-    message.associationSaveReference !== undefined && (obj.associationSaveReference = message.associationSaveReference);
-    message.preload !== undefined && (obj.preload = message.preload);
-    message.replace !== undefined && (obj.replace = message.replace);
-    message.append !== undefined && (obj.append = message.append);
-    message.clear !== undefined && (obj.clear = message.clear);
+    if (message.foreignkey !== "") {
+      obj.foreignkey = message.foreignkey;
+    }
+    if (message.foreignkeyTag !== undefined) {
+      obj.foreignkeyTag = GormTag.toJSON(message.foreignkeyTag);
+    }
+    if (message.associationForeignkey !== "") {
+      obj.associationForeignkey = message.associationForeignkey;
+    }
+    if (message.disableAssociationAutoupdate === true) {
+      obj.disableAssociationAutoupdate = message.disableAssociationAutoupdate;
+    }
+    if (message.disableAssociationAutocreate === true) {
+      obj.disableAssociationAutocreate = message.disableAssociationAutocreate;
+    }
+    if (message.associationSaveReference === true) {
+      obj.associationSaveReference = message.associationSaveReference;
+    }
+    if (message.preload === true) {
+      obj.preload = message.preload;
+    }
+    if (message.replace === true) {
+      obj.replace = message.replace;
+    }
+    if (message.append === true) {
+      obj.append = message.append;
+    }
+    if (message.clear === true) {
+      obj.clear = message.clear;
+    }
     return obj;
   },
 
@@ -1230,16 +1315,27 @@ export const BelongsToOptions = {
 
   toJSON(message: BelongsToOptions): unknown {
     const obj: any = {};
-    message.foreignkey !== undefined && (obj.foreignkey = message.foreignkey);
-    message.foreignkeyTag !== undefined &&
-      (obj.foreignkeyTag = message.foreignkeyTag ? GormTag.toJSON(message.foreignkeyTag) : undefined);
-    message.associationForeignkey !== undefined && (obj.associationForeignkey = message.associationForeignkey);
-    message.disableAssociationAutoupdate !== undefined &&
-      (obj.disableAssociationAutoupdate = message.disableAssociationAutoupdate);
-    message.disableAssociationAutocreate !== undefined &&
-      (obj.disableAssociationAutocreate = message.disableAssociationAutocreate);
-    message.associationSaveReference !== undefined && (obj.associationSaveReference = message.associationSaveReference);
-    message.preload !== undefined && (obj.preload = message.preload);
+    if (message.foreignkey !== "") {
+      obj.foreignkey = message.foreignkey;
+    }
+    if (message.foreignkeyTag !== undefined) {
+      obj.foreignkeyTag = GormTag.toJSON(message.foreignkeyTag);
+    }
+    if (message.associationForeignkey !== "") {
+      obj.associationForeignkey = message.associationForeignkey;
+    }
+    if (message.disableAssociationAutoupdate === true) {
+      obj.disableAssociationAutoupdate = message.disableAssociationAutoupdate;
+    }
+    if (message.disableAssociationAutocreate === true) {
+      obj.disableAssociationAutocreate = message.disableAssociationAutocreate;
+    }
+    if (message.associationSaveReference === true) {
+      obj.associationSaveReference = message.associationSaveReference;
+    }
+    if (message.preload === true) {
+      obj.preload = message.preload;
+    }
     return obj;
   },
 
@@ -1445,22 +1541,42 @@ export const HasManyOptions = {
 
   toJSON(message: HasManyOptions): unknown {
     const obj: any = {};
-    message.foreignkey !== undefined && (obj.foreignkey = message.foreignkey);
-    message.foreignkeyTag !== undefined &&
-      (obj.foreignkeyTag = message.foreignkeyTag ? GormTag.toJSON(message.foreignkeyTag) : undefined);
-    message.associationForeignkey !== undefined && (obj.associationForeignkey = message.associationForeignkey);
-    message.positionField !== undefined && (obj.positionField = message.positionField);
-    message.positionFieldTag !== undefined &&
-      (obj.positionFieldTag = message.positionFieldTag ? GormTag.toJSON(message.positionFieldTag) : undefined);
-    message.disableAssociationAutoupdate !== undefined &&
-      (obj.disableAssociationAutoupdate = message.disableAssociationAutoupdate);
-    message.disableAssociationAutocreate !== undefined &&
-      (obj.disableAssociationAutocreate = message.disableAssociationAutocreate);
-    message.associationSaveReference !== undefined && (obj.associationSaveReference = message.associationSaveReference);
-    message.preload !== undefined && (obj.preload = message.preload);
-    message.replace !== undefined && (obj.replace = message.replace);
-    message.append !== undefined && (obj.append = message.append);
-    message.clear !== undefined && (obj.clear = message.clear);
+    if (message.foreignkey !== "") {
+      obj.foreignkey = message.foreignkey;
+    }
+    if (message.foreignkeyTag !== undefined) {
+      obj.foreignkeyTag = GormTag.toJSON(message.foreignkeyTag);
+    }
+    if (message.associationForeignkey !== "") {
+      obj.associationForeignkey = message.associationForeignkey;
+    }
+    if (message.positionField !== "") {
+      obj.positionField = message.positionField;
+    }
+    if (message.positionFieldTag !== undefined) {
+      obj.positionFieldTag = GormTag.toJSON(message.positionFieldTag);
+    }
+    if (message.disableAssociationAutoupdate === true) {
+      obj.disableAssociationAutoupdate = message.disableAssociationAutoupdate;
+    }
+    if (message.disableAssociationAutocreate === true) {
+      obj.disableAssociationAutocreate = message.disableAssociationAutocreate;
+    }
+    if (message.associationSaveReference === true) {
+      obj.associationSaveReference = message.associationSaveReference;
+    }
+    if (message.preload === true) {
+      obj.preload = message.preload;
+    }
+    if (message.replace === true) {
+      obj.replace = message.replace;
+    }
+    if (message.append === true) {
+      obj.append = message.append;
+    }
+    if (message.clear === true) {
+      obj.clear = message.clear;
+    }
     return obj;
   },
 
@@ -1675,21 +1791,42 @@ export const ManyToManyOptions = {
 
   toJSON(message: ManyToManyOptions): unknown {
     const obj: any = {};
-    message.jointable !== undefined && (obj.jointable = message.jointable);
-    message.foreignkey !== undefined && (obj.foreignkey = message.foreignkey);
-    message.jointableForeignkey !== undefined && (obj.jointableForeignkey = message.jointableForeignkey);
-    message.associationForeignkey !== undefined && (obj.associationForeignkey = message.associationForeignkey);
-    message.associationJointableForeignkey !== undefined &&
-      (obj.associationJointableForeignkey = message.associationJointableForeignkey);
-    message.disableAssociationAutoupdate !== undefined &&
-      (obj.disableAssociationAutoupdate = message.disableAssociationAutoupdate);
-    message.disableAssociationAutocreate !== undefined &&
-      (obj.disableAssociationAutocreate = message.disableAssociationAutocreate);
-    message.associationSaveReference !== undefined && (obj.associationSaveReference = message.associationSaveReference);
-    message.preload !== undefined && (obj.preload = message.preload);
-    message.replace !== undefined && (obj.replace = message.replace);
-    message.append !== undefined && (obj.append = message.append);
-    message.clear !== undefined && (obj.clear = message.clear);
+    if (message.jointable !== "") {
+      obj.jointable = message.jointable;
+    }
+    if (message.foreignkey !== "") {
+      obj.foreignkey = message.foreignkey;
+    }
+    if (message.jointableForeignkey !== "") {
+      obj.jointableForeignkey = message.jointableForeignkey;
+    }
+    if (message.associationForeignkey !== "") {
+      obj.associationForeignkey = message.associationForeignkey;
+    }
+    if (message.associationJointableForeignkey !== "") {
+      obj.associationJointableForeignkey = message.associationJointableForeignkey;
+    }
+    if (message.disableAssociationAutoupdate === true) {
+      obj.disableAssociationAutoupdate = message.disableAssociationAutoupdate;
+    }
+    if (message.disableAssociationAutocreate === true) {
+      obj.disableAssociationAutocreate = message.disableAssociationAutocreate;
+    }
+    if (message.associationSaveReference === true) {
+      obj.associationSaveReference = message.associationSaveReference;
+    }
+    if (message.preload === true) {
+      obj.preload = message.preload;
+    }
+    if (message.replace === true) {
+      obj.replace = message.replace;
+    }
+    if (message.append === true) {
+      obj.append = message.append;
+    }
+    if (message.clear === true) {
+      obj.clear = message.clear;
+    }
     return obj;
   },
 
@@ -1780,9 +1917,15 @@ export const AutoServerOptions = {
 
   toJSON(message: AutoServerOptions): unknown {
     const obj: any = {};
-    message.autogen !== undefined && (obj.autogen = message.autogen);
-    message.txnMiddleware !== undefined && (obj.txnMiddleware = message.txnMiddleware);
-    message.withTracing !== undefined && (obj.withTracing = message.withTracing);
+    if (message.autogen === true) {
+      obj.autogen = message.autogen;
+    }
+    if (message.txnMiddleware === true) {
+      obj.txnMiddleware = message.txnMiddleware;
+    }
+    if (message.withTracing === true) {
+      obj.withTracing = message.withTracing;
+    }
     return obj;
   },
 
@@ -1840,7 +1983,9 @@ export const MethodOptions = {
 
   toJSON(message: MethodOptions): unknown {
     const obj: any = {};
-    message.objectType !== undefined && (obj.objectType = message.objectType);
+    if (message.objectType !== "") {
+      obj.objectType = message.objectType;
+    }
     return obj;
   },
 

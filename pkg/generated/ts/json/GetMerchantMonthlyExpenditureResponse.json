@@ -1,0 +1,42 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/GetMerchantMonthlyExpenditureResponse",
+    "definitions": {
+        "GetMerchantMonthlyExpenditureResponse": {
+            "properties": {
+                "merchant_monthly_expenditures": {
+                    "items": {
+                        "$ref": "#/definitions/financial_integration_service_api.v1.MerchantMonthlyExpenditure"
+                    },
+                    "type": "array"
+                },
+                "next_page_number": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Get Merchant Monthly Expenditure Response"
+        },
+        "financial_integration_service_api.v1.MerchantMonthlyExpenditure": {
+            "properties": {
+                "month": {
+                    "type": "integer"
+                },
+                "merchant_name": {
+                    "type": "string"
+                },
+                "total_spending": {
+                    "type": "number"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Merchant Monthly Expenditure",
+            "description": "MerchantMonthlyExpenditure This message is used to represent the monthly expenditure of a merchant."
+        }
+    }
+}

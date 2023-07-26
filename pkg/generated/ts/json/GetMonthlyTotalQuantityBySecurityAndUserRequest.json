@@ -1,0 +1,30 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/GetMonthlyTotalQuantityBySecurityAndUserRequest",
+    "definitions": {
+        "GetMonthlyTotalQuantityBySecurityAndUserRequest": {
+            "properties": {
+                "user_id": {
+                    "type": "string"
+                },
+                "month": {
+                    "type": "integer"
+                },
+                "security_id": {
+                    "type": "string"
+                },
+                "page_number": {
+                    "type": "string"
+                },
+                "page_size": {
+                    "type": "string",
+                    "description": "Number of items to return per page."
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Get Monthly Total Quantity By Security And User Request",
+            "description": "GetMonthlyTotalQuantityBySecurityAndUser RPC"
+        }
+    }
+}

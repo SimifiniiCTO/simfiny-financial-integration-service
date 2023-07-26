@@ -1,0 +1,23 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/MonthlySavings",
+    "definitions": {
+        "MonthlySavings": {
+            "properties": {
+                "month": {
+                    "type": "integer"
+                },
+                "net_savings": {
+                    "type": "number"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Monthly Savings",
+            "description": "MonthlySavings This message is used to represent the monthly savings of a user."
+        }
+    }
+}

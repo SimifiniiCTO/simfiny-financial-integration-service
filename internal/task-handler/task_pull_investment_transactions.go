@@ -48,10 +48,8 @@ func NewPullInvestmentTransactionsTask(userId, linkId uint64, accessToken string
 
 func (th *TaskHandler) RunPullInvestmentTransactionsTask(ctx context.Context, t *asynq.Task) error {
 	var (
-		payload          = &PullInvestmentTransactionsTaskPayload{}
-		postgresClient   = th.postgresDb
-		clickhouseClient = th.clickhouseDb
-		plaidClient      = th.plaidClient
+		payload        = &PullInvestmentTransactionsTaskPayload{}
+		postgresClient = th.postgresDb
 	)
 
 	if err := json.Unmarshal(t.Payload(), payload); err != nil {
@@ -71,21 +69,53 @@ func (th *TaskHandler) RunPullInvestmentTransactionsTask(ctx context.Context, t 
 
 	// get investment transactions
 	// get last 2 weeks worth of transactions
+	// TODO: track offset and number of transactions fetched in database
+	// need to cross reference the transactions obtained from plaid with the transactions in the database
+	// to determine which transactions are new and which transactions are updates
+	// get new transactions
+	// get updated transactions
+	// get deleted transactions
+	// save deleted transactions
+	// save updated transactions
+	// save new transactions
+	if err := th.queryInvestmentTransactions(ctx, accessToken, userId, link, accountIds); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (th *TaskHandler) queryInvestmentTransactions(ctx context.Context, accessToken string, userId uint64, link *schema.Link, accountIds []string) error {
+	// get investment transactions
+	// get last 2 weeks worth of transactions
+	// TODO: track offset and number of transactions fetched in database
+	// need to cross reference the transactions obtained from plaid with the transactions in the database
+	// to determine which transactions are new and which transactions are updates
+	// get new transactions
+	// get updated transactions
+	// get deleted transactions
+	// save deleted transactions
+	// save updated transactions
+	// save new transactions
+
+	var (
+		clickhouseClient = th.clickhouseDb
+		plaidClient      = th.plaidClient
+	)
+
 	startTime := time.Now().AddDate(0, 0, -14).Format("2006-01-02")
 	endTime := time.Now().Format("2006-01-02")
+
 	transactions, err := plaidClient.GetInvestmentTransactions(ctx, &accessToken, &userId, link, startTime, endTime, accountIds, 0, 0)
 	if err != nil {
 		return err
 	}
 
-	// need to cross reference the transactions obtained from plaid with the transactions in the database
-	// to determine which transactions are new and which transactions are updates
 	currentTransactions, err := clickhouseClient.GetAllInvestmentTransactions(ctx, &userId)
 	if err != nil {
 		return err
 	}
 
-	// get new transactions
 	newTransactions := make([]*schema.InvestmentTransaction, 0, len(transactions))
 	for _, transaction := range transactions {
 		if !isTransactionInSlice(transaction, currentTransactions) {
@@ -93,7 +123,6 @@ func (th *TaskHandler) RunPullInvestmentTransactionsTask(ctx context.Context, t 
 		}
 	}
 
-	// get updated transactions
 	updatedTransactions := make([]*schema.InvestmentTransaction, 0, len(transactions))
 	for _, transaction := range transactions {
 		if isTransactionInSlice(transaction, currentTransactions) {
@@ -101,7 +130,6 @@ func (th *TaskHandler) RunPullInvestmentTransactionsTask(ctx context.Context, t 
 		}
 	}
 
-	// get deleted transactions
 	deletedTransactionIds := make([]string, 0, len(currentTransactions))
 	for _, transaction := range currentTransactions {
 		if !isTransactionInSlice(transaction, transactions) {
@@ -109,27 +137,23 @@ func (th *TaskHandler) RunPullInvestmentTransactionsTask(ctx context.Context, t 
 		}
 	}
 
-	// save deleted transactions
 	if len(deletedTransactionIds) > 0 {
 		if err := clickhouseClient.DeleteInvestmentTransactions(ctx, deletedTransactionIds...); err != nil {
 			return err
 		}
 	}
 
-	// save updated transactions
 	if len(updatedTransactions) > 0 {
 		if err := clickhouseClient.UpdateInvestmentTransactions(ctx, &userId, updatedTransactions); err != nil {
 			return err
 		}
 	}
 
-	// save new transactions
 	if len(newTransactions) > 0 {
 		if err := clickhouseClient.AddInvestmentTransactions(ctx, &userId, newTransactions); err != nil {
 			return err
 		}
 	}
-
 	return nil
 }
 

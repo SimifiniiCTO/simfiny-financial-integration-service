@@ -2,7 +2,7 @@
 CREATE TABLE IF NOT EXISTS TransactionAggregatesByMonth 
 (
     Month UInt32,
-    CategoryId String,
+    PersonalFinanceCategoryPrimary String,
     LocationCity String,
     PaymentChannel String,
     MerchantName String,
@@ -12,4 +12,4 @@ CREATE TABLE IF NOT EXISTS TransactionAggregatesByMonth
 ) 
 ENGINE = AggregatingMergeTree()
 PARTITION BY Month
-ORDER BY (Month, CategoryId, LocationCity, PaymentChannel, MerchantName);
+ORDER BY (Month, PersonalFinanceCategoryPrimary, LocationCity, PaymentChannel, MerchantName);

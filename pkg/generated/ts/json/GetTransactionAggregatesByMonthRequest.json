@@ -1,0 +1,20 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/GetTransactionAggregatesByMonthRequest",
+    "definitions": {
+        "GetTransactionAggregatesByMonthRequest": {
+            "properties": {
+                "user_id": {
+                    "type": "string"
+                },
+                "month": {
+                    "type": "integer"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Get Transaction Aggregates By Month Request",
+            "description": "transaction aggregates by month"
+        }
+    }
+}

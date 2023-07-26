@@ -40,51 +40,71 @@ type SyncResult struct {
 func (p *PlaidWrapper) Sync(ctx context.Context, cursor, accessToken *string) (*SyncResult, error) {
 	includePersonalFinanceCategory := true
 
-	reqCtx := plaid.TransactionsSyncRequest{
-		AccessToken: *accessToken,
-		Count:       pointer.Int32P(500),
-		Options: &plaid.TransactionsSyncRequestOptions{
-			IncludePersonalFinanceCategory: &includePersonalFinanceCategory,
-		},
-	}
+	added := make([]*schema.Transaction, 0)
+	modified := make([]*schema.Transaction, 0)
+	removed := make([]string, 0)
 
-	if cursor != nil {
-		reqCtx.Cursor = cursor
-	}
-
-	request := p.client.PlaidApi.
-		TransactionsSync(ctx).
-		TransactionsSyncRequest(reqCtx)
-
-	result, _, err := request.Execute()
-	if err != nil {
-		p.Logger.Error("failed to sync data with Plaid", zap.Error(err), zap.Any("request", request))
-		return nil, err
-	}
-
-	added := make([]*schema.Transaction, 0, len(result.Added))
-	for _, transaction := range result.Added {
-		newTx, err := transformer.NewTransactionFromPlaid(&transaction)
-		if err != nil {
-			return nil, err
+	for {
+		reqCtx := plaid.TransactionsSyncRequest{
+			AccessToken: *accessToken,
+			Count:       pointer.Int32P(500),
+			Options: &plaid.TransactionsSyncRequestOptions{
+				IncludePersonalFinanceCategory: &includePersonalFinanceCategory,
+			},
 		}
 
-		added = append(added, newTx)
-	}
-
-	modified := make([]*schema.Transaction, 0, len(result.Modified))
-	for _, transaction := range result.Modified {
-		modifiedTx, err := transformer.NewTransactionFromPlaid(&transaction)
-		if err != nil {
-			return nil, err
+		if cursor != nil {
+			reqCtx.Cursor = cursor
 		}
 
-		modified = append(modified, modifiedTx)
-	}
+		// query the Plaid API for transactions
+		request := p.client.PlaidApi.
+			TransactionsSync(ctx).
+			TransactionsSyncRequest(reqCtx)
 
-	removed := make([]string, len(result.Removed))
-	for _, transaction := range result.Removed {
-		removed = append(removed, transaction.GetTransactionId())
+		result, _, err := request.Execute()
+
+		if err != nil {
+			if plaidErr, currerr := plaid.ToPlaidError(err); currerr == nil {
+				if plaidErr.ErrorCode == "TRANSACTIONS_SYNC_MUTATION_DURING_PAGINATION" {
+					// Restart the loop by setting the transactions slice to be empty
+					added = []*schema.Transaction{}
+					modified = []*schema.Transaction{}
+					removed = []string{}
+					continue
+				}
+			} else {
+				p.Logger.Error("failed to sync data with Plaid", zap.Error(err), zap.Any("request", request))
+				return nil, err
+			}
+		}
+
+		cursor = pointer.StringP(result.GetNextCursor())
+		for _, transaction := range result.Added {
+			newTx, err := transformer.NewTransactionFromPlaid(&transaction)
+			if err != nil {
+				return nil, err
+			}
+
+			added = append(added, newTx)
+		}
+
+		for _, transaction := range result.Modified {
+			modifiedTx, err := transformer.NewTransactionFromPlaid(&transaction)
+			if err != nil {
+				return nil, err
+			}
+
+			modified = append(modified, modifiedTx)
+		}
+
+		for _, transaction := range result.Removed {
+			removed = append(removed, transaction.GetTransactionId())
+		}
+
+		if !result.GetHasMore() {
+			break
+		}
 	}
 
 	if len(added)+len(modified)+len(removed) == 0 {
@@ -94,8 +114,8 @@ func (p *PlaidWrapper) Sync(ctx context.Context, cursor, accessToken *string) (*
 	}
 
 	return &SyncResult{
-		NextCursor: result.GetNextCursor(),
-		HasMore:    result.GetHasMore(),
+		NextCursor: *cursor,
+		HasMore:    false,
 		New:        added,
 		Updated:    modified,
 		Deleted:    removed,

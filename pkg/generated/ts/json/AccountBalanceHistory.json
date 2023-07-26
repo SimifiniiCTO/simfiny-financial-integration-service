@@ -22,11 +22,15 @@
                 },
                 "sign": {
                     "type": "integer"
+                },
+                "id": {
+                    "type": "string"
                 }
             },
             "additionalProperties": true,
             "type": "object",
-            "title": "Account Balance History"
+            "title": "Account Balance History",
+            "description": "Account Balance History This message is used to represent the balance history of an account."
         }
     }
 }

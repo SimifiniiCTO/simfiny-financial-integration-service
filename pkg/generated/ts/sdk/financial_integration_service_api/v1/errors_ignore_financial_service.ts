@@ -585,8 +585,12 @@ export const ValidationErrorMessageResponse = {
 
   toJSON(message: ValidationErrorMessageResponse): unknown {
     const obj: any = {};
-    message.code !== undefined && (obj.code = errorCodeToJSON(message.code));
-    message.message !== undefined && (obj.message = message.message);
+    if (message.code !== 0) {
+      obj.code = errorCodeToJSON(message.code);
+    }
+    if (message.message !== "") {
+      obj.message = message.message;
+    }
     return obj;
   },
 
@@ -658,8 +662,12 @@ export const InternalErrorMessageResponse = {
 
   toJSON(message: InternalErrorMessageResponse): unknown {
     const obj: any = {};
-    message.code !== undefined && (obj.code = internalErrorCodeToJSON(message.code));
-    message.message !== undefined && (obj.message = message.message);
+    if (message.code !== 0) {
+      obj.code = internalErrorCodeToJSON(message.code);
+    }
+    if (message.message !== "") {
+      obj.message = message.message;
+    }
     return obj;
   },
 
@@ -729,8 +737,12 @@ export const PathUnknownErrorMessageResponse = {
 
   toJSON(message: PathUnknownErrorMessageResponse): unknown {
     const obj: any = {};
-    message.code !== undefined && (obj.code = notFoundErrorCodeToJSON(message.code));
-    message.message !== undefined && (obj.message = message.message);
+    if (message.code !== 0) {
+      obj.code = notFoundErrorCodeToJSON(message.code);
+    }
+    if (message.message !== "") {
+      obj.message = message.message;
+    }
     return obj;
   },
 

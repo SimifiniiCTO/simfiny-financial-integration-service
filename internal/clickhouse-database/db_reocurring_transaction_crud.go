@@ -91,10 +91,12 @@ func (db *Db) AddReOccurringTransactions(ctx context.Context, userId *uint64, tx
 	// associate the user id to the transaction of interest
 	for _, tx := range txs {
 		if tx.Id != "" {
+			db.Logger.Error("transaction ID must be 0 at creation time")
 			return fmt.Errorf("transaction ID must be 0 at creation time")
 		}
 
 		if tx.LinkId == 0 {
+			db.Logger.Error("transaction link ID must be greater than 0")
 			return fmt.Errorf("transaction link ID must be greater than 0")
 		}
 
@@ -103,6 +105,7 @@ func (db *Db) AddReOccurringTransactions(ctx context.Context, userId *uint64, tx
 
 		// validate transactions
 		if err := tx.Validate(); err != nil {
+			db.Logger.Error(err.Error())
 			return err
 		}
 
@@ -417,7 +420,7 @@ func (db *Db) GetUserReOccurringTransactions(ctx context.Context, userId *uint64
 	}
 
 	if len(result) == 0 {
-		return nil, fmt.Errorf("no transactions found")
+		return []*schema.ReOccuringTransaction{}, nil
 	}
 
 	results := make([]*schema.ReOccuringTransaction, 0, len(result))

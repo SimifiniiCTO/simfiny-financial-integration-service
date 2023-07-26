@@ -109,6 +109,46 @@ func (m *CreateUserProfileRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
+	if m.GetFinancialContext() == nil {
+		err := CreateUserProfileRequestValidationError{
+			field:  "FinancialContext",
+			reason: "value is required",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if all {
+		switch v := interface{}(m.GetFinancialContext()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, CreateUserProfileRequestValidationError{
+					field:  "FinancialContext",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, CreateUserProfileRequestValidationError{
+					field:  "FinancialContext",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetFinancialContext()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return CreateUserProfileRequestValidationError{
+				field:  "FinancialContext",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
 	if len(errors) > 0 {
 		return CreateUserProfileRequestMultiError(errors)
 	}
@@ -10419,6 +10459,278 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = CreateSubscriptionResponseValidationError{}
+
+// Validate checks the field values on GetTransactionsForBankAccountRequest
+// with the rules defined in the proto definition for this message. If any
+// rules are violated, the first error encountered is returned, or nil if
+// there are no violations.
+func (m *GetTransactionsForBankAccountRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GetTransactionsForBankAccountRequest
+// with the rules defined in the proto definition for this message. If any
+// rules are violated, the result is a list of violation errors wrapped in
+// GetTransactionsForBankAccountRequestMultiError, or nil if none found.
+func (m *GetTransactionsForBankAccountRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GetTransactionsForBankAccountRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if m.GetUserId() <= 0 {
+		err := GetTransactionsForBankAccountRequestValidationError{
+			field:  "UserId",
+			reason: "value must be greater than 0",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if utf8.RuneCountInString(m.GetPlaidAccountId()) < 1 {
+		err := GetTransactionsForBankAccountRequestValidationError{
+			field:  "PlaidAccountId",
+			reason: "value length must be at least 1 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	// no validation rules for PageNumber
+
+	// no validation rules for PageSize
+
+	if len(errors) > 0 {
+		return GetTransactionsForBankAccountRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// GetTransactionsForBankAccountRequestMultiError is an error wrapping multiple
+// validation errors returned by
+// GetTransactionsForBankAccountRequest.ValidateAll() if the designated
+// constraints aren't met.
+type GetTransactionsForBankAccountRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GetTransactionsForBankAccountRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GetTransactionsForBankAccountRequestMultiError) AllErrors() []error { return m }
+
+// GetTransactionsForBankAccountRequestValidationError is the validation error
+// returned by GetTransactionsForBankAccountRequest.Validate if the designated
+// constraints aren't met.
+type GetTransactionsForBankAccountRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetTransactionsForBankAccountRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetTransactionsForBankAccountRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetTransactionsForBankAccountRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetTransactionsForBankAccountRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetTransactionsForBankAccountRequestValidationError) ErrorName() string {
+	return "GetTransactionsForBankAccountRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetTransactionsForBankAccountRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetTransactionsForBankAccountRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetTransactionsForBankAccountRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetTransactionsForBankAccountRequestValidationError{}
+
+// Validate checks the field values on GetTransactionsForBankAccountResponse
+// with the rules defined in the proto definition for this message. If any
+// rules are violated, the first error encountered is returned, or nil if
+// there are no violations.
+func (m *GetTransactionsForBankAccountResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GetTransactionsForBankAccountResponse
+// with the rules defined in the proto definition for this message. If any
+// rules are violated, the result is a list of violation errors wrapped in
+// GetTransactionsForBankAccountResponseMultiError, or nil if none found.
+func (m *GetTransactionsForBankAccountResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GetTransactionsForBankAccountResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	for idx, item := range m.GetTransactions() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, GetTransactionsForBankAccountResponseValidationError{
+						field:  fmt.Sprintf("Transactions[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, GetTransactionsForBankAccountResponseValidationError{
+						field:  fmt.Sprintf("Transactions[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return GetTransactionsForBankAccountResponseValidationError{
+					field:  fmt.Sprintf("Transactions[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	// no validation rules for NextPageNumber
+
+	if len(errors) > 0 {
+		return GetTransactionsForBankAccountResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// GetTransactionsForBankAccountResponseMultiError is an error wrapping
+// multiple validation errors returned by
+// GetTransactionsForBankAccountResponse.ValidateAll() if the designated
+// constraints aren't met.
+type GetTransactionsForBankAccountResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GetTransactionsForBankAccountResponseMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GetTransactionsForBankAccountResponseMultiError) AllErrors() []error { return m }
+
+// GetTransactionsForBankAccountResponseValidationError is the validation error
+// returned by GetTransactionsForBankAccountResponse.Validate if the
+// designated constraints aren't met.
+type GetTransactionsForBankAccountResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetTransactionsForBankAccountResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetTransactionsForBankAccountResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetTransactionsForBankAccountResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetTransactionsForBankAccountResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetTransactionsForBankAccountResponseValidationError) ErrorName() string {
+	return "GetTransactionsForBankAccountResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetTransactionsForBankAccountResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetTransactionsForBankAccountResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetTransactionsForBankAccountResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetTransactionsForBankAccountResponseValidationError{}
 
 // Validate checks the field values on
 // GetReCurringTransactionsResponse_ParticipantReCurringTransactions with the

@@ -40,6 +40,13 @@ message CreateUserProfileRequest {
     (validate.rules).string.email = true,
     (google.api.field_behavior) = REQUIRED
   ];
+
+
+  // financial context for the user
+  MelodyFinancialContext financial_context = 3 [
+    (validate.rules).message.required = true,
+    (google.api.field_behavior) = REQUIRED
+  ];
 }
 
 // CreateUserProfileResponse: Represents the response object returned as a response to
@@ -863,4 +870,30 @@ message CreateSubscriptionRequest {
 message CreateSubscriptionResponse {
   string subscription_id = 1;
   string payment_intent_client_secret = 2;
+}
+
+
+message GetTransactionsForBankAccountRequest {
+  // The user id
+  // Validations:
+  // - user_id must be greater than 0
+  uint64 user_id = 2 [
+    (validate.rules).uint64.gt = 0,
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  string plaid_account_id = 1 [
+    (validate.rules).string.min_len = 1,
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  uint64 page_number = 3;
+  uint64 page_size = 4;  
+}
+
+
+message GetTransactionsForBankAccountResponse {
+  // The transactions
+  repeated Transaction transactions = 1;
+  uint64 next_page_number = 2;
 }

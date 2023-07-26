@@ -19,48 +19,70 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	FinancialService_PlaidInitiateTokenExchange_FullMethodName = "/financial_integration_service_api.v1.FinancialService/PlaidInitiateTokenExchange"
-	FinancialService_PlaidInitiateTokenUpdate_FullMethodName   = "/financial_integration_service_api.v1.FinancialService/PlaidInitiateTokenUpdate"
-	FinancialService_PlaidExchangeToken_FullMethodName         = "/financial_integration_service_api.v1.FinancialService/PlaidExchangeToken"
-	FinancialService_CreateUserProfile_FullMethodName          = "/financial_integration_service_api.v1.FinancialService/CreateUserProfile"
-	FinancialService_GetUserProfile_FullMethodName             = "/financial_integration_service_api.v1.FinancialService/GetUserProfile"
-	FinancialService_DeleteUserProfile_FullMethodName          = "/financial_integration_service_api.v1.FinancialService/DeleteUserProfile"
-	FinancialService_UpdateUserProfile_FullMethodName          = "/financial_integration_service_api.v1.FinancialService/UpdateUserProfile"
-	FinancialService_CreateBankAccount_FullMethodName          = "/financial_integration_service_api.v1.FinancialService/CreateBankAccount"
-	FinancialService_GetBankAccount_FullMethodName             = "/financial_integration_service_api.v1.FinancialService/GetBankAccount"
-	FinancialService_UpdateBankAccount_FullMethodName          = "/financial_integration_service_api.v1.FinancialService/UpdateBankAccount"
-	FinancialService_DeleteBankAccount_FullMethodName          = "/financial_integration_service_api.v1.FinancialService/DeleteBankAccount"
-	FinancialService_GetPocket_FullMethodName                  = "/financial_integration_service_api.v1.FinancialService/GetPocket"
-	FinancialService_GetSmartGoalsByPocketId_FullMethodName    = "/financial_integration_service_api.v1.FinancialService/GetSmartGoalsByPocketId"
-	FinancialService_CreateSmartGoal_FullMethodName            = "/financial_integration_service_api.v1.FinancialService/CreateSmartGoal"
-	FinancialService_UpdateSmartGoal_FullMethodName            = "/financial_integration_service_api.v1.FinancialService/UpdateSmartGoal"
-	FinancialService_DeleteSmartGoal_FullMethodName            = "/financial_integration_service_api.v1.FinancialService/DeleteSmartGoal"
-	FinancialService_CreateMilestone_FullMethodName            = "/financial_integration_service_api.v1.FinancialService/CreateMilestone"
-	FinancialService_DeleteMilestone_FullMethodName            = "/financial_integration_service_api.v1.FinancialService/DeleteMilestone"
-	FinancialService_UpdateMilestone_FullMethodName            = "/financial_integration_service_api.v1.FinancialService/UpdateMilestone"
-	FinancialService_GetMilestone_FullMethodName               = "/financial_integration_service_api.v1.FinancialService/GetMilestone"
-	FinancialService_GetMilestonesBySmartGoalId_FullMethodName = "/financial_integration_service_api.v1.FinancialService/GetMilestonesBySmartGoalId"
-	FinancialService_GetForecast_FullMethodName                = "/financial_integration_service_api.v1.FinancialService/GetForecast"
-	FinancialService_CreateBudget_FullMethodName               = "/financial_integration_service_api.v1.FinancialService/CreateBudget"
-	FinancialService_UpdateBudget_FullMethodName               = "/financial_integration_service_api.v1.FinancialService/UpdateBudget"
-	FinancialService_DeleteBudget_FullMethodName               = "/financial_integration_service_api.v1.FinancialService/DeleteBudget"
-	FinancialService_GetBudget_FullMethodName                  = "/financial_integration_service_api.v1.FinancialService/GetBudget"
-	FinancialService_GetAllBudgets_FullMethodName              = "/financial_integration_service_api.v1.FinancialService/GetAllBudgets"
-	FinancialService_HealthCheck_FullMethodName                = "/financial_integration_service_api.v1.FinancialService/HealthCheck"
-	FinancialService_ReadynessCheck_FullMethodName             = "/financial_integration_service_api.v1.FinancialService/ReadynessCheck"
-	FinancialService_GetInvestmentAcccount_FullMethodName      = "/financial_integration_service_api.v1.FinancialService/GetInvestmentAcccount"
-	FinancialService_GetMortgageAccount_FullMethodName         = "/financial_integration_service_api.v1.FinancialService/GetMortgageAccount"
-	FinancialService_GetLiabilityAccount_FullMethodName        = "/financial_integration_service_api.v1.FinancialService/GetLiabilityAccount"
-	FinancialService_GetStudentLoanAccount_FullMethodName      = "/financial_integration_service_api.v1.FinancialService/GetStudentLoanAccount"
-	FinancialService_CreateManualLink_FullMethodName           = "/financial_integration_service_api.v1.FinancialService/CreateManualLink"
-	FinancialService_GetLink_FullMethodName                    = "/financial_integration_service_api.v1.FinancialService/GetLink"
-	FinancialService_GetLinks_FullMethodName                   = "/financial_integration_service_api.v1.FinancialService/GetLinks"
-	FinancialService_DeleteLink_FullMethodName                 = "/financial_integration_service_api.v1.FinancialService/DeleteLink"
-	FinancialService_GetReCurringTransactions_FullMethodName   = "/financial_integration_service_api.v1.FinancialService/GetReCurringTransactions"
-	FinancialService_GetTransactions_FullMethodName            = "/financial_integration_service_api.v1.FinancialService/GetTransactions"
-	FinancialService_ProcessWebhook_FullMethodName             = "/financial_integration_service_api.v1.FinancialService/ProcessWebhook"
-	FinancialService_StripeWebhook_FullMethodName              = "/financial_integration_service_api.v1.FinancialService/StripeWebhook"
-	FinancialService_CreateSubscription_FullMethodName         = "/financial_integration_service_api.v1.FinancialService/CreateSubscription"
+	FinancialService_PlaidInitiateTokenExchange_FullMethodName               = "/financial_integration_service_api.v1.FinancialService/PlaidInitiateTokenExchange"
+	FinancialService_PlaidInitiateTokenUpdate_FullMethodName                 = "/financial_integration_service_api.v1.FinancialService/PlaidInitiateTokenUpdate"
+	FinancialService_PlaidExchangeToken_FullMethodName                       = "/financial_integration_service_api.v1.FinancialService/PlaidExchangeToken"
+	FinancialService_CreateUserProfile_FullMethodName                        = "/financial_integration_service_api.v1.FinancialService/CreateUserProfile"
+	FinancialService_GetUserProfile_FullMethodName                           = "/financial_integration_service_api.v1.FinancialService/GetUserProfile"
+	FinancialService_DeleteUserProfile_FullMethodName                        = "/financial_integration_service_api.v1.FinancialService/DeleteUserProfile"
+	FinancialService_UpdateUserProfile_FullMethodName                        = "/financial_integration_service_api.v1.FinancialService/UpdateUserProfile"
+	FinancialService_CreateBankAccount_FullMethodName                        = "/financial_integration_service_api.v1.FinancialService/CreateBankAccount"
+	FinancialService_GetBankAccount_FullMethodName                           = "/financial_integration_service_api.v1.FinancialService/GetBankAccount"
+	FinancialService_UpdateBankAccount_FullMethodName                        = "/financial_integration_service_api.v1.FinancialService/UpdateBankAccount"
+	FinancialService_DeleteBankAccount_FullMethodName                        = "/financial_integration_service_api.v1.FinancialService/DeleteBankAccount"
+	FinancialService_GetPocket_FullMethodName                                = "/financial_integration_service_api.v1.FinancialService/GetPocket"
+	FinancialService_GetSmartGoalsByPocketId_FullMethodName                  = "/financial_integration_service_api.v1.FinancialService/GetSmartGoalsByPocketId"
+	FinancialService_CreateSmartGoal_FullMethodName                          = "/financial_integration_service_api.v1.FinancialService/CreateSmartGoal"
+	FinancialService_UpdateSmartGoal_FullMethodName                          = "/financial_integration_service_api.v1.FinancialService/UpdateSmartGoal"
+	FinancialService_DeleteSmartGoal_FullMethodName                          = "/financial_integration_service_api.v1.FinancialService/DeleteSmartGoal"
+	FinancialService_CreateMilestone_FullMethodName                          = "/financial_integration_service_api.v1.FinancialService/CreateMilestone"
+	FinancialService_DeleteMilestone_FullMethodName                          = "/financial_integration_service_api.v1.FinancialService/DeleteMilestone"
+	FinancialService_UpdateMilestone_FullMethodName                          = "/financial_integration_service_api.v1.FinancialService/UpdateMilestone"
+	FinancialService_GetMilestone_FullMethodName                             = "/financial_integration_service_api.v1.FinancialService/GetMilestone"
+	FinancialService_GetMilestonesBySmartGoalId_FullMethodName               = "/financial_integration_service_api.v1.FinancialService/GetMilestonesBySmartGoalId"
+	FinancialService_GetForecast_FullMethodName                              = "/financial_integration_service_api.v1.FinancialService/GetForecast"
+	FinancialService_CreateBudget_FullMethodName                             = "/financial_integration_service_api.v1.FinancialService/CreateBudget"
+	FinancialService_UpdateBudget_FullMethodName                             = "/financial_integration_service_api.v1.FinancialService/UpdateBudget"
+	FinancialService_DeleteBudget_FullMethodName                             = "/financial_integration_service_api.v1.FinancialService/DeleteBudget"
+	FinancialService_GetBudget_FullMethodName                                = "/financial_integration_service_api.v1.FinancialService/GetBudget"
+	FinancialService_GetAllBudgets_FullMethodName                            = "/financial_integration_service_api.v1.FinancialService/GetAllBudgets"
+	FinancialService_HealthCheck_FullMethodName                              = "/financial_integration_service_api.v1.FinancialService/HealthCheck"
+	FinancialService_ReadynessCheck_FullMethodName                           = "/financial_integration_service_api.v1.FinancialService/ReadynessCheck"
+	FinancialService_GetInvestmentAcccount_FullMethodName                    = "/financial_integration_service_api.v1.FinancialService/GetInvestmentAcccount"
+	FinancialService_GetMortgageAccount_FullMethodName                       = "/financial_integration_service_api.v1.FinancialService/GetMortgageAccount"
+	FinancialService_GetLiabilityAccount_FullMethodName                      = "/financial_integration_service_api.v1.FinancialService/GetLiabilityAccount"
+	FinancialService_GetStudentLoanAccount_FullMethodName                    = "/financial_integration_service_api.v1.FinancialService/GetStudentLoanAccount"
+	FinancialService_CreateManualLink_FullMethodName                         = "/financial_integration_service_api.v1.FinancialService/CreateManualLink"
+	FinancialService_GetLink_FullMethodName                                  = "/financial_integration_service_api.v1.FinancialService/GetLink"
+	FinancialService_GetLinks_FullMethodName                                 = "/financial_integration_service_api.v1.FinancialService/GetLinks"
+	FinancialService_DeleteLink_FullMethodName                               = "/financial_integration_service_api.v1.FinancialService/DeleteLink"
+	FinancialService_GetReCurringTransactions_FullMethodName                 = "/financial_integration_service_api.v1.FinancialService/GetReCurringTransactions"
+	FinancialService_GetTransactions_FullMethodName                          = "/financial_integration_service_api.v1.FinancialService/GetTransactions"
+	FinancialService_ProcessWebhook_FullMethodName                           = "/financial_integration_service_api.v1.FinancialService/ProcessWebhook"
+	FinancialService_StripeWebhook_FullMethodName                            = "/financial_integration_service_api.v1.FinancialService/StripeWebhook"
+	FinancialService_CreateSubscription_FullMethodName                       = "/financial_integration_service_api.v1.FinancialService/CreateSubscription"
+	FinancialService_GetTransactionAggregates_FullMethodName                 = "/financial_integration_service_api.v1.FinancialService/GetTransactionAggregates"
+	FinancialService_GetUserAccountBalanceHistory_FullMethodName             = "/financial_integration_service_api.v1.FinancialService/GetUserAccountBalanceHistory"
+	FinancialService_GetAccountBalanceHistory_FullMethodName                 = "/financial_integration_service_api.v1.FinancialService/GetAccountBalanceHistory"
+	FinancialService_GetUserCategoryMonthlyExpenditure_FullMethodName        = "/financial_integration_service_api.v1.FinancialService/GetUserCategoryMonthlyExpenditure"
+	FinancialService_GetUserCategoryMonthlyIncome_FullMethodName             = "/financial_integration_service_api.v1.FinancialService/GetUserCategoryMonthlyIncome"
+	FinancialService_GetCategoryMonthlyTransactionCount_FullMethodName       = "/financial_integration_service_api.v1.FinancialService/GetCategoryMonthlyTransactionCount"
+	FinancialService_GetDebtToIncomeRatio_FullMethodName                     = "/financial_integration_service_api.v1.FinancialService/GetDebtToIncomeRatio"
+	FinancialService_GetExpenseMetrics_FullMethodName                        = "/financial_integration_service_api.v1.FinancialService/GetExpenseMetrics"
+	FinancialService_GetFinancialProfile_FullMethodName                      = "/financial_integration_service_api.v1.FinancialService/GetFinancialProfile"
+	FinancialService_GetIncomeExpenseRatio_FullMethodName                    = "/financial_integration_service_api.v1.FinancialService/GetIncomeExpenseRatio"
+	FinancialService_GetIncomeMetrics_FullMethodName                         = "/financial_integration_service_api.v1.FinancialService/GetIncomeMetrics"
+	FinancialService_GetMerchantMonthlyExpenditure_FullMethodName            = "/financial_integration_service_api.v1.FinancialService/GetMerchantMonthlyExpenditure"
+	FinancialService_GetMonthlyBalance_FullMethodName                        = "/financial_integration_service_api.v1.FinancialService/GetMonthlyBalance"
+	FinancialService_GetMonthlyExpenditure_FullMethodName                    = "/financial_integration_service_api.v1.FinancialService/GetMonthlyExpenditure"
+	FinancialService_GetMonthlyIncome_FullMethodName                         = "/financial_integration_service_api.v1.FinancialService/GetMonthlyIncome"
+	FinancialService_GetMonthlySavings_FullMethodName                        = "/financial_integration_service_api.v1.FinancialService/GetMonthlySavings"
+	FinancialService_GetMonthlyTotalQuantityBySecurityAndUser_FullMethodName = "/financial_integration_service_api.v1.FinancialService/GetMonthlyTotalQuantityBySecurityAndUser"
+	FinancialService_GetMonthlyTransactionCount_FullMethodName               = "/financial_integration_service_api.v1.FinancialService/GetMonthlyTransactionCount"
+	FinancialService_GetPaymentChannelMonthlyExpenditure_FullMethodName      = "/financial_integration_service_api.v1.FinancialService/GetPaymentChannelMonthlyExpenditure"
+	FinancialService_GetTotalInvestmentBySecurity_FullMethodName             = "/financial_integration_service_api.v1.FinancialService/GetTotalInvestmentBySecurity"
+	FinancialService_GetMelodyFinancialContext_FullMethodName                = "/financial_integration_service_api.v1.FinancialService/GetMelodyFinancialContext"
+	FinancialService_GetTransactionsForBankAccount_FullMethodName            = "/financial_integration_service_api.v1.FinancialService/GetTransactionsForBankAccount"
 )
 
 // FinancialServiceClient is the client API for FinancialService service.
@@ -109,6 +131,33 @@ type FinancialServiceClient interface {
 	ProcessWebhook(ctx context.Context, in *ProcessWebhookRequest, opts ...grpc.CallOption) (*ProcessWebhookResponse, error)
 	StripeWebhook(ctx context.Context, in *StripeWebhookRequest, opts ...grpc.CallOption) (*StripeWebhookResponse, error)
 	CreateSubscription(ctx context.Context, in *CreateSubscriptionRequest, opts ...grpc.CallOption) (*CreateSubscriptionResponse, error)
+	// Transaction Aggregates By Queries
+	GetTransactionAggregates(ctx context.Context, in *GetTransactionAggregatesRequest, opts ...grpc.CallOption) (*GetTransactionAggregatesResponse, error)
+	GetUserAccountBalanceHistory(ctx context.Context, in *GetUserAccountBalanceHistoryRequest, opts ...grpc.CallOption) (*GetUserAccountBalanceHistoryResponse, error)
+	GetAccountBalanceHistory(ctx context.Context, in *GetAccountBalanceHistoryRequest, opts ...grpc.CallOption) (*GetAccountBalanceHistoryResponse, error)
+	// Get user category monthly expenditure
+	GetUserCategoryMonthlyExpenditure(ctx context.Context, in *GetUserCategoryMonthlyExpenditureRequest, opts ...grpc.CallOption) (*GetUserCategoryMonthlyExpenditureResponse, error)
+	// Get CategoryMonthlyIncome by Category and User - This would return all CategoryMonthlyIncome records for a specific user for a specific personal finance category
+	GetUserCategoryMonthlyIncome(ctx context.Context, in *GetUserCategoryMonthlyIncomeRequest, opts ...grpc.CallOption) (*GetUserCategoryMonthlyIncomeResponse, error)
+	// Get CategoryMonthlyTransactionCount by User - This would return all CategoryMonthlyTransactionCount records for a specific user
+	GetCategoryMonthlyTransactionCount(ctx context.Context, in *GetCategoryMonthlyTransactionCountRequest, opts ...grpc.CallOption) (*GetCategoryMonthlyTransactionCountResponse, error)
+	GetDebtToIncomeRatio(ctx context.Context, in *GetDebtToIncomeRatioRequest, opts ...grpc.CallOption) (*GetDebtToIncomeRatioResponse, error)
+	GetExpenseMetrics(ctx context.Context, in *GetExpenseMetricsRequest, opts ...grpc.CallOption) (*GetExpenseMetricsResponse, error)
+	GetFinancialProfile(ctx context.Context, in *GetFinancialProfileRequest, opts ...grpc.CallOption) (*GetFinancialProfileResponse, error)
+	GetIncomeExpenseRatio(ctx context.Context, in *GetIncomeExpenseRatioRequest, opts ...grpc.CallOption) (*GetIncomeExpenseRatioResponse, error)
+	GetIncomeMetrics(ctx context.Context, in *GetIncomeMetricsRequest, opts ...grpc.CallOption) (*GetIncomeMetricsResponse, error)
+	GetMerchantMonthlyExpenditure(ctx context.Context, in *GetMerchantMonthlyExpenditureRequest, opts ...grpc.CallOption) (*GetMerchantMonthlyExpenditureResponse, error)
+	// @here
+	GetMonthlyBalance(ctx context.Context, in *GetMonthlyBalanceRequest, opts ...grpc.CallOption) (*GetMonthlyBalanceResponse, error)
+	GetMonthlyExpenditure(ctx context.Context, in *GetMonthlyExpenditureRequest, opts ...grpc.CallOption) (*GetMonthlyExpenditureResponse, error)
+	GetMonthlyIncome(ctx context.Context, in *GetMonthlyIncomeRequest, opts ...grpc.CallOption) (*GetMonthlyIncomeResponse, error)
+	GetMonthlySavings(ctx context.Context, in *GetMonthlySavingsRequest, opts ...grpc.CallOption) (*GetMonthlySavingsResponse, error)
+	GetMonthlyTotalQuantityBySecurityAndUser(ctx context.Context, in *GetMonthlyTotalQuantityBySecurityAndUserRequest, opts ...grpc.CallOption) (*GetMonthlyTotalQuantityBySecurityAndUserResponse, error)
+	GetMonthlyTransactionCount(ctx context.Context, in *GetMonthlyTransactionCountRequest, opts ...grpc.CallOption) (*GetMonthlyTransactionCountResponse, error)
+	GetPaymentChannelMonthlyExpenditure(ctx context.Context, in *GetPaymentChannelMonthlyExpenditureRequest, opts ...grpc.CallOption) (*GetPaymentChannelMonthlyExpenditureResponse, error)
+	GetTotalInvestmentBySecurity(ctx context.Context, in *GetTotalInvestmentBySecurityRequest, opts ...grpc.CallOption) (*GetTotalInvestmentBySecurityResponse, error)
+	GetMelodyFinancialContext(ctx context.Context, in *GetMelodyFinancialContextRequest, opts ...grpc.CallOption) (*GetMelodyFinancialContextResponse, error)
+	GetTransactionsForBankAccount(ctx context.Context, in *GetTransactionsForBankAccountRequest, opts ...grpc.CallOption) (*GetTransactionsForBankAccountResponse, error)
 }
 
 type financialServiceClient struct {
@@ -497,6 +546,204 @@ func (c *financialServiceClient) CreateSubscription(ctx context.Context, in *Cre
 	return out, nil
 }
 
+func (c *financialServiceClient) GetTransactionAggregates(ctx context.Context, in *GetTransactionAggregatesRequest, opts ...grpc.CallOption) (*GetTransactionAggregatesResponse, error) {
+	out := new(GetTransactionAggregatesResponse)
+	err := c.cc.Invoke(ctx, FinancialService_GetTransactionAggregates_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *financialServiceClient) GetUserAccountBalanceHistory(ctx context.Context, in *GetUserAccountBalanceHistoryRequest, opts ...grpc.CallOption) (*GetUserAccountBalanceHistoryResponse, error) {
+	out := new(GetUserAccountBalanceHistoryResponse)
+	err := c.cc.Invoke(ctx, FinancialService_GetUserAccountBalanceHistory_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *financialServiceClient) GetAccountBalanceHistory(ctx context.Context, in *GetAccountBalanceHistoryRequest, opts ...grpc.CallOption) (*GetAccountBalanceHistoryResponse, error) {
+	out := new(GetAccountBalanceHistoryResponse)
+	err := c.cc.Invoke(ctx, FinancialService_GetAccountBalanceHistory_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *financialServiceClient) GetUserCategoryMonthlyExpenditure(ctx context.Context, in *GetUserCategoryMonthlyExpenditureRequest, opts ...grpc.CallOption) (*GetUserCategoryMonthlyExpenditureResponse, error) {
+	out := new(GetUserCategoryMonthlyExpenditureResponse)
+	err := c.cc.Invoke(ctx, FinancialService_GetUserCategoryMonthlyExpenditure_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *financialServiceClient) GetUserCategoryMonthlyIncome(ctx context.Context, in *GetUserCategoryMonthlyIncomeRequest, opts ...grpc.CallOption) (*GetUserCategoryMonthlyIncomeResponse, error) {
+	out := new(GetUserCategoryMonthlyIncomeResponse)
+	err := c.cc.Invoke(ctx, FinancialService_GetUserCategoryMonthlyIncome_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *financialServiceClient) GetCategoryMonthlyTransactionCount(ctx context.Context, in *GetCategoryMonthlyTransactionCountRequest, opts ...grpc.CallOption) (*GetCategoryMonthlyTransactionCountResponse, error) {
+	out := new(GetCategoryMonthlyTransactionCountResponse)
+	err := c.cc.Invoke(ctx, FinancialService_GetCategoryMonthlyTransactionCount_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *financialServiceClient) GetDebtToIncomeRatio(ctx context.Context, in *GetDebtToIncomeRatioRequest, opts ...grpc.CallOption) (*GetDebtToIncomeRatioResponse, error) {
+	out := new(GetDebtToIncomeRatioResponse)
+	err := c.cc.Invoke(ctx, FinancialService_GetDebtToIncomeRatio_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *financialServiceClient) GetExpenseMetrics(ctx context.Context, in *GetExpenseMetricsRequest, opts ...grpc.CallOption) (*GetExpenseMetricsResponse, error) {
+	out := new(GetExpenseMetricsResponse)
+	err := c.cc.Invoke(ctx, FinancialService_GetExpenseMetrics_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *financialServiceClient) GetFinancialProfile(ctx context.Context, in *GetFinancialProfileRequest, opts ...grpc.CallOption) (*GetFinancialProfileResponse, error) {
+	out := new(GetFinancialProfileResponse)
+	err := c.cc.Invoke(ctx, FinancialService_GetFinancialProfile_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *financialServiceClient) GetIncomeExpenseRatio(ctx context.Context, in *GetIncomeExpenseRatioRequest, opts ...grpc.CallOption) (*GetIncomeExpenseRatioResponse, error) {
+	out := new(GetIncomeExpenseRatioResponse)
+	err := c.cc.Invoke(ctx, FinancialService_GetIncomeExpenseRatio_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *financialServiceClient) GetIncomeMetrics(ctx context.Context, in *GetIncomeMetricsRequest, opts ...grpc.CallOption) (*GetIncomeMetricsResponse, error) {
+	out := new(GetIncomeMetricsResponse)
+	err := c.cc.Invoke(ctx, FinancialService_GetIncomeMetrics_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *financialServiceClient) GetMerchantMonthlyExpenditure(ctx context.Context, in *GetMerchantMonthlyExpenditureRequest, opts ...grpc.CallOption) (*GetMerchantMonthlyExpenditureResponse, error) {
+	out := new(GetMerchantMonthlyExpenditureResponse)
+	err := c.cc.Invoke(ctx, FinancialService_GetMerchantMonthlyExpenditure_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *financialServiceClient) GetMonthlyBalance(ctx context.Context, in *GetMonthlyBalanceRequest, opts ...grpc.CallOption) (*GetMonthlyBalanceResponse, error) {
+	out := new(GetMonthlyBalanceResponse)
+	err := c.cc.Invoke(ctx, FinancialService_GetMonthlyBalance_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *financialServiceClient) GetMonthlyExpenditure(ctx context.Context, in *GetMonthlyExpenditureRequest, opts ...grpc.CallOption) (*GetMonthlyExpenditureResponse, error) {
+	out := new(GetMonthlyExpenditureResponse)
+	err := c.cc.Invoke(ctx, FinancialService_GetMonthlyExpenditure_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *financialServiceClient) GetMonthlyIncome(ctx context.Context, in *GetMonthlyIncomeRequest, opts ...grpc.CallOption) (*GetMonthlyIncomeResponse, error) {
+	out := new(GetMonthlyIncomeResponse)
+	err := c.cc.Invoke(ctx, FinancialService_GetMonthlyIncome_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *financialServiceClient) GetMonthlySavings(ctx context.Context, in *GetMonthlySavingsRequest, opts ...grpc.CallOption) (*GetMonthlySavingsResponse, error) {
+	out := new(GetMonthlySavingsResponse)
+	err := c.cc.Invoke(ctx, FinancialService_GetMonthlySavings_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *financialServiceClient) GetMonthlyTotalQuantityBySecurityAndUser(ctx context.Context, in *GetMonthlyTotalQuantityBySecurityAndUserRequest, opts ...grpc.CallOption) (*GetMonthlyTotalQuantityBySecurityAndUserResponse, error) {
+	out := new(GetMonthlyTotalQuantityBySecurityAndUserResponse)
+	err := c.cc.Invoke(ctx, FinancialService_GetMonthlyTotalQuantityBySecurityAndUser_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *financialServiceClient) GetMonthlyTransactionCount(ctx context.Context, in *GetMonthlyTransactionCountRequest, opts ...grpc.CallOption) (*GetMonthlyTransactionCountResponse, error) {
+	out := new(GetMonthlyTransactionCountResponse)
+	err := c.cc.Invoke(ctx, FinancialService_GetMonthlyTransactionCount_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *financialServiceClient) GetPaymentChannelMonthlyExpenditure(ctx context.Context, in *GetPaymentChannelMonthlyExpenditureRequest, opts ...grpc.CallOption) (*GetPaymentChannelMonthlyExpenditureResponse, error) {
+	out := new(GetPaymentChannelMonthlyExpenditureResponse)
+	err := c.cc.Invoke(ctx, FinancialService_GetPaymentChannelMonthlyExpenditure_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *financialServiceClient) GetTotalInvestmentBySecurity(ctx context.Context, in *GetTotalInvestmentBySecurityRequest, opts ...grpc.CallOption) (*GetTotalInvestmentBySecurityResponse, error) {
+	out := new(GetTotalInvestmentBySecurityResponse)
+	err := c.cc.Invoke(ctx, FinancialService_GetTotalInvestmentBySecurity_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *financialServiceClient) GetMelodyFinancialContext(ctx context.Context, in *GetMelodyFinancialContextRequest, opts ...grpc.CallOption) (*GetMelodyFinancialContextResponse, error) {
+	out := new(GetMelodyFinancialContextResponse)
+	err := c.cc.Invoke(ctx, FinancialService_GetMelodyFinancialContext_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *financialServiceClient) GetTransactionsForBankAccount(ctx context.Context, in *GetTransactionsForBankAccountRequest, opts ...grpc.CallOption) (*GetTransactionsForBankAccountResponse, error) {
+	out := new(GetTransactionsForBankAccountResponse)
+	err := c.cc.Invoke(ctx, FinancialService_GetTransactionsForBankAccount_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // FinancialServiceServer is the server API for FinancialService service.
 // All implementations must embed UnimplementedFinancialServiceServer
 // for forward compatibility
@@ -543,6 +790,33 @@ type FinancialServiceServer interface {
 	ProcessWebhook(context.Context, *ProcessWebhookRequest) (*ProcessWebhookResponse, error)
 	StripeWebhook(context.Context, *StripeWebhookRequest) (*StripeWebhookResponse, error)
 	CreateSubscription(context.Context, *CreateSubscriptionRequest) (*CreateSubscriptionResponse, error)
+	// Transaction Aggregates By Queries
+	GetTransactionAggregates(context.Context, *GetTransactionAggregatesRequest) (*GetTransactionAggregatesResponse, error)
+	GetUserAccountBalanceHistory(context.Context, *GetUserAccountBalanceHistoryRequest) (*GetUserAccountBalanceHistoryResponse, error)
+	GetAccountBalanceHistory(context.Context, *GetAccountBalanceHistoryRequest) (*GetAccountBalanceHistoryResponse, error)
+	// Get user category monthly expenditure
+	GetUserCategoryMonthlyExpenditure(context.Context, *GetUserCategoryMonthlyExpenditureRequest) (*GetUserCategoryMonthlyExpenditureResponse, error)
+	// Get CategoryMonthlyIncome by Category and User - This would return all CategoryMonthlyIncome records for a specific user for a specific personal finance category
+	GetUserCategoryMonthlyIncome(context.Context, *GetUserCategoryMonthlyIncomeRequest) (*GetUserCategoryMonthlyIncomeResponse, error)
+	// Get CategoryMonthlyTransactionCount by User - This would return all CategoryMonthlyTransactionCount records for a specific user
+	GetCategoryMonthlyTransactionCount(context.Context, *GetCategoryMonthlyTransactionCountRequest) (*GetCategoryMonthlyTransactionCountResponse, error)
+	GetDebtToIncomeRatio(context.Context, *GetDebtToIncomeRatioRequest) (*GetDebtToIncomeRatioResponse, error)
+	GetExpenseMetrics(context.Context, *GetExpenseMetricsRequest) (*GetExpenseMetricsResponse, error)
+	GetFinancialProfile(context.Context, *GetFinancialProfileRequest) (*GetFinancialProfileResponse, error)
+	GetIncomeExpenseRatio(context.Context, *GetIncomeExpenseRatioRequest) (*GetIncomeExpenseRatioResponse, error)
+	GetIncomeMetrics(context.Context, *GetIncomeMetricsRequest) (*GetIncomeMetricsResponse, error)
+	GetMerchantMonthlyExpenditure(context.Context, *GetMerchantMonthlyExpenditureRequest) (*GetMerchantMonthlyExpenditureResponse, error)
+	// @here
+	GetMonthlyBalance(context.Context, *GetMonthlyBalanceRequest) (*GetMonthlyBalanceResponse, error)
+	GetMonthlyExpenditure(context.Context, *GetMonthlyExpenditureRequest) (*GetMonthlyExpenditureResponse, error)
+	GetMonthlyIncome(context.Context, *GetMonthlyIncomeRequest) (*GetMonthlyIncomeResponse, error)
+	GetMonthlySavings(context.Context, *GetMonthlySavingsRequest) (*GetMonthlySavingsResponse, error)
+	GetMonthlyTotalQuantityBySecurityAndUser(context.Context, *GetMonthlyTotalQuantityBySecurityAndUserRequest) (*GetMonthlyTotalQuantityBySecurityAndUserResponse, error)
+	GetMonthlyTransactionCount(context.Context, *GetMonthlyTransactionCountRequest) (*GetMonthlyTransactionCountResponse, error)
+	GetPaymentChannelMonthlyExpenditure(context.Context, *GetPaymentChannelMonthlyExpenditureRequest) (*GetPaymentChannelMonthlyExpenditureResponse, error)
+	GetTotalInvestmentBySecurity(context.Context, *GetTotalInvestmentBySecurityRequest) (*GetTotalInvestmentBySecurityResponse, error)
+	GetMelodyFinancialContext(context.Context, *GetMelodyFinancialContextRequest) (*GetMelodyFinancialContextResponse, error)
+	GetTransactionsForBankAccount(context.Context, *GetTransactionsForBankAccountRequest) (*GetTransactionsForBankAccountResponse, error)
 	mustEmbedUnimplementedFinancialServiceServer()
 }
 
@@ -675,6 +949,72 @@ func (UnimplementedFinancialServiceServer) StripeWebhook(context.Context, *Strip
 }
 func (UnimplementedFinancialServiceServer) CreateSubscription(context.Context, *CreateSubscriptionRequest) (*CreateSubscriptionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateSubscription not implemented")
+}
+func (UnimplementedFinancialServiceServer) GetTransactionAggregates(context.Context, *GetTransactionAggregatesRequest) (*GetTransactionAggregatesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetTransactionAggregates not implemented")
+}
+func (UnimplementedFinancialServiceServer) GetUserAccountBalanceHistory(context.Context, *GetUserAccountBalanceHistoryRequest) (*GetUserAccountBalanceHistoryResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserAccountBalanceHistory not implemented")
+}
+func (UnimplementedFinancialServiceServer) GetAccountBalanceHistory(context.Context, *GetAccountBalanceHistoryRequest) (*GetAccountBalanceHistoryResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAccountBalanceHistory not implemented")
+}
+func (UnimplementedFinancialServiceServer) GetUserCategoryMonthlyExpenditure(context.Context, *GetUserCategoryMonthlyExpenditureRequest) (*GetUserCategoryMonthlyExpenditureResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserCategoryMonthlyExpenditure not implemented")
+}
+func (UnimplementedFinancialServiceServer) GetUserCategoryMonthlyIncome(context.Context, *GetUserCategoryMonthlyIncomeRequest) (*GetUserCategoryMonthlyIncomeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserCategoryMonthlyIncome not implemented")
+}
+func (UnimplementedFinancialServiceServer) GetCategoryMonthlyTransactionCount(context.Context, *GetCategoryMonthlyTransactionCountRequest) (*GetCategoryMonthlyTransactionCountResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetCategoryMonthlyTransactionCount not implemented")
+}
+func (UnimplementedFinancialServiceServer) GetDebtToIncomeRatio(context.Context, *GetDebtToIncomeRatioRequest) (*GetDebtToIncomeRatioResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetDebtToIncomeRatio not implemented")
+}
+func (UnimplementedFinancialServiceServer) GetExpenseMetrics(context.Context, *GetExpenseMetricsRequest) (*GetExpenseMetricsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetExpenseMetrics not implemented")
+}
+func (UnimplementedFinancialServiceServer) GetFinancialProfile(context.Context, *GetFinancialProfileRequest) (*GetFinancialProfileResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetFinancialProfile not implemented")
+}
+func (UnimplementedFinancialServiceServer) GetIncomeExpenseRatio(context.Context, *GetIncomeExpenseRatioRequest) (*GetIncomeExpenseRatioResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetIncomeExpenseRatio not implemented")
+}
+func (UnimplementedFinancialServiceServer) GetIncomeMetrics(context.Context, *GetIncomeMetricsRequest) (*GetIncomeMetricsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetIncomeMetrics not implemented")
+}
+func (UnimplementedFinancialServiceServer) GetMerchantMonthlyExpenditure(context.Context, *GetMerchantMonthlyExpenditureRequest) (*GetMerchantMonthlyExpenditureResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMerchantMonthlyExpenditure not implemented")
+}
+func (UnimplementedFinancialServiceServer) GetMonthlyBalance(context.Context, *GetMonthlyBalanceRequest) (*GetMonthlyBalanceResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMonthlyBalance not implemented")
+}
+func (UnimplementedFinancialServiceServer) GetMonthlyExpenditure(context.Context, *GetMonthlyExpenditureRequest) (*GetMonthlyExpenditureResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMonthlyExpenditure not implemented")
+}
+func (UnimplementedFinancialServiceServer) GetMonthlyIncome(context.Context, *GetMonthlyIncomeRequest) (*GetMonthlyIncomeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMonthlyIncome not implemented")
+}
+func (UnimplementedFinancialServiceServer) GetMonthlySavings(context.Context, *GetMonthlySavingsRequest) (*GetMonthlySavingsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMonthlySavings not implemented")
+}
+func (UnimplementedFinancialServiceServer) GetMonthlyTotalQuantityBySecurityAndUser(context.Context, *GetMonthlyTotalQuantityBySecurityAndUserRequest) (*GetMonthlyTotalQuantityBySecurityAndUserResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMonthlyTotalQuantityBySecurityAndUser not implemented")
+}
+func (UnimplementedFinancialServiceServer) GetMonthlyTransactionCount(context.Context, *GetMonthlyTransactionCountRequest) (*GetMonthlyTransactionCountResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMonthlyTransactionCount not implemented")
+}
+func (UnimplementedFinancialServiceServer) GetPaymentChannelMonthlyExpenditure(context.Context, *GetPaymentChannelMonthlyExpenditureRequest) (*GetPaymentChannelMonthlyExpenditureResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetPaymentChannelMonthlyExpenditure not implemented")
+}
+func (UnimplementedFinancialServiceServer) GetTotalInvestmentBySecurity(context.Context, *GetTotalInvestmentBySecurityRequest) (*GetTotalInvestmentBySecurityResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetTotalInvestmentBySecurity not implemented")
+}
+func (UnimplementedFinancialServiceServer) GetMelodyFinancialContext(context.Context, *GetMelodyFinancialContextRequest) (*GetMelodyFinancialContextResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMelodyFinancialContext not implemented")
+}
+func (UnimplementedFinancialServiceServer) GetTransactionsForBankAccount(context.Context, *GetTransactionsForBankAccountRequest) (*GetTransactionsForBankAccountResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetTransactionsForBankAccount not implemented")
 }
 func (UnimplementedFinancialServiceServer) mustEmbedUnimplementedFinancialServiceServer() {}
 
@@ -1445,6 +1785,402 @@ func _FinancialService_CreateSubscription_Handler(srv interface{}, ctx context.C
 	return interceptor(ctx, in, info, handler)
 }
 
+func _FinancialService_GetTransactionAggregates_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetTransactionAggregatesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FinancialServiceServer).GetTransactionAggregates(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FinancialService_GetTransactionAggregates_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FinancialServiceServer).GetTransactionAggregates(ctx, req.(*GetTransactionAggregatesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FinancialService_GetUserAccountBalanceHistory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserAccountBalanceHistoryRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FinancialServiceServer).GetUserAccountBalanceHistory(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FinancialService_GetUserAccountBalanceHistory_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FinancialServiceServer).GetUserAccountBalanceHistory(ctx, req.(*GetUserAccountBalanceHistoryRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FinancialService_GetAccountBalanceHistory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAccountBalanceHistoryRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FinancialServiceServer).GetAccountBalanceHistory(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FinancialService_GetAccountBalanceHistory_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FinancialServiceServer).GetAccountBalanceHistory(ctx, req.(*GetAccountBalanceHistoryRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FinancialService_GetUserCategoryMonthlyExpenditure_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserCategoryMonthlyExpenditureRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FinancialServiceServer).GetUserCategoryMonthlyExpenditure(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FinancialService_GetUserCategoryMonthlyExpenditure_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FinancialServiceServer).GetUserCategoryMonthlyExpenditure(ctx, req.(*GetUserCategoryMonthlyExpenditureRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FinancialService_GetUserCategoryMonthlyIncome_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserCategoryMonthlyIncomeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FinancialServiceServer).GetUserCategoryMonthlyIncome(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FinancialService_GetUserCategoryMonthlyIncome_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FinancialServiceServer).GetUserCategoryMonthlyIncome(ctx, req.(*GetUserCategoryMonthlyIncomeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FinancialService_GetCategoryMonthlyTransactionCount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetCategoryMonthlyTransactionCountRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FinancialServiceServer).GetCategoryMonthlyTransactionCount(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FinancialService_GetCategoryMonthlyTransactionCount_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FinancialServiceServer).GetCategoryMonthlyTransactionCount(ctx, req.(*GetCategoryMonthlyTransactionCountRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FinancialService_GetDebtToIncomeRatio_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetDebtToIncomeRatioRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FinancialServiceServer).GetDebtToIncomeRatio(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FinancialService_GetDebtToIncomeRatio_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FinancialServiceServer).GetDebtToIncomeRatio(ctx, req.(*GetDebtToIncomeRatioRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FinancialService_GetExpenseMetrics_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetExpenseMetricsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FinancialServiceServer).GetExpenseMetrics(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FinancialService_GetExpenseMetrics_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FinancialServiceServer).GetExpenseMetrics(ctx, req.(*GetExpenseMetricsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FinancialService_GetFinancialProfile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetFinancialProfileRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FinancialServiceServer).GetFinancialProfile(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FinancialService_GetFinancialProfile_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FinancialServiceServer).GetFinancialProfile(ctx, req.(*GetFinancialProfileRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FinancialService_GetIncomeExpenseRatio_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetIncomeExpenseRatioRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FinancialServiceServer).GetIncomeExpenseRatio(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FinancialService_GetIncomeExpenseRatio_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FinancialServiceServer).GetIncomeExpenseRatio(ctx, req.(*GetIncomeExpenseRatioRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FinancialService_GetIncomeMetrics_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetIncomeMetricsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FinancialServiceServer).GetIncomeMetrics(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FinancialService_GetIncomeMetrics_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FinancialServiceServer).GetIncomeMetrics(ctx, req.(*GetIncomeMetricsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FinancialService_GetMerchantMonthlyExpenditure_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetMerchantMonthlyExpenditureRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FinancialServiceServer).GetMerchantMonthlyExpenditure(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FinancialService_GetMerchantMonthlyExpenditure_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FinancialServiceServer).GetMerchantMonthlyExpenditure(ctx, req.(*GetMerchantMonthlyExpenditureRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FinancialService_GetMonthlyBalance_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetMonthlyBalanceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FinancialServiceServer).GetMonthlyBalance(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FinancialService_GetMonthlyBalance_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FinancialServiceServer).GetMonthlyBalance(ctx, req.(*GetMonthlyBalanceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FinancialService_GetMonthlyExpenditure_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetMonthlyExpenditureRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FinancialServiceServer).GetMonthlyExpenditure(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FinancialService_GetMonthlyExpenditure_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FinancialServiceServer).GetMonthlyExpenditure(ctx, req.(*GetMonthlyExpenditureRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FinancialService_GetMonthlyIncome_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetMonthlyIncomeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FinancialServiceServer).GetMonthlyIncome(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FinancialService_GetMonthlyIncome_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FinancialServiceServer).GetMonthlyIncome(ctx, req.(*GetMonthlyIncomeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FinancialService_GetMonthlySavings_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetMonthlySavingsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FinancialServiceServer).GetMonthlySavings(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FinancialService_GetMonthlySavings_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FinancialServiceServer).GetMonthlySavings(ctx, req.(*GetMonthlySavingsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FinancialService_GetMonthlyTotalQuantityBySecurityAndUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetMonthlyTotalQuantityBySecurityAndUserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FinancialServiceServer).GetMonthlyTotalQuantityBySecurityAndUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FinancialService_GetMonthlyTotalQuantityBySecurityAndUser_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FinancialServiceServer).GetMonthlyTotalQuantityBySecurityAndUser(ctx, req.(*GetMonthlyTotalQuantityBySecurityAndUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FinancialService_GetMonthlyTransactionCount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetMonthlyTransactionCountRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FinancialServiceServer).GetMonthlyTransactionCount(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FinancialService_GetMonthlyTransactionCount_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FinancialServiceServer).GetMonthlyTransactionCount(ctx, req.(*GetMonthlyTransactionCountRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FinancialService_GetPaymentChannelMonthlyExpenditure_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetPaymentChannelMonthlyExpenditureRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FinancialServiceServer).GetPaymentChannelMonthlyExpenditure(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FinancialService_GetPaymentChannelMonthlyExpenditure_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FinancialServiceServer).GetPaymentChannelMonthlyExpenditure(ctx, req.(*GetPaymentChannelMonthlyExpenditureRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FinancialService_GetTotalInvestmentBySecurity_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetTotalInvestmentBySecurityRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FinancialServiceServer).GetTotalInvestmentBySecurity(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FinancialService_GetTotalInvestmentBySecurity_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FinancialServiceServer).GetTotalInvestmentBySecurity(ctx, req.(*GetTotalInvestmentBySecurityRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FinancialService_GetMelodyFinancialContext_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetMelodyFinancialContextRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FinancialServiceServer).GetMelodyFinancialContext(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FinancialService_GetMelodyFinancialContext_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FinancialServiceServer).GetMelodyFinancialContext(ctx, req.(*GetMelodyFinancialContextRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FinancialService_GetTransactionsForBankAccount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetTransactionsForBankAccountRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FinancialServiceServer).GetTransactionsForBankAccount(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FinancialService_GetTransactionsForBankAccount_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FinancialServiceServer).GetTransactionsForBankAccount(ctx, req.(*GetTransactionsForBankAccountRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // FinancialService_ServiceDesc is the grpc.ServiceDesc for FinancialService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1619,6 +2355,94 @@ var FinancialService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateSubscription",
 			Handler:    _FinancialService_CreateSubscription_Handler,
+		},
+		{
+			MethodName: "GetTransactionAggregates",
+			Handler:    _FinancialService_GetTransactionAggregates_Handler,
+		},
+		{
+			MethodName: "GetUserAccountBalanceHistory",
+			Handler:    _FinancialService_GetUserAccountBalanceHistory_Handler,
+		},
+		{
+			MethodName: "GetAccountBalanceHistory",
+			Handler:    _FinancialService_GetAccountBalanceHistory_Handler,
+		},
+		{
+			MethodName: "GetUserCategoryMonthlyExpenditure",
+			Handler:    _FinancialService_GetUserCategoryMonthlyExpenditure_Handler,
+		},
+		{
+			MethodName: "GetUserCategoryMonthlyIncome",
+			Handler:    _FinancialService_GetUserCategoryMonthlyIncome_Handler,
+		},
+		{
+			MethodName: "GetCategoryMonthlyTransactionCount",
+			Handler:    _FinancialService_GetCategoryMonthlyTransactionCount_Handler,
+		},
+		{
+			MethodName: "GetDebtToIncomeRatio",
+			Handler:    _FinancialService_GetDebtToIncomeRatio_Handler,
+		},
+		{
+			MethodName: "GetExpenseMetrics",
+			Handler:    _FinancialService_GetExpenseMetrics_Handler,
+		},
+		{
+			MethodName: "GetFinancialProfile",
+			Handler:    _FinancialService_GetFinancialProfile_Handler,
+		},
+		{
+			MethodName: "GetIncomeExpenseRatio",
+			Handler:    _FinancialService_GetIncomeExpenseRatio_Handler,
+		},
+		{
+			MethodName: "GetIncomeMetrics",
+			Handler:    _FinancialService_GetIncomeMetrics_Handler,
+		},
+		{
+			MethodName: "GetMerchantMonthlyExpenditure",
+			Handler:    _FinancialService_GetMerchantMonthlyExpenditure_Handler,
+		},
+		{
+			MethodName: "GetMonthlyBalance",
+			Handler:    _FinancialService_GetMonthlyBalance_Handler,
+		},
+		{
+			MethodName: "GetMonthlyExpenditure",
+			Handler:    _FinancialService_GetMonthlyExpenditure_Handler,
+		},
+		{
+			MethodName: "GetMonthlyIncome",
+			Handler:    _FinancialService_GetMonthlyIncome_Handler,
+		},
+		{
+			MethodName: "GetMonthlySavings",
+			Handler:    _FinancialService_GetMonthlySavings_Handler,
+		},
+		{
+			MethodName: "GetMonthlyTotalQuantityBySecurityAndUser",
+			Handler:    _FinancialService_GetMonthlyTotalQuantityBySecurityAndUser_Handler,
+		},
+		{
+			MethodName: "GetMonthlyTransactionCount",
+			Handler:    _FinancialService_GetMonthlyTransactionCount_Handler,
+		},
+		{
+			MethodName: "GetPaymentChannelMonthlyExpenditure",
+			Handler:    _FinancialService_GetPaymentChannelMonthlyExpenditure_Handler,
+		},
+		{
+			MethodName: "GetTotalInvestmentBySecurity",
+			Handler:    _FinancialService_GetTotalInvestmentBySecurity_Handler,
+		},
+		{
+			MethodName: "GetMelodyFinancialContext",
+			Handler:    _FinancialService_GetMelodyFinancialContext_Handler,
+		},
+		{
+			MethodName: "GetTransactionsForBankAccount",
+			Handler:    _FinancialService_GetTransactionsForBankAccount_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

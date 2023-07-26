@@ -1,0 +1,24 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/ListCategoryMonthlyTransactionCountRequest",
+    "definitions": {
+        "ListCategoryMonthlyTransactionCountRequest": {
+            "properties": {
+                "user_id": {
+                    "type": "string",
+                    "description": "has to be present and defined"
+                },
+                "page_number": {
+                    "type": "string"
+                },
+                "page_size": {
+                    "type": "string",
+                    "description": "Number of items to return per page."
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "List Category Monthly Transaction Count Request"
+        }
+    }
+}

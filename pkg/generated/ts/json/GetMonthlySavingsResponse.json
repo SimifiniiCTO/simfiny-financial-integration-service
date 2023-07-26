@@ -1,0 +1,39 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/GetMonthlySavingsResponse",
+    "definitions": {
+        "GetMonthlySavingsResponse": {
+            "properties": {
+                "monthly_savings": {
+                    "items": {
+                        "$ref": "#/definitions/financial_integration_service_api.v1.MonthlySavings"
+                    },
+                    "type": "array"
+                },
+                "next_page_number": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Get Monthly Savings Response"
+        },
+        "financial_integration_service_api.v1.MonthlySavings": {
+            "properties": {
+                "month": {
+                    "type": "integer"
+                },
+                "net_savings": {
+                    "type": "number"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Monthly Savings",
+            "description": "MonthlySavings This message is used to represent the monthly savings of a user."
+        }
+    }
+}

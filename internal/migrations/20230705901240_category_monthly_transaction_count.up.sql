@@ -3,9 +3,10 @@
 CREATE TABLE IF NOT EXISTS CategoryMonthlyTransactionCount 
 (
     Month UInt32,
-    CategoryId String,
-    TransactionCount UInt32
+    PersonalFinanceCategoryPrimary String,
+    TransactionCount UInt32,
+    UserId UInt64
 ) 
 ENGINE = AggregatingMergeTree()
 PARTITION BY Month
-ORDER BY (Month, CategoryId);
+ORDER BY (Month, PersonalFinanceCategoryPrimary);

@@ -1,6 +1,50 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
 import {
+  GetAccountBalanceHistoryRequest,
+  GetAccountBalanceHistoryResponse,
+  GetCategoryMonthlyTransactionCountRequest,
+  GetCategoryMonthlyTransactionCountResponse,
+  GetDebtToIncomeRatioRequest,
+  GetDebtToIncomeRatioResponse,
+  GetExpenseMetricsRequest,
+  GetExpenseMetricsResponse,
+  GetFinancialProfileRequest,
+  GetFinancialProfileResponse,
+  GetIncomeExpenseRatioRequest,
+  GetIncomeExpenseRatioResponse,
+  GetIncomeMetricsRequest,
+  GetIncomeMetricsResponse,
+  GetMelodyFinancialContextRequest,
+  GetMelodyFinancialContextResponse,
+  GetMerchantMonthlyExpenditureRequest,
+  GetMerchantMonthlyExpenditureResponse,
+  GetMonthlyBalanceRequest,
+  GetMonthlyBalanceResponse,
+  GetMonthlyExpenditureRequest,
+  GetMonthlyExpenditureResponse,
+  GetMonthlyIncomeRequest,
+  GetMonthlyIncomeResponse,
+  GetMonthlySavingsRequest,
+  GetMonthlySavingsResponse,
+  GetMonthlyTotalQuantityBySecurityAndUserRequest,
+  GetMonthlyTotalQuantityBySecurityAndUserResponse,
+  GetMonthlyTransactionCountRequest,
+  GetMonthlyTransactionCountResponse,
+  GetPaymentChannelMonthlyExpenditureRequest,
+  GetPaymentChannelMonthlyExpenditureResponse,
+  GetTotalInvestmentBySecurityRequest,
+  GetTotalInvestmentBySecurityResponse,
+  GetTransactionAggregatesRequest,
+  GetTransactionAggregatesResponse,
+  GetUserAccountBalanceHistoryRequest,
+  GetUserAccountBalanceHistoryResponse,
+  GetUserCategoryMonthlyExpenditureRequest,
+  GetUserCategoryMonthlyExpenditureResponse,
+  GetUserCategoryMonthlyIncomeRequest,
+  GetUserCategoryMonthlyIncomeResponse,
+} from "./request_response_financial_analytics_service";
+import {
   CreateBankAccountRequest,
   CreateBankAccountResponse,
   CreateBudgetRequest,
@@ -57,6 +101,8 @@ import {
   GetSmartGoalsByPocketIdResponse,
   GetStudentLoanAccountRequest,
   GetStudentLoanAccountResponse,
+  GetTransactionsForBankAccountRequest,
+  GetTransactionsForBankAccountResponse,
   GetTransactionsRequest,
   GetTransactionsResponse,
   GetUserProfileRequest,
@@ -133,6 +179,51 @@ export interface FinancialService {
   ProcessWebhook(request: ProcessWebhookRequest): Promise<ProcessWebhookResponse>;
   StripeWebhook(request: StripeWebhookRequest): Promise<StripeWebhookResponse>;
   CreateSubscription(request: CreateSubscriptionRequest): Promise<CreateSubscriptionResponse>;
+  /** Transaction Aggregates By Queries */
+  GetTransactionAggregates(request: GetTransactionAggregatesRequest): Promise<GetTransactionAggregatesResponse>;
+  GetUserAccountBalanceHistory(
+    request: GetUserAccountBalanceHistoryRequest,
+  ): Promise<GetUserAccountBalanceHistoryResponse>;
+  GetAccountBalanceHistory(request: GetAccountBalanceHistoryRequest): Promise<GetAccountBalanceHistoryResponse>;
+  /** Get user category monthly expenditure */
+  GetUserCategoryMonthlyExpenditure(
+    request: GetUserCategoryMonthlyExpenditureRequest,
+  ): Promise<GetUserCategoryMonthlyExpenditureResponse>;
+  /** Get CategoryMonthlyIncome by Category and User - This would return all CategoryMonthlyIncome records for a specific user for a specific personal finance category */
+  GetUserCategoryMonthlyIncome(
+    request: GetUserCategoryMonthlyIncomeRequest,
+  ): Promise<GetUserCategoryMonthlyIncomeResponse>;
+  /** Get CategoryMonthlyTransactionCount by User - This would return all CategoryMonthlyTransactionCount records for a specific user */
+  GetCategoryMonthlyTransactionCount(
+    request: GetCategoryMonthlyTransactionCountRequest,
+  ): Promise<GetCategoryMonthlyTransactionCountResponse>;
+  GetDebtToIncomeRatio(request: GetDebtToIncomeRatioRequest): Promise<GetDebtToIncomeRatioResponse>;
+  GetExpenseMetrics(request: GetExpenseMetricsRequest): Promise<GetExpenseMetricsResponse>;
+  GetFinancialProfile(request: GetFinancialProfileRequest): Promise<GetFinancialProfileResponse>;
+  GetIncomeExpenseRatio(request: GetIncomeExpenseRatioRequest): Promise<GetIncomeExpenseRatioResponse>;
+  GetIncomeMetrics(request: GetIncomeMetricsRequest): Promise<GetIncomeMetricsResponse>;
+  GetMerchantMonthlyExpenditure(
+    request: GetMerchantMonthlyExpenditureRequest,
+  ): Promise<GetMerchantMonthlyExpenditureResponse>;
+  /** @here */
+  GetMonthlyBalance(request: GetMonthlyBalanceRequest): Promise<GetMonthlyBalanceResponse>;
+  GetMonthlyExpenditure(request: GetMonthlyExpenditureRequest): Promise<GetMonthlyExpenditureResponse>;
+  GetMonthlyIncome(request: GetMonthlyIncomeRequest): Promise<GetMonthlyIncomeResponse>;
+  GetMonthlySavings(request: GetMonthlySavingsRequest): Promise<GetMonthlySavingsResponse>;
+  GetMonthlyTotalQuantityBySecurityAndUser(
+    request: GetMonthlyTotalQuantityBySecurityAndUserRequest,
+  ): Promise<GetMonthlyTotalQuantityBySecurityAndUserResponse>;
+  GetMonthlyTransactionCount(request: GetMonthlyTransactionCountRequest): Promise<GetMonthlyTransactionCountResponse>;
+  GetPaymentChannelMonthlyExpenditure(
+    request: GetPaymentChannelMonthlyExpenditureRequest,
+  ): Promise<GetPaymentChannelMonthlyExpenditureResponse>;
+  GetTotalInvestmentBySecurity(
+    request: GetTotalInvestmentBySecurityRequest,
+  ): Promise<GetTotalInvestmentBySecurityResponse>;
+  GetMelodyFinancialContext(request: GetMelodyFinancialContextRequest): Promise<GetMelodyFinancialContextResponse>;
+  GetTransactionsForBankAccount(
+    request: GetTransactionsForBankAccountRequest,
+  ): Promise<GetTransactionsForBankAccountResponse>;
 }
 
 export const FinancialServiceServiceName = "financial_integration_service_api.v1.FinancialService";
@@ -184,6 +275,28 @@ export class FinancialServiceClientImpl implements FinancialService {
     this.ProcessWebhook = this.ProcessWebhook.bind(this);
     this.StripeWebhook = this.StripeWebhook.bind(this);
     this.CreateSubscription = this.CreateSubscription.bind(this);
+    this.GetTransactionAggregates = this.GetTransactionAggregates.bind(this);
+    this.GetUserAccountBalanceHistory = this.GetUserAccountBalanceHistory.bind(this);
+    this.GetAccountBalanceHistory = this.GetAccountBalanceHistory.bind(this);
+    this.GetUserCategoryMonthlyExpenditure = this.GetUserCategoryMonthlyExpenditure.bind(this);
+    this.GetUserCategoryMonthlyIncome = this.GetUserCategoryMonthlyIncome.bind(this);
+    this.GetCategoryMonthlyTransactionCount = this.GetCategoryMonthlyTransactionCount.bind(this);
+    this.GetDebtToIncomeRatio = this.GetDebtToIncomeRatio.bind(this);
+    this.GetExpenseMetrics = this.GetExpenseMetrics.bind(this);
+    this.GetFinancialProfile = this.GetFinancialProfile.bind(this);
+    this.GetIncomeExpenseRatio = this.GetIncomeExpenseRatio.bind(this);
+    this.GetIncomeMetrics = this.GetIncomeMetrics.bind(this);
+    this.GetMerchantMonthlyExpenditure = this.GetMerchantMonthlyExpenditure.bind(this);
+    this.GetMonthlyBalance = this.GetMonthlyBalance.bind(this);
+    this.GetMonthlyExpenditure = this.GetMonthlyExpenditure.bind(this);
+    this.GetMonthlyIncome = this.GetMonthlyIncome.bind(this);
+    this.GetMonthlySavings = this.GetMonthlySavings.bind(this);
+    this.GetMonthlyTotalQuantityBySecurityAndUser = this.GetMonthlyTotalQuantityBySecurityAndUser.bind(this);
+    this.GetMonthlyTransactionCount = this.GetMonthlyTransactionCount.bind(this);
+    this.GetPaymentChannelMonthlyExpenditure = this.GetPaymentChannelMonthlyExpenditure.bind(this);
+    this.GetTotalInvestmentBySecurity = this.GetTotalInvestmentBySecurity.bind(this);
+    this.GetMelodyFinancialContext = this.GetMelodyFinancialContext.bind(this);
+    this.GetTransactionsForBankAccount = this.GetTransactionsForBankAccount.bind(this);
   }
   PlaidInitiateTokenExchange(request: PlaidInitiateTokenExchangeRequest): Promise<PlaidInitiateTokenExchangeResponse> {
     const data = PlaidInitiateTokenExchangeRequest.encode(request).finish();
@@ -435,6 +548,156 @@ export class FinancialServiceClientImpl implements FinancialService {
     const data = CreateSubscriptionRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "CreateSubscription", data);
     return promise.then((data) => CreateSubscriptionResponse.decode(_m0.Reader.create(data)));
+  }
+
+  GetTransactionAggregates(request: GetTransactionAggregatesRequest): Promise<GetTransactionAggregatesResponse> {
+    const data = GetTransactionAggregatesRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "GetTransactionAggregates", data);
+    return promise.then((data) => GetTransactionAggregatesResponse.decode(_m0.Reader.create(data)));
+  }
+
+  GetUserAccountBalanceHistory(
+    request: GetUserAccountBalanceHistoryRequest,
+  ): Promise<GetUserAccountBalanceHistoryResponse> {
+    const data = GetUserAccountBalanceHistoryRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "GetUserAccountBalanceHistory", data);
+    return promise.then((data) => GetUserAccountBalanceHistoryResponse.decode(_m0.Reader.create(data)));
+  }
+
+  GetAccountBalanceHistory(request: GetAccountBalanceHistoryRequest): Promise<GetAccountBalanceHistoryResponse> {
+    const data = GetAccountBalanceHistoryRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "GetAccountBalanceHistory", data);
+    return promise.then((data) => GetAccountBalanceHistoryResponse.decode(_m0.Reader.create(data)));
+  }
+
+  GetUserCategoryMonthlyExpenditure(
+    request: GetUserCategoryMonthlyExpenditureRequest,
+  ): Promise<GetUserCategoryMonthlyExpenditureResponse> {
+    const data = GetUserCategoryMonthlyExpenditureRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "GetUserCategoryMonthlyExpenditure", data);
+    return promise.then((data) => GetUserCategoryMonthlyExpenditureResponse.decode(_m0.Reader.create(data)));
+  }
+
+  GetUserCategoryMonthlyIncome(
+    request: GetUserCategoryMonthlyIncomeRequest,
+  ): Promise<GetUserCategoryMonthlyIncomeResponse> {
+    const data = GetUserCategoryMonthlyIncomeRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "GetUserCategoryMonthlyIncome", data);
+    return promise.then((data) => GetUserCategoryMonthlyIncomeResponse.decode(_m0.Reader.create(data)));
+  }
+
+  GetCategoryMonthlyTransactionCount(
+    request: GetCategoryMonthlyTransactionCountRequest,
+  ): Promise<GetCategoryMonthlyTransactionCountResponse> {
+    const data = GetCategoryMonthlyTransactionCountRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "GetCategoryMonthlyTransactionCount", data);
+    return promise.then((data) => GetCategoryMonthlyTransactionCountResponse.decode(_m0.Reader.create(data)));
+  }
+
+  GetDebtToIncomeRatio(request: GetDebtToIncomeRatioRequest): Promise<GetDebtToIncomeRatioResponse> {
+    const data = GetDebtToIncomeRatioRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "GetDebtToIncomeRatio", data);
+    return promise.then((data) => GetDebtToIncomeRatioResponse.decode(_m0.Reader.create(data)));
+  }
+
+  GetExpenseMetrics(request: GetExpenseMetricsRequest): Promise<GetExpenseMetricsResponse> {
+    const data = GetExpenseMetricsRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "GetExpenseMetrics", data);
+    return promise.then((data) => GetExpenseMetricsResponse.decode(_m0.Reader.create(data)));
+  }
+
+  GetFinancialProfile(request: GetFinancialProfileRequest): Promise<GetFinancialProfileResponse> {
+    const data = GetFinancialProfileRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "GetFinancialProfile", data);
+    return promise.then((data) => GetFinancialProfileResponse.decode(_m0.Reader.create(data)));
+  }
+
+  GetIncomeExpenseRatio(request: GetIncomeExpenseRatioRequest): Promise<GetIncomeExpenseRatioResponse> {
+    const data = GetIncomeExpenseRatioRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "GetIncomeExpenseRatio", data);
+    return promise.then((data) => GetIncomeExpenseRatioResponse.decode(_m0.Reader.create(data)));
+  }
+
+  GetIncomeMetrics(request: GetIncomeMetricsRequest): Promise<GetIncomeMetricsResponse> {
+    const data = GetIncomeMetricsRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "GetIncomeMetrics", data);
+    return promise.then((data) => GetIncomeMetricsResponse.decode(_m0.Reader.create(data)));
+  }
+
+  GetMerchantMonthlyExpenditure(
+    request: GetMerchantMonthlyExpenditureRequest,
+  ): Promise<GetMerchantMonthlyExpenditureResponse> {
+    const data = GetMerchantMonthlyExpenditureRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "GetMerchantMonthlyExpenditure", data);
+    return promise.then((data) => GetMerchantMonthlyExpenditureResponse.decode(_m0.Reader.create(data)));
+  }
+
+  GetMonthlyBalance(request: GetMonthlyBalanceRequest): Promise<GetMonthlyBalanceResponse> {
+    const data = GetMonthlyBalanceRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "GetMonthlyBalance", data);
+    return promise.then((data) => GetMonthlyBalanceResponse.decode(_m0.Reader.create(data)));
+  }
+
+  GetMonthlyExpenditure(request: GetMonthlyExpenditureRequest): Promise<GetMonthlyExpenditureResponse> {
+    const data = GetMonthlyExpenditureRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "GetMonthlyExpenditure", data);
+    return promise.then((data) => GetMonthlyExpenditureResponse.decode(_m0.Reader.create(data)));
+  }
+
+  GetMonthlyIncome(request: GetMonthlyIncomeRequest): Promise<GetMonthlyIncomeResponse> {
+    const data = GetMonthlyIncomeRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "GetMonthlyIncome", data);
+    return promise.then((data) => GetMonthlyIncomeResponse.decode(_m0.Reader.create(data)));
+  }
+
+  GetMonthlySavings(request: GetMonthlySavingsRequest): Promise<GetMonthlySavingsResponse> {
+    const data = GetMonthlySavingsRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "GetMonthlySavings", data);
+    return promise.then((data) => GetMonthlySavingsResponse.decode(_m0.Reader.create(data)));
+  }
+
+  GetMonthlyTotalQuantityBySecurityAndUser(
+    request: GetMonthlyTotalQuantityBySecurityAndUserRequest,
+  ): Promise<GetMonthlyTotalQuantityBySecurityAndUserResponse> {
+    const data = GetMonthlyTotalQuantityBySecurityAndUserRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "GetMonthlyTotalQuantityBySecurityAndUser", data);
+    return promise.then((data) => GetMonthlyTotalQuantityBySecurityAndUserResponse.decode(_m0.Reader.create(data)));
+  }
+
+  GetMonthlyTransactionCount(request: GetMonthlyTransactionCountRequest): Promise<GetMonthlyTransactionCountResponse> {
+    const data = GetMonthlyTransactionCountRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "GetMonthlyTransactionCount", data);
+    return promise.then((data) => GetMonthlyTransactionCountResponse.decode(_m0.Reader.create(data)));
+  }
+
+  GetPaymentChannelMonthlyExpenditure(
+    request: GetPaymentChannelMonthlyExpenditureRequest,
+  ): Promise<GetPaymentChannelMonthlyExpenditureResponse> {
+    const data = GetPaymentChannelMonthlyExpenditureRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "GetPaymentChannelMonthlyExpenditure", data);
+    return promise.then((data) => GetPaymentChannelMonthlyExpenditureResponse.decode(_m0.Reader.create(data)));
+  }
+
+  GetTotalInvestmentBySecurity(
+    request: GetTotalInvestmentBySecurityRequest,
+  ): Promise<GetTotalInvestmentBySecurityResponse> {
+    const data = GetTotalInvestmentBySecurityRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "GetTotalInvestmentBySecurity", data);
+    return promise.then((data) => GetTotalInvestmentBySecurityResponse.decode(_m0.Reader.create(data)));
+  }
+
+  GetMelodyFinancialContext(request: GetMelodyFinancialContextRequest): Promise<GetMelodyFinancialContextResponse> {
+    const data = GetMelodyFinancialContextRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "GetMelodyFinancialContext", data);
+    return promise.then((data) => GetMelodyFinancialContextResponse.decode(_m0.Reader.create(data)));
+  }
+
+  GetTransactionsForBankAccount(
+    request: GetTransactionsForBankAccountRequest,
+  ): Promise<GetTransactionsForBankAccountResponse> {
+    const data = GetTransactionsForBankAccountRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "GetTransactionsForBankAccount", data);
+    return promise.then((data) => GetTransactionsForBankAccountResponse.decode(_m0.Reader.create(data)));
   }
 }
 

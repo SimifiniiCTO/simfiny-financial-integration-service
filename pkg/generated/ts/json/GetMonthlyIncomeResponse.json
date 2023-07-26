@@ -1,0 +1,39 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/GetMonthlyIncomeResponse",
+    "definitions": {
+        "GetMonthlyIncomeResponse": {
+            "properties": {
+                "monthly_incomes": {
+                    "items": {
+                        "$ref": "#/definitions/financial_integration_service_api.v1.MonthlyIncome"
+                    },
+                    "type": "array"
+                },
+                "next_page_number": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Get Monthly Income Response"
+        },
+        "financial_integration_service_api.v1.MonthlyIncome": {
+            "properties": {
+                "month": {
+                    "type": "integer"
+                },
+                "total_income": {
+                    "type": "number"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Monthly Income",
+            "description": "MonthlyIncome This message is used to represent the monthly income of a user."
+        }
+    }
+}

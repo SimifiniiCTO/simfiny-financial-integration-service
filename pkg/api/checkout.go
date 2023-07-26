@@ -41,7 +41,7 @@ func (s *Server) handleCheckoutSession(w http.ResponseWriter, r *http.Request) {
 	checkoutParams := &stripe.CheckoutSessionParams{
 		Mode: stripe.String(string(stripe.CheckoutSessionModeSubscription)),
 		LineItems: []*stripe.CheckoutSessionLineItemParams{
-			&stripe.CheckoutSessionLineItemParams{
+			{
 				Price:    stripe.String(price.ID),
 				Quantity: stripe.Int64(1),
 			},

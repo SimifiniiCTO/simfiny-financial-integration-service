@@ -12,6 +12,11 @@
                 "email": {
                     "type": "string",
                     "description": "the email of the account to create"
+                },
+                "financial_context": {
+                    "$ref": "#/definitions/financial_integration_service_api.v1.MelodyFinancialContext",
+                    "additionalProperties": true,
+                    "description": "financial context for the user"
                 }
             },
             "additionalProperties": true,
@@ -190,6 +195,44 @@
             "title": "Category",
             "description": "The Categories table stores information about the different categories of expenses or income, such as \"Housing\", \"Food\", \"Transportation\", and \"Entertainment\". Each category has one or more subcategories, which are stored in the Subcategories table. For example, the \"Housing\" category might have subcategories for \"Rent\", \"Utilities\", and \"Home Maintenance\"."
         },
+        "financial_integration_service_api.v1.CategoryMetricsFinancialSubProfile": {
+            "properties": {
+                "month": {
+                    "type": "integer"
+                },
+                "personal_finance_category_primary": {
+                    "type": "string"
+                },
+                "transaction_count": {
+                    "type": "string"
+                },
+                "spent_last_week": {
+                    "type": "number"
+                },
+                "spent_last_two_weeks": {
+                    "type": "number"
+                },
+                "spent_last_month": {
+                    "type": "number"
+                },
+                "spent_last_six_months": {
+                    "type": "number"
+                },
+                "spent_last_year": {
+                    "type": "number"
+                },
+                "spent_last_two_years": {
+                    "type": "number"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Category Metrics Financial Sub Profile",
+            "description": "CategoryMetricsFinancialSubProfile This message is used to represent the financial sub profile of a category."
+        },
         "financial_integration_service_api.v1.CreditAccount": {
             "properties": {
                 "id": {
@@ -280,6 +323,35 @@
             "type": "object",
             "title": "Credit Account"
         },
+        "financial_integration_service_api.v1.ExpenseMetricsFinancialSubProfileMetrics": {
+            "properties": {
+                "month": {
+                    "type": "integer"
+                },
+                "spent_last_week": {
+                    "type": "number"
+                },
+                "spent_last_month": {
+                    "type": "number"
+                },
+                "spent_last_six_months": {
+                    "type": "number"
+                },
+                "average_monthly_discretionary_spending": {
+                    "type": "number"
+                },
+                "average_monthly_recurring_spending": {
+                    "type": "number"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Expense Metrics Financial Sub Profile Metrics",
+            "description": "ExpenseMetricsFinancialSubProfileMetrics This message is used to represent the financial sub profile metrics of a user."
+        },
         "financial_integration_service_api.v1.Forecast": {
             "properties": {
                 "id": {
@@ -303,6 +375,35 @@
             "type": "object",
             "title": "Forecast",
             "description": "The Forecast table stores information about each forecast generated for a particular goal, including the forecast date, the forecasted amount of money saved or invested for the goal by the target date, and the variance between the forecasted and target amounts. This allows the user to track how well they are progressing towards their goal and make adjustments as needed."
+        },
+        "financial_integration_service_api.v1.IncomeMetricsFinancialSubProfile": {
+            "properties": {
+                "month": {
+                    "type": "integer"
+                },
+                "income_last_two_weeks": {
+                    "type": "number"
+                },
+                "income_last_month": {
+                    "type": "number"
+                },
+                "income_last_two_months": {
+                    "type": "number"
+                },
+                "income_last_six_months": {
+                    "type": "number"
+                },
+                "income_last_year": {
+                    "type": "number"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Income Metrics Financial Sub Profile",
+            "description": "IncomeMetricsFinancialSubProfile This message is used to represent the financial sub profile of a user."
         },
         "financial_integration_service_api.v1.InvesmentHolding": {
             "properties": {
@@ -613,6 +714,123 @@
             "title": "Link",
             "description": "A Link represents a login at a financial institution. A single end-user of your application might have accounts at different financial institutions, which means they would have multiple different Items. An Item is not the same as a financial institution account, although every account will be associated with an Item. For example, if a user has one login at their bank that allows them to access both their checking account and their savings account, a single Item would be associated with both of those accounts. Each Item  linked within your application will have a corresponding access_token, which is a token that you can use to make API requests related to that specific Item. Two Items created for the same set of credentials at the same institution will be considered different and not share the same item_id."
         },
+        "financial_integration_service_api.v1.LocationFinancialSubProfile": {
+            "properties": {
+                "location_city": {
+                    "type": "string"
+                },
+                "transaction_count": {
+                    "type": "string"
+                },
+                "spent_last_week": {
+                    "type": "number"
+                },
+                "spent_last_two_weeks": {
+                    "type": "number"
+                },
+                "spent_last_month": {
+                    "type": "number"
+                },
+                "spent_last_six_months": {
+                    "type": "number"
+                },
+                "spent_last_year": {
+                    "type": "number"
+                },
+                "spent_last_two_years": {
+                    "type": "number"
+                },
+                "user_id": {
+                    "type": "string"
+                },
+                "month": {
+                    "type": "integer"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Location Financial Sub Profile",
+            "description": "LocationFinancialSubProfile This message is used to represent the financial sub profile of a location."
+        },
+        "financial_integration_service_api.v1.MelodyFinancialContext": {
+            "properties": {
+                "categories": {
+                    "items": {
+                        "$ref": "#/definitions/financial_integration_service_api.v1.CategoryMetricsFinancialSubProfile"
+                    },
+                    "type": "array"
+                },
+                "expenses": {
+                    "items": {
+                        "$ref": "#/definitions/financial_integration_service_api.v1.ExpenseMetricsFinancialSubProfileMetrics"
+                    },
+                    "type": "array"
+                },
+                "income": {
+                    "items": {
+                        "$ref": "#/definitions/financial_integration_service_api.v1.IncomeMetricsFinancialSubProfile"
+                    },
+                    "type": "array"
+                },
+                "locations": {
+                    "items": {
+                        "$ref": "#/definitions/financial_integration_service_api.v1.LocationFinancialSubProfile"
+                    },
+                    "type": "array"
+                },
+                "merchants": {
+                    "items": {
+                        "$ref": "#/definitions/financial_integration_service_api.v1.MerchantMetricsFinancialSubProfile"
+                    },
+                    "type": "array"
+                },
+                "payment_channels": {
+                    "items": {
+                        "$ref": "#/definitions/financial_integration_service_api.v1.PaymentChannelMetricsFinancialSubProfile"
+                    },
+                    "type": "array"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Melody Financial Context",
+            "description": "MelodyFinancialContext represents the financial context of a user. This message is used to represent the financial context of a user."
+        },
+        "financial_integration_service_api.v1.MerchantMetricsFinancialSubProfile": {
+            "properties": {
+                "merchant_name": {
+                    "type": "string"
+                },
+                "spent_last_week": {
+                    "type": "number"
+                },
+                "spent_last_two_weeks": {
+                    "type": "number"
+                },
+                "spent_last_month": {
+                    "type": "number"
+                },
+                "spent_last_six_months": {
+                    "type": "number"
+                },
+                "spent_last_year": {
+                    "type": "number"
+                },
+                "spent_last_two_years": {
+                    "type": "number"
+                },
+                "user_id": {
+                    "type": "string"
+                },
+                "month": {
+                    "type": "integer"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Merchant Metrics Financial Sub Profile",
+            "description": "MerchantFinancialSubProfile This message is used to represent the financial sub profile of a merchant."
+        },
         "financial_integration_service_api.v1.Milestone": {
             "properties": {
                 "id": {
@@ -753,6 +971,44 @@
             "additionalProperties": true,
             "type": "object",
             "title": "Mortgage Account"
+        },
+        "financial_integration_service_api.v1.PaymentChannelMetricsFinancialSubProfile": {
+            "properties": {
+                "payment_channel": {
+                    "type": "string"
+                },
+                "spent_last_week": {
+                    "type": "number"
+                },
+                "spent_last_two_weeks": {
+                    "type": "number"
+                },
+                "spent_last_month": {
+                    "type": "number"
+                },
+                "spent_last_six_months": {
+                    "type": "number"
+                },
+                "spent_last_year": {
+                    "type": "number"
+                },
+                "spent_last_two_years": {
+                    "type": "number"
+                },
+                "user_id": {
+                    "type": "string"
+                },
+                "month": {
+                    "type": "integer"
+                },
+                "transaction_count": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Payment Channel Metrics Financial Sub Profile",
+            "description": "PaymentChannelMetricsFinancialSubProfile This message is used to represent the financial sub profile of a payment channel."
         },
         "financial_integration_service_api.v1.PlaidLink": {
             "properties": {

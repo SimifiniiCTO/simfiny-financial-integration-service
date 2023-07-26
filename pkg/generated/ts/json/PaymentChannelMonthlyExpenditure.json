@@ -1,0 +1,26 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/PaymentChannelMonthlyExpenditure",
+    "definitions": {
+        "PaymentChannelMonthlyExpenditure": {
+            "properties": {
+                "month": {
+                    "type": "integer"
+                },
+                "payment_channel": {
+                    "type": "string"
+                },
+                "total_spending": {
+                    "type": "number"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Payment Channel Monthly Expenditure",
+            "description": "PaymentChannelMonthlyExpenditure This message is used to represent the monthly expenditure of a payment channel."
+        }
+    }
+}
