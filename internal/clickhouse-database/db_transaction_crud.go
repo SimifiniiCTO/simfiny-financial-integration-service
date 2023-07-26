@@ -228,6 +228,62 @@ func (db *Db) GetTransactions(ctx context.Context, userId *uint64, pagenumber in
 		Where("UserId = ?", *userId).
 		Offset(offset).
 		Limit(queryLimit).
+		Order("Time DESC").
+		Scan(ctx); err != nil {
+		return nil, 0, err
+	}
+
+	results := make([]*schema.Transaction, 0, len(transactions))
+	if len(transactions) > 0 {
+		for _, tx := range transactions {
+			txRecord, err := tx.ConvertToTransaction()
+			if err != nil {
+				return nil, 0, err
+			}
+			results = append(results, txRecord)
+		}
+	}
+
+	return results, nextPageNumber, nil
+}
+
+func (db *Db) GetTransactionsForAccount(ctx context.Context, userId *uint64, pagenumber int64, limit int64, accountId string) ([]*schema.Transaction, int64, error) {
+	var (
+		nextPageNumber int64
+	)
+
+	if span := db.startDatastoreSpan(ctx, "dbtxn-get-transactions"); span != nil {
+		defer span.End()
+	}
+
+	if userId == nil {
+		return nil, 0, fmt.Errorf("user ID must be 0 at creation time")
+	}
+
+	if accountId == "" {
+		return nil, 0, fmt.Errorf("account ID was not provided")
+	}
+
+	// sanitize the request params
+	pageNumber, pageSize := db.sanitizePaginationParams(pagenumber, limit)
+	if pageNumber == 0 {
+		nextPageNumber = 2
+	} else {
+		nextPageNumber = pageNumber + 1
+	}
+
+	offset := int(pageSize * (pageNumber - 1))
+	queryLimit := int(pageSize)
+	var transactions []schema.TransactionInternal
+	if err := db.
+		queryEngine.
+		NewSelect().
+		Model(&transactions).
+		Where("UserId = ?", *userId).
+		Where("AccountId = ?", accountId).
+		Offset(offset).
+		Limit(queryLimit).
+		Order("Time DESC").
 		Scan(ctx); err != nil {
 		return nil, 0, err
 	}
