@@ -735,7 +735,7 @@ func (db *Db) GetFinancialContextForCurrentMonth(ctx context.Context, userId *ui
 		record := record.ConvertToProto()
 		categoryProfilesProto = append(categoryProfilesProto, record)
 
-		if idx > limit {
+		if idx >= limit {
 			break
 		}
 	}
@@ -745,7 +745,7 @@ func (db *Db) GetFinancialContextForCurrentMonth(ctx context.Context, userId *ui
 		record := record.ConvertToProto()
 		expenseProfilesProto = append(expenseProfilesProto, record)
 
-		if idx > limit {
+		if idx >= limit {
 			break
 		}
 	}
@@ -755,7 +755,7 @@ func (db *Db) GetFinancialContextForCurrentMonth(ctx context.Context, userId *ui
 		record := record.ConvertToProto()
 		incomeProfilesProto = append(incomeProfilesProto, record)
 
-		if idx > limit {
+		if idx >= limit {
 			break
 		}
 	}
@@ -765,7 +765,7 @@ func (db *Db) GetFinancialContextForCurrentMonth(ctx context.Context, userId *ui
 		record := record.ConvertToProto()
 		locationProfilesProto = append(locationProfilesProto, record)
 
-		if idx > limit {
+		if idx >= limit {
 			break
 		}
 	}
@@ -774,7 +774,7 @@ func (db *Db) GetFinancialContextForCurrentMonth(ctx context.Context, userId *ui
 	for idx, record := range merchantProfiles {
 		record := record.ConvertToProto()
 		merchantProfilesProto = append(merchantProfilesProto, record)
-		if idx > limit {
+		if idx >= limit {
 			break
 		}
 	}
@@ -783,7 +783,7 @@ func (db *Db) GetFinancialContextForCurrentMonth(ctx context.Context, userId *ui
 	for idx, record := range paymentChannelsProfiles {
 		record := record.ConvertToProto()
 		paymentChannelsProfilesProto = append(paymentChannelsProfilesProto, record)
-		if idx > limit {
+		if idx >= limit {
 			break
 		}
 	}
