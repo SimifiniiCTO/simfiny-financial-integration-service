@@ -12,10 +12,6 @@ func (s *Server) GetUserAccountBalanceHistory(context.Context, *proto.GetUserAcc
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserAccountBalanceHistory not implemented")
 }
 
-func (s *Server) GetMerchantMonthlyExpenditure(context.Context, *proto.GetMerchantMonthlyExpenditureRequest) (*proto.GetMerchantMonthlyExpenditureResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetMerchantMonthlyExpenditure not implemented")
-}
-
 func (s *Server) GetMonthlyBalance(context.Context, *proto.GetMonthlyBalanceRequest) (*proto.GetMonthlyBalanceResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetMonthlyBalance not implemented")
 }
