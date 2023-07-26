@@ -2156,6 +2156,8 @@ func (m *LocationFinancialSubProfile) validate(all bool) error {
 
 	// no validation rules for UserId
 
+	// no validation rules for Month
+
 	if len(errors) > 0 {
 		return LocationFinancialSubProfileMultiError(errors)
 	}
@@ -2275,6 +2277,8 @@ func (m *MerchantMetricsFinancialSubProfile) validate(all bool) error {
 	// no validation rules for SpentLastTwoYears
 
 	// no validation rules for UserId
+
+	// no validation rules for Month
 
 	if len(errors) > 0 {
 		return MerchantMetricsFinancialSubProfileMultiError(errors)

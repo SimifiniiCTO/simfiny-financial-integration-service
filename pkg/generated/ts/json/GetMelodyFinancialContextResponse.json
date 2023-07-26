@@ -137,6 +137,9 @@
                 },
                 "user_id": {
                     "type": "string"
+                },
+                "month": {
+                    "type": "integer"
                 }
             },
             "additionalProperties": true,
@@ -201,6 +204,9 @@
                 },
                 "user_id": {
                     "type": "string"
+                },
+                "month": {
+                    "type": "integer"
                 }
             },
             "additionalProperties": true,

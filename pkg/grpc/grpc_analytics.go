@@ -8,6 +8,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
+// TODO: implement the following methods
 func (s *Server) GetMonthlyTotalQuantityBySecurityAndUser(ctx context.Context, req *proto.GetMonthlyTotalQuantityBySecurityAndUserRequest) (*proto.GetMonthlyTotalQuantityBySecurityAndUserResponse, error) {
 	// perform validations
 	if req == nil {
@@ -31,6 +32,7 @@ func (s *Server) GetMonthlyTotalQuantityBySecurityAndUser(ctx context.Context, r
 	return nil, nil
 }
 
+// TODO: implement the following methods
 func (s *Server) GetTotalInvestmentBySecurity(ctx context.Context, req *proto.GetTotalInvestmentBySecurityRequest) (*proto.GetTotalInvestmentBySecurityResponse, error) {
 	// perform validations
 	if req == nil {
@@ -54,6 +56,7 @@ func (s *Server) GetTotalInvestmentBySecurity(ctx context.Context, req *proto.Ge
 	return nil, nil
 }
 
+// TODO: implement the following methods
 func (s *Server) GetUserAccountBalanceHistory(ctx context.Context, req *proto.GetUserAccountBalanceHistoryRequest) (*proto.GetUserAccountBalanceHistoryResponse, error) {
 
 	// perform validations

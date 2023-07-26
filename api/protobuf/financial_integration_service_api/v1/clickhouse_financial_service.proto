@@ -392,6 +392,7 @@ message LocationFinancialSubProfile {
     double spent_last_year = 7;
     double spent_last_two_years = 8;
     uint64 user_id = 9;
+    uint32 month = 10;
 }
 
 // MerchantFinancialSubProfile
@@ -406,6 +407,7 @@ message MerchantMetricsFinancialSubProfile {
     double spent_last_year = 7;
     double spent_last_two_years = 8;
     uint64 user_id = 9;
+    uint32 month = 10;
 }
 
 // MerchantMonthlyExpenditure

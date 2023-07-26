@@ -645,17 +645,17 @@ func (source *TotalInvestmentBySecurityInternal) ConvertToProto() *TotalInvestme
 }
 
 type CategoryMetricsFinancialSubProfileInternal struct {
-	ch.CHModel                     `ch:"partition:toYYYYMM(time)"`
-	Month                          uint32  `ch:"type:UInt32"`
-	PersonalFinanceCategoryPrimary string  `ch:"type:String"`
-	TransactionCount               uint64  `ch:"type:UInt64"`
-	SpentLastWeek                  float64 `ch:"type:Float64"`
-	SpentLastTwoWeeks              float64 `ch:"type:Float64"`
-	SpentLastMonth                 float64 `ch:"type:Float64"`
-	SpentLastSixMonths             float64 `ch:"type:Float64"`
-	SpentLastYear                  float64 `ch:"type:Float64"`
-	SpentLastTwoYears              float64 `ch:"type:Float64"`
-	UserId                         uint64  `ch:"type:UInt64"`
+	ch.CHModel                     `ch:"CategoryMetricsFinancialSubProfile,partition:toYYYYMM(time)"`
+	Month                          uint32  `ch:"Month,type:UInt32"`
+	PersonalFinanceCategoryPrimary string  `ch:"PersonalFinanceCategoryPrimary,type:String"`
+	TransactionCount               uint64  `ch:"TransactionCount,type:UInt64"`
+	SpentLastWeek                  float64 `ch:"SpentLastWeek,type:Float64"`
+	SpentLastTwoWeeks              float64 `ch:"SpentLastTwoWeeks,type:Float64"`
+	SpentLastMonth                 float64 `ch:"SpentLastMonth,type:Float64"`
+	SpentLastSixMonths             float64 `ch:"SpentLastSixMonths,type:Float64"`
+	SpentLastYear                  float64 `ch:"SpentLastYear,type:Float64"`
+	SpentLastTwoYears              float64 `ch:"SpentLastTwoYears,type:Float64"`
+	UserId                         uint64  `ch:"UserId,type:UInt64"`
 }
 
 func (source *CategoryMetricsFinancialSubProfileInternal) ConvertToORM() *CategoryMetricsFinancialSubProfileORM {
@@ -685,5 +685,287 @@ func (source *CategoryMetricsFinancialSubProfileORM) ConvertToInternal() *Catego
 		SpentLastYear:                  source.SpentLastYear,
 		TransactionCount:               source.TransactionCount,
 		UserId:                         source.UserId,
+	}
+}
+
+func (source *CategoryMetricsFinancialSubProfileInternal) ConvertToProto() *CategoryMetricsFinancialSubProfile {
+	return &CategoryMetricsFinancialSubProfile{
+		Month:                          source.Month,
+		PersonalFinanceCategoryPrimary: source.PersonalFinanceCategoryPrimary,
+		SpentLastMonth:                 source.SpentLastMonth,
+		SpentLastSixMonths:             source.SpentLastSixMonths,
+		SpentLastTwoWeeks:              source.SpentLastTwoWeeks,
+		SpentLastTwoYears:              source.SpentLastTwoYears,
+		SpentLastWeek:                  source.SpentLastWeek,
+		SpentLastYear:                  source.SpentLastYear,
+		TransactionCount:               source.TransactionCount,
+		UserId:                         source.UserId,
+	}
+}
+
+type IncomeMetricsFinancialSubProfileInternal struct {
+	ch.CHModel          `ch:"IncomeMetricsFinancialSubProfile,partition:toYYYYMM(time)"`
+	Month               uint32  `ch:"Month,type:UInt32"`
+	IncomeLastTwoWeeks  float64 `ch:"IncomeLastTwoWeeks,type:Float64"`
+	IncomeLastMonth     float64 `ch:"IncomeLastMonth,type:Float64"`
+	IncomeLastTwoMonths float64 `ch:"IncomeLastTwoMonths,type:Float64"`
+	IncomeLastSixMonths float64 `ch:"IncomeLastSixMonths,type:Float64"`
+	IncomeLastYear      float64 `ch:"IncomeLastYear,type:Float64"`
+	UserId              uint64  `ch:"UserId,type:UInt64"`
+}
+
+func (source *IncomeMetricsFinancialSubProfileInternal) ConvertToORM() *IncomeMetricsFinancialSubProfileORM {
+	return &IncomeMetricsFinancialSubProfileORM{
+		Month:               source.Month,
+		IncomeLastMonth:     source.IncomeLastMonth,
+		IncomeLastSixMonths: source.IncomeLastSixMonths,
+		IncomeLastTwoMonths: source.IncomeLastTwoMonths,
+		IncomeLastTwoWeeks:  source.IncomeLastTwoWeeks,
+		IncomeLastYear:      source.IncomeLastYear,
+		UserId:              source.UserId,
+	}
+}
+
+func (source *IncomeMetricsFinancialSubProfileORM) ConvertToInternal() *IncomeMetricsFinancialSubProfileInternal {
+	return &IncomeMetricsFinancialSubProfileInternal{
+		Month:               source.Month,
+		IncomeLastMonth:     source.IncomeLastMonth,
+		IncomeLastSixMonths: source.IncomeLastSixMonths,
+		IncomeLastTwoMonths: source.IncomeLastTwoMonths,
+		IncomeLastTwoWeeks:  source.IncomeLastTwoWeeks,
+		IncomeLastYear:      source.IncomeLastYear,
+		UserId:              source.UserId,
+	}
+}
+
+func (source *IncomeMetricsFinancialSubProfileInternal) ConvertToProto() *IncomeMetricsFinancialSubProfile {
+	return &IncomeMetricsFinancialSubProfile{
+		Month:               source.Month,
+		IncomeLastMonth:     source.IncomeLastMonth,
+		IncomeLastSixMonths: source.IncomeLastSixMonths,
+		IncomeLastTwoMonths: source.IncomeLastTwoMonths,
+		IncomeLastTwoWeeks:  source.IncomeLastTwoWeeks,
+		IncomeLastYear:      source.IncomeLastYear,
+		UserId:              source.UserId,
+	}
+}
+
+type ExpenseMetricsFinancialSubProfileInternal struct {
+	ch.CHModel                          `ch:"ExpenseMetricsFinancialSubProfileMetrics,partition:toYYYYMM(time)"`
+	Month                               uint32  `ch:"Month,type:UInt32"`
+	SpentLastWeek                       float64 `ch:"SpentLastWeek,type:Float64"`
+	SpentLastMonth                      float64 `ch:"SpentLastMonth,type:Float64"`
+	SpentLastSixMonths                  float64 `ch:"SpentLastSixMonths,type:Float64"`
+	AverageMonthlyDiscretionarySpending float64 `ch:"AverageMonthlyDiscretionarySpending,type:Float64"`
+	AverageMonthlyRecurringSpending     float64 `ch:"AverageMonthlyRecurringSpending,type:Float64"`
+	UserId                              uint64  `ch:"UserId,type:UInt64"`
+}
+
+func (source *ExpenseMetricsFinancialSubProfileInternal) ConvertToORM() *ExpenseMetricsFinancialSubProfileMetricsORM {
+	return &ExpenseMetricsFinancialSubProfileMetricsORM{
+		AverageMonthlyDiscretionarySpending: source.AverageMonthlyDiscretionarySpending,
+		AverageMonthlyRecurringSpending:     source.AverageMonthlyRecurringSpending,
+		Month:                               source.Month,
+		SpentLastMonth:                      source.SpentLastMonth,
+		SpentLastSixMonths:                  source.SpentLastSixMonths,
+		SpentLastWeek:                       source.SpentLastWeek,
+		UserId:                              source.UserId,
+	}
+}
+
+func (source *ExpenseMetricsFinancialSubProfileMetricsORM) ConvertToInternal() *ExpenseMetricsFinancialSubProfileInternal {
+	return &ExpenseMetricsFinancialSubProfileInternal{
+		Month:                               source.Month,
+		AverageMonthlyDiscretionarySpending: source.AverageMonthlyDiscretionarySpending,
+		AverageMonthlyRecurringSpending:     source.AverageMonthlyRecurringSpending,
+		SpentLastSixMonths:                  source.SpentLastSixMonths,
+		SpentLastMonth:                      source.SpentLastMonth,
+		SpentLastWeek:                       source.SpentLastWeek,
+		UserId:                              source.UserId,
+	}
+}
+
+func (source *ExpenseMetricsFinancialSubProfileInternal) ConvertToProto() *ExpenseMetricsFinancialSubProfileMetrics {
+	return &ExpenseMetricsFinancialSubProfileMetrics{
+		Month:                               source.Month,
+		SpentLastWeek:                       source.SpentLastWeek,
+		SpentLastMonth:                      source.SpentLastMonth,
+		SpentLastSixMonths:                  source.SpentLastSixMonths,
+		AverageMonthlyDiscretionarySpending: source.AverageMonthlyDiscretionarySpending,
+		AverageMonthlyRecurringSpending:     source.AverageMonthlyRecurringSpending,
+		UserId:                              source.UserId,
+	}
+}
+
+type LocationFinancialSubProfileInternal struct {
+	ch.CHModel         `ch:"LocationFinancialSubProfile,partition:toYYYYMM(time)"`
+	Month              uint32  `ch:"Month,type:UInt32"`
+	LocationCity       string  `ch:"LocationCity,type:String"`
+	TransactionCount   uint64  `ch:"TransactionCount,type:UInt64"`
+	SpentLastWeek      float64 `ch:"SpentLastWeek,type:Float64"`
+	SpentLastTwoWeeks  float64 `ch:"SpentLastTwoWeeks,type:Float64"`
+	SpentLastMonth     float64 `ch:"SpentLastMonth,type:Float64"`
+	SpentLastSixMonths float64 `ch:"SpentLastSixMonths,type:Float64"`
+	SpentLastYear      float64 `ch:"SpentLastYear,type:Float64"`
+	SpentLastTwoYears  float64 `ch:"SpentLastTwoYears,type:Float64"`
+	UserId             uint64  `ch:"UserId,type:UInt64"`
+}
+
+func (source *LocationFinancialSubProfileInternal) ConvertToORM() *LocationFinancialSubProfileORM {
+	return &LocationFinancialSubProfileORM{
+		LocationCity:       source.LocationCity,
+		Month:              source.Month,
+		SpentLastMonth:     source.SpentLastMonth,
+		SpentLastSixMonths: source.SpentLastSixMonths,
+		SpentLastTwoWeeks:  source.SpentLastTwoWeeks,
+		SpentLastTwoYears:  source.SpentLastTwoYears,
+		SpentLastWeek:      source.SpentLastWeek,
+		SpentLastYear:      source.SpentLastYear,
+		TransactionCount:   source.TransactionCount,
+		UserId:             source.UserId,
+	}
+}
+
+func (source *LocationFinancialSubProfileORM) ConvertToInternal() *LocationFinancialSubProfileInternal {
+	return &LocationFinancialSubProfileInternal{
+		LocationCity:       source.LocationCity,
+		Month:              source.Month,
+		SpentLastMonth:     source.SpentLastMonth,
+		SpentLastSixMonths: source.SpentLastSixMonths,
+		SpentLastTwoWeeks:  source.SpentLastTwoWeeks,
+		SpentLastTwoYears:  source.SpentLastTwoYears,
+		SpentLastWeek:      source.SpentLastWeek,
+		SpentLastYear:      source.SpentLastYear,
+		TransactionCount:   source.TransactionCount,
+		UserId:             source.UserId,
+	}
+}
+
+func (source *LocationFinancialSubProfileInternal) ConvertToProto() *LocationFinancialSubProfile {
+	return &LocationFinancialSubProfile{
+		LocationCity:       source.LocationCity,
+		Month:              source.Month,
+		SpentLastMonth:     source.SpentLastMonth,
+		SpentLastSixMonths: source.SpentLastSixMonths,
+		SpentLastTwoWeeks:  source.SpentLastTwoWeeks,
+		SpentLastTwoYears:  source.SpentLastTwoYears,
+		SpentLastWeek:      source.SpentLastWeek,
+		SpentLastYear:      source.SpentLastYear,
+		TransactionCount:   source.TransactionCount,
+		UserId:             source.UserId,
+	}
+}
+
+type MerchantMetricsFinancialSubProfileInternal struct {
+	ch.CHModel         `ch:"MerchantMetricsFinancialSubProfile,partition:toYYYYMM(time)"`
+	Month              uint32  `ch:"Month,type:UInt32"`
+	SpentLastWeek      float64 `ch:"SpentLastWeek,type:Float64"`
+	SpentLastTwoWeeks  float64 `ch:"SpentLastTwoWeeks,type:Float64"`
+	SpentLastMonth     float64 `ch:"SpentLastMonth,type:Float64"`
+	SpentLastSixMonths float64 `ch:"SpentLastSixMonths,type:Float64"`
+	SpentLastYear      float64 `ch:"SpentLastYear,type:Float64"`
+	SpentLastTwoYears  float64 `ch:"SpentLastTwoYears,type:Float64"`
+	UserId             uint64  `ch:"UserId,type:UInt64"`
+	MerchantName       string  `ch:"MerchantName,type:String"`
+}
+
+func (source *MerchantMetricsFinancialSubProfileInternal) ConvertToORM() *MerchantMetricsFinancialSubProfileORM {
+	return &MerchantMetricsFinancialSubProfileORM{
+		MerchantName:       source.MerchantName,
+		Month:              source.Month,
+		SpentLastMonth:     source.SpentLastMonth,
+		SpentLastSixMonths: source.SpentLastSixMonths,
+		SpentLastTwoWeeks:  source.SpentLastTwoWeeks,
+		SpentLastTwoYears:  source.SpentLastTwoYears,
+		SpentLastWeek:      source.SpentLastWeek,
+		SpentLastYear:      source.SpentLastYear,
+		UserId:             source.UserId,
+	}
+}
+
+func (source *MerchantMetricsFinancialSubProfileORM) ConvertToInternal() *MerchantMetricsFinancialSubProfileInternal {
+	return &MerchantMetricsFinancialSubProfileInternal{
+		MerchantName:       source.MerchantName,
+		Month:              source.Month,
+		SpentLastMonth:     source.SpentLastMonth,
+		SpentLastSixMonths: source.SpentLastSixMonths,
+		SpentLastTwoWeeks:  source.SpentLastTwoWeeks,
+		SpentLastTwoYears:  source.SpentLastTwoYears,
+		SpentLastWeek:      source.SpentLastWeek,
+		SpentLastYear:      source.SpentLastYear,
+		UserId:             source.UserId,
+	}
+}
+
+func (source *MerchantMetricsFinancialSubProfileInternal) ConvertToProto() *MerchantMetricsFinancialSubProfile {
+	return &MerchantMetricsFinancialSubProfile{
+		MerchantName:       source.MerchantName,
+		Month:              source.Month,
+		SpentLastMonth:     source.SpentLastMonth,
+		SpentLastSixMonths: source.SpentLastSixMonths,
+		SpentLastTwoWeeks:  source.SpentLastTwoWeeks,
+		SpentLastTwoYears:  source.SpentLastTwoYears,
+		SpentLastWeek:      source.SpentLastWeek,
+		SpentLastYear:      source.SpentLastYear,
+		UserId:             source.UserId,
+	}
+}
+
+type PaymentChannelMetricsFinancialSubProfileInternal struct {
+	ch.CHModel         `ch:"LocationFinancialSubProfile,partition:toYYYYMM(time)"`
+	Month              uint32  `ch:"Month,type:UInt32"`
+	PaymentChannel     string  `ch:"PaymentChannel,type:String"`
+	TransactionCount   uint64  `ch:"TransactionCount,type:UInt64"`
+	SpentLastWeek      float64 `ch:"SpentLastWeek,type:Float64"`
+	SpentLastTwoWeeks  float64 `ch:"SpentLastTwoWeeks,type:Float64"`
+	SpentLastMonth     float64 `ch:"SpentLastMonth,type:Float64"`
+	SpentLastSixMonths float64 `ch:"SpentLastSixMonths,type:Float64"`
+	SpentLastYear      float64 `ch:"SpentLastYear,type:Float64"`
+	SpentLastTwoYears  float64 `ch:"SpentLastTwoYears,type:Float64"`
+	UserId             uint64  `ch:"UserId,type:UInt64"`
+}
+
+func (source *PaymentChannelMetricsFinancialSubProfileInternal) ConvertToORM() *PaymentChannelMetricsFinancialSubProfileORM {
+	return &PaymentChannelMetricsFinancialSubProfileORM{
+		Month:              source.Month,
+		PaymentChannel:     source.PaymentChannel,
+		SpentLastMonth:     source.SpentLastMonth,
+		SpentLastSixMonths: source.SpentLastSixMonths,
+		SpentLastTwoWeeks:  source.SpentLastTwoWeeks,
+		SpentLastTwoYears:  source.SpentLastTwoYears,
+		SpentLastWeek:      source.SpentLastWeek,
+		SpentLastYear:      source.SpentLastYear,
+		TransactionCount:   source.TransactionCount,
+		UserId:             source.UserId,
+	}
+}
+
+func (source *PaymentChannelMetricsFinancialSubProfileORM) ConvertToInternal() *PaymentChannelMetricsFinancialSubProfileInternal {
+	return &PaymentChannelMetricsFinancialSubProfileInternal{
+		Month:              source.Month,
+		PaymentChannel:     source.PaymentChannel,
+		SpentLastMonth:     source.SpentLastMonth,
+		SpentLastSixMonths: source.SpentLastSixMonths,
+		SpentLastTwoWeeks:  source.SpentLastTwoWeeks,
+		SpentLastTwoYears:  source.SpentLastTwoYears,
+		SpentLastWeek:      source.SpentLastWeek,
+		SpentLastYear:      source.SpentLastYear,
+		TransactionCount:   source.TransactionCount,
+		UserId:             source.UserId,
+	}
+}
+
+func (source *PaymentChannelMetricsFinancialSubProfileInternal) ConvertToProto() *PaymentChannelMetricsFinancialSubProfile {
+	return &PaymentChannelMetricsFinancialSubProfile{
+		Month:              source.Month,
+		PaymentChannel:     source.PaymentChannel,
+		SpentLastMonth:     source.SpentLastMonth,
+		SpentLastSixMonths: source.SpentLastSixMonths,
+		SpentLastTwoWeeks:  source.SpentLastTwoWeeks,
+		SpentLastTwoYears:  source.SpentLastTwoYears,
+		SpentLastWeek:      source.SpentLastWeek,
+		SpentLastYear:      source.SpentLastYear,
+		TransactionCount:   source.TransactionCount,
+		UserId:             source.UserId,
 	}
 }

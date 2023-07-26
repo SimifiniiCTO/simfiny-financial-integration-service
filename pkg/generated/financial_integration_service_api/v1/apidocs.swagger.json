@@ -5710,6 +5710,10 @@
         "userId": {
           "type": "string",
           "format": "uint64"
+        },
+        "month": {
+          "type": "integer",
+          "format": "int64"
         }
       },
       "description": "LocationFinancialSubProfile\nThis message is used to represent the financial sub profile of a location."
@@ -5771,6 +5775,10 @@
         "userId": {
           "type": "string",
           "format": "uint64"
+        },
+        "month": {
+          "type": "integer",
+          "format": "int64"
         }
       },
       "description": "MerchantFinancialSubProfile\nThis message is used to represent the financial sub profile of a merchant."

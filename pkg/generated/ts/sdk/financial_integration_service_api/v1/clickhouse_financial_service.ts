@@ -481,6 +481,7 @@ export interface LocationFinancialSubProfile {
   spentLastYear: number;
   spentLastTwoYears: number;
   userId: number;
+  month: number;
 }
 
 /**
@@ -496,6 +497,7 @@ export interface MerchantMetricsFinancialSubProfile {
   spentLastYear: number;
   spentLastTwoYears: number;
   userId: number;
+  month: number;
 }
 
 /**
@@ -3819,6 +3821,7 @@ function createBaseLocationFinancialSubProfile(): LocationFinancialSubProfile {
     spentLastYear: 0,
     spentLastTwoYears: 0,
     userId: 0,
+    month: 0,
   };
 }
 
@@ -3850,6 +3853,9 @@ export const LocationFinancialSubProfile = {
     }
     if (message.userId !== 0) {
       writer.uint32(72).uint64(message.userId);
+    }
+    if (message.month !== 0) {
+      writer.uint32(80).uint32(message.month);
     }
     return writer;
   },
@@ -3924,6 +3930,13 @@ export const LocationFinancialSubProfile = {
 
           message.userId = longToNumber(reader.uint64() as Long);
           continue;
+        case 10:
+          if (tag !== 80) {
+            break;
+          }
+
+          message.month = reader.uint32();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -3944,6 +3957,7 @@ export const LocationFinancialSubProfile = {
       spentLastYear: isSet(object.spentLastYear) ? Number(object.spentLastYear) : 0,
       spentLastTwoYears: isSet(object.spentLastTwoYears) ? Number(object.spentLastTwoYears) : 0,
       userId: isSet(object.userId) ? Number(object.userId) : 0,
+      month: isSet(object.month) ? Number(object.month) : 0,
     };
   },
 
@@ -3976,6 +3990,9 @@ export const LocationFinancialSubProfile = {
     if (message.userId !== 0) {
       obj.userId = Math.round(message.userId);
     }
+    if (message.month !== 0) {
+      obj.month = Math.round(message.month);
+    }
     return obj;
   },
 
@@ -3994,6 +4011,7 @@ export const LocationFinancialSubProfile = {
     message.spentLastYear = object.spentLastYear ?? 0;
     message.spentLastTwoYears = object.spentLastTwoYears ?? 0;
     message.userId = object.userId ?? 0;
+    message.month = object.month ?? 0;
     return message;
   },
 };
@@ -4008,6 +4026,7 @@ function createBaseMerchantMetricsFinancialSubProfile(): MerchantMetricsFinancia
     spentLastYear: 0,
     spentLastTwoYears: 0,
     userId: 0,
+    month: 0,
   };
 }
 
@@ -4036,6 +4055,9 @@ export const MerchantMetricsFinancialSubProfile = {
     }
     if (message.userId !== 0) {
       writer.uint32(72).uint64(message.userId);
+    }
+    if (message.month !== 0) {
+      writer.uint32(80).uint32(message.month);
     }
     return writer;
   },
@@ -4103,6 +4125,13 @@ export const MerchantMetricsFinancialSubProfile = {
 
           message.userId = longToNumber(reader.uint64() as Long);
           continue;
+        case 10:
+          if (tag !== 80) {
+            break;
+          }
+
+          message.month = reader.uint32();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -4122,6 +4151,7 @@ export const MerchantMetricsFinancialSubProfile = {
       spentLastYear: isSet(object.spentLastYear) ? Number(object.spentLastYear) : 0,
       spentLastTwoYears: isSet(object.spentLastTwoYears) ? Number(object.spentLastTwoYears) : 0,
       userId: isSet(object.userId) ? Number(object.userId) : 0,
+      month: isSet(object.month) ? Number(object.month) : 0,
     };
   },
 
@@ -4151,6 +4181,9 @@ export const MerchantMetricsFinancialSubProfile = {
     if (message.userId !== 0) {
       obj.userId = Math.round(message.userId);
     }
+    if (message.month !== 0) {
+      obj.month = Math.round(message.month);
+    }
     return obj;
   },
 
@@ -4172,6 +4205,7 @@ export const MerchantMetricsFinancialSubProfile = {
     message.spentLastYear = object.spentLastYear ?? 0;
     message.spentLastTwoYears = object.spentLastTwoYears ?? 0;
     message.userId = object.userId ?? 0;
+    message.month = object.month ?? 0;
     return message;
   },
 };

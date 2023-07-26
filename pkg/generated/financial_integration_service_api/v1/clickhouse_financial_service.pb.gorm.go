@@ -1440,6 +1440,7 @@ type IncomeMetricsFinancialSubProfileWithAfterToPB interface {
 
 type LocationFinancialSubProfileORM struct {
 	LocationCity       string
+	Month              uint32
 	SpentLastMonth     float64
 	SpentLastSixMonths float64
 	SpentLastTwoWeeks  float64
@@ -1474,6 +1475,7 @@ func (m *LocationFinancialSubProfile) ToORM(ctx context.Context) (LocationFinanc
 	to.SpentLastYear = m.SpentLastYear
 	to.SpentLastTwoYears = m.SpentLastTwoYears
 	to.UserId = m.UserId
+	to.Month = m.Month
 	if posthook, ok := interface{}(m).(LocationFinancialSubProfileWithAfterToORM); ok {
 		err = posthook.AfterToORM(ctx, &to)
 	}
@@ -1499,6 +1501,7 @@ func (m *LocationFinancialSubProfileORM) ToPB(ctx context.Context) (LocationFina
 	to.SpentLastYear = m.SpentLastYear
 	to.SpentLastTwoYears = m.SpentLastTwoYears
 	to.UserId = m.UserId
+	to.Month = m.Month
 	if posthook, ok := interface{}(m).(LocationFinancialSubProfileWithAfterToPB); ok {
 		err = posthook.AfterToPB(ctx, &to)
 	}
@@ -1530,6 +1533,7 @@ type LocationFinancialSubProfileWithAfterToPB interface {
 
 type MerchantMetricsFinancialSubProfileORM struct {
 	MerchantName       string
+	Month              uint32
 	SpentLastMonth     float64
 	SpentLastSixMonths float64
 	SpentLastTwoWeeks  float64
@@ -1562,6 +1566,7 @@ func (m *MerchantMetricsFinancialSubProfile) ToORM(ctx context.Context) (Merchan
 	to.SpentLastYear = m.SpentLastYear
 	to.SpentLastTwoYears = m.SpentLastTwoYears
 	to.UserId = m.UserId
+	to.Month = m.Month
 	if posthook, ok := interface{}(m).(MerchantMetricsFinancialSubProfileWithAfterToORM); ok {
 		err = posthook.AfterToORM(ctx, &to)
 	}
@@ -1586,6 +1591,7 @@ func (m *MerchantMetricsFinancialSubProfileORM) ToPB(ctx context.Context) (Merch
 	to.SpentLastYear = m.SpentLastYear
 	to.SpentLastTwoYears = m.SpentLastTwoYears
 	to.UserId = m.UserId
+	to.Month = m.Month
 	if posthook, ok := interface{}(m).(MerchantMetricsFinancialSubProfileWithAfterToPB); ok {
 		err = posthook.AfterToPB(ctx, &to)
 	}
@@ -5846,6 +5852,10 @@ func DefaultApplyFieldMaskLocationFinancialSubProfile(ctx context.Context, patch
 			patchee.UserId = patcher.UserId
 			continue
 		}
+		if f == prefix+"Month" {
+			patchee.Month = patcher.Month
+			continue
+		}
 	}
 	if err != nil {
 		return nil, err
@@ -5977,6 +5987,10 @@ func DefaultApplyFieldMaskMerchantMetricsFinancialSubProfile(ctx context.Context
 		}
 		if f == prefix+"UserId" {
 			patchee.UserId = patcher.UserId
+			continue
+		}
+		if f == prefix+"Month" {
+			patchee.Month = patcher.Month
 			continue
 		}
 	}

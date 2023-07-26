@@ -528,6 +528,7 @@ This message is used to represent the financial sub profile of a location.
 | spent_last_year | [double](#double) |  |  |
 | spent_last_two_years | [double](#double) |  |  |
 | user_id | [uint64](#uint64) |  |  |
+| month | [uint32](#uint32) |  |  |
 
 
 
@@ -572,6 +573,7 @@ This message is used to represent the financial sub profile of a merchant.
 | spent_last_year | [double](#double) |  |  |
 | spent_last_two_years | [double](#double) |  |  |
 | user_id | [uint64](#uint64) |  |  |
+| month | [uint32](#uint32) |  |  |
 
 
 
