@@ -119,13 +119,14 @@ func (p *Params) Validate() error {
 	return nil
 }
 
-func configureTaskHandler(param *Params) *taskhandler.TaskHandler {
+func configureTaskHandler(param *Params, client *openai.Client) *taskhandler.TaskHandler {
 	opts := []taskhandler.Option{
 		taskhandler.WithLogger(param.Logger),
 		taskhandler.WithInstrumentationClient(param.Instrumentation),
 		taskhandler.WithClickhouseDb(param.ClickhouseDb),
 		taskhandler.WithPostgresDb(param.Db),
 		taskhandler.WithPlaidClient(param.PlaidWrapper),
+		taskhandler.WithOpenAIClient(client),
 	}
 
 	return taskhandler.NewTaskHandler(opts...)
@@ -141,7 +142,8 @@ func NewServer(param *Params) (*Server, error) {
 	sc := &client.API{}
 	sc.Init(param.Config.StripeApiKey, nil)
 
-	th := configureTaskHandler(param)
+	openAiClient := openai.NewClient(*param.OpenAiToken)
+	th := configureTaskHandler(param, openAiClient)
 	// generatee task procerssor
 	opts := []taskprocessor.Option{
 		taskprocessor.WithLoggerOpt(param.Logger),
@@ -175,7 +177,7 @@ func NewServer(param *Params) (*Server, error) {
 		return nil, errors.New("open ai token is required")
 	}
 
-	srv.OpenAiClient = openai.NewClient(*param.OpenAiToken)
+	srv.OpenAiClient = openAiClient
 
 	if err := srv.registerBatchJobs(); err != nil {
 		return nil, err
