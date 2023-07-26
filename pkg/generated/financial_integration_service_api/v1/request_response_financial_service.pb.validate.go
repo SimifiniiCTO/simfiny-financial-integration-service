@@ -109,46 +109,6 @@ func (m *CreateUserProfileRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	if m.GetFinancialContext() == nil {
-		err := CreateUserProfileRequestValidationError{
-			field:  "FinancialContext",
-			reason: "value is required",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
-	}
-
-	if all {
-		switch v := interface{}(m.GetFinancialContext()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, CreateUserProfileRequestValidationError{
-					field:  "FinancialContext",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, CreateUserProfileRequestValidationError{
-					field:  "FinancialContext",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		}
-	} else if v, ok := interface{}(m.GetFinancialContext()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return CreateUserProfileRequestValidationError{
-				field:  "FinancialContext",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
-
 	if len(errors) > 0 {
 		return CreateUserProfileRequestMultiError(errors)
 	}
@@ -541,6 +501,46 @@ func (m *GetUserProfileResponse) validate(all bool) error {
 		if err := v.Validate(); err != nil {
 			return GetUserProfileResponseValidationError{
 				field:  "Profile",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if m.GetFinancialContext() == nil {
+		err := GetUserProfileResponseValidationError{
+			field:  "FinancialContext",
+			reason: "value is required",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if all {
+		switch v := interface{}(m.GetFinancialContext()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, GetUserProfileResponseValidationError{
+					field:  "FinancialContext",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, GetUserProfileResponseValidationError{
+					field:  "FinancialContext",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetFinancialContext()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return GetUserProfileResponseValidationError{
+				field:  "FinancialContext",
 				reason: "embedded message failed validation",
 				cause:  err,
 			}
