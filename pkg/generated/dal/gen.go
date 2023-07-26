@@ -17,6 +17,7 @@ import (
 
 var (
 	Q                        = new(Query)
+	ActionableInsightORM     *actionableInsightORM
 	AprORM                   *aprORM
 	BankAccountORM           *bankAccountORM
 	BudgetORM                *budgetORM
@@ -44,6 +45,7 @@ var (
 
 func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	*Q = *Use(db, opts...)
+	ActionableInsightORM = &Q.ActionableInsightORM
 	AprORM = &Q.AprORM
 	BankAccountORM = &Q.BankAccountORM
 	BudgetORM = &Q.BudgetORM
@@ -72,6 +74,7 @@ func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 	return &Query{
 		db:                       db,
+		ActionableInsightORM:     newActionableInsightORM(db, opts...),
 		AprORM:                   newAprORM(db, opts...),
 		BankAccountORM:           newBankAccountORM(db, opts...),
 		BudgetORM:                newBudgetORM(db, opts...),
@@ -101,6 +104,7 @@ func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 type Query struct {
 	db *gorm.DB
 
+	ActionableInsightORM     actionableInsightORM
 	AprORM                   aprORM
 	BankAccountORM           bankAccountORM
 	BudgetORM                budgetORM
@@ -131,6 +135,7 @@ func (q *Query) Available() bool { return q.db != nil }
 func (q *Query) clone(db *gorm.DB) *Query {
 	return &Query{
 		db:                       db,
+		ActionableInsightORM:     q.ActionableInsightORM.clone(db),
 		AprORM:                   q.AprORM.clone(db),
 		BankAccountORM:           q.BankAccountORM.clone(db),
 		BudgetORM:                q.BudgetORM.clone(db),
@@ -168,6 +173,7 @@ func (q *Query) WriteDB() *Query {
 func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 	return &Query{
 		db:                       db,
+		ActionableInsightORM:     q.ActionableInsightORM.replaceDB(db),
 		AprORM:                   q.AprORM.replaceDB(db),
 		BankAccountORM:           q.BankAccountORM.replaceDB(db),
 		BudgetORM:                q.BudgetORM.replaceDB(db),
@@ -195,6 +201,7 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 }
 
 type queryCtx struct {
+	ActionableInsightORM     IActionableInsightORMDo
 	AprORM                   IAprORMDo
 	BankAccountORM           IBankAccountORMDo
 	BudgetORM                IBudgetORMDo
@@ -222,6 +229,7 @@ type queryCtx struct {
 
 func (q *Query) WithContext(ctx context.Context) *queryCtx {
 	return &queryCtx{
+		ActionableInsightORM:     q.ActionableInsightORM.WithContext(ctx),
 		AprORM:                   q.AprORM.WithContext(ctx),
 		BankAccountORM:           q.BankAccountORM.WithContext(ctx),
 		BudgetORM:                q.BudgetORM.WithContext(ctx),

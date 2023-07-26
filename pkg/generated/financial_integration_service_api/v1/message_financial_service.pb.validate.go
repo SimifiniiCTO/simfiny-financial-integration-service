@@ -249,6 +249,40 @@ func (m *UserProfile) validate(all bool) error {
 
 	}
 
+	for idx, item := range m.GetActionableInsights() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, UserProfileValidationError{
+						field:  fmt.Sprintf("ActionableInsights[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, UserProfileValidationError{
+						field:  fmt.Sprintf("ActionableInsights[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return UserProfileValidationError{
+					field:  fmt.Sprintf("ActionableInsights[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
 	if len(errors) > 0 {
 		return UserProfileMultiError(errors)
 	}
@@ -325,6 +359,143 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = UserProfileValidationError{}
+
+// Validate checks the field values on ActionableInsight with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// first error encountered is returned, or nil if there are no violations.
+func (m *ActionableInsight) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ActionableInsight with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ActionableInsightMultiError, or nil if none found.
+func (m *ActionableInsight) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ActionableInsight) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Id
+
+	// no validation rules for DetailedAction
+
+	// no validation rules for SummarizedAction
+
+	if all {
+		switch v := interface{}(m.GetGeneratedTime()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ActionableInsightValidationError{
+					field:  "GeneratedTime",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ActionableInsightValidationError{
+					field:  "GeneratedTime",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetGeneratedTime()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ActionableInsightValidationError{
+				field:  "GeneratedTime",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return ActionableInsightMultiError(errors)
+	}
+
+	return nil
+}
+
+// ActionableInsightMultiError is an error wrapping multiple validation errors
+// returned by ActionableInsight.ValidateAll() if the designated constraints
+// aren't met.
+type ActionableInsightMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ActionableInsightMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ActionableInsightMultiError) AllErrors() []error { return m }
+
+// ActionableInsightValidationError is the validation error returned by
+// ActionableInsight.Validate if the designated constraints aren't met.
+type ActionableInsightValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ActionableInsightValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ActionableInsightValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ActionableInsightValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ActionableInsightValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ActionableInsightValidationError) ErrorName() string {
+	return "ActionableInsightValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ActionableInsightValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sActionableInsight.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ActionableInsightValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ActionableInsightValidationError{}
 
 // Validate checks the field values on Link with the rules defined in the proto
 // definition for this message. If any rules are violated, the first error

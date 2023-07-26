@@ -4,6 +4,7 @@ package financial_integration_service_apiv1
 func GetDatabaseSchemas() []interface{} {
 	var models = []interface{}{
 		LinkORM{},
+		ActionableInsightORM{},
 		TokenORM{},
 		PlaidLinkORM{},
 		UserProfileORM{},

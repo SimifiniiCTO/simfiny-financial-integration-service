@@ -1,5 +1,6 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
+import { Timestamp } from "../../google/protobuf/timestamp";
 import Long = require("long");
 
 export const protobufPackage = "financial_integration_service_api.v1";
@@ -479,6 +480,25 @@ export interface UserProfile {
     | undefined;
   /** a user profile can have many links (connected institutions) of which finanical accounts are tied to (checking, savings, etc) */
   link: Link[];
+  actionableInsights: ActionableInsight[];
+}
+
+/**
+ * An actionable insight serves as a basic insight users
+ * can leverage and act upon and is typically generated based off of their financial contexts
+ */
+export interface ActionableInsight {
+  id: number;
+  /** for each user we generate a detailed actionable insights for them to see */
+  detailedAction: string;
+  /** for each user we generate a summarized insight targeted at optimizing a certain condition */
+  summarizedAction: string;
+  /** the time the insight was generated */
+  generatedTime:
+    | Date
+    | undefined;
+  /** associated tags with the generated insights */
+  tags: string[];
 }
 
 /**
@@ -1101,7 +1121,7 @@ export const StripeSubscription = {
 };
 
 function createBaseUserProfile(): UserProfile {
-  return { id: 0, userId: 0, stripeCustomerId: "", stripeSubscriptions: undefined, link: [] };
+  return { id: 0, userId: 0, stripeCustomerId: "", stripeSubscriptions: undefined, link: [], actionableInsights: [] };
 }
 
 export const UserProfile = {
@@ -1120,6 +1140,9 @@ export const UserProfile = {
     }
     for (const v of message.link) {
       Link.encode(v!, writer.uint32(50).fork()).ldelim();
+    }
+    for (const v of message.actionableInsights) {
+      ActionableInsight.encode(v!, writer.uint32(58).fork()).ldelim();
     }
     return writer;
   },
@@ -1166,6 +1189,13 @@ export const UserProfile = {
 
           message.link.push(Link.decode(reader, reader.uint32()));
           continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.actionableInsights.push(ActionableInsight.decode(reader, reader.uint32()));
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1184,6 +1214,9 @@ export const UserProfile = {
         ? StripeSubscription.fromJSON(object.stripeSubscriptions)
         : undefined,
       link: Array.isArray(object?.link) ? object.link.map((e: any) => Link.fromJSON(e)) : [],
+      actionableInsights: Array.isArray(object?.actionableInsights)
+        ? object.actionableInsights.map((e: any) => ActionableInsight.fromJSON(e))
+        : [],
     };
   },
 
@@ -1204,6 +1237,9 @@ export const UserProfile = {
     if (message.link?.length) {
       obj.link = message.link.map((e) => Link.toJSON(e));
     }
+    if (message.actionableInsights?.length) {
+      obj.actionableInsights = message.actionableInsights.map((e) => ActionableInsight.toJSON(e));
+    }
     return obj;
   },
 
@@ -1220,6 +1256,127 @@ export const UserProfile = {
       ? StripeSubscription.fromPartial(object.stripeSubscriptions)
       : undefined;
     message.link = object.link?.map((e) => Link.fromPartial(e)) || [];
+    message.actionableInsights = object.actionableInsights?.map((e) => ActionableInsight.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseActionableInsight(): ActionableInsight {
+  return { id: 0, detailedAction: "", summarizedAction: "", generatedTime: undefined, tags: [] };
+}
+
+export const ActionableInsight = {
+  encode(message: ActionableInsight, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).uint64(message.id);
+    }
+    if (message.detailedAction !== "") {
+      writer.uint32(18).string(message.detailedAction);
+    }
+    if (message.summarizedAction !== "") {
+      writer.uint32(26).string(message.summarizedAction);
+    }
+    if (message.generatedTime !== undefined) {
+      Timestamp.encode(toTimestamp(message.generatedTime), writer.uint32(34).fork()).ldelim();
+    }
+    for (const v of message.tags) {
+      writer.uint32(42).string(v!);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ActionableInsight {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseActionableInsight();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.id = longToNumber(reader.uint64() as Long);
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.detailedAction = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.summarizedAction = reader.string();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.generatedTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.tags.push(reader.string());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ActionableInsight {
+    return {
+      id: isSet(object.id) ? Number(object.id) : 0,
+      detailedAction: isSet(object.detailedAction) ? String(object.detailedAction) : "",
+      summarizedAction: isSet(object.summarizedAction) ? String(object.summarizedAction) : "",
+      generatedTime: isSet(object.generatedTime) ? fromJsonTimestamp(object.generatedTime) : undefined,
+      tags: Array.isArray(object?.tags) ? object.tags.map((e: any) => String(e)) : [],
+    };
+  },
+
+  toJSON(message: ActionableInsight): unknown {
+    const obj: any = {};
+    if (message.id !== 0) {
+      obj.id = Math.round(message.id);
+    }
+    if (message.detailedAction !== "") {
+      obj.detailedAction = message.detailedAction;
+    }
+    if (message.summarizedAction !== "") {
+      obj.summarizedAction = message.summarizedAction;
+    }
+    if (message.generatedTime !== undefined) {
+      obj.generatedTime = message.generatedTime.toISOString();
+    }
+    if (message.tags?.length) {
+      obj.tags = message.tags;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ActionableInsight>, I>>(base?: I): ActionableInsight {
+    return ActionableInsight.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ActionableInsight>, I>>(object: I): ActionableInsight {
+    const message = createBaseActionableInsight();
+    message.id = object.id ?? 0;
+    message.detailedAction = object.detailedAction ?? "";
+    message.summarizedAction = object.summarizedAction ?? "";
+    message.generatedTime = object.generatedTime ?? undefined;
+    message.tags = object.tags?.map((e) => e) || [];
     return message;
   },
 };
@@ -5672,6 +5829,28 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
+
+function toTimestamp(date: Date): Timestamp {
+  const seconds = date.getTime() / 1_000;
+  const nanos = (date.getTime() % 1_000) * 1_000_000;
+  return { seconds, nanos };
+}
+
+function fromTimestamp(t: Timestamp): Date {
+  let millis = (t.seconds || 0) * 1_000;
+  millis += (t.nanos || 0) / 1_000_000;
+  return new Date(millis);
+}
+
+function fromJsonTimestamp(o: any): Date {
+  if (o instanceof Date) {
+    return o;
+  } else if (typeof o === "string") {
+    return new Date(o);
+  } else {
+    return fromTimestamp(Timestamp.fromJSON(o));
+  }
+}
 
 function longToNumber(long: Long): number {
   if (long.gt(Number.MAX_SAFE_INTEGER)) {

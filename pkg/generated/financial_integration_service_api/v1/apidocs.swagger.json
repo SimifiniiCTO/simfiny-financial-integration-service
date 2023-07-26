@@ -3956,6 +3956,36 @@
       },
       "description": "Account Balance History\nThis message is used to represent the balance history of an account."
     },
+    "ActionableInsight": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "detailedAction": {
+          "type": "string",
+          "title": "for each user we generate a detailed actionable insights for them to see"
+        },
+        "summarizedAction": {
+          "type": "string",
+          "title": "for each user we generate a summarized insight targeted at optimizing a certain condition"
+        },
+        "generatedTime": {
+          "type": "string",
+          "format": "date-time",
+          "title": "the time the insight was generated"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "associated tags with the generated insights"
+        }
+      },
+      "title": "An actionable insight serves as a basic insight users \ncan leverage and act upon and is typically generated based off of their financial contexts"
+    },
     "Any": {
       "type": "object",
       "properties": {
@@ -7289,6 +7319,13 @@
             "$ref": "#/definitions/Link"
           },
           "title": "a user profile can have many links (connected institutions) of which finanical accounts are tied to (checking, savings, etc)"
+        },
+        "actionableInsights": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/ActionableInsight"
+          }
         }
       },
       "title": "UserProfile stores high level user profile details\nsuch as the id, user_id tied to the profile, and many more"

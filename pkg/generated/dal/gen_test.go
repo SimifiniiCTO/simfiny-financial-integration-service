@@ -77,6 +77,7 @@ func Test_WithContext(t *testing.T) {
 	qCtx := query.WithContext(context.WithValue(context.Background(), key, value))
 
 	for _, ctx := range []context.Context{
+		qCtx.ActionableInsightORM.UnderlyingDB().Statement.Context,
 		qCtx.AprORM.UnderlyingDB().Statement.Context,
 		qCtx.BankAccountORM.UnderlyingDB().Statement.Context,
 		qCtx.BudgetORM.UnderlyingDB().Statement.Context,

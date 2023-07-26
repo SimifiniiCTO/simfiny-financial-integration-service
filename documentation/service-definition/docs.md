@@ -51,6 +51,7 @@
     - [NotFoundErrorCode](#financial_integration_service_api-v1-NotFoundErrorCode)
   
 - [financial_integration_service_api/v1/message_financial_service.proto](#financial_integration_service_api_v1_message_financial_service-proto)
+    - [ActionableInsight](#financial_integration_service_api-v1-ActionableInsight)
     - [Apr](#financial_integration_service_api-v1-Apr)
     - [BankAccount](#financial_integration_service_api-v1-BankAccount)
     - [Budget](#financial_integration_service_api-v1-Budget)
@@ -1155,6 +1156,26 @@ This message is used to represent the financial health metrics of a user.
 
 
 
+<a name="financial_integration_service_api-v1-ActionableInsight"></a>
+
+### ActionableInsight
+An actionable insight serves as a basic insight users 
+can leverage and act upon and is typically generated based off of their financial contexts
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [uint64](#uint64) |  |  |
+| detailed_action | [string](#string) |  | for each user we generate a detailed actionable insights for them to see |
+| summarized_action | [string](#string) |  | for each user we generate a summarized insight targeted at optimizing a certain condition |
+| generated_time | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  | the time the insight was generated |
+| tags | [string](#string) | repeated | associated tags with the generated insights |
+
+
+
+
+
+
 <a name="financial_integration_service_api-v1-Apr"></a>
 
 ### Apr
@@ -1692,6 +1713,7 @@ such as the id, user_id tied to the profile, and many more
 | stripe_customer_id | [string](#string) |  |  |
 | stripe_subscriptions | [StripeSubscription](#financial_integration_service_api-v1-StripeSubscription) |  | the stripe subscriptions the user profile actively maintains |
 | link | [Link](#financial_integration_service_api-v1-Link) | repeated | a user profile can have many links (connected institutions) of which finanical accounts are tied to (checking, savings, etc) |
+| actionable_insights | [ActionableInsight](#financial_integration_service_api-v1-ActionableInsight) | repeated |  |
 
 
 

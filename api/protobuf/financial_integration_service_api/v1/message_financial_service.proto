@@ -7,6 +7,7 @@ import "protoc-gen-gorm/options/gorm.proto";
 import "validate/validate.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 import "google/api/field_behavior.proto";
+import "google/protobuf/timestamp.proto";
 
 option go_package = "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1";
 
@@ -114,7 +115,23 @@ message UserProfile {
   // the stripe subscriptions the user profile actively maintains
   StripeSubscription stripe_subscriptions = 4 [(gorm.field).has_many = {disable_association_autocreate: false disable_association_autoupdate: false preload: true}];
   // a user profile can have many links (connected institutions) of which finanical accounts are tied to (checking, savings, etc)
-  repeated Link link = 6 [(gorm.field).has_one = {disable_association_autocreate: false disable_association_autoupdate: false preload: true}];
+  repeated Link link = 6 [(gorm.field).has_many = {disable_association_autocreate: false disable_association_autoupdate: false preload: true}];
+  repeated ActionableInsight actionable_insights = 7 [(gorm.field).has_many = {disable_association_autocreate: false disable_association_autoupdate: false preload: true}];
+}
+
+// An actionable insight serves as a basic insight users 
+// can leverage and act upon and is typically generated based off of their financial contexts
+message ActionableInsight {
+  option (gorm.opts) = {ormable: true};
+  uint64 id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+  // for each user we generate a detailed actionable insights for them to see
+  string detailed_action = 2;
+  // for each user we generate a summarized insight targeted at optimizing a certain condition
+  string summarized_action = 3;
+  // the time the insight was generated
+  google.protobuf.Timestamp generated_time = 4;
+  // associated tags with the generated insights
+  repeated string tags = 5;
 }
 
 // A Link represents a login at a financial institution. A single end-user of your application might have accounts at different financial
