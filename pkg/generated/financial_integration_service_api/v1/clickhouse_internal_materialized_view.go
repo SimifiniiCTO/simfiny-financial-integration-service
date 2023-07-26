@@ -422,7 +422,7 @@ func (source *MonthlyBalanceInternal) ConvertToProto() *MonthlyBalance {
 type MonthlyExpenditureInternal struct {
 	ch.CHModel    `ch:"MonthlyExpenditure,partition:toYYYYMM(time)"`
 	Month         uint32  `ch:"Month,type:UInt32"`
-	TotalSpending float64 `ch:"TotalSpent,type:Float64"`
+	TotalSpending float64 `ch:"TotalSpending,type:Float64"`
 	UserId        uint64  `ch:"UserId,type:UInt64"`
 }
 

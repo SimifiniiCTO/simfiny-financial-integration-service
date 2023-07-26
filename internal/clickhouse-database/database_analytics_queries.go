@@ -315,19 +315,20 @@ type BaseParams struct {
 	PageNumber   uint64
 }
 
+func clickhouseQueryBuilder(params *BaseParams, query *ch.SelectQuery) {
+	if params.Month != 0 {
+		query = query.Where("Month = ?", params.Month)
+	}
+
+	if params.MerchantName != "" {
+		query = query.Where("MerchantName = ?", params.MerchantName)
+	}
+}
+
 func (db *Db) GetMerchantMonthlyExpenditure(ctx context.Context, userId *uint64, params *BaseParams) ([]*schema.MerchantMonthlyExpenditure, int64, error) {
 	var (
 		nextPageNumber              int64
 		merchantMonthlyExpenditures []schema.MerchantMonthlyExpenditureInternal
-		buildClickHouseQuery        = func(params *BaseParams, query *ch.SelectQuery) {
-			if params.Month != 0 {
-				query = query.Where("Month = ?", params.Month)
-			}
-
-			if params.MerchantName != "" {
-				query = query.Where("MerchantName = ?", params.MerchantName)
-			}
-		}
 	)
 
 	if span := db.startDatastoreSpan(ctx, "dbtxn-get-merchant-monthly-expenditure"); span != nil {
@@ -352,7 +353,7 @@ func (db *Db) GetMerchantMonthlyExpenditure(ctx context.Context, userId *uint64,
 	offset := int(pageSize * (pageNumber - 1))
 	queryLimit := int(pageSize)
 	selectQuery := db.queryEngine.NewSelect().Model(&merchantMonthlyExpenditures).Offset(offset).Limit(queryLimit)
-	buildClickHouseQuery(params, selectQuery)
+	clickhouseQueryBuilder(params, selectQuery)
 	// sort by month in descending order
 	if err := selectQuery.Order("Month DESC").Scan(ctx); err != nil {
 		return nil, 0, err
@@ -364,6 +365,56 @@ func (db *Db) GetMerchantMonthlyExpenditure(ctx context.Context, userId *uint64,
 
 	txs := make([]*schema.MerchantMonthlyExpenditure, 0, len(merchantMonthlyExpenditures))
 	for _, record := range merchantMonthlyExpenditures {
+		record := record.ConvertToProto()
+		txs = append(txs, record)
+	}
+
+	return txs, nextPageNumber, nil
+}
+
+func (db *Db) GetMonthlyExpenditure(ctx context.Context, userId *uint64, params *BaseParams) ([]*schema.MonthlyExpenditure, int64, error) {
+	var (
+		nextPageNumber      int64
+		monthlyExpenditures []schema.MonthlyExpenditureInternal
+	)
+
+	if span := db.startDatastoreSpan(ctx, "dbtxn-get-monthly-expenditure"); span != nil {
+		defer span.End()
+	}
+
+	if userId == nil {
+		return nil, 0, fmt.Errorf("user ID cannot be nil")
+	}
+
+	if params == nil {
+		return nil, 0, fmt.Errorf("params cannot be nil")
+	}
+
+	// ensure only the month is used for the query
+	params.MerchantName = ""
+
+	pageNumber, pageSize := db.sanitizePaginationParams(int64(params.PageNumber), int64(params.PageSize))
+	if pageNumber == 0 {
+		nextPageNumber = 2
+	} else {
+		nextPageNumber = pageNumber + 1
+	}
+
+	offset := int(pageSize * (pageNumber - 1))
+	queryLimit := int(pageSize)
+	selectQuery := db.queryEngine.NewSelect().Model(&monthlyExpenditures).Offset(offset).Limit(queryLimit)
+	clickhouseQueryBuilder(params, selectQuery)
+	// sort by month in descending order
+	if err := selectQuery.Order("Month DESC").Scan(ctx); err != nil {
+		return nil, 0, err
+	}
+
+	if len(monthlyExpenditures) == 0 {
+		return nil, 0, fmt.Errorf("no records found")
+	}
+
+	txs := make([]*schema.MonthlyExpenditure, 0, len(monthlyExpenditures))
+	for _, record := range monthlyExpenditures {
 		record := record.ConvertToProto()
 		txs = append(txs, record)
 	}
