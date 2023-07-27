@@ -126,37 +126,309 @@ type FinancialServiceClient interface {
 	GetLink(ctx context.Context, in *GetLinkRequest, opts ...grpc.CallOption) (*GetLinkResponse, error)
 	GetLinks(ctx context.Context, in *GetLinksRequest, opts ...grpc.CallOption) (*GetLinksResponse, error)
 	DeleteLink(ctx context.Context, in *DeleteLinkRequest, opts ...grpc.CallOption) (*DeleteLinkResponse, error)
+	// Description: This endpoint enables end users to get recurring transactions
+	// Parameters:
+	// - user_id - user id of the user whose recurring transaction we seek to fetch
+	// API Version: 1.
+	// API: /api/v1/transactions/recurring-transactions/{user_id}
 	GetReCurringTransactions(ctx context.Context, in *GetReCurringTransactionsRequest, opts ...grpc.CallOption) (*GetReCurringTransactionsResponse, error)
+	// Description: This endpoint enables end users to get transactions in a paginated manner
+	// Parameters:
+	// - user_id - user id of the user whose recurring transaction we seek to fetch
+	// - page_number - page number of the transaction we want to fetch (page number)
+	// - page_size - page size of the transaction we want to fetch (number of transactions)
+	// API Version: 1.
+	// API: /api/v1/transactions/{user_id}/pageNumber/{page_number}/pageSize/{page_size}
 	GetTransactions(ctx context.Context, in *GetTransactionsRequest, opts ...grpc.CallOption) (*GetTransactionsResponse, error)
+	// Description: This endpoint enables us to process plaid webhooks
+	// Body:
+	// - {
+	// "webhookType": "string",
+	// "webhookCode": "string",
+	// "itemId": "string",
+	// "initialUpdateComplete": true,
+	// "historicalUpdateComplete": "string",
+	// "environment": "string",
+	// "newTransactions": [
+	// "string"
+	// ],
+	// "removedTransactions": [
+	// "string"
+	// ],
+	// "error": {
+	// "additionalProp1": {
+	// "@type": "string",
+	// "additionalProp1": "string",
+	// "additionalProp2": "string",
+	// "additionalProp3": "string"
+	// },
+	// "additionalProp2": {
+	// "@type": "string",
+	// "additionalProp1": "string",
+	// "additionalProp2": "string",
+	// "additionalProp3": "string"
+	// },
+	// "additionalProp3": {
+	// "@type": "string",
+	// "additionalProp1": "string",
+	// "additionalProp2": "string",
+	// "additionalProp3": "string"
+	// }
+	// },
+	// "accountIds": [
+	// "string"
+	// ],
+	// "consentExpirationTime": "string",
+	// "accountIdsWithNewLiabilities": [
+	// "string"
+	// ],
+	// "accountIdsWithUpdatedLiabilities": [
+	// "string"
+	// ],
+	// "newHoldings": "string",
+	// "updatedHoldings": "string"
+	// }
+	// API Version: 1.
+	// API: /api/v1/plaid/webhook
 	ProcessWebhook(ctx context.Context, in *ProcessWebhookRequest, opts ...grpc.CallOption) (*ProcessWebhookResponse, error)
+	// Description: This endpoint enables us to process stripe webhooks
+	// Body:
+	// - {
+	// "body": "string",
+	// "signature": "string"
+	// }
+	// API Version: 1.
+	// API: /api/v1/stripe/webhook
 	StripeWebhook(ctx context.Context, in *StripeWebhookRequest, opts ...grpc.CallOption) (*StripeWebhookResponse, error)
+	// Description: This endpoint enables end users to get transactions in a paginated manner
+	// Body:
+	// - {
+	// userId*	string($uint64)
+	// priceId*	string
+	// }
+	// API Version: 1.
+	// API: /api/v1/stripe/subscription
 	CreateSubscription(ctx context.Context, in *CreateSubscriptionRequest, opts ...grpc.CallOption) (*CreateSubscriptionResponse, error)
-	// Transaction Aggregates By Queries
+	// Description: This endpoint enables end users to get transaction aggregated by month
+	// Parameters:
+	// - user_id - user id of the user whose recurring transaction we seek to fetch
+	// Optional Parameters:
+	// - month - month of the transaction
+	// - personalFinanceCategoryPrimary - personal financial category
+	// - locationCity - location of the transaction
+	// - paymentChannel - payment channel
+	// - merchantName - merchant name
+	// - pageNumber - page number
+	// - pageSize - page size
+	// API Version: 1.
+	// API: /api/v1/analytics/transaction-aggregates/{user_id}?pageNumber={page_number}&pageSize={page_size}&merchantName={merchant_name}&paymentChannel={payment_channel}&locationCity={location_city}&personalFinanceCategoryPrimary={personal_finance_category_primary}&month={month}
 	GetTransactionAggregates(ctx context.Context, in *GetTransactionAggregatesRequest, opts ...grpc.CallOption) (*GetTransactionAggregatesResponse, error)
+	// Description: This endpoint enables end users to get the historical account balances for all accounts the user has
+	// Parameters:
+	// - user_id - user id of the user whose recurring transaction we seek to fetch
+	// - page_number - page number of the request
+	// - page_size - page size of the request
+	// API Version: 1.
+	// API: /api/v1/analytics/balance-history/user/{user_id}/pagenumber/{page_number}/pagesize/{page_size}
 	GetUserAccountBalanceHistory(ctx context.Context, in *GetUserAccountBalanceHistoryRequest, opts ...grpc.CallOption) (*GetUserAccountBalanceHistoryResponse, error)
+	// Description: This endpoint enables end users to get the historical account balances for a given account the user has
+	// Parameters:
+	// - user_id - user id of the user whose recurring transaction we seek to fetch
+	// - plaid_account_id - plaid account id of the account
+	// - page_number - page number of the request
+	// - page_size - page size of the request
+	// API Version: 1.
+	// API: /api/v1/analytics/balance-history/account/{plaid_account_id}/pagenumber/{page_number}/pagesize/{page_size}
 	GetAccountBalanceHistory(ctx context.Context, in *GetAccountBalanceHistoryRequest, opts ...grpc.CallOption) (*GetAccountBalanceHistoryResponse, error)
-	// Get user category monthly expenditure
+	// Description: This endpoint enables end users to get their categorized monthly expenditures
+	// Parameters:
+	// - user_id - user id of the user
+	// Optional Parameters:
+	// - personalFinanceCategoryPrimary - category of the personal finance
+	// - month - month
+	// - pageNumber - page number of the request
+	// - pageSize - page size of the request
+	// API Version: 1.
+	// API: /api/v1/analytics/category-monthly-expenditure/user/{user_id}?personalFinanceCategoryPrimary={personal_finance_category_}&month={month}&pageNumber={page_number}&pageSize={page_size}
 	GetUserCategoryMonthlyExpenditure(ctx context.Context, in *GetUserCategoryMonthlyExpenditureRequest, opts ...grpc.CallOption) (*GetUserCategoryMonthlyExpenditureResponse, error)
-	// Get CategoryMonthlyIncome by Category and User - This would return all CategoryMonthlyIncome records for a specific user for a specific personal finance category
+	// Description: Get CategoryMonthlyIncome by Category and User - This would return all CategoryMonthlyIncome records for a specific user for a specific personal finance category
+	// Parameters:
+	// - user_id - user id of the user
+	// Optional Parameters:
+	// - personalFinanceCategoryPrimary - category of the personal finance
+	// - month - month
+	// - pageNumber - page number of the request
+	// - pageSize - page size of the request
+	// API Version: 1.
+	// API: /api/v1/analytics/category-monthly-income/user/{user_id}?personalFinanceCategoryPrimary={personal_finance_category_}&month={month}&pageNumber={page_number}&pageSize={page_size}
 	GetUserCategoryMonthlyIncome(ctx context.Context, in *GetUserCategoryMonthlyIncomeRequest, opts ...grpc.CallOption) (*GetUserCategoryMonthlyIncomeResponse, error)
-	// Get CategoryMonthlyTransactionCount by User - This would return all CategoryMonthlyTransactionCount records for a specific user
+	// Description: Get CategoryMonthlyTransactionCount by User - This would return all CategoryMonthlyTransactionCount records for a specific user
+	// Parameters:
+	// - user_id - user id of the user
+	// Optional Parameters:
+	// - personalFinanceCategoryPrimary - category of the personal finance
+	// - month - month
+	// - pageNumber - page number of the request
+	// - pageSize - page size of the request
+	// API Version: 1.
+	// API: /api/v1/analytics//category-monthly-transaction-count/user/{user_id}?personalFinanceCategoryPrimary={personal_finance_category_}&month={month}&pageNumber={page_number}&pageSize={page_size}
 	GetCategoryMonthlyTransactionCount(ctx context.Context, in *GetCategoryMonthlyTransactionCountRequest, opts ...grpc.CallOption) (*GetCategoryMonthlyTransactionCountResponse, error)
+	// Description: Get debt to income ratio
+	// Parameters:
+	// - user_id - user id of the user
+	// Optional Parameters:
+	// - month - month
+	// - pageNumber - page number of the request
+	// - pageSize - page size of the request
+	// API Version: 1.
+	// API: /api/v1/analytics/debt-to-income-ratio/user/{user_id}?month={month}&pageNumber={page_number}&pageSize={page_size}
 	GetDebtToIncomeRatio(ctx context.Context, in *GetDebtToIncomeRatioRequest, opts ...grpc.CallOption) (*GetDebtToIncomeRatioResponse, error)
+	// Description: Get expense metrics
+	// Parameters:
+	// - user_id - user id of the user
+	// Optional Parameters:
+	// - personalFinanceCategoryPrimary - category of the personal finance
+	// - month - month
+	// - pageNumber - page number of the request
+	// - pageSize - page size of the request
+	// API Version: 1.
+	// API: /api/v1/analytics/expenses/user/{user_id}?personalFinanceCategoryPrimary={personal_finance_category_}&month={month}&pageNumber={page_number}&pageSize={page_size}
 	GetExpenseMetrics(ctx context.Context, in *GetExpenseMetricsRequest, opts ...grpc.CallOption) (*GetExpenseMetricsResponse, error)
+	// Description: Get financial profile
+	// Parameters:
+	// - user_id - user id of the user
+	// Optional Parameters:
+	// - month - month
+	// - pageNumber - page number of the request
+	// - pageSize - page size of the request
+	// API Version: 1.
+	// API: /api/v1/analytics/finance-profile/user/{user_id}?month={month}&pageNumber={page_number}&pageSize={page_size}
 	GetFinancialProfile(ctx context.Context, in *GetFinancialProfileRequest, opts ...grpc.CallOption) (*GetFinancialProfileResponse, error)
+	// Description: Get income expense ratio
+	// Parameters:
+	// - user_id - user id of the user
+	// Optional Parameters:
+	// - month - month
+	// - pageNumber - page number of the request
+	// - pageSize - page size of the request
+	// API Version: 1.
+	// API: /api/v1/analytics/income-expense-ratio/user/{user_id}?month={month}&pageNumber={page_number}&pageSize={page_size}
 	GetIncomeExpenseRatio(ctx context.Context, in *GetIncomeExpenseRatioRequest, opts ...grpc.CallOption) (*GetIncomeExpenseRatioResponse, error)
+	// Description: Get income metrics
+	// Parameters:
+	// - user_id - user id of the user
+	// Optional Parameters:
+	// - month - month
+	// - personalFinanceCategoryPrimary - category of the personal finance
+	// - pageNumber - page number of the request
+	// - pageSize - page size of the request
+	// API Version: 1.
+	// API: /api/v1/analytics/income/user/{user_id}?personalFinanceCategoryPrimary={personalFinanceCategoryPrimary}&month={month}&pageNumber={page_number}&pageSize={page_size}
 	GetIncomeMetrics(ctx context.Context, in *GetIncomeMetricsRequest, opts ...grpc.CallOption) (*GetIncomeMetricsResponse, error)
+	// Description: Get merchant monthly expenditures
+	// Parameters:
+	// - user_id - user id of the user
+	// Optional Parameters:
+	// - month - month
+	// - merchantName - merchant_name
+	// - pageNumber - page number of the request
+	// - pageSize - page size of the request
+	// API Version: 1.
+	// API: /api/v1/analytics/merchant-monthly-expenditure/user/{user_id}?merchantName={merchant_name}&month={month}&pageNumber={page_number}&pageSize={page_size}
 	GetMerchantMonthlyExpenditure(ctx context.Context, in *GetMerchantMonthlyExpenditureRequest, opts ...grpc.CallOption) (*GetMerchantMonthlyExpenditureResponse, error)
-	// @here
+	// Description: Get monthly balance
+	// Parameters:
+	// - user_id - user id of the user
+	// Optional Parameters:
+	// - month - month
+	// - pageNumber - page number of the request
+	// - pageSize - page size of the request
+	// API Version: 1.
+	// API: /api/v1/analytics/monthly-balance/user/{user_id}?month={month}&pageNumber={page_number}&pageSize={page_size}
 	GetMonthlyBalance(ctx context.Context, in *GetMonthlyBalanceRequest, opts ...grpc.CallOption) (*GetMonthlyBalanceResponse, error)
+	// Description: Get monthly expenditures
+	// Parameters:
+	// - user_id - user id of the user
+	// Optional Parameters:
+	// - month - month
+	// - pageNumber - page number of the request
+	// - pageSize - page size of the request
+	// API Version: 1.
+	// API: /api/v1/analytics/monthly-expenditure/user/{user_id}?month={month}&pageNumber={page_number}&pageSize={page_size}
 	GetMonthlyExpenditure(ctx context.Context, in *GetMonthlyExpenditureRequest, opts ...grpc.CallOption) (*GetMonthlyExpenditureResponse, error)
+	// Description: Get monthly Income
+	// Parameters:
+	// - user_id - user id of the user
+	// Optional Parameters:
+	// - month - month
+	// - pageNumber - page number of the request
+	// - pageSize - page size of the request
+	// API Version: 1.
+	// API: /api/v1/analytics/monthly-income/user/{user_id}?month={month}&pageNumber={page_number}&pageSize={page_size}
 	GetMonthlyIncome(ctx context.Context, in *GetMonthlyIncomeRequest, opts ...grpc.CallOption) (*GetMonthlyIncomeResponse, error)
+	// Description: Get monthly savings
+	// Parameters:
+	// - user_id - user id of the user
+	// Optional Parameters:
+	// - month - month
+	// - pageNumber - page number of the request
+	// - pageSize - page size of the request
+	// API Version: 1.
+	// API: /api/v1/analytics/monthly-savings/user/user/{user_id}?month={month}&pageNumber={page_number}&pageSize={page_size}
 	GetMonthlySavings(ctx context.Context, in *GetMonthlySavingsRequest, opts ...grpc.CallOption) (*GetMonthlySavingsResponse, error)
+	// Description: Get monthly total quantity by security and user
+	// Parameters:
+	// - user_id - user id of the user
+	// Optional Parameters:
+	// - month - month
+	// - pageNumber - page number of the request
+	// - security_id - security id of the security
+	// - pageSize - page size of the request
+	// API Version: 1.
+	// API: /api/v1/analytics/monthly-total-quantity-by-security-and-user/user/user/{user_id}?securityId={security_id}&month={month}&pageNumber={page_number}&pageSize={page_size}
 	GetMonthlyTotalQuantityBySecurityAndUser(ctx context.Context, in *GetMonthlyTotalQuantityBySecurityAndUserRequest, opts ...grpc.CallOption) (*GetMonthlyTotalQuantityBySecurityAndUserResponse, error)
+	// Description: Get monthly transaction
+	// Parameters:
+	// - user_id - user id of the user
+	// Optional Parameters:
+	// - month - month
+	// - pageNumber - page number of the request
+	// - pageSize - page size of the request
+	// API Version: 1.
+	// API: /api/v1/analytics/monthly-transaction-count/user/user/{user_id}?month={month}&pageNumber={page_number}&pageSize={page_size}
 	GetMonthlyTransactionCount(ctx context.Context, in *GetMonthlyTransactionCountRequest, opts ...grpc.CallOption) (*GetMonthlyTransactionCountResponse, error)
+	// Description: Get monthly channel expenditure
+	// Parameters:
+	// - user_id - user id of the user
+	// Optional Parameters:
+	// - month - month
+	// - paymentChannel - payment channel
+	// - pageNumber - page number of the request
+	// - pageSize - page size of the request
+	// API Version: 1.
+	// API: /api/v1/analytics/payment-channel-expenditure/user/user/{user_id}?paymentChannel={payment_channel}&month={month}&pageNumber={page_number}&pageSize={page_size}
 	GetPaymentChannelMonthlyExpenditure(ctx context.Context, in *GetPaymentChannelMonthlyExpenditureRequest, opts ...grpc.CallOption) (*GetPaymentChannelMonthlyExpenditureResponse, error)
+	// Description: Get total investment security
+	// Parameters:
+	// - user_id - user id of the user
+	// Optional Parameters:
+	// - securityId - payment channel
+	// - pageNumber - page number of the request
+	// - pageSize - page size of the request
+	// API Version: 1.
+	// API:/api/v1/analytics/total-investment/user/{user_id}?securityId={securityId}&pageNumber={page_number}&pageSize={page_size}
 	GetTotalInvestmentBySecurity(ctx context.Context, in *GetTotalInvestmentBySecurityRequest, opts ...grpc.CallOption) (*GetTotalInvestmentBySecurityResponse, error)
+	// Description: Get financial context
+	// Parameters:
+	// - user_id - user id of the user
+	// API Version: 1.
+	// API:/api/v1/analytics/melody-financial-context/user/{user_id}
 	GetMelodyFinancialContext(ctx context.Context, in *GetMelodyFinancialContextRequest, opts ...grpc.CallOption) (*GetMelodyFinancialContextResponse, error)
+	// Description: Get bank transaction counts
+	// Parameters:
+	// - user_id - user id of the user
+	// API Version: 1.
+	// API:/api/v1/analytics/melody-financial-context/user/{user_id}
 	GetTransactionsForBankAccount(ctx context.Context, in *GetTransactionsForBankAccountRequest, opts ...grpc.CallOption) (*GetTransactionsForBankAccountResponse, error)
 }
 
@@ -785,37 +1057,309 @@ type FinancialServiceServer interface {
 	GetLink(context.Context, *GetLinkRequest) (*GetLinkResponse, error)
 	GetLinks(context.Context, *GetLinksRequest) (*GetLinksResponse, error)
 	DeleteLink(context.Context, *DeleteLinkRequest) (*DeleteLinkResponse, error)
+	// Description: This endpoint enables end users to get recurring transactions
+	// Parameters:
+	// - user_id - user id of the user whose recurring transaction we seek to fetch
+	// API Version: 1.
+	// API: /api/v1/transactions/recurring-transactions/{user_id}
 	GetReCurringTransactions(context.Context, *GetReCurringTransactionsRequest) (*GetReCurringTransactionsResponse, error)
+	// Description: This endpoint enables end users to get transactions in a paginated manner
+	// Parameters:
+	// - user_id - user id of the user whose recurring transaction we seek to fetch
+	// - page_number - page number of the transaction we want to fetch (page number)
+	// - page_size - page size of the transaction we want to fetch (number of transactions)
+	// API Version: 1.
+	// API: /api/v1/transactions/{user_id}/pageNumber/{page_number}/pageSize/{page_size}
 	GetTransactions(context.Context, *GetTransactionsRequest) (*GetTransactionsResponse, error)
+	// Description: This endpoint enables us to process plaid webhooks
+	// Body:
+	// - {
+	// "webhookType": "string",
+	// "webhookCode": "string",
+	// "itemId": "string",
+	// "initialUpdateComplete": true,
+	// "historicalUpdateComplete": "string",
+	// "environment": "string",
+	// "newTransactions": [
+	// "string"
+	// ],
+	// "removedTransactions": [
+	// "string"
+	// ],
+	// "error": {
+	// "additionalProp1": {
+	// "@type": "string",
+	// "additionalProp1": "string",
+	// "additionalProp2": "string",
+	// "additionalProp3": "string"
+	// },
+	// "additionalProp2": {
+	// "@type": "string",
+	// "additionalProp1": "string",
+	// "additionalProp2": "string",
+	// "additionalProp3": "string"
+	// },
+	// "additionalProp3": {
+	// "@type": "string",
+	// "additionalProp1": "string",
+	// "additionalProp2": "string",
+	// "additionalProp3": "string"
+	// }
+	// },
+	// "accountIds": [
+	// "string"
+	// ],
+	// "consentExpirationTime": "string",
+	// "accountIdsWithNewLiabilities": [
+	// "string"
+	// ],
+	// "accountIdsWithUpdatedLiabilities": [
+	// "string"
+	// ],
+	// "newHoldings": "string",
+	// "updatedHoldings": "string"
+	// }
+	// API Version: 1.
+	// API: /api/v1/plaid/webhook
 	ProcessWebhook(context.Context, *ProcessWebhookRequest) (*ProcessWebhookResponse, error)
+	// Description: This endpoint enables us to process stripe webhooks
+	// Body:
+	// - {
+	// "body": "string",
+	// "signature": "string"
+	// }
+	// API Version: 1.
+	// API: /api/v1/stripe/webhook
 	StripeWebhook(context.Context, *StripeWebhookRequest) (*StripeWebhookResponse, error)
+	// Description: This endpoint enables end users to get transactions in a paginated manner
+	// Body:
+	// - {
+	// userId*	string($uint64)
+	// priceId*	string
+	// }
+	// API Version: 1.
+	// API: /api/v1/stripe/subscription
 	CreateSubscription(context.Context, *CreateSubscriptionRequest) (*CreateSubscriptionResponse, error)
-	// Transaction Aggregates By Queries
+	// Description: This endpoint enables end users to get transaction aggregated by month
+	// Parameters:
+	// - user_id - user id of the user whose recurring transaction we seek to fetch
+	// Optional Parameters:
+	// - month - month of the transaction
+	// - personalFinanceCategoryPrimary - personal financial category
+	// - locationCity - location of the transaction
+	// - paymentChannel - payment channel
+	// - merchantName - merchant name
+	// - pageNumber - page number
+	// - pageSize - page size
+	// API Version: 1.
+	// API: /api/v1/analytics/transaction-aggregates/{user_id}?pageNumber={page_number}&pageSize={page_size}&merchantName={merchant_name}&paymentChannel={payment_channel}&locationCity={location_city}&personalFinanceCategoryPrimary={personal_finance_category_primary}&month={month}
 	GetTransactionAggregates(context.Context, *GetTransactionAggregatesRequest) (*GetTransactionAggregatesResponse, error)
+	// Description: This endpoint enables end users to get the historical account balances for all accounts the user has
+	// Parameters:
+	// - user_id - user id of the user whose recurring transaction we seek to fetch
+	// - page_number - page number of the request
+	// - page_size - page size of the request
+	// API Version: 1.
+	// API: /api/v1/analytics/balance-history/user/{user_id}/pagenumber/{page_number}/pagesize/{page_size}
 	GetUserAccountBalanceHistory(context.Context, *GetUserAccountBalanceHistoryRequest) (*GetUserAccountBalanceHistoryResponse, error)
+	// Description: This endpoint enables end users to get the historical account balances for a given account the user has
+	// Parameters:
+	// - user_id - user id of the user whose recurring transaction we seek to fetch
+	// - plaid_account_id - plaid account id of the account
+	// - page_number - page number of the request
+	// - page_size - page size of the request
+	// API Version: 1.
+	// API: /api/v1/analytics/balance-history/account/{plaid_account_id}/pagenumber/{page_number}/pagesize/{page_size}
 	GetAccountBalanceHistory(context.Context, *GetAccountBalanceHistoryRequest) (*GetAccountBalanceHistoryResponse, error)
-	// Get user category monthly expenditure
+	// Description: This endpoint enables end users to get their categorized monthly expenditures
+	// Parameters:
+	// - user_id - user id of the user
+	// Optional Parameters:
+	// - personalFinanceCategoryPrimary - category of the personal finance
+	// - month - month
+	// - pageNumber - page number of the request
+	// - pageSize - page size of the request
+	// API Version: 1.
+	// API: /api/v1/analytics/category-monthly-expenditure/user/{user_id}?personalFinanceCategoryPrimary={personal_finance_category_}&month={month}&pageNumber={page_number}&pageSize={page_size}
 	GetUserCategoryMonthlyExpenditure(context.Context, *GetUserCategoryMonthlyExpenditureRequest) (*GetUserCategoryMonthlyExpenditureResponse, error)
-	// Get CategoryMonthlyIncome by Category and User - This would return all CategoryMonthlyIncome records for a specific user for a specific personal finance category
+	// Description: Get CategoryMonthlyIncome by Category and User - This would return all CategoryMonthlyIncome records for a specific user for a specific personal finance category
+	// Parameters:
+	// - user_id - user id of the user
+	// Optional Parameters:
+	// - personalFinanceCategoryPrimary - category of the personal finance
+	// - month - month
+	// - pageNumber - page number of the request
+	// - pageSize - page size of the request
+	// API Version: 1.
+	// API: /api/v1/analytics/category-monthly-income/user/{user_id}?personalFinanceCategoryPrimary={personal_finance_category_}&month={month}&pageNumber={page_number}&pageSize={page_size}
 	GetUserCategoryMonthlyIncome(context.Context, *GetUserCategoryMonthlyIncomeRequest) (*GetUserCategoryMonthlyIncomeResponse, error)
-	// Get CategoryMonthlyTransactionCount by User - This would return all CategoryMonthlyTransactionCount records for a specific user
+	// Description: Get CategoryMonthlyTransactionCount by User - This would return all CategoryMonthlyTransactionCount records for a specific user
+	// Parameters:
+	// - user_id - user id of the user
+	// Optional Parameters:
+	// - personalFinanceCategoryPrimary - category of the personal finance
+	// - month - month
+	// - pageNumber - page number of the request
+	// - pageSize - page size of the request
+	// API Version: 1.
+	// API: /api/v1/analytics//category-monthly-transaction-count/user/{user_id}?personalFinanceCategoryPrimary={personal_finance_category_}&month={month}&pageNumber={page_number}&pageSize={page_size}
 	GetCategoryMonthlyTransactionCount(context.Context, *GetCategoryMonthlyTransactionCountRequest) (*GetCategoryMonthlyTransactionCountResponse, error)
+	// Description: Get debt to income ratio
+	// Parameters:
+	// - user_id - user id of the user
+	// Optional Parameters:
+	// - month - month
+	// - pageNumber - page number of the request
+	// - pageSize - page size of the request
+	// API Version: 1.
+	// API: /api/v1/analytics/debt-to-income-ratio/user/{user_id}?month={month}&pageNumber={page_number}&pageSize={page_size}
 	GetDebtToIncomeRatio(context.Context, *GetDebtToIncomeRatioRequest) (*GetDebtToIncomeRatioResponse, error)
+	// Description: Get expense metrics
+	// Parameters:
+	// - user_id - user id of the user
+	// Optional Parameters:
+	// - personalFinanceCategoryPrimary - category of the personal finance
+	// - month - month
+	// - pageNumber - page number of the request
+	// - pageSize - page size of the request
+	// API Version: 1.
+	// API: /api/v1/analytics/expenses/user/{user_id}?personalFinanceCategoryPrimary={personal_finance_category_}&month={month}&pageNumber={page_number}&pageSize={page_size}
 	GetExpenseMetrics(context.Context, *GetExpenseMetricsRequest) (*GetExpenseMetricsResponse, error)
+	// Description: Get financial profile
+	// Parameters:
+	// - user_id - user id of the user
+	// Optional Parameters:
+	// - month - month
+	// - pageNumber - page number of the request
+	// - pageSize - page size of the request
+	// API Version: 1.
+	// API: /api/v1/analytics/finance-profile/user/{user_id}?month={month}&pageNumber={page_number}&pageSize={page_size}
 	GetFinancialProfile(context.Context, *GetFinancialProfileRequest) (*GetFinancialProfileResponse, error)
+	// Description: Get income expense ratio
+	// Parameters:
+	// - user_id - user id of the user
+	// Optional Parameters:
+	// - month - month
+	// - pageNumber - page number of the request
+	// - pageSize - page size of the request
+	// API Version: 1.
+	// API: /api/v1/analytics/income-expense-ratio/user/{user_id}?month={month}&pageNumber={page_number}&pageSize={page_size}
 	GetIncomeExpenseRatio(context.Context, *GetIncomeExpenseRatioRequest) (*GetIncomeExpenseRatioResponse, error)
+	// Description: Get income metrics
+	// Parameters:
+	// - user_id - user id of the user
+	// Optional Parameters:
+	// - month - month
+	// - personalFinanceCategoryPrimary - category of the personal finance
+	// - pageNumber - page number of the request
+	// - pageSize - page size of the request
+	// API Version: 1.
+	// API: /api/v1/analytics/income/user/{user_id}?personalFinanceCategoryPrimary={personalFinanceCategoryPrimary}&month={month}&pageNumber={page_number}&pageSize={page_size}
 	GetIncomeMetrics(context.Context, *GetIncomeMetricsRequest) (*GetIncomeMetricsResponse, error)
+	// Description: Get merchant monthly expenditures
+	// Parameters:
+	// - user_id - user id of the user
+	// Optional Parameters:
+	// - month - month
+	// - merchantName - merchant_name
+	// - pageNumber - page number of the request
+	// - pageSize - page size of the request
+	// API Version: 1.
+	// API: /api/v1/analytics/merchant-monthly-expenditure/user/{user_id}?merchantName={merchant_name}&month={month}&pageNumber={page_number}&pageSize={page_size}
 	GetMerchantMonthlyExpenditure(context.Context, *GetMerchantMonthlyExpenditureRequest) (*GetMerchantMonthlyExpenditureResponse, error)
-	// @here
+	// Description: Get monthly balance
+	// Parameters:
+	// - user_id - user id of the user
+	// Optional Parameters:
+	// - month - month
+	// - pageNumber - page number of the request
+	// - pageSize - page size of the request
+	// API Version: 1.
+	// API: /api/v1/analytics/monthly-balance/user/{user_id}?month={month}&pageNumber={page_number}&pageSize={page_size}
 	GetMonthlyBalance(context.Context, *GetMonthlyBalanceRequest) (*GetMonthlyBalanceResponse, error)
+	// Description: Get monthly expenditures
+	// Parameters:
+	// - user_id - user id of the user
+	// Optional Parameters:
+	// - month - month
+	// - pageNumber - page number of the request
+	// - pageSize - page size of the request
+	// API Version: 1.
+	// API: /api/v1/analytics/monthly-expenditure/user/{user_id}?month={month}&pageNumber={page_number}&pageSize={page_size}
 	GetMonthlyExpenditure(context.Context, *GetMonthlyExpenditureRequest) (*GetMonthlyExpenditureResponse, error)
+	// Description: Get monthly Income
+	// Parameters:
+	// - user_id - user id of the user
+	// Optional Parameters:
+	// - month - month
+	// - pageNumber - page number of the request
+	// - pageSize - page size of the request
+	// API Version: 1.
+	// API: /api/v1/analytics/monthly-income/user/{user_id}?month={month}&pageNumber={page_number}&pageSize={page_size}
 	GetMonthlyIncome(context.Context, *GetMonthlyIncomeRequest) (*GetMonthlyIncomeResponse, error)
+	// Description: Get monthly savings
+	// Parameters:
+	// - user_id - user id of the user
+	// Optional Parameters:
+	// - month - month
+	// - pageNumber - page number of the request
+	// - pageSize - page size of the request
+	// API Version: 1.
+	// API: /api/v1/analytics/monthly-savings/user/user/{user_id}?month={month}&pageNumber={page_number}&pageSize={page_size}
 	GetMonthlySavings(context.Context, *GetMonthlySavingsRequest) (*GetMonthlySavingsResponse, error)
+	// Description: Get monthly total quantity by security and user
+	// Parameters:
+	// - user_id - user id of the user
+	// Optional Parameters:
+	// - month - month
+	// - pageNumber - page number of the request
+	// - security_id - security id of the security
+	// - pageSize - page size of the request
+	// API Version: 1.
+	// API: /api/v1/analytics/monthly-total-quantity-by-security-and-user/user/user/{user_id}?securityId={security_id}&month={month}&pageNumber={page_number}&pageSize={page_size}
 	GetMonthlyTotalQuantityBySecurityAndUser(context.Context, *GetMonthlyTotalQuantityBySecurityAndUserRequest) (*GetMonthlyTotalQuantityBySecurityAndUserResponse, error)
+	// Description: Get monthly transaction
+	// Parameters:
+	// - user_id - user id of the user
+	// Optional Parameters:
+	// - month - month
+	// - pageNumber - page number of the request
+	// - pageSize - page size of the request
+	// API Version: 1.
+	// API: /api/v1/analytics/monthly-transaction-count/user/user/{user_id}?month={month}&pageNumber={page_number}&pageSize={page_size}
 	GetMonthlyTransactionCount(context.Context, *GetMonthlyTransactionCountRequest) (*GetMonthlyTransactionCountResponse, error)
+	// Description: Get monthly channel expenditure
+	// Parameters:
+	// - user_id - user id of the user
+	// Optional Parameters:
+	// - month - month
+	// - paymentChannel - payment channel
+	// - pageNumber - page number of the request
+	// - pageSize - page size of the request
+	// API Version: 1.
+	// API: /api/v1/analytics/payment-channel-expenditure/user/user/{user_id}?paymentChannel={payment_channel}&month={month}&pageNumber={page_number}&pageSize={page_size}
 	GetPaymentChannelMonthlyExpenditure(context.Context, *GetPaymentChannelMonthlyExpenditureRequest) (*GetPaymentChannelMonthlyExpenditureResponse, error)
+	// Description: Get total investment security
+	// Parameters:
+	// - user_id - user id of the user
+	// Optional Parameters:
+	// - securityId - payment channel
+	// - pageNumber - page number of the request
+	// - pageSize - page size of the request
+	// API Version: 1.
+	// API:/api/v1/analytics/total-investment/user/{user_id}?securityId={securityId}&pageNumber={page_number}&pageSize={page_size}
 	GetTotalInvestmentBySecurity(context.Context, *GetTotalInvestmentBySecurityRequest) (*GetTotalInvestmentBySecurityResponse, error)
+	// Description: Get financial context
+	// Parameters:
+	// - user_id - user id of the user
+	// API Version: 1.
+	// API:/api/v1/analytics/melody-financial-context/user/{user_id}
 	GetMelodyFinancialContext(context.Context, *GetMelodyFinancialContextRequest) (*GetMelodyFinancialContextResponse, error)
+	// Description: Get bank transaction counts
+	// Parameters:
+	// - user_id - user id of the user
+	// API Version: 1.
+	// API:/api/v1/analytics/melody-financial-context/user/{user_id}
 	GetTransactionsForBankAccount(context.Context, *GetTransactionsForBankAccountRequest) (*GetTransactionsForBankAccountResponse, error)
 	mustEmbedUnimplementedFinancialServiceServer()
 }
