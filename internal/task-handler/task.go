@@ -162,6 +162,8 @@ func (th *TaskHandler) RegisterTaskHandler() *asynq.ServeMux {
 	mux.HandleFunc(TaskPullInvestmentHoldings.String(), th.RunPullInvestmentHoldingsTask)
 	mux.HandleFunc(TaskSyncNewLiabilityAccounts.String(), th.RunSyncNewLiabilityAccountsTask)
 	mux.HandleFunc(TaskSyncAllAccounts.String(), th.RunSyncAllPlatformConnectedPlaidAccounts)
+	mux.HandleFunc(TaskGenerateActionableInsights.String(), th.RunGenerateActionableInsights)
+
 	return mux
 }
 

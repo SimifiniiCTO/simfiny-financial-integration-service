@@ -3,10 +3,16 @@ package taskhandler
 import (
 	"context"
 	"encoding/json"
+	"fmt"
+	"time"
 
 	"github.com/SimifiniiCTO/asynq"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/pointer"
+	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/prompts"
+	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
+	"github.com/sashabaranov/go-openai"
 	"go.uber.org/zap"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 type GenerateActionableInsightPayload struct{}
@@ -26,37 +32,57 @@ func NewGenerateActionableInsights() (*asynq.Task, error) {
 }
 
 func (th *TaskHandler) RunGenerateActionableInsights(ctx context.Context, task *asynq.Task) error {
-	var (
-		payload GenerateActionableInsightPayload
-		db      = th.clickhouseDb
-	)
-
-	if err := json.Unmarshal(task.Payload(), &payload); err != nil {
-		return err
-	}
-
-	// get all user profiles on the platform
-	profiles, err := th.postgresDb.GetAllUserProfiles(ctx)
+	financialContexts, err := th.clickhouseDb.GetAllFinancialContextsForCurrentMonth(ctx, 4)
 	if err != nil {
 		return err
 	}
 
-	// for each profile, query and obtain its financial context
-	// only if it has a connected plaid account with us
-	for _, profile := range profiles {
-		if len(profile.Link) > 0 {
-			// retrieve the financial context for the user
-			userId := profile.UserId
-			// TODO: optimize this to perform this in one single query and obtain all financial contexts on the platform
-			financialContext, err := db.GetFinancialContextForCurrentMonth(ctx, &userId, 5)
-			if err != nil {
-				// log the error
-				th.logger.Error("failed to get financial context for user", zap.Any("userId", userId), zap.Error(err))
-				continue
-			}
+	for userId, financialContext := range financialContexts {
+		// call openAI for detailed response
+		detailedResponse, err := th.getActionableInsight(financialContext, prompts.DetailedPromptType)
+		if err != nil {
+			th.logger.Error(err.Error())
+			continue
+		}
 
-			// call open ai with the financial context
+		summarizedResponse, err := th.getActionableInsight(financialContext, prompts.SummaryPromptType)
+		if err != nil {
+			th.logger.Error(err.Error())
+			continue
+		}
 
+		insight := &schema.ActionableInsight{
+			Id:               userId,
+			DetailedAction:   detailedResponse.Content,
+			SummarizedAction: summarizedResponse.Content,
+			GeneratedTime:    timestamppb.New(time.Now()),
+			Tags:             []string{},
+		}
+
+		if err := th.postgresDb.AddActionableInsight(ctx, userId, insight); err != nil {
+			th.logger.Error(err.Error())
+			continue
 		}
 	}
+
+	return nil
+}
+
+func (th *TaskHandler) getActionableInsight(financialContext *schema.MelodyFinancialContext, promptType prompts.PromptType) (*openai.ChatCompletionMessage, error) {
+	detailedPromt, err := prompts.GenerateInsightsPrompt(financialContext, promptType)
+	if err != nil {
+		th.logger.Error("Failed to generate financial context prompt for user", zap.Error(err))
+		return nil, err
+	}
+
+	response, err := th.callCompletionEndpoint(detailedPromt)
+	if err != nil {
+		return nil, err
+	}
+
+	if len(response.Choices) > 0 {
+		return &response.Choices[0].Message, nil
+	}
+
+	return nil, fmt.Errorf("Failed to generate a response from open-ai using the financial context")
 }

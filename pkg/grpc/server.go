@@ -144,6 +144,7 @@ func NewServer(param *Params) (*Server, error) {
 
 	openAiClient := openai.NewClient(*param.OpenAiToken)
 	th := configureTaskHandler(param, openAiClient)
+
 	// generatee task procerssor
 	opts := []taskprocessor.Option{
 		taskprocessor.WithLoggerOpt(param.Logger),
@@ -194,11 +195,15 @@ func (s *Server) registerBatchJobs() error {
 		return err
 	}
 
-	// TODO: we enqueue the task to compute actionable insights for all users across all accounts (this should run every 24 hours) - use openai for this (insights)
+	generateActionableInsightsBatchJob, err := taskhandler.NewGenerateActionableInsights()
+	if err != nil {
+		return err
+	}
+
 	// TODO: we enqueue the task to compute the net worth of all users across all accounts (this should run every 24 hours) (net worth)
 
 	// TODO: this should be config driven
-	entryId, err := s.Taskprocessor.EnqueueRecurringTask(
+	_, err = s.Taskprocessor.EnqueueRecurringTask(
 		context.Background(),
 		syncAllAccountsBatchJob,
 		taskprocessor.Every6Hours)
@@ -206,7 +211,14 @@ func (s *Server) registerBatchJobs() error {
 		return err
 	}
 
-	// ideally we should emit an event for each entry id provided
-	s.logger.Info("enqueued sync all accounts batch job", zap.Any("entry_id", entryId))
+	// TODO: we enqueue the task to compute actionable insights for all users across all accounts (this should run every 24 hours) - use openai for this (insights)
+	_, err = s.Taskprocessor.EnqueueRecurringTask(
+		context.Background(),
+		generateActionableInsightsBatchJob,
+		taskprocessor.EveryWeek)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
