@@ -228,7 +228,7 @@ func (s *Server) registerBatchJobs() error {
 	_, err = s.Taskprocessor.EnqueueRecurringTask(
 		context.Background(),
 		generateRecurringTransactionsBatchJob,
-		taskprocessor.EveryWeek)
+		taskprocessor.EveryDay)
 	if err != nil {
 		return err
 	}

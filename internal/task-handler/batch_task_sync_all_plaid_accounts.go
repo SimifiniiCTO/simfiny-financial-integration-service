@@ -70,6 +70,19 @@ func (th *TaskHandler) RunSyncAllPlatformConnectedPlaidAccounts(ctx context.Cont
 				if len(accts) == 0 {
 					th.logger.Warn("no accounts found for user", zap.Uint64("user_id", payload.UserId))
 				}
+
+				if len(link.InvestmentAccounts) > 0 {
+					// get all the account ids
+					accountIds := make([]string, 0, len(link.InvestmentAccounts))
+					for _, investmentAccount := range link.InvestmentAccounts {
+						accountIds = append(accountIds, investmentAccount.PlaidAccountId)
+					}
+
+					if err := th.queryInvestmentTransactions(ctx, *accessToken, profile.UserId, link, accountIds); err != nil {
+						th.logger.Error("error syncing investment transaction", zap.Error(err))
+					}
+
+				}
 			}
 		}
 	}

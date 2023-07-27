@@ -106,8 +106,6 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, userId, linkId 
 		}
 	}
 
-	th.logger.Info("bank accounts", zap.Any("account", plaidBankAccounts))
-
 	// // lets sync recurring transactions
 	// if err := th.queryAndStoreRecurringTransactions(ctx, accessToken, userId, linkId, plaidAccountIds); err != nil {
 	// 	th.logger.Error("failed to sync recurring transactions", zap.Error(err))
@@ -194,7 +192,6 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, userId, linkId 
 							return nil, err
 						}
 
-						th.logger.Info("adding updated credit account to set", zap.Any("account", acctOrm))
 						creditCardAccountsToUpdate = append(creditCardAccountsToUpdate, &acctOrm)
 					}
 				}
@@ -205,7 +202,6 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, userId, linkId 
 					return nil, err
 				}
 
-				th.logger.Info("credit accounts ready for update", zap.Any("accounts", creditCardAccountsToUpdate))
 				// update the credit accounts in the database
 				if err := l.CreditAccounts.Model(&linkOrm).Replace(creditCardAccountsToUpdate...); err != nil {
 					return nil, err
