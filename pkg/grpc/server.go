@@ -211,7 +211,7 @@ func (s *Server) registerBatchJobs() error {
 	_, err = s.Taskprocessor.EnqueueRecurringTask(
 		context.Background(),
 		syncAllAccountsBatchJob,
-		taskprocessor.Every1Minutes)
+		taskprocessor.Every12Hours)
 	if err != nil {
 		return err
 	}
