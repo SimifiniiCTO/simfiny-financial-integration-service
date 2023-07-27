@@ -87,7 +87,6 @@ func (db *Db) AddReOccurringTransactions(ctx context.Context, userId *uint64, tx
 		return fmt.Errorf("transactions is nil")
 	}
 
-	txRecords := make([]schema.ReOccuringTransactionInternal, 0, len(txs))
 	// associate the user id to the transaction of interest
 	for _, tx := range txs {
 		if tx.Id != "" {
@@ -109,16 +108,9 @@ func (db *Db) AddReOccurringTransactions(ctx context.Context, userId *uint64, tx
 			return err
 		}
 
-		record, err := tx.ConvertToInternal()
-		if err != nil {
+		if _, err := db.AddReOccurringTransaction(ctx, userId, tx); err != nil {
 			return err
 		}
-
-		txRecords = append(txRecords, *record)
-	}
-
-	if _, err := db.queryEngine.NewInsert().Model(&txRecords).Exec(ctx); err != nil {
-		return err
 	}
 
 	return nil

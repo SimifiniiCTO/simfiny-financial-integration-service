@@ -9,7 +9,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (s *Server) GetReOcurringTransactions(ctx context.Context, req *proto.GetReCurringTransactionsRequest) (*proto.GetReCurringTransactionsResponse, error) {
+func (s *Server) GetReCurringTransactions(ctx context.Context, req *proto.GetReCurringTransactionsRequest) (*proto.GetReCurringTransactionsResponse, error) {
 	// perform validations
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "missing request")

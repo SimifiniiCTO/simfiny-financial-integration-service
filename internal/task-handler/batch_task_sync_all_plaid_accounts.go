@@ -3,6 +3,7 @@ package taskhandler
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 
 	"github.com/SimifiniiCTO/asynq"
 	encryptdecrypt "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/encrypt_decrypt"
@@ -61,12 +62,26 @@ func (th *TaskHandler) RunSyncAllPlatformConnectedPlaidAccounts(ctx context.Cont
 				// call the sync operation for the link
 				accts, err := th.processSyncOperation(ctx, profile.UserId, link.Id, *accessToken, *trigger)
 				if err != nil {
-					return err
+					th.logger.Error(fmt.Sprintf("failed to sync transactions for link %d", link.Id))
+					continue
 				}
 
 				// log a warning if no accounts were found
 				if len(accts) == 0 {
 					th.logger.Warn("no accounts found for user", zap.Uint64("user_id", payload.UserId))
+				}
+
+				if len(link.InvestmentAccounts) > 0 {
+					// get all the account ids
+					accountIds := make([]string, 0, len(link.InvestmentAccounts))
+					for _, investmentAccount := range link.InvestmentAccounts {
+						accountIds = append(accountIds, investmentAccount.PlaidAccountId)
+					}
+
+					if err := th.queryInvestmentTransactions(ctx, *accessToken, profile.UserId, link, accountIds); err != nil {
+						th.logger.Error("error syncing investment transaction", zap.Error(err))
+					}
+
 				}
 			}
 		}

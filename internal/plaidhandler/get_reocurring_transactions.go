@@ -107,8 +107,6 @@ func transactionStreamToRecurringTransactions(userId, linkId *uint64, streams []
 			LastDate:                        stream.GetLastDate(),
 			Frequency:                       getFrequency(stream.GetFrequency()),
 			TransactionIds:                  helper.SliceToCommaSeparatedString(stream.GetTransactionIds()),
-			AverageAmount:                   fmt.Sprintf("%f", *stream.GetAverageAmount().Amount),
-			LastAmount:                      fmt.Sprintf("%f", *stream.LastAmount.Amount),
 			IsActive:                        stream.GetIsActive(),
 			Status:                          getStatus(stream.GetStatus()),
 			UpdatedTime:                     time.Now().String(),
@@ -117,19 +115,32 @@ func transactionStreamToRecurringTransactions(userId, linkId *uint64, streams []
 			Id:                              "",
 			Flow:                            flow,
 			Sign:                            1,
-			Time: &timestamppb.Timestamp{
-				Seconds: int64(time.Now().Second()),
-				Nanos:   int32(time.Now().Nanosecond()),
-			},
-			AdditionalProperties: &anypb.Any{},
+			Time:                            &timestamppb.Timestamp{},
+			AdditionalProperties:            &anypb.Any{},
 		}
+
+		layout := "2006-01-02"
+		t, err := time.Parse(layout, stream.LastDate)
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		tx.Time = timestamppb.New(t)
 
 		if stream.GetAverageAmount().Amount != nil {
 			tx.AverageAmount = fmt.Sprintf("%f", *stream.GetAverageAmount().Amount)
+			isoCurrencyCode := stream.GetAverageAmount().IsoCurrencyCode.Get()
+			if isoCurrencyCode != nil {
+				tx.AverageAmountIsoCurrencyCode = fmt.Sprintf("%s", *isoCurrencyCode)
+			}
 		}
 
 		if stream.GetLastAmount().Amount != nil {
 			tx.LastAmount = fmt.Sprintf("%f", *stream.GetLastAmount().Amount)
+			isoCurrencyCode := stream.GetLastAmount().IsoCurrencyCode.Get()
+			if isoCurrencyCode != nil {
+				tx.LastAmountIsoCurrencyCode = fmt.Sprintf("%s", *isoCurrencyCode)
+			}
 		}
 
 		recurringTransactions = append(recurringTransactions, tx)

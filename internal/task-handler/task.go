@@ -37,6 +37,7 @@ const (
 	TaskSyncRecurringTransactions        TaskType = "transactions:sync:recurring"
 	TaskSyncAllAccounts                  TaskType = "transactions:sync_all_account"
 	TaskGenerateActionableInsights       TaskType = "insights:generate"
+	TaskBatchSyncRecurringTransactions   TaskType = "batch:sync_recurring_transactions"
 )
 
 func (t TaskType) String() string {
@@ -163,7 +164,7 @@ func (th *TaskHandler) RegisterTaskHandler() *asynq.ServeMux {
 	mux.HandleFunc(TaskSyncNewLiabilityAccounts.String(), th.RunSyncNewLiabilityAccountsTask)
 	mux.HandleFunc(TaskSyncAllAccounts.String(), th.RunSyncAllPlatformConnectedPlaidAccounts)
 	mux.HandleFunc(TaskGenerateActionableInsights.String(), th.RunGenerateActionableInsights)
-
+	mux.HandleFunc(TaskBatchSyncRecurringTransactions.String(), th.RunBatchSyncRecurringTransactions)
 	return mux
 }
 
