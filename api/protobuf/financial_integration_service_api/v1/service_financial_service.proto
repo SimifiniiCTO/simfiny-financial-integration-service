@@ -15,6 +15,7 @@ option go_package = "github.com/SimifiniiCTO/simfiny-financial-integration-servi
 
 // FinancialService API.
 service FinancialService {
+  // 
   rpc PlaidInitiateTokenExchange(PlaidInitiateTokenExchangeRequest) returns (PlaidInitiateTokenExchangeResponse) {
     option (google.api.http) = {
       post: "/api/v1/plaid/initiate-token-exchange"
@@ -22,7 +23,7 @@ service FinancialService {
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "initiate plaid setup"
-      tags: ["plaid"]
+      tags: ["plaid link token"]
       operation_id: "InitiatePlaidSetup"
       description: "This endpoint initiates a plaid link token creation"
       responses: {
@@ -44,7 +45,7 @@ service FinancialService {
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "initiate plaid link token update"
-      tags: ["plaid"]
+      tags: ["plaid link token"]
       operation_id: "InitiatePlaidTokenUpdate"
       description: "This endpoint initiates a plaid link token update"
       responses: {
@@ -66,7 +67,7 @@ service FinancialService {
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "exchange plaid token"
-      tags: ["plaid"]
+      tags: ["plaid link token"]
       operation_id: "ExchangePlaidToken"
       description: "This endpoint exchanges a plaid link token for a plaid access token"
       responses: {
@@ -780,6 +781,13 @@ service FinancialService {
     };
   }
 
+  /**
+    Description: This endpoint enables end users to get recurring transactions
+    Parameters:
+      - user_id - user id of the user whose recurring transaction we seek to fetch
+    API Version: 1.
+    API: /api/v1/transactions/recurring-transactions/{user_id}
+  **/
   rpc GetReCurringTransactions(GetReCurringTransactionsRequest) returns (GetReCurringTransactionsResponse) {
     option (google.api.http) = {get: "/api/v1/transactions/recurring-transactions/{user_id}"};
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
@@ -797,6 +805,15 @@ service FinancialService {
     };
   }
 
+  /**
+    Description: This endpoint enables end users to get transactions in a paginated manner
+    Parameters:
+      - user_id - user id of the user whose recurring transaction we seek to fetch
+      - page_number - page number of the transaction we want to fetch (page number)
+      - page_size - page size of the transaction we want to fetch (number of transactions)
+    API Version: 1.
+    API: /api/v1/transactions/{user_id}/pageNumber/{page_number}/pageSize/{page_size}
+  **/
   rpc GetTransactions(GetTransactionsRequest) returns (GetTransactionsResponse) {
     option (google.api.http) = {get: "/api/v1/transactions/{user_id}/pageNumber/{page_number}/pageSize/{page_size}"};
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
@@ -814,6 +831,58 @@ service FinancialService {
     };
   }
 
+  /**
+    Description: This endpoint enables us to process plaid webhooks
+    Body:
+      - {
+          "webhookType": "string",
+          "webhookCode": "string",
+          "itemId": "string",
+          "initialUpdateComplete": true,
+          "historicalUpdateComplete": "string",
+          "environment": "string",
+          "newTransactions": [
+            "string"
+          ],
+          "removedTransactions": [
+            "string"
+          ],
+          "error": {
+            "additionalProp1": {
+              "@type": "string",
+              "additionalProp1": "string",
+              "additionalProp2": "string",
+              "additionalProp3": "string"
+            },
+            "additionalProp2": {
+              "@type": "string",
+              "additionalProp1": "string",
+              "additionalProp2": "string",
+              "additionalProp3": "string"
+            },
+            "additionalProp3": {
+              "@type": "string",
+              "additionalProp1": "string",
+              "additionalProp2": "string",
+              "additionalProp3": "string"
+            }
+          },
+          "accountIds": [
+            "string"
+          ],
+          "consentExpirationTime": "string",
+          "accountIdsWithNewLiabilities": [
+            "string"
+          ],
+          "accountIdsWithUpdatedLiabilities": [
+            "string"
+          ],
+          "newHoldings": "string",
+          "updatedHoldings": "string"
+        }
+    API Version: 1.
+    API: /api/v1/plaid/webhook
+  **/
   rpc ProcessWebhook(ProcessWebhookRequest) returns (ProcessWebhookResponse) {
     option (google.api.http) = {
       post: "/api/v1/plaid/webhook"
@@ -837,6 +906,16 @@ service FinancialService {
     };
   }
 
+  /**
+    Description: This endpoint enables us to process stripe webhooks
+    Body:
+      - {
+          "body": "string",
+          "signature": "string"
+        }
+    API Version: 1.
+    API: /api/v1/stripe/webhook
+  **/
   rpc StripeWebhook(StripeWebhookRequest) returns (StripeWebhookResponse){
     option (google.api.http) = {
       post: "/api/v1/stripe/webhook"
@@ -860,6 +939,16 @@ service FinancialService {
     };
   }
 
+  /**
+    Description: This endpoint enables end users to get transactions in a paginated manner
+    Body:
+      - {
+          userId*	string($uint64)
+          priceId*	string
+        }
+    API Version: 1.
+    API: /api/v1/stripe/subscription
+  **/
   rpc CreateSubscription(CreateSubscriptionRequest) returns (CreateSubscriptionResponse) {
     option (google.api.http) = {
       post: "/api/v1/stripe/subscription"
@@ -883,7 +972,22 @@ service FinancialService {
     };
   }
 
-  // Transaction Aggregates By Queries
+  // Transaction Aggregates By Various parameters
+  /**
+    Description: This endpoint enables end users to get transaction aggregated by month
+    Parameters:
+      - user_id - user id of the user whose recurring transaction we seek to fetch
+    Optional Parameters:
+      - month - month of the transaction
+      - personalFinanceCategoryPrimary - personal financial category
+      - locationCity - location of the transaction
+      - paymentChannel - payment channel
+      - merchantName - merchant name
+      - pageNumber - page number
+      - pageSize - page size
+    API Version: 1.
+    API: /api/v1/analytics/transaction-aggregates/{user_id}?pageNumber={page_number}&pageSize={page_size}&merchantName={merchant_name}&paymentChannel={payment_channel}&locationCity={location_city}&personalFinanceCategoryPrimary={personal_finance_category_primary}&month={month}
+  **/
   rpc GetTransactionAggregates(GetTransactionAggregatesRequest) returns (GetTransactionAggregatesResponse) {
     option (google.api.http) = {
       get: "/api/v1/analytics/transaction-aggregates/{user_id}"
@@ -891,7 +995,7 @@ service FinancialService {
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "Returns the aggregated transactions for a user and month"
-      tags: ["transaction-aggregates"]
+      tags: ["analytics","transaction", "category"]
       operation_id: "TransactionAggregates"
       description: "This API could accept user_id and month as input parameters and return the aggregated transactions for that user and month."
       responses: {
@@ -906,13 +1010,22 @@ service FinancialService {
     };
   }
 
+  /**
+    Description: This endpoint enables end users to get the historical account balances for all accounts the user has
+    Parameters:
+      - user_id - user id of the user whose recurring transaction we seek to fetch
+      - page_number - page number of the request
+      - page_size - page size of the request
+    API Version: 1.
+    API: /api/v1/analytics/balance-history/user/{user_id}/pagenumber/{page_number}/pagesize/{page_size}
+  **/
   rpc GetUserAccountBalanceHistory(GetUserAccountBalanceHistoryRequest) returns (GetUserAccountBalanceHistoryResponse) {
     option (google.api.http) = {
       get: "/api/v1/analytics/balance-history/user/{user_id}/pagenumber/{page_number}/pagesize/{page_size}"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "Returns the account balance history for a user"
-      tags: ["balance-history"]
+      tags: ["analytics","balance-history"]
       operation_id: "GetUserAccountBalanceHistory"
       description: "This API could accept user_id as input parameters and return the account balance history for that user."
       responses: {
@@ -927,13 +1040,23 @@ service FinancialService {
     };
   }
 
+  /**
+    Description: This endpoint enables end users to get the historical account balances for a given account the user has
+    Parameters:
+      - user_id - user id of the user whose recurring transaction we seek to fetch
+      - plaid_account_id - plaid account id of the account
+      - page_number - page number of the request
+      - page_size - page size of the request
+    API Version: 1.
+    API: /api/v1/analytics/balance-history/account/{plaid_account_id}/pagenumber/{page_number}/pagesize/{page_size}
+  **/
   rpc GetAccountBalanceHistory(GetAccountBalanceHistoryRequest) returns (GetAccountBalanceHistoryResponse) {
     option (google.api.http) = {
       get: "/api/v1/analytics/balance-history/account/{plaid_account_id}/pagenumber/{page_number}/pagesize/{page_size}"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "Returns the account balance history for an account"
-      tags: ["balance-history"]
+      tags: ["analytics","balance-history"]
       operation_id: "GetAccountBalanceHistory"
       description: "This API could accept account_id as input parameters and return the account balance history for that account."
       responses: {
@@ -948,14 +1071,25 @@ service FinancialService {
     };
   }
 
-  // Get user category monthly expenditure
+  /**
+    Description: This endpoint enables end users to get their categorized monthly expenditures
+    Parameters:
+      - user_id - user id of the user
+    Optional Parameters:
+      - personalFinanceCategoryPrimary - category of the personal finance
+      - month - month
+      - pageNumber - page number of the request
+      - pageSize - page size of the request
+    API Version: 1.
+    API: /api/v1/analytics/category-monthly-expenditure/user/{user_id}?personalFinanceCategoryPrimary={personal_finance_category_}&month={month}&pageNumber={page_number}&pageSize={page_size}
+  **/
   rpc GetUserCategoryMonthlyExpenditure(GetUserCategoryMonthlyExpenditureRequest) returns (GetUserCategoryMonthlyExpenditureResponse) {
     option (google.api.http) = {
       get: "/api/v1/analytics/category-monthly-expenditure/user/{user_id}"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "Returns the monthly category expenditure for a user"
-      tags: ["category", "expenditures"]
+      tags: ["analytics","category", "expense"]
       operation_id: "GetUserCategoryMonthlyExpenditure"
       description: "This API could accept user_id as an input parameter and return the monthly category expenditure for that user."
       responses: {
@@ -970,7 +1104,18 @@ service FinancialService {
     };
   }
 
-  // Get CategoryMonthlyIncome by Category and User - This would return all CategoryMonthlyIncome records for a specific user for a specific personal finance category
+  /**
+    Description: Get CategoryMonthlyIncome by Category and User - This would return all CategoryMonthlyIncome records for a specific user for a specific personal finance category
+    Parameters:
+      - user_id - user id of the user
+    Optional Parameters:
+      - personalFinanceCategoryPrimary - category of the personal finance
+      - month - month
+      - pageNumber - page number of the request
+      - pageSize - page size of the request
+    API Version: 1.
+    API: /api/v1/analytics/category-monthly-income/user/{user_id}?personalFinanceCategoryPrimary={personal_finance_category_}&month={month}&pageNumber={page_number}&pageSize={page_size}
+  **/
   rpc GetUserCategoryMonthlyIncome(GetUserCategoryMonthlyIncomeRequest) returns (GetUserCategoryMonthlyIncomeResponse) {
     option (google.api.http) = {
       get: "/api/v1/analytics/category-monthly-income/user/{user_id}"
@@ -978,7 +1123,7 @@ service FinancialService {
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "Get monthly income by user for a specific category"
-      tags: ["category", "income"]
+      tags: ["analytics","category", "income"]
       operation_id: "GetUserCategoryMonthlyIncome"
       responses: {
         key: "200"
@@ -992,15 +1137,26 @@ service FinancialService {
     };
   }
 
-  // Get CategoryMonthlyTransactionCount by User - This would return all CategoryMonthlyTransactionCount records for a specific user
+  /**
+    Description: Get CategoryMonthlyTransactionCount by User - This would return all CategoryMonthlyTransactionCount records for a specific user
+    Parameters:
+      - user_id - user id of the user
+    Optional Parameters:
+      - personalFinanceCategoryPrimary - category of the personal finance
+      - month - month
+      - pageNumber - page number of the request
+      - pageSize - page size of the request
+    API Version: 1.
+    API: /api/v1/analytics//category-monthly-transaction-count/user/{user_id}?personalFinanceCategoryPrimary={personal_finance_category_}&month={month}&pageNumber={page_number}&pageSize={page_size}
+  **/
   rpc GetCategoryMonthlyTransactionCount(GetCategoryMonthlyTransactionCountRequest) returns (GetCategoryMonthlyTransactionCountResponse) {
     option (google.api.http) = {
-      get: "/api/v1/analytics/category-monthly-transaction-count/{user_id}"
+      get: "/api/v1/analytics/category-monthly-transaction-count/user/{user_id}"
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "Get monthly transaction count by user, month, and category"
-      tags: ["category", "transactions"]
+      tags: ["analytics","category", "transactions"]
       operation_id: "GetCategoryMonthlyTransactionCount"
       responses: {
         key: "200"
@@ -1014,14 +1170,25 @@ service FinancialService {
     };
   }
 
+  /**
+    Description: Get debt to income ratio
+    Parameters:
+      - user_id - user id of the user
+    Optional Parameters:
+      - month - month
+      - pageNumber - page number of the request
+      - pageSize - page size of the request
+    API Version: 1.
+    API: /api/v1/analytics/debt-to-income-ratio/user/{user_id}?month={month}&pageNumber={page_number}&pageSize={page_size}
+  **/
   rpc GetDebtToIncomeRatio(GetDebtToIncomeRatioRequest) returns (GetDebtToIncomeRatioResponse) {
     option (google.api.http) = {
-      get: "/api/v1/analytics/debt-to-income-ratio/{user_id}"
+      get: "/api/v1/analytics/debt-to-income-ratio/user/{user_id}"
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "Get Debt-to-Income ratio by user and month"
-      tags: ["finance"]
+      tags: ["analytics","debt"]
       operation_id: "GetDebtToIncomeRatio"
       responses: {
         key: "200"
@@ -1035,14 +1202,26 @@ service FinancialService {
     };
   }
 
+  /**
+    Description: Get expense metrics
+    Parameters:
+      - user_id - user id of the user
+    Optional Parameters:
+      - personalFinanceCategoryPrimary - category of the personal finance
+      - month - month
+      - pageNumber - page number of the request
+      - pageSize - page size of the request
+    API Version: 1.
+    API: /api/v1/analytics/expenses/user/{user_id}?personalFinanceCategoryPrimary={personal_finance_category_}&month={month}&pageNumber={page_number}&pageSize={page_size}
+  **/
   rpc GetExpenseMetrics(GetExpenseMetricsRequest) returns (GetExpenseMetricsResponse) {
     option (google.api.http) = {
-      get: "/api/v1/analytics/expenses/{user_id}"
+      get: "/api/v1/analytics/expenses/user/{user_id}"
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "Get Expense Metrics by user, month and category"
-      tags: ["finance"]
+      tags: ["analytics","expense"]
       operation_id: "GetExpenseMetrics"
       responses: {
         key: "200"
@@ -1056,14 +1235,25 @@ service FinancialService {
     };
   }
 
+  /**
+    Description: Get financial profile
+    Parameters:
+      - user_id - user id of the user
+    Optional Parameters:
+      - month - month
+      - pageNumber - page number of the request
+      - pageSize - page size of the request
+    API Version: 1.
+    API: /api/v1/analytics/finance-profile/user/{user_id}?month={month}&pageNumber={page_number}&pageSize={page_size}
+  **/
   rpc GetFinancialProfile(GetFinancialProfileRequest) returns (GetFinancialProfileResponse) {
     option (google.api.http) = {
-      get: "/api/v1/analytics/finance-profile/{user_id}"
+      get: "/api/v1/analytics/finance-profile/user/{user_id}"
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "Get Financial Profile by user and month"
-      tags: ["finance"]
+      tags: ["analytics","finance-profile"]
       operation_id: "GetFinancialProfile"
       responses: {
         key: "200"
@@ -1077,14 +1267,25 @@ service FinancialService {
     };
   }
 
+  /**
+    Description: Get income expense ratio
+    Parameters:
+      - user_id - user id of the user
+    Optional Parameters:
+      - month - month
+      - pageNumber - page number of the request
+      - pageSize - page size of the request
+    API Version: 1.
+    API: /api/v1/analytics/income-expense-ratio/user/{user_id}?month={month}&pageNumber={page_number}&pageSize={page_size}
+  **/
   rpc GetIncomeExpenseRatio(GetIncomeExpenseRatioRequest) returns (GetIncomeExpenseRatioResponse) {
     option (google.api.http) = {
-      get: "/api/v1/analytics/income-expense-ratio/{user_id}"
+      get: "/api/v1/analytics/income-expense-ratio/user/{user_id}"
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "Get Income Expense Ratio by user and month"
-      tags: ["finance"]
+      tags: ["analytics","income"]
       operation_id: "GetIncomeExpenseRatio"
       responses: {
         key: "200"
@@ -1098,14 +1299,26 @@ service FinancialService {
     };
   }
 
+  /**
+    Description: Get income metrics
+    Parameters:
+      - user_id - user id of the user
+    Optional Parameters:
+      - month - month
+      - personalFinanceCategoryPrimary - category of the personal finance
+      - pageNumber - page number of the request
+      - pageSize - page size of the request
+    API Version: 1.
+    API: /api/v1/analytics/income/user/{user_id}?personalFinanceCategoryPrimary={personalFinanceCategoryPrimary}&month={month}&pageNumber={page_number}&pageSize={page_size}
+  **/
   rpc GetIncomeMetrics(GetIncomeMetricsRequest) returns (GetIncomeMetricsResponse) {
     option (google.api.http) = {
-      get: "/api/v1/analytics/income/{user_id}"
+      get: "/api/v1/analytics/income/user/{user_id}"
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "Get Income Metrics by user, month and category"
-      tags: ["finance"]
+      tags: ["analytics","income"]
       operation_id: "GetIncomeMetrics"
       responses: {
         key: "200"
@@ -1119,14 +1332,26 @@ service FinancialService {
     };
   }
 
+  /**
+    Description: Get merchant monthly expenditures
+    Parameters:
+      - user_id - user id of the user
+    Optional Parameters:
+      - month - month
+      - merchantName - merchant_name
+      - pageNumber - page number of the request
+      - pageSize - page size of the request
+    API Version: 1.
+    API: /api/v1/analytics/merchant-monthly-expenditure/user/{user_id}?merchantName={merchant_name}&month={month}&pageNumber={page_number}&pageSize={page_size}
+  **/
   rpc GetMerchantMonthlyExpenditure(GetMerchantMonthlyExpenditureRequest) returns (GetMerchantMonthlyExpenditureResponse) {
     option (google.api.http) = {
-      get: "/api/v1/analytics/merchant-monthly-expenditure/{user_id}"
+      get: "/api/v1/analytics/merchant-monthly-expenditure/user/{user_id}"
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "Get Merchant Monthly Expenditure by user, month and merchant name"
-      tags: ["finance"]
+      tags: ["analytics","expense"]
       operation_id: "GetMerchantMonthlyExpenditure"
       responses: {
         key: "200"
@@ -1140,15 +1365,25 @@ service FinancialService {
     };
   }
 
-  //@here
+  /**
+    Description: Get monthly balance
+    Parameters:
+      - user_id - user id of the user
+    Optional Parameters:
+      - month - month
+      - pageNumber - page number of the request
+      - pageSize - page size of the request
+    API Version: 1.
+    API: /api/v1/analytics/monthly-balance/user/{user_id}?month={month}&pageNumber={page_number}&pageSize={page_size}
+  **/
   rpc GetMonthlyBalance(GetMonthlyBalanceRequest) returns (GetMonthlyBalanceResponse) {
     option (google.api.http) = {
-      get: "/api/v1/analytics/monthly-balance/{user_id}"
+      get: "/api/v1/analytics/monthly-balance/user/{user_id}"
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "Get Monthly Balance by user and month"
-      tags: ["finance"]
+      tags: ["analytics","balance"]
       operation_id: "GetMonthlyBalance"
       responses: {
         key: "200"
@@ -1162,14 +1397,25 @@ service FinancialService {
     };
   }
 
+  /**
+    Description: Get monthly expenditures
+    Parameters:
+      - user_id - user id of the user
+    Optional Parameters:
+      - month - month
+      - pageNumber - page number of the request
+      - pageSize - page size of the request
+    API Version: 1.
+    API: /api/v1/analytics/monthly-expenditure/user/{user_id}?month={month}&pageNumber={page_number}&pageSize={page_size}
+  **/
   rpc GetMonthlyExpenditure(GetMonthlyExpenditureRequest) returns (GetMonthlyExpenditureResponse) {
     option (google.api.http) = {
-      get: "/api/v1/analytics/monthly-expenditure/{user_id}"
+      get: "/api/v1/analytics/monthly-expenditure/user/{user_id}"
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "Get Monthly Expenditure by user and month"
-      tags: ["finance"]
+      tags: ["analytics","expense"]
       operation_id: "GetMonthlyExpenditure"
       responses: {
         key: "200"
@@ -1183,14 +1429,25 @@ service FinancialService {
     };
   }
 
+  /**
+    Description: Get monthly Income
+    Parameters:
+      - user_id - user id of the user
+    Optional Parameters:
+      - month - month
+      - pageNumber - page number of the request
+      - pageSize - page size of the request
+    API Version: 1.
+    API: /api/v1/analytics/monthly-income/user/{user_id}?month={month}&pageNumber={page_number}&pageSize={page_size}
+  **/
   rpc GetMonthlyIncome(GetMonthlyIncomeRequest) returns (GetMonthlyIncomeResponse) {
     option (google.api.http) = {
-      get: "/api/v1/analytics/monthly-income/{user_id}"
+      get: "/api/v1/analytics/monthly-income/user/{user_id}"
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "Get Monthly Income by user and month"
-      tags: ["finance"]
+      tags: ["analytics","income"]
       operation_id: "GetMonthlyIncome"
       responses: {
         key: "200"
@@ -1204,6 +1461,17 @@ service FinancialService {
     };
   }
 
+  /**
+    Description: Get monthly savings
+    Parameters:
+      - user_id - user id of the user
+    Optional Parameters:
+      - month - month
+      - pageNumber - page number of the request
+      - pageSize - page size of the request
+    API Version: 1.
+    API: /api/v1/analytics/monthly-savings/user/user/{user_id}?month={month}&pageNumber={page_number}&pageSize={page_size}
+  **/
   rpc GetMonthlySavings(GetMonthlySavingsRequest) returns (GetMonthlySavingsResponse) {
     option (google.api.http) = {
       get: "/api/v1/analytics/monthly-savings/{user_id}"
@@ -1211,7 +1479,7 @@ service FinancialService {
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "Get Monthly Savings by user and month"
-      tags: ["finance"]
+      tags: ["analytics","savings"]
       operation_id: "GetMonthlySavings"
       responses: {
         key: "200"
@@ -1225,14 +1493,26 @@ service FinancialService {
     };
   }
 
+  /**
+    Description: Get monthly total quantity by security and user
+    Parameters:
+      - user_id - user id of the user
+    Optional Parameters:
+      - month - month
+      - pageNumber - page number of the request
+      - security_id - security id of the security
+      - pageSize - page size of the request
+    API Version: 1.
+    API: /api/v1/analytics/monthly-total-quantity-by-security-and-user/user/user/{user_id}?securityId={security_id}&month={month}&pageNumber={page_number}&pageSize={page_size}
+  **/
   rpc GetMonthlyTotalQuantityBySecurityAndUser(GetMonthlyTotalQuantityBySecurityAndUserRequest) returns (GetMonthlyTotalQuantityBySecurityAndUserResponse) {
     option (google.api.http) = {
-      get: "/api/v1/analytics/monthly-total-quantity-by-security-and-user/{user_id}"
+      get: "/api/v1/analytics/monthly-total-quantity-by-security-and-user/user/{user_id}"
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "Get Monthly Total Quantity of Security by user, month and security"
-      tags: ["finance"]
+      tags: ["analytics","securities"]
       operation_id: "GetMonthlyTotalQuantityBySecurityAndUser"
       responses: {
         key: "200"
@@ -1246,14 +1526,25 @@ service FinancialService {
     };
   }
 
+  /**
+    Description: Get monthly transaction
+    Parameters:
+      - user_id - user id of the user
+    Optional Parameters:
+      - month - month
+      - pageNumber - page number of the request
+      - pageSize - page size of the request
+    API Version: 1.
+    API: /api/v1/analytics/monthly-transaction-count/user/user/{user_id}?month={month}&pageNumber={page_number}&pageSize={page_size}
+  **/
   rpc GetMonthlyTransactionCount(GetMonthlyTransactionCountRequest) returns (GetMonthlyTransactionCountResponse) {
     option (google.api.http) = {
-      get: "/api/v1/analytics/monthly-transaction-count/{user_id}"
+      get: "/api/v1/analytics/monthly-transaction-count/user/{user_id}"
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "Get Monthly Transaction Count by user and month"
-      tags: ["finance"]
+      tags: ["analytics","transaction"]
       operation_id: "GetMonthlyTransactionCount"
       responses: {
         key: "200"
@@ -1267,14 +1558,26 @@ service FinancialService {
     };
   }
 
+  /**
+    Description: Get monthly channel expenditure
+    Parameters:
+      - user_id - user id of the user
+    Optional Parameters:
+      - month - month
+      - paymentChannel - payment channel
+      - pageNumber - page number of the request
+      - pageSize - page size of the request
+    API Version: 1.
+    API: /api/v1/analytics/payment-channel-expenditure/user/user/{user_id}?paymentChannel={payment_channel}&month={month}&pageNumber={page_number}&pageSize={page_size}
+  **/
   rpc GetPaymentChannelMonthlyExpenditure(GetPaymentChannelMonthlyExpenditureRequest) returns (GetPaymentChannelMonthlyExpenditureResponse) {
     option (google.api.http) = {
-      get: "/api/v1/analytics/payment-channel-expenditure/{user_id}"
+      get: "/api/v1/analytics/payment-channel-expenditure/user/{user_id}"
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "Get Payment Channel Monthly Expenditure by user, month, and payment channel"
-      tags: ["finance"]
+      tags: ["analytics","expense"]
       operation_id: "GetPaymentChannelMonthlyExpenditure"
       responses: {
         key: "200"
@@ -1288,14 +1591,25 @@ service FinancialService {
     };
   }
 
+  /**
+    Description: Get total investment security
+    Parameters:
+      - user_id - user id of the user
+    Optional Parameters:
+      - securityId - payment channel
+      - pageNumber - page number of the request
+      - pageSize - page size of the request
+    API Version: 1.
+    API:/api/v1/analytics/total-investment/user/{user_id}?securityId={securityId}&pageNumber={page_number}&pageSize={page_size}
+  **/
   rpc GetTotalInvestmentBySecurity(GetTotalInvestmentBySecurityRequest) returns (GetTotalInvestmentBySecurityResponse) {
     option (google.api.http) = {
-      get: "/api/v1/analytics/total-investment/{user_id}"
+      get: "/api/v1/analytics/total-investment/user/{user_id}"
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "Get Total Investment by user and security"
-      tags: ["finance"]
+      tags: ["analytics","security"]
       operation_id: "GetTotalInvestmentBySecurity"
       responses: {
         key: "200"
@@ -1309,14 +1623,21 @@ service FinancialService {
     };
   }
 
+  /**
+    Description: Get financial context
+    Parameters:
+      - user_id - user id of the user
+    API Version: 1.
+    API:/api/v1/analytics/melody-financial-context/user/{user_id}
+  **/
   rpc GetMelodyFinancialContext(GetMelodyFinancialContextRequest) returns (GetMelodyFinancialContextResponse) {
     option (google.api.http) = {
-      get: "/api/v1/analytics/melody-financial-context/{user_id}"
+      get: "/api/v1/analytics/melody-financial-context/user/{user_id}"
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "Get Melody Financial Context"
-      tags: ["finance"]
+      tags: ["analytics","financial-context"]
       operation_id: "GetMelodyFinancialContext"
       responses: {
         key: "200"
@@ -1330,11 +1651,18 @@ service FinancialService {
     };
   }
 
+  /**
+    Description: Get bank transaction counts
+    Parameters:
+      - user_id - user id of the user
+    API Version: 1.
+    API:/api/v1/analytics/melody-financial-context/user/{user_id}
+  **/
   rpc GetTransactionsForBankAccount(GetTransactionsForBankAccountRequest) returns (GetTransactionsForBankAccountResponse) {
-    option (google.api.http) = {get: "/api/v1/transactions/{user_id}/plaid-account-id/{plaid_account_id}/pageNumber/{page_number}/pageSize/{page_size}"};
+    option (google.api.http) = {get: "/api/v1/transactions/user/{user_id}/plaid-account-id/{plaid_account_id}/pageNumber/{page_number}/pageSize/{page_size}"};
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "get transactions tied to a bank account and account id"
-      tags: ["transactions"]
+      tags: ["analytics","transactions"]
       operation_id: "GetTransactions"
       description: "This endpoint returns the transactions for a given user id and a business account id"
       responses: {

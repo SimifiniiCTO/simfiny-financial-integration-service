@@ -137,6 +137,7 @@ export const protobufPackage = "financial_integration_service_api.v1";
 
 /** FinancialService API. */
 export interface FinancialService {
+  /**  */
   PlaidInitiateTokenExchange(request: PlaidInitiateTokenExchangeRequest): Promise<PlaidInitiateTokenExchangeResponse>;
   PlaidInitiateTokenUpdate(request: PlaidInitiateTokenUpdateRequest): Promise<PlaidInitiateTokenUpdateResponse>;
   PlaidExchangeToken(request: PlaidExchangeTokenRequest): Promise<PlaidExchangeTokenResponse>;
@@ -174,53 +175,379 @@ export interface FinancialService {
   GetLink(request: GetLinkRequest): Promise<GetLinkResponse>;
   GetLinks(request: GetLinksRequest): Promise<GetLinksResponse>;
   DeleteLink(request: DeleteLinkRequest): Promise<DeleteLinkResponse>;
+  /**
+   * Description: This endpoint enables end users to get recurring transactions
+   * Parameters:
+   * - user_id - user id of the user whose recurring transaction we seek to fetch
+   * API Version: 1.
+   * API: /api/v1/transactions/recurring-transactions/{user_id}
+   */
   GetReCurringTransactions(request: GetReCurringTransactionsRequest): Promise<GetReCurringTransactionsResponse>;
+  /**
+   * Description: This endpoint enables end users to get transactions in a paginated manner
+   * Parameters:
+   * - user_id - user id of the user whose recurring transaction we seek to fetch
+   * - page_number - page number of the transaction we want to fetch (page number)
+   * - page_size - page size of the transaction we want to fetch (number of transactions)
+   * API Version: 1.
+   * API: /api/v1/transactions/{user_id}/pageNumber/{page_number}/pageSize/{page_size}
+   */
   GetTransactions(request: GetTransactionsRequest): Promise<GetTransactionsResponse>;
+  /**
+   * Description: This endpoint enables us to process plaid webhooks
+   * Body:
+   * - {
+   * "webhookType": "string",
+   * "webhookCode": "string",
+   * "itemId": "string",
+   * "initialUpdateComplete": true,
+   * "historicalUpdateComplete": "string",
+   * "environment": "string",
+   * "newTransactions": [
+   * "string"
+   * ],
+   * "removedTransactions": [
+   * "string"
+   * ],
+   * "error": {
+   * "additionalProp1": {
+   * "@type": "string",
+   * "additionalProp1": "string",
+   * "additionalProp2": "string",
+   * "additionalProp3": "string"
+   * },
+   * "additionalProp2": {
+   * "@type": "string",
+   * "additionalProp1": "string",
+   * "additionalProp2": "string",
+   * "additionalProp3": "string"
+   * },
+   * "additionalProp3": {
+   * "@type": "string",
+   * "additionalProp1": "string",
+   * "additionalProp2": "string",
+   * "additionalProp3": "string"
+   * }
+   * },
+   * "accountIds": [
+   * "string"
+   * ],
+   * "consentExpirationTime": "string",
+   * "accountIdsWithNewLiabilities": [
+   * "string"
+   * ],
+   * "accountIdsWithUpdatedLiabilities": [
+   * "string"
+   * ],
+   * "newHoldings": "string",
+   * "updatedHoldings": "string"
+   * }
+   * API Version: 1.
+   * API: /api/v1/plaid/webhook
+   */
   ProcessWebhook(request: ProcessWebhookRequest): Promise<ProcessWebhookResponse>;
+  /**
+   * Description: This endpoint enables us to process stripe webhooks
+   * Body:
+   * - {
+   * "body": "string",
+   * "signature": "string"
+   * }
+   * API Version: 1.
+   * API: /api/v1/stripe/webhook
+   */
   StripeWebhook(request: StripeWebhookRequest): Promise<StripeWebhookResponse>;
+  /**
+   * Description: This endpoint enables end users to get transactions in a paginated manner
+   * Body:
+   * - {
+   * userId*	string($uint64)
+   * priceId*	string
+   * }
+   * API Version: 1.
+   * API: /api/v1/stripe/subscription
+   */
   CreateSubscription(request: CreateSubscriptionRequest): Promise<CreateSubscriptionResponse>;
-  /** Transaction Aggregates By Queries */
+  /**
+   * Description: This endpoint enables end users to get transaction aggregated by month
+   * Parameters:
+   * - user_id - user id of the user whose recurring transaction we seek to fetch
+   * Optional Parameters:
+   * - month - month of the transaction
+   * - personalFinanceCategoryPrimary - personal financial category
+   * - locationCity - location of the transaction
+   * - paymentChannel - payment channel
+   * - merchantName - merchant name
+   * - pageNumber - page number
+   * - pageSize - page size
+   * API Version: 1.
+   * API: /api/v1/analytics/transaction-aggregates/{user_id}?pageNumber={page_number}&pageSize={page_size}&merchantName={merchant_name}&paymentChannel={payment_channel}&locationCity={location_city}&personalFinanceCategoryPrimary={personal_finance_category_primary}&month={month}
+   */
   GetTransactionAggregates(request: GetTransactionAggregatesRequest): Promise<GetTransactionAggregatesResponse>;
+  /**
+   * Description: This endpoint enables end users to get the historical account balances for all accounts the user has
+   * Parameters:
+   * - user_id - user id of the user whose recurring transaction we seek to fetch
+   * - page_number - page number of the request
+   * - page_size - page size of the request
+   * API Version: 1.
+   * API: /api/v1/analytics/balance-history/user/{user_id}/pagenumber/{page_number}/pagesize/{page_size}
+   */
   GetUserAccountBalanceHistory(
     request: GetUserAccountBalanceHistoryRequest,
   ): Promise<GetUserAccountBalanceHistoryResponse>;
+  /**
+   * Description: This endpoint enables end users to get the historical account balances for a given account the user has
+   * Parameters:
+   * - user_id - user id of the user whose recurring transaction we seek to fetch
+   * - plaid_account_id - plaid account id of the account
+   * - page_number - page number of the request
+   * - page_size - page size of the request
+   * API Version: 1.
+   * API: /api/v1/analytics/balance-history/account/{plaid_account_id}/pagenumber/{page_number}/pagesize/{page_size}
+   */
   GetAccountBalanceHistory(request: GetAccountBalanceHistoryRequest): Promise<GetAccountBalanceHistoryResponse>;
-  /** Get user category monthly expenditure */
+  /**
+   * Description: This endpoint enables end users to get their categorized monthly expenditures
+   * Parameters:
+   * - user_id - user id of the user
+   * Optional Parameters:
+   * - personalFinanceCategoryPrimary - category of the personal finance
+   * - month - month
+   * - pageNumber - page number of the request
+   * - pageSize - page size of the request
+   * API Version: 1.
+   * API: /api/v1/analytics/category-monthly-expenditure/user/{user_id}?personalFinanceCategoryPrimary={personal_finance_category_}&month={month}&pageNumber={page_number}&pageSize={page_size}
+   */
   GetUserCategoryMonthlyExpenditure(
     request: GetUserCategoryMonthlyExpenditureRequest,
   ): Promise<GetUserCategoryMonthlyExpenditureResponse>;
-  /** Get CategoryMonthlyIncome by Category and User - This would return all CategoryMonthlyIncome records for a specific user for a specific personal finance category */
+  /**
+   * Description: Get CategoryMonthlyIncome by Category and User - This would return all CategoryMonthlyIncome records for a specific user for a specific personal finance category
+   * Parameters:
+   * - user_id - user id of the user
+   * Optional Parameters:
+   * - personalFinanceCategoryPrimary - category of the personal finance
+   * - month - month
+   * - pageNumber - page number of the request
+   * - pageSize - page size of the request
+   * API Version: 1.
+   * API: /api/v1/analytics/category-monthly-income/user/{user_id}?personalFinanceCategoryPrimary={personal_finance_category_}&month={month}&pageNumber={page_number}&pageSize={page_size}
+   */
   GetUserCategoryMonthlyIncome(
     request: GetUserCategoryMonthlyIncomeRequest,
   ): Promise<GetUserCategoryMonthlyIncomeResponse>;
-  /** Get CategoryMonthlyTransactionCount by User - This would return all CategoryMonthlyTransactionCount records for a specific user */
+  /**
+   * Description: Get CategoryMonthlyTransactionCount by User - This would return all CategoryMonthlyTransactionCount records for a specific user
+   * Parameters:
+   * - user_id - user id of the user
+   * Optional Parameters:
+   * - personalFinanceCategoryPrimary - category of the personal finance
+   * - month - month
+   * - pageNumber - page number of the request
+   * - pageSize - page size of the request
+   * API Version: 1.
+   * API: /api/v1/analytics//category-monthly-transaction-count/user/{user_id}?personalFinanceCategoryPrimary={personal_finance_category_}&month={month}&pageNumber={page_number}&pageSize={page_size}
+   */
   GetCategoryMonthlyTransactionCount(
     request: GetCategoryMonthlyTransactionCountRequest,
   ): Promise<GetCategoryMonthlyTransactionCountResponse>;
+  /**
+   * Description: Get debt to income ratio
+   * Parameters:
+   * - user_id - user id of the user
+   * Optional Parameters:
+   * - month - month
+   * - pageNumber - page number of the request
+   * - pageSize - page size of the request
+   * API Version: 1.
+   * API: /api/v1/analytics/debt-to-income-ratio/user/{user_id}?month={month}&pageNumber={page_number}&pageSize={page_size}
+   */
   GetDebtToIncomeRatio(request: GetDebtToIncomeRatioRequest): Promise<GetDebtToIncomeRatioResponse>;
+  /**
+   * Description: Get expense metrics
+   * Parameters:
+   * - user_id - user id of the user
+   * Optional Parameters:
+   * - personalFinanceCategoryPrimary - category of the personal finance
+   * - month - month
+   * - pageNumber - page number of the request
+   * - pageSize - page size of the request
+   * API Version: 1.
+   * API: /api/v1/analytics/expenses/user/{user_id}?personalFinanceCategoryPrimary={personal_finance_category_}&month={month}&pageNumber={page_number}&pageSize={page_size}
+   */
   GetExpenseMetrics(request: GetExpenseMetricsRequest): Promise<GetExpenseMetricsResponse>;
+  /**
+   * Description: Get financial profile
+   * Parameters:
+   * - user_id - user id of the user
+   * Optional Parameters:
+   * - month - month
+   * - pageNumber - page number of the request
+   * - pageSize - page size of the request
+   * API Version: 1.
+   * API: /api/v1/analytics/finance-profile/user/{user_id}?month={month}&pageNumber={page_number}&pageSize={page_size}
+   */
   GetFinancialProfile(request: GetFinancialProfileRequest): Promise<GetFinancialProfileResponse>;
+  /**
+   * Description: Get income expense ratio
+   * Parameters:
+   * - user_id - user id of the user
+   * Optional Parameters:
+   * - month - month
+   * - pageNumber - page number of the request
+   * - pageSize - page size of the request
+   * API Version: 1.
+   * API: /api/v1/analytics/income-expense-ratio/user/{user_id}?month={month}&pageNumber={page_number}&pageSize={page_size}
+   */
   GetIncomeExpenseRatio(request: GetIncomeExpenseRatioRequest): Promise<GetIncomeExpenseRatioResponse>;
+  /**
+   * Description: Get income metrics
+   * Parameters:
+   * - user_id - user id of the user
+   * Optional Parameters:
+   * - month - month
+   * - personalFinanceCategoryPrimary - category of the personal finance
+   * - pageNumber - page number of the request
+   * - pageSize - page size of the request
+   * API Version: 1.
+   * API: /api/v1/analytics/income/user/{user_id}?personalFinanceCategoryPrimary={personalFinanceCategoryPrimary}&month={month}&pageNumber={page_number}&pageSize={page_size}
+   */
   GetIncomeMetrics(request: GetIncomeMetricsRequest): Promise<GetIncomeMetricsResponse>;
+  /**
+   * Description: Get merchant monthly expenditures
+   * Parameters:
+   * - user_id - user id of the user
+   * Optional Parameters:
+   * - month - month
+   * - merchantName - merchant_name
+   * - pageNumber - page number of the request
+   * - pageSize - page size of the request
+   * API Version: 1.
+   * API: /api/v1/analytics/merchant-monthly-expenditure/user/{user_id}?merchantName={merchant_name}&month={month}&pageNumber={page_number}&pageSize={page_size}
+   */
   GetMerchantMonthlyExpenditure(
     request: GetMerchantMonthlyExpenditureRequest,
   ): Promise<GetMerchantMonthlyExpenditureResponse>;
-  /** @here */
+  /**
+   * Description: Get monthly balance
+   * Parameters:
+   * - user_id - user id of the user
+   * Optional Parameters:
+   * - month - month
+   * - pageNumber - page number of the request
+   * - pageSize - page size of the request
+   * API Version: 1.
+   * API: /api/v1/analytics/monthly-balance/user/{user_id}?month={month}&pageNumber={page_number}&pageSize={page_size}
+   */
   GetMonthlyBalance(request: GetMonthlyBalanceRequest): Promise<GetMonthlyBalanceResponse>;
+  /**
+   * Description: Get monthly expenditures
+   * Parameters:
+   * - user_id - user id of the user
+   * Optional Parameters:
+   * - month - month
+   * - pageNumber - page number of the request
+   * - pageSize - page size of the request
+   * API Version: 1.
+   * API: /api/v1/analytics/monthly-expenditure/user/{user_id}?month={month}&pageNumber={page_number}&pageSize={page_size}
+   */
   GetMonthlyExpenditure(request: GetMonthlyExpenditureRequest): Promise<GetMonthlyExpenditureResponse>;
+  /**
+   * Description: Get monthly Income
+   * Parameters:
+   * - user_id - user id of the user
+   * Optional Parameters:
+   * - month - month
+   * - pageNumber - page number of the request
+   * - pageSize - page size of the request
+   * API Version: 1.
+   * API: /api/v1/analytics/monthly-income/user/{user_id}?month={month}&pageNumber={page_number}&pageSize={page_size}
+   */
   GetMonthlyIncome(request: GetMonthlyIncomeRequest): Promise<GetMonthlyIncomeResponse>;
+  /**
+   * Description: Get monthly savings
+   * Parameters:
+   * - user_id - user id of the user
+   * Optional Parameters:
+   * - month - month
+   * - pageNumber - page number of the request
+   * - pageSize - page size of the request
+   * API Version: 1.
+   * API: /api/v1/analytics/monthly-savings/user/user/{user_id}?month={month}&pageNumber={page_number}&pageSize={page_size}
+   */
   GetMonthlySavings(request: GetMonthlySavingsRequest): Promise<GetMonthlySavingsResponse>;
+  /**
+   * Description: Get monthly total quantity by security and user
+   * Parameters:
+   * - user_id - user id of the user
+   * Optional Parameters:
+   * - month - month
+   * - pageNumber - page number of the request
+   * - security_id - security id of the security
+   * - pageSize - page size of the request
+   * API Version: 1.
+   * API: /api/v1/analytics/monthly-total-quantity-by-security-and-user/user/user/{user_id}?securityId={security_id}&month={month}&pageNumber={page_number}&pageSize={page_size}
+   */
   GetMonthlyTotalQuantityBySecurityAndUser(
     request: GetMonthlyTotalQuantityBySecurityAndUserRequest,
   ): Promise<GetMonthlyTotalQuantityBySecurityAndUserResponse>;
+  /**
+   * Description: Get monthly transaction
+   * Parameters:
+   * - user_id - user id of the user
+   * Optional Parameters:
+   * - month - month
+   * - pageNumber - page number of the request
+   * - pageSize - page size of the request
+   * API Version: 1.
+   * API: /api/v1/analytics/monthly-transaction-count/user/user/{user_id}?month={month}&pageNumber={page_number}&pageSize={page_size}
+   */
   GetMonthlyTransactionCount(request: GetMonthlyTransactionCountRequest): Promise<GetMonthlyTransactionCountResponse>;
+  /**
+   * Description: Get monthly channel expenditure
+   * Parameters:
+   * - user_id - user id of the user
+   * Optional Parameters:
+   * - month - month
+   * - paymentChannel - payment channel
+   * - pageNumber - page number of the request
+   * - pageSize - page size of the request
+   * API Version: 1.
+   * API: /api/v1/analytics/payment-channel-expenditure/user/user/{user_id}?paymentChannel={payment_channel}&month={month}&pageNumber={page_number}&pageSize={page_size}
+   */
   GetPaymentChannelMonthlyExpenditure(
     request: GetPaymentChannelMonthlyExpenditureRequest,
   ): Promise<GetPaymentChannelMonthlyExpenditureResponse>;
+  /**
+   * Description: Get total investment security
+   * Parameters:
+   * - user_id - user id of the user
+   * Optional Parameters:
+   * - securityId - payment channel
+   * - pageNumber - page number of the request
+   * - pageSize - page size of the request
+   * API Version: 1.
+   * API:/api/v1/analytics/total-investment/user/{user_id}?securityId={securityId}&pageNumber={page_number}&pageSize={page_size}
+   */
   GetTotalInvestmentBySecurity(
     request: GetTotalInvestmentBySecurityRequest,
   ): Promise<GetTotalInvestmentBySecurityResponse>;
+  /**
+   * Description: Get financial context
+   * Parameters:
+   * - user_id - user id of the user
+   * API Version: 1.
+   * API:/api/v1/analytics/melody-financial-context/user/{user_id}
+   */
   GetMelodyFinancialContext(request: GetMelodyFinancialContextRequest): Promise<GetMelodyFinancialContextResponse>;
+  /**
+   * Description: Get bank transaction counts
+   * Parameters:
+   * - user_id - user id of the user
+   * API Version: 1.
+   * API:/api/v1/analytics/melody-financial-context/user/{user_id}
+   */
   GetTransactionsForBankAccount(
     request: GetTransactionsForBankAccountRequest,
   ): Promise<GetTransactionsForBankAccountResponse>;

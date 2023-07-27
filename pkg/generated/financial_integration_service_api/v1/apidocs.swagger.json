@@ -332,6 +332,7 @@
           }
         ],
         "tags": [
+          "analytics",
           "balance-history"
         ]
       }
@@ -399,6 +400,7 @@
           }
         ],
         "tags": [
+          "analytics",
           "balance-history"
         ]
       }
@@ -481,8 +483,9 @@
           }
         ],
         "tags": [
+          "analytics",
           "category",
-          "expenditures"
+          "expense"
         ]
       }
     },
@@ -560,12 +563,13 @@
           }
         ],
         "tags": [
+          "analytics",
           "category",
           "income"
         ]
       }
     },
-    "/api/v1/analytics/category-monthly-transaction-count/{userId}": {
+    "/api/v1/analytics/category-monthly-transaction-count/user/{userId}": {
       "get": {
         "summary": "Get monthly transaction count by user, month, and category",
         "operationId": "GetCategoryMonthlyTransactionCount",
@@ -642,12 +646,13 @@
           }
         ],
         "tags": [
+          "analytics",
           "category",
           "transactions"
         ]
       }
     },
-    "/api/v1/analytics/debt-to-income-ratio/{userId}": {
+    "/api/v1/analytics/debt-to-income-ratio/user/{userId}": {
       "get": {
         "summary": "Get Debt-to-Income ratio by user and month",
         "operationId": "GetDebtToIncomeRatio",
@@ -716,11 +721,12 @@
           }
         ],
         "tags": [
-          "finance"
+          "analytics",
+          "debt"
         ]
       }
     },
-    "/api/v1/analytics/expenses/{userId}": {
+    "/api/v1/analytics/expenses/user/{userId}": {
       "get": {
         "summary": "Get Expense Metrics by user, month and category",
         "operationId": "GetExpenseMetrics",
@@ -796,11 +802,12 @@
           }
         ],
         "tags": [
-          "finance"
+          "analytics",
+          "expense"
         ]
       }
     },
-    "/api/v1/analytics/finance-profile/{userId}": {
+    "/api/v1/analytics/finance-profile/user/{userId}": {
       "get": {
         "summary": "Get Financial Profile by user and month",
         "operationId": "GetFinancialProfile",
@@ -869,11 +876,12 @@
           }
         ],
         "tags": [
-          "finance"
+          "analytics",
+          "finance-profile"
         ]
       }
     },
-    "/api/v1/analytics/income-expense-ratio/{userId}": {
+    "/api/v1/analytics/income-expense-ratio/user/{userId}": {
       "get": {
         "summary": "Get Income Expense Ratio by user and month",
         "operationId": "GetIncomeExpenseRatio",
@@ -942,11 +950,12 @@
           }
         ],
         "tags": [
-          "finance"
+          "analytics",
+          "income"
         ]
       }
     },
-    "/api/v1/analytics/income/{userId}": {
+    "/api/v1/analytics/income/user/{userId}": {
       "get": {
         "summary": "Get Income Metrics by user, month and category",
         "operationId": "GetIncomeMetrics",
@@ -1022,11 +1031,12 @@
           }
         ],
         "tags": [
-          "finance"
+          "analytics",
+          "income"
         ]
       }
     },
-    "/api/v1/analytics/melody-financial-context/{userId}": {
+    "/api/v1/analytics/melody-financial-context/user/{userId}": {
       "get": {
         "summary": "Get Melody Financial Context",
         "operationId": "GetMelodyFinancialContext",
@@ -1072,11 +1082,12 @@
           }
         ],
         "tags": [
-          "finance"
+          "analytics",
+          "financial-context"
         ]
       }
     },
-    "/api/v1/analytics/merchant-monthly-expenditure/{userId}": {
+    "/api/v1/analytics/merchant-monthly-expenditure/user/{userId}": {
       "get": {
         "summary": "Get Merchant Monthly Expenditure by user, month and merchant name",
         "operationId": "GetMerchantMonthlyExpenditure",
@@ -1152,11 +1163,12 @@
           }
         ],
         "tags": [
-          "finance"
+          "analytics",
+          "expense"
         ]
       }
     },
-    "/api/v1/analytics/monthly-balance/{userId}": {
+    "/api/v1/analytics/monthly-balance/user/{userId}": {
       "get": {
         "summary": "Get Monthly Balance by user and month",
         "operationId": "GetMonthlyBalance",
@@ -1225,11 +1237,12 @@
           }
         ],
         "tags": [
-          "finance"
+          "analytics",
+          "balance"
         ]
       }
     },
-    "/api/v1/analytics/monthly-expenditure/{userId}": {
+    "/api/v1/analytics/monthly-expenditure/user/{userId}": {
       "get": {
         "summary": "Get Monthly Expenditure by user and month",
         "operationId": "GetMonthlyExpenditure",
@@ -1297,11 +1310,12 @@
           }
         ],
         "tags": [
-          "finance"
+          "analytics",
+          "expense"
         ]
       }
     },
-    "/api/v1/analytics/monthly-income/{userId}": {
+    "/api/v1/analytics/monthly-income/user/{userId}": {
       "get": {
         "summary": "Get Monthly Income by user and month",
         "operationId": "GetMonthlyIncome",
@@ -1369,7 +1383,8 @@
           }
         ],
         "tags": [
-          "finance"
+          "analytics",
+          "income"
         ]
       }
     },
@@ -1441,11 +1456,12 @@
           }
         ],
         "tags": [
-          "finance"
+          "analytics",
+          "savings"
         ]
       }
     },
-    "/api/v1/analytics/monthly-total-quantity-by-security-and-user/{userId}": {
+    "/api/v1/analytics/monthly-total-quantity-by-security-and-user/user/{userId}": {
       "get": {
         "summary": "Get Monthly Total Quantity of Security by user, month and security",
         "operationId": "GetMonthlyTotalQuantityBySecurityAndUser",
@@ -1519,11 +1535,12 @@
           }
         ],
         "tags": [
-          "finance"
+          "analytics",
+          "securities"
         ]
       }
     },
-    "/api/v1/analytics/monthly-transaction-count/{userId}": {
+    "/api/v1/analytics/monthly-transaction-count/user/{userId}": {
       "get": {
         "summary": "Get Monthly Transaction Count by user and month",
         "operationId": "GetMonthlyTransactionCount",
@@ -1591,11 +1608,12 @@
           }
         ],
         "tags": [
-          "finance"
+          "analytics",
+          "transaction"
         ]
       }
     },
-    "/api/v1/analytics/payment-channel-expenditure/{userId}": {
+    "/api/v1/analytics/payment-channel-expenditure/user/{userId}": {
       "get": {
         "summary": "Get Payment Channel Monthly Expenditure by user, month, and payment channel",
         "operationId": "GetPaymentChannelMonthlyExpenditure",
@@ -1669,11 +1687,12 @@
           }
         ],
         "tags": [
-          "finance"
+          "analytics",
+          "expense"
         ]
       }
     },
-    "/api/v1/analytics/total-investment/{userId}": {
+    "/api/v1/analytics/total-investment/user/{userId}": {
       "get": {
         "summary": "Get Total Investment by user and security",
         "operationId": "GetTotalInvestmentBySecurity",
@@ -1740,7 +1759,8 @@
           }
         ],
         "tags": [
-          "finance"
+          "analytics",
+          "security"
         ]
       }
     },
@@ -1837,7 +1857,9 @@
           }
         ],
         "tags": [
-          "transaction-aggregates"
+          "analytics",
+          "transaction",
+          "category"
         ]
       }
     },
@@ -2965,7 +2987,7 @@
           }
         ],
         "tags": [
-          "plaid"
+          "plaid link token"
         ]
       }
     },
@@ -3017,7 +3039,7 @@
           }
         ],
         "tags": [
-          "plaid"
+          "plaid link token"
         ]
       }
     },
@@ -3069,7 +3091,7 @@
           }
         ],
         "tags": [
-          "plaid"
+          "plaid link token"
         ]
       }
     },
@@ -3785,73 +3807,7 @@
         ]
       }
     },
-    "/api/v1/transactions/{userId}/pageNumber/{pageNumber}/pageSize/{pageSize}": {
-      "get": {
-        "summary": "get transactions",
-        "description": "This endpoint returns the transactions for a given user id",
-        "operationId": "GetTransactions",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": ".api.v1.GetTransactionsResponse"
-            }
-          },
-          "400": {
-            "description": "Request failed due to invalid input.",
-            "schema": {
-              "$ref": ".api.v1.ValidationErrorMessageResponse"
-            }
-          },
-          "404": {
-            "description": "Request failed due to incorrect path.",
-            "schema": {
-              "$ref": ".api.v1.PathUnknownErrorMessageResponse"
-            }
-          },
-          "500": {
-            "description": "Request failed due to internal server error.",
-            "schema": {
-              "$ref": ".api.v1.InternalErrorMessageResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "userId",
-            "description": "The user id\nValidations:\n- user_id must be greater than 0",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "format": "uint64"
-          },
-          {
-            "name": "pageNumber",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "format": "uint64"
-          },
-          {
-            "name": "pageSize",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "format": "uint64"
-          }
-        ],
-        "tags": [
-          "transactions"
-        ]
-      }
-    },
-    "/api/v1/transactions/{userId}/plaid-account-id/{plaidAccountId}/pageNumber/{pageNumber}/pageSize/{pageSize}": {
+    "/api/v1/transactions/user/{userId}/plaid-account-id/{plaidAccountId}/pageNumber/{pageNumber}/pageSize/{pageSize}": {
       "get": {
         "summary": "get transactions tied to a bank account and account id",
         "description": "This endpoint returns the transactions for a given user id and a business account id",
@@ -3902,6 +3858,73 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "pageNumber",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "pageSize",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "analytics",
+          "transactions"
+        ]
+      }
+    },
+    "/api/v1/transactions/{userId}/pageNumber/{pageNumber}/pageSize/{pageSize}": {
+      "get": {
+        "summary": "get transactions",
+        "description": "This endpoint returns the transactions for a given user id",
+        "operationId": "GetTransactions",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": ".api.v1.GetTransactionsResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": ".api.v1.ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": ".api.v1.PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": ".api.v1.InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "description": "The user id\nValidations:\n- user_id must be greater than 0",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
           },
           {
             "name": "pageNumber",
