@@ -108,10 +108,10 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, userId, linkId 
 
 	th.logger.Info("bank accounts", zap.Any("account", plaidBankAccounts))
 
-	// lets sync recurring transactions
-	if err := th.queryAndStoreRecurringTransactions(ctx, accessToken, userId, linkId, plaidAccountIds); err != nil {
-		th.logger.Error("failed to sync recurring transactions", zap.Error(err))
-	}
+	// // lets sync recurring transactions
+	// if err := th.queryAndStoreRecurringTransactions(ctx, accessToken, userId, linkId, plaidAccountIds); err != nil {
+	// 	th.logger.Error("failed to sync recurring transactions", zap.Error(err))
+	// }
 
 	// get the liability accounts
 	// TODO: need to figure out wether to update the existing investment account or add a new one

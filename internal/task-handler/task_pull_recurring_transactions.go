@@ -106,7 +106,9 @@ func (th *TaskHandler) queryAndStoreRecurringTransactions(ctx context.Context, a
 		plaidClient      = th.plaidClient
 		clickhouseClient = th.clickhouseDb
 	)
-	newOrUpdatedReCurringTxns, err := plaidClient.GetRecurringTransactionsForAccounts(ctx, &accessToken, &userId, &linkId, accountIds)
+	newOrUpdatedReCurringTxns, err :=
+		plaidClient.
+			GetRecurringTransactionsForAccounts(ctx, &accessToken, &userId, &linkId, accountIds)
 	if err != nil {
 		th.logger.Error("error while getting re-occurring transactions from plaid", zap.Error(err))
 		return err
@@ -137,9 +139,12 @@ func (th *TaskHandler) queryAndStoreRecurringTransactions(ctx context.Context, a
 					if newTxn.MerchantName == existingTxn.MerchantName &&
 						newTxn.Frequency == existingTxn.Frequency &&
 						newTxn.AverageAmount == existingTxn.AverageAmount &&
-						newTxn.PersonalFinanceCategoryDetailed == existingTxn.PersonalFinanceCategoryDetailed {
-
+						newTxn.Description == existingTxn.Description &&
+						newTxn.AccountId == existingTxn.AccountId {
+						newTxn.UserId = userId
+						newTxn.LinkId = linkId
 						updatedRecurringTxnSet = append(updatedRecurringTxnSet, copyOldtxnToNewtxn(existingTxn, newTxn))
+
 						break
 					} else if idx == len(existingReCurringTxns)-1 {
 						newTxn.UserId = userId
