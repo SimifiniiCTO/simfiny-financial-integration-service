@@ -689,6 +689,8 @@ github.com/SimifiniiCTO/core/core-telemetry v0.0.0-20230307040227-eeb14211b9ed h
 github.com/SimifiniiCTO/core/core-telemetry v0.0.0-20230307040227-eeb14211b9ed/go.mod h1:w+BToZgY3mqNXqHnxtA4zsxGlcM2AaDiJGy/7fV/wWA=
 github.com/SimifiniiCTO/simfiny-core-lib v1.0.10 h1:li09ws7/Et4hOrJZytfK65hWxHSsbs0UgwH8lBDutNM=
 github.com/SimifiniiCTO/simfiny-core-lib v1.0.10/go.mod h1:wt3uUuPpCju/xoyhGMW1f5QkLr37W2GVY1AsQP+rc1E=
+github.com/SimifiniiCTO/simfiny-core-lib v1.0.11 h1:3frpx69vzXRSL5ZPKQr87FKYRZFlcTO27gmRicK4Ios=
+github.com/SimifiniiCTO/simfiny-core-lib v1.0.11/go.mod h1:wt3uUuPpCju/xoyhGMW1f5QkLr37W2GVY1AsQP+rc1E=
 github.com/StackExchange/wmi v0.0.0-20190523213315-cbe66965904d/go.mod h1:3eOhrUMpNV+6aFIbp5/iudMxNCF27Vw2OZgy4xEx0Fg=
 github.com/VividCortex/gohistogram v1.0.0/go.mod h1:Pf5mBqqDxYaXu3hDrrU+w6nw50o/4+TcAqDqk/vUH7g=
 github.com/afex/hystrix-go v0.0.0-20180502004556-fa1af6a1f4f5/go.mod h1:SkGFH1ia65gfNATL8TAiHDNxPzPdmEL5uirI2Uyuz6c=
@@ -1370,6 +1372,8 @@ github.com/hashicorp/go-multierror v1.1.0/go.mod h1:spPvp8C1qA32ftKqdAHm4hHTbPw+
 github.com/hashicorp/go-multierror v1.1.1/go.mod h1:iw975J/qwKPdAO1clOe2L8331t/9/fmwbPZ6JB6eMoM=
 github.com/hashicorp/go-rootcerts v1.0.0/go.mod h1:K6zTfqpRlCUIjkwsN4Z+hiSfzSTQa6eBIzfwKfwNnHU=
 github.com/hashicorp/go-rootcerts v1.0.2/go.mod h1:pqUvnprVnM5bf7AOirdbb01K4ccR319Vf4pU3K5EGc8=
+github.com/hashicorp/go-set v0.1.13 h1:k1B5goY3c7OKEzpK+gwAhJexxzAJwDN8kId8YvWrihA=
+github.com/hashicorp/go-set v0.1.13/go.mod h1:0/D+R4MFUzJ6XmvjU7liXtznF1eQDxh84GJlhXw+lvo=
 github.com/hashicorp/go-sockaddr v1.0.0/go.mod h1:7Xibr9yA9JjQq1JpNB2Vw7kxv8xerXegt+ozgdvDeDU=
 github.com/hashicorp/go-syslog v1.0.0/go.mod h1:qPfqrKkXGihmCqbJM2mZgkZGvKG1dFdvsLplgctolz4=
 github.com/hashicorp/go-uuid v1.0.0/go.mod h1:6SBZvOh/SIDV7/2o3Jml5SYk/TvGqwFJ/bN7x4byOro=

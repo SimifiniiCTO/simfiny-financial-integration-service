@@ -56,7 +56,7 @@ func Test_configureTaskHandler(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := configureTaskHandler(tt.args.param); !reflect.DeepEqual(got, tt.want) {
+			if got := configureTaskHandler(tt.args.param, nil); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("configureTaskHandler() = %v, want %v", got, tt.want)
 			}
 		})

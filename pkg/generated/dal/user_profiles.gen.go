@@ -38,6 +38,12 @@ func newUserProfileORM(db *gorm.DB, opts ...gen.DOOption) userProfileORM {
 		RelationField: field.NewRelation("StripeSubscriptions", "financial_integration_service_apiv1.StripeSubscriptionORM"),
 	}
 
+	_userProfileORM.ActionableInsights = userProfileORMHasManyActionableInsights{
+		db: db.Session(&gorm.Session{}),
+
+		RelationField: field.NewRelation("ActionableInsights", "financial_integration_service_apiv1.ActionableInsightORM"),
+	}
+
 	_userProfileORM.Link = userProfileORMHasManyLink{
 		db: db.Session(&gorm.Session{}),
 
@@ -206,6 +212,8 @@ type userProfileORM struct {
 	UserId              field.Uint64
 	StripeSubscriptions userProfileORMHasOneStripeSubscriptions
 
+	ActionableInsights userProfileORMHasManyActionableInsights
+
 	Link userProfileORMHasManyLink
 
 	fieldMap map[string]field.Expr
@@ -242,7 +250,7 @@ func (u *userProfileORM) GetFieldByName(fieldName string) (field.OrderExpr, bool
 }
 
 func (u *userProfileORM) fillFieldMap() {
-	u.fieldMap = make(map[string]field.Expr, 5)
+	u.fieldMap = make(map[string]field.Expr, 6)
 	u.fieldMap["id"] = u.Id
 	u.fieldMap["stripe_customer_id"] = u.StripeCustomerId
 	u.fieldMap["user_id"] = u.UserId
@@ -322,6 +330,72 @@ func (a userProfileORMHasOneStripeSubscriptionsTx) Clear() error {
 }
 
 func (a userProfileORMHasOneStripeSubscriptionsTx) Count() int64 {
+	return a.tx.Count()
+}
+
+type userProfileORMHasManyActionableInsights struct {
+	db *gorm.DB
+
+	field.RelationField
+}
+
+func (a userProfileORMHasManyActionableInsights) Where(conds ...field.Expr) *userProfileORMHasManyActionableInsights {
+	if len(conds) == 0 {
+		return &a
+	}
+
+	exprs := make([]clause.Expression, 0, len(conds))
+	for _, cond := range conds {
+		exprs = append(exprs, cond.BeCond().(clause.Expression))
+	}
+	a.db = a.db.Clauses(clause.Where{Exprs: exprs})
+	return &a
+}
+
+func (a userProfileORMHasManyActionableInsights) WithContext(ctx context.Context) *userProfileORMHasManyActionableInsights {
+	a.db = a.db.WithContext(ctx)
+	return &a
+}
+
+func (a userProfileORMHasManyActionableInsights) Model(m *financial_integration_service_apiv1.UserProfileORM) *userProfileORMHasManyActionableInsightsTx {
+	return &userProfileORMHasManyActionableInsightsTx{a.db.Model(m).Association(a.Name())}
+}
+
+type userProfileORMHasManyActionableInsightsTx struct{ tx *gorm.Association }
+
+func (a userProfileORMHasManyActionableInsightsTx) Find() (result []*financial_integration_service_apiv1.ActionableInsightORM, err error) {
+	return result, a.tx.Find(&result)
+}
+
+func (a userProfileORMHasManyActionableInsightsTx) Append(values ...*financial_integration_service_apiv1.ActionableInsightORM) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Append(targetValues...)
+}
+
+func (a userProfileORMHasManyActionableInsightsTx) Replace(values ...*financial_integration_service_apiv1.ActionableInsightORM) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Replace(targetValues...)
+}
+
+func (a userProfileORMHasManyActionableInsightsTx) Delete(values ...*financial_integration_service_apiv1.ActionableInsightORM) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Delete(targetValues...)
+}
+
+func (a userProfileORMHasManyActionableInsightsTx) Clear() error {
+	return a.tx.Clear()
+}
+
+func (a userProfileORMHasManyActionableInsightsTx) Count() int64 {
 	return a.tx.Count()
 }
 

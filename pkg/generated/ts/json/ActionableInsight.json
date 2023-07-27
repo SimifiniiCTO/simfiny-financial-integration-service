@@ -1,0 +1,37 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/ActionableInsight",
+    "definitions": {
+        "ActionableInsight": {
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "detailed_action": {
+                    "type": "string",
+                    "description": "for each user we generate a detailed actionable insights for them to see"
+                },
+                "summarized_action": {
+                    "type": "string",
+                    "description": "for each user we generate a summarized insight targeted at optimizing a certain condition"
+                },
+                "generated_time": {
+                    "type": "string",
+                    "description": "the time the insight was generated",
+                    "format": "date-time"
+                },
+                "tags": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array",
+                    "description": "associated tags with the generated insights"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Actionable Insight",
+            "description": "An actionable insight serves as a basic insight users  can leverage and act upon and is typically generated based off of their financial contexts"
+        }
+    }
+}

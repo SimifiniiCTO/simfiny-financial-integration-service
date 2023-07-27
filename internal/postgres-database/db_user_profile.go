@@ -168,6 +168,7 @@ func (db *Db) GetUserProfileByUserID(ctx context.Context, userID uint64) (*schem
 		Preload(u.Link.Token).
 		Preload(u.Link.PlaidLink).
 		Preload(u.StripeSubscriptions).
+		Preload(u.ActionableInsights).
 		First()
 	if err != nil {
 		return nil, err

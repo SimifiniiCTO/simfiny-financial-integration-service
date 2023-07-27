@@ -10,6 +10,7 @@ import (
 	clickhousedb "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/clickhouse-database"
 	"github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/plaidhandler"
 	postgresdb "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/postgres-database"
+	"github.com/sashabaranov/go-openai"
 
 	"go.uber.org/zap"
 )
@@ -35,6 +36,7 @@ const (
 	TaskSyncNewLiabilityAccounts         TaskType = "accounts:sync:new-liability"
 	TaskSyncRecurringTransactions        TaskType = "transactions:sync:recurring"
 	TaskSyncAllAccounts                  TaskType = "transactions:sync_all_account"
+	TaskGenerateActionableInsights       TaskType = "insights:generate"
 )
 
 func (t TaskType) String() string {
@@ -50,6 +52,7 @@ type TaskHandler struct {
 	clickhouseDb          *clickhousedb.Db
 	instrumentationClient *instrumentation.Client
 	plaidClient           *plaidhandler.PlaidWrapper
+	openaiClient          *openai.Client
 }
 
 var _ taskhandler.ITaskHandler = (*TaskHandler)(nil)
@@ -88,6 +91,12 @@ func WithInstrumentationClient(instrumentationClient *instrumentation.Client) Op
 func WithPlaidClient(plaidClient *plaidhandler.PlaidWrapper) Option {
 	return func(handler *TaskHandler) {
 		handler.plaidClient = plaidClient
+	}
+}
+
+func WithOpenAIClient(client *openai.Client) Option {
+	return func(handler *TaskHandler) {
+		handler.openaiClient = client
 	}
 }
 
@@ -153,6 +162,8 @@ func (th *TaskHandler) RegisterTaskHandler() *asynq.ServeMux {
 	mux.HandleFunc(TaskPullInvestmentHoldings.String(), th.RunPullInvestmentHoldingsTask)
 	mux.HandleFunc(TaskSyncNewLiabilityAccounts.String(), th.RunSyncNewLiabilityAccountsTask)
 	mux.HandleFunc(TaskSyncAllAccounts.String(), th.RunSyncAllPlatformConnectedPlaidAccounts)
+	mux.HandleFunc(TaskGenerateActionableInsights.String(), th.RunGenerateActionableInsights)
+
 	return mux
 }
 

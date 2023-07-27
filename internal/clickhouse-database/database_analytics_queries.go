@@ -6,6 +6,7 @@ import (
 	"time"
 
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
+	"github.com/hashicorp/go-set"
 	"github.com/uptrace/go-clickhouse/ch"
 )
 
@@ -798,6 +799,206 @@ func (db *Db) GetFinancialContextForCurrentMonth(ctx context.Context, userId *ui
 	}
 
 	return financialContext, nil
+}
+
+// TODO: refactor this with order by caluse
+func (db *Db) GetAllFinancialContextsForCurrentMonth(ctx context.Context, limit int) (map[uint64]*schema.MelodyFinancialContext, error) {
+	var (
+		financialContexts       = make(map[uint64]*schema.MelodyFinancialContext, 0)
+		categoryProfiles        []*schema.CategoryMetricsFinancialSubProfileInternal
+		expenseProfiles         []*schema.ExpenseMetricsFinancialSubProfileMetricsInternal
+		incomeProfiles          []*schema.IncomeMetricsFinancialSubProfileInternal
+		locationProfiles        []*schema.LocationFinancialSubProfileInternal
+		merchantProfiles        []*schema.MerchantMetricsFinancialSubProfileInternal
+		paymentChannelsProfiles []*schema.PaymentChannelMetricsFinancialSubProfileInternal
+		// hash maps
+		userIdToCategorySubProfile       = make(map[uint64][]*schema.CategoryMetricsFinancialSubProfile, 0)
+		userIdToExpensesSubProfile       = make(map[uint64][]*schema.ExpenseMetricsFinancialSubProfileMetrics, 0)
+		userIdToIncomesSubProfile        = make(map[uint64][]*schema.IncomeMetricsFinancialSubProfile, 0)
+		userIdToLocationSubProfile       = make(map[uint64][]*schema.LocationFinancialSubProfile, 0)
+		userIdToMerchantSubProfile       = make(map[uint64][]*schema.MerchantMetricsFinancialSubProfile, 0)
+		userIdToPaymentChannelSubProfile = make(map[uint64][]*schema.PaymentChannelMetricsFinancialSubProfile, 0)
+	)
+
+	if span := db.startDatastoreSpan(ctx, "dbtxn-get-monthly-payment-channel-expenditures"); span != nil {
+		defer span.End()
+	}
+
+	if limit == 0 {
+		limit = 4
+	} else if limit > 5 {
+		limit = 4
+	}
+
+	// query for all the profile based on the user ID
+	if err := db.queryEngine.NewSelect().Model(&categoryProfiles).Where("Month = ?", getCurrentMonthRepresentation()).Order("TransactionCount DESC").Scan(ctx); err != nil {
+		return nil, err
+	}
+
+	if err := db.queryEngine.NewSelect().Model(&expenseProfiles).Where("Month = ?", getCurrentMonthRepresentation()).Order("SpentLastMonth DESC").Scan(ctx); err != nil {
+		return nil, err
+	}
+
+	if err := db.queryEngine.NewSelect().Model(&incomeProfiles).Where("Month = ?", getCurrentMonthRepresentation()).Order("IncomeLastMonth DESC").Scan(ctx); err != nil {
+		return nil, err
+	}
+
+	if err := db.queryEngine.NewSelect().Model(&locationProfiles).Where("Month = ?", getCurrentMonthRepresentation()).Order("TransactionCount DESC").Scan(ctx); err != nil {
+		return nil, err
+	}
+
+	if err := db.queryEngine.NewSelect().Model(&merchantProfiles).Where("Month = ?", getCurrentMonthRepresentation()).Order("SpentLastMonth DESC").Scan(ctx); err != nil {
+		return nil, err
+	}
+
+	if err := db.queryEngine.NewSelect().Model(&paymentChannelsProfiles).Where("Month = ?", getCurrentMonthRepresentation()).Order("TransactionCount DESC").Scan(ctx); err != nil {
+		return nil, err
+	}
+
+	uniqueUserIds := set.New[uint64](0)
+	// convert all profiles
+	for idx, record := range categoryProfiles {
+		uniqueUserIds.Insert(record.UserId)
+		data := record.ConvertToProto()
+		if _, ok := userIdToCategorySubProfile[record.UserId]; !ok {
+			set := make([]*schema.CategoryMetricsFinancialSubProfile, 0)
+			set = append(set, data)
+			userIdToCategorySubProfile[record.UserId] = set
+		} else {
+			set := userIdToCategorySubProfile[record.UserId]
+			set = append(set, data)
+			userIdToCategorySubProfile[record.UserId] = set
+		}
+
+		if idx >= limit {
+			break
+		}
+	}
+
+	for idx, record := range expenseProfiles {
+		uniqueUserIds.Insert(record.UserId)
+		data := record.ConvertToProto()
+		if _, ok := userIdToExpensesSubProfile[record.UserId]; !ok {
+			set := make([]*schema.ExpenseMetricsFinancialSubProfileMetrics, 0)
+			set = append(set, data)
+			userIdToExpensesSubProfile[record.UserId] = set
+		} else {
+			set := userIdToExpensesSubProfile[record.UserId]
+			set = append(set, data)
+			userIdToExpensesSubProfile[record.UserId] = set
+		}
+
+		if idx >= limit {
+			break
+		}
+	}
+
+	for idx, record := range incomeProfiles {
+		uniqueUserIds.Insert(record.UserId)
+		data := record.ConvertToProto()
+		if _, ok := userIdToIncomesSubProfile[record.UserId]; !ok {
+			set := make([]*schema.IncomeMetricsFinancialSubProfile, 0)
+			set = append(set, data)
+			userIdToIncomesSubProfile[record.UserId] = set
+		} else {
+			set := userIdToIncomesSubProfile[record.UserId]
+			set = append(set, data)
+			userIdToIncomesSubProfile[record.UserId] = set
+		}
+
+		if idx >= limit {
+			break
+		}
+	}
+
+	for idx, record := range locationProfiles {
+		uniqueUserIds.Insert(record.UserId)
+		data := record.ConvertToProto()
+		if _, ok := userIdToLocationSubProfile[record.UserId]; !ok {
+			set := make([]*schema.LocationFinancialSubProfile, 0)
+			set = append(set, data)
+			userIdToLocationSubProfile[record.UserId] = set
+		} else {
+			set := userIdToLocationSubProfile[record.UserId]
+			set = append(set, data)
+			userIdToLocationSubProfile[record.UserId] = set
+		}
+
+		if idx >= limit {
+			break
+		}
+	}
+
+	for idx, record := range merchantProfiles {
+		uniqueUserIds.Insert(record.UserId)
+		data := record.ConvertToProto()
+		if _, ok := userIdToMerchantSubProfile[record.UserId]; !ok {
+			set := make([]*schema.MerchantMetricsFinancialSubProfile, 0)
+			set = append(set, data)
+			userIdToMerchantSubProfile[record.UserId] = set
+		} else {
+			set := userIdToMerchantSubProfile[record.UserId]
+			set = append(set, data)
+			userIdToMerchantSubProfile[record.UserId] = set
+		}
+
+		if idx >= limit {
+			break
+		}
+	}
+
+	for idx, record := range paymentChannelsProfiles {
+		uniqueUserIds.Insert(record.UserId)
+		data := record.ConvertToProto()
+		if _, ok := userIdToPaymentChannelSubProfile[record.UserId]; !ok {
+			set := make([]*schema.PaymentChannelMetricsFinancialSubProfile, 0)
+			set = append(set, data)
+			userIdToPaymentChannelSubProfile[record.UserId] = set
+		} else {
+			set := userIdToPaymentChannelSubProfile[record.UserId]
+			set = append(set, data)
+			userIdToPaymentChannelSubProfile[record.UserId] = set
+		}
+
+		if idx >= limit {
+			break
+		}
+	}
+
+	uniqueUserIds.ForEach(func(userId uint64) bool {
+		// construct financial context
+		financialContext := &schema.MelodyFinancialContext{}
+
+		// extract the category profiles form the userIdToCategoryProfilemap
+		if recs, ok := userIdToCategorySubProfile[userId]; ok {
+			financialContext.Categories = recs
+		}
+
+		if recs, ok := userIdToExpensesSubProfile[userId]; ok {
+			financialContext.Expenses = recs
+		}
+
+		if recs, ok := userIdToIncomesSubProfile[userId]; ok {
+			financialContext.Income = recs
+		}
+
+		if recs, ok := userIdToLocationSubProfile[userId]; ok {
+			financialContext.Locations = recs
+		}
+
+		if recs, ok := userIdToMerchantSubProfile[userId]; ok {
+			financialContext.Merchants = recs
+		}
+
+		if recs, ok := userIdToPaymentChannelSubProfile[userId]; ok {
+			financialContext.PaymentChannels = recs
+		}
+
+		financialContexts[userId] = financialContext
+		return true
+	})
+
+	return financialContexts, nil
 }
 
 func getCurrentMonthRepresentation() string {

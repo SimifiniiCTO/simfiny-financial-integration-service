@@ -6,7 +6,7 @@ require (
 	github.com/MicahParks/keyfunc v1.9.0
 	github.com/SimifiniiCTO/core/core-database v0.0.0-20230307040227-eeb14211b9ed
 	github.com/SimifiniiCTO/core/core-telemetry v0.0.0-20230307040227-eeb14211b9ed
-	github.com/SimifiniiCTO/simfiny-core-lib v1.0.10
+	github.com/SimifiniiCTO/simfiny-core-lib v1.0.11
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
 	github.com/alicebob/miniredis/v2 v2.30.2
 	github.com/aws/aws-sdk-go v1.44.299
@@ -67,6 +67,7 @@ require (
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.0.0-rc.5 // indirect
+	github.com/hashicorp/go-set v0.1.13 // indirect
 	github.com/jackc/pgx/v5 v5.4.1 // indirect
 	github.com/microsoft/go-mssqldb v1.0.0 // indirect
 	github.com/newrelic/go-agent/v3/integrations/nrgorilla v1.1.1 // indirect
