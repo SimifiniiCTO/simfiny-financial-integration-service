@@ -52,7 +52,11 @@ func (db *Db) GetCategoryMonthlyTransactionCount(ctx context.Context, userId *ui
 
 	offset := int(pageSize * (pageNumber - 1))
 	queryLimit := int(pageSize)
-	selectQuery := db.queryEngine.NewSelect().Model(&categorizedMonthlyTransactionCount).Offset(offset).Limit(queryLimit)
+	selectQuery := db.queryEngine.
+		NewSelect().
+		Model(&categorizedMonthlyTransactionCount).
+		Where("UserId = ?", *userId).
+		Offset(offset).Limit(queryLimit)
 	buildCategoryMonthlyTransactionCountClickHouseQuery(params, selectQuery)
 	// sort by month in descending order
 	if err := selectQuery.Order("Month DESC").Scan(ctx); err != nil {

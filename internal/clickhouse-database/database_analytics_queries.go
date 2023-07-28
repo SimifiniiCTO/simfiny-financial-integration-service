@@ -74,7 +74,7 @@ func (db *Db) GetDebtToIncomeRatio(ctx context.Context, userId *uint64, params *
 
 	offset := int(pageSize * (pageNumber - 1))
 	queryLimit := int(pageSize)
-	selectQuery := db.queryEngine.NewSelect().Model(&debtToIncomeRatios).Offset(offset).Limit(queryLimit)
+	selectQuery := db.queryEngine.NewSelect().Model(&debtToIncomeRatios).Where("UserId = ?", *userId).Offset(offset).Limit(queryLimit)
 	buildClickHouseQuery(params, selectQuery)
 	// sort by month in descending order
 	if err := selectQuery.Order("Month DESC").Scan(ctx); err != nil {
@@ -130,7 +130,7 @@ func (db *Db) GetExpenseMetrics(ctx context.Context, userId *uint64, params *Exp
 
 	offset := int(pageSize * (pageNumber - 1))
 	queryLimit := int(pageSize)
-	selectQuery := db.queryEngine.NewSelect().Model(&expenseMetrics).Offset(offset).Limit(queryLimit)
+	selectQuery := db.queryEngine.NewSelect().Model(&expenseMetrics).Where("UserId = ?", *userId).Offset(offset).Limit(queryLimit)
 	buildClickHouseQuery(params, selectQuery)
 	// sort by month in descending order
 	if err := selectQuery.Order("Month DESC").Scan(ctx); err != nil {
@@ -182,7 +182,7 @@ func (db *Db) GetFinancialProfile(ctx context.Context, userId *uint64, params *F
 
 	offset := int(pageSize * (pageNumber - 1))
 	queryLimit := int(pageSize)
-	selectQuery := db.queryEngine.NewSelect().Model(&financialProfile).Offset(offset).Limit(queryLimit)
+	selectQuery := db.queryEngine.NewSelect().Model(&financialProfile).Where("UserId = ?", *userId).Offset(offset).Limit(queryLimit)
 	buildClickHouseQuery(params, selectQuery)
 	// sort by month in descending order
 	if err := selectQuery.Order("Month DESC").Scan(ctx); err != nil {
@@ -234,7 +234,7 @@ func (db *Db) GetIncomeExpenseRatio(ctx context.Context, userId *uint64, params 
 
 	offset := int(pageSize * (pageNumber - 1))
 	queryLimit := int(pageSize)
-	selectQuery := db.queryEngine.NewSelect().Model(&incomeExpenseRatios).Offset(offset).Limit(queryLimit)
+	selectQuery := db.queryEngine.NewSelect().Model(&incomeExpenseRatios).Where("UserId = ?", *userId).Offset(offset).Limit(queryLimit)
 	buildClickHouseQuery(params, selectQuery)
 	// sort by month in descending order
 	if err := selectQuery.Order("Month DESC").Scan(ctx); err != nil {
@@ -290,7 +290,7 @@ func (db *Db) GetIncomeMetrics(ctx context.Context, userId *uint64, params *Inco
 
 	offset := int(pageSize * (pageNumber - 1))
 	queryLimit := int(pageSize)
-	selectQuery := db.queryEngine.NewSelect().Model(&incomeMetricss).Offset(offset).Limit(queryLimit)
+	selectQuery := db.queryEngine.NewSelect().Model(&incomeMetricss).Where("UserId = ?", *userId).Offset(offset).Limit(queryLimit)
 	buildClickHouseQuery(params, selectQuery)
 	// sort by month in descending order
 	if err := selectQuery.Order("Month DESC").Scan(ctx); err != nil {
@@ -359,7 +359,7 @@ func (db *Db) GetMerchantMonthlyExpenditure(ctx context.Context, userId *uint64,
 
 	offset := int(pageSize * (pageNumber - 1))
 	queryLimit := int(pageSize)
-	selectQuery := db.queryEngine.NewSelect().Model(&merchantMonthlyExpenditures).Offset(offset).Limit(queryLimit)
+	selectQuery := db.queryEngine.NewSelect().Model(&merchantMonthlyExpenditures).Where("UserId = ?", *userId).Offset(offset).Limit(queryLimit)
 	clickhouseQueryBuilder(params, selectQuery)
 	// sort by month in descending order
 	if err := selectQuery.Order("Month DESC").Scan(ctx); err != nil {
@@ -409,7 +409,7 @@ func (db *Db) GetMonthlyExpenditure(ctx context.Context, userId *uint64, params 
 
 	offset := int(pageSize * (pageNumber - 1))
 	queryLimit := int(pageSize)
-	selectQuery := db.queryEngine.NewSelect().Model(&monthlyExpenditures).Offset(offset).Limit(queryLimit)
+	selectQuery := db.queryEngine.NewSelect().Model(&monthlyExpenditures).Offset(offset).Where("UserId = ?", *userId).Limit(queryLimit)
 	clickhouseQueryBuilder(params, selectQuery)
 	// sort by month in descending order
 	if err := selectQuery.Order("Month DESC").Scan(ctx); err != nil {
@@ -459,7 +459,7 @@ func (db *Db) GetMonthlyIncome(ctx context.Context, userId *uint64, params *Base
 
 	offset := int(pageSize * (pageNumber - 1))
 	queryLimit := int(pageSize)
-	selectQuery := db.queryEngine.NewSelect().Model(&monthlyIncomes).Offset(offset).Limit(queryLimit)
+	selectQuery := db.queryEngine.NewSelect().Model(&monthlyIncomes).Offset(offset).Where("UserId = ?", *userId).Limit(queryLimit)
 	clickhouseQueryBuilder(params, selectQuery)
 	// sort by month in descending order
 	if err := selectQuery.Order("Month DESC").Scan(ctx); err != nil {
@@ -509,7 +509,7 @@ func (db *Db) GetMonthlySavings(ctx context.Context, userId *uint64, params *Bas
 
 	offset := int(pageSize * (pageNumber - 1))
 	queryLimit := int(pageSize)
-	selectQuery := db.queryEngine.NewSelect().Model(&monthlySavings).Offset(offset).Limit(queryLimit)
+	selectQuery := db.queryEngine.NewSelect().Model(&monthlySavings).Where("UserId = ?", *userId).Offset(offset).Limit(queryLimit)
 	clickhouseQueryBuilder(params, selectQuery)
 	// sort by month in descending order
 	if err := selectQuery.Order("Month DESC").Scan(ctx); err != nil {
@@ -559,7 +559,7 @@ func (db *Db) GetMonthlyBalance(ctx context.Context, userId *uint64, params *Bas
 
 	offset := int(pageSize * (pageNumber - 1))
 	queryLimit := int(pageSize)
-	selectQuery := db.queryEngine.NewSelect().Model(&monthlyBalances).Offset(offset).Limit(queryLimit)
+	selectQuery := db.queryEngine.NewSelect().Model(&monthlyBalances).Where("UserId = ?", *userId).Offset(offset).Limit(queryLimit)
 	clickhouseQueryBuilder(params, selectQuery)
 	// sort by month in descending order
 	if err := selectQuery.Order("Month DESC").Scan(ctx); err != nil {
@@ -609,7 +609,7 @@ func (db *Db) GetMonthlyTransactionCount(ctx context.Context, userId *uint64, pa
 
 	offset := int(pageSize * (pageNumber - 1))
 	queryLimit := int(pageSize)
-	selectQuery := db.queryEngine.NewSelect().Model(&monthlyTransactionCount).Offset(offset).Limit(queryLimit)
+	selectQuery := db.queryEngine.NewSelect().Model(&monthlyTransactionCount).Where("UserId = ?", *userId).Offset(offset).Limit(queryLimit)
 	clickhouseQueryBuilder(params, selectQuery)
 	// sort by month in descending order
 	if err := selectQuery.Order("Month DESC").Scan(ctx); err != nil {
@@ -659,7 +659,7 @@ func (db *Db) GetMonthlyPaymentChannelExpenditure(ctx context.Context, userId *u
 
 	offset := int(pageSize * (pageNumber - 1))
 	queryLimit := int(pageSize)
-	selectQuery := db.queryEngine.NewSelect().Model(&paymentChannelMonthlyExpenditures).Offset(offset).Limit(queryLimit)
+	selectQuery := db.queryEngine.NewSelect().Model(&paymentChannelMonthlyExpenditures).Where("UserId = ?", *userId).Offset(offset).Limit(queryLimit)
 	clickhouseQueryBuilder(params, selectQuery)
 	// sort by month in descending order
 	if err := selectQuery.Order("Month DESC").Scan(ctx); err != nil {

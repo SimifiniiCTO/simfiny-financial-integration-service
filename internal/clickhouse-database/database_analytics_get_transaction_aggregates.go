@@ -67,7 +67,11 @@ func (db *Db) GetTransactionAggregates(ctx context.Context, userId *uint64, para
 
 	offset := int(pageSize * (pageNumber - 1))
 	queryLimit := int(pageSize)
-	selectQuery := db.queryEngine.NewSelect().Model(&transactionAggregates).Offset(offset).Limit(queryLimit)
+	selectQuery := db.queryEngine.
+		NewSelect().
+		Model(&transactionAggregates).
+		Where("UserId = ?", *userId).
+		Offset(offset).Limit(queryLimit)
 	buildTransactionAggregatesClickHouseQuery(params, selectQuery)
 	// sort by month in descending order
 	if err := selectQuery.Order("Month DESC").Scan(ctx); err != nil {

@@ -52,7 +52,12 @@ func (db *Db) GetCategoryMonthlyIncome(ctx context.Context, userId *uint64, para
 
 	offset := int(pageSize * (pageNumber - 1))
 	queryLimit := int(pageSize)
-	selectQuery := db.queryEngine.NewSelect().Model(&categorizedMonthlyIncome).Offset(offset).Limit(queryLimit)
+	selectQuery := db.queryEngine.
+		NewSelect().
+		Model(&categorizedMonthlyIncome).
+		Where("UserId = ?", *userId).
+		Offset(offset).
+		Limit(queryLimit)
 	buildCategoryMonthlyIncomeClickHouseQuery(params, selectQuery)
 	// sort by month in descending order
 	if err := selectQuery.Order("Month DESC").Scan(ctx); err != nil {
