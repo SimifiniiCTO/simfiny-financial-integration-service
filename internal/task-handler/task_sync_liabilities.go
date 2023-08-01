@@ -65,6 +65,9 @@ func (th *TaskHandler) processAndStoreInvestmentAccount(ctx context.Context, lin
 		syncedInvestmentAccounts := investmentAccts
 		currentInvestmentAccounts := link.GetInvestmentAccounts()
 
+		th.logger.Info("current investment accounts", zap.Any("accounts", currentInvestmentAccounts))
+		th.logger.Info("synced investment accounts", zap.Any("accounts", syncedInvestmentAccounts))
+
 		// iterate over the syncred investment accounts and cross reference them with the existing investment accounts
 		// if the synced investment account is not found in the existing investment accounts, then add it to the existing
 		// investment accounts
@@ -78,32 +81,33 @@ func (th *TaskHandler) processAndStoreInvestmentAccount(ctx context.Context, lin
 					return err
 				}
 
+				th.logger.Info("adding new investment account to set", zap.Any("account", acctOrm))
 				investmentAccountsToAdd = append(investmentAccountsToAdd, &acctOrm)
 				continue
-			} else {
-				for idx, currentInvestmentAccount := range currentInvestmentAccounts {
+			}
 
-					if syncedInvestmentAccount.PlaidAccountId == currentInvestmentAccount.PlaidAccountId {
-						found = true
-						break
-					} else if syncedInvestmentAccount.PlaidAccountId != currentInvestmentAccount.PlaidAccountId && idx == len(currentInvestmentAccounts)-1 {
-						acctOrm, err := syncedInvestmentAccount.ToORM(ctx)
-						if err != nil {
-							return err
-						}
-
-						investmentAccountsToAdd = append(investmentAccountsToAdd, &acctOrm)
-					}
-				}
-
-				if found {
+			for idx, currentInvestmentAccount := range currentInvestmentAccounts {
+				if syncedInvestmentAccount.PlaidAccountId == currentInvestmentAccount.PlaidAccountId {
+					found = true
+					break
+				} else if syncedInvestmentAccount.PlaidAccountId != currentInvestmentAccount.PlaidAccountId && idx == len(currentInvestmentAccounts)-1 {
 					acctOrm, err := syncedInvestmentAccount.ToORM(ctx)
 					if err != nil {
 						return err
 					}
 
-					investmentAccountsToUpdate = append(investmentAccountsToUpdate, &acctOrm)
+					th.logger.Info("adding new investment account to set", zap.Any("account", acctOrm))
+					investmentAccountsToAdd = append(investmentAccountsToAdd, &acctOrm)
 				}
+			}
+
+			if found {
+				acctOrm, err := syncedInvestmentAccount.ToORM(ctx)
+				if err != nil {
+					return err
+				}
+
+				investmentAccountsToUpdate = append(investmentAccountsToUpdate, &acctOrm)
 			}
 		}
 
@@ -114,9 +118,13 @@ func (th *TaskHandler) processAndStoreInvestmentAccount(ctx context.Context, lin
 		}
 
 		// update the investment accounts in the database
-		if err := l.InvestmentAccounts.Model(&linkOrm).Replace(investmentAccountsToUpdate...); err != nil {
-			return err
+		if len(investmentAccountsToUpdate) > 0 {
+			if err := l.InvestmentAccounts.Model(&linkOrm).Replace(investmentAccountsToUpdate...); err != nil {
+				return err
+			}
 		}
+
+		th.logger.Info("new investment accounts", zap.Any("accounts", investmentAccountsToAdd))
 
 		// add the new investment accounts to the database
 		if len(investmentAccountsToAdd) > 0 {
