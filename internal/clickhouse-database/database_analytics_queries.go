@@ -8,6 +8,7 @@ import (
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 	"github.com/hashicorp/go-set"
 	"github.com/uptrace/go-clickhouse/ch"
+	"go.uber.org/zap"
 )
 
 type DebtToIncomeParams struct {
@@ -705,28 +706,49 @@ func (db *Db) GetFinancialContextForCurrentMonth(ctx context.Context, userId *ui
 		limit = 4
 	}
 
+	db.Logger.Info("limit", zap.Int("limit", limit))
+	db.Logger.Info("month", zap.String("month", getCurrentMonthRepresentation()))
+
+	// we first get the current months representation
+	month := getCurrentMonthRepresentation()
+
+	// we use the current months numerical representation to the query the database. If no results are provided
+	// it is safe to assume that the sourced context for the current month has not yet been generated
+	// hence we use the previous months representation
+	if err := db.queryEngine.NewSelect().Model(&categoryProfiles).Where("UserId = ? AND Month = ?", *userId, month).Order("TransactionCount DESC").Scan(ctx); err != nil {
+		return nil, err
+	}
+
+	// if no results are found for the current month, we use the previous months representation
+	if len(categoryProfiles) == 0 {
+		month = getPreviousMonthRepresentation()
+		if err := db.queryEngine.NewSelect().Model(&categoryProfiles).Where("UserId = ? AND Month = ?", *userId, month).Order("TransactionCount DESC").Scan(ctx); err != nil {
+			return nil, err
+		}
+	}
+
 	// query for all the profile based on the user ID
-	if err := db.queryEngine.NewSelect().Model(&categoryProfiles).Where("UserId = ? AND Month = ?", *userId, getCurrentMonthRepresentation()).Order("TransactionCount DESC").Scan(ctx); err != nil {
+	if err := db.queryEngine.NewSelect().Model(&categoryProfiles).Where("UserId = ? AND Month = ?", *userId, month).Order("TransactionCount DESC").Scan(ctx); err != nil {
 		return nil, err
 	}
 
-	if err := db.queryEngine.NewSelect().Model(&expenseProfiles).Where("UserId = ? AND Month = ?", *userId, getCurrentMonthRepresentation()).Order("SpentLastMonth DESC").Scan(ctx); err != nil {
+	if err := db.queryEngine.NewSelect().Model(&expenseProfiles).Where("UserId = ? AND Month = ?", *userId, month).Order("SpentLastMonth DESC").Scan(ctx); err != nil {
 		return nil, err
 	}
 
-	if err := db.queryEngine.NewSelect().Model(&incomeProfiles).Where("UserId = ? AND Month = ?", *userId, getCurrentMonthRepresentation()).Order("IncomeLastMonth DESC").Scan(ctx); err != nil {
+	if err := db.queryEngine.NewSelect().Model(&incomeProfiles).Where("UserId = ? AND Month = ?", *userId, month).Order("IncomeLastMonth DESC").Scan(ctx); err != nil {
 		return nil, err
 	}
 
-	if err := db.queryEngine.NewSelect().Model(&locationProfiles).Where("UserId = ? AND Month = ?", *userId, getCurrentMonthRepresentation()).Order("TransactionCount DESC").Scan(ctx); err != nil {
+	if err := db.queryEngine.NewSelect().Model(&locationProfiles).Where("UserId = ? AND Month = ?", *userId, month).Order("TransactionCount DESC").Scan(ctx); err != nil {
 		return nil, err
 	}
 
-	if err := db.queryEngine.NewSelect().Model(&merchantProfiles).Where("UserId = ? AND Month = ?", *userId, getCurrentMonthRepresentation()).Order("SpentLastMonth DESC").Scan(ctx); err != nil {
+	if err := db.queryEngine.NewSelect().Model(&merchantProfiles).Where("UserId = ? AND Month = ?", *userId, month).Order("SpentLastMonth DESC").Scan(ctx); err != nil {
 		return nil, err
 	}
 
-	if err := db.queryEngine.NewSelect().Model(&paymentChannelsProfiles).Where("UserId = ? AND Month = ?", *userId, getCurrentMonthRepresentation()).Order("TransactionCount DESC").Scan(ctx); err != nil {
+	if err := db.queryEngine.NewSelect().Model(&paymentChannelsProfiles).Where("UserId = ? AND Month = ?", *userId, month).Order("TransactionCount DESC").Scan(ctx); err != nil {
 		return nil, err
 	}
 
@@ -830,28 +852,46 @@ func (db *Db) GetAllFinancialContextsForCurrentMonth(ctx context.Context, limit 
 		limit = 4
 	}
 
+	// we first get the current months representation
+	month := getCurrentMonthRepresentation()
+
+	// we use the current months numerical representation to the query the database. If no results are provided
+	// it is safe to assume that the sourced context for the current month has not yet been generated
+	// hence we use the previous months representation
+	if err := db.queryEngine.NewSelect().Model(&categoryProfiles).Where("Month = ?", month).Order("TransactionCount DESC").Scan(ctx); err != nil {
+		return nil, err
+	}
+
+	// if no results are found for the current month, we use the previous months representation
+	if len(categoryProfiles) == 0 {
+		month = getPreviousMonthRepresentation()
+		if err := db.queryEngine.NewSelect().Model(&categoryProfiles).Where("Month = ?", month).Order("TransactionCount DESC").Scan(ctx); err != nil {
+			return nil, err
+		}
+	}
+
 	// query for all the profile based on the user ID
-	if err := db.queryEngine.NewSelect().Model(&categoryProfiles).Where("Month = ?", getCurrentMonthRepresentation()).Order("TransactionCount DESC").Scan(ctx); err != nil {
+	if err := db.queryEngine.NewSelect().Model(&categoryProfiles).Where("Month = ?", month).Order("TransactionCount DESC").Scan(ctx); err != nil {
 		return nil, err
 	}
 
-	if err := db.queryEngine.NewSelect().Model(&expenseProfiles).Where("Month = ?", getCurrentMonthRepresentation()).Order("SpentLastMonth DESC").Scan(ctx); err != nil {
+	if err := db.queryEngine.NewSelect().Model(&expenseProfiles).Where("Month = ?", month).Order("SpentLastMonth DESC").Scan(ctx); err != nil {
 		return nil, err
 	}
 
-	if err := db.queryEngine.NewSelect().Model(&incomeProfiles).Where("Month = ?", getCurrentMonthRepresentation()).Order("IncomeLastMonth DESC").Scan(ctx); err != nil {
+	if err := db.queryEngine.NewSelect().Model(&incomeProfiles).Where("Month = ?", month).Order("IncomeLastMonth DESC").Scan(ctx); err != nil {
 		return nil, err
 	}
 
-	if err := db.queryEngine.NewSelect().Model(&locationProfiles).Where("Month = ?", getCurrentMonthRepresentation()).Order("TransactionCount DESC").Scan(ctx); err != nil {
+	if err := db.queryEngine.NewSelect().Model(&locationProfiles).Where("Month = ?", month).Order("TransactionCount DESC").Scan(ctx); err != nil {
 		return nil, err
 	}
 
-	if err := db.queryEngine.NewSelect().Model(&merchantProfiles).Where("Month = ?", getCurrentMonthRepresentation()).Order("SpentLastMonth DESC").Scan(ctx); err != nil {
+	if err := db.queryEngine.NewSelect().Model(&merchantProfiles).Where("Month = ?", month).Order("SpentLastMonth DESC").Scan(ctx); err != nil {
 		return nil, err
 	}
 
-	if err := db.queryEngine.NewSelect().Model(&paymentChannelsProfiles).Where("Month = ?", getCurrentMonthRepresentation()).Order("TransactionCount DESC").Scan(ctx); err != nil {
+	if err := db.queryEngine.NewSelect().Model(&paymentChannelsProfiles).Where("Month = ?", month).Order("TransactionCount DESC").Scan(ctx); err != nil {
 		return nil, err
 	}
 
@@ -1007,4 +1047,12 @@ func getCurrentMonthRepresentation() string {
 	year, month, _ := now.Date()
 
 	return fmt.Sprintf("%d%02d", year, int(month))
+}
+
+func getPreviousMonthRepresentation() string {
+	now := time.Now().AddDate(0, -1, 0)
+
+	year, month, _ := now.Date()
+
+	return fmt.Sprintf("%d%02d", year, int(month-1))
 }

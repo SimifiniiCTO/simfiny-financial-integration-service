@@ -45,7 +45,7 @@ func (s *Server) GetUserProfile(ctx context.Context, req *proto.GetUserProfileRe
 
 	// query the financial context from the given user
 	financialContext, err := s.clickhouseConn.
-		GetFinancialContextForCurrentMonth(ctx, &req.UserId, 5)
+		GetFinancialContextForCurrentMonth(ctx, &req.UserId, 10)
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
