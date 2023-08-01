@@ -595,9 +595,8 @@ export const ValidationErrorMessageResponse = {
   },
 
   create<I extends Exact<DeepPartial<ValidationErrorMessageResponse>, I>>(base?: I): ValidationErrorMessageResponse {
-    return ValidationErrorMessageResponse.fromPartial(base ?? {});
+    return ValidationErrorMessageResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<ValidationErrorMessageResponse>, I>>(
     object: I,
   ): ValidationErrorMessageResponse {
@@ -672,9 +671,8 @@ export const InternalErrorMessageResponse = {
   },
 
   create<I extends Exact<DeepPartial<InternalErrorMessageResponse>, I>>(base?: I): InternalErrorMessageResponse {
-    return InternalErrorMessageResponse.fromPartial(base ?? {});
+    return InternalErrorMessageResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<InternalErrorMessageResponse>, I>>(object: I): InternalErrorMessageResponse {
     const message = createBaseInternalErrorMessageResponse();
     message.code = object.code ?? 0;
@@ -747,9 +745,8 @@ export const PathUnknownErrorMessageResponse = {
   },
 
   create<I extends Exact<DeepPartial<PathUnknownErrorMessageResponse>, I>>(base?: I): PathUnknownErrorMessageResponse {
-    return PathUnknownErrorMessageResponse.fromPartial(base ?? {});
+    return PathUnknownErrorMessageResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<PathUnknownErrorMessageResponse>, I>>(
     object: I,
   ): PathUnknownErrorMessageResponse {
@@ -795,9 +792,8 @@ export const ErrorMessageRequest = {
   },
 
   create<I extends Exact<DeepPartial<ErrorMessageRequest>, I>>(base?: I): ErrorMessageRequest {
-    return ErrorMessageRequest.fromPartial(base ?? {});
+    return ErrorMessageRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<ErrorMessageRequest>, I>>(_: I): ErrorMessageRequest {
     const message = createBaseErrorMessageRequest();
     return message;

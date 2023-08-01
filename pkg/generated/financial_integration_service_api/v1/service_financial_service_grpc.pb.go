@@ -233,7 +233,6 @@ type FinancialServiceClient interface {
 	GetUserAccountBalanceHistory(ctx context.Context, in *GetUserAccountBalanceHistoryRequest, opts ...grpc.CallOption) (*GetUserAccountBalanceHistoryResponse, error)
 	// Description: This endpoint enables end users to get the historical account balances for a given account the user has
 	// Parameters:
-	// - user_id - user id of the user whose recurring transaction we seek to fetch
 	// - plaid_account_id - plaid account id of the account
 	// - page_number - page number of the request
 	// - page_size - page size of the request
@@ -1164,7 +1163,6 @@ type FinancialServiceServer interface {
 	GetUserAccountBalanceHistory(context.Context, *GetUserAccountBalanceHistoryRequest) (*GetUserAccountBalanceHistoryResponse, error)
 	// Description: This endpoint enables end users to get the historical account balances for a given account the user has
 	// Parameters:
-	// - user_id - user id of the user whose recurring transaction we seek to fetch
 	// - plaid_account_id - plaid account id of the account
 	// - page_number - page number of the request
 	// - page_size - page size of the request

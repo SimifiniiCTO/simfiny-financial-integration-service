@@ -497,9 +497,8 @@ export const GetTransactionAggregatesRequest = {
   },
 
   create<I extends Exact<DeepPartial<GetTransactionAggregatesRequest>, I>>(base?: I): GetTransactionAggregatesRequest {
-    return GetTransactionAggregatesRequest.fromPartial(base ?? {});
+    return GetTransactionAggregatesRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetTransactionAggregatesRequest>, I>>(
     object: I,
   ): GetTransactionAggregatesRequest {
@@ -584,9 +583,8 @@ export const GetTransactionAggregatesResponse = {
   create<I extends Exact<DeepPartial<GetTransactionAggregatesResponse>, I>>(
     base?: I,
   ): GetTransactionAggregatesResponse {
-    return GetTransactionAggregatesResponse.fromPartial(base ?? {});
+    return GetTransactionAggregatesResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetTransactionAggregatesResponse>, I>>(
     object: I,
   ): GetTransactionAggregatesResponse {
@@ -678,9 +676,8 @@ export const GetUserAccountBalanceHistoryRequest = {
   create<I extends Exact<DeepPartial<GetUserAccountBalanceHistoryRequest>, I>>(
     base?: I,
   ): GetUserAccountBalanceHistoryRequest {
-    return GetUserAccountBalanceHistoryRequest.fromPartial(base ?? {});
+    return GetUserAccountBalanceHistoryRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetUserAccountBalanceHistoryRequest>, I>>(
     object: I,
   ): GetUserAccountBalanceHistoryRequest {
@@ -746,9 +743,8 @@ export const GetUserAccountBalanceHistoryResponse = {
   create<I extends Exact<DeepPartial<GetUserAccountBalanceHistoryResponse>, I>>(
     base?: I,
   ): GetUserAccountBalanceHistoryResponse {
-    return GetUserAccountBalanceHistoryResponse.fromPartial(base ?? {});
+    return GetUserAccountBalanceHistoryResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetUserAccountBalanceHistoryResponse>, I>>(
     object: I,
   ): GetUserAccountBalanceHistoryResponse {
@@ -837,9 +833,8 @@ export const GetAccountBalanceHistoryRequest = {
   },
 
   create<I extends Exact<DeepPartial<GetAccountBalanceHistoryRequest>, I>>(base?: I): GetAccountBalanceHistoryRequest {
-    return GetAccountBalanceHistoryRequest.fromPartial(base ?? {});
+    return GetAccountBalanceHistoryRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetAccountBalanceHistoryRequest>, I>>(
     object: I,
   ): GetAccountBalanceHistoryRequest {
@@ -905,9 +900,8 @@ export const GetAccountBalanceHistoryResponse = {
   create<I extends Exact<DeepPartial<GetAccountBalanceHistoryResponse>, I>>(
     base?: I,
   ): GetAccountBalanceHistoryResponse {
-    return GetAccountBalanceHistoryResponse.fromPartial(base ?? {});
+    return GetAccountBalanceHistoryResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetAccountBalanceHistoryResponse>, I>>(
     object: I,
   ): GetAccountBalanceHistoryResponse {
@@ -1028,9 +1022,8 @@ export const GetUserCategoryMonthlyExpenditureRequest = {
   create<I extends Exact<DeepPartial<GetUserCategoryMonthlyExpenditureRequest>, I>>(
     base?: I,
   ): GetUserCategoryMonthlyExpenditureRequest {
-    return GetUserCategoryMonthlyExpenditureRequest.fromPartial(base ?? {});
+    return GetUserCategoryMonthlyExpenditureRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetUserCategoryMonthlyExpenditureRequest>, I>>(
     object: I,
   ): GetUserCategoryMonthlyExpenditureRequest {
@@ -1114,9 +1107,8 @@ export const GetUserCategoryMonthlyExpenditureResponse = {
   create<I extends Exact<DeepPartial<GetUserCategoryMonthlyExpenditureResponse>, I>>(
     base?: I,
   ): GetUserCategoryMonthlyExpenditureResponse {
-    return GetUserCategoryMonthlyExpenditureResponse.fromPartial(base ?? {});
+    return GetUserCategoryMonthlyExpenditureResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetUserCategoryMonthlyExpenditureResponse>, I>>(
     object: I,
   ): GetUserCategoryMonthlyExpenditureResponse {
@@ -1238,9 +1230,8 @@ export const GetUserCategoryMonthlyIncomeRequest = {
   create<I extends Exact<DeepPartial<GetUserCategoryMonthlyIncomeRequest>, I>>(
     base?: I,
   ): GetUserCategoryMonthlyIncomeRequest {
-    return GetUserCategoryMonthlyIncomeRequest.fromPartial(base ?? {});
+    return GetUserCategoryMonthlyIncomeRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetUserCategoryMonthlyIncomeRequest>, I>>(
     object: I,
   ): GetUserCategoryMonthlyIncomeRequest {
@@ -1322,9 +1313,8 @@ export const GetUserCategoryMonthlyIncomeResponse = {
   create<I extends Exact<DeepPartial<GetUserCategoryMonthlyIncomeResponse>, I>>(
     base?: I,
   ): GetUserCategoryMonthlyIncomeResponse {
-    return GetUserCategoryMonthlyIncomeResponse.fromPartial(base ?? {});
+    return GetUserCategoryMonthlyIncomeResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetUserCategoryMonthlyIncomeResponse>, I>>(
     object: I,
   ): GetUserCategoryMonthlyIncomeResponse {
@@ -1446,9 +1436,8 @@ export const GetCategoryMonthlyTransactionCountRequest = {
   create<I extends Exact<DeepPartial<GetCategoryMonthlyTransactionCountRequest>, I>>(
     base?: I,
   ): GetCategoryMonthlyTransactionCountRequest {
-    return GetCategoryMonthlyTransactionCountRequest.fromPartial(base ?? {});
+    return GetCategoryMonthlyTransactionCountRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetCategoryMonthlyTransactionCountRequest>, I>>(
     object: I,
   ): GetCategoryMonthlyTransactionCountRequest {
@@ -1532,9 +1521,8 @@ export const GetCategoryMonthlyTransactionCountResponse = {
   create<I extends Exact<DeepPartial<GetCategoryMonthlyTransactionCountResponse>, I>>(
     base?: I,
   ): GetCategoryMonthlyTransactionCountResponse {
-    return GetCategoryMonthlyTransactionCountResponse.fromPartial(base ?? {});
+    return GetCategoryMonthlyTransactionCountResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetCategoryMonthlyTransactionCountResponse>, I>>(
     object: I,
   ): GetCategoryMonthlyTransactionCountResponse {
@@ -1638,9 +1626,8 @@ export const GetDebtToIncomeRatioRequest = {
   },
 
   create<I extends Exact<DeepPartial<GetDebtToIncomeRatioRequest>, I>>(base?: I): GetDebtToIncomeRatioRequest {
-    return GetDebtToIncomeRatioRequest.fromPartial(base ?? {});
+    return GetDebtToIncomeRatioRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetDebtToIncomeRatioRequest>, I>>(object: I): GetDebtToIncomeRatioRequest {
     const message = createBaseGetDebtToIncomeRatioRequest();
     message.userId = object.userId ?? 0;
@@ -1717,9 +1704,8 @@ export const GetDebtToIncomeRatioResponse = {
   },
 
   create<I extends Exact<DeepPartial<GetDebtToIncomeRatioResponse>, I>>(base?: I): GetDebtToIncomeRatioResponse {
-    return GetDebtToIncomeRatioResponse.fromPartial(base ?? {});
+    return GetDebtToIncomeRatioResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetDebtToIncomeRatioResponse>, I>>(object: I): GetDebtToIncomeRatioResponse {
     const message = createBaseGetDebtToIncomeRatioResponse();
     message.debtToIncomeRatios = object.debtToIncomeRatios?.map((e) => DebtToIncomeRatio.fromPartial(e)) || [];
@@ -1836,9 +1822,8 @@ export const GetExpenseMetricsRequest = {
   },
 
   create<I extends Exact<DeepPartial<GetExpenseMetricsRequest>, I>>(base?: I): GetExpenseMetricsRequest {
-    return GetExpenseMetricsRequest.fromPartial(base ?? {});
+    return GetExpenseMetricsRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetExpenseMetricsRequest>, I>>(object: I): GetExpenseMetricsRequest {
     const message = createBaseGetExpenseMetricsRequest();
     message.userId = object.userId ?? 0;
@@ -1916,9 +1901,8 @@ export const GetExpenseMetricsResponse = {
   },
 
   create<I extends Exact<DeepPartial<GetExpenseMetricsResponse>, I>>(base?: I): GetExpenseMetricsResponse {
-    return GetExpenseMetricsResponse.fromPartial(base ?? {});
+    return GetExpenseMetricsResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetExpenseMetricsResponse>, I>>(object: I): GetExpenseMetricsResponse {
     const message = createBaseGetExpenseMetricsResponse();
     message.expenseMetrics = object.expenseMetrics?.map((e) => ExpenseMetrics.fromPartial(e)) || [];
@@ -2019,9 +2003,8 @@ export const GetFinancialProfileRequest = {
   },
 
   create<I extends Exact<DeepPartial<GetFinancialProfileRequest>, I>>(base?: I): GetFinancialProfileRequest {
-    return GetFinancialProfileRequest.fromPartial(base ?? {});
+    return GetFinancialProfileRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetFinancialProfileRequest>, I>>(object: I): GetFinancialProfileRequest {
     const message = createBaseGetFinancialProfileRequest();
     message.userId = object.userId ?? 0;
@@ -2098,9 +2081,8 @@ export const GetFinancialProfileResponse = {
   },
 
   create<I extends Exact<DeepPartial<GetFinancialProfileResponse>, I>>(base?: I): GetFinancialProfileResponse {
-    return GetFinancialProfileResponse.fromPartial(base ?? {});
+    return GetFinancialProfileResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetFinancialProfileResponse>, I>>(object: I): GetFinancialProfileResponse {
     const message = createBaseGetFinancialProfileResponse();
     message.financialProfiles = object.financialProfiles?.map((e) => FinancialProfile.fromPartial(e)) || [];
@@ -2201,9 +2183,8 @@ export const GetIncomeExpenseRatioRequest = {
   },
 
   create<I extends Exact<DeepPartial<GetIncomeExpenseRatioRequest>, I>>(base?: I): GetIncomeExpenseRatioRequest {
-    return GetIncomeExpenseRatioRequest.fromPartial(base ?? {});
+    return GetIncomeExpenseRatioRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetIncomeExpenseRatioRequest>, I>>(object: I): GetIncomeExpenseRatioRequest {
     const message = createBaseGetIncomeExpenseRatioRequest();
     message.userId = object.userId ?? 0;
@@ -2280,9 +2261,8 @@ export const GetIncomeExpenseRatioResponse = {
   },
 
   create<I extends Exact<DeepPartial<GetIncomeExpenseRatioResponse>, I>>(base?: I): GetIncomeExpenseRatioResponse {
-    return GetIncomeExpenseRatioResponse.fromPartial(base ?? {});
+    return GetIncomeExpenseRatioResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetIncomeExpenseRatioResponse>, I>>(
     object: I,
   ): GetIncomeExpenseRatioResponse {
@@ -2401,9 +2381,8 @@ export const GetIncomeMetricsRequest = {
   },
 
   create<I extends Exact<DeepPartial<GetIncomeMetricsRequest>, I>>(base?: I): GetIncomeMetricsRequest {
-    return GetIncomeMetricsRequest.fromPartial(base ?? {});
+    return GetIncomeMetricsRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetIncomeMetricsRequest>, I>>(object: I): GetIncomeMetricsRequest {
     const message = createBaseGetIncomeMetricsRequest();
     message.userId = object.userId ?? 0;
@@ -2481,9 +2460,8 @@ export const GetIncomeMetricsResponse = {
   },
 
   create<I extends Exact<DeepPartial<GetIncomeMetricsResponse>, I>>(base?: I): GetIncomeMetricsResponse {
-    return GetIncomeMetricsResponse.fromPartial(base ?? {});
+    return GetIncomeMetricsResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetIncomeMetricsResponse>, I>>(object: I): GetIncomeMetricsResponse {
     const message = createBaseGetIncomeMetricsResponse();
     message.incomeMetrics = object.incomeMetrics?.map((e) => IncomeMetrics.fromPartial(e)) || [];
@@ -2600,9 +2578,8 @@ export const GetMerchantMonthlyExpenditureRequest = {
   create<I extends Exact<DeepPartial<GetMerchantMonthlyExpenditureRequest>, I>>(
     base?: I,
   ): GetMerchantMonthlyExpenditureRequest {
-    return GetMerchantMonthlyExpenditureRequest.fromPartial(base ?? {});
+    return GetMerchantMonthlyExpenditureRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetMerchantMonthlyExpenditureRequest>, I>>(
     object: I,
   ): GetMerchantMonthlyExpenditureRequest {
@@ -2686,9 +2663,8 @@ export const GetMerchantMonthlyExpenditureResponse = {
   create<I extends Exact<DeepPartial<GetMerchantMonthlyExpenditureResponse>, I>>(
     base?: I,
   ): GetMerchantMonthlyExpenditureResponse {
-    return GetMerchantMonthlyExpenditureResponse.fromPartial(base ?? {});
+    return GetMerchantMonthlyExpenditureResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetMerchantMonthlyExpenditureResponse>, I>>(
     object: I,
   ): GetMerchantMonthlyExpenditureResponse {
@@ -2792,9 +2768,8 @@ export const GetMonthlyBalanceRequest = {
   },
 
   create<I extends Exact<DeepPartial<GetMonthlyBalanceRequest>, I>>(base?: I): GetMonthlyBalanceRequest {
-    return GetMonthlyBalanceRequest.fromPartial(base ?? {});
+    return GetMonthlyBalanceRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetMonthlyBalanceRequest>, I>>(object: I): GetMonthlyBalanceRequest {
     const message = createBaseGetMonthlyBalanceRequest();
     message.userId = object.userId ?? 0;
@@ -2871,9 +2846,8 @@ export const GetMonthlyBalanceResponse = {
   },
 
   create<I extends Exact<DeepPartial<GetMonthlyBalanceResponse>, I>>(base?: I): GetMonthlyBalanceResponse {
-    return GetMonthlyBalanceResponse.fromPartial(base ?? {});
+    return GetMonthlyBalanceResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetMonthlyBalanceResponse>, I>>(object: I): GetMonthlyBalanceResponse {
     const message = createBaseGetMonthlyBalanceResponse();
     message.monthlyBalances = object.monthlyBalances?.map((e) => MonthlyBalance.fromPartial(e)) || [];
@@ -2974,9 +2948,8 @@ export const GetMonthlyExpenditureRequest = {
   },
 
   create<I extends Exact<DeepPartial<GetMonthlyExpenditureRequest>, I>>(base?: I): GetMonthlyExpenditureRequest {
-    return GetMonthlyExpenditureRequest.fromPartial(base ?? {});
+    return GetMonthlyExpenditureRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetMonthlyExpenditureRequest>, I>>(object: I): GetMonthlyExpenditureRequest {
     const message = createBaseGetMonthlyExpenditureRequest();
     message.userId = object.userId ?? 0;
@@ -3053,9 +3026,8 @@ export const GetMonthlyExpenditureResponse = {
   },
 
   create<I extends Exact<DeepPartial<GetMonthlyExpenditureResponse>, I>>(base?: I): GetMonthlyExpenditureResponse {
-    return GetMonthlyExpenditureResponse.fromPartial(base ?? {});
+    return GetMonthlyExpenditureResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetMonthlyExpenditureResponse>, I>>(
     object: I,
   ): GetMonthlyExpenditureResponse {
@@ -3158,9 +3130,8 @@ export const GetMonthlyIncomeRequest = {
   },
 
   create<I extends Exact<DeepPartial<GetMonthlyIncomeRequest>, I>>(base?: I): GetMonthlyIncomeRequest {
-    return GetMonthlyIncomeRequest.fromPartial(base ?? {});
+    return GetMonthlyIncomeRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetMonthlyIncomeRequest>, I>>(object: I): GetMonthlyIncomeRequest {
     const message = createBaseGetMonthlyIncomeRequest();
     message.userId = object.userId ?? 0;
@@ -3237,9 +3208,8 @@ export const GetMonthlyIncomeResponse = {
   },
 
   create<I extends Exact<DeepPartial<GetMonthlyIncomeResponse>, I>>(base?: I): GetMonthlyIncomeResponse {
-    return GetMonthlyIncomeResponse.fromPartial(base ?? {});
+    return GetMonthlyIncomeResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetMonthlyIncomeResponse>, I>>(object: I): GetMonthlyIncomeResponse {
     const message = createBaseGetMonthlyIncomeResponse();
     message.monthlyIncomes = object.monthlyIncomes?.map((e) => MonthlyIncome.fromPartial(e)) || [];
@@ -3340,9 +3310,8 @@ export const GetMonthlySavingsRequest = {
   },
 
   create<I extends Exact<DeepPartial<GetMonthlySavingsRequest>, I>>(base?: I): GetMonthlySavingsRequest {
-    return GetMonthlySavingsRequest.fromPartial(base ?? {});
+    return GetMonthlySavingsRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetMonthlySavingsRequest>, I>>(object: I): GetMonthlySavingsRequest {
     const message = createBaseGetMonthlySavingsRequest();
     message.userId = object.userId ?? 0;
@@ -3419,9 +3388,8 @@ export const GetMonthlySavingsResponse = {
   },
 
   create<I extends Exact<DeepPartial<GetMonthlySavingsResponse>, I>>(base?: I): GetMonthlySavingsResponse {
-    return GetMonthlySavingsResponse.fromPartial(base ?? {});
+    return GetMonthlySavingsResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetMonthlySavingsResponse>, I>>(object: I): GetMonthlySavingsResponse {
     const message = createBaseGetMonthlySavingsResponse();
     message.monthlySavings = object.monthlySavings?.map((e) => MonthlySavings.fromPartial(e)) || [];
@@ -3541,9 +3509,8 @@ export const GetMonthlyTotalQuantityBySecurityAndUserRequest = {
   create<I extends Exact<DeepPartial<GetMonthlyTotalQuantityBySecurityAndUserRequest>, I>>(
     base?: I,
   ): GetMonthlyTotalQuantityBySecurityAndUserRequest {
-    return GetMonthlyTotalQuantityBySecurityAndUserRequest.fromPartial(base ?? {});
+    return GetMonthlyTotalQuantityBySecurityAndUserRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetMonthlyTotalQuantityBySecurityAndUserRequest>, I>>(
     object: I,
   ): GetMonthlyTotalQuantityBySecurityAndUserRequest {
@@ -3634,9 +3601,8 @@ export const GetMonthlyTotalQuantityBySecurityAndUserResponse = {
   create<I extends Exact<DeepPartial<GetMonthlyTotalQuantityBySecurityAndUserResponse>, I>>(
     base?: I,
   ): GetMonthlyTotalQuantityBySecurityAndUserResponse {
-    return GetMonthlyTotalQuantityBySecurityAndUserResponse.fromPartial(base ?? {});
+    return GetMonthlyTotalQuantityBySecurityAndUserResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetMonthlyTotalQuantityBySecurityAndUserResponse>, I>>(
     object: I,
   ): GetMonthlyTotalQuantityBySecurityAndUserResponse {
@@ -3743,9 +3709,8 @@ export const GetMonthlyTransactionCountRequest = {
   create<I extends Exact<DeepPartial<GetMonthlyTransactionCountRequest>, I>>(
     base?: I,
   ): GetMonthlyTransactionCountRequest {
-    return GetMonthlyTransactionCountRequest.fromPartial(base ?? {});
+    return GetMonthlyTransactionCountRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetMonthlyTransactionCountRequest>, I>>(
     object: I,
   ): GetMonthlyTransactionCountRequest {
@@ -3826,9 +3791,8 @@ export const GetMonthlyTransactionCountResponse = {
   create<I extends Exact<DeepPartial<GetMonthlyTransactionCountResponse>, I>>(
     base?: I,
   ): GetMonthlyTransactionCountResponse {
-    return GetMonthlyTransactionCountResponse.fromPartial(base ?? {});
+    return GetMonthlyTransactionCountResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetMonthlyTransactionCountResponse>, I>>(
     object: I,
   ): GetMonthlyTransactionCountResponse {
@@ -3948,9 +3912,8 @@ export const GetPaymentChannelMonthlyExpenditureRequest = {
   create<I extends Exact<DeepPartial<GetPaymentChannelMonthlyExpenditureRequest>, I>>(
     base?: I,
   ): GetPaymentChannelMonthlyExpenditureRequest {
-    return GetPaymentChannelMonthlyExpenditureRequest.fromPartial(base ?? {});
+    return GetPaymentChannelMonthlyExpenditureRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetPaymentChannelMonthlyExpenditureRequest>, I>>(
     object: I,
   ): GetPaymentChannelMonthlyExpenditureRequest {
@@ -4036,9 +3999,8 @@ export const GetPaymentChannelMonthlyExpenditureResponse = {
   create<I extends Exact<DeepPartial<GetPaymentChannelMonthlyExpenditureResponse>, I>>(
     base?: I,
   ): GetPaymentChannelMonthlyExpenditureResponse {
-    return GetPaymentChannelMonthlyExpenditureResponse.fromPartial(base ?? {});
+    return GetPaymentChannelMonthlyExpenditureResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetPaymentChannelMonthlyExpenditureResponse>, I>>(
     object: I,
   ): GetPaymentChannelMonthlyExpenditureResponse {
@@ -4144,9 +4106,8 @@ export const GetTotalInvestmentBySecurityRequest = {
   create<I extends Exact<DeepPartial<GetTotalInvestmentBySecurityRequest>, I>>(
     base?: I,
   ): GetTotalInvestmentBySecurityRequest {
-    return GetTotalInvestmentBySecurityRequest.fromPartial(base ?? {});
+    return GetTotalInvestmentBySecurityRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetTotalInvestmentBySecurityRequest>, I>>(
     object: I,
   ): GetTotalInvestmentBySecurityRequest {
@@ -4227,9 +4188,8 @@ export const GetTotalInvestmentBySecurityResponse = {
   create<I extends Exact<DeepPartial<GetTotalInvestmentBySecurityResponse>, I>>(
     base?: I,
   ): GetTotalInvestmentBySecurityResponse {
-    return GetTotalInvestmentBySecurityResponse.fromPartial(base ?? {});
+    return GetTotalInvestmentBySecurityResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetTotalInvestmentBySecurityResponse>, I>>(
     object: I,
   ): GetTotalInvestmentBySecurityResponse {
@@ -4291,9 +4251,8 @@ export const GetMelodyFinancialContextRequest = {
   create<I extends Exact<DeepPartial<GetMelodyFinancialContextRequest>, I>>(
     base?: I,
   ): GetMelodyFinancialContextRequest {
-    return GetMelodyFinancialContextRequest.fromPartial(base ?? {});
+    return GetMelodyFinancialContextRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetMelodyFinancialContextRequest>, I>>(
     object: I,
   ): GetMelodyFinancialContextRequest {
@@ -4357,9 +4316,8 @@ export const GetMelodyFinancialContextResponse = {
   create<I extends Exact<DeepPartial<GetMelodyFinancialContextResponse>, I>>(
     base?: I,
   ): GetMelodyFinancialContextResponse {
-    return GetMelodyFinancialContextResponse.fromPartial(base ?? {});
+    return GetMelodyFinancialContextResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetMelodyFinancialContextResponse>, I>>(
     object: I,
   ): GetMelodyFinancialContextResponse {

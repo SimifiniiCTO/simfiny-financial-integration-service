@@ -763,7 +763,6 @@ message GetReCurringTransactionsResponse {
 }
   // The re-occuring transactions
   repeated ReOccuringTransaction re_ccuring_transactions = 1;
-  repeated ParticipantReCurringTransactions participant_re_ccuring_transactions = 2;
 }
 
 message GetTransactionsRequest {

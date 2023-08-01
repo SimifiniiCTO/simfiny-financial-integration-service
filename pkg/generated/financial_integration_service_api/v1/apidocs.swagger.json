@@ -5144,13 +5144,6 @@
             "$ref": "#/definitions/ReOccuringTransaction"
           },
           "title": "The re-occuring transactions"
-        },
-        "participantReCcuringTransactions": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/ParticipantReCurringTransactions"
-          }
         }
       }
     },
@@ -6146,23 +6139,6 @@
         },
         "interestRateType": {
           "type": "string"
-        }
-      }
-    },
-    "ParticipantReCurringTransactions": {
-      "type": "object",
-      "properties": {
-        "reocurringTransactionId": {
-          "type": "string",
-          "title": "The participant id"
-        },
-        "transactions": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/Transaction"
-          },
-          "title": "The transactions"
         }
       }
     },

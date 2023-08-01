@@ -1004,9 +1004,8 @@ export const InvestmentTransaction = {
   },
 
   create<I extends Exact<DeepPartial<InvestmentTransaction>, I>>(base?: I): InvestmentTransaction {
-    return InvestmentTransaction.fromPartial(base ?? {});
+    return InvestmentTransaction.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<InvestmentTransaction>, I>>(object: I): InvestmentTransaction {
     const message = createBaseInvestmentTransaction();
     message.accountId = object.accountId ?? "";
@@ -1456,9 +1455,8 @@ export const ReOccuringTransaction = {
   },
 
   create<I extends Exact<DeepPartial<ReOccuringTransaction>, I>>(base?: I): ReOccuringTransaction {
-    return ReOccuringTransaction.fromPartial(base ?? {});
+    return ReOccuringTransaction.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<ReOccuringTransaction>, I>>(object: I): ReOccuringTransaction {
     const message = createBaseReOccuringTransaction();
     message.accountId = object.accountId ?? "";
@@ -2184,9 +2182,8 @@ export const Transaction = {
   },
 
   create<I extends Exact<DeepPartial<Transaction>, I>>(base?: I): Transaction {
-    return Transaction.fromPartial(base ?? {});
+    return Transaction.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<Transaction>, I>>(object: I): Transaction {
     const message = createBaseTransaction();
     message.accountId = object.accountId ?? "";
@@ -2372,9 +2369,8 @@ export const AccountBalanceHistory = {
   },
 
   create<I extends Exact<DeepPartial<AccountBalanceHistory>, I>>(base?: I): AccountBalanceHistory {
-    return AccountBalanceHistory.fromPartial(base ?? {});
+    return AccountBalanceHistory.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<AccountBalanceHistory>, I>>(object: I): AccountBalanceHistory {
     const message = createBaseAccountBalanceHistory();
     message.time = object.time ?? undefined;
@@ -2579,9 +2575,8 @@ export const CategoryMetricsFinancialSubProfile = {
   create<I extends Exact<DeepPartial<CategoryMetricsFinancialSubProfile>, I>>(
     base?: I,
   ): CategoryMetricsFinancialSubProfile {
-    return CategoryMetricsFinancialSubProfile.fromPartial(base ?? {});
+    return CategoryMetricsFinancialSubProfile.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<CategoryMetricsFinancialSubProfile>, I>>(
     object: I,
   ): CategoryMetricsFinancialSubProfile {
@@ -2694,9 +2689,8 @@ export const CategoryMonthlyExpenditure = {
   },
 
   create<I extends Exact<DeepPartial<CategoryMonthlyExpenditure>, I>>(base?: I): CategoryMonthlyExpenditure {
-    return CategoryMonthlyExpenditure.fromPartial(base ?? {});
+    return CategoryMonthlyExpenditure.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<CategoryMonthlyExpenditure>, I>>(object: I): CategoryMonthlyExpenditure {
     const message = createBaseCategoryMonthlyExpenditure();
     message.month = object.month ?? 0;
@@ -2801,9 +2795,8 @@ export const CategoryMonthlyIncome = {
   },
 
   create<I extends Exact<DeepPartial<CategoryMonthlyIncome>, I>>(base?: I): CategoryMonthlyIncome {
-    return CategoryMonthlyIncome.fromPartial(base ?? {});
+    return CategoryMonthlyIncome.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<CategoryMonthlyIncome>, I>>(object: I): CategoryMonthlyIncome {
     const message = createBaseCategoryMonthlyIncome();
     message.month = object.month ?? 0;
@@ -2908,9 +2901,8 @@ export const CategoryMonthlyTransactionCount = {
   },
 
   create<I extends Exact<DeepPartial<CategoryMonthlyTransactionCount>, I>>(base?: I): CategoryMonthlyTransactionCount {
-    return CategoryMonthlyTransactionCount.fromPartial(base ?? {});
+    return CategoryMonthlyTransactionCount.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<CategoryMonthlyTransactionCount>, I>>(
     object: I,
   ): CategoryMonthlyTransactionCount {
@@ -3001,9 +2993,8 @@ export const DebtToIncomeRatio = {
   },
 
   create<I extends Exact<DeepPartial<DebtToIncomeRatio>, I>>(base?: I): DebtToIncomeRatio {
-    return DebtToIncomeRatio.fromPartial(base ?? {});
+    return DebtToIncomeRatio.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<DebtToIncomeRatio>, I>>(object: I): DebtToIncomeRatio {
     const message = createBaseDebtToIncomeRatio();
     message.month = object.month ?? 0;
@@ -3121,9 +3112,8 @@ export const ExpenseMetrics = {
   },
 
   create<I extends Exact<DeepPartial<ExpenseMetrics>, I>>(base?: I): ExpenseMetrics {
-    return ExpenseMetrics.fromPartial(base ?? {});
+    return ExpenseMetrics.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<ExpenseMetrics>, I>>(object: I): ExpenseMetrics {
     const message = createBaseExpenseMetrics();
     message.month = object.month ?? 0;
@@ -3283,9 +3273,8 @@ export const ExpenseMetricsFinancialSubProfileMetrics = {
   create<I extends Exact<DeepPartial<ExpenseMetricsFinancialSubProfileMetrics>, I>>(
     base?: I,
   ): ExpenseMetricsFinancialSubProfileMetrics {
-    return ExpenseMetricsFinancialSubProfileMetrics.fromPartial(base ?? {});
+    return ExpenseMetricsFinancialSubProfileMetrics.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<ExpenseMetricsFinancialSubProfileMetrics>, I>>(
     object: I,
   ): ExpenseMetricsFinancialSubProfileMetrics {
@@ -3421,9 +3410,8 @@ export const FinancialProfile = {
   },
 
   create<I extends Exact<DeepPartial<FinancialProfile>, I>>(base?: I): FinancialProfile {
-    return FinancialProfile.fromPartial(base ?? {});
+    return FinancialProfile.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<FinancialProfile>, I>>(object: I): FinancialProfile {
     const message = createBaseFinancialProfile();
     message.month = object.month ?? 0;
@@ -3514,9 +3502,8 @@ export const IncomeExpenseRatio = {
   },
 
   create<I extends Exact<DeepPartial<IncomeExpenseRatio>, I>>(base?: I): IncomeExpenseRatio {
-    return IncomeExpenseRatio.fromPartial(base ?? {});
+    return IncomeExpenseRatio.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<IncomeExpenseRatio>, I>>(object: I): IncomeExpenseRatio {
     const message = createBaseIncomeExpenseRatio();
     message.month = object.month ?? 0;
@@ -3634,9 +3621,8 @@ export const IncomeMetrics = {
   },
 
   create<I extends Exact<DeepPartial<IncomeMetrics>, I>>(base?: I): IncomeMetrics {
-    return IncomeMetrics.fromPartial(base ?? {});
+    return IncomeMetrics.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<IncomeMetrics>, I>>(object: I): IncomeMetrics {
     const message = createBaseIncomeMetrics();
     message.month = object.month ?? 0;
@@ -3792,9 +3778,8 @@ export const IncomeMetricsFinancialSubProfile = {
   create<I extends Exact<DeepPartial<IncomeMetricsFinancialSubProfile>, I>>(
     base?: I,
   ): IncomeMetricsFinancialSubProfile {
-    return IncomeMetricsFinancialSubProfile.fromPartial(base ?? {});
+    return IncomeMetricsFinancialSubProfile.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<IncomeMetricsFinancialSubProfile>, I>>(
     object: I,
   ): IncomeMetricsFinancialSubProfile {
@@ -3997,9 +3982,8 @@ export const LocationFinancialSubProfile = {
   },
 
   create<I extends Exact<DeepPartial<LocationFinancialSubProfile>, I>>(base?: I): LocationFinancialSubProfile {
-    return LocationFinancialSubProfile.fromPartial(base ?? {});
+    return LocationFinancialSubProfile.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<LocationFinancialSubProfile>, I>>(object: I): LocationFinancialSubProfile {
     const message = createBaseLocationFinancialSubProfile();
     message.locationCity = object.locationCity ?? "";
@@ -4190,9 +4174,8 @@ export const MerchantMetricsFinancialSubProfile = {
   create<I extends Exact<DeepPartial<MerchantMetricsFinancialSubProfile>, I>>(
     base?: I,
   ): MerchantMetricsFinancialSubProfile {
-    return MerchantMetricsFinancialSubProfile.fromPartial(base ?? {});
+    return MerchantMetricsFinancialSubProfile.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<MerchantMetricsFinancialSubProfile>, I>>(
     object: I,
   ): MerchantMetricsFinancialSubProfile {
@@ -4302,9 +4285,8 @@ export const MerchantMonthlyExpenditure = {
   },
 
   create<I extends Exact<DeepPartial<MerchantMonthlyExpenditure>, I>>(base?: I): MerchantMonthlyExpenditure {
-    return MerchantMonthlyExpenditure.fromPartial(base ?? {});
+    return MerchantMonthlyExpenditure.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<MerchantMonthlyExpenditure>, I>>(object: I): MerchantMonthlyExpenditure {
     const message = createBaseMerchantMonthlyExpenditure();
     message.month = object.month ?? 0;
@@ -4393,9 +4375,8 @@ export const MonthlyBalance = {
   },
 
   create<I extends Exact<DeepPartial<MonthlyBalance>, I>>(base?: I): MonthlyBalance {
-    return MonthlyBalance.fromPartial(base ?? {});
+    return MonthlyBalance.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<MonthlyBalance>, I>>(object: I): MonthlyBalance {
     const message = createBaseMonthlyBalance();
     message.month = object.month ?? 0;
@@ -4483,9 +4464,8 @@ export const MonthlyExpenditure = {
   },
 
   create<I extends Exact<DeepPartial<MonthlyExpenditure>, I>>(base?: I): MonthlyExpenditure {
-    return MonthlyExpenditure.fromPartial(base ?? {});
+    return MonthlyExpenditure.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<MonthlyExpenditure>, I>>(object: I): MonthlyExpenditure {
     const message = createBaseMonthlyExpenditure();
     message.month = object.month ?? 0;
@@ -4573,9 +4553,8 @@ export const MonthlyIncome = {
   },
 
   create<I extends Exact<DeepPartial<MonthlyIncome>, I>>(base?: I): MonthlyIncome {
-    return MonthlyIncome.fromPartial(base ?? {});
+    return MonthlyIncome.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<MonthlyIncome>, I>>(object: I): MonthlyIncome {
     const message = createBaseMonthlyIncome();
     message.month = object.month ?? 0;
@@ -4663,9 +4642,8 @@ export const MonthlySavings = {
   },
 
   create<I extends Exact<DeepPartial<MonthlySavings>, I>>(base?: I): MonthlySavings {
-    return MonthlySavings.fromPartial(base ?? {});
+    return MonthlySavings.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<MonthlySavings>, I>>(object: I): MonthlySavings {
     const message = createBaseMonthlySavings();
     message.month = object.month ?? 0;
@@ -4769,9 +4747,8 @@ export const MonthlyTotalQuantityBySecurityAndUser = {
   create<I extends Exact<DeepPartial<MonthlyTotalQuantityBySecurityAndUser>, I>>(
     base?: I,
   ): MonthlyTotalQuantityBySecurityAndUser {
-    return MonthlyTotalQuantityBySecurityAndUser.fromPartial(base ?? {});
+    return MonthlyTotalQuantityBySecurityAndUser.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<MonthlyTotalQuantityBySecurityAndUser>, I>>(
     object: I,
   ): MonthlyTotalQuantityBySecurityAndUser {
@@ -4862,9 +4839,8 @@ export const MonthlyTransactionCount = {
   },
 
   create<I extends Exact<DeepPartial<MonthlyTransactionCount>, I>>(base?: I): MonthlyTransactionCount {
-    return MonthlyTransactionCount.fromPartial(base ?? {});
+    return MonthlyTransactionCount.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<MonthlyTransactionCount>, I>>(object: I): MonthlyTransactionCount {
     const message = createBaseMonthlyTransactionCount();
     message.month = object.month ?? 0;
@@ -5063,9 +5039,8 @@ export const PaymentChannelMetricsFinancialSubProfile = {
   create<I extends Exact<DeepPartial<PaymentChannelMetricsFinancialSubProfile>, I>>(
     base?: I,
   ): PaymentChannelMetricsFinancialSubProfile {
-    return PaymentChannelMetricsFinancialSubProfile.fromPartial(base ?? {});
+    return PaymentChannelMetricsFinancialSubProfile.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<PaymentChannelMetricsFinancialSubProfile>, I>>(
     object: I,
   ): PaymentChannelMetricsFinancialSubProfile {
@@ -5178,9 +5153,8 @@ export const PaymentChannelMonthlyExpenditure = {
   create<I extends Exact<DeepPartial<PaymentChannelMonthlyExpenditure>, I>>(
     base?: I,
   ): PaymentChannelMonthlyExpenditure {
-    return PaymentChannelMonthlyExpenditure.fromPartial(base ?? {});
+    return PaymentChannelMonthlyExpenditure.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<PaymentChannelMonthlyExpenditure>, I>>(
     object: I,
   ): PaymentChannelMonthlyExpenditure {
@@ -5271,9 +5245,8 @@ export const TotalInvestmentBySecurity = {
   },
 
   create<I extends Exact<DeepPartial<TotalInvestmentBySecurity>, I>>(base?: I): TotalInvestmentBySecurity {
-    return TotalInvestmentBySecurity.fromPartial(base ?? {});
+    return TotalInvestmentBySecurity.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<TotalInvestmentBySecurity>, I>>(object: I): TotalInvestmentBySecurity {
     const message = createBaseTotalInvestmentBySecurity();
     message.securityId = object.securityId ?? "";
@@ -5442,9 +5415,8 @@ export const TransactionAggregatesByMonth = {
   },
 
   create<I extends Exact<DeepPartial<TransactionAggregatesByMonth>, I>>(base?: I): TransactionAggregatesByMonth {
-    return TransactionAggregatesByMonth.fromPartial(base ?? {});
+    return TransactionAggregatesByMonth.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<TransactionAggregatesByMonth>, I>>(object: I): TransactionAggregatesByMonth {
     const message = createBaseTransactionAggregatesByMonth();
     message.month = object.month ?? 0;
@@ -5601,9 +5573,8 @@ export const UserFinancialHealthMetricsTable = {
   },
 
   create<I extends Exact<DeepPartial<UserFinancialHealthMetricsTable>, I>>(base?: I): UserFinancialHealthMetricsTable {
-    return UserFinancialHealthMetricsTable.fromPartial(base ?? {});
+    return UserFinancialHealthMetricsTable.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<UserFinancialHealthMetricsTable>, I>>(
     object: I,
   ): UserFinancialHealthMetricsTable {
@@ -5751,9 +5722,8 @@ export const MelodyFinancialContext = {
   },
 
   create<I extends Exact<DeepPartial<MelodyFinancialContext>, I>>(base?: I): MelodyFinancialContext {
-    return MelodyFinancialContext.fromPartial(base ?? {});
+    return MelodyFinancialContext.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<MelodyFinancialContext>, I>>(object: I): MelodyFinancialContext {
     const message = createBaseMelodyFinancialContext();
     message.categories = object.categories?.map((e) => CategoryMetricsFinancialSubProfile.fromPartial(e)) || [];

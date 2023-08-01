@@ -155,9 +155,8 @@ export const GormFileOptions = {
   },
 
   create<I extends Exact<DeepPartial<GormFileOptions>, I>>(base?: I): GormFileOptions {
-    return GormFileOptions.fromPartial(base ?? {});
+    return GormFileOptions.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GormFileOptions>, I>>(_: I): GormFileOptions {
     const message = createBaseGormFileOptions();
     return message;
@@ -256,9 +255,8 @@ export const GormMessageOptions = {
   },
 
   create<I extends Exact<DeepPartial<GormMessageOptions>, I>>(base?: I): GormMessageOptions {
-    return GormMessageOptions.fromPartial(base ?? {});
+    return GormMessageOptions.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GormMessageOptions>, I>>(object: I): GormMessageOptions {
     const message = createBaseGormMessageOptions();
     message.ormable = object.ormable ?? false;
@@ -361,9 +359,8 @@ export const ExtraField = {
   },
 
   create<I extends Exact<DeepPartial<ExtraField>, I>>(base?: I): ExtraField {
-    return ExtraField.fromPartial(base ?? {});
+    return ExtraField.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<ExtraField>, I>>(object: I): ExtraField {
     const message = createBaseExtraField();
     message.type = object.type ?? "";
@@ -516,9 +513,8 @@ export const GormFieldOptions = {
   },
 
   create<I extends Exact<DeepPartial<GormFieldOptions>, I>>(base?: I): GormFieldOptions {
-    return GormFieldOptions.fromPartial(base ?? {});
+    return GormFieldOptions.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GormFieldOptions>, I>>(object: I): GormFieldOptions {
     const message = createBaseGormFieldOptions();
     message.tag = (object.tag !== undefined && object.tag !== null) ? GormTag.fromPartial(object.tag) : undefined;
@@ -945,9 +941,8 @@ export const GormTag = {
   },
 
   create<I extends Exact<DeepPartial<GormTag>, I>>(base?: I): GormTag {
-    return GormTag.fromPartial(base ?? {});
+    return GormTag.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GormTag>, I>>(object: I): GormTag {
     const message = createBaseGormTag();
     message.column = object.column ?? "";
@@ -1171,9 +1166,8 @@ export const HasOneOptions = {
   },
 
   create<I extends Exact<DeepPartial<HasOneOptions>, I>>(base?: I): HasOneOptions {
-    return HasOneOptions.fromPartial(base ?? {});
+    return HasOneOptions.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<HasOneOptions>, I>>(object: I): HasOneOptions {
     const message = createBaseHasOneOptions();
     message.foreignkey = object.foreignkey ?? "";
@@ -1340,9 +1334,8 @@ export const BelongsToOptions = {
   },
 
   create<I extends Exact<DeepPartial<BelongsToOptions>, I>>(base?: I): BelongsToOptions {
-    return BelongsToOptions.fromPartial(base ?? {});
+    return BelongsToOptions.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<BelongsToOptions>, I>>(object: I): BelongsToOptions {
     const message = createBaseBelongsToOptions();
     message.foreignkey = object.foreignkey ?? "";
@@ -1581,9 +1574,8 @@ export const HasManyOptions = {
   },
 
   create<I extends Exact<DeepPartial<HasManyOptions>, I>>(base?: I): HasManyOptions {
-    return HasManyOptions.fromPartial(base ?? {});
+    return HasManyOptions.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<HasManyOptions>, I>>(object: I): HasManyOptions {
     const message = createBaseHasManyOptions();
     message.foreignkey = object.foreignkey ?? "";
@@ -1831,9 +1823,8 @@ export const ManyToManyOptions = {
   },
 
   create<I extends Exact<DeepPartial<ManyToManyOptions>, I>>(base?: I): ManyToManyOptions {
-    return ManyToManyOptions.fromPartial(base ?? {});
+    return ManyToManyOptions.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<ManyToManyOptions>, I>>(object: I): ManyToManyOptions {
     const message = createBaseManyToManyOptions();
     message.jointable = object.jointable ?? "";
@@ -1930,9 +1921,8 @@ export const AutoServerOptions = {
   },
 
   create<I extends Exact<DeepPartial<AutoServerOptions>, I>>(base?: I): AutoServerOptions {
-    return AutoServerOptions.fromPartial(base ?? {});
+    return AutoServerOptions.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<AutoServerOptions>, I>>(object: I): AutoServerOptions {
     const message = createBaseAutoServerOptions();
     message.autogen = object.autogen ?? false;
@@ -1990,9 +1980,8 @@ export const MethodOptions = {
   },
 
   create<I extends Exact<DeepPartial<MethodOptions>, I>>(base?: I): MethodOptions {
-    return MethodOptions.fromPartial(base ?? {});
+    return MethodOptions.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<MethodOptions>, I>>(object: I): MethodOptions {
     const message = createBaseMethodOptions();
     message.objectType = object.objectType ?? "";

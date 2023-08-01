@@ -704,7 +704,6 @@ export interface GetReCurringTransactionsRequest {
 export interface GetReCurringTransactionsResponse {
   /** The re-occuring transactions */
   reCcuringTransactions: ReOccuringTransaction[];
-  participantReCcuringTransactions: GetReCurringTransactionsResponse_ParticipantReCurringTransactions[];
 }
 
 export interface GetReCurringTransactionsResponse_ParticipantReCurringTransactions {
@@ -882,9 +881,8 @@ export const CreateUserProfileRequest = {
   },
 
   create<I extends Exact<DeepPartial<CreateUserProfileRequest>, I>>(base?: I): CreateUserProfileRequest {
-    return CreateUserProfileRequest.fromPartial(base ?? {});
+    return CreateUserProfileRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<CreateUserProfileRequest>, I>>(object: I): CreateUserProfileRequest {
     const message = createBaseCreateUserProfileRequest();
     message.profile = (object.profile !== undefined && object.profile !== null)
@@ -943,9 +941,8 @@ export const CreateUserProfileResponse = {
   },
 
   create<I extends Exact<DeepPartial<CreateUserProfileResponse>, I>>(base?: I): CreateUserProfileResponse {
-    return CreateUserProfileResponse.fromPartial(base ?? {});
+    return CreateUserProfileResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<CreateUserProfileResponse>, I>>(object: I): CreateUserProfileResponse {
     const message = createBaseCreateUserProfileResponse();
     message.userId = object.userId ?? 0;
@@ -1001,9 +998,8 @@ export const GetUserProfileRequest = {
   },
 
   create<I extends Exact<DeepPartial<GetUserProfileRequest>, I>>(base?: I): GetUserProfileRequest {
-    return GetUserProfileRequest.fromPartial(base ?? {});
+    return GetUserProfileRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetUserProfileRequest>, I>>(object: I): GetUserProfileRequest {
     const message = createBaseGetUserProfileRequest();
     message.userId = object.userId ?? 0;
@@ -1077,9 +1073,8 @@ export const GetUserProfileResponse = {
   },
 
   create<I extends Exact<DeepPartial<GetUserProfileResponse>, I>>(base?: I): GetUserProfileResponse {
-    return GetUserProfileResponse.fromPartial(base ?? {});
+    return GetUserProfileResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetUserProfileResponse>, I>>(object: I): GetUserProfileResponse {
     const message = createBaseGetUserProfileResponse();
     message.profile = (object.profile !== undefined && object.profile !== null)
@@ -1140,9 +1135,8 @@ export const DeleteUserProfileRequest = {
   },
 
   create<I extends Exact<DeepPartial<DeleteUserProfileRequest>, I>>(base?: I): DeleteUserProfileRequest {
-    return DeleteUserProfileRequest.fromPartial(base ?? {});
+    return DeleteUserProfileRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<DeleteUserProfileRequest>, I>>(object: I): DeleteUserProfileRequest {
     const message = createBaseDeleteUserProfileRequest();
     message.userId = object.userId ?? 0;
@@ -1198,9 +1192,8 @@ export const DeleteUserProfileResponse = {
   },
 
   create<I extends Exact<DeepPartial<DeleteUserProfileResponse>, I>>(base?: I): DeleteUserProfileResponse {
-    return DeleteUserProfileResponse.fromPartial(base ?? {});
+    return DeleteUserProfileResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<DeleteUserProfileResponse>, I>>(object: I): DeleteUserProfileResponse {
     const message = createBaseDeleteUserProfileResponse();
     message.profileDeleted = object.profileDeleted ?? false;
@@ -1256,9 +1249,8 @@ export const UpdateUserProfileRequest = {
   },
 
   create<I extends Exact<DeepPartial<UpdateUserProfileRequest>, I>>(base?: I): UpdateUserProfileRequest {
-    return UpdateUserProfileRequest.fromPartial(base ?? {});
+    return UpdateUserProfileRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<UpdateUserProfileRequest>, I>>(object: I): UpdateUserProfileRequest {
     const message = createBaseUpdateUserProfileRequest();
     message.profile = (object.profile !== undefined && object.profile !== null)
@@ -1332,9 +1324,8 @@ export const UpdateUserProfileResponse = {
   },
 
   create<I extends Exact<DeepPartial<UpdateUserProfileResponse>, I>>(base?: I): UpdateUserProfileResponse {
-    return UpdateUserProfileResponse.fromPartial(base ?? {});
+    return UpdateUserProfileResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<UpdateUserProfileResponse>, I>>(object: I): UpdateUserProfileResponse {
     const message = createBaseUpdateUserProfileResponse();
     message.profileUpdated = object.profileUpdated ?? false;
@@ -1409,9 +1400,8 @@ export const CreateBankAccountRequest = {
   },
 
   create<I extends Exact<DeepPartial<CreateBankAccountRequest>, I>>(base?: I): CreateBankAccountRequest {
-    return CreateBankAccountRequest.fromPartial(base ?? {});
+    return CreateBankAccountRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<CreateBankAccountRequest>, I>>(object: I): CreateBankAccountRequest {
     const message = createBaseCreateBankAccountRequest();
     message.userId = object.userId ?? 0;
@@ -1470,9 +1460,8 @@ export const CreateBankAccountResponse = {
   },
 
   create<I extends Exact<DeepPartial<CreateBankAccountResponse>, I>>(base?: I): CreateBankAccountResponse {
-    return CreateBankAccountResponse.fromPartial(base ?? {});
+    return CreateBankAccountResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<CreateBankAccountResponse>, I>>(object: I): CreateBankAccountResponse {
     const message = createBaseCreateBankAccountResponse();
     message.bankAccountId = object.bankAccountId ?? 0;
@@ -1528,9 +1517,8 @@ export const GetBankAccountRequest = {
   },
 
   create<I extends Exact<DeepPartial<GetBankAccountRequest>, I>>(base?: I): GetBankAccountRequest {
-    return GetBankAccountRequest.fromPartial(base ?? {});
+    return GetBankAccountRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetBankAccountRequest>, I>>(object: I): GetBankAccountRequest {
     const message = createBaseGetBankAccountRequest();
     message.bankAccountId = object.bankAccountId ?? 0;
@@ -1586,9 +1574,8 @@ export const GetBankAccountResponse = {
   },
 
   create<I extends Exact<DeepPartial<GetBankAccountResponse>, I>>(base?: I): GetBankAccountResponse {
-    return GetBankAccountResponse.fromPartial(base ?? {});
+    return GetBankAccountResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetBankAccountResponse>, I>>(object: I): GetBankAccountResponse {
     const message = createBaseGetBankAccountResponse();
     message.bankAccount = (object.bankAccount !== undefined && object.bankAccount !== null)
@@ -1662,9 +1649,8 @@ export const DeleteBankAccountRequest = {
   },
 
   create<I extends Exact<DeepPartial<DeleteBankAccountRequest>, I>>(base?: I): DeleteBankAccountRequest {
-    return DeleteBankAccountRequest.fromPartial(base ?? {});
+    return DeleteBankAccountRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<DeleteBankAccountRequest>, I>>(object: I): DeleteBankAccountRequest {
     const message = createBaseDeleteBankAccountRequest();
     message.userId = object.userId ?? 0;
@@ -1721,9 +1707,8 @@ export const DeleteBankAccountResponse = {
   },
 
   create<I extends Exact<DeepPartial<DeleteBankAccountResponse>, I>>(base?: I): DeleteBankAccountResponse {
-    return DeleteBankAccountResponse.fromPartial(base ?? {});
+    return DeleteBankAccountResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<DeleteBankAccountResponse>, I>>(object: I): DeleteBankAccountResponse {
     const message = createBaseDeleteBankAccountResponse();
     message.deleted = object.deleted ?? false;
@@ -1779,9 +1764,8 @@ export const UpdateBankAccountRequest = {
   },
 
   create<I extends Exact<DeepPartial<UpdateBankAccountRequest>, I>>(base?: I): UpdateBankAccountRequest {
-    return UpdateBankAccountRequest.fromPartial(base ?? {});
+    return UpdateBankAccountRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<UpdateBankAccountRequest>, I>>(object: I): UpdateBankAccountRequest {
     const message = createBaseUpdateBankAccountRequest();
     message.bankAccount = (object.bankAccount !== undefined && object.bankAccount !== null)
@@ -1855,9 +1839,8 @@ export const UpdateBankAccountResponse = {
   },
 
   create<I extends Exact<DeepPartial<UpdateBankAccountResponse>, I>>(base?: I): UpdateBankAccountResponse {
-    return UpdateBankAccountResponse.fromPartial(base ?? {});
+    return UpdateBankAccountResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<UpdateBankAccountResponse>, I>>(object: I): UpdateBankAccountResponse {
     const message = createBaseUpdateBankAccountResponse();
     message.updated = object.updated ?? false;
@@ -1916,9 +1899,8 @@ export const GetPocketRequest = {
   },
 
   create<I extends Exact<DeepPartial<GetPocketRequest>, I>>(base?: I): GetPocketRequest {
-    return GetPocketRequest.fromPartial(base ?? {});
+    return GetPocketRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetPocketRequest>, I>>(object: I): GetPocketRequest {
     const message = createBaseGetPocketRequest();
     message.pocketId = object.pocketId ?? 0;
@@ -1974,9 +1956,8 @@ export const GetPocketResponse = {
   },
 
   create<I extends Exact<DeepPartial<GetPocketResponse>, I>>(base?: I): GetPocketResponse {
-    return GetPocketResponse.fromPartial(base ?? {});
+    return GetPocketResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetPocketResponse>, I>>(object: I): GetPocketResponse {
     const message = createBaseGetPocketResponse();
     message.pocket = (object.pocket !== undefined && object.pocket !== null)
@@ -2034,9 +2015,8 @@ export const GetSmartGoalsByPocketIdRequest = {
   },
 
   create<I extends Exact<DeepPartial<GetSmartGoalsByPocketIdRequest>, I>>(base?: I): GetSmartGoalsByPocketIdRequest {
-    return GetSmartGoalsByPocketIdRequest.fromPartial(base ?? {});
+    return GetSmartGoalsByPocketIdRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetSmartGoalsByPocketIdRequest>, I>>(
     object: I,
   ): GetSmartGoalsByPocketIdRequest {
@@ -2096,9 +2076,8 @@ export const GetSmartGoalsByPocketIdResponse = {
   },
 
   create<I extends Exact<DeepPartial<GetSmartGoalsByPocketIdResponse>, I>>(base?: I): GetSmartGoalsByPocketIdResponse {
-    return GetSmartGoalsByPocketIdResponse.fromPartial(base ?? {});
+    return GetSmartGoalsByPocketIdResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetSmartGoalsByPocketIdResponse>, I>>(
     object: I,
   ): GetSmartGoalsByPocketIdResponse {
@@ -2172,9 +2151,8 @@ export const CreateSmartGoalRequest = {
   },
 
   create<I extends Exact<DeepPartial<CreateSmartGoalRequest>, I>>(base?: I): CreateSmartGoalRequest {
-    return CreateSmartGoalRequest.fromPartial(base ?? {});
+    return CreateSmartGoalRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<CreateSmartGoalRequest>, I>>(object: I): CreateSmartGoalRequest {
     const message = createBaseCreateSmartGoalRequest();
     message.pocketId = object.pocketId ?? 0;
@@ -2233,9 +2211,8 @@ export const CreateSmartGoalResponse = {
   },
 
   create<I extends Exact<DeepPartial<CreateSmartGoalResponse>, I>>(base?: I): CreateSmartGoalResponse {
-    return CreateSmartGoalResponse.fromPartial(base ?? {});
+    return CreateSmartGoalResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<CreateSmartGoalResponse>, I>>(object: I): CreateSmartGoalResponse {
     const message = createBaseCreateSmartGoalResponse();
     message.smartGoalId = object.smartGoalId ?? 0;
@@ -2291,9 +2268,8 @@ export const UpdateSmartGoalRequest = {
   },
 
   create<I extends Exact<DeepPartial<UpdateSmartGoalRequest>, I>>(base?: I): UpdateSmartGoalRequest {
-    return UpdateSmartGoalRequest.fromPartial(base ?? {});
+    return UpdateSmartGoalRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<UpdateSmartGoalRequest>, I>>(object: I): UpdateSmartGoalRequest {
     const message = createBaseUpdateSmartGoalRequest();
     message.smartGoal = (object.smartGoal !== undefined && object.smartGoal !== null)
@@ -2351,9 +2327,8 @@ export const UpdateSmartGoalResponse = {
   },
 
   create<I extends Exact<DeepPartial<UpdateSmartGoalResponse>, I>>(base?: I): UpdateSmartGoalResponse {
-    return UpdateSmartGoalResponse.fromPartial(base ?? {});
+    return UpdateSmartGoalResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<UpdateSmartGoalResponse>, I>>(object: I): UpdateSmartGoalResponse {
     const message = createBaseUpdateSmartGoalResponse();
     message.smartGoalId = object.smartGoalId ?? 0;
@@ -2409,9 +2384,8 @@ export const DeleteSmartGoalRequest = {
   },
 
   create<I extends Exact<DeepPartial<DeleteSmartGoalRequest>, I>>(base?: I): DeleteSmartGoalRequest {
-    return DeleteSmartGoalRequest.fromPartial(base ?? {});
+    return DeleteSmartGoalRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<DeleteSmartGoalRequest>, I>>(object: I): DeleteSmartGoalRequest {
     const message = createBaseDeleteSmartGoalRequest();
     message.smartGoalId = object.smartGoalId ?? 0;
@@ -2467,9 +2441,8 @@ export const DeleteSmartGoalResponse = {
   },
 
   create<I extends Exact<DeepPartial<DeleteSmartGoalResponse>, I>>(base?: I): DeleteSmartGoalResponse {
-    return DeleteSmartGoalResponse.fromPartial(base ?? {});
+    return DeleteSmartGoalResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<DeleteSmartGoalResponse>, I>>(object: I): DeleteSmartGoalResponse {
     const message = createBaseDeleteSmartGoalResponse();
     message.deleted = object.deleted ?? false;
@@ -2541,9 +2514,8 @@ export const CreateMilestoneRequest = {
   },
 
   create<I extends Exact<DeepPartial<CreateMilestoneRequest>, I>>(base?: I): CreateMilestoneRequest {
-    return CreateMilestoneRequest.fromPartial(base ?? {});
+    return CreateMilestoneRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<CreateMilestoneRequest>, I>>(object: I): CreateMilestoneRequest {
     const message = createBaseCreateMilestoneRequest();
     message.smartGoalId = object.smartGoalId ?? 0;
@@ -2602,9 +2574,8 @@ export const CreateMilestoneResponse = {
   },
 
   create<I extends Exact<DeepPartial<CreateMilestoneResponse>, I>>(base?: I): CreateMilestoneResponse {
-    return CreateMilestoneResponse.fromPartial(base ?? {});
+    return CreateMilestoneResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<CreateMilestoneResponse>, I>>(object: I): CreateMilestoneResponse {
     const message = createBaseCreateMilestoneResponse();
     message.milestoneId = object.milestoneId ?? 0;
@@ -2660,9 +2631,8 @@ export const DeleteMilestoneRequest = {
   },
 
   create<I extends Exact<DeepPartial<DeleteMilestoneRequest>, I>>(base?: I): DeleteMilestoneRequest {
-    return DeleteMilestoneRequest.fromPartial(base ?? {});
+    return DeleteMilestoneRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<DeleteMilestoneRequest>, I>>(object: I): DeleteMilestoneRequest {
     const message = createBaseDeleteMilestoneRequest();
     message.milestoneId = object.milestoneId ?? 0;
@@ -2718,9 +2688,8 @@ export const DeleteMilestoneResponse = {
   },
 
   create<I extends Exact<DeepPartial<DeleteMilestoneResponse>, I>>(base?: I): DeleteMilestoneResponse {
-    return DeleteMilestoneResponse.fromPartial(base ?? {});
+    return DeleteMilestoneResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<DeleteMilestoneResponse>, I>>(object: I): DeleteMilestoneResponse {
     const message = createBaseDeleteMilestoneResponse();
     message.deleted = object.deleted ?? false;
@@ -2776,9 +2745,8 @@ export const UpdateMilestoneRequest = {
   },
 
   create<I extends Exact<DeepPartial<UpdateMilestoneRequest>, I>>(base?: I): UpdateMilestoneRequest {
-    return UpdateMilestoneRequest.fromPartial(base ?? {});
+    return UpdateMilestoneRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<UpdateMilestoneRequest>, I>>(object: I): UpdateMilestoneRequest {
     const message = createBaseUpdateMilestoneRequest();
     message.milestone = (object.milestone !== undefined && object.milestone !== null)
@@ -2836,9 +2804,8 @@ export const UpdateMilestoneResponse = {
   },
 
   create<I extends Exact<DeepPartial<UpdateMilestoneResponse>, I>>(base?: I): UpdateMilestoneResponse {
-    return UpdateMilestoneResponse.fromPartial(base ?? {});
+    return UpdateMilestoneResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<UpdateMilestoneResponse>, I>>(object: I): UpdateMilestoneResponse {
     const message = createBaseUpdateMilestoneResponse();
     message.milestone = (object.milestone !== undefined && object.milestone !== null)
@@ -2898,9 +2865,8 @@ export const GetMilestonesBySmartGoalIdRequest = {
   create<I extends Exact<DeepPartial<GetMilestonesBySmartGoalIdRequest>, I>>(
     base?: I,
   ): GetMilestonesBySmartGoalIdRequest {
-    return GetMilestonesBySmartGoalIdRequest.fromPartial(base ?? {});
+    return GetMilestonesBySmartGoalIdRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetMilestonesBySmartGoalIdRequest>, I>>(
     object: I,
   ): GetMilestonesBySmartGoalIdRequest {
@@ -2962,9 +2928,8 @@ export const GetMilestonesBySmartGoalIdResponse = {
   create<I extends Exact<DeepPartial<GetMilestonesBySmartGoalIdResponse>, I>>(
     base?: I,
   ): GetMilestonesBySmartGoalIdResponse {
-    return GetMilestonesBySmartGoalIdResponse.fromPartial(base ?? {});
+    return GetMilestonesBySmartGoalIdResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetMilestonesBySmartGoalIdResponse>, I>>(
     object: I,
   ): GetMilestonesBySmartGoalIdResponse {
@@ -3022,9 +2987,8 @@ export const GetMilestoneRequest = {
   },
 
   create<I extends Exact<DeepPartial<GetMilestoneRequest>, I>>(base?: I): GetMilestoneRequest {
-    return GetMilestoneRequest.fromPartial(base ?? {});
+    return GetMilestoneRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetMilestoneRequest>, I>>(object: I): GetMilestoneRequest {
     const message = createBaseGetMilestoneRequest();
     message.milestoneId = object.milestoneId ?? 0;
@@ -3080,9 +3044,8 @@ export const GetMilestoneResponse = {
   },
 
   create<I extends Exact<DeepPartial<GetMilestoneResponse>, I>>(base?: I): GetMilestoneResponse {
-    return GetMilestoneResponse.fromPartial(base ?? {});
+    return GetMilestoneResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetMilestoneResponse>, I>>(object: I): GetMilestoneResponse {
     const message = createBaseGetMilestoneResponse();
     message.milestone = (object.milestone !== undefined && object.milestone !== null)
@@ -3140,9 +3103,8 @@ export const GetForecastRequest = {
   },
 
   create<I extends Exact<DeepPartial<GetForecastRequest>, I>>(base?: I): GetForecastRequest {
-    return GetForecastRequest.fromPartial(base ?? {});
+    return GetForecastRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetForecastRequest>, I>>(object: I): GetForecastRequest {
     const message = createBaseGetForecastRequest();
     message.smartGoalId = object.smartGoalId ?? 0;
@@ -3198,9 +3160,8 @@ export const GetForecastResponse = {
   },
 
   create<I extends Exact<DeepPartial<GetForecastResponse>, I>>(base?: I): GetForecastResponse {
-    return GetForecastResponse.fromPartial(base ?? {});
+    return GetForecastResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetForecastResponse>, I>>(object: I): GetForecastResponse {
     const message = createBaseGetForecastResponse();
     message.forecast = (object.forecast !== undefined && object.forecast !== null)
@@ -3274,9 +3235,8 @@ export const CreateBudgetRequest = {
   },
 
   create<I extends Exact<DeepPartial<CreateBudgetRequest>, I>>(base?: I): CreateBudgetRequest {
-    return CreateBudgetRequest.fromPartial(base ?? {});
+    return CreateBudgetRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<CreateBudgetRequest>, I>>(object: I): CreateBudgetRequest {
     const message = createBaseCreateBudgetRequest();
     message.milestroneId = object.milestroneId ?? 0;
@@ -3335,9 +3295,8 @@ export const CreateBudgetResponse = {
   },
 
   create<I extends Exact<DeepPartial<CreateBudgetResponse>, I>>(base?: I): CreateBudgetResponse {
-    return CreateBudgetResponse.fromPartial(base ?? {});
+    return CreateBudgetResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<CreateBudgetResponse>, I>>(object: I): CreateBudgetResponse {
     const message = createBaseCreateBudgetResponse();
     message.budgetId = object.budgetId ?? 0;
@@ -3393,9 +3352,8 @@ export const UpdateBudgetRequest = {
   },
 
   create<I extends Exact<DeepPartial<UpdateBudgetRequest>, I>>(base?: I): UpdateBudgetRequest {
-    return UpdateBudgetRequest.fromPartial(base ?? {});
+    return UpdateBudgetRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<UpdateBudgetRequest>, I>>(object: I): UpdateBudgetRequest {
     const message = createBaseUpdateBudgetRequest();
     message.budget = (object.budget !== undefined && object.budget !== null)
@@ -3453,9 +3411,8 @@ export const UpdateBudgetResponse = {
   },
 
   create<I extends Exact<DeepPartial<UpdateBudgetResponse>, I>>(base?: I): UpdateBudgetResponse {
-    return UpdateBudgetResponse.fromPartial(base ?? {});
+    return UpdateBudgetResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<UpdateBudgetResponse>, I>>(object: I): UpdateBudgetResponse {
     const message = createBaseUpdateBudgetResponse();
     message.budget = (object.budget !== undefined && object.budget !== null)
@@ -3513,9 +3470,8 @@ export const DeleteBudgetRequest = {
   },
 
   create<I extends Exact<DeepPartial<DeleteBudgetRequest>, I>>(base?: I): DeleteBudgetRequest {
-    return DeleteBudgetRequest.fromPartial(base ?? {});
+    return DeleteBudgetRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<DeleteBudgetRequest>, I>>(object: I): DeleteBudgetRequest {
     const message = createBaseDeleteBudgetRequest();
     message.budgetId = object.budgetId ?? 0;
@@ -3571,9 +3527,8 @@ export const DeleteBudgetResponse = {
   },
 
   create<I extends Exact<DeepPartial<DeleteBudgetResponse>, I>>(base?: I): DeleteBudgetResponse {
-    return DeleteBudgetResponse.fromPartial(base ?? {});
+    return DeleteBudgetResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<DeleteBudgetResponse>, I>>(object: I): DeleteBudgetResponse {
     const message = createBaseDeleteBudgetResponse();
     message.deleted = object.deleted ?? false;
@@ -3629,9 +3584,8 @@ export const GetBudgetRequest = {
   },
 
   create<I extends Exact<DeepPartial<GetBudgetRequest>, I>>(base?: I): GetBudgetRequest {
-    return GetBudgetRequest.fromPartial(base ?? {});
+    return GetBudgetRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetBudgetRequest>, I>>(object: I): GetBudgetRequest {
     const message = createBaseGetBudgetRequest();
     message.budgetId = object.budgetId ?? 0;
@@ -3687,9 +3641,8 @@ export const GetBudgetResponse = {
   },
 
   create<I extends Exact<DeepPartial<GetBudgetResponse>, I>>(base?: I): GetBudgetResponse {
-    return GetBudgetResponse.fromPartial(base ?? {});
+    return GetBudgetResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetBudgetResponse>, I>>(object: I): GetBudgetResponse {
     const message = createBaseGetBudgetResponse();
     message.budget = (object.budget !== undefined && object.budget !== null)
@@ -3777,9 +3730,8 @@ export const GetAllBudgetsRequest = {
   },
 
   create<I extends Exact<DeepPartial<GetAllBudgetsRequest>, I>>(base?: I): GetAllBudgetsRequest {
-    return GetAllBudgetsRequest.fromPartial(base ?? {});
+    return GetAllBudgetsRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetAllBudgetsRequest>, I>>(object: I): GetAllBudgetsRequest {
     const message = createBaseGetAllBudgetsRequest();
     message.pocketId = object.pocketId ?? 0;
@@ -3837,9 +3789,8 @@ export const GetAllBudgetsResponse = {
   },
 
   create<I extends Exact<DeepPartial<GetAllBudgetsResponse>, I>>(base?: I): GetAllBudgetsResponse {
-    return GetAllBudgetsResponse.fromPartial(base ?? {});
+    return GetAllBudgetsResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetAllBudgetsResponse>, I>>(object: I): GetAllBudgetsResponse {
     const message = createBaseGetAllBudgetsResponse();
     message.budgets = object.budgets?.map((e) => Budget.fromPartial(e)) || [];
@@ -3882,9 +3833,8 @@ export const HealthCheckRequest = {
   },
 
   create<I extends Exact<DeepPartial<HealthCheckRequest>, I>>(base?: I): HealthCheckRequest {
-    return HealthCheckRequest.fromPartial(base ?? {});
+    return HealthCheckRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<HealthCheckRequest>, I>>(_: I): HealthCheckRequest {
     const message = createBaseHealthCheckRequest();
     return message;
@@ -3939,9 +3889,8 @@ export const HealthCheckResponse = {
   },
 
   create<I extends Exact<DeepPartial<HealthCheckResponse>, I>>(base?: I): HealthCheckResponse {
-    return HealthCheckResponse.fromPartial(base ?? {});
+    return HealthCheckResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<HealthCheckResponse>, I>>(object: I): HealthCheckResponse {
     const message = createBaseHealthCheckResponse();
     message.healthy = object.healthy ?? false;
@@ -3984,9 +3933,8 @@ export const ReadynessCheckRequest = {
   },
 
   create<I extends Exact<DeepPartial<ReadynessCheckRequest>, I>>(base?: I): ReadynessCheckRequest {
-    return ReadynessCheckRequest.fromPartial(base ?? {});
+    return ReadynessCheckRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<ReadynessCheckRequest>, I>>(_: I): ReadynessCheckRequest {
     const message = createBaseReadynessCheckRequest();
     return message;
@@ -4041,9 +3989,8 @@ export const ReadynessCheckResponse = {
   },
 
   create<I extends Exact<DeepPartial<ReadynessCheckResponse>, I>>(base?: I): ReadynessCheckResponse {
-    return ReadynessCheckResponse.fromPartial(base ?? {});
+    return ReadynessCheckResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<ReadynessCheckResponse>, I>>(object: I): ReadynessCheckResponse {
     const message = createBaseReadynessCheckResponse();
     message.healthy = object.healthy ?? false;
@@ -4145,9 +4092,8 @@ export const PlaidInitiateTokenExchangeRequest = {
   create<I extends Exact<DeepPartial<PlaidInitiateTokenExchangeRequest>, I>>(
     base?: I,
   ): PlaidInitiateTokenExchangeRequest {
-    return PlaidInitiateTokenExchangeRequest.fromPartial(base ?? {});
+    return PlaidInitiateTokenExchangeRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<PlaidInitiateTokenExchangeRequest>, I>>(
     object: I,
   ): PlaidInitiateTokenExchangeRequest {
@@ -4240,9 +4186,8 @@ export const PlaidInitiateTokenExchangeResponse = {
   create<I extends Exact<DeepPartial<PlaidInitiateTokenExchangeResponse>, I>>(
     base?: I,
   ): PlaidInitiateTokenExchangeResponse {
-    return PlaidInitiateTokenExchangeResponse.fromPartial(base ?? {});
+    return PlaidInitiateTokenExchangeResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<PlaidInitiateTokenExchangeResponse>, I>>(
     object: I,
   ): PlaidInitiateTokenExchangeResponse {
@@ -4318,9 +4263,8 @@ export const PlaidInitiateTokenUpdateRequest = {
   },
 
   create<I extends Exact<DeepPartial<PlaidInitiateTokenUpdateRequest>, I>>(base?: I): PlaidInitiateTokenUpdateRequest {
-    return PlaidInitiateTokenUpdateRequest.fromPartial(base ?? {});
+    return PlaidInitiateTokenUpdateRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<PlaidInitiateTokenUpdateRequest>, I>>(
     object: I,
   ): PlaidInitiateTokenUpdateRequest {
@@ -4397,9 +4341,8 @@ export const PlaidInitiateTokenUpdateResponse = {
   create<I extends Exact<DeepPartial<PlaidInitiateTokenUpdateResponse>, I>>(
     base?: I,
   ): PlaidInitiateTokenUpdateResponse {
-    return PlaidInitiateTokenUpdateResponse.fromPartial(base ?? {});
+    return PlaidInitiateTokenUpdateResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<PlaidInitiateTokenUpdateResponse>, I>>(
     object: I,
   ): PlaidInitiateTokenUpdateResponse {
@@ -4502,9 +4445,8 @@ export const PlaidExchangeTokenRequest = {
   },
 
   create<I extends Exact<DeepPartial<PlaidExchangeTokenRequest>, I>>(base?: I): PlaidExchangeTokenRequest {
-    return PlaidExchangeTokenRequest.fromPartial(base ?? {});
+    return PlaidExchangeTokenRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<PlaidExchangeTokenRequest>, I>>(object: I): PlaidExchangeTokenRequest {
     const message = createBasePlaidExchangeTokenRequest();
     message.userId = object.userId ?? 0;
@@ -4563,9 +4505,8 @@ export const PlaidExchangeTokenResponse = {
   },
 
   create<I extends Exact<DeepPartial<PlaidExchangeTokenResponse>, I>>(base?: I): PlaidExchangeTokenResponse {
-    return PlaidExchangeTokenResponse.fromPartial(base ?? {});
+    return PlaidExchangeTokenResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<PlaidExchangeTokenResponse>, I>>(object: I): PlaidExchangeTokenResponse {
     const message = createBasePlaidExchangeTokenResponse();
     message.success = object.success ?? false;
@@ -4637,9 +4578,8 @@ export const GetInvestmentAcccountRequest = {
   },
 
   create<I extends Exact<DeepPartial<GetInvestmentAcccountRequest>, I>>(base?: I): GetInvestmentAcccountRequest {
-    return GetInvestmentAcccountRequest.fromPartial(base ?? {});
+    return GetInvestmentAcccountRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetInvestmentAcccountRequest>, I>>(object: I): GetInvestmentAcccountRequest {
     const message = createBaseGetInvestmentAcccountRequest();
     message.userId = object.userId ?? 0;
@@ -4700,9 +4640,8 @@ export const GetInvestmentAcccountResponse = {
   },
 
   create<I extends Exact<DeepPartial<GetInvestmentAcccountResponse>, I>>(base?: I): GetInvestmentAcccountResponse {
-    return GetInvestmentAcccountResponse.fromPartial(base ?? {});
+    return GetInvestmentAcccountResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetInvestmentAcccountResponse>, I>>(
     object: I,
   ): GetInvestmentAcccountResponse {
@@ -4778,9 +4717,8 @@ export const GetMortgageAccountRequest = {
   },
 
   create<I extends Exact<DeepPartial<GetMortgageAccountRequest>, I>>(base?: I): GetMortgageAccountRequest {
-    return GetMortgageAccountRequest.fromPartial(base ?? {});
+    return GetMortgageAccountRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetMortgageAccountRequest>, I>>(object: I): GetMortgageAccountRequest {
     const message = createBaseGetMortgageAccountRequest();
     message.userId = object.userId ?? 0;
@@ -4839,9 +4777,8 @@ export const GetMortgageAccountResponse = {
   },
 
   create<I extends Exact<DeepPartial<GetMortgageAccountResponse>, I>>(base?: I): GetMortgageAccountResponse {
-    return GetMortgageAccountResponse.fromPartial(base ?? {});
+    return GetMortgageAccountResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetMortgageAccountResponse>, I>>(object: I): GetMortgageAccountResponse {
     const message = createBaseGetMortgageAccountResponse();
     message.mortageAccount = (object.mortageAccount !== undefined && object.mortageAccount !== null)
@@ -4915,9 +4852,8 @@ export const GetLiabilityAccountRequest = {
   },
 
   create<I extends Exact<DeepPartial<GetLiabilityAccountRequest>, I>>(base?: I): GetLiabilityAccountRequest {
-    return GetLiabilityAccountRequest.fromPartial(base ?? {});
+    return GetLiabilityAccountRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetLiabilityAccountRequest>, I>>(object: I): GetLiabilityAccountRequest {
     const message = createBaseGetLiabilityAccountRequest();
     message.userId = object.userId ?? 0;
@@ -4976,9 +4912,8 @@ export const GetLiabilityAccountResponse = {
   },
 
   create<I extends Exact<DeepPartial<GetLiabilityAccountResponse>, I>>(base?: I): GetLiabilityAccountResponse {
-    return GetLiabilityAccountResponse.fromPartial(base ?? {});
+    return GetLiabilityAccountResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetLiabilityAccountResponse>, I>>(object: I): GetLiabilityAccountResponse {
     const message = createBaseGetLiabilityAccountResponse();
     message.liabilityAccount = (object.liabilityAccount !== undefined && object.liabilityAccount !== null)
@@ -5052,9 +4987,8 @@ export const GetStudentLoanAccountRequest = {
   },
 
   create<I extends Exact<DeepPartial<GetStudentLoanAccountRequest>, I>>(base?: I): GetStudentLoanAccountRequest {
-    return GetStudentLoanAccountRequest.fromPartial(base ?? {});
+    return GetStudentLoanAccountRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetStudentLoanAccountRequest>, I>>(object: I): GetStudentLoanAccountRequest {
     const message = createBaseGetStudentLoanAccountRequest();
     message.userId = object.userId ?? 0;
@@ -5115,9 +5049,8 @@ export const GetStudentLoanAccountResponse = {
   },
 
   create<I extends Exact<DeepPartial<GetStudentLoanAccountResponse>, I>>(base?: I): GetStudentLoanAccountResponse {
-    return GetStudentLoanAccountResponse.fromPartial(base ?? {});
+    return GetStudentLoanAccountResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetStudentLoanAccountResponse>, I>>(
     object: I,
   ): GetStudentLoanAccountResponse {
@@ -5193,9 +5126,8 @@ export const CreateManualLinkRequest = {
   },
 
   create<I extends Exact<DeepPartial<CreateManualLinkRequest>, I>>(base?: I): CreateManualLinkRequest {
-    return CreateManualLinkRequest.fromPartial(base ?? {});
+    return CreateManualLinkRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<CreateManualLinkRequest>, I>>(object: I): CreateManualLinkRequest {
     const message = createBaseCreateManualLinkRequest();
     message.userId = object.userId ?? 0;
@@ -5254,9 +5186,8 @@ export const CreateManualLinkResponse = {
   },
 
   create<I extends Exact<DeepPartial<CreateManualLinkResponse>, I>>(base?: I): CreateManualLinkResponse {
-    return CreateManualLinkResponse.fromPartial(base ?? {});
+    return CreateManualLinkResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<CreateManualLinkResponse>, I>>(object: I): CreateManualLinkResponse {
     const message = createBaseCreateManualLinkResponse();
     message.linkId = object.linkId ?? 0;
@@ -5328,9 +5259,8 @@ export const GetLinkRequest = {
   },
 
   create<I extends Exact<DeepPartial<GetLinkRequest>, I>>(base?: I): GetLinkRequest {
-    return GetLinkRequest.fromPartial(base ?? {});
+    return GetLinkRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetLinkRequest>, I>>(object: I): GetLinkRequest {
     const message = createBaseGetLinkRequest();
     message.userId = object.userId ?? 0;
@@ -5387,9 +5317,8 @@ export const GetLinkResponse = {
   },
 
   create<I extends Exact<DeepPartial<GetLinkResponse>, I>>(base?: I): GetLinkResponse {
-    return GetLinkResponse.fromPartial(base ?? {});
+    return GetLinkResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetLinkResponse>, I>>(object: I): GetLinkResponse {
     const message = createBaseGetLinkResponse();
     message.link = (object.link !== undefined && object.link !== null) ? Link.fromPartial(object.link) : undefined;
@@ -5445,9 +5374,8 @@ export const GetLinksRequest = {
   },
 
   create<I extends Exact<DeepPartial<GetLinksRequest>, I>>(base?: I): GetLinksRequest {
-    return GetLinksRequest.fromPartial(base ?? {});
+    return GetLinksRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetLinksRequest>, I>>(object: I): GetLinksRequest {
     const message = createBaseGetLinksRequest();
     message.userId = object.userId ?? 0;
@@ -5503,9 +5431,8 @@ export const GetLinksResponse = {
   },
 
   create<I extends Exact<DeepPartial<GetLinksResponse>, I>>(base?: I): GetLinksResponse {
-    return GetLinksResponse.fromPartial(base ?? {});
+    return GetLinksResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetLinksResponse>, I>>(object: I): GetLinksResponse {
     const message = createBaseGetLinksResponse();
     message.links = object.links?.map((e) => Link.fromPartial(e)) || [];
@@ -5577,9 +5504,8 @@ export const DeleteLinkRequest = {
   },
 
   create<I extends Exact<DeepPartial<DeleteLinkRequest>, I>>(base?: I): DeleteLinkRequest {
-    return DeleteLinkRequest.fromPartial(base ?? {});
+    return DeleteLinkRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<DeleteLinkRequest>, I>>(object: I): DeleteLinkRequest {
     const message = createBaseDeleteLinkRequest();
     message.userId = object.userId ?? 0;
@@ -5636,9 +5562,8 @@ export const DeleteLinkResponse = {
   },
 
   create<I extends Exact<DeepPartial<DeleteLinkResponse>, I>>(base?: I): DeleteLinkResponse {
-    return DeleteLinkResponse.fromPartial(base ?? {});
+    return DeleteLinkResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<DeleteLinkResponse>, I>>(object: I): DeleteLinkResponse {
     const message = createBaseDeleteLinkResponse();
     message.linkId = object.linkId ?? 0;
@@ -5694,9 +5619,8 @@ export const GetReCurringTransactionsRequest = {
   },
 
   create<I extends Exact<DeepPartial<GetReCurringTransactionsRequest>, I>>(base?: I): GetReCurringTransactionsRequest {
-    return GetReCurringTransactionsRequest.fromPartial(base ?? {});
+    return GetReCurringTransactionsRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetReCurringTransactionsRequest>, I>>(
     object: I,
   ): GetReCurringTransactionsRequest {
@@ -5707,16 +5631,13 @@ export const GetReCurringTransactionsRequest = {
 };
 
 function createBaseGetReCurringTransactionsResponse(): GetReCurringTransactionsResponse {
-  return { reCcuringTransactions: [], participantReCcuringTransactions: [] };
+  return { reCcuringTransactions: [] };
 }
 
 export const GetReCurringTransactionsResponse = {
   encode(message: GetReCurringTransactionsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.reCcuringTransactions) {
       ReOccuringTransaction.encode(v!, writer.uint32(10).fork()).ldelim();
-    }
-    for (const v of message.participantReCcuringTransactions) {
-      GetReCurringTransactionsResponse_ParticipantReCurringTransactions.encode(v!, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -5735,15 +5656,6 @@ export const GetReCurringTransactionsResponse = {
 
           message.reCcuringTransactions.push(ReOccuringTransaction.decode(reader, reader.uint32()));
           continue;
-        case 2:
-          if (tag !== 18) {
-            break;
-          }
-
-          message.participantReCcuringTransactions.push(
-            GetReCurringTransactionsResponse_ParticipantReCurringTransactions.decode(reader, reader.uint32()),
-          );
-          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -5758,11 +5670,6 @@ export const GetReCurringTransactionsResponse = {
       reCcuringTransactions: Array.isArray(object?.reCcuringTransactions)
         ? object.reCcuringTransactions.map((e: any) => ReOccuringTransaction.fromJSON(e))
         : [],
-      participantReCcuringTransactions: Array.isArray(object?.participantReCcuringTransactions)
-        ? object.participantReCcuringTransactions.map((e: any) =>
-          GetReCurringTransactionsResponse_ParticipantReCurringTransactions.fromJSON(e)
-        )
-        : [],
     };
   },
 
@@ -5771,30 +5678,20 @@ export const GetReCurringTransactionsResponse = {
     if (message.reCcuringTransactions?.length) {
       obj.reCcuringTransactions = message.reCcuringTransactions.map((e) => ReOccuringTransaction.toJSON(e));
     }
-    if (message.participantReCcuringTransactions?.length) {
-      obj.participantReCcuringTransactions = message.participantReCcuringTransactions.map((e) =>
-        GetReCurringTransactionsResponse_ParticipantReCurringTransactions.toJSON(e)
-      );
-    }
     return obj;
   },
 
   create<I extends Exact<DeepPartial<GetReCurringTransactionsResponse>, I>>(
     base?: I,
   ): GetReCurringTransactionsResponse {
-    return GetReCurringTransactionsResponse.fromPartial(base ?? {});
+    return GetReCurringTransactionsResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetReCurringTransactionsResponse>, I>>(
     object: I,
   ): GetReCurringTransactionsResponse {
     const message = createBaseGetReCurringTransactionsResponse();
     message.reCcuringTransactions = object.reCcuringTransactions?.map((e) => ReOccuringTransaction.fromPartial(e)) ||
       [];
-    message.participantReCcuringTransactions =
-      object.participantReCcuringTransactions?.map((e) =>
-        GetReCurringTransactionsResponse_ParticipantReCurringTransactions.fromPartial(e)
-      ) || [];
     return message;
   },
 };
@@ -5873,9 +5770,8 @@ export const GetReCurringTransactionsResponse_ParticipantReCurringTransactions =
   create<I extends Exact<DeepPartial<GetReCurringTransactionsResponse_ParticipantReCurringTransactions>, I>>(
     base?: I,
   ): GetReCurringTransactionsResponse_ParticipantReCurringTransactions {
-    return GetReCurringTransactionsResponse_ParticipantReCurringTransactions.fromPartial(base ?? {});
+    return GetReCurringTransactionsResponse_ParticipantReCurringTransactions.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetReCurringTransactionsResponse_ParticipantReCurringTransactions>, I>>(
     object: I,
   ): GetReCurringTransactionsResponse_ParticipantReCurringTransactions {
@@ -5964,9 +5860,8 @@ export const GetTransactionsRequest = {
   },
 
   create<I extends Exact<DeepPartial<GetTransactionsRequest>, I>>(base?: I): GetTransactionsRequest {
-    return GetTransactionsRequest.fromPartial(base ?? {});
+    return GetTransactionsRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetTransactionsRequest>, I>>(object: I): GetTransactionsRequest {
     const message = createBaseGetTransactionsRequest();
     message.userId = object.userId ?? 0;
@@ -6042,9 +5937,8 @@ export const GetTransactionsResponse = {
   },
 
   create<I extends Exact<DeepPartial<GetTransactionsResponse>, I>>(base?: I): GetTransactionsResponse {
-    return GetTransactionsResponse.fromPartial(base ?? {});
+    return GetTransactionsResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetTransactionsResponse>, I>>(object: I): GetTransactionsResponse {
     const message = createBaseGetTransactionsResponse();
     message.transactions = object.transactions?.map((e) => Transaction.fromPartial(e)) || [];
@@ -6335,9 +6229,8 @@ export const ProcessWebhookRequest = {
   },
 
   create<I extends Exact<DeepPartial<ProcessWebhookRequest>, I>>(base?: I): ProcessWebhookRequest {
-    return ProcessWebhookRequest.fromPartial(base ?? {});
+    return ProcessWebhookRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<ProcessWebhookRequest>, I>>(object: I): ProcessWebhookRequest {
     const message = createBaseProcessWebhookRequest();
     message.webhookType = object.webhookType ?? "";
@@ -6430,9 +6323,8 @@ export const ProcessWebhookRequest_ErrorEntry = {
   create<I extends Exact<DeepPartial<ProcessWebhookRequest_ErrorEntry>, I>>(
     base?: I,
   ): ProcessWebhookRequest_ErrorEntry {
-    return ProcessWebhookRequest_ErrorEntry.fromPartial(base ?? {});
+    return ProcessWebhookRequest_ErrorEntry.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<ProcessWebhookRequest_ErrorEntry>, I>>(
     object: I,
   ): ProcessWebhookRequest_ErrorEntry {
@@ -6478,9 +6370,8 @@ export const ProcessWebhookResponse = {
   },
 
   create<I extends Exact<DeepPartial<ProcessWebhookResponse>, I>>(base?: I): ProcessWebhookResponse {
-    return ProcessWebhookResponse.fromPartial(base ?? {});
+    return ProcessWebhookResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<ProcessWebhookResponse>, I>>(_: I): ProcessWebhookResponse {
     const message = createBaseProcessWebhookResponse();
     return message;
@@ -6551,9 +6442,8 @@ export const StripeWebhookRequest = {
   },
 
   create<I extends Exact<DeepPartial<StripeWebhookRequest>, I>>(base?: I): StripeWebhookRequest {
-    return StripeWebhookRequest.fromPartial(base ?? {});
+    return StripeWebhookRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<StripeWebhookRequest>, I>>(object: I): StripeWebhookRequest {
     const message = createBaseStripeWebhookRequest();
     message.body = object.body ?? "";
@@ -6610,9 +6500,8 @@ export const StripeWebhookResponse = {
   },
 
   create<I extends Exact<DeepPartial<StripeWebhookResponse>, I>>(base?: I): StripeWebhookResponse {
-    return StripeWebhookResponse.fromPartial(base ?? {});
+    return StripeWebhookResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<StripeWebhookResponse>, I>>(object: I): StripeWebhookResponse {
     const message = createBaseStripeWebhookResponse();
     message.message = object.message ?? "";
@@ -6684,9 +6573,8 @@ export const CreateSubscriptionRequest = {
   },
 
   create<I extends Exact<DeepPartial<CreateSubscriptionRequest>, I>>(base?: I): CreateSubscriptionRequest {
-    return CreateSubscriptionRequest.fromPartial(base ?? {});
+    return CreateSubscriptionRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<CreateSubscriptionRequest>, I>>(object: I): CreateSubscriptionRequest {
     const message = createBaseCreateSubscriptionRequest();
     message.userId = object.userId ?? 0;
@@ -6761,9 +6649,8 @@ export const CreateSubscriptionResponse = {
   },
 
   create<I extends Exact<DeepPartial<CreateSubscriptionResponse>, I>>(base?: I): CreateSubscriptionResponse {
-    return CreateSubscriptionResponse.fromPartial(base ?? {});
+    return CreateSubscriptionResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<CreateSubscriptionResponse>, I>>(object: I): CreateSubscriptionResponse {
     const message = createBaseCreateSubscriptionResponse();
     message.subscriptionId = object.subscriptionId ?? "";
@@ -6866,9 +6753,8 @@ export const GetTransactionsForBankAccountRequest = {
   create<I extends Exact<DeepPartial<GetTransactionsForBankAccountRequest>, I>>(
     base?: I,
   ): GetTransactionsForBankAccountRequest {
-    return GetTransactionsForBankAccountRequest.fromPartial(base ?? {});
+    return GetTransactionsForBankAccountRequest.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetTransactionsForBankAccountRequest>, I>>(
     object: I,
   ): GetTransactionsForBankAccountRequest {
@@ -6949,9 +6835,8 @@ export const GetTransactionsForBankAccountResponse = {
   create<I extends Exact<DeepPartial<GetTransactionsForBankAccountResponse>, I>>(
     base?: I,
   ): GetTransactionsForBankAccountResponse {
-    return GetTransactionsForBankAccountResponse.fromPartial(base ?? {});
+    return GetTransactionsForBankAccountResponse.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<GetTransactionsForBankAccountResponse>, I>>(
     object: I,
   ): GetTransactionsForBankAccountResponse {

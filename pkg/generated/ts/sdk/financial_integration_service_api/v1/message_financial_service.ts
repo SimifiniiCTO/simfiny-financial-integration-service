@@ -1105,9 +1105,8 @@ export const StripeSubscription = {
   },
 
   create<I extends Exact<DeepPartial<StripeSubscription>, I>>(base?: I): StripeSubscription {
-    return StripeSubscription.fromPartial(base ?? {});
+    return StripeSubscription.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<StripeSubscription>, I>>(object: I): StripeSubscription {
     const message = createBaseStripeSubscription();
     message.id = object.id ?? 0;
@@ -1244,9 +1243,8 @@ export const UserProfile = {
   },
 
   create<I extends Exact<DeepPartial<UserProfile>, I>>(base?: I): UserProfile {
-    return UserProfile.fromPartial(base ?? {});
+    return UserProfile.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<UserProfile>, I>>(object: I): UserProfile {
     const message = createBaseUserProfile();
     message.id = object.id ?? 0;
@@ -1367,9 +1365,8 @@ export const ActionableInsight = {
   },
 
   create<I extends Exact<DeepPartial<ActionableInsight>, I>>(base?: I): ActionableInsight {
-    return ActionableInsight.fromPartial(base ?? {});
+    return ActionableInsight.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<ActionableInsight>, I>>(object: I): ActionableInsight {
     const message = createBaseActionableInsight();
     message.id = object.id ?? 0;
@@ -1775,9 +1772,8 @@ export const Link = {
   },
 
   create<I extends Exact<DeepPartial<Link>, I>>(base?: I): Link {
-    return Link.fromPartial(base ?? {});
+    return Link.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<Link>, I>>(object: I): Link {
     const message = createBaseLink();
     message.id = object.id ?? 0;
@@ -1945,9 +1941,8 @@ export const PlaidSync = {
   },
 
   create<I extends Exact<DeepPartial<PlaidSync>, I>>(base?: I): PlaidSync {
-    return PlaidSync.fromPartial(base ?? {});
+    return PlaidSync.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<PlaidSync>, I>>(object: I): PlaidSync {
     const message = createBasePlaidSync();
     message.id = object.id ?? 0;
@@ -2067,9 +2062,8 @@ export const Token = {
   },
 
   create<I extends Exact<DeepPartial<Token>, I>>(base?: I): Token {
-    return Token.fromPartial(base ?? {});
+    return Token.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<Token>, I>>(object: I): Token {
     const message = createBaseToken();
     message.id = object.id ?? 0;
@@ -2223,9 +2217,8 @@ export const PlaidLink = {
   },
 
   create<I extends Exact<DeepPartial<PlaidLink>, I>>(base?: I): PlaidLink {
-    return PlaidLink.fromPartial(base ?? {});
+    return PlaidLink.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<PlaidLink>, I>>(object: I): PlaidLink {
     const message = createBasePlaidLink();
     message.id = object.id ?? 0;
@@ -2811,9 +2804,8 @@ export const StudentLoanAccount = {
   },
 
   create<I extends Exact<DeepPartial<StudentLoanAccount>, I>>(base?: I): StudentLoanAccount {
-    return StudentLoanAccount.fromPartial(base ?? {});
+    return StudentLoanAccount.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<StudentLoanAccount>, I>>(object: I): StudentLoanAccount {
     const message = createBaseStudentLoanAccount();
     message.id = object.id ?? 0;
@@ -3192,9 +3184,8 @@ export const CreditAccount = {
   },
 
   create<I extends Exact<DeepPartial<CreditAccount>, I>>(base?: I): CreditAccount {
-    return CreditAccount.fromPartial(base ?? {});
+    return CreditAccount.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<CreditAccount>, I>>(object: I): CreditAccount {
     const message = createBaseCreditAccount();
     message.id = object.id ?? 0;
@@ -3744,9 +3735,8 @@ export const MortgageAccount = {
   },
 
   create<I extends Exact<DeepPartial<MortgageAccount>, I>>(base?: I): MortgageAccount {
-    return MortgageAccount.fromPartial(base ?? {});
+    return MortgageAccount.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<MortgageAccount>, I>>(object: I): MortgageAccount {
     const message = createBaseMortgageAccount();
     message.id = object.id ?? 0;
@@ -4004,9 +3994,8 @@ export const InvestmentAccount = {
   },
 
   create<I extends Exact<DeepPartial<InvestmentAccount>, I>>(base?: I): InvestmentAccount {
-    return InvestmentAccount.fromPartial(base ?? {});
+    return InvestmentAccount.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<InvestmentAccount>, I>>(object: I): InvestmentAccount {
     const message = createBaseInvestmentAccount();
     message.id = object.id ?? 0;
@@ -4257,9 +4246,8 @@ export const BankAccount = {
   },
 
   create<I extends Exact<DeepPartial<BankAccount>, I>>(base?: I): BankAccount {
-    return BankAccount.fromPartial(base ?? {});
+    return BankAccount.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<BankAccount>, I>>(object: I): BankAccount {
     const message = createBaseBankAccount();
     message.id = object.id ?? 0;
@@ -4357,9 +4345,8 @@ export const Pocket = {
   },
 
   create<I extends Exact<DeepPartial<Pocket>, I>>(base?: I): Pocket {
-    return Pocket.fromPartial(base ?? {});
+    return Pocket.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<Pocket>, I>>(object: I): Pocket {
     const message = createBasePocket();
     message.id = object.id ?? 0;
@@ -4601,9 +4588,8 @@ export const SmartGoal = {
   },
 
   create<I extends Exact<DeepPartial<SmartGoal>, I>>(base?: I): SmartGoal {
-    return SmartGoal.fromPartial(base ?? {});
+    return SmartGoal.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<SmartGoal>, I>>(object: I): SmartGoal {
     const message = createBaseSmartGoal();
     message.id = object.id ?? 0;
@@ -4717,9 +4703,8 @@ export const Forecast = {
   },
 
   create<I extends Exact<DeepPartial<Forecast>, I>>(base?: I): Forecast {
-    return Forecast.fromPartial(base ?? {});
+    return Forecast.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<Forecast>, I>>(object: I): Forecast {
     const message = createBaseForecast();
     message.id = object.id ?? 0;
@@ -4864,9 +4849,8 @@ export const Milestone = {
   },
 
   create<I extends Exact<DeepPartial<Milestone>, I>>(base?: I): Milestone {
-    return Milestone.fromPartial(base ?? {});
+    return Milestone.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<Milestone>, I>>(object: I): Milestone {
     const message = createBaseMilestone();
     message.id = object.id ?? 0;
@@ -5002,9 +4986,8 @@ export const Budget = {
   },
 
   create<I extends Exact<DeepPartial<Budget>, I>>(base?: I): Budget {
-    return Budget.fromPartial(base ?? {});
+    return Budget.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<Budget>, I>>(object: I): Budget {
     const message = createBaseBudget();
     message.id = object.id ?? 0;
@@ -5111,9 +5094,8 @@ export const Category = {
   },
 
   create<I extends Exact<DeepPartial<Category>, I>>(base?: I): Category {
-    return Category.fromPartial(base ?? {});
+    return Category.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<Category>, I>>(object: I): Category {
     const message = createBaseCategory();
     message.id = object.id ?? 0;
@@ -5341,9 +5323,8 @@ export const InvesmentHolding = {
   },
 
   create<I extends Exact<DeepPartial<InvesmentHolding>, I>>(base?: I): InvesmentHolding {
-    return InvesmentHolding.fromPartial(base ?? {});
+    return InvesmentHolding.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<InvesmentHolding>, I>>(object: I): InvesmentHolding {
     const message = createBaseInvesmentHolding();
     message.id = object.id ?? 0;
@@ -5654,9 +5635,8 @@ export const InvestmentSecurity = {
   },
 
   create<I extends Exact<DeepPartial<InvestmentSecurity>, I>>(base?: I): InvestmentSecurity {
-    return InvestmentSecurity.fromPartial(base ?? {});
+    return InvestmentSecurity.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<InvestmentSecurity>, I>>(object: I): InvestmentSecurity {
     const message = createBaseInvestmentSecurity();
     message.id = object.id ?? 0;
@@ -5786,9 +5766,8 @@ export const Apr = {
   },
 
   create<I extends Exact<DeepPartial<Apr>, I>>(base?: I): Apr {
-    return Apr.fromPartial(base ?? {});
+    return Apr.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<Apr>, I>>(object: I): Apr {
     const message = createBaseApr();
     message.id = object.id ?? 0;

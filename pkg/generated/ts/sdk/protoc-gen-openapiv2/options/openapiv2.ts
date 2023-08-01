@@ -1429,9 +1429,8 @@ export const Swagger = {
   },
 
   create<I extends Exact<DeepPartial<Swagger>, I>>(base?: I): Swagger {
-    return Swagger.fromPartial(base ?? {});
+    return Swagger.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<Swagger>, I>>(object: I): Swagger {
     const message = createBaseSwagger();
     message.swagger = object.swagger ?? "";
@@ -1535,9 +1534,8 @@ export const Swagger_ResponsesEntry = {
   },
 
   create<I extends Exact<DeepPartial<Swagger_ResponsesEntry>, I>>(base?: I): Swagger_ResponsesEntry {
-    return Swagger_ResponsesEntry.fromPartial(base ?? {});
+    return Swagger_ResponsesEntry.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<Swagger_ResponsesEntry>, I>>(object: I): Swagger_ResponsesEntry {
     const message = createBaseSwagger_ResponsesEntry();
     message.key = object.key ?? "";
@@ -1609,9 +1607,8 @@ export const Swagger_ExtensionsEntry = {
   },
 
   create<I extends Exact<DeepPartial<Swagger_ExtensionsEntry>, I>>(base?: I): Swagger_ExtensionsEntry {
-    return Swagger_ExtensionsEntry.fromPartial(base ?? {});
+    return Swagger_ExtensionsEntry.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<Swagger_ExtensionsEntry>, I>>(object: I): Swagger_ExtensionsEntry {
     const message = createBaseSwagger_ExtensionsEntry();
     message.key = object.key ?? "";
@@ -1894,9 +1891,8 @@ export const Operation = {
   },
 
   create<I extends Exact<DeepPartial<Operation>, I>>(base?: I): Operation {
-    return Operation.fromPartial(base ?? {});
+    return Operation.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<Operation>, I>>(object: I): Operation {
     const message = createBaseOperation();
     message.tags = object.tags?.map((e) => e) || [];
@@ -2000,9 +1996,8 @@ export const Operation_ResponsesEntry = {
   },
 
   create<I extends Exact<DeepPartial<Operation_ResponsesEntry>, I>>(base?: I): Operation_ResponsesEntry {
-    return Operation_ResponsesEntry.fromPartial(base ?? {});
+    return Operation_ResponsesEntry.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<Operation_ResponsesEntry>, I>>(object: I): Operation_ResponsesEntry {
     const message = createBaseOperation_ResponsesEntry();
     message.key = object.key ?? "";
@@ -2074,9 +2069,8 @@ export const Operation_ExtensionsEntry = {
   },
 
   create<I extends Exact<DeepPartial<Operation_ExtensionsEntry>, I>>(base?: I): Operation_ExtensionsEntry {
-    return Operation_ExtensionsEntry.fromPartial(base ?? {});
+    return Operation_ExtensionsEntry.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<Operation_ExtensionsEntry>, I>>(object: I): Operation_ExtensionsEntry {
     const message = createBaseOperation_ExtensionsEntry();
     message.key = object.key ?? "";
@@ -2135,9 +2129,8 @@ export const Parameters = {
   },
 
   create<I extends Exact<DeepPartial<Parameters>, I>>(base?: I): Parameters {
-    return Parameters.fromPartial(base ?? {});
+    return Parameters.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<Parameters>, I>>(object: I): Parameters {
     const message = createBaseParameters();
     message.headers = object.headers?.map((e) => HeaderParameter.fromPartial(e)) || [];
@@ -2251,9 +2244,8 @@ export const HeaderParameter = {
   },
 
   create<I extends Exact<DeepPartial<HeaderParameter>, I>>(base?: I): HeaderParameter {
-    return HeaderParameter.fromPartial(base ?? {});
+    return HeaderParameter.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<HeaderParameter>, I>>(object: I): HeaderParameter {
     const message = createBaseHeaderParameter();
     message.name = object.name ?? "";
@@ -2371,9 +2363,8 @@ export const Header = {
   },
 
   create<I extends Exact<DeepPartial<Header>, I>>(base?: I): Header {
-    return Header.fromPartial(base ?? {});
+    return Header.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<Header>, I>>(object: I): Header {
     const message = createBaseHeader();
     message.description = object.description ?? "";
@@ -2535,9 +2526,8 @@ export const Response = {
   },
 
   create<I extends Exact<DeepPartial<Response>, I>>(base?: I): Response {
-    return Response.fromPartial(base ?? {});
+    return Response.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<Response>, I>>(object: I): Response {
     const message = createBaseResponse();
     message.description = object.description ?? "";
@@ -2633,9 +2623,8 @@ export const Response_HeadersEntry = {
   },
 
   create<I extends Exact<DeepPartial<Response_HeadersEntry>, I>>(base?: I): Response_HeadersEntry {
-    return Response_HeadersEntry.fromPartial(base ?? {});
+    return Response_HeadersEntry.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<Response_HeadersEntry>, I>>(object: I): Response_HeadersEntry {
     const message = createBaseResponse_HeadersEntry();
     message.key = object.key ?? "";
@@ -2707,9 +2696,8 @@ export const Response_ExamplesEntry = {
   },
 
   create<I extends Exact<DeepPartial<Response_ExamplesEntry>, I>>(base?: I): Response_ExamplesEntry {
-    return Response_ExamplesEntry.fromPartial(base ?? {});
+    return Response_ExamplesEntry.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<Response_ExamplesEntry>, I>>(object: I): Response_ExamplesEntry {
     const message = createBaseResponse_ExamplesEntry();
     message.key = object.key ?? "";
@@ -2779,9 +2767,8 @@ export const Response_ExtensionsEntry = {
   },
 
   create<I extends Exact<DeepPartial<Response_ExtensionsEntry>, I>>(base?: I): Response_ExtensionsEntry {
-    return Response_ExtensionsEntry.fromPartial(base ?? {});
+    return Response_ExtensionsEntry.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<Response_ExtensionsEntry>, I>>(object: I): Response_ExtensionsEntry {
     const message = createBaseResponse_ExtensionsEntry();
     message.key = object.key ?? "";
@@ -2948,9 +2935,8 @@ export const Info = {
   },
 
   create<I extends Exact<DeepPartial<Info>, I>>(base?: I): Info {
-    return Info.fromPartial(base ?? {});
+    return Info.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<Info>, I>>(object: I): Info {
     const message = createBaseInfo();
     message.title = object.title ?? "";
@@ -3037,9 +3023,8 @@ export const Info_ExtensionsEntry = {
   },
 
   create<I extends Exact<DeepPartial<Info_ExtensionsEntry>, I>>(base?: I): Info_ExtensionsEntry {
-    return Info_ExtensionsEntry.fromPartial(base ?? {});
+    return Info_ExtensionsEntry.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<Info_ExtensionsEntry>, I>>(object: I): Info_ExtensionsEntry {
     const message = createBaseInfo_ExtensionsEntry();
     message.key = object.key ?? "";
@@ -3126,9 +3111,8 @@ export const Contact = {
   },
 
   create<I extends Exact<DeepPartial<Contact>, I>>(base?: I): Contact {
-    return Contact.fromPartial(base ?? {});
+    return Contact.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<Contact>, I>>(object: I): Contact {
     const message = createBaseContact();
     message.name = object.name ?? "";
@@ -3199,9 +3183,8 @@ export const License = {
   },
 
   create<I extends Exact<DeepPartial<License>, I>>(base?: I): License {
-    return License.fromPartial(base ?? {});
+    return License.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<License>, I>>(object: I): License {
     const message = createBaseLicense();
     message.name = object.name ?? "";
@@ -3274,9 +3257,8 @@ export const ExternalDocumentation = {
   },
 
   create<I extends Exact<DeepPartial<ExternalDocumentation>, I>>(base?: I): ExternalDocumentation {
-    return ExternalDocumentation.fromPartial(base ?? {});
+    return ExternalDocumentation.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<ExternalDocumentation>, I>>(object: I): ExternalDocumentation {
     const message = createBaseExternalDocumentation();
     message.description = object.description ?? "";
@@ -3391,9 +3373,8 @@ export const Schema = {
   },
 
   create<I extends Exact<DeepPartial<Schema>, I>>(base?: I): Schema {
-    return Schema.fromPartial(base ?? {});
+    return Schema.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<Schema>, I>>(object: I): Schema {
     const message = createBaseSchema();
     message.jsonSchema = (object.jsonSchema !== undefined && object.jsonSchema !== null)
@@ -3866,9 +3847,8 @@ export const JSONSchema = {
   },
 
   create<I extends Exact<DeepPartial<JSONSchema>, I>>(base?: I): JSONSchema {
-    return JSONSchema.fromPartial(base ?? {});
+    return JSONSchema.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<JSONSchema>, I>>(object: I): JSONSchema {
     const message = createBaseJSONSchema();
     message.ref = object.ref ?? "";
@@ -3959,9 +3939,8 @@ export const JSONSchema_FieldConfiguration = {
   },
 
   create<I extends Exact<DeepPartial<JSONSchema_FieldConfiguration>, I>>(base?: I): JSONSchema_FieldConfiguration {
-    return JSONSchema_FieldConfiguration.fromPartial(base ?? {});
+    return JSONSchema_FieldConfiguration.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<JSONSchema_FieldConfiguration>, I>>(
     object: I,
   ): JSONSchema_FieldConfiguration {
@@ -4032,9 +4011,8 @@ export const JSONSchema_ExtensionsEntry = {
   },
 
   create<I extends Exact<DeepPartial<JSONSchema_ExtensionsEntry>, I>>(base?: I): JSONSchema_ExtensionsEntry {
-    return JSONSchema_ExtensionsEntry.fromPartial(base ?? {});
+    return JSONSchema_ExtensionsEntry.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<JSONSchema_ExtensionsEntry>, I>>(object: I): JSONSchema_ExtensionsEntry {
     const message = createBaseJSONSchema_ExtensionsEntry();
     message.key = object.key ?? "";
@@ -4151,9 +4129,8 @@ export const Tag = {
   },
 
   create<I extends Exact<DeepPartial<Tag>, I>>(base?: I): Tag {
-    return Tag.fromPartial(base ?? {});
+    return Tag.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<Tag>, I>>(object: I): Tag {
     const message = createBaseTag();
     message.name = object.name ?? "";
@@ -4235,9 +4212,8 @@ export const Tag_ExtensionsEntry = {
   },
 
   create<I extends Exact<DeepPartial<Tag_ExtensionsEntry>, I>>(base?: I): Tag_ExtensionsEntry {
-    return Tag_ExtensionsEntry.fromPartial(base ?? {});
+    return Tag_ExtensionsEntry.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<Tag_ExtensionsEntry>, I>>(object: I): Tag_ExtensionsEntry {
     const message = createBaseTag_ExtensionsEntry();
     message.key = object.key ?? "";
@@ -4310,9 +4286,8 @@ export const SecurityDefinitions = {
   },
 
   create<I extends Exact<DeepPartial<SecurityDefinitions>, I>>(base?: I): SecurityDefinitions {
-    return SecurityDefinitions.fromPartial(base ?? {});
+    return SecurityDefinitions.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<SecurityDefinitions>, I>>(object: I): SecurityDefinitions {
     const message = createBaseSecurityDefinitions();
     message.security = Object.entries(object.security ?? {}).reduce<{ [key: string]: SecurityScheme }>(
@@ -4394,9 +4369,8 @@ export const SecurityDefinitions_SecurityEntry = {
   create<I extends Exact<DeepPartial<SecurityDefinitions_SecurityEntry>, I>>(
     base?: I,
   ): SecurityDefinitions_SecurityEntry {
-    return SecurityDefinitions_SecurityEntry.fromPartial(base ?? {});
+    return SecurityDefinitions_SecurityEntry.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<SecurityDefinitions_SecurityEntry>, I>>(
     object: I,
   ): SecurityDefinitions_SecurityEntry {
@@ -4597,9 +4571,8 @@ export const SecurityScheme = {
   },
 
   create<I extends Exact<DeepPartial<SecurityScheme>, I>>(base?: I): SecurityScheme {
-    return SecurityScheme.fromPartial(base ?? {});
+    return SecurityScheme.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<SecurityScheme>, I>>(object: I): SecurityScheme {
     const message = createBaseSecurityScheme();
     message.type = object.type ?? 0;
@@ -4686,9 +4659,8 @@ export const SecurityScheme_ExtensionsEntry = {
   },
 
   create<I extends Exact<DeepPartial<SecurityScheme_ExtensionsEntry>, I>>(base?: I): SecurityScheme_ExtensionsEntry {
-    return SecurityScheme_ExtensionsEntry.fromPartial(base ?? {});
+    return SecurityScheme_ExtensionsEntry.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<SecurityScheme_ExtensionsEntry>, I>>(
     object: I,
   ): SecurityScheme_ExtensionsEntry {
@@ -4766,9 +4738,8 @@ export const SecurityRequirement = {
   },
 
   create<I extends Exact<DeepPartial<SecurityRequirement>, I>>(base?: I): SecurityRequirement {
-    return SecurityRequirement.fromPartial(base ?? {});
+    return SecurityRequirement.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<SecurityRequirement>, I>>(object: I): SecurityRequirement {
     const message = createBaseSecurityRequirement();
     message.securityRequirement = Object.entries(object.securityRequirement ?? {}).reduce<
@@ -4833,9 +4804,8 @@ export const SecurityRequirement_SecurityRequirementValue = {
   create<I extends Exact<DeepPartial<SecurityRequirement_SecurityRequirementValue>, I>>(
     base?: I,
   ): SecurityRequirement_SecurityRequirementValue {
-    return SecurityRequirement_SecurityRequirementValue.fromPartial(base ?? {});
+    return SecurityRequirement_SecurityRequirementValue.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<SecurityRequirement_SecurityRequirementValue>, I>>(
     object: I,
   ): SecurityRequirement_SecurityRequirementValue {
@@ -4911,9 +4881,8 @@ export const SecurityRequirement_SecurityRequirementEntry = {
   create<I extends Exact<DeepPartial<SecurityRequirement_SecurityRequirementEntry>, I>>(
     base?: I,
   ): SecurityRequirement_SecurityRequirementEntry {
-    return SecurityRequirement_SecurityRequirementEntry.fromPartial(base ?? {});
+    return SecurityRequirement_SecurityRequirementEntry.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<SecurityRequirement_SecurityRequirementEntry>, I>>(
     object: I,
   ): SecurityRequirement_SecurityRequirementEntry {
@@ -4990,9 +4959,8 @@ export const Scopes = {
   },
 
   create<I extends Exact<DeepPartial<Scopes>, I>>(base?: I): Scopes {
-    return Scopes.fromPartial(base ?? {});
+    return Scopes.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<Scopes>, I>>(object: I): Scopes {
     const message = createBaseScopes();
     message.scope = Object.entries(object.scope ?? {}).reduce<{ [key: string]: string }>((acc, [key, value]) => {
@@ -5066,9 +5034,8 @@ export const Scopes_ScopeEntry = {
   },
 
   create<I extends Exact<DeepPartial<Scopes_ScopeEntry>, I>>(base?: I): Scopes_ScopeEntry {
-    return Scopes_ScopeEntry.fromPartial(base ?? {});
+    return Scopes_ScopeEntry.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<Scopes_ScopeEntry>, I>>(object: I): Scopes_ScopeEntry {
     const message = createBaseScopes_ScopeEntry();
     message.key = object.key ?? "";

@@ -146,9 +146,8 @@ export const Duration = {
   },
 
   create<I extends Exact<DeepPartial<Duration>, I>>(base?: I): Duration {
-    return Duration.fromPartial(base ?? {});
+    return Duration.fromPartial(base ?? ({} as any));
   },
-
   fromPartial<I extends Exact<DeepPartial<Duration>, I>>(object: I): Duration {
     const message = createBaseDuration();
     message.seconds = object.seconds ?? 0;
