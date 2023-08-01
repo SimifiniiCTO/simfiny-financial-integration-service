@@ -44,14 +44,14 @@ clickhouse:
   host: l77zn1po0n.us-east-1.aws.clickhouse.cloud
   port: 8443
   user: default
-  password: nnqMml.lfh2g9
+  password: 8OnfmVp~U6xnZ
   maxConnectionAttempts: 4
   maxConnectionRetries: 4
   maxConnectionRetryTimeout: 500ms
   maxConnectionRetrySleepInterval: 100ms
   maxQueryTimeout: 500ms
   # ref: https://clickhouse.com/docs/en/interfaces/cli
-  uri: clickhouse://default:nnqMml.lfh2g9@l77zn1po0n.us-east-1.aws.clickhouse.cloud:9440/Production # https://default:nnqMml.lfh2g9@l77zn1po0n.us-east-1.aws.clickhouse.cloud:8443/FinancialIntegrationService?secure=true&skip_verify=true
+  uri: clickhouse://default:8OnfmVp~U6xnZ@l77zn1po0n.us-east-1.aws.clickhouse.cloud:9440/Production # https://default:8OnfmVp~U6xnZ@l77zn1po0n.us-east-1.aws.clickhouse.cloud:8443/FinancialIntegrationService?secure=true&skip_verify=true
 database:
   host: simfiny-db-cluster-do-user-11446161-0.b.db.ondigitalocean.com
   port: 25061

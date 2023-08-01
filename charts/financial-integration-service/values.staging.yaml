@@ -44,13 +44,13 @@ clickhouse:
   host: l77zn1po0n.us-east-1.aws.clickhouse.cloud
   port: 8443
   user: default
-  password: nnqMml.lfh2g9
+  password: 8OnfmVp~U6xnZ
   maxConnectionAttempts: 4
   maxConnectionRetries: 4
   maxConnectionRetryTimeout: 500ms
   maxConnectionRetrySleepInterval: 100ms
   maxQueryTimeout: 500ms
-  uri: https://default:nnqMml.lfh2g9@l77zn1po0n.us-east-1.aws.clickhouse.cloud:8443/default?secure=true&skip_verify=true
+  uri: https://default:8OnfmVp~U6xnZ@l77zn1po0n.us-east-1.aws.clickhouse.cloud:8443/default?secure=true&skip_verify=true
   
 database:
   host: db-postgresql-staging-environment-do-user-11446161-0.b.db.ondigitalocean.com

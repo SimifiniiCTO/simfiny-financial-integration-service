@@ -137,9 +137,9 @@ func ReadEnvVars() {
 	fs.Duration("workflow-task-timeout", 1*time.Second, "The timeout for processing workflow task from the time the worker pulled this task. If a workflow task is lost, it is retried after this timeout. The resolution is seconds.")
 	fs.Duration("workflow-run-timeout", 1*time.Second, "The timeout for duration of a single workflow run. The resolution is seconds. Optional: defaulted to WorkflowExecutionTimeout.")
 
-	// production: clickhouse://default:nnqMml.lfh2g9@l77zn1po0n.us-east-1.aws.clickhouse.cloud:9440/Production
+	// production: clickhouse://default:8OnfmVp~U6xnZ@l77zn1po0n.us-east-1.aws.clickhouse.cloud:9440/Production
 	// local: clickhouse://gorm:gorm@clickhouse-database:9000/gorm?sslmode=disable&dial_timeout=10s&read_timeout=20s
-	fs.String("clickhouse-connection-uri", "clickhouse://default:nnqMml.lfh2g9@l77zn1po0n.us-east-1.aws.clickhouse.cloud:9440/Production", "clickhouse-connection-uri")
+	fs.String("clickhouse-connection-uri", "clickhouse://default:8OnfmVp~U6xnZ@l77zn1po0n.us-east-1.aws.clickhouse.cloud:9440/Production", "clickhouse-connection-uri")
 	fs.Int("task-processor-workers", 5, "task-processor-workers")
 
 	fs.String("openai-token", "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", "openai-token")
