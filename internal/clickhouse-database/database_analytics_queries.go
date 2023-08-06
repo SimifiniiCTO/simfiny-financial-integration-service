@@ -710,7 +710,8 @@ func (db *Db) GetFinancialContextForCurrentMonth(ctx context.Context, userId *ui
 	db.Logger.Info("month", zap.String("month", getCurrentMonthRepresentation()))
 
 	// we first get the current months representation
-	month := getCurrentMonthRepresentation()
+	// TODO: refactor this
+	month := getPreviousMonthRepresentation()
 
 	// we use the current months numerical representation to the query the database. If no results are provided
 	// it is safe to assume that the sourced context for the current month has not yet been generated
@@ -1054,5 +1055,5 @@ func getPreviousMonthRepresentation() string {
 
 	year, month, _ := now.Date()
 
-	return fmt.Sprintf("%d%02d", year, int(month-1))
+	return fmt.Sprintf("%d%02d", year, int(month))
 }

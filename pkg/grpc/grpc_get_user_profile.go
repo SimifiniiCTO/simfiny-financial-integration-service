@@ -112,6 +112,19 @@ func enrichFinancialContext(user *proto.UserProfile, ctx *proto.MelodyFinancialC
 		mortgageAccts = mortgageAccts[:2]
 	}
 
+	// sanitize the bank accounts
+	// we do not want the pockets
+	for _, acct := range bankAccts {
+		acct.Pockets = nil
+	}
+
+	// sanitize the investment account s
+	// we do not want the positions nor holdings
+	for _, acct := range investmentAccts {
+		acct.Securities = nil
+		acct.Holdings = nil
+	}
+
 	ctx.BankAccounts = bankAccts
 	ctx.CreditAccounts = creditAccts
 	ctx.StudentLoanAccounts = loanAccts
