@@ -5810,6 +5810,41 @@
             "type": "object",
             "$ref": "#/definitions/PaymentChannelMetricsFinancialSubProfile"
           }
+        },
+        "bankAccounts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/BankAccount"
+          }
+        },
+        "investmentAccounts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/InvestmentAccount"
+          }
+        },
+        "creditAccounts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/CreditAccount"
+          }
+        },
+        "mortgageLoanAccounts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/MortgageAccount"
+          }
+        },
+        "studentLoanAccounts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/StudentLoanAccount"
+          }
         }
       },
       "description": "MelodyFinancialContext represents the financial context of a user.\nThis message is used to represent the financial context of a user."
