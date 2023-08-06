@@ -2,6 +2,13 @@
 import * as _m0 from "protobufjs/minimal";
 import { Any } from "../../google/protobuf/any";
 import { Timestamp } from "../../google/protobuf/timestamp";
+import {
+  BankAccount,
+  CreditAccount,
+  InvestmentAccount,
+  MortgageAccount,
+  StudentLoanAccount,
+} from "./message_financial_service";
 import Long = require("long");
 
 export const protobufPackage = "financial_integration_service_api.v1";
@@ -650,6 +657,11 @@ export interface MelodyFinancialContext {
   locations: LocationFinancialSubProfile[];
   merchants: MerchantMetricsFinancialSubProfile[];
   paymentChannels: PaymentChannelMetricsFinancialSubProfile[];
+  bankAccounts: BankAccount[];
+  investmentAccounts: InvestmentAccount[];
+  creditAccounts: CreditAccount[];
+  mortgageLoanAccounts: MortgageAccount[];
+  studentLoanAccounts: StudentLoanAccount[];
 }
 
 function createBaseInvestmentTransaction(): InvestmentTransaction {
@@ -5591,7 +5603,19 @@ export const UserFinancialHealthMetricsTable = {
 };
 
 function createBaseMelodyFinancialContext(): MelodyFinancialContext {
-  return { categories: [], expenses: [], income: [], locations: [], merchants: [], paymentChannels: [] };
+  return {
+    categories: [],
+    expenses: [],
+    income: [],
+    locations: [],
+    merchants: [],
+    paymentChannels: [],
+    bankAccounts: [],
+    investmentAccounts: [],
+    creditAccounts: [],
+    mortgageLoanAccounts: [],
+    studentLoanAccounts: [],
+  };
 }
 
 export const MelodyFinancialContext = {
@@ -5613,6 +5637,21 @@ export const MelodyFinancialContext = {
     }
     for (const v of message.paymentChannels) {
       PaymentChannelMetricsFinancialSubProfile.encode(v!, writer.uint32(50).fork()).ldelim();
+    }
+    for (const v of message.bankAccounts) {
+      BankAccount.encode(v!, writer.uint32(58).fork()).ldelim();
+    }
+    for (const v of message.investmentAccounts) {
+      InvestmentAccount.encode(v!, writer.uint32(66).fork()).ldelim();
+    }
+    for (const v of message.creditAccounts) {
+      CreditAccount.encode(v!, writer.uint32(74).fork()).ldelim();
+    }
+    for (const v of message.mortgageLoanAccounts) {
+      MortgageAccount.encode(v!, writer.uint32(82).fork()).ldelim();
+    }
+    for (const v of message.studentLoanAccounts) {
+      StudentLoanAccount.encode(v!, writer.uint32(90).fork()).ldelim();
     }
     return writer;
   },
@@ -5666,6 +5705,41 @@ export const MelodyFinancialContext = {
 
           message.paymentChannels.push(PaymentChannelMetricsFinancialSubProfile.decode(reader, reader.uint32()));
           continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.bankAccounts.push(BankAccount.decode(reader, reader.uint32()));
+          continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.investmentAccounts.push(InvestmentAccount.decode(reader, reader.uint32()));
+          continue;
+        case 9:
+          if (tag !== 74) {
+            break;
+          }
+
+          message.creditAccounts.push(CreditAccount.decode(reader, reader.uint32()));
+          continue;
+        case 10:
+          if (tag !== 82) {
+            break;
+          }
+
+          message.mortgageLoanAccounts.push(MortgageAccount.decode(reader, reader.uint32()));
+          continue;
+        case 11:
+          if (tag !== 90) {
+            break;
+          }
+
+          message.studentLoanAccounts.push(StudentLoanAccount.decode(reader, reader.uint32()));
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -5695,6 +5769,21 @@ export const MelodyFinancialContext = {
       paymentChannels: Array.isArray(object?.paymentChannels)
         ? object.paymentChannels.map((e: any) => PaymentChannelMetricsFinancialSubProfile.fromJSON(e))
         : [],
+      bankAccounts: Array.isArray(object?.bankAccounts)
+        ? object.bankAccounts.map((e: any) => BankAccount.fromJSON(e))
+        : [],
+      investmentAccounts: Array.isArray(object?.investmentAccounts)
+        ? object.investmentAccounts.map((e: any) => InvestmentAccount.fromJSON(e))
+        : [],
+      creditAccounts: Array.isArray(object?.creditAccounts)
+        ? object.creditAccounts.map((e: any) => CreditAccount.fromJSON(e))
+        : [],
+      mortgageLoanAccounts: Array.isArray(object?.mortgageLoanAccounts)
+        ? object.mortgageLoanAccounts.map((e: any) => MortgageAccount.fromJSON(e))
+        : [],
+      studentLoanAccounts: Array.isArray(object?.studentLoanAccounts)
+        ? object.studentLoanAccounts.map((e: any) => StudentLoanAccount.fromJSON(e))
+        : [],
     };
   },
 
@@ -5718,6 +5807,21 @@ export const MelodyFinancialContext = {
     if (message.paymentChannels?.length) {
       obj.paymentChannels = message.paymentChannels.map((e) => PaymentChannelMetricsFinancialSubProfile.toJSON(e));
     }
+    if (message.bankAccounts?.length) {
+      obj.bankAccounts = message.bankAccounts.map((e) => BankAccount.toJSON(e));
+    }
+    if (message.investmentAccounts?.length) {
+      obj.investmentAccounts = message.investmentAccounts.map((e) => InvestmentAccount.toJSON(e));
+    }
+    if (message.creditAccounts?.length) {
+      obj.creditAccounts = message.creditAccounts.map((e) => CreditAccount.toJSON(e));
+    }
+    if (message.mortgageLoanAccounts?.length) {
+      obj.mortgageLoanAccounts = message.mortgageLoanAccounts.map((e) => MortgageAccount.toJSON(e));
+    }
+    if (message.studentLoanAccounts?.length) {
+      obj.studentLoanAccounts = message.studentLoanAccounts.map((e) => StudentLoanAccount.toJSON(e));
+    }
     return obj;
   },
 
@@ -5733,6 +5837,11 @@ export const MelodyFinancialContext = {
     message.merchants = object.merchants?.map((e) => MerchantMetricsFinancialSubProfile.fromPartial(e)) || [];
     message.paymentChannels =
       object.paymentChannels?.map((e) => PaymentChannelMetricsFinancialSubProfile.fromPartial(e)) || [];
+    message.bankAccounts = object.bankAccounts?.map((e) => BankAccount.fromPartial(e)) || [];
+    message.investmentAccounts = object.investmentAccounts?.map((e) => InvestmentAccount.fromPartial(e)) || [];
+    message.creditAccounts = object.creditAccounts?.map((e) => CreditAccount.fromPartial(e)) || [];
+    message.mortgageLoanAccounts = object.mortgageLoanAccounts?.map((e) => MortgageAccount.fromPartial(e)) || [];
+    message.studentLoanAccounts = object.studentLoanAccounts?.map((e) => StudentLoanAccount.fromPartial(e)) || [];
     return message;
   },
 };

@@ -3,6 +3,38 @@
 
 ## Table of Contents
 
+- [financial_integration_service_api/v1/message_financial_service.proto](#financial_integration_service_api_v1_message_financial_service-proto)
+    - [ActionableInsight](#financial_integration_service_api-v1-ActionableInsight)
+    - [Apr](#financial_integration_service_api-v1-Apr)
+    - [BankAccount](#financial_integration_service_api-v1-BankAccount)
+    - [Budget](#financial_integration_service_api-v1-Budget)
+    - [Category](#financial_integration_service_api-v1-Category)
+    - [CreditAccount](#financial_integration_service_api-v1-CreditAccount)
+    - [Forecast](#financial_integration_service_api-v1-Forecast)
+    - [InvesmentHolding](#financial_integration_service_api-v1-InvesmentHolding)
+    - [InvestmentAccount](#financial_integration_service_api-v1-InvestmentAccount)
+    - [InvestmentSecurity](#financial_integration_service_api-v1-InvestmentSecurity)
+    - [Link](#financial_integration_service_api-v1-Link)
+    - [Milestone](#financial_integration_service_api-v1-Milestone)
+    - [MortgageAccount](#financial_integration_service_api-v1-MortgageAccount)
+    - [PlaidLink](#financial_integration_service_api-v1-PlaidLink)
+    - [PlaidSync](#financial_integration_service_api-v1-PlaidSync)
+    - [Pocket](#financial_integration_service_api-v1-Pocket)
+    - [SmartGoal](#financial_integration_service_api-v1-SmartGoal)
+    - [StripeSubscription](#financial_integration_service_api-v1-StripeSubscription)
+    - [StudentLoanAccount](#financial_integration_service_api-v1-StudentLoanAccount)
+    - [Token](#financial_integration_service_api-v1-Token)
+    - [UserProfile](#financial_integration_service_api-v1-UserProfile)
+  
+    - [BankAccountStatus](#financial_integration_service_api-v1-BankAccountStatus)
+    - [BankAccountType](#financial_integration_service_api-v1-BankAccountType)
+    - [GoalStatus](#financial_integration_service_api-v1-GoalStatus)
+    - [GoalType](#financial_integration_service_api-v1-GoalType)
+    - [LinkStatus](#financial_integration_service_api-v1-LinkStatus)
+    - [LinkType](#financial_integration_service_api-v1-LinkType)
+    - [PocketType](#financial_integration_service_api-v1-PocketType)
+    - [StripeSubscriptionStatus](#financial_integration_service_api-v1-StripeSubscriptionStatus)
+  
 - [financial_integration_service_api/v1/clickhouse_financial_service.proto](#financial_integration_service_api_v1_clickhouse_financial_service-proto)
     - [AccountBalanceHistory](#financial_integration_service_api-v1-AccountBalanceHistory)
     - [CategoryMetricsFinancialSubProfile](#financial_integration_service_api-v1-CategoryMetricsFinancialSubProfile)
@@ -49,38 +81,6 @@
     - [ErrorCode](#financial_integration_service_api-v1-ErrorCode)
     - [InternalErrorCode](#financial_integration_service_api-v1-InternalErrorCode)
     - [NotFoundErrorCode](#financial_integration_service_api-v1-NotFoundErrorCode)
-  
-- [financial_integration_service_api/v1/message_financial_service.proto](#financial_integration_service_api_v1_message_financial_service-proto)
-    - [ActionableInsight](#financial_integration_service_api-v1-ActionableInsight)
-    - [Apr](#financial_integration_service_api-v1-Apr)
-    - [BankAccount](#financial_integration_service_api-v1-BankAccount)
-    - [Budget](#financial_integration_service_api-v1-Budget)
-    - [Category](#financial_integration_service_api-v1-Category)
-    - [CreditAccount](#financial_integration_service_api-v1-CreditAccount)
-    - [Forecast](#financial_integration_service_api-v1-Forecast)
-    - [InvesmentHolding](#financial_integration_service_api-v1-InvesmentHolding)
-    - [InvestmentAccount](#financial_integration_service_api-v1-InvestmentAccount)
-    - [InvestmentSecurity](#financial_integration_service_api-v1-InvestmentSecurity)
-    - [Link](#financial_integration_service_api-v1-Link)
-    - [Milestone](#financial_integration_service_api-v1-Milestone)
-    - [MortgageAccount](#financial_integration_service_api-v1-MortgageAccount)
-    - [PlaidLink](#financial_integration_service_api-v1-PlaidLink)
-    - [PlaidSync](#financial_integration_service_api-v1-PlaidSync)
-    - [Pocket](#financial_integration_service_api-v1-Pocket)
-    - [SmartGoal](#financial_integration_service_api-v1-SmartGoal)
-    - [StripeSubscription](#financial_integration_service_api-v1-StripeSubscription)
-    - [StudentLoanAccount](#financial_integration_service_api-v1-StudentLoanAccount)
-    - [Token](#financial_integration_service_api-v1-Token)
-    - [UserProfile](#financial_integration_service_api-v1-UserProfile)
-  
-    - [BankAccountStatus](#financial_integration_service_api-v1-BankAccountStatus)
-    - [BankAccountType](#financial_integration_service_api-v1-BankAccountType)
-    - [GoalStatus](#financial_integration_service_api-v1-GoalStatus)
-    - [GoalType](#financial_integration_service_api-v1-GoalType)
-    - [LinkStatus](#financial_integration_service_api-v1-LinkStatus)
-    - [LinkType](#financial_integration_service_api-v1-LinkType)
-    - [PocketType](#financial_integration_service_api-v1-PocketType)
-    - [StripeSubscriptionStatus](#financial_integration_service_api-v1-StripeSubscriptionStatus)
   
 - [financial_integration_service_api/v1/openapi_financial_service.proto](#financial_integration_service_api_v1_openapi_financial_service-proto)
 - [financial_integration_service_api/v1/request_response_financial_analytics_service.proto](#financial_integration_service_api_v1_request_response_financial_analytics_service-proto)
@@ -221,931 +221,6 @@
     - [FinancialService](#financial_integration_service_api-v1-FinancialService)
   
 - [Scalar Value Types](#scalar-value-types)
-
-
-
-<a name="financial_integration_service_api_v1_clickhouse_financial_service-proto"></a>
-<p align="right"><a href="#top">Top</a></p>
-
-## financial_integration_service_api/v1/clickhouse_financial_service.proto
-
-
-
-<a name="financial_integration_service_api-v1-AccountBalanceHistory"></a>
-
-### AccountBalanceHistory
-Account Balance History
-This message is used to represent the balance history of an account.
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| time | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
-| account_id | [string](#string) |  |  |
-| iso_currency_code | [string](#string) |  |  |
-| balance | [double](#double) |  |  |
-| user_id | [uint64](#uint64) |  |  |
-| sign | [uint32](#uint32) |  |  |
-| id | [string](#string) |  |  |
-
-
-
-
-
-
-<a name="financial_integration_service_api-v1-CategoryMetricsFinancialSubProfile"></a>
-
-### CategoryMetricsFinancialSubProfile
-CategoryMetricsFinancialSubProfile
-This message is used to represent the financial sub profile of a category.
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| month | [uint32](#uint32) |  |  |
-| personal_finance_category_primary | [string](#string) |  |  |
-| transaction_count | [uint64](#uint64) |  |  |
-| spent_last_week | [double](#double) |  |  |
-| spent_last_two_weeks | [double](#double) |  |  |
-| spent_last_month | [double](#double) |  |  |
-| spent_last_six_months | [double](#double) |  |  |
-| spent_last_year | [double](#double) |  |  |
-| spent_last_two_years | [double](#double) |  |  |
-| user_id | [uint64](#uint64) |  |  |
-
-
-
-
-
-
-<a name="financial_integration_service_api-v1-CategoryMonthlyExpenditure"></a>
-
-### CategoryMonthlyExpenditure
-CategoryMonthlyExpenditure represents the monthly expenditure of a category.
-This message is used to represent the monthly expenditure of a category.
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| month | [uint32](#uint32) |  |  |
-| personal_finance_category_primary | [string](#string) |  |  |
-| total_spending | [double](#double) |  |  |
-| user_id | [uint64](#uint64) |  |  |
-
-
-
-
-
-
-<a name="financial_integration_service_api-v1-CategoryMonthlyIncome"></a>
-
-### CategoryMonthlyIncome
-CategoryMonthlyIncome
-This message is used to represent the monthly income of a category.
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| month | [uint32](#uint32) |  |  |
-| personal_finance_category_primary | [string](#string) |  |  |
-| total_income | [double](#double) |  |  |
-| user_id | [uint64](#uint64) |  |  |
-
-
-
-
-
-
-<a name="financial_integration_service_api-v1-CategoryMonthlyTransactionCount"></a>
-
-### CategoryMonthlyTransactionCount
-CategoryMonthlyTransactionCount
-This message is used to represent the monthly transaction count of a category.
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| month | [uint32](#uint32) |  |  |
-| personal_finance_category_primary | [string](#string) |  |  |
-| transaction_count | [uint32](#uint32) |  |  |
-| user_id | [uint64](#uint64) |  |  |
-
-
-
-
-
-
-<a name="financial_integration_service_api-v1-DebtToIncomeRatio"></a>
-
-### DebtToIncomeRatio
-DebtToIncomeRatio
-This message is used to represent the debt to income ratio of a user.
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| month | [uint32](#uint32) |  |  |
-| ratio | [double](#double) |  |  |
-| user_id | [uint64](#uint64) |  |  |
-
-
-
-
-
-
-<a name="financial_integration_service_api-v1-ExpenseMetrics"></a>
-
-### ExpenseMetrics
-ExpenseMetrics
-This message is used to represent the expense metrics of a user.
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| month | [uint32](#uint32) |  |  |
-| personal_finance_category_primary | [string](#string) |  |  |
-| transaction_count | [uint64](#uint64) |  |  |
-| total_expenses | [double](#double) |  |  |
-| user_id | [uint64](#uint64) |  |  |
-
-
-
-
-
-
-<a name="financial_integration_service_api-v1-ExpenseMetricsFinancialSubProfileMetrics"></a>
-
-### ExpenseMetricsFinancialSubProfileMetrics
-ExpenseMetricsFinancialSubProfileMetrics
-This message is used to represent the financial sub profile metrics of a user.
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| month | [uint32](#uint32) |  |  |
-| spent_last_week | [double](#double) |  |  |
-| spent_last_month | [double](#double) |  |  |
-| spent_last_six_months | [double](#double) |  |  |
-| average_monthly_discretionary_spending | [double](#double) |  |  |
-| average_monthly_recurring_spending | [double](#double) |  |  |
-| user_id | [uint64](#uint64) |  |  |
-
-
-
-
-
-
-<a name="financial_integration_service_api-v1-FinancialProfile"></a>
-
-### FinancialProfile
-FinancialProfile
-This message is used to represent the financial profile of a user.
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| month | [uint32](#uint32) |  |  |
-| total_income | [double](#double) |  |  |
-| total_expenses | [double](#double) |  |  |
-| number_of_transactions | [uint64](#uint64) |  |  |
-| most_expensive_category | [string](#string) |  |  |
-| user_id | [uint64](#uint64) |  |  |
-
-
-
-
-
-
-<a name="financial_integration_service_api-v1-IncomeExpenseRatio"></a>
-
-### IncomeExpenseRatio
-IncomeExpenseRatio
-This message is used to represent the income expense ratio of a user.
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| month | [uint32](#uint32) |  |  |
-| ratio | [double](#double) |  |  |
-| user_id | [uint64](#uint64) |  |  |
-
-
-
-
-
-
-<a name="financial_integration_service_api-v1-IncomeMetrics"></a>
-
-### IncomeMetrics
-IncomeMetrics
-This message is used to represent the income metrics of a user.
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| month | [uint32](#uint32) |  |  |
-| personal_finance_category_primary | [string](#string) |  |  |
-| transaction_count | [uint64](#uint64) |  |  |
-| total_income | [double](#double) |  |  |
-| user_id | [uint64](#uint64) |  |  |
-
-
-
-
-
-
-<a name="financial_integration_service_api-v1-IncomeMetricsFinancialSubProfile"></a>
-
-### IncomeMetricsFinancialSubProfile
-IncomeMetricsFinancialSubProfile
-This message is used to represent the financial sub profile of a user.
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| month | [uint32](#uint32) |  |  |
-| income_last_two_weeks | [double](#double) |  |  |
-| income_last_month | [double](#double) |  |  |
-| income_last_two_months | [double](#double) |  |  |
-| income_last_six_months | [double](#double) |  |  |
-| income_last_year | [double](#double) |  |  |
-| user_id | [uint64](#uint64) |  |  |
-
-
-
-
-
-
-<a name="financial_integration_service_api-v1-InvestmentTransaction"></a>
-
-### InvestmentTransaction
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| account_id | [string](#string) |  | @gotag: ch:&#34;account_id&#34; |
-| ammount | [string](#string) |  | @gotag: ch:&#34;amount&#34; |
-| investment_transaction_id | [string](#string) |  | @gotag: ch:&#34;investment_transaction_id&#34; |
-| security_id | [string](#string) |  | @gotag: ch:&#34;security_id&#34; |
-| current_date | [string](#string) |  | @gotag: ch:&#34;date&#34; |
-| name | [string](#string) |  | @gotag: ch:&#34;name&#34; |
-| quantity | [double](#double) |  | @gotag: ch:&#34;quantity&#34; |
-| amount | [double](#double) |  | @gotag: ch:&#34;amount&#34; |
-| price | [double](#double) |  | @gotag: ch:&#34;price&#34; |
-| fees | [double](#double) |  | @gotag: ch:&#34;fees&#34; |
-| type | [string](#string) |  | @gotag: ch:&#34;type&#34; |
-| subtype | [string](#string) |  | @gotag: ch:&#34;subtype&#34; |
-| iso_currency_code | [string](#string) |  | @gotag: ch:&#34;iso_currency_code&#34; |
-| unofficial_currency_code | [string](#string) |  | @gotag: ch:&#34;unofficial_currency_code&#34; |
-| link_id | [uint64](#uint64) |  | @gotag: ch:&#34;link_id&#34; |
-| id | [string](#string) |  | @gotag: ch:&#34;id&#34; |
-| user_id | [uint64](#uint64) |  | @gotag: ch:&#34;user_id&#34; |
-| created_at | [string](#string) |  |  |
-| sign | [int32](#int32) |  |  |
-| time | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
-| additional_properties | [google.protobuf.Any](#google-protobuf-Any) |  |  |
-
-
-
-
-
-
-<a name="financial_integration_service_api-v1-LocationFinancialSubProfile"></a>
-
-### LocationFinancialSubProfile
-LocationFinancialSubProfile
-This message is used to represent the financial sub profile of a location.
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| location_city | [string](#string) |  |  |
-| transaction_count | [uint64](#uint64) |  |  |
-| spent_last_week | [double](#double) |  |  |
-| spent_last_two_weeks | [double](#double) |  |  |
-| spent_last_month | [double](#double) |  |  |
-| spent_last_six_months | [double](#double) |  |  |
-| spent_last_year | [double](#double) |  |  |
-| spent_last_two_years | [double](#double) |  |  |
-| user_id | [uint64](#uint64) |  |  |
-| month | [uint32](#uint32) |  |  |
-
-
-
-
-
-
-<a name="financial_integration_service_api-v1-MelodyFinancialContext"></a>
-
-### MelodyFinancialContext
-MelodyFinancialContext represents the financial context of a user.
-This message is used to represent the financial context of a user.
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| categories | [CategoryMetricsFinancialSubProfile](#financial_integration_service_api-v1-CategoryMetricsFinancialSubProfile) | repeated |  |
-| expenses | [ExpenseMetricsFinancialSubProfileMetrics](#financial_integration_service_api-v1-ExpenseMetricsFinancialSubProfileMetrics) | repeated |  |
-| income | [IncomeMetricsFinancialSubProfile](#financial_integration_service_api-v1-IncomeMetricsFinancialSubProfile) | repeated |  |
-| locations | [LocationFinancialSubProfile](#financial_integration_service_api-v1-LocationFinancialSubProfile) | repeated |  |
-| merchants | [MerchantMetricsFinancialSubProfile](#financial_integration_service_api-v1-MerchantMetricsFinancialSubProfile) | repeated |  |
-| payment_channels | [PaymentChannelMetricsFinancialSubProfile](#financial_integration_service_api-v1-PaymentChannelMetricsFinancialSubProfile) | repeated |  |
-
-
-
-
-
-
-<a name="financial_integration_service_api-v1-MerchantMetricsFinancialSubProfile"></a>
-
-### MerchantMetricsFinancialSubProfile
-MerchantFinancialSubProfile
-This message is used to represent the financial sub profile of a merchant.
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| merchant_name | [string](#string) |  |  |
-| spent_last_week | [double](#double) |  |  |
-| spent_last_two_weeks | [double](#double) |  |  |
-| spent_last_month | [double](#double) |  |  |
-| spent_last_six_months | [double](#double) |  |  |
-| spent_last_year | [double](#double) |  |  |
-| spent_last_two_years | [double](#double) |  |  |
-| user_id | [uint64](#uint64) |  |  |
-| month | [uint32](#uint32) |  |  |
-
-
-
-
-
-
-<a name="financial_integration_service_api-v1-MerchantMonthlyExpenditure"></a>
-
-### MerchantMonthlyExpenditure
-MerchantMonthlyExpenditure
-This message is used to represent the monthly expenditure of a merchant.
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| month | [uint32](#uint32) |  |  |
-| merchant_name | [string](#string) |  |  |
-| total_spending | [double](#double) |  |  |
-| user_id | [uint64](#uint64) |  |  |
-
-
-
-
-
-
-<a name="financial_integration_service_api-v1-MonthlyBalance"></a>
-
-### MonthlyBalance
-MonthlyBalance
-This message is used to represent the monthly balance of a user.
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| month | [uint32](#uint32) |  |  |
-| net_balance | [double](#double) |  |  |
-| user_id | [uint64](#uint64) |  |  |
-
-
-
-
-
-
-<a name="financial_integration_service_api-v1-MonthlyExpenditure"></a>
-
-### MonthlyExpenditure
-MonthlyExpenditure
-This message is used to represent the monthly expenditure of a user.
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| month | [uint32](#uint32) |  |  |
-| total_spending | [double](#double) |  |  |
-| user_id | [uint64](#uint64) |  |  |
-
-
-
-
-
-
-<a name="financial_integration_service_api-v1-MonthlyIncome"></a>
-
-### MonthlyIncome
-MonthlyIncome
-This message is used to represent the monthly income of a user.
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| month | [uint32](#uint32) |  |  |
-| total_income | [double](#double) |  |  |
-| user_id | [uint64](#uint64) |  |  |
-
-
-
-
-
-
-<a name="financial_integration_service_api-v1-MonthlySavings"></a>
-
-### MonthlySavings
-MonthlySavings
-This message is used to represent the monthly savings of a user.
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| month | [uint32](#uint32) |  |  |
-| net_savings | [double](#double) |  |  |
-| user_id | [uint64](#uint64) |  |  |
-
-
-
-
-
-
-<a name="financial_integration_service_api-v1-MonthlyTotalQuantityBySecurityAndUser"></a>
-
-### MonthlyTotalQuantityBySecurityAndUser
-MonthlyTotalQuantityBySecurityAndUser
-This message is used to represent the monthly total quantity of a security.
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| month | [uint32](#uint32) |  |  |
-| security_id | [string](#string) |  |  |
-| total_quantity | [double](#double) |  |  |
-| user_id | [uint64](#uint64) |  |  |
-
-
-
-
-
-
-<a name="financial_integration_service_api-v1-MonthlyTransactionCount"></a>
-
-### MonthlyTransactionCount
-MonthlyTransactionCount
-This message is used to represent the monthly transaction count of a user.
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| month | [uint32](#uint32) |  |  |
-| transaction_count | [uint64](#uint64) |  |  |
-| user_id | [uint64](#uint64) |  |  |
-
-
-
-
-
-
-<a name="financial_integration_service_api-v1-PaymentChannelMetricsFinancialSubProfile"></a>
-
-### PaymentChannelMetricsFinancialSubProfile
-PaymentChannelMetricsFinancialSubProfile
-This message is used to represent the financial sub profile of a payment channel.
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| payment_channel | [string](#string) |  |  |
-| spent_last_week | [double](#double) |  |  |
-| spent_last_two_weeks | [double](#double) |  |  |
-| spent_last_month | [double](#double) |  |  |
-| spent_last_six_months | [double](#double) |  |  |
-| spent_last_year | [double](#double) |  |  |
-| spent_last_two_years | [double](#double) |  |  |
-| user_id | [uint64](#uint64) |  |  |
-| month | [uint32](#uint32) |  |  |
-| transaction_count | [uint64](#uint64) |  |  |
-
-
-
-
-
-
-<a name="financial_integration_service_api-v1-PaymentChannelMonthlyExpenditure"></a>
-
-### PaymentChannelMonthlyExpenditure
-PaymentChannelMonthlyExpenditure
-This message is used to represent the monthly expenditure of a payment channel.
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| month | [uint32](#uint32) |  |  |
-| payment_channel | [string](#string) |  |  |
-| total_spending | [double](#double) |  |  |
-| user_id | [uint64](#uint64) |  |  |
-
-
-
-
-
-
-<a name="financial_integration_service_api-v1-ReOccuringTransaction"></a>
-
-### ReOccuringTransaction
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| account_id | [string](#string) |  | @gotag: ch:&#34;account_id&#34; |
-| stream_id | [string](#string) |  | @gotag: ch:&#34;stream_id&#34; |
-| category_id | [string](#string) |  | @gotag: ch:&#34;category_id&#34; |
-| description | [string](#string) |  | @gotag: ch:&#34;description&#34; |
-| merchant_name | [string](#string) |  | @gotag: ch:&#34;merchant_name&#34; |
-| personal_finance_category_primary | [string](#string) |  | @gotag: ch:&#34;personal_finance_category_primary&#34; |
-| personal_finance_category_detailed | [string](#string) |  | @gotag: ch:&#34;personal_finance_category_detailed&#34; |
-| first_date | [string](#string) |  | @gotag: ch:&#34;first_date&#34; |
-| last_date | [string](#string) |  | @gotag: ch:&#34;last_date&#34; |
-| frequency | [ReOccuringTransactionsFrequency](#financial_integration_service_api-v1-ReOccuringTransactionsFrequency) |  | @gotag: ch:&#34;frequency&#34; |
-| transaction_ids | [string](#string) |  | @gotag: ch:&#34;transaction_ids,array&#34; |
-| average_amount | [string](#string) |  | @gotag: ch:&#34;average_amount&#34; |
-| average_amount_iso_currency_code | [string](#string) |  | @gotag: ch:&#34;average_amount_iso_currency_code&#34; |
-| last_amount | [string](#string) |  | @gotag: ch:&#34;last_amount&#34; |
-| last_amount_iso_currency_code | [string](#string) |  | @gotag: ch:&#34;last_amount_iso_currency_code&#34; |
-| is_active | [bool](#bool) |  | @gotag: ch:&#34;is_active&#34; |
-| status | [ReOccuringTransactionsStatus](#financial_integration_service_api-v1-ReOccuringTransactionsStatus) |  | @gotag: ch:&#34;status&#34; |
-| updated_time | [string](#string) |  | @gotag: ch:&#34;updated_time&#34; |
-| user_id | [uint64](#uint64) |  | @gotag: ch:&#34;user_id&#34; |
-| link_id | [uint64](#uint64) |  | @gotag: ch:&#34;link_id&#34; |
-| id | [string](#string) |  | @gotag: ch:&#34;id&#34; |
-| flow | [ReCurringFlow](#financial_integration_service_api-v1-ReCurringFlow) |  | @gotag: ch:&#34;flow&#34; |
-| sign | [int32](#int32) |  |  |
-| time | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
-| additional_properties | [google.protobuf.Any](#google-protobuf-Any) |  |  |
-
-
-
-
-
-
-<a name="financial_integration_service_api-v1-TotalInvestmentBySecurity"></a>
-
-### TotalInvestmentBySecurity
-TotalInvestmentBySecurity
-This message is used to represent the total investment of a security.
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| security_id | [string](#string) |  |  |
-| total_investment | [double](#double) |  |  |
-| user_id | [uint64](#uint64) |  |  |
-
-
-
-
-
-
-<a name="financial_integration_service_api-v1-Transaction"></a>
-
-### Transaction
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| account_id | [string](#string) |  | @gotag: ch:&#34;account_id&#34; |
-| amount | [double](#double) |  | @gotag: ch:&#34;amount&#34; |
-| iso_currency_code | [string](#string) |  | @gotag: ch:&#34;iso_currency_code&#34; |
-| unofficial_currency_code | [string](#string) |  | @gotag: ch:&#34;unofficial_currency_code&#34; |
-| category_id | [string](#string) |  | @gotag: ch:&#34;category_id&#34; |
-| check_number | [string](#string) |  | @gotag: ch:&#34;check_number&#34; |
-| current_date | [string](#string) |  | @gotag: ch:&#34;date&#34; |
-| current_datetime | [string](#string) |  | @gotag: ch:&#34;datetime&#34; |
-| authorized_date | [string](#string) |  | @gotag: ch:&#34;authorized_date&#34; |
-| authorized_datetime | [string](#string) |  | @gotag: ch:&#34;authorized_datetime&#34; |
-| name | [string](#string) |  | @gotag: ch:&#34;name&#34; |
-| merchant_name | [string](#string) |  | @gotag: ch:&#34;merchant_name&#34; |
-| payment_channel | [string](#string) |  | @gotag: ch:&#34;payment_channel&#34; |
-| pending | [bool](#bool) |  | @gotag: ch:&#34;pending&#34; |
-| pending_transaction_id | [string](#string) |  | @gotag: ch:&#34;pending_transaction_id&#34; |
-| account_owner | [string](#string) |  | @gotag: ch:&#34;account_owner&#34; |
-| transaction_id | [string](#string) |  | @gotag: ch:&#34;transaction_id&#34; |
-| transaction_code | [string](#string) |  | @gotag: ch:&#34;transaction_code&#34; |
-| id | [string](#string) |  |  |
-| user_id | [uint64](#uint64) |  | @gotag: ch:&#34;user_id&#34; |
-| link_id | [uint64](#uint64) |  | @gotag: ch:&#34;link_id&#34; |
-| sign | [int32](#int32) |  |  |
-| personal_finance_category_primary | [string](#string) |  | @gotag: ch:&#34;personal_finance_category_primary&#34; |
-| personal_finance_category_detailed | [string](#string) |  | @gotag: ch:&#34;personal_finance_category_detailed&#34; |
-| location_address | [string](#string) |  |  |
-| location_city | [string](#string) |  |  |
-| location_region | [string](#string) |  |  |
-| location_postal_code | [string](#string) |  |  |
-| location_country | [string](#string) |  |  |
-| location_lat | [double](#double) |  |  |
-| location_lon | [double](#double) |  |  |
-| location_store_number | [string](#string) |  |  |
-| payment_meta_by_order_of | [string](#string) |  |  |
-| payment_meta_payee | [string](#string) |  |  |
-| payment_meta_payer | [string](#string) |  |  |
-| payment_meta_payment_method | [string](#string) |  |  |
-| payment_meta_payment_processor | [string](#string) |  |  |
-| payment_meta_ppd_id | [string](#string) |  |  |
-| payment_meta_reason | [string](#string) |  |  |
-| payment_meta_reference_number | [string](#string) |  |  |
-| time | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
-| additional_properties | [google.protobuf.Any](#google-protobuf-Any) |  |  |
-| categories | [string](#string) | repeated |  |
-
-
-
-
-
-
-<a name="financial_integration_service_api-v1-TransactionAggregatesByMonth"></a>
-
-### TransactionAggregatesByMonth
-TransactionAggregatesByMonth
-This message is used to represent the transaction aggregates of a user.
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| month | [uint32](#uint32) |  |  |
-| personal_finance_category_primary | [string](#string) |  |  |
-| location_city | [string](#string) |  |  |
-| payment_channel | [string](#string) |  |  |
-| merchant_name | [string](#string) |  |  |
-| transaction_count | [uint64](#uint64) |  |  |
-| total_amount | [double](#double) |  |  |
-| user_id | [uint64](#uint64) |  |  |
-
-
-
-
-
-
-<a name="financial_integration_service_api-v1-UserFinancialHealthMetricsTable"></a>
-
-### UserFinancialHealthMetricsTable
-UserFinancialHealthMetricsTable
-This message is used to represent the financial health metrics of a user.
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| time | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
-| user_id | [uint64](#uint64) |  |  |
-| monthly_income | [double](#double) |  |  |
-| monthly_expenses | [double](#double) |  |  |
-| transaction_diversity | [uint64](#uint64) |  |  |
-| debt_to_income_ratio | [double](#double) |  |  |
-| overdraft_frequency | [uint64](#uint64) |  |  |
-
-
-
-
-
- 
-
-
-<a name="financial_integration_service_api-v1-ReCurringFlow"></a>
-
-### ReCurringFlow
-
-
-| Name | Number | Description |
-| ---- | ------ | ----------- |
-| RE_CURRING_FLOW_UNSPECIFIED | 0 |  |
-| RE_CURRING_FLOW_INFLOW | 1 |  |
-| RE_CURRING_FLOW_OUTFLOW | 2 |  |
-
-
-
-<a name="financial_integration_service_api-v1-ReOccuringTransactionsFrequency"></a>
-
-### ReOccuringTransactionsFrequency
-
-
-| Name | Number | Description |
-| ---- | ------ | ----------- |
-| RE_OCCURING_TRANSACTIONS_FREQUENCY_UNSPECIFIED | 0 |  |
-| RE_OCCURING_TRANSACTIONS_FREQUENCY_WEEKLY | 1 |  |
-| RE_OCCURING_TRANSACTIONS_FREQUENCY_BIWEEKLY | 2 |  |
-| RE_OCCURING_TRANSACTIONS_FREQUENCY_SEMI_MONTHLY | 3 |  |
-| RE_OCCURING_TRANSACTIONS_FREQUENCY_MONTHLY | 4 |  |
-| RE_OCCURING_TRANSACTIONS_FREQUENCY_ANNUALLY | 5 |  |
-
-
-
-<a name="financial_integration_service_api-v1-ReOccuringTransactionsStatus"></a>
-
-### ReOccuringTransactionsStatus
-
-
-| Name | Number | Description |
-| ---- | ------ | ----------- |
-| RE_OCCURING_TRANSACTIONS_STATUS_UNSPECIFIED | 0 |  |
-| RE_OCCURING_TRANSACTIONS_STATUS_MATURE | 1 | A MATURE recurring stream should have at least 3 transactions and happen on a regular cadence (For Annual recurring stream, we will mark it MATURE after 2 instances). |
-| RE_OCCURING_TRANSACTIONS_STATUS_EARLY_DETECTION | 2 | When a recurring transaction first appears in the transaction history and before it fulfills the requirement of a mature stream, the status will be EARLY_DETECTION. |
-| RE_OCCURING_TRANSACTIONS_STATUS_TOMBSTONED | 3 | A stream that was previously in the EARLY_DETECTION status will move to the TOMBSTONED status when no further transactions were found at the next expected date. |
-
-
- 
-
- 
-
- 
-
-
-
-<a name="financial_integration_service_api_v1_errors_ignore_financial_service-proto"></a>
-<p align="right"><a href="#top">Top</a></p>
-
-## financial_integration_service_api/v1/errors_ignore_financial_service.proto
-
-
-
-<a name="financial_integration_service_api-v1-ErrorMessageRequest"></a>
-
-### ErrorMessageRequest
-
-
-
-
-
-
-
-<a name="financial_integration_service_api-v1-InternalErrorMessageResponse"></a>
-
-### InternalErrorMessageResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| code | [InternalErrorCode](#financial_integration_service_api-v1-InternalErrorCode) |  |  |
-| message | [string](#string) |  |  |
-
-
-
-
-
-
-<a name="financial_integration_service_api-v1-PathUnknownErrorMessageResponse"></a>
-
-### PathUnknownErrorMessageResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| code | [NotFoundErrorCode](#financial_integration_service_api-v1-NotFoundErrorCode) |  |  |
-| message | [string](#string) |  |  |
-
-
-
-
-
-
-<a name="financial_integration_service_api-v1-ValidationErrorMessageResponse"></a>
-
-### ValidationErrorMessageResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| code | [ErrorCode](#financial_integration_service_api-v1-ErrorCode) |  |  |
-| message | [string](#string) |  |  |
-
-
-
-
-
- 
-
-
-<a name="financial_integration_service_api-v1-AuthErrorCode"></a>
-
-### AuthErrorCode
-
-
-| Name | Number | Description |
-| ---- | ------ | ----------- |
-| no_auth_error | 0 |  |
-| auth_failed_invalid_subject | 1001 |  |
-| auth_failed_invalid_audience | 1002 |  |
-| auth_failed_invalid_issuer | 1003 |  |
-| invalid_claims | 1004 |  |
-| auth_failed_invalid_bearer_token | 1005 |  |
-| bearer_token_missing | 1010 |  |
-| unauthenticated | 1500 |  |
-
-
-
-<a name="financial_integration_service_api-v1-ErrorCode"></a>
-
-### ErrorCode
-
-
-| Name | Number | Description |
-| ---- | ------ | ----------- |
-| no_error | 0 |  |
-| validation_error | 2000 |  |
-| authorization_model_not_found | 2001 |  |
-| authorization_model_resolution_too_complex | 2002 |  |
-| invalid_write_input | 2003 |  |
-| cannot_allow_duplicate_tuples_in_one_request | 2004 |  |
-| cannot_allow_duplicate_types_in_one_request | 2005 |  |
-| cannot_allow_multiple_references_to_one_relation | 2006 |  |
-| invalid_continuation_token | 2007 |  |
-| invalid_tuple_set | 2008 |  |
-| invalid_check_input | 2009 |  |
-| invalid_expand_input | 2010 |  |
-| unsupported_user_set | 2011 |  |
-| invalid_object_format | 2012 |  |
-| write_failed_due_to_invalid_input | 2017 |  |
-| authorization_model_assertions_not_found | 2018 |  |
-| latest_authorization_model_not_found | 2020 |  |
-| type_not_found | 2021 |  |
-| relation_not_found | 2022 |  |
-| empty_relation_definition | 2023 |  |
-| invalid_user | 2025 |  |
-| invalid_tuple | 2027 |  |
-| unknown_relation | 2028 |  |
-| store_id_invalid_length | 2030 |  |
-| assertions_too_many_items | 2033 |  |
-| id_too_long | 2034 |  |
-| authorization_model_id_too_long | 2036 |  |
-| tuple_key_value_not_specified | 2037 |  |
-| tuple_keys_too_many_or_too_few_items | 2038 |  |
-| page_size_invalid | 2039 |  |
-| param_missing_value | 2040 |  |
-| difference_base_missing_value | 2041 |  |
-| subtract_base_missing_value | 2042 |  |
-| object_too_long | 2043 |  |
-| relation_too_long | 2044 |  |
-| type_definitions_too_few_items | 2045 |  |
-| type_invalid_length | 2046 |  |
-| type_invalid_pattern | 2047 |  |
-| relations_too_few_items | 2048 |  |
-| relations_too_long | 2049 |  |
-| relations_invalid_pattern | 2050 |  |
-| object_invalid_pattern | 2051 |  |
-| query_string_type_continuation_token_mismatch | 2052 |  |
-| exceeded_entity_limit | 2053 |  |
-| invalid_contextual_tuple | 2054 |  |
-| duplicate_contextual_tuple | 2055 |  |
-| invalid_authorization_model | 2056 |  |
-| unsupported_schema_version | 2057 |  |
-
-
-
-<a name="financial_integration_service_api-v1-InternalErrorCode"></a>
-
-### InternalErrorCode
-
-
-| Name | Number | Description |
-| ---- | ------ | ----------- |
-| no_internal_error | 0 |  |
-| internal_error | 4000 |  |
-| cancelled | 4003 |  |
-| deadline_exceeded | 4004 |  |
-| already_exists | 4005 |  |
-| resource_exhausted | 4006 |  |
-| failed_precondition | 4007 |  |
-| aborted | 4008 |  |
-| out_of_range | 4009 |  |
-| unavailable | 4010 |  |
-| data_loss | 4011 |  |
-
-
-
-<a name="financial_integration_service_api-v1-NotFoundErrorCode"></a>
-
-### NotFoundErrorCode
-
-
-| Name | Number | Description |
-| ---- | ------ | ----------- |
-| no_not_found_error | 0 |  |
-| undefined_endpoint | 5000 |  |
-| store_id_not_found | 5002 |  |
-| unimplemented | 5004 |  |
-
-
- 
-
- 
-
- 
 
 
 
@@ -1845,6 +920,936 @@ such as the id, user_id tied to the profile, and many more
 | STRIPE_SUBSCRIPTION_STATUS_INCOMPLETE_EXPIRED | 8 |  |
 | STRIPE_SUBSCRIPTION_STATUS_CREATED | 9 |  |
 | STRIPE_SUBSCRIPTION_STATUS_PAUSED | 10 |  |
+
+
+ 
+
+ 
+
+ 
+
+
+
+<a name="financial_integration_service_api_v1_clickhouse_financial_service-proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## financial_integration_service_api/v1/clickhouse_financial_service.proto
+
+
+
+<a name="financial_integration_service_api-v1-AccountBalanceHistory"></a>
+
+### AccountBalanceHistory
+Account Balance History
+This message is used to represent the balance history of an account.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| time | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+| account_id | [string](#string) |  |  |
+| iso_currency_code | [string](#string) |  |  |
+| balance | [double](#double) |  |  |
+| user_id | [uint64](#uint64) |  |  |
+| sign | [uint32](#uint32) |  |  |
+| id | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-CategoryMetricsFinancialSubProfile"></a>
+
+### CategoryMetricsFinancialSubProfile
+CategoryMetricsFinancialSubProfile
+This message is used to represent the financial sub profile of a category.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| month | [uint32](#uint32) |  |  |
+| personal_finance_category_primary | [string](#string) |  |  |
+| transaction_count | [uint64](#uint64) |  |  |
+| spent_last_week | [double](#double) |  |  |
+| spent_last_two_weeks | [double](#double) |  |  |
+| spent_last_month | [double](#double) |  |  |
+| spent_last_six_months | [double](#double) |  |  |
+| spent_last_year | [double](#double) |  |  |
+| spent_last_two_years | [double](#double) |  |  |
+| user_id | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-CategoryMonthlyExpenditure"></a>
+
+### CategoryMonthlyExpenditure
+CategoryMonthlyExpenditure represents the monthly expenditure of a category.
+This message is used to represent the monthly expenditure of a category.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| month | [uint32](#uint32) |  |  |
+| personal_finance_category_primary | [string](#string) |  |  |
+| total_spending | [double](#double) |  |  |
+| user_id | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-CategoryMonthlyIncome"></a>
+
+### CategoryMonthlyIncome
+CategoryMonthlyIncome
+This message is used to represent the monthly income of a category.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| month | [uint32](#uint32) |  |  |
+| personal_finance_category_primary | [string](#string) |  |  |
+| total_income | [double](#double) |  |  |
+| user_id | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-CategoryMonthlyTransactionCount"></a>
+
+### CategoryMonthlyTransactionCount
+CategoryMonthlyTransactionCount
+This message is used to represent the monthly transaction count of a category.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| month | [uint32](#uint32) |  |  |
+| personal_finance_category_primary | [string](#string) |  |  |
+| transaction_count | [uint32](#uint32) |  |  |
+| user_id | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-DebtToIncomeRatio"></a>
+
+### DebtToIncomeRatio
+DebtToIncomeRatio
+This message is used to represent the debt to income ratio of a user.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| month | [uint32](#uint32) |  |  |
+| ratio | [double](#double) |  |  |
+| user_id | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-ExpenseMetrics"></a>
+
+### ExpenseMetrics
+ExpenseMetrics
+This message is used to represent the expense metrics of a user.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| month | [uint32](#uint32) |  |  |
+| personal_finance_category_primary | [string](#string) |  |  |
+| transaction_count | [uint64](#uint64) |  |  |
+| total_expenses | [double](#double) |  |  |
+| user_id | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-ExpenseMetricsFinancialSubProfileMetrics"></a>
+
+### ExpenseMetricsFinancialSubProfileMetrics
+ExpenseMetricsFinancialSubProfileMetrics
+This message is used to represent the financial sub profile metrics of a user.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| month | [uint32](#uint32) |  |  |
+| spent_last_week | [double](#double) |  |  |
+| spent_last_month | [double](#double) |  |  |
+| spent_last_six_months | [double](#double) |  |  |
+| average_monthly_discretionary_spending | [double](#double) |  |  |
+| average_monthly_recurring_spending | [double](#double) |  |  |
+| user_id | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-FinancialProfile"></a>
+
+### FinancialProfile
+FinancialProfile
+This message is used to represent the financial profile of a user.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| month | [uint32](#uint32) |  |  |
+| total_income | [double](#double) |  |  |
+| total_expenses | [double](#double) |  |  |
+| number_of_transactions | [uint64](#uint64) |  |  |
+| most_expensive_category | [string](#string) |  |  |
+| user_id | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-IncomeExpenseRatio"></a>
+
+### IncomeExpenseRatio
+IncomeExpenseRatio
+This message is used to represent the income expense ratio of a user.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| month | [uint32](#uint32) |  |  |
+| ratio | [double](#double) |  |  |
+| user_id | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-IncomeMetrics"></a>
+
+### IncomeMetrics
+IncomeMetrics
+This message is used to represent the income metrics of a user.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| month | [uint32](#uint32) |  |  |
+| personal_finance_category_primary | [string](#string) |  |  |
+| transaction_count | [uint64](#uint64) |  |  |
+| total_income | [double](#double) |  |  |
+| user_id | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-IncomeMetricsFinancialSubProfile"></a>
+
+### IncomeMetricsFinancialSubProfile
+IncomeMetricsFinancialSubProfile
+This message is used to represent the financial sub profile of a user.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| month | [uint32](#uint32) |  |  |
+| income_last_two_weeks | [double](#double) |  |  |
+| income_last_month | [double](#double) |  |  |
+| income_last_two_months | [double](#double) |  |  |
+| income_last_six_months | [double](#double) |  |  |
+| income_last_year | [double](#double) |  |  |
+| user_id | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-InvestmentTransaction"></a>
+
+### InvestmentTransaction
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| account_id | [string](#string) |  | @gotag: ch:&#34;account_id&#34; |
+| ammount | [string](#string) |  | @gotag: ch:&#34;amount&#34; |
+| investment_transaction_id | [string](#string) |  | @gotag: ch:&#34;investment_transaction_id&#34; |
+| security_id | [string](#string) |  | @gotag: ch:&#34;security_id&#34; |
+| current_date | [string](#string) |  | @gotag: ch:&#34;date&#34; |
+| name | [string](#string) |  | @gotag: ch:&#34;name&#34; |
+| quantity | [double](#double) |  | @gotag: ch:&#34;quantity&#34; |
+| amount | [double](#double) |  | @gotag: ch:&#34;amount&#34; |
+| price | [double](#double) |  | @gotag: ch:&#34;price&#34; |
+| fees | [double](#double) |  | @gotag: ch:&#34;fees&#34; |
+| type | [string](#string) |  | @gotag: ch:&#34;type&#34; |
+| subtype | [string](#string) |  | @gotag: ch:&#34;subtype&#34; |
+| iso_currency_code | [string](#string) |  | @gotag: ch:&#34;iso_currency_code&#34; |
+| unofficial_currency_code | [string](#string) |  | @gotag: ch:&#34;unofficial_currency_code&#34; |
+| link_id | [uint64](#uint64) |  | @gotag: ch:&#34;link_id&#34; |
+| id | [string](#string) |  | @gotag: ch:&#34;id&#34; |
+| user_id | [uint64](#uint64) |  | @gotag: ch:&#34;user_id&#34; |
+| created_at | [string](#string) |  |  |
+| sign | [int32](#int32) |  |  |
+| time | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+| additional_properties | [google.protobuf.Any](#google-protobuf-Any) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-LocationFinancialSubProfile"></a>
+
+### LocationFinancialSubProfile
+LocationFinancialSubProfile
+This message is used to represent the financial sub profile of a location.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| location_city | [string](#string) |  |  |
+| transaction_count | [uint64](#uint64) |  |  |
+| spent_last_week | [double](#double) |  |  |
+| spent_last_two_weeks | [double](#double) |  |  |
+| spent_last_month | [double](#double) |  |  |
+| spent_last_six_months | [double](#double) |  |  |
+| spent_last_year | [double](#double) |  |  |
+| spent_last_two_years | [double](#double) |  |  |
+| user_id | [uint64](#uint64) |  |  |
+| month | [uint32](#uint32) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-MelodyFinancialContext"></a>
+
+### MelodyFinancialContext
+MelodyFinancialContext represents the financial context of a user.
+This message is used to represent the financial context of a user.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| categories | [CategoryMetricsFinancialSubProfile](#financial_integration_service_api-v1-CategoryMetricsFinancialSubProfile) | repeated |  |
+| expenses | [ExpenseMetricsFinancialSubProfileMetrics](#financial_integration_service_api-v1-ExpenseMetricsFinancialSubProfileMetrics) | repeated |  |
+| income | [IncomeMetricsFinancialSubProfile](#financial_integration_service_api-v1-IncomeMetricsFinancialSubProfile) | repeated |  |
+| locations | [LocationFinancialSubProfile](#financial_integration_service_api-v1-LocationFinancialSubProfile) | repeated |  |
+| merchants | [MerchantMetricsFinancialSubProfile](#financial_integration_service_api-v1-MerchantMetricsFinancialSubProfile) | repeated |  |
+| payment_channels | [PaymentChannelMetricsFinancialSubProfile](#financial_integration_service_api-v1-PaymentChannelMetricsFinancialSubProfile) | repeated |  |
+| bank_accounts | [BankAccount](#financial_integration_service_api-v1-BankAccount) | repeated |  |
+| investment_accounts | [InvestmentAccount](#financial_integration_service_api-v1-InvestmentAccount) | repeated |  |
+| credit_accounts | [CreditAccount](#financial_integration_service_api-v1-CreditAccount) | repeated |  |
+| mortgage_loan_accounts | [MortgageAccount](#financial_integration_service_api-v1-MortgageAccount) | repeated |  |
+| student_loan_accounts | [StudentLoanAccount](#financial_integration_service_api-v1-StudentLoanAccount) | repeated |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-MerchantMetricsFinancialSubProfile"></a>
+
+### MerchantMetricsFinancialSubProfile
+MerchantFinancialSubProfile
+This message is used to represent the financial sub profile of a merchant.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| merchant_name | [string](#string) |  |  |
+| spent_last_week | [double](#double) |  |  |
+| spent_last_two_weeks | [double](#double) |  |  |
+| spent_last_month | [double](#double) |  |  |
+| spent_last_six_months | [double](#double) |  |  |
+| spent_last_year | [double](#double) |  |  |
+| spent_last_two_years | [double](#double) |  |  |
+| user_id | [uint64](#uint64) |  |  |
+| month | [uint32](#uint32) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-MerchantMonthlyExpenditure"></a>
+
+### MerchantMonthlyExpenditure
+MerchantMonthlyExpenditure
+This message is used to represent the monthly expenditure of a merchant.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| month | [uint32](#uint32) |  |  |
+| merchant_name | [string](#string) |  |  |
+| total_spending | [double](#double) |  |  |
+| user_id | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-MonthlyBalance"></a>
+
+### MonthlyBalance
+MonthlyBalance
+This message is used to represent the monthly balance of a user.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| month | [uint32](#uint32) |  |  |
+| net_balance | [double](#double) |  |  |
+| user_id | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-MonthlyExpenditure"></a>
+
+### MonthlyExpenditure
+MonthlyExpenditure
+This message is used to represent the monthly expenditure of a user.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| month | [uint32](#uint32) |  |  |
+| total_spending | [double](#double) |  |  |
+| user_id | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-MonthlyIncome"></a>
+
+### MonthlyIncome
+MonthlyIncome
+This message is used to represent the monthly income of a user.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| month | [uint32](#uint32) |  |  |
+| total_income | [double](#double) |  |  |
+| user_id | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-MonthlySavings"></a>
+
+### MonthlySavings
+MonthlySavings
+This message is used to represent the monthly savings of a user.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| month | [uint32](#uint32) |  |  |
+| net_savings | [double](#double) |  |  |
+| user_id | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-MonthlyTotalQuantityBySecurityAndUser"></a>
+
+### MonthlyTotalQuantityBySecurityAndUser
+MonthlyTotalQuantityBySecurityAndUser
+This message is used to represent the monthly total quantity of a security.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| month | [uint32](#uint32) |  |  |
+| security_id | [string](#string) |  |  |
+| total_quantity | [double](#double) |  |  |
+| user_id | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-MonthlyTransactionCount"></a>
+
+### MonthlyTransactionCount
+MonthlyTransactionCount
+This message is used to represent the monthly transaction count of a user.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| month | [uint32](#uint32) |  |  |
+| transaction_count | [uint64](#uint64) |  |  |
+| user_id | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-PaymentChannelMetricsFinancialSubProfile"></a>
+
+### PaymentChannelMetricsFinancialSubProfile
+PaymentChannelMetricsFinancialSubProfile
+This message is used to represent the financial sub profile of a payment channel.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| payment_channel | [string](#string) |  |  |
+| spent_last_week | [double](#double) |  |  |
+| spent_last_two_weeks | [double](#double) |  |  |
+| spent_last_month | [double](#double) |  |  |
+| spent_last_six_months | [double](#double) |  |  |
+| spent_last_year | [double](#double) |  |  |
+| spent_last_two_years | [double](#double) |  |  |
+| user_id | [uint64](#uint64) |  |  |
+| month | [uint32](#uint32) |  |  |
+| transaction_count | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-PaymentChannelMonthlyExpenditure"></a>
+
+### PaymentChannelMonthlyExpenditure
+PaymentChannelMonthlyExpenditure
+This message is used to represent the monthly expenditure of a payment channel.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| month | [uint32](#uint32) |  |  |
+| payment_channel | [string](#string) |  |  |
+| total_spending | [double](#double) |  |  |
+| user_id | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-ReOccuringTransaction"></a>
+
+### ReOccuringTransaction
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| account_id | [string](#string) |  | @gotag: ch:&#34;account_id&#34; |
+| stream_id | [string](#string) |  | @gotag: ch:&#34;stream_id&#34; |
+| category_id | [string](#string) |  | @gotag: ch:&#34;category_id&#34; |
+| description | [string](#string) |  | @gotag: ch:&#34;description&#34; |
+| merchant_name | [string](#string) |  | @gotag: ch:&#34;merchant_name&#34; |
+| personal_finance_category_primary | [string](#string) |  | @gotag: ch:&#34;personal_finance_category_primary&#34; |
+| personal_finance_category_detailed | [string](#string) |  | @gotag: ch:&#34;personal_finance_category_detailed&#34; |
+| first_date | [string](#string) |  | @gotag: ch:&#34;first_date&#34; |
+| last_date | [string](#string) |  | @gotag: ch:&#34;last_date&#34; |
+| frequency | [ReOccuringTransactionsFrequency](#financial_integration_service_api-v1-ReOccuringTransactionsFrequency) |  | @gotag: ch:&#34;frequency&#34; |
+| transaction_ids | [string](#string) |  | @gotag: ch:&#34;transaction_ids,array&#34; |
+| average_amount | [string](#string) |  | @gotag: ch:&#34;average_amount&#34; |
+| average_amount_iso_currency_code | [string](#string) |  | @gotag: ch:&#34;average_amount_iso_currency_code&#34; |
+| last_amount | [string](#string) |  | @gotag: ch:&#34;last_amount&#34; |
+| last_amount_iso_currency_code | [string](#string) |  | @gotag: ch:&#34;last_amount_iso_currency_code&#34; |
+| is_active | [bool](#bool) |  | @gotag: ch:&#34;is_active&#34; |
+| status | [ReOccuringTransactionsStatus](#financial_integration_service_api-v1-ReOccuringTransactionsStatus) |  | @gotag: ch:&#34;status&#34; |
+| updated_time | [string](#string) |  | @gotag: ch:&#34;updated_time&#34; |
+| user_id | [uint64](#uint64) |  | @gotag: ch:&#34;user_id&#34; |
+| link_id | [uint64](#uint64) |  | @gotag: ch:&#34;link_id&#34; |
+| id | [string](#string) |  | @gotag: ch:&#34;id&#34; |
+| flow | [ReCurringFlow](#financial_integration_service_api-v1-ReCurringFlow) |  | @gotag: ch:&#34;flow&#34; |
+| sign | [int32](#int32) |  |  |
+| time | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+| additional_properties | [google.protobuf.Any](#google-protobuf-Any) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-TotalInvestmentBySecurity"></a>
+
+### TotalInvestmentBySecurity
+TotalInvestmentBySecurity
+This message is used to represent the total investment of a security.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| security_id | [string](#string) |  |  |
+| total_investment | [double](#double) |  |  |
+| user_id | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-Transaction"></a>
+
+### Transaction
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| account_id | [string](#string) |  | @gotag: ch:&#34;account_id&#34; |
+| amount | [double](#double) |  | @gotag: ch:&#34;amount&#34; |
+| iso_currency_code | [string](#string) |  | @gotag: ch:&#34;iso_currency_code&#34; |
+| unofficial_currency_code | [string](#string) |  | @gotag: ch:&#34;unofficial_currency_code&#34; |
+| category_id | [string](#string) |  | @gotag: ch:&#34;category_id&#34; |
+| check_number | [string](#string) |  | @gotag: ch:&#34;check_number&#34; |
+| current_date | [string](#string) |  | @gotag: ch:&#34;date&#34; |
+| current_datetime | [string](#string) |  | @gotag: ch:&#34;datetime&#34; |
+| authorized_date | [string](#string) |  | @gotag: ch:&#34;authorized_date&#34; |
+| authorized_datetime | [string](#string) |  | @gotag: ch:&#34;authorized_datetime&#34; |
+| name | [string](#string) |  | @gotag: ch:&#34;name&#34; |
+| merchant_name | [string](#string) |  | @gotag: ch:&#34;merchant_name&#34; |
+| payment_channel | [string](#string) |  | @gotag: ch:&#34;payment_channel&#34; |
+| pending | [bool](#bool) |  | @gotag: ch:&#34;pending&#34; |
+| pending_transaction_id | [string](#string) |  | @gotag: ch:&#34;pending_transaction_id&#34; |
+| account_owner | [string](#string) |  | @gotag: ch:&#34;account_owner&#34; |
+| transaction_id | [string](#string) |  | @gotag: ch:&#34;transaction_id&#34; |
+| transaction_code | [string](#string) |  | @gotag: ch:&#34;transaction_code&#34; |
+| id | [string](#string) |  |  |
+| user_id | [uint64](#uint64) |  | @gotag: ch:&#34;user_id&#34; |
+| link_id | [uint64](#uint64) |  | @gotag: ch:&#34;link_id&#34; |
+| sign | [int32](#int32) |  |  |
+| personal_finance_category_primary | [string](#string) |  | @gotag: ch:&#34;personal_finance_category_primary&#34; |
+| personal_finance_category_detailed | [string](#string) |  | @gotag: ch:&#34;personal_finance_category_detailed&#34; |
+| location_address | [string](#string) |  |  |
+| location_city | [string](#string) |  |  |
+| location_region | [string](#string) |  |  |
+| location_postal_code | [string](#string) |  |  |
+| location_country | [string](#string) |  |  |
+| location_lat | [double](#double) |  |  |
+| location_lon | [double](#double) |  |  |
+| location_store_number | [string](#string) |  |  |
+| payment_meta_by_order_of | [string](#string) |  |  |
+| payment_meta_payee | [string](#string) |  |  |
+| payment_meta_payer | [string](#string) |  |  |
+| payment_meta_payment_method | [string](#string) |  |  |
+| payment_meta_payment_processor | [string](#string) |  |  |
+| payment_meta_ppd_id | [string](#string) |  |  |
+| payment_meta_reason | [string](#string) |  |  |
+| payment_meta_reference_number | [string](#string) |  |  |
+| time | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+| additional_properties | [google.protobuf.Any](#google-protobuf-Any) |  |  |
+| categories | [string](#string) | repeated |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-TransactionAggregatesByMonth"></a>
+
+### TransactionAggregatesByMonth
+TransactionAggregatesByMonth
+This message is used to represent the transaction aggregates of a user.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| month | [uint32](#uint32) |  |  |
+| personal_finance_category_primary | [string](#string) |  |  |
+| location_city | [string](#string) |  |  |
+| payment_channel | [string](#string) |  |  |
+| merchant_name | [string](#string) |  |  |
+| transaction_count | [uint64](#uint64) |  |  |
+| total_amount | [double](#double) |  |  |
+| user_id | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-UserFinancialHealthMetricsTable"></a>
+
+### UserFinancialHealthMetricsTable
+UserFinancialHealthMetricsTable
+This message is used to represent the financial health metrics of a user.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| time | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+| user_id | [uint64](#uint64) |  |  |
+| monthly_income | [double](#double) |  |  |
+| monthly_expenses | [double](#double) |  |  |
+| transaction_diversity | [uint64](#uint64) |  |  |
+| debt_to_income_ratio | [double](#double) |  |  |
+| overdraft_frequency | [uint64](#uint64) |  |  |
+
+
+
+
+
+ 
+
+
+<a name="financial_integration_service_api-v1-ReCurringFlow"></a>
+
+### ReCurringFlow
+
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| RE_CURRING_FLOW_UNSPECIFIED | 0 |  |
+| RE_CURRING_FLOW_INFLOW | 1 |  |
+| RE_CURRING_FLOW_OUTFLOW | 2 |  |
+
+
+
+<a name="financial_integration_service_api-v1-ReOccuringTransactionsFrequency"></a>
+
+### ReOccuringTransactionsFrequency
+
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| RE_OCCURING_TRANSACTIONS_FREQUENCY_UNSPECIFIED | 0 |  |
+| RE_OCCURING_TRANSACTIONS_FREQUENCY_WEEKLY | 1 |  |
+| RE_OCCURING_TRANSACTIONS_FREQUENCY_BIWEEKLY | 2 |  |
+| RE_OCCURING_TRANSACTIONS_FREQUENCY_SEMI_MONTHLY | 3 |  |
+| RE_OCCURING_TRANSACTIONS_FREQUENCY_MONTHLY | 4 |  |
+| RE_OCCURING_TRANSACTIONS_FREQUENCY_ANNUALLY | 5 |  |
+
+
+
+<a name="financial_integration_service_api-v1-ReOccuringTransactionsStatus"></a>
+
+### ReOccuringTransactionsStatus
+
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| RE_OCCURING_TRANSACTIONS_STATUS_UNSPECIFIED | 0 |  |
+| RE_OCCURING_TRANSACTIONS_STATUS_MATURE | 1 | A MATURE recurring stream should have at least 3 transactions and happen on a regular cadence (For Annual recurring stream, we will mark it MATURE after 2 instances). |
+| RE_OCCURING_TRANSACTIONS_STATUS_EARLY_DETECTION | 2 | When a recurring transaction first appears in the transaction history and before it fulfills the requirement of a mature stream, the status will be EARLY_DETECTION. |
+| RE_OCCURING_TRANSACTIONS_STATUS_TOMBSTONED | 3 | A stream that was previously in the EARLY_DETECTION status will move to the TOMBSTONED status when no further transactions were found at the next expected date. |
+
+
+ 
+
+ 
+
+ 
+
+
+
+<a name="financial_integration_service_api_v1_errors_ignore_financial_service-proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## financial_integration_service_api/v1/errors_ignore_financial_service.proto
+
+
+
+<a name="financial_integration_service_api-v1-ErrorMessageRequest"></a>
+
+### ErrorMessageRequest
+
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-InternalErrorMessageResponse"></a>
+
+### InternalErrorMessageResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| code | [InternalErrorCode](#financial_integration_service_api-v1-InternalErrorCode) |  |  |
+| message | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-PathUnknownErrorMessageResponse"></a>
+
+### PathUnknownErrorMessageResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| code | [NotFoundErrorCode](#financial_integration_service_api-v1-NotFoundErrorCode) |  |  |
+| message | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-ValidationErrorMessageResponse"></a>
+
+### ValidationErrorMessageResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| code | [ErrorCode](#financial_integration_service_api-v1-ErrorCode) |  |  |
+| message | [string](#string) |  |  |
+
+
+
+
+
+ 
+
+
+<a name="financial_integration_service_api-v1-AuthErrorCode"></a>
+
+### AuthErrorCode
+
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| no_auth_error | 0 |  |
+| auth_failed_invalid_subject | 1001 |  |
+| auth_failed_invalid_audience | 1002 |  |
+| auth_failed_invalid_issuer | 1003 |  |
+| invalid_claims | 1004 |  |
+| auth_failed_invalid_bearer_token | 1005 |  |
+| bearer_token_missing | 1010 |  |
+| unauthenticated | 1500 |  |
+
+
+
+<a name="financial_integration_service_api-v1-ErrorCode"></a>
+
+### ErrorCode
+
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| no_error | 0 |  |
+| validation_error | 2000 |  |
+| authorization_model_not_found | 2001 |  |
+| authorization_model_resolution_too_complex | 2002 |  |
+| invalid_write_input | 2003 |  |
+| cannot_allow_duplicate_tuples_in_one_request | 2004 |  |
+| cannot_allow_duplicate_types_in_one_request | 2005 |  |
+| cannot_allow_multiple_references_to_one_relation | 2006 |  |
+| invalid_continuation_token | 2007 |  |
+| invalid_tuple_set | 2008 |  |
+| invalid_check_input | 2009 |  |
+| invalid_expand_input | 2010 |  |
+| unsupported_user_set | 2011 |  |
+| invalid_object_format | 2012 |  |
+| write_failed_due_to_invalid_input | 2017 |  |
+| authorization_model_assertions_not_found | 2018 |  |
+| latest_authorization_model_not_found | 2020 |  |
+| type_not_found | 2021 |  |
+| relation_not_found | 2022 |  |
+| empty_relation_definition | 2023 |  |
+| invalid_user | 2025 |  |
+| invalid_tuple | 2027 |  |
+| unknown_relation | 2028 |  |
+| store_id_invalid_length | 2030 |  |
+| assertions_too_many_items | 2033 |  |
+| id_too_long | 2034 |  |
+| authorization_model_id_too_long | 2036 |  |
+| tuple_key_value_not_specified | 2037 |  |
+| tuple_keys_too_many_or_too_few_items | 2038 |  |
+| page_size_invalid | 2039 |  |
+| param_missing_value | 2040 |  |
+| difference_base_missing_value | 2041 |  |
+| subtract_base_missing_value | 2042 |  |
+| object_too_long | 2043 |  |
+| relation_too_long | 2044 |  |
+| type_definitions_too_few_items | 2045 |  |
+| type_invalid_length | 2046 |  |
+| type_invalid_pattern | 2047 |  |
+| relations_too_few_items | 2048 |  |
+| relations_too_long | 2049 |  |
+| relations_invalid_pattern | 2050 |  |
+| object_invalid_pattern | 2051 |  |
+| query_string_type_continuation_token_mismatch | 2052 |  |
+| exceeded_entity_limit | 2053 |  |
+| invalid_contextual_tuple | 2054 |  |
+| duplicate_contextual_tuple | 2055 |  |
+| invalid_authorization_model | 2056 |  |
+| unsupported_schema_version | 2057 |  |
+
+
+
+<a name="financial_integration_service_api-v1-InternalErrorCode"></a>
+
+### InternalErrorCode
+
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| no_internal_error | 0 |  |
+| internal_error | 4000 |  |
+| cancelled | 4003 |  |
+| deadline_exceeded | 4004 |  |
+| already_exists | 4005 |  |
+| resource_exhausted | 4006 |  |
+| failed_precondition | 4007 |  |
+| aborted | 4008 |  |
+| out_of_range | 4009 |  |
+| unavailable | 4010 |  |
+| data_loss | 4011 |  |
+
+
+
+<a name="financial_integration_service_api-v1-NotFoundErrorCode"></a>
+
+### NotFoundErrorCode
+
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| no_not_found_error | 0 |  |
+| undefined_endpoint | 5000 |  |
+| store_id_not_found | 5002 |  |
+| unimplemented | 5004 |  |
 
 
  

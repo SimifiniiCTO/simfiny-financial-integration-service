@@ -815,6 +815,36 @@
                         "$ref": "#/definitions/financial_integration_service_api.v1.PaymentChannelMetricsFinancialSubProfile"
                     },
                     "type": "array"
+                },
+                "bank_accounts": {
+                    "items": {
+                        "$ref": "#/definitions/financial_integration_service_api.v1.BankAccount"
+                    },
+                    "type": "array"
+                },
+                "investment_accounts": {
+                    "items": {
+                        "$ref": "#/definitions/financial_integration_service_api.v1.InvestmentAccount"
+                    },
+                    "type": "array"
+                },
+                "credit_accounts": {
+                    "items": {
+                        "$ref": "#/definitions/financial_integration_service_api.v1.CreditAccount"
+                    },
+                    "type": "array"
+                },
+                "mortgage_loan_accounts": {
+                    "items": {
+                        "$ref": "#/definitions/financial_integration_service_api.v1.MortgageAccount"
+                    },
+                    "type": "array"
+                },
+                "student_loan_accounts": {
+                    "items": {
+                        "$ref": "#/definitions/financial_integration_service_api.v1.StudentLoanAccount"
+                    },
+                    "type": "array"
                 }
             },
             "additionalProperties": true,
