@@ -112,6 +112,8 @@ func (p *PlaidWrapper) UpdateLinkToken(ctx context.Context, options *LinkTokenOp
 		}
 	}
 
+	p.Logger.Info("creating link token with Plaid - webhooks domain check applied", zap.Any("request", options))
+
 	// if we are in sandbox mode, we need to create a public token for the sandbox account
 	// based on the env config value ... we decipher wether to use the sandbox or production plaid client
 	if p.Environment == plaid.Sandbox {
@@ -126,6 +128,8 @@ func (p *PlaidWrapper) UpdateLinkToken(ctx context.Context, options *LinkTokenOp
 		}, nil
 	}
 
+	p.Logger.Info("creating link token with Plaid - sandbox environment check applied", zap.Any("request", options))
+
 	user := plaid.LinkTokenCreateRequestUser{
 		ClientUserId: options.ClientUserID,
 	}
@@ -137,9 +141,19 @@ func (p *PlaidWrapper) UpdateLinkToken(ctx context.Context, options *LinkTokenOp
 		user,
 	)
 
+	p.Logger.Info("creating link token with Plaid - request definition defined", zap.Any("request", options))
+
 	request.SetWebhook(*webhooksUrl)
+
+	p.Logger.Info("creating link token with Plaid - webhook added", zap.Any("request", options))
+
 	request.SetAccessToken(*accessToken)
+
+	p.Logger.Info("creating link token with Plaid - acces token added", zap.Any("request", options))
+
 	request.SetLinkCustomizationName(PlaidClientName)
+
+	request.Update = plaid.NewLinkTokenCreateRequestUpdate()
 	request.Update.SetAccountSelectionEnabled(true)
 
 	p.Logger.Info("creating link token with Plaid in update mode", zap.Any("request", request))
@@ -148,6 +162,7 @@ func (p *PlaidWrapper) UpdateLinkToken(ctx context.Context, options *LinkTokenOp
 		LinkTokenCreate(ctx).
 		LinkTokenCreateRequest(*request).Execute()
 	if err != nil {
+
 		if plaidErr, ok := err.(plaid.GenericOpenAPIError); ok {
 			// Handle the plaidErr
 			// You can access the specific fields of plaidErr if needed

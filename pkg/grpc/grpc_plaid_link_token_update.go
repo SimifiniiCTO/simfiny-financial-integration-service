@@ -40,7 +40,7 @@ func (s *Server) PlaidInitiateTokenUpdate(ctx context.Context, req *proto.PlaidI
 	}
 
 	// ensure user exists
-	link, err := s.conn.GetLink(ctx, req.UserId, req.LinkId, true)
+	link, err := s.conn.GetLink(ctx, req.UserId, req.LinkId, false /** wether to clear access token or not */)
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
@@ -49,14 +49,14 @@ func (s *Server) PlaidInitiateTokenUpdate(ctx context.Context, req *proto.PlaidI
 		return nil, status.Errorf(codes.Internal, "Link token credentials are required but not provided")
 	}
 
-	res, err := encryptdecrypt.EncryptAccessToken(ctx, link.Token.AccessToken, s.kms, s.logger)
+	decryptedAccessToken, err := encryptdecrypt.DecryptUserAccessToken(ctx, link.Token, s.kms, s.logger)
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
 	linkTokenResponse, err := s.plaidClient.UpdateLinkToken(ctx, &plaidhandler.LinkTokenOptions{
 		ClientUserID: fmt.Sprintf("%d", req.UserId),
-	}, &res.AccessToken)
+	}, decryptedAccessToken)
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
