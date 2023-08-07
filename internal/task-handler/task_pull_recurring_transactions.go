@@ -92,20 +92,14 @@ func (th *TaskHandler) RunPullUpdatedReCurringTransactionsTask(ctx context.Conte
 
 // TODO: Rework Query Logic
 func (th *TaskHandler) queryAndStoreRecurringTransactions(ctx context.Context, accessToken string, userId uint64, linkId uint64, accountIds []string) error {
-	// query the re-curring transactions for the given accountId
-	// get the existing re-occurring transactions from the database
-	// updated set of transactions
-	// new set of transactions
-	// deleted set of transactions
-	// copy the existing transaction id to the new transaction
-	// delete the re-occurring transactions from the database
-	// add the new re-occurring transactions to the database
-	// update the re-occurring transactions in the database
-	// add the transactions to the database
 	var (
-		plaidClient      = th.plaidClient
-		clickhouseClient = th.clickhouseDb
+		plaidClient = th.plaidClient
 	)
+
+	if len(accountIds) == 0 {
+		return errors.New("invalid input argument. account ids cannot be empty")
+	}
+
 	transactions, err :=
 		plaidClient.
 			GetRecurringTransactionsForAccounts(ctx, &accessToken, &userId, &linkId, accountIds)
@@ -114,55 +108,9 @@ func (th *TaskHandler) queryAndStoreRecurringTransactions(ctx context.Context, a
 		return err
 	}
 
-	currentTransactions, err := clickhouseClient.GetUserReOccurringTransactions(ctx, &userId)
-	if err != nil {
-		th.logger.Error("error while getting re-occurring transactions from database", zap.Error(err))
+	if err := th.pullRecurringTransactionsHelper(ctx, &userId, transactions); err != nil {
+		th.logger.Error("failed to pull recurring transactions", zap.Error(err))
 		return err
-	}
-
-	newTransactions := make([]*schema.ReOccuringTransaction, 0, len(transactions))
-	for _, transaction := range transactions {
-		if !isRecurringTransactionInSlice(transaction, currentTransactions) {
-			newTransactions = append(newTransactions, transaction)
-		}
-	}
-
-	updatedTransactions := make([]*schema.ReOccuringTransaction, 0, len(transactions))
-	for _, transaction := range transactions {
-		if isRecurringTransactionInSlice(transaction, currentTransactions) {
-			transaction.UserId = userId
-			transaction.LinkId = linkId
-			transaction.Sign = 1
-			updatedTransactions = append(updatedTransactions, transaction)
-		}
-	}
-
-	deletedTransactionIds := make([]string, 0, len(currentTransactions))
-	for _, transaction := range currentTransactions {
-		if !isRecurringTransactionInSlice(transaction, transactions) {
-			deletedTransactionIds = append(deletedTransactionIds, transaction.Id)
-		}
-	}
-
-	if len(deletedTransactionIds) > 0 {
-		th.logger.Info("deleting re-occurring transactions", zap.Any("deleted_recurring_txn_set", len(deletedTransactionIds)))
-		if err := clickhouseClient.DeleteReOccurringTransactionsByIds(ctx, deletedTransactionIds); err != nil {
-			return err
-		}
-	}
-
-	if len(newTransactions) > 0 {
-		th.logger.Info("adding new re-occurring transactions", zap.Any("new_recurring_txn_set", len(newTransactions)))
-		if err := clickhouseClient.AddReOccurringTransactions(ctx, &userId, newTransactions); err != nil {
-			return err
-		}
-	}
-
-	if len(updatedTransactions) > 0 {
-		th.logger.Info("updating re-occurring transactions", zap.Any("updated_recurring_txn_set", len(updatedTransactions)))
-		if err := clickhouseClient.UpdateReOccurringTransactions(ctx, &userId, updatedTransactions); err != nil {
-			return err
-		}
 	}
 
 	return nil

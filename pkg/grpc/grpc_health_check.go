@@ -32,18 +32,6 @@ func (s *Server) HealthCheck(ctx context.Context, req *proto.HealthCheckRequest)
 		defer span.End()
 	}
 
-	// syncAllAccountsBatchJob, err := taskhandler.NewSyncAllPlatformConnectedPlaidAccounts()
-	// if err != nil {
-	// 	return nil, err
-	// }
-
-	// _, err = s.Taskprocessor.EnqueueTask(
-	// 	context.Background(),
-	// 	syncAllAccountsBatchJob)
-	// if err != nil {
-	// 	return nil, err
-	// }
-
 	return &proto.HealthCheckResponse{
 		Healthy: true,
 	}, nil

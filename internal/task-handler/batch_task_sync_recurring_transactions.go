@@ -48,6 +48,10 @@ func (th *TaskHandler) RunBatchSyncRecurringTransactions(ctx context.Context, ta
 					bankAccountIds = append(bankAccountIds, bankAccount.PlaidAccountId)
 				}
 
+				if len(bankAccountIds) == 0 {
+					continue
+				}
+
 				// decrypt the access token
 				accessToken, err := encryptdecrypt.DecryptUserAccessToken(ctx, link.Token, th.postgresDb.Kms, th.logger)
 				if err != nil {
