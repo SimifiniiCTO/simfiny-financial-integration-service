@@ -13,6 +13,7 @@ import (
 	"github.com/labstack/gommon/log"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 type SyncPlaidTaskPayload struct {
@@ -92,6 +93,9 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, userId, linkId 
 		return nil, errors.New("plaid link not found")
 	}
 
+	// construct account balance objects from the synced accounts
+	accountBalances := make([]*apiv1.AccountBalanceHistory, 0)
+
 	// query plaid for all of the user's accounts
 	syncBankAccounts, err := plaidClient.GetAccounts(ctx, accessToken, userId)
 	if err != nil {
@@ -108,6 +112,23 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, userId, linkId 
 		if err := th.syncBankAccountsHelper(ctx, link, syncBankAccounts, currentBankAccounts); err != nil {
 			return nil, err
 		}
+
+		th.logger.Info("adding acocunt balances")
+		for _, account := range syncBankAccounts {
+			accountBalance := &apiv1.AccountBalanceHistory{
+				Time:            timestamppb.Now(),
+				AccountId:       account.PlaidAccountId,
+				IsoCurrencyCode: account.Currency,
+				Balance:         float64(account.Balance),
+				UserId:          userId,
+				Sign:            1,
+				Id:              "",
+			}
+
+			th.logger.Info("adding account balance", zap.Any("accountBalance", accountBalance))
+			accountBalances = append(accountBalances, accountBalance)
+		}
+
 	}
 
 	plaidAccountIds := make([]string, 0, len(syncBankAccounts))
@@ -164,6 +185,19 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, userId, linkId 
 			if err := th.syncCreditAccountsHelper(ctx, link, syncedCreditAccounts, currentCreditAccounts); err != nil {
 				return nil, err
 			}
+
+			for _, account := range syncedCreditAccounts {
+				accountBalance := &apiv1.AccountBalanceHistory{
+					AccountId: account.PlaidAccountId,
+					Balance:   float64(account.Balance),
+					UserId:    userId,
+					Sign:      1,
+					Id:        "",
+					Time:      timestamppb.Now(),
+				}
+
+				accountBalances = append(accountBalances, accountBalance)
+			}
 		}
 
 		if len(creditAccountsSet.MortgageLoanAccts) > 0 {
@@ -171,6 +205,19 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, userId, linkId 
 			currentMortgageLoanAccounts := link.GetMortgageAccounts()
 			if err := th.syncMortgageAccountsHelper(ctx, link, syncedMortgageLoanAccounts, currentMortgageLoanAccounts); err != nil {
 				return nil, err
+			}
+
+			for _, account := range syncedMortgageLoanAccounts {
+				accountBalance := &apiv1.AccountBalanceHistory{
+					AccountId: account.PlaidAccountId,
+					Balance:   float64(account.OutstandingPrincipalBalance),
+					UserId:    userId,
+					Sign:      1,
+					Id:        "",
+					Time:      timestamppb.Now(),
+				}
+
+				accountBalances = append(accountBalances, accountBalance)
 			}
 		}
 
@@ -180,6 +227,29 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, userId, linkId 
 			if err := th.syncStudentLoanAccountsHelper(ctx, link, syncedStudentLoanAccounts, currentStudentLoanAccounts); err != nil {
 				return nil, err
 			}
+
+			for _, account := range syncedStudentLoanAccounts {
+				accountBalance := &apiv1.AccountBalanceHistory{
+					AccountId: account.PlaidAccountId,
+					Balance:   float64(account.GetOriginationPrincipalAmount()),
+					UserId:    userId,
+					Sign:      1,
+					Id:        "",
+					Time:      timestamppb.Now(),
+				}
+
+				accountBalances = append(accountBalances, accountBalance)
+			}
+		}
+	}
+
+	// update the account balances in the database
+	if len(accountBalances) > 0 {
+		th.logger.Info("updating account balances", zap.Int("count", len(accountBalances)))
+
+		if err := clickhouseClient.AddAccountBalances(ctx, &userId, accountBalances); err != nil {
+			th.logger.Error("failed to add account balances", zap.Error(err))
+			return nil, err
 		}
 	}
 
@@ -243,6 +313,18 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, userId, linkId 
 			transactionName = plaidTransaction.GetMerchantName()
 		}
 
+		// if we have no present transactions in the database for the user of interest
+		// then we know that we need to insert all of the transactions
+		if len(txnFound) == 0 {
+			plaidTransaction.UserId = userId
+			plaidTransaction.LinkId = linkId
+			plaidTransaction.Sign = 1
+			plaidTransaction.Name = transactionName
+
+			transactionsToInsert = append(transactionsToInsert, plaidTransaction)
+			continue
+		}
+
 		existingTransaction, ok := plaidTxnIdToTxnMap[plaidTransaction.GetTransactionId()]
 		if !ok {
 			plaidTransaction.UserId = userId
@@ -262,8 +344,6 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, userId, linkId 
 			To delete a row: sign = -1
 			*/
 			var shouldUpdate bool = false
-			var oldTransaction = existingTransaction
-			oldTransaction.Sign = -1
 
 			var newTransaction = existingTransaction
 			newTransaction.Sign = 1
@@ -283,7 +363,7 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, userId, linkId 
 			}
 
 			if shouldUpdate {
-				transactionsToUpdate = append(transactionsToUpdate, newTransaction, oldTransaction)
+				transactionsToUpdate = append(transactionsToUpdate, newTransaction)
 			}
 		}
 

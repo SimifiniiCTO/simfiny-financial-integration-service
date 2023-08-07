@@ -334,105 +334,119 @@ func (db *Db) UpdateTransaction(ctx context.Context, userId *uint64, txId *strin
 	}
 
 	//	get the transacton by tx id
-	if _, err := db.GetTransactionById(ctx, txId); err != nil {
+	storedTx, err := db.GetTransactionById(ctx, txId)
+	if err != nil {
 		return err
 	}
 
-	query := `
-		ALTER TABLE TransactionInternal UPDATE
-		AccountId = ?,
-		AccountOwner = ?,
-		Amount = ?,
-		AuthorizedDate = ?,
-		AuthorizedDatetime = ?,
-		CategoryId = ?,
-		CheckNumber = ?,
-		CurrentDate = ?,
-		CurrentDatetime = ?,
-		IsoCurrencyCode = ?,
-		LinkId = ?,
-		LocationAddress = ?,
-		LocationCity = ?,
-		LocationCountry = ?,
-		LocationLat = ?,
-		LocationLon = ?,
-		LocationPostalCode = ?,
-		LocationRegion = ?,
-		LocationStoreNumber = ?,
-		MerchantName = ?,
-		Name = ?,
-		PaymentChannel = ?,
-		PaymentMetaByOrderOf = ?,
-		PaymentMetaPayee = ?,
-		PaymentMetaPayer = ?,
-		PaymentMetaPaymentMethod = ?,
-		PaymentMetaPaymentProcessor = ?,
-		PaymentMetaPpdId = ?,
-		PaymentMetaReason = ?,
-		PaymentMetaReferenceNumber = ?,
-		Pending = ?,
-		PendingTransactionId = ?,
-		PersonalFinanceCategoryDetailed = ?,
-		PersonalFinanceCategoryPrimary = ?,
-		TransactionCode = ?,
-		UnofficialCurrencyCode = ?,
-		UserId = ?,
-		Categories = ?
-		WHERE TransactionId = ?;
-	`
-
-	transactionPendingBinaryRef := func(b bool) int {
-		if b {
-			return 1
-		} else {
-			return 0
-		}
-	}(tx.Pending)
-
+	// since we use collapsing merge tree, we need to delete the old row and insert a new one
 	// we first delete the old row
-
-	if err := db.queryEngine.NewRaw(query,
-		tx.AccountId,
-		tx.AccountOwner,
-		tx.Amount,
-		tx.AuthorizedDate,
-		tx.AuthorizedDatetime,
-		tx.CategoryId,
-		tx.CheckNumber,
-		tx.CurrentDate,
-		tx.CurrentDatetime,
-		tx.IsoCurrencyCode,
-		tx.LinkId,
-		tx.LocationAddress,
-		tx.LocationCity,
-		tx.LocationCountry,
-		tx.LocationLat,
-		tx.LocationLon,
-		tx.LocationPostalCode,
-		tx.LocationRegion,
-		tx.LocationStoreNumber,
-		tx.MerchantName,
-		tx.Name,
-		tx.PaymentChannel,
-		tx.PaymentMetaByOrderOf,
-		tx.PaymentMetaPayee,
-		tx.PaymentMetaPayer,
-		tx.PaymentMetaPaymentMethod,
-		tx.PaymentMetaPaymentProcessor,
-		tx.PaymentMetaPpdId,
-		tx.PaymentMetaReason,
-		tx.PaymentMetaReferenceNumber,
-		transactionPendingBinaryRef,
-		tx.PendingTransactionId,
-		tx.PersonalFinanceCategoryDetailed,
-		tx.PersonalFinanceCategoryPrimary,
-		tx.TransactionCode,
-		tx.UnofficialCurrencyCode,
-		tx.UserId,
-		Stringify(tx.GetCategories()),
-		tx.TransactionId).Scan(ctx); err != nil {
+	storedTx.Sign = -1
+	if _, err := db.AddTransaction(ctx, userId, storedTx); err != nil {
 		return err
 	}
+
+	// now we add the updated transaction
+	tx.Sign = 1
+	if _, err := db.AddTransaction(ctx, userId, tx); err != nil {
+		return err
+	}
+
+	// query := `
+	// 	ALTER TABLE TransactionInternal UPDATE
+	// 	AccountId = ?,
+	// 	AccountOwner = ?,
+	// 	Amount = ?,
+	// 	AuthorizedDate = ?,
+	// 	AuthorizedDatetime = ?,
+	// 	CategoryId = ?,
+	// 	CheckNumber = ?,
+	// 	CurrentDate = ?,
+	// 	CurrentDatetime = ?,
+	// 	IsoCurrencyCode = ?,
+	// 	LinkId = ?,
+	// 	LocationAddress = ?,
+	// 	LocationCity = ?,
+	// 	LocationCountry = ?,
+	// 	LocationLat = ?,
+	// 	LocationLon = ?,
+	// 	LocationPostalCode = ?,
+	// 	LocationRegion = ?,
+	// 	LocationStoreNumber = ?,
+	// 	MerchantName = ?,
+	// 	Name = ?,
+	// 	PaymentChannel = ?,
+	// 	PaymentMetaByOrderOf = ?,
+	// 	PaymentMetaPayee = ?,
+	// 	PaymentMetaPayer = ?,
+	// 	PaymentMetaPaymentMethod = ?,
+	// 	PaymentMetaPaymentProcessor = ?,
+	// 	PaymentMetaPpdId = ?,
+	// 	PaymentMetaReason = ?,
+	// 	PaymentMetaReferenceNumber = ?,
+	// 	Pending = ?,
+	// 	PendingTransactionId = ?,
+	// 	PersonalFinanceCategoryDetailed = ?,
+	// 	PersonalFinanceCategoryPrimary = ?,
+	// 	TransactionCode = ?,
+	// 	UnofficialCurrencyCode = ?,
+	// 	UserId = ?,
+	// 	Categories = ?
+	// 	WHERE TransactionId = ?;
+	// `
+
+	// transactionPendingBinaryRef := func(b bool) int {
+	// 	if b {
+	// 		return 1
+	// 	} else {
+	// 		return 0
+	// 	}
+	// }(tx.Pending)
+
+	// // we first delete the old row
+
+	// if err := db.queryEngine.NewRaw(query,
+	// 	tx.AccountId,
+	// 	tx.AccountOwner,
+	// 	tx.Amount,
+	// 	tx.AuthorizedDate,
+	// 	tx.AuthorizedDatetime,
+	// 	tx.CategoryId,
+	// 	tx.CheckNumber,
+	// 	tx.CurrentDate,
+	// 	tx.CurrentDatetime,
+	// 	tx.IsoCurrencyCode,
+	// 	tx.LinkId,
+	// 	tx.LocationAddress,
+	// 	tx.LocationCity,
+	// 	tx.LocationCountry,
+	// 	tx.LocationLat,
+	// 	tx.LocationLon,
+	// 	tx.LocationPostalCode,
+	// 	tx.LocationRegion,
+	// 	tx.LocationStoreNumber,
+	// 	tx.MerchantName,
+	// 	tx.Name,
+	// 	tx.PaymentChannel,
+	// 	tx.PaymentMetaByOrderOf,
+	// 	tx.PaymentMetaPayee,
+	// 	tx.PaymentMetaPayer,
+	// 	tx.PaymentMetaPaymentMethod,
+	// 	tx.PaymentMetaPaymentProcessor,
+	// 	tx.PaymentMetaPpdId,
+	// 	tx.PaymentMetaReason,
+	// 	tx.PaymentMetaReferenceNumber,
+	// 	transactionPendingBinaryRef,
+	// 	tx.PendingTransactionId,
+	// 	tx.PersonalFinanceCategoryDetailed,
+	// 	tx.PersonalFinanceCategoryPrimary,
+	// 	tx.TransactionCode,
+	// 	tx.UnofficialCurrencyCode,
+	// 	tx.UserId,
+	// 	Stringify(tx.GetCategories()),
+	// 	tx.TransactionId).Scan(ctx); err != nil {
+	// 	return err
+	// }
 
 	return nil
 }
@@ -451,19 +465,41 @@ func (db *Db) UpdateTransactions(ctx context.Context, userId *uint64, txs []*sch
 		return fmt.Errorf("user ID must be 0 at creation time")
 	}
 
-	for _, tx := range txs {
-		if tx.Id == "" {
-			return fmt.Errorf("transaction ID not be empty at update time")
-		}
+	// GetTransactionsByPlaidTransactionIds
+	transactionIds := make([]string, 0, len(txs))
 
+	// we first iterate over the transactions and get the transaction ids
+	for _, tx := range txs {
 		// validate transactions
 		if err := tx.Validate(); err != nil {
 			return err
 		}
 
-		if err := db.UpdateTransaction(ctx, userId, &tx.Id, tx); err != nil {
-			db.Logger.Error(err.Error())
-		}
+		// ensure the tx sign is positive
+		tx.Sign = 1
+
+		transactionIds = append(transactionIds, tx.TransactionId)
+	}
+
+	// get all the old transactions based on the transaction ids
+	oldTransactions, err := db.GetTransactionsByPlaidTransactionIds(ctx, transactionIds)
+	if err != nil {
+		return err
+	}
+
+	// now we iterate over the old transactions and ensure they have a negative sign
+	for _, tx := range oldTransactions {
+		tx.Sign = -1
+	}
+
+	// save this to the database
+	if err := db.AddTransactions(ctx, userId, oldTransactions); err != nil {
+		return err
+	}
+
+	// now updated transactions are added
+	if err := db.AddTransactions(ctx, userId, txs); err != nil {
+		return err
 	}
 
 	return nil

@@ -1,52 +1,44 @@
 package financial_integration_service_apiv1
 
 import (
-	"fmt"
-	"strconv"
 	time "time"
 
 	"github.com/uptrace/go-clickhouse/ch"
+	"github.com/uptrace/go-clickhouse/ch/chschema"
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 )
 
 type AccountBalanceHistoryInternal struct {
-	ch.CHModel      `ch:"partition:toYYYYMM(time)"`
-	Time            time.Time `ch:"type:DateTime"`
-	AccountId       string    `ch:"type:String"`
-	IsoCurrencyCode string    `ch:"type:String"`
-	Balance         float64   `ch:"type:Float64"`
-	UserId          uint64    `ch:"type:Uint64"`
-	Sign            uint32    `ch:"type:Uint32"`
-	Id              uint64    `ch:"type:String"`
+	ch.CHModel      `ch:"AccountBalanceHistoryInternal,partition:toYYYYMM(time)"`
+	Time            time.Time `ch:"Time,pk"`
+	AccountId       string    `ch:"AccountId,lc"`
+	IsoCurrencyCode string    `ch:"IsoCurrencyCode,lc"`
+	Balance         float64   `ch:"Balance"`
+	UserId          uint64    `ch:"UserId"`
+	Sign            int8      `ch:"Sign"`
+	Id              string    `ch:"Id,type:String,default:generateUUIDv4(),pk"`
 }
 
 func (source *AccountBalanceHistoryInternal) ConvertToORM() *AccountBalanceHistoryORM {
 	return &AccountBalanceHistoryORM{
 		AccountId:       source.AccountId,
 		Balance:         source.Balance,
-		Id:              fmt.Sprintf("%d", source.Id),
+		Id:              source.Id,
 		IsoCurrencyCode: source.IsoCurrencyCode,
-		Sign:            0,
-		Time:            &source.Time,
+		Sign:            uint32(source.Sign),
 		UserId:          source.UserId,
 	}
 }
 
 func (source *AccountBalanceHistoryORM) ConvertToInternal() *AccountBalanceHistoryInternal {
-	uint64Value, err := strconv.ParseUint(source.Id, 10, 64)
-	if err != nil {
-		// Handle the error if the string cannot be converted to uint64
-		fmt.Println("Error:", err)
-		uint64Value = 0
-	}
-
 	res := &AccountBalanceHistoryInternal{
-		Time:            time.Time{},
+		CHModel:         chschema.CHModel{},
 		AccountId:       source.AccountId,
 		IsoCurrencyCode: source.IsoCurrencyCode,
 		Balance:         source.Balance,
 		UserId:          source.UserId,
-		Sign:            0,
-		Id:              uint64Value,
+		Sign:            int8(source.Sign),
+		Id:              source.Id,
 	}
 
 	if source.Time != nil {
@@ -54,4 +46,36 @@ func (source *AccountBalanceHistoryORM) ConvertToInternal() *AccountBalanceHisto
 	}
 
 	return res
+}
+
+func (internal *AccountBalanceHistory) ConvertToInternal() (*AccountBalanceHistoryInternal, error) {
+	tx := &AccountBalanceHistoryInternal{
+		CHModel:         chschema.CHModel{},
+		AccountId:       internal.AccountId,
+		IsoCurrencyCode: internal.IsoCurrencyCode,
+		Balance:         internal.Balance,
+		UserId:          internal.UserId,
+		Sign:            int8(internal.Sign),
+		Id:              internal.Id,
+	}
+
+	if internal.Time != nil {
+		tx.Time = internal.Time.AsTime()
+	}
+
+	return tx, nil
+}
+
+func (internal *AccountBalanceHistoryInternal) ConvertTo() (*AccountBalanceHistory, error) {
+	tx := &AccountBalanceHistory{
+		AccountId:       internal.AccountId,
+		Balance:         internal.Balance,
+		Id:              internal.Id,
+		IsoCurrencyCode: internal.IsoCurrencyCode,
+		Sign:            uint32(internal.Sign),
+		Time:            timestamppb.New(internal.Time),
+		UserId:          internal.UserId,
+	}
+
+	return tx, nil
 }

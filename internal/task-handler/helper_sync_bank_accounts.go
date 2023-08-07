@@ -2,8 +2,10 @@ package taskhandler
 
 import (
 	"context"
+	"strings"
 
 	apiv1 "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
+	"github.com/hashicorp/go-set"
 	"go.uber.org/zap"
 )
 
@@ -18,21 +20,25 @@ func (t *TaskHandler) syncBankAccountsHelper(ctx context.Context, link *apiv1.Li
 		return nil
 	}
 
+	// remove all duplicates
+	currentBankAccounts = set.From[*apiv1.BankAccount](currentBankAccounts).Slice()
+	syncedBankAccounts = set.From[*apiv1.BankAccount](syncedBankAccounts).Slice()
+
 	// log the current and synced accounts
-	t.logger.Info("syncing bank accounts", zap.Any("syncedBankAccounts", syncedBankAccounts), zap.Any("currentBankAccounts", currentBankAccounts))
+	t.logger.Info("syncing bank accounts", zap.Any("syncedBankAccounts", len(syncedBankAccounts)), zap.Any("currentBankAccounts", len(currentBankAccounts)))
 
 	// for the current bank accounts, we create a hashmap comprised of plaidAccountId to the respective account
 	// this is done so that we can easily check if a synced bank account is already in the database
 	currentBankAccountsMap := make(map[string]*apiv1.BankAccount)
 	for _, currentBankAccount := range currentBankAccountsMap {
-		currentBankAccountsMap[currentBankAccount.PlaidAccountId] = currentBankAccount
+		currentBankAccountsMap[strings.ToLower(currentBankAccount.Name)] = currentBankAccount
 	}
 
 	// construct a synced accounts map
 	// this is done so that we can easily check if a synced bank account is already in the database
 	syncedBankAccountsMap := make(map[string]*apiv1.BankAccount)
 	for _, syncedBankAccount := range syncedBankAccounts {
-		syncedBankAccountsMap[syncedBankAccount.PlaidAccountId] = syncedBankAccount
+		syncedBankAccountsMap[strings.ToLower(syncedBankAccount.Name)] = syncedBankAccount
 	}
 
 	// we iterate over the synced bank accounts and cross reference them with the existing bank accounts
@@ -46,7 +52,7 @@ func (t *TaskHandler) syncBankAccountsHelper(ctx context.Context, link *apiv1.Li
 	// this happens, log something and mark that account as inactive. This way we can inform the user that the account
 	// is no longer receiving updates.
 	for _, account := range currentBankAccounts {
-		if _, ok := syncedBankAccountsMap[account.PlaidAccountId]; !ok {
+		if _, ok := syncedBankAccountsMap[strings.ToLower(account.Name)]; !ok {
 			t.logger.Info("account no longer visible in plaid, marking as inactive", zap.Any("account", account))
 			account.Status = apiv1.BankAccountStatus_BANK_ACCOUNT_STATUS_INACTIVE
 			// update the bank account in the database
@@ -81,7 +87,7 @@ func (t *TaskHandler) syncBankAccountsHelper(ctx context.Context, link *apiv1.Li
 
 		// if the synced bank account is not found in the current bank accounts set, then we know it is a new account that must be added
 		// to the database
-		if storedBankAccount, ok := currentBankAccountsMap[syncedBankAccount.PlaidAccountId]; !ok {
+		if storedBankAccount, ok := currentBankAccountsMap[strings.ToLower(syncedBankAccount.Name)]; !ok {
 			record, err := syncedBankAccount.ToORM(ctx)
 			if err != nil {
 				return err
