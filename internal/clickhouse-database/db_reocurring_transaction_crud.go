@@ -349,12 +349,12 @@ func (db *Db) UpdateReOccurringTransaction(ctx context.Context, userId *uint64, 
 }
 
 // UpdateReOccurringTransactions updates a set of reoccurring transactions
-func (db *Db) UpdateReOccurringTransactions(ctx context.Context, userId *uint64, txs []*schema.ReOccuringTransaction) error {
+func (db *Db) UpdateReOccurringTransactions(ctx context.Context, userId *uint64, newTxsToUpdate []*schema.ReOccuringTransaction) error {
 	if span := db.startDatastoreSpan(ctx, "dbtxn-update-transaction"); span != nil {
 		defer span.End()
 	}
 
-	if len(txs) == 0 {
+	if len(newTxsToUpdate) == 0 {
 		return fmt.Errorf("transactions length must be greater than 0")
 	}
 
@@ -362,10 +362,52 @@ func (db *Db) UpdateReOccurringTransactions(ctx context.Context, userId *uint64,
 		return fmt.Errorf("user ID must be 0 at creation time")
 	}
 
-	for _, tx := range txs {
-		if err := db.UpdateReOccurringTransaction(ctx, userId, &tx.Id, tx); err != nil {
-			db.Logger.Error(err.Error())
+	// iterate over all recurring transactions and store their ids in a list
+	// this is used to create a query to update all transactions in a single
+	// query
+	var txIds []string
+	for _, tx := range newTxsToUpdate {
+		if tx.Id == "" {
+			return fmt.Errorf("transaction ID cannot be empty at update time")
 		}
+
+		txIds = append(txIds, tx.Id)
+	}
+
+	var oldTransactions []schema.ReOccuringTransactionInternal
+	ids := "'" + strings.Join(txIds, "', '") + "'"
+	sqlQuery := fmt.Sprintf("SELECT * FROM ReOccuringTransactionInternal WHERE ID IN (%s)", ids)
+	if err := db.queryEngine.
+		NewRaw(sqlQuery).
+		Scan(ctx, &oldTransactions); err != nil {
+		return err
+	}
+
+	// change the sign value on all the old transactions to -1
+	oldTxsToRemove := make([]*schema.ReOccuringTransaction, 0, len(oldTransactions))
+	for _, tx := range oldTransactions {
+		tx.Sign = -1
+		txRecord, err := tx.ConvertToRecurringTransaction()
+		if err != nil {
+			return err
+		}
+
+		oldTxsToRemove = append(oldTxsToRemove, txRecord)
+	}
+
+	// save the transactions to the database
+	if err := db.AddReOccurringTransactions(ctx, userId, oldTxsToRemove); err != nil {
+		return err
+	}
+
+	// make sure the new transactions have the correct sign value
+	for _, tx := range newTxsToUpdate {
+		tx.Sign = 1
+	}
+
+	// update the transactions
+	if err := db.AddReOccurringTransactions(ctx, userId, newTxsToUpdate); err != nil {
+		return err
 	}
 
 	return nil

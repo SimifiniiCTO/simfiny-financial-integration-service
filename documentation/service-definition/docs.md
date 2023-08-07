@@ -94,6 +94,8 @@
     - [GetExpenseMetricsResponse](#financial_integration_service_api-v1-GetExpenseMetricsResponse)
     - [GetFinancialProfileRequest](#financial_integration_service_api-v1-GetFinancialProfileRequest)
     - [GetFinancialProfileResponse](#financial_integration_service_api-v1-GetFinancialProfileResponse)
+    - [GetHistoricalAccountBalanceRequest](#financial_integration_service_api-v1-GetHistoricalAccountBalanceRequest)
+    - [GetHistoricalAccountBalanceResponse](#financial_integration_service_api-v1-GetHistoricalAccountBalanceResponse)
     - [GetIncomeExpenseRatioRequest](#financial_integration_service_api-v1-GetIncomeExpenseRatioRequest)
     - [GetIncomeExpenseRatioResponse](#financial_integration_service_api-v1-GetIncomeExpenseRatioResponse)
     - [GetIncomeMetricsRequest](#financial_integration_service_api-v1-GetIncomeMetricsRequest)
@@ -2047,6 +2049,37 @@ GetFinancialProfile RPC
 | ----- | ---- | ----- | ----------- |
 | financial_profiles | [FinancialProfile](#financial_integration_service_api-v1-FinancialProfile) | repeated |  |
 | next_page_number | [int64](#int64) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-GetHistoricalAccountBalanceRequest"></a>
+
+### GetHistoricalAccountBalanceRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| plaid_account_id | [string](#string) |  |  |
+| user_id | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="financial_integration_service_api-v1-GetHistoricalAccountBalanceResponse"></a>
+
+### GetHistoricalAccountBalanceResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| historical_account_balance | [AccountBalanceHistory](#financial_integration_service_api-v1-AccountBalanceHistory) | repeated |  |
 
 
 
@@ -4081,6 +4114,7 @@ FinancialService API.
 | GetTotalInvestmentBySecurity | [GetTotalInvestmentBySecurityRequest](#financial_integration_service_api-v1-GetTotalInvestmentBySecurityRequest) | [GetTotalInvestmentBySecurityResponse](#financial_integration_service_api-v1-GetTotalInvestmentBySecurityResponse) | Description: Get total investment security Parameters: - user_id - user id of the user Optional Parameters: - securityId - payment channel - pageNumber - page number of the request - pageSize - page size of the request API Version: 1. API:/api/v1/analytics/total-investment/user/{user_id}?securityId={securityId}&amp;pageNumber={page_number}&amp;pageSize={page_size} |
 | GetMelodyFinancialContext | [GetMelodyFinancialContextRequest](#financial_integration_service_api-v1-GetMelodyFinancialContextRequest) | [GetMelodyFinancialContextResponse](#financial_integration_service_api-v1-GetMelodyFinancialContextResponse) | Description: Get financial context Parameters: - user_id - user id of the user API Version: 1. API:/api/v1/analytics/melody-financial-context/user/{user_id} |
 | GetTransactionsForBankAccount | [GetTransactionsForBankAccountRequest](#financial_integration_service_api-v1-GetTransactionsForBankAccountRequest) | [GetTransactionsForBankAccountResponse](#financial_integration_service_api-v1-GetTransactionsForBankAccountResponse) | Description: Get bank transaction counts Parameters: - user_id - user id of the user API Version: 1. API:/api/v1/analytics/melody-financial-context/user/{user_id} |
+| GetHistoricalAccountBalance | [GetHistoricalAccountBalanceRequest](#financial_integration_service_api-v1-GetHistoricalAccountBalanceRequest) | [GetHistoricalAccountBalanceResponse](#financial_integration_service_api-v1-GetHistoricalAccountBalanceResponse) |  |
 
  
 

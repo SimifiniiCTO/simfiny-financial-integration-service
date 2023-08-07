@@ -1673,4 +1673,21 @@ service FinancialService {
       }
     };
   }
+
+  rpc GetHistoricalAccountBalance(GetHistoricalAccountBalanceRequest) returns (GetHistoricalAccountBalanceResponse) {
+    option (google.api.http) = {get: "/api/v1/historical-account-balance/user/{user_id}/plaid-account-id/{plaid_account_id}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "gets account balance of an account"
+      tags: ["analytics","account-balance"]
+      operation_id: "GetAccountBalance"
+      description: "This endpoint returns the historical balance for a given account"
+      responses: {
+        key: "200"
+        value: {
+          description: "A successful response."
+          schema: {json_schema: {ref: ".api.v1.GetAccountBalanceResponse"}}
+        }
+      }
+    };
+  }
 }

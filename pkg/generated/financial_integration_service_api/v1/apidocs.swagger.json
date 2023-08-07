@@ -2459,6 +2459,64 @@
         ]
       }
     },
+    "/api/v1/historical-account-balance/user/{userId}/plaid-account-id/{plaidAccountId}": {
+      "get": {
+        "summary": "gets account balance of an account",
+        "description": "This endpoint returns the historical balance for a given account",
+        "operationId": "GetAccountBalance",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": ".api.v1.GetAccountBalanceResponse"
+            }
+          },
+          "400": {
+            "description": "Request failed due to invalid input.",
+            "schema": {
+              "$ref": ".api.v1.ValidationErrorMessageResponse"
+            }
+          },
+          "404": {
+            "description": "Request failed due to incorrect path.",
+            "schema": {
+              "$ref": ".api.v1.PathUnknownErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Request failed due to internal server error.",
+            "schema": {
+              "$ref": ".api.v1.InternalErrorMessageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "plaidAccountId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "analytics",
+          "account-balance"
+        ]
+      }
+    },
     "/api/v1/link": {
       "post": {
         "summary": "create link",
@@ -4883,6 +4941,18 @@
         "forecast": {
           "$ref": "#/definitions/Forecast",
           "title": "The forecast"
+        }
+      }
+    },
+    "GetHistoricalAccountBalanceResponse": {
+      "type": "object",
+      "properties": {
+        "historicalAccountBalance": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/AccountBalanceHistory"
+          }
         }
       }
     },

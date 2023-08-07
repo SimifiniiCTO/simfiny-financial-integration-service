@@ -11,6 +11,8 @@ import {
   GetExpenseMetricsResponse,
   GetFinancialProfileRequest,
   GetFinancialProfileResponse,
+  GetHistoricalAccountBalanceRequest,
+  GetHistoricalAccountBalanceResponse,
   GetIncomeExpenseRatioRequest,
   GetIncomeExpenseRatioResponse,
   GetIncomeMetricsRequest,
@@ -550,6 +552,9 @@ export interface FinancialService {
   GetTransactionsForBankAccount(
     request: GetTransactionsForBankAccountRequest,
   ): Promise<GetTransactionsForBankAccountResponse>;
+  GetHistoricalAccountBalance(
+    request: GetHistoricalAccountBalanceRequest,
+  ): Promise<GetHistoricalAccountBalanceResponse>;
 }
 
 export const FinancialServiceServiceName = "financial_integration_service_api.v1.FinancialService";
@@ -623,6 +628,7 @@ export class FinancialServiceClientImpl implements FinancialService {
     this.GetTotalInvestmentBySecurity = this.GetTotalInvestmentBySecurity.bind(this);
     this.GetMelodyFinancialContext = this.GetMelodyFinancialContext.bind(this);
     this.GetTransactionsForBankAccount = this.GetTransactionsForBankAccount.bind(this);
+    this.GetHistoricalAccountBalance = this.GetHistoricalAccountBalance.bind(this);
   }
   PlaidInitiateTokenExchange(request: PlaidInitiateTokenExchangeRequest): Promise<PlaidInitiateTokenExchangeResponse> {
     const data = PlaidInitiateTokenExchangeRequest.encode(request).finish();
@@ -1024,6 +1030,14 @@ export class FinancialServiceClientImpl implements FinancialService {
     const data = GetTransactionsForBankAccountRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "GetTransactionsForBankAccount", data);
     return promise.then((data) => GetTransactionsForBankAccountResponse.decode(_m0.Reader.create(data)));
+  }
+
+  GetHistoricalAccountBalance(
+    request: GetHistoricalAccountBalanceRequest,
+  ): Promise<GetHistoricalAccountBalanceResponse> {
+    const data = GetHistoricalAccountBalanceRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "GetHistoricalAccountBalance", data);
+    return promise.then((data) => GetHistoricalAccountBalanceResponse.decode(_m0.Reader.create(data)));
   }
 }
 
