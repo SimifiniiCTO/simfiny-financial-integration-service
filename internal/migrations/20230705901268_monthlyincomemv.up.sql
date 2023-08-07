@@ -8,7 +8,7 @@ SELECT
 FROM
     TransactionInternal
 WHERE
-    Amount > 0
+    Amount < 0
 GROUP BY
     Month, 
     UserId;
