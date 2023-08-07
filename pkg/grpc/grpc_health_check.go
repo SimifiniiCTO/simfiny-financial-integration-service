@@ -6,7 +6,6 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	taskhandler "github.com/SimifiniiCTO/simfiny-financial-integration-service/internal/task-handler"
 	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 )
 
@@ -33,17 +32,17 @@ func (s *Server) HealthCheck(ctx context.Context, req *proto.HealthCheckRequest)
 		defer span.End()
 	}
 
-	syncAllAccountsBatchJob, err := taskhandler.NewSyncAllPlatformConnectedPlaidAccounts()
-	if err != nil {
-		return nil, err
-	}
+	// syncAllAccountsBatchJob, err := taskhandler.NewSyncAllPlatformConnectedPlaidAccounts()
+	// if err != nil {
+	// 	return nil, err
+	// }
 
-	_, err = s.Taskprocessor.EnqueueTask(
-		context.Background(),
-		syncAllAccountsBatchJob)
-	if err != nil {
-		return nil, err
-	}
+	// _, err = s.Taskprocessor.EnqueueTask(
+	// 	context.Background(),
+	// 	syncAllAccountsBatchJob)
+	// if err != nil {
+	// 	return nil, err
+	// }
 
 	return &proto.HealthCheckResponse{
 		Healthy: true,
