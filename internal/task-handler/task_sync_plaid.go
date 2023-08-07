@@ -93,13 +93,25 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, userId, linkId 
 	}
 
 	// query plaid for all of the user's accounts
-	plaidBankAccounts, err := plaidClient.GetAccounts(ctx, accessToken, userId)
+	syncBankAccounts, err := plaidClient.GetAccounts(ctx, accessToken, userId)
 	if err != nil {
 		return nil, err
 	}
 
-	plaidAccountIds := make([]string, 0, len(plaidBankAccounts))
-	for _, plaidBankAccount := range plaidBankAccounts {
+	// we only perform account sync cross referencing if the
+	// number of synced accounts is greater than 0
+	if len(syncBankAccounts) == 0 {
+		th.logger.Warn("no accounts found for user", zap.Uint64("user_id", userId))
+		return nil, nil
+	} else {
+		currentBankAccounts := link.GetBankAccounts()
+		if err := th.syncBankAccountsHelper(ctx, link, syncBankAccounts, currentBankAccounts); err != nil {
+			return nil, err
+		}
+	}
+
+	plaidAccountIds := make([]string, 0, len(syncBankAccounts))
+	for _, plaidBankAccount := range syncBankAccounts {
 		if plaidBankAccount.Subtype == "checking" || plaidBankAccount.Subtype == "savings" || plaidBankAccount.Subtype == "cd" || plaidBankAccount.Subtype == "money market" ||
 			plaidBankAccount.Subtype == "gic" || plaidBankAccount.Subtype == "prepaid" || plaidBankAccount.Subtype == "health" || plaidBankAccount.Subtype == "cash management" {
 			plaidAccountIds = append(plaidAccountIds, plaidBankAccount.PlaidAccountId)
@@ -131,8 +143,11 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, userId, linkId 
 		investmentAccountIds = append(investmentAccountIds, investmentAccount.PlaidAccountId)
 	}
 
-	if err := th.queryInvestmentTransactions(ctx, accessToken, userId, link, investmentAccountIds); err != nil {
-		th.logger.Error("failed to get investment account transactions", zap.Error(err))
+	// get the investment account ids
+	if len(investmentAccountIds) > 0 {
+		if err := th.queryInvestmentTransactions(ctx, accessToken, userId, link, investmentAccountIds); err != nil {
+			th.logger.Error("failed to get investment account transactions", zap.Error(err))
+		}
 	}
 
 	// link contains liability accounts hence sync them
@@ -146,237 +161,26 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, userId, linkId 
 		if len(creditAccountsSet.CrediCardAccounts) > 0 {
 			syncedCreditAccounts := creditAccountsSet.CrediCardAccounts
 			currentCreditAccounts := link.GetCreditAccounts()
-
-			th.logger.Info("current credit accounts", zap.Any("accounts", currentCreditAccounts))
-			th.logger.Info("synced credit accounts", zap.Any("accounts", syncedCreditAccounts))
-
-			// iterate over the syncred credit accounts and cross reference them with the existing credit accounts
-			// if the synced credit account is not found in the existing credit accounts, then add it to the existing
-			// credit accounts
-			creditCardAccountsToUpdate := make([]*apiv1.CreditAccountORM, 0, len(syncedCreditAccounts))
-			creditCardAccountsToAdd := make([]*apiv1.CreditAccountORM, 0, len(syncedCreditAccounts))
-			for _, syncedCreditAccount := range syncedCreditAccounts {
-				found := false
-				if len(currentCreditAccounts) == 0 {
-					acctOrm, err := syncedCreditAccount.ToORM(ctx)
-					if err != nil {
-						return nil, err
-					}
-
-					th.logger.Info("adding new credit account to set", zap.Any("account", acctOrm))
-					creditCardAccountsToAdd = append(creditCardAccountsToAdd, &acctOrm)
-					continue
-				}
-
-				for idx, currentCreditAccount := range currentCreditAccounts {
-					if syncedCreditAccount.PlaidAccountId == currentCreditAccount.PlaidAccountId {
-						found = true
-						break
-					} else if syncedCreditAccount.PlaidAccountId != currentCreditAccount.PlaidAccountId && idx == len(currentCreditAccounts)-1 {
-						acctOrm, err := syncedCreditAccount.ToORM(ctx)
-						if err != nil {
-							return nil, err
-						}
-
-						th.logger.Info("adding new credit account to set", zap.Any("account", acctOrm))
-						creditCardAccountsToAdd = append(creditCardAccountsToAdd, &acctOrm)
-					}
-				}
-
-				if found {
-					acctOrm, err := syncedCreditAccount.ToORM(ctx)
-					if err != nil {
-						return nil, err
-					}
-
-					creditCardAccountsToUpdate = append(creditCardAccountsToUpdate, &acctOrm)
-				}
-			}
-
-			l := th.postgresDb.QueryOperator.LinkORM
-			linkOrm, err := link.ToORM(ctx)
-			if err != nil {
+			if err := th.syncCreditAccountsHelper(ctx, link, syncedCreditAccounts, currentCreditAccounts); err != nil {
 				return nil, err
 			}
-
-			// update the credit accounts in the database
-			if err := l.CreditAccounts.Model(&linkOrm).Replace(creditCardAccountsToUpdate...); err != nil {
-				return nil, err
-			}
-
-			th.logger.Info("new credit accounts", zap.Any("accounts", creditCardAccountsToAdd))
-			// add the new credit accounts to the database
-			if err := l.CreditAccounts.Model(&linkOrm).Append(creditCardAccountsToAdd...); err != nil {
-				return nil, err
-			}
-
-			th.logger.Info("found credit accounts", zap.Int("count", len(creditAccountsSet.CrediCardAccounts)))
 		}
 
 		if len(creditAccountsSet.MortgageLoanAccts) > 0 {
 			syncedMortgageLoanAccounts := creditAccountsSet.MortgageLoanAccts
 			currentMortgageLoanAccounts := link.GetMortgageAccounts()
-
-			// iterate over the syncred credit accounts and cross reference them with the existing credit accounts
-			// if the synced credit account is not found in the existing credit accounts, then add it to the existing
-			// credit accounts
-			mortgageLoanAccountsToUpdate := make([]*apiv1.MortgageAccountORM, 0, len(syncedMortgageLoanAccounts))
-			mortgageLoanAccountsToAdd := make([]*apiv1.MortgageAccountORM, 0, len(syncedMortgageLoanAccounts))
-			for _, syncedMortgageAccount := range syncedMortgageLoanAccounts {
-				found := false
-				if len(currentMortgageLoanAccounts) == 0 {
-					acctOrm, err := syncedMortgageAccount.ToORM(ctx)
-					if err != nil {
-						return nil, err
-					}
-
-					th.logger.Info("adding new mortgage account to set", zap.Any("account", acctOrm))
-					mortgageLoanAccountsToAdd = append(mortgageLoanAccountsToAdd, &acctOrm)
-					continue
-				}
-
-				for idx, currentCreditAccount := range currentMortgageLoanAccounts {
-					if syncedMortgageAccount.PlaidAccountId == currentCreditAccount.PlaidAccountId {
-						found = true
-						break
-					} else if syncedMortgageAccount.PlaidAccountId != currentCreditAccount.PlaidAccountId && idx == len(currentMortgageLoanAccounts)-1 {
-						acctOrm, err := syncedMortgageAccount.ToORM(ctx)
-						if err != nil {
-							return nil, err
-						}
-
-						mortgageLoanAccountsToAdd = append(mortgageLoanAccountsToAdd, &acctOrm)
-					}
-				}
-
-				if found {
-					acctOrm, err := syncedMortgageAccount.ToORM(ctx)
-					if err != nil {
-						return nil, err
-					}
-					mortgageLoanAccountsToUpdate = append(mortgageLoanAccountsToUpdate, &acctOrm)
-				}
-			}
-
-			l := th.postgresDb.QueryOperator.LinkORM
-			linkOrm, err := link.ToORM(ctx)
-			if err != nil {
+			if err := th.syncMortgageAccountsHelper(ctx, link, syncedMortgageLoanAccounts, currentMortgageLoanAccounts); err != nil {
 				return nil, err
 			}
-
-			// update the credit accounts in the database
-			if err := l.MortgageAccounts.Model(&linkOrm).Replace(mortgageLoanAccountsToUpdate...); err != nil {
-				return nil, err
-			}
-
-			// add the new credit accounts to the database
-			if err := l.MortgageAccounts.Model(&linkOrm).Append(mortgageLoanAccountsToAdd...); err != nil {
-				return nil, err
-			}
-
-			th.logger.Info("found mortgage accounts", zap.Int("count", len(creditAccountsSet.MortgageLoanAccts)))
 		}
 
 		if len(creditAccountsSet.StudentLoanAccts) > 0 {
 			syncedStudentLoanAccounts := creditAccountsSet.StudentLoanAccts
 			currentStudentLoanAccounts := link.GetStudentLoanAccounts()
-
-			// iterate over the syncred credit accounts and cross reference them with the existing credit accounts
-			// if the synced credit account is not found in the existing credit accounts, then add it to the existing
-			// credit accounts
-			studentLoanAccountsToUpdate := make([]*apiv1.StudentLoanAccountORM, 0, len(syncedStudentLoanAccounts))
-			studentLoanAccountsToAdd := make([]*apiv1.StudentLoanAccountORM, 0, len(syncedStudentLoanAccounts))
-			for _, syncedCreditAccount := range syncedStudentLoanAccounts {
-				found := false
-				for idx, currentCreditAccount := range currentStudentLoanAccounts {
-					if len(syncedStudentLoanAccounts) == 0 {
-						acctOrm, err := currentCreditAccount.ToORM(ctx)
-						if err != nil {
-							return nil, err
-						}
-
-						th.logger.Info("adding new student loan account to set", zap.Any("account", acctOrm))
-						studentLoanAccountsToAdd = append(studentLoanAccountsToAdd, &acctOrm)
-						continue
-					}
-
-					if syncedCreditAccount.PlaidAccountId == currentCreditAccount.PlaidAccountId {
-						found = true
-						break
-					} else if syncedCreditAccount.PlaidAccountId != currentCreditAccount.PlaidAccountId && idx == len(currentStudentLoanAccounts)-1 {
-						acctOrm, err := syncedCreditAccount.ToORM(ctx)
-						if err != nil {
-							return nil, err
-						}
-
-						studentLoanAccountsToAdd = append(studentLoanAccountsToAdd, &acctOrm)
-					}
-				}
-
-				if found {
-					acctOrm, err := syncedCreditAccount.ToORM(ctx)
-					if err != nil {
-						return nil, err
-					}
-					studentLoanAccountsToUpdate = append(studentLoanAccountsToUpdate, &acctOrm)
-				}
-			}
-
-			l := th.postgresDb.QueryOperator.LinkORM
-			linkOrm, err := link.ToORM(ctx)
-			if err != nil {
-				return nil, err
-			}
-
-			// update the credit accounts in the database
-			if err := l.StudentLoanAccounts.Model(&linkOrm).Replace(studentLoanAccountsToUpdate...); err != nil {
-				return nil, err
-			}
-
-			// add the new credit accounts to the database
-			if err := l.StudentLoanAccounts.Model(&linkOrm).Append(studentLoanAccountsToAdd...); err != nil {
-				return nil, err
-			}
-
-			th.logger.Info("found student loan accounts", zap.Int("count", len(creditAccountsSet.StudentLoanAccts)))
-		}
-	}
-
-	if len(plaidBankAccounts) == 0 {
-		th.logger.Warn("no accounts found for user", zap.Uint64("user_id", userId))
-		return nil, nil
-	}
-
-	plaidIDtoBankIDMap := make(map[string]uint64, 0)
-	plaidBankIDToBankRecordMap := make(map[uint64]*apiv1.BankAccount, 0)
-	bankAccountIds := make([]uint64, 0, len(plaidBankAccounts))
-
-	for _, customBankAccount := range link.GetBankAccounts() {
-		for _, plaidBankAccount := range plaidBankAccounts {
-			if plaidBankAccount.PlaidAccountId == customBankAccount.PlaidAccountId {
-				bankAccountIds = append(bankAccountIds, customBankAccount.Id)
-				plaidIDtoBankIDMap[plaidBankAccount.PlaidAccountId] = customBankAccount.Id
-				plaidBankIDToBankRecordMap[customBankAccount.Id] = customBankAccount
-				break
-			}
-		}
-
-		// If an account is no longer visible in plaid that means that we won't receive updates for that account anymore. If
-		// this happens, log something and mark that account as inactive. This way we can inform the user that the account
-		// is no longer receiving updates.
-		if _, ok := plaidIDtoBankIDMap[customBankAccount.PlaidAccountId]; !ok {
-			customBankAccount.Status = apiv1.BankAccountStatus_BANK_ACCOUNT_STATUS_INACTIVE
-			// update the bank account in the database
-			// TODO: maybe emit a metric here
-			if err := postgresClient.UpdateBankAccount(ctx, customBankAccount); err != nil {
+			if err := th.syncStudentLoanAccountsHelper(ctx, link, syncedStudentLoanAccounts, currentStudentLoanAccounts); err != nil {
 				return nil, err
 			}
 		}
-	}
-
-	if (len(bankAccountIds)) == 0 {
-		th.logger.Warn("none of the linked bank accounts are active at plaid", zap.Uint64("user_id", userId))
-		return nil, nil
 	}
 
 	var cursor *string
@@ -441,75 +245,48 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, userId, linkId 
 
 		existingTransaction, ok := plaidTxnIdToTxnMap[plaidTransaction.GetTransactionId()]
 		if !ok {
-			txnRecord := &apiv1.Transaction{
-				AccountId:                       plaidTransaction.GetAccountId(),
-				Amount:                          amount,
-				IsoCurrencyCode:                 plaidTransaction.GetIsoCurrencyCode(),
-				UnofficialCurrencyCode:          plaidTransaction.GetUnofficialCurrencyCode(),
-				CategoryId:                      plaidTransaction.GetCategoryId(),
-				CheckNumber:                     plaidTransaction.GetCheckNumber(),
-				CurrentDate:                     plaidTransaction.GetCurrentDate(),
-				CurrentDatetime:                 plaidTransaction.GetCurrentDatetime(),
-				AuthorizedDate:                  plaidTransaction.GetAuthorizedDate(),
-				AuthorizedDatetime:              plaidTransaction.GetAuthorizedDatetime(),
-				Name:                            transactionName,
-				MerchantName:                    plaidTransaction.GetMerchantName(),
-				PaymentChannel:                  plaidTransaction.GetPaymentChannel(),
-				Pending:                         plaidTransaction.GetPending(),
-				PendingTransactionId:            plaidTransaction.GetPendingTransactionId(),
-				AccountOwner:                    plaidTransaction.GetAccountOwner(),
-				TransactionId:                   plaidTransaction.GetTransactionId(),
-				TransactionCode:                 plaidTransaction.GetTransactionCode(),
-				Id:                              "",
-				UserId:                          userId,
-				LinkId:                          linkId,
-				Sign:                            1,
-				PersonalFinanceCategoryPrimary:  plaidTransaction.GetPersonalFinanceCategoryPrimary(),
-				PersonalFinanceCategoryDetailed: plaidTransaction.GetPersonalFinanceCategoryDetailed(),
-				LocationAddress:                 plaidTransaction.GetLocationAddress(),
-				LocationCity:                    plaidTransaction.GetLocationCity(),
-				LocationRegion:                  plaidTransaction.GetLocationRegion(),
-				LocationPostalCode:              plaidTransaction.GetLocationPostalCode(),
-				LocationCountry:                 plaidTransaction.GetLocationCountry(),
-				LocationLat:                     plaidTransaction.GetLocationLat(),
-				LocationLon:                     plaidTransaction.GetLocationLon(),
-				LocationStoreNumber:             plaidTransaction.GetLocationStoreNumber(),
-				PaymentMetaByOrderOf:            plaidTransaction.GetPaymentMetaByOrderOf(),
-				PaymentMetaPayee:                plaidTransaction.GetPaymentMetaPayee(),
-				PaymentMetaPayer:                plaidTransaction.GetPaymentMetaPayer(),
-				PaymentMetaPaymentMethod:        plaidTransaction.GetPaymentMetaPaymentMethod(),
-				PaymentMetaPaymentProcessor:     plaidTransaction.GetPaymentMetaPaymentProcessor(),
-				PaymentMetaPpdId:                plaidTransaction.GetPaymentMetaPpdId(),
-				PaymentMetaReason:               plaidTransaction.GetPaymentMetaReason(),
-				PaymentMetaReferenceNumber:      plaidTransaction.GetPaymentMetaReferenceNumber(),
-				Time:                            plaidTransaction.GetTime(),
-				Categories:                      plaidTransaction.GetCategories(),
+			plaidTransaction.UserId = userId
+			plaidTransaction.LinkId = linkId
+			plaidTransaction.Sign = 1
+			plaidTransaction.Name = transactionName
+
+			transactionsToInsert = append(transactionsToInsert, plaidTransaction)
+			continue
+		} else {
+			// due to clickhouse's collapsing merge tree deduplication logic, we need to
+			// also append the old transactions that was updated but with a sign bit that is negative
+			/**
+			CollapsingMergeTree: This engine collapses rows with the same sorting key during the merge operation based on the sign column.
+
+			To insert a row: sign = 1
+			To delete a row: sign = -1
+			*/
+			var shouldUpdate bool = false
+			var oldTransaction = existingTransaction
+			oldTransaction.Sign = -1
+
+			var newTransaction = existingTransaction
+			newTransaction.Sign = 1
+			if newTransaction.Amount != amount {
+				newTransaction.Amount = amount
+				shouldUpdate = true
 			}
 
-			transactionsToInsert = append(transactionsToInsert, txnRecord)
-			continue
+			if newTransaction.Pending != plaidTransaction.GetPending() {
+				newTransaction.Pending = plaidTransaction.GetPending()
+				shouldUpdate = true
+			}
+
+			if strings.EqualFold(newTransaction.PendingTransactionId, plaidTransaction.GetPendingTransactionId()) {
+				newTransaction.PendingTransactionId = plaidTransaction.GetPendingTransactionId()
+				shouldUpdate = true
+			}
+
+			if shouldUpdate {
+				transactionsToUpdate = append(transactionsToUpdate, newTransaction, oldTransaction)
+			}
 		}
 
-		var shouldUpdate bool
-		if existingTransaction.Amount != amount {
-			shouldUpdate = true
-		}
-
-		if existingTransaction.Pending != plaidTransaction.GetPending() {
-			shouldUpdate = true
-		}
-
-		if strings.EqualFold(existingTransaction.PendingTransactionId, plaidTransaction.GetPendingTransactionId()) {
-			shouldUpdate = true
-		}
-
-		existingTransaction.Amount = amount
-		existingTransaction.Pending = plaidTransaction.GetPending()
-		existingTransaction.PendingTransactionId = plaidTransaction.GetPendingTransactionId()
-
-		if shouldUpdate {
-			transactionsToUpdate = append(transactionsToUpdate, existingTransaction)
-		}
 	}
 
 	if len(transactionsToUpdate) > 0 {
@@ -525,48 +302,6 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, userId, linkId 
 			th.logger.Error("failed to insert transactions", zap.Error(err))
 			return nil, err
 		}
-	}
-
-	if len(transactionsToInsert)+len(transactionsToUpdate) > 0 {
-		updatedBankAccounts := make([]*apiv1.BankAccount, 0, len(plaidBankAccounts))
-		for _, singleBankAccount := range plaidBankAccounts {
-			bankAccount, ok := plaidBankIDToBankRecordMap[singleBankAccount.GetId()]
-			if !ok {
-				th.logger.Warn("bank was not found in map", zap.Any("plaidBankAccountId", singleBankAccount.GetId()))
-				continue
-			}
-
-			shouldUpdate := false
-			available := singleBankAccount.GetBalance()
-			current := singleBankAccount.GetCurrentFunds()
-
-			if bankAccount.CurrentFunds != current {
-				shouldUpdate = true
-			}
-
-			if bankAccount.Balance != available {
-				shouldUpdate = true
-			}
-
-			plaidName := bankAccount.Name
-			if bankAccount.Name != singleBankAccount.GetName() {
-				plaidName = singleBankAccount.GetName()
-				shouldUpdate = true
-			}
-
-			if shouldUpdate {
-				bankAccount.Name = plaidName
-				bankAccount.Balance = available
-				bankAccount.CurrentFunds = current
-				updatedBankAccounts = append(updatedBankAccounts, bankAccount)
-			}
-		}
-
-		if err = postgresClient.UpdateBankAccounts(ctx, updatedBankAccounts); err != nil {
-			th.logger.Error("failed to update bank accounts", zap.Error(err))
-		}
-
-		th.logger.Info("successfully updated bank accounts", zap.Int("count", len(updatedBankAccounts)))
 	}
 
 	if len(syncResult.Deleted) > 0 { // Handle removed transactions
@@ -619,5 +354,5 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, userId, linkId 
 		th.logger.Info("sending link setup notification")
 	}
 
-	return plaidBankAccounts, nil
+	return syncBankAccounts, nil
 }
