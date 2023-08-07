@@ -351,3 +351,12 @@ message GetMelodyFinancialContextRequest {
 message GetMelodyFinancialContextResponse {
   MelodyFinancialContext melody_financial_context = 1;
 }
+
+message GetHistoricalAccountBalanceRequest {
+  string plaid_account_id = 1;
+  uint64 user_id = 2;
+}
+
+message GetHistoricalAccountBalanceResponse {
+  repeated AccountBalanceHistory historical_account_balance = 1;
+}

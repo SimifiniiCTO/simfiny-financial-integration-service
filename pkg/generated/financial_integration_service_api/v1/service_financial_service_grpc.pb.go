@@ -83,6 +83,7 @@ const (
 	FinancialService_GetTotalInvestmentBySecurity_FullMethodName             = "/financial_integration_service_api.v1.FinancialService/GetTotalInvestmentBySecurity"
 	FinancialService_GetMelodyFinancialContext_FullMethodName                = "/financial_integration_service_api.v1.FinancialService/GetMelodyFinancialContext"
 	FinancialService_GetTransactionsForBankAccount_FullMethodName            = "/financial_integration_service_api.v1.FinancialService/GetTransactionsForBankAccount"
+	FinancialService_GetHistoricalAccountBalance_FullMethodName              = "/financial_integration_service_api.v1.FinancialService/GetHistoricalAccountBalance"
 )
 
 // FinancialServiceClient is the client API for FinancialService service.
@@ -429,6 +430,7 @@ type FinancialServiceClient interface {
 	// API Version: 1.
 	// API:/api/v1/analytics/melody-financial-context/user/{user_id}
 	GetTransactionsForBankAccount(ctx context.Context, in *GetTransactionsForBankAccountRequest, opts ...grpc.CallOption) (*GetTransactionsForBankAccountResponse, error)
+	GetHistoricalAccountBalance(ctx context.Context, in *GetHistoricalAccountBalanceRequest, opts ...grpc.CallOption) (*GetHistoricalAccountBalanceResponse, error)
 }
 
 type financialServiceClient struct {
@@ -1015,6 +1017,15 @@ func (c *financialServiceClient) GetTransactionsForBankAccount(ctx context.Conte
 	return out, nil
 }
 
+func (c *financialServiceClient) GetHistoricalAccountBalance(ctx context.Context, in *GetHistoricalAccountBalanceRequest, opts ...grpc.CallOption) (*GetHistoricalAccountBalanceResponse, error) {
+	out := new(GetHistoricalAccountBalanceResponse)
+	err := c.cc.Invoke(ctx, FinancialService_GetHistoricalAccountBalance_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // FinancialServiceServer is the server API for FinancialService service.
 // All implementations must embed UnimplementedFinancialServiceServer
 // for forward compatibility
@@ -1359,6 +1370,7 @@ type FinancialServiceServer interface {
 	// API Version: 1.
 	// API:/api/v1/analytics/melody-financial-context/user/{user_id}
 	GetTransactionsForBankAccount(context.Context, *GetTransactionsForBankAccountRequest) (*GetTransactionsForBankAccountResponse, error)
+	GetHistoricalAccountBalance(context.Context, *GetHistoricalAccountBalanceRequest) (*GetHistoricalAccountBalanceResponse, error)
 	mustEmbedUnimplementedFinancialServiceServer()
 }
 
@@ -1557,6 +1569,9 @@ func (UnimplementedFinancialServiceServer) GetMelodyFinancialContext(context.Con
 }
 func (UnimplementedFinancialServiceServer) GetTransactionsForBankAccount(context.Context, *GetTransactionsForBankAccountRequest) (*GetTransactionsForBankAccountResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetTransactionsForBankAccount not implemented")
+}
+func (UnimplementedFinancialServiceServer) GetHistoricalAccountBalance(context.Context, *GetHistoricalAccountBalanceRequest) (*GetHistoricalAccountBalanceResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetHistoricalAccountBalance not implemented")
 }
 func (UnimplementedFinancialServiceServer) mustEmbedUnimplementedFinancialServiceServer() {}
 
@@ -2723,6 +2738,24 @@ func _FinancialService_GetTransactionsForBankAccount_Handler(srv interface{}, ct
 	return interceptor(ctx, in, info, handler)
 }
 
+func _FinancialService_GetHistoricalAccountBalance_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetHistoricalAccountBalanceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FinancialServiceServer).GetHistoricalAccountBalance(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FinancialService_GetHistoricalAccountBalance_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FinancialServiceServer).GetHistoricalAccountBalance(ctx, req.(*GetHistoricalAccountBalanceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // FinancialService_ServiceDesc is the grpc.ServiceDesc for FinancialService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -2985,6 +3018,10 @@ var FinancialService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetTransactionsForBankAccount",
 			Handler:    _FinancialService_GetTransactionsForBankAccount_Handler,
+		},
+		{
+			MethodName: "GetHistoricalAccountBalance",
+			Handler:    _FinancialService_GetHistoricalAccountBalance_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

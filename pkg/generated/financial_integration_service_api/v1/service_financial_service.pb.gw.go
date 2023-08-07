@@ -3643,6 +3643,78 @@ func local_request_FinancialService_GetTransactionsForBankAccount_0(ctx context.
 
 }
 
+func request_FinancialService_GetHistoricalAccountBalance_0(ctx context.Context, marshaler runtime.Marshaler, client FinancialServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetHistoricalAccountBalanceRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["user_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "user_id")
+	}
+
+	protoReq.UserId, err = runtime.Uint64(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "user_id", err)
+	}
+
+	val, ok = pathParams["plaid_account_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "plaid_account_id")
+	}
+
+	protoReq.PlaidAccountId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "plaid_account_id", err)
+	}
+
+	msg, err := client.GetHistoricalAccountBalance(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_FinancialService_GetHistoricalAccountBalance_0(ctx context.Context, marshaler runtime.Marshaler, server FinancialServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetHistoricalAccountBalanceRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["user_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "user_id")
+	}
+
+	protoReq.UserId, err = runtime.Uint64(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "user_id", err)
+	}
+
+	val, ok = pathParams["plaid_account_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "plaid_account_id")
+	}
+
+	protoReq.PlaidAccountId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "plaid_account_id", err)
+	}
+
+	msg, err := server.GetHistoricalAccountBalance(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
 // RegisterFinancialServiceHandlerServer registers the http handlers for service FinancialService to "mux".
 // UnaryRPC     :call FinancialServiceServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
@@ -5249,6 +5321,31 @@ func RegisterFinancialServiceHandlerServer(ctx context.Context, mux *runtime.Ser
 
 	})
 
+	mux.Handle("GET", pattern_FinancialService_GetHistoricalAccountBalance_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/GetHistoricalAccountBalance", runtime.WithHTTPPathPattern("/api/v1/historical-account-balance/user/{user_id}/plaid-account-id/{plaid_account_id}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_FinancialService_GetHistoricalAccountBalance_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_FinancialService_GetHistoricalAccountBalance_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
 	return nil
 }
 
@@ -6698,6 +6795,28 @@ func RegisterFinancialServiceHandlerClient(ctx context.Context, mux *runtime.Ser
 
 	})
 
+	mux.Handle("GET", pattern_FinancialService_GetHistoricalAccountBalance_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/financial_integration_service_api.v1.FinancialService/GetHistoricalAccountBalance", runtime.WithHTTPPathPattern("/api/v1/historical-account-balance/user/{user_id}/plaid-account-id/{plaid_account_id}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_FinancialService_GetHistoricalAccountBalance_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_FinancialService_GetHistoricalAccountBalance_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
 	return nil
 }
 
@@ -6829,6 +6948,8 @@ var (
 	pattern_FinancialService_GetMelodyFinancialContext_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 2, 4, 1, 0, 4, 1, 5, 5}, []string{"api", "v1", "analytics", "melody-financial-context", "user", "user_id"}, ""))
 
 	pattern_FinancialService_GetTransactionsForBankAccount_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4, 2, 5, 1, 0, 4, 1, 5, 6, 2, 7, 1, 0, 4, 1, 5, 8, 2, 9, 1, 0, 4, 1, 5, 10}, []string{"api", "v1", "transactions", "user", "user_id", "plaid-account-id", "plaid_account_id", "pageNumber", "page_number", "pageSize", "page_size"}, ""))
+
+	pattern_FinancialService_GetHistoricalAccountBalance_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4, 2, 5, 1, 0, 4, 1, 5, 6}, []string{"api", "v1", "historical-account-balance", "user", "user_id", "plaid-account-id", "plaid_account_id"}, ""))
 )
 
 var (
@@ -6959,4 +7080,6 @@ var (
 	forward_FinancialService_GetMelodyFinancialContext_0 = runtime.ForwardResponseMessage
 
 	forward_FinancialService_GetTransactionsForBankAccount_0 = runtime.ForwardResponseMessage
+
+	forward_FinancialService_GetHistoricalAccountBalance_0 = runtime.ForwardResponseMessage
 )

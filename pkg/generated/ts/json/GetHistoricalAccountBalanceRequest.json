@@ -1,0 +1,19 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/GetHistoricalAccountBalanceRequest",
+    "definitions": {
+        "GetHistoricalAccountBalanceRequest": {
+            "properties": {
+                "plaid_account_id": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Get Historical Account Balance Request"
+        }
+    }
+}

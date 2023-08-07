@@ -46,7 +46,7 @@ var file_financial_integration_service_api_v1_service_financial_service_proto_ra
 	0x74, 0x6f, 0x1a, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63, 0x2d, 0x67, 0x65, 0x6e, 0x2d, 0x6f,
 	0x70, 0x65, 0x6e, 0x61, 0x70, 0x69, 0x76, 0x32, 0x2f, 0x6f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x73,
 	0x2f, 0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x2e, 0x70, 0x72, 0x6f,
-	0x74, 0x6f, 0x32, 0xc7, 0xd2, 0x01, 0x0a, 0x10, 0x46, 0x69, 0x6e, 0x61, 0x6e, 0x63, 0x69, 0x61,
+	0x74, 0x6f, 0x32, 0xbd, 0xd6, 0x01, 0x0a, 0x10, 0x46, 0x69, 0x6e, 0x61, 0x6e, 0x63, 0x69, 0x61,
 	0x6c, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x98, 0x03, 0x0a, 0x1a, 0x50, 0x6c, 0x61,
 	0x69, 0x64, 0x49, 0x6e, 0x69, 0x74, 0x69, 0x61, 0x74, 0x65, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x45,
 	0x78, 0x63, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x12, 0x47, 0x2e, 0x66, 0x69, 0x6e, 0x61, 0x6e, 0x63,
@@ -1730,35 +1730,66 @@ var file_financial_integration_service_api_v1_service_financial_service_proto_ra
 	0x61, 0x69, 0x64, 0x5f, 0x61, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x5f, 0x69, 0x64, 0x7d, 0x2f,
 	0x70, 0x61, 0x67, 0x65, 0x4e, 0x75, 0x6d, 0x62, 0x65, 0x72, 0x2f, 0x7b, 0x70, 0x61, 0x67, 0x65,
 	0x5f, 0x6e, 0x75, 0x6d, 0x62, 0x65, 0x72, 0x7d, 0x2f, 0x70, 0x61, 0x67, 0x65, 0x53, 0x69, 0x7a,
-	0x65, 0x2f, 0x7b, 0x70, 0x61, 0x67, 0x65, 0x5f, 0x73, 0x69, 0x7a, 0x65, 0x7d, 0x42, 0xa9, 0x03,
-	0x0a, 0x28, 0x63, 0x6f, 0x6d, 0x2e, 0x66, 0x69, 0x6e, 0x61, 0x6e, 0x63, 0x69, 0x61, 0x6c, 0x5f,
-	0x69, 0x6e, 0x74, 0x65, 0x67, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x73, 0x65, 0x72, 0x76,
-	0x69, 0x63, 0x65, 0x5f, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x42, 0x1c, 0x53, 0x65, 0x72, 0x76,
-	0x69, 0x63, 0x65, 0x46, 0x69, 0x6e, 0x61, 0x6e, 0x63, 0x69, 0x61, 0x6c, 0x53, 0x65, 0x72, 0x76,
-	0x69, 0x63, 0x65, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0xb9, 0x01, 0x67, 0x69, 0x74,
-	0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x53, 0x69, 0x6d, 0x69, 0x66, 0x69, 0x6e, 0x69,
-	0x69, 0x43, 0x54, 0x4f, 0x2f, 0x73, 0x69, 0x6d, 0x66, 0x69, 0x6e, 0x79, 0x2d, 0x66, 0x69, 0x6e,
-	0x61, 0x6e, 0x63, 0x69, 0x61, 0x6c, 0x2d, 0x69, 0x6e, 0x74, 0x65, 0x67, 0x72, 0x61, 0x74, 0x69,
-	0x6f, 0x6e, 0x2d, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x2f, 0x70, 0x6b, 0x67, 0x2f, 0x67,
-	0x65, 0x6e, 0x65, 0x72, 0x61, 0x74, 0x65, 0x64, 0x2f, 0x66, 0x69, 0x6e, 0x61, 0x6e, 0x63, 0x69,
+	0x65, 0x2f, 0x7b, 0x70, 0x61, 0x67, 0x65, 0x5f, 0x73, 0x69, 0x7a, 0x65, 0x7d, 0x12, 0xf3, 0x03,
+	0x0a, 0x1b, 0x47, 0x65, 0x74, 0x48, 0x69, 0x73, 0x74, 0x6f, 0x72, 0x69, 0x63, 0x61, 0x6c, 0x41,
+	0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x42, 0x61, 0x6c, 0x61, 0x6e, 0x63, 0x65, 0x12, 0x48, 0x2e,
+	0x66, 0x69, 0x6e, 0x61, 0x6e, 0x63, 0x69, 0x61, 0x6c, 0x5f, 0x69, 0x6e, 0x74, 0x65, 0x67, 0x72,
+	0x61, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x5f, 0x61, 0x70,
+	0x69, 0x2e, 0x76, 0x31, 0x2e, 0x47, 0x65, 0x74, 0x48, 0x69, 0x73, 0x74, 0x6f, 0x72, 0x69, 0x63,
+	0x61, 0x6c, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x42, 0x61, 0x6c, 0x61, 0x6e, 0x63, 0x65,
+	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x49, 0x2e, 0x66, 0x69, 0x6e, 0x61, 0x6e, 0x63,
+	0x69, 0x61, 0x6c, 0x5f, 0x69, 0x6e, 0x74, 0x65, 0x67, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x5f,
+	0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x5f, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x47,
+	0x65, 0x74, 0x48, 0x69, 0x73, 0x74, 0x6f, 0x72, 0x69, 0x63, 0x61, 0x6c, 0x41, 0x63, 0x63, 0x6f,
+	0x75, 0x6e, 0x74, 0x42, 0x61, 0x6c, 0x61, 0x6e, 0x63, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
+	0x73, 0x65, 0x22, 0xbe, 0x02, 0x92, 0x41, 0xdd, 0x01, 0x0a, 0x09, 0x61, 0x6e, 0x61, 0x6c, 0x79,
+	0x74, 0x69, 0x63, 0x73, 0x0a, 0x0f, 0x61, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x2d, 0x62, 0x61,
+	0x6c, 0x61, 0x6e, 0x63, 0x65, 0x12, 0x22, 0x67, 0x65, 0x74, 0x73, 0x20, 0x61, 0x63, 0x63, 0x6f,
+	0x75, 0x6e, 0x74, 0x20, 0x62, 0x61, 0x6c, 0x61, 0x6e, 0x63, 0x65, 0x20, 0x6f, 0x66, 0x20, 0x61,
+	0x6e, 0x20, 0x61, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x1a, 0x40, 0x54, 0x68, 0x69, 0x73, 0x20,
+	0x65, 0x6e, 0x64, 0x70, 0x6f, 0x69, 0x6e, 0x74, 0x20, 0x72, 0x65, 0x74, 0x75, 0x72, 0x6e, 0x73,
+	0x20, 0x74, 0x68, 0x65, 0x20, 0x68, 0x69, 0x73, 0x74, 0x6f, 0x72, 0x69, 0x63, 0x61, 0x6c, 0x20,
+	0x62, 0x61, 0x6c, 0x61, 0x6e, 0x63, 0x65, 0x20, 0x66, 0x6f, 0x72, 0x20, 0x61, 0x20, 0x67, 0x69,
+	0x76, 0x65, 0x6e, 0x20, 0x61, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x2a, 0x11, 0x47, 0x65, 0x74,
+	0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x42, 0x61, 0x6c, 0x61, 0x6e, 0x63, 0x65, 0x4a, 0x46,
+	0x0a, 0x03, 0x32, 0x30, 0x30, 0x12, 0x3f, 0x0a, 0x16, 0x41, 0x20, 0x73, 0x75, 0x63, 0x63, 0x65,
+	0x73, 0x73, 0x66, 0x75, 0x6c, 0x20, 0x72, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x2e, 0x12,
+	0x25, 0x0a, 0x23, 0x1a, 0x21, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x47, 0x65, 0x74,
+	0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x42, 0x61, 0x6c, 0x61, 0x6e, 0x63, 0x65, 0x52, 0x65,
+	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x57, 0x12, 0x55, 0x2f, 0x61,
+	0x70, 0x69, 0x2f, 0x76, 0x31, 0x2f, 0x68, 0x69, 0x73, 0x74, 0x6f, 0x72, 0x69, 0x63, 0x61, 0x6c,
+	0x2d, 0x61, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x2d, 0x62, 0x61, 0x6c, 0x61, 0x6e, 0x63, 0x65,
+	0x2f, 0x75, 0x73, 0x65, 0x72, 0x2f, 0x7b, 0x75, 0x73, 0x65, 0x72, 0x5f, 0x69, 0x64, 0x7d, 0x2f,
+	0x70, 0x6c, 0x61, 0x69, 0x64, 0x2d, 0x61, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x2d, 0x69, 0x64,
+	0x2f, 0x7b, 0x70, 0x6c, 0x61, 0x69, 0x64, 0x5f, 0x61, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x5f,
+	0x69, 0x64, 0x7d, 0x42, 0xa9, 0x03, 0x0a, 0x28, 0x63, 0x6f, 0x6d, 0x2e, 0x66, 0x69, 0x6e, 0x61,
+	0x6e, 0x63, 0x69, 0x61, 0x6c, 0x5f, 0x69, 0x6e, 0x74, 0x65, 0x67, 0x72, 0x61, 0x74, 0x69, 0x6f,
+	0x6e, 0x5f, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x5f, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31,
+	0x42, 0x1c, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x46, 0x69, 0x6e, 0x61, 0x6e, 0x63, 0x69,
+	0x61, 0x6c, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01,
+	0x5a, 0xb9, 0x01, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x53, 0x69,
+	0x6d, 0x69, 0x66, 0x69, 0x6e, 0x69, 0x69, 0x43, 0x54, 0x4f, 0x2f, 0x73, 0x69, 0x6d, 0x66, 0x69,
+	0x6e, 0x79, 0x2d, 0x66, 0x69, 0x6e, 0x61, 0x6e, 0x63, 0x69, 0x61, 0x6c, 0x2d, 0x69, 0x6e, 0x74,
+	0x65, 0x67, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2d, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65,
+	0x2f, 0x70, 0x6b, 0x67, 0x2f, 0x67, 0x65, 0x6e, 0x65, 0x72, 0x61, 0x74, 0x65, 0x64, 0x2f, 0x66,
+	0x69, 0x6e, 0x61, 0x6e, 0x63, 0x69, 0x61, 0x6c, 0x5f, 0x69, 0x6e, 0x74, 0x65, 0x67, 0x72, 0x61,
+	0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x5f, 0x61, 0x70, 0x69,
+	0x2f, 0x76, 0x31, 0x2f, 0x66, 0x69, 0x6e, 0x61, 0x6e, 0x63, 0x69, 0x61, 0x6c, 0x5f, 0x69, 0x6e,
+	0x74, 0x65, 0x67, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63,
+	0x65, 0x5f, 0x61, 0x70, 0x69, 0x2f, 0x76, 0x31, 0x3b, 0x66, 0x69, 0x6e, 0x61, 0x6e, 0x63, 0x69,
 	0x61, 0x6c, 0x5f, 0x69, 0x6e, 0x74, 0x65, 0x67, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x73,
-	0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x5f, 0x61, 0x70, 0x69, 0x2f, 0x76, 0x31, 0x2f, 0x66, 0x69,
-	0x6e, 0x61, 0x6e, 0x63, 0x69, 0x61, 0x6c, 0x5f, 0x69, 0x6e, 0x74, 0x65, 0x67, 0x72, 0x61, 0x74,
-	0x69, 0x6f, 0x6e, 0x5f, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x5f, 0x61, 0x70, 0x69, 0x2f,
-	0x76, 0x31, 0x3b, 0x66, 0x69, 0x6e, 0x61, 0x6e, 0x63, 0x69, 0x61, 0x6c, 0x5f, 0x69, 0x6e, 0x74,
-	0x65, 0x67, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65,
-	0x5f, 0x61, 0x70, 0x69, 0x76, 0x31, 0xa2, 0x02, 0x03, 0x46, 0x58, 0x58, 0xaa, 0x02, 0x21, 0x46,
-	0x69, 0x6e, 0x61, 0x6e, 0x63, 0x69, 0x61, 0x6c, 0x49, 0x6e, 0x74, 0x65, 0x67, 0x72, 0x61, 0x74,
-	0x69, 0x6f, 0x6e, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x41, 0x70, 0x69, 0x2e, 0x56, 0x31,
-	0xca, 0x02, 0x21, 0x46, 0x69, 0x6e, 0x61, 0x6e, 0x63, 0x69, 0x61, 0x6c, 0x49, 0x6e, 0x74, 0x65,
-	0x67, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x41, 0x70,
-	0x69, 0x5c, 0x56, 0x31, 0xe2, 0x02, 0x2d, 0x46, 0x69, 0x6e, 0x61, 0x6e, 0x63, 0x69, 0x61, 0x6c,
-	0x49, 0x6e, 0x74, 0x65, 0x67, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x53, 0x65, 0x72, 0x76, 0x69,
-	0x63, 0x65, 0x41, 0x70, 0x69, 0x5c, 0x56, 0x31, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61,
-	0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x22, 0x46, 0x69, 0x6e, 0x61, 0x6e, 0x63, 0x69, 0x61, 0x6c,
-	0x49, 0x6e, 0x74, 0x65, 0x67, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x53, 0x65, 0x72, 0x76, 0x69,
-	0x63, 0x65, 0x41, 0x70, 0x69, 0x3a, 0x3a, 0x56, 0x31, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f,
-	0x33,
+	0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x5f, 0x61, 0x70, 0x69, 0x76, 0x31, 0xa2, 0x02, 0x03, 0x46,
+	0x58, 0x58, 0xaa, 0x02, 0x21, 0x46, 0x69, 0x6e, 0x61, 0x6e, 0x63, 0x69, 0x61, 0x6c, 0x49, 0x6e,
+	0x74, 0x65, 0x67, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65,
+	0x41, 0x70, 0x69, 0x2e, 0x56, 0x31, 0xca, 0x02, 0x21, 0x46, 0x69, 0x6e, 0x61, 0x6e, 0x63, 0x69,
+	0x61, 0x6c, 0x49, 0x6e, 0x74, 0x65, 0x67, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x53, 0x65, 0x72,
+	0x76, 0x69, 0x63, 0x65, 0x41, 0x70, 0x69, 0x5c, 0x56, 0x31, 0xe2, 0x02, 0x2d, 0x46, 0x69, 0x6e,
+	0x61, 0x6e, 0x63, 0x69, 0x61, 0x6c, 0x49, 0x6e, 0x74, 0x65, 0x67, 0x72, 0x61, 0x74, 0x69, 0x6f,
+	0x6e, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x41, 0x70, 0x69, 0x5c, 0x56, 0x31, 0x5c, 0x47,
+	0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x22, 0x46, 0x69, 0x6e,
+	0x61, 0x6e, 0x63, 0x69, 0x61, 0x6c, 0x49, 0x6e, 0x74, 0x65, 0x67, 0x72, 0x61, 0x74, 0x69, 0x6f,
+	0x6e, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x41, 0x70, 0x69, 0x3a, 0x3a, 0x56, 0x31, 0x62,
+	0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var file_financial_integration_service_api_v1_service_financial_service_proto_goTypes = []interface{}{
@@ -1826,70 +1857,72 @@ var file_financial_integration_service_api_v1_service_financial_service_proto_go
 	(*GetTotalInvestmentBySecurityRequest)(nil),              // 61: financial_integration_service_api.v1.GetTotalInvestmentBySecurityRequest
 	(*GetMelodyFinancialContextRequest)(nil),                 // 62: financial_integration_service_api.v1.GetMelodyFinancialContextRequest
 	(*GetTransactionsForBankAccountRequest)(nil),             // 63: financial_integration_service_api.v1.GetTransactionsForBankAccountRequest
-	(*PlaidInitiateTokenExchangeResponse)(nil),               // 64: financial_integration_service_api.v1.PlaidInitiateTokenExchangeResponse
-	(*PlaidInitiateTokenUpdateResponse)(nil),                 // 65: financial_integration_service_api.v1.PlaidInitiateTokenUpdateResponse
-	(*PlaidExchangeTokenResponse)(nil),                       // 66: financial_integration_service_api.v1.PlaidExchangeTokenResponse
-	(*CreateUserProfileResponse)(nil),                        // 67: financial_integration_service_api.v1.CreateUserProfileResponse
-	(*GetUserProfileResponse)(nil),                           // 68: financial_integration_service_api.v1.GetUserProfileResponse
-	(*DeleteUserProfileResponse)(nil),                        // 69: financial_integration_service_api.v1.DeleteUserProfileResponse
-	(*UpdateUserProfileResponse)(nil),                        // 70: financial_integration_service_api.v1.UpdateUserProfileResponse
-	(*CreateBankAccountResponse)(nil),                        // 71: financial_integration_service_api.v1.CreateBankAccountResponse
-	(*GetBankAccountResponse)(nil),                           // 72: financial_integration_service_api.v1.GetBankAccountResponse
-	(*UpdateBankAccountResponse)(nil),                        // 73: financial_integration_service_api.v1.UpdateBankAccountResponse
-	(*DeleteBankAccountResponse)(nil),                        // 74: financial_integration_service_api.v1.DeleteBankAccountResponse
-	(*GetPocketResponse)(nil),                                // 75: financial_integration_service_api.v1.GetPocketResponse
-	(*GetSmartGoalsByPocketIdResponse)(nil),                  // 76: financial_integration_service_api.v1.GetSmartGoalsByPocketIdResponse
-	(*CreateSmartGoalResponse)(nil),                          // 77: financial_integration_service_api.v1.CreateSmartGoalResponse
-	(*UpdateSmartGoalResponse)(nil),                          // 78: financial_integration_service_api.v1.UpdateSmartGoalResponse
-	(*DeleteSmartGoalResponse)(nil),                          // 79: financial_integration_service_api.v1.DeleteSmartGoalResponse
-	(*CreateMilestoneResponse)(nil),                          // 80: financial_integration_service_api.v1.CreateMilestoneResponse
-	(*DeleteMilestoneResponse)(nil),                          // 81: financial_integration_service_api.v1.DeleteMilestoneResponse
-	(*UpdateMilestoneResponse)(nil),                          // 82: financial_integration_service_api.v1.UpdateMilestoneResponse
-	(*GetMilestoneResponse)(nil),                             // 83: financial_integration_service_api.v1.GetMilestoneResponse
-	(*GetMilestonesBySmartGoalIdResponse)(nil),               // 84: financial_integration_service_api.v1.GetMilestonesBySmartGoalIdResponse
-	(*GetForecastResponse)(nil),                              // 85: financial_integration_service_api.v1.GetForecastResponse
-	(*CreateBudgetResponse)(nil),                             // 86: financial_integration_service_api.v1.CreateBudgetResponse
-	(*UpdateBudgetResponse)(nil),                             // 87: financial_integration_service_api.v1.UpdateBudgetResponse
-	(*DeleteBudgetResponse)(nil),                             // 88: financial_integration_service_api.v1.DeleteBudgetResponse
-	(*GetBudgetResponse)(nil),                                // 89: financial_integration_service_api.v1.GetBudgetResponse
-	(*GetAllBudgetsResponse)(nil),                            // 90: financial_integration_service_api.v1.GetAllBudgetsResponse
-	(*HealthCheckResponse)(nil),                              // 91: financial_integration_service_api.v1.HealthCheckResponse
-	(*ReadynessCheckResponse)(nil),                           // 92: financial_integration_service_api.v1.ReadynessCheckResponse
-	(*GetInvestmentAcccountResponse)(nil),                    // 93: financial_integration_service_api.v1.GetInvestmentAcccountResponse
-	(*GetMortgageAccountResponse)(nil),                       // 94: financial_integration_service_api.v1.GetMortgageAccountResponse
-	(*GetLiabilityAccountResponse)(nil),                      // 95: financial_integration_service_api.v1.GetLiabilityAccountResponse
-	(*GetStudentLoanAccountResponse)(nil),                    // 96: financial_integration_service_api.v1.GetStudentLoanAccountResponse
-	(*CreateManualLinkResponse)(nil),                         // 97: financial_integration_service_api.v1.CreateManualLinkResponse
-	(*GetLinkResponse)(nil),                                  // 98: financial_integration_service_api.v1.GetLinkResponse
-	(*GetLinksResponse)(nil),                                 // 99: financial_integration_service_api.v1.GetLinksResponse
-	(*DeleteLinkResponse)(nil),                               // 100: financial_integration_service_api.v1.DeleteLinkResponse
-	(*GetReCurringTransactionsResponse)(nil),                 // 101: financial_integration_service_api.v1.GetReCurringTransactionsResponse
-	(*GetTransactionsResponse)(nil),                          // 102: financial_integration_service_api.v1.GetTransactionsResponse
-	(*ProcessWebhookResponse)(nil),                           // 103: financial_integration_service_api.v1.ProcessWebhookResponse
-	(*StripeWebhookResponse)(nil),                            // 104: financial_integration_service_api.v1.StripeWebhookResponse
-	(*CreateSubscriptionResponse)(nil),                       // 105: financial_integration_service_api.v1.CreateSubscriptionResponse
-	(*GetTransactionAggregatesResponse)(nil),                 // 106: financial_integration_service_api.v1.GetTransactionAggregatesResponse
-	(*GetUserAccountBalanceHistoryResponse)(nil),             // 107: financial_integration_service_api.v1.GetUserAccountBalanceHistoryResponse
-	(*GetAccountBalanceHistoryResponse)(nil),                 // 108: financial_integration_service_api.v1.GetAccountBalanceHistoryResponse
-	(*GetUserCategoryMonthlyExpenditureResponse)(nil),        // 109: financial_integration_service_api.v1.GetUserCategoryMonthlyExpenditureResponse
-	(*GetUserCategoryMonthlyIncomeResponse)(nil),             // 110: financial_integration_service_api.v1.GetUserCategoryMonthlyIncomeResponse
-	(*GetCategoryMonthlyTransactionCountResponse)(nil),       // 111: financial_integration_service_api.v1.GetCategoryMonthlyTransactionCountResponse
-	(*GetDebtToIncomeRatioResponse)(nil),                     // 112: financial_integration_service_api.v1.GetDebtToIncomeRatioResponse
-	(*GetExpenseMetricsResponse)(nil),                        // 113: financial_integration_service_api.v1.GetExpenseMetricsResponse
-	(*GetFinancialProfileResponse)(nil),                      // 114: financial_integration_service_api.v1.GetFinancialProfileResponse
-	(*GetIncomeExpenseRatioResponse)(nil),                    // 115: financial_integration_service_api.v1.GetIncomeExpenseRatioResponse
-	(*GetIncomeMetricsResponse)(nil),                         // 116: financial_integration_service_api.v1.GetIncomeMetricsResponse
-	(*GetMerchantMonthlyExpenditureResponse)(nil),            // 117: financial_integration_service_api.v1.GetMerchantMonthlyExpenditureResponse
-	(*GetMonthlyBalanceResponse)(nil),                        // 118: financial_integration_service_api.v1.GetMonthlyBalanceResponse
-	(*GetMonthlyExpenditureResponse)(nil),                    // 119: financial_integration_service_api.v1.GetMonthlyExpenditureResponse
-	(*GetMonthlyIncomeResponse)(nil),                         // 120: financial_integration_service_api.v1.GetMonthlyIncomeResponse
-	(*GetMonthlySavingsResponse)(nil),                        // 121: financial_integration_service_api.v1.GetMonthlySavingsResponse
-	(*GetMonthlyTotalQuantityBySecurityAndUserResponse)(nil), // 122: financial_integration_service_api.v1.GetMonthlyTotalQuantityBySecurityAndUserResponse
-	(*GetMonthlyTransactionCountResponse)(nil),               // 123: financial_integration_service_api.v1.GetMonthlyTransactionCountResponse
-	(*GetPaymentChannelMonthlyExpenditureResponse)(nil),      // 124: financial_integration_service_api.v1.GetPaymentChannelMonthlyExpenditureResponse
-	(*GetTotalInvestmentBySecurityResponse)(nil),             // 125: financial_integration_service_api.v1.GetTotalInvestmentBySecurityResponse
-	(*GetMelodyFinancialContextResponse)(nil),                // 126: financial_integration_service_api.v1.GetMelodyFinancialContextResponse
-	(*GetTransactionsForBankAccountResponse)(nil),            // 127: financial_integration_service_api.v1.GetTransactionsForBankAccountResponse
+	(*GetHistoricalAccountBalanceRequest)(nil),               // 64: financial_integration_service_api.v1.GetHistoricalAccountBalanceRequest
+	(*PlaidInitiateTokenExchangeResponse)(nil),               // 65: financial_integration_service_api.v1.PlaidInitiateTokenExchangeResponse
+	(*PlaidInitiateTokenUpdateResponse)(nil),                 // 66: financial_integration_service_api.v1.PlaidInitiateTokenUpdateResponse
+	(*PlaidExchangeTokenResponse)(nil),                       // 67: financial_integration_service_api.v1.PlaidExchangeTokenResponse
+	(*CreateUserProfileResponse)(nil),                        // 68: financial_integration_service_api.v1.CreateUserProfileResponse
+	(*GetUserProfileResponse)(nil),                           // 69: financial_integration_service_api.v1.GetUserProfileResponse
+	(*DeleteUserProfileResponse)(nil),                        // 70: financial_integration_service_api.v1.DeleteUserProfileResponse
+	(*UpdateUserProfileResponse)(nil),                        // 71: financial_integration_service_api.v1.UpdateUserProfileResponse
+	(*CreateBankAccountResponse)(nil),                        // 72: financial_integration_service_api.v1.CreateBankAccountResponse
+	(*GetBankAccountResponse)(nil),                           // 73: financial_integration_service_api.v1.GetBankAccountResponse
+	(*UpdateBankAccountResponse)(nil),                        // 74: financial_integration_service_api.v1.UpdateBankAccountResponse
+	(*DeleteBankAccountResponse)(nil),                        // 75: financial_integration_service_api.v1.DeleteBankAccountResponse
+	(*GetPocketResponse)(nil),                                // 76: financial_integration_service_api.v1.GetPocketResponse
+	(*GetSmartGoalsByPocketIdResponse)(nil),                  // 77: financial_integration_service_api.v1.GetSmartGoalsByPocketIdResponse
+	(*CreateSmartGoalResponse)(nil),                          // 78: financial_integration_service_api.v1.CreateSmartGoalResponse
+	(*UpdateSmartGoalResponse)(nil),                          // 79: financial_integration_service_api.v1.UpdateSmartGoalResponse
+	(*DeleteSmartGoalResponse)(nil),                          // 80: financial_integration_service_api.v1.DeleteSmartGoalResponse
+	(*CreateMilestoneResponse)(nil),                          // 81: financial_integration_service_api.v1.CreateMilestoneResponse
+	(*DeleteMilestoneResponse)(nil),                          // 82: financial_integration_service_api.v1.DeleteMilestoneResponse
+	(*UpdateMilestoneResponse)(nil),                          // 83: financial_integration_service_api.v1.UpdateMilestoneResponse
+	(*GetMilestoneResponse)(nil),                             // 84: financial_integration_service_api.v1.GetMilestoneResponse
+	(*GetMilestonesBySmartGoalIdResponse)(nil),               // 85: financial_integration_service_api.v1.GetMilestonesBySmartGoalIdResponse
+	(*GetForecastResponse)(nil),                              // 86: financial_integration_service_api.v1.GetForecastResponse
+	(*CreateBudgetResponse)(nil),                             // 87: financial_integration_service_api.v1.CreateBudgetResponse
+	(*UpdateBudgetResponse)(nil),                             // 88: financial_integration_service_api.v1.UpdateBudgetResponse
+	(*DeleteBudgetResponse)(nil),                             // 89: financial_integration_service_api.v1.DeleteBudgetResponse
+	(*GetBudgetResponse)(nil),                                // 90: financial_integration_service_api.v1.GetBudgetResponse
+	(*GetAllBudgetsResponse)(nil),                            // 91: financial_integration_service_api.v1.GetAllBudgetsResponse
+	(*HealthCheckResponse)(nil),                              // 92: financial_integration_service_api.v1.HealthCheckResponse
+	(*ReadynessCheckResponse)(nil),                           // 93: financial_integration_service_api.v1.ReadynessCheckResponse
+	(*GetInvestmentAcccountResponse)(nil),                    // 94: financial_integration_service_api.v1.GetInvestmentAcccountResponse
+	(*GetMortgageAccountResponse)(nil),                       // 95: financial_integration_service_api.v1.GetMortgageAccountResponse
+	(*GetLiabilityAccountResponse)(nil),                      // 96: financial_integration_service_api.v1.GetLiabilityAccountResponse
+	(*GetStudentLoanAccountResponse)(nil),                    // 97: financial_integration_service_api.v1.GetStudentLoanAccountResponse
+	(*CreateManualLinkResponse)(nil),                         // 98: financial_integration_service_api.v1.CreateManualLinkResponse
+	(*GetLinkResponse)(nil),                                  // 99: financial_integration_service_api.v1.GetLinkResponse
+	(*GetLinksResponse)(nil),                                 // 100: financial_integration_service_api.v1.GetLinksResponse
+	(*DeleteLinkResponse)(nil),                               // 101: financial_integration_service_api.v1.DeleteLinkResponse
+	(*GetReCurringTransactionsResponse)(nil),                 // 102: financial_integration_service_api.v1.GetReCurringTransactionsResponse
+	(*GetTransactionsResponse)(nil),                          // 103: financial_integration_service_api.v1.GetTransactionsResponse
+	(*ProcessWebhookResponse)(nil),                           // 104: financial_integration_service_api.v1.ProcessWebhookResponse
+	(*StripeWebhookResponse)(nil),                            // 105: financial_integration_service_api.v1.StripeWebhookResponse
+	(*CreateSubscriptionResponse)(nil),                       // 106: financial_integration_service_api.v1.CreateSubscriptionResponse
+	(*GetTransactionAggregatesResponse)(nil),                 // 107: financial_integration_service_api.v1.GetTransactionAggregatesResponse
+	(*GetUserAccountBalanceHistoryResponse)(nil),             // 108: financial_integration_service_api.v1.GetUserAccountBalanceHistoryResponse
+	(*GetAccountBalanceHistoryResponse)(nil),                 // 109: financial_integration_service_api.v1.GetAccountBalanceHistoryResponse
+	(*GetUserCategoryMonthlyExpenditureResponse)(nil),        // 110: financial_integration_service_api.v1.GetUserCategoryMonthlyExpenditureResponse
+	(*GetUserCategoryMonthlyIncomeResponse)(nil),             // 111: financial_integration_service_api.v1.GetUserCategoryMonthlyIncomeResponse
+	(*GetCategoryMonthlyTransactionCountResponse)(nil),       // 112: financial_integration_service_api.v1.GetCategoryMonthlyTransactionCountResponse
+	(*GetDebtToIncomeRatioResponse)(nil),                     // 113: financial_integration_service_api.v1.GetDebtToIncomeRatioResponse
+	(*GetExpenseMetricsResponse)(nil),                        // 114: financial_integration_service_api.v1.GetExpenseMetricsResponse
+	(*GetFinancialProfileResponse)(nil),                      // 115: financial_integration_service_api.v1.GetFinancialProfileResponse
+	(*GetIncomeExpenseRatioResponse)(nil),                    // 116: financial_integration_service_api.v1.GetIncomeExpenseRatioResponse
+	(*GetIncomeMetricsResponse)(nil),                         // 117: financial_integration_service_api.v1.GetIncomeMetricsResponse
+	(*GetMerchantMonthlyExpenditureResponse)(nil),            // 118: financial_integration_service_api.v1.GetMerchantMonthlyExpenditureResponse
+	(*GetMonthlyBalanceResponse)(nil),                        // 119: financial_integration_service_api.v1.GetMonthlyBalanceResponse
+	(*GetMonthlyExpenditureResponse)(nil),                    // 120: financial_integration_service_api.v1.GetMonthlyExpenditureResponse
+	(*GetMonthlyIncomeResponse)(nil),                         // 121: financial_integration_service_api.v1.GetMonthlyIncomeResponse
+	(*GetMonthlySavingsResponse)(nil),                        // 122: financial_integration_service_api.v1.GetMonthlySavingsResponse
+	(*GetMonthlyTotalQuantityBySecurityAndUserResponse)(nil), // 123: financial_integration_service_api.v1.GetMonthlyTotalQuantityBySecurityAndUserResponse
+	(*GetMonthlyTransactionCountResponse)(nil),               // 124: financial_integration_service_api.v1.GetMonthlyTransactionCountResponse
+	(*GetPaymentChannelMonthlyExpenditureResponse)(nil),      // 125: financial_integration_service_api.v1.GetPaymentChannelMonthlyExpenditureResponse
+	(*GetTotalInvestmentBySecurityResponse)(nil),             // 126: financial_integration_service_api.v1.GetTotalInvestmentBySecurityResponse
+	(*GetMelodyFinancialContextResponse)(nil),                // 127: financial_integration_service_api.v1.GetMelodyFinancialContextResponse
+	(*GetTransactionsForBankAccountResponse)(nil),            // 128: financial_integration_service_api.v1.GetTransactionsForBankAccountResponse
+	(*GetHistoricalAccountBalanceResponse)(nil),              // 129: financial_integration_service_api.v1.GetHistoricalAccountBalanceResponse
 }
 var file_financial_integration_service_api_v1_service_financial_service_proto_depIdxs = []int32{
 	0,   // 0: financial_integration_service_api.v1.FinancialService.PlaidInitiateTokenExchange:input_type -> financial_integration_service_api.v1.PlaidInitiateTokenExchangeRequest
@@ -1956,72 +1989,74 @@ var file_financial_integration_service_api_v1_service_financial_service_proto_de
 	61,  // 61: financial_integration_service_api.v1.FinancialService.GetTotalInvestmentBySecurity:input_type -> financial_integration_service_api.v1.GetTotalInvestmentBySecurityRequest
 	62,  // 62: financial_integration_service_api.v1.FinancialService.GetMelodyFinancialContext:input_type -> financial_integration_service_api.v1.GetMelodyFinancialContextRequest
 	63,  // 63: financial_integration_service_api.v1.FinancialService.GetTransactionsForBankAccount:input_type -> financial_integration_service_api.v1.GetTransactionsForBankAccountRequest
-	64,  // 64: financial_integration_service_api.v1.FinancialService.PlaidInitiateTokenExchange:output_type -> financial_integration_service_api.v1.PlaidInitiateTokenExchangeResponse
-	65,  // 65: financial_integration_service_api.v1.FinancialService.PlaidInitiateTokenUpdate:output_type -> financial_integration_service_api.v1.PlaidInitiateTokenUpdateResponse
-	66,  // 66: financial_integration_service_api.v1.FinancialService.PlaidExchangeToken:output_type -> financial_integration_service_api.v1.PlaidExchangeTokenResponse
-	67,  // 67: financial_integration_service_api.v1.FinancialService.CreateUserProfile:output_type -> financial_integration_service_api.v1.CreateUserProfileResponse
-	68,  // 68: financial_integration_service_api.v1.FinancialService.GetUserProfile:output_type -> financial_integration_service_api.v1.GetUserProfileResponse
-	69,  // 69: financial_integration_service_api.v1.FinancialService.DeleteUserProfile:output_type -> financial_integration_service_api.v1.DeleteUserProfileResponse
-	70,  // 70: financial_integration_service_api.v1.FinancialService.UpdateUserProfile:output_type -> financial_integration_service_api.v1.UpdateUserProfileResponse
-	71,  // 71: financial_integration_service_api.v1.FinancialService.CreateBankAccount:output_type -> financial_integration_service_api.v1.CreateBankAccountResponse
-	72,  // 72: financial_integration_service_api.v1.FinancialService.GetBankAccount:output_type -> financial_integration_service_api.v1.GetBankAccountResponse
-	73,  // 73: financial_integration_service_api.v1.FinancialService.UpdateBankAccount:output_type -> financial_integration_service_api.v1.UpdateBankAccountResponse
-	74,  // 74: financial_integration_service_api.v1.FinancialService.DeleteBankAccount:output_type -> financial_integration_service_api.v1.DeleteBankAccountResponse
-	75,  // 75: financial_integration_service_api.v1.FinancialService.GetPocket:output_type -> financial_integration_service_api.v1.GetPocketResponse
-	76,  // 76: financial_integration_service_api.v1.FinancialService.GetSmartGoalsByPocketId:output_type -> financial_integration_service_api.v1.GetSmartGoalsByPocketIdResponse
-	77,  // 77: financial_integration_service_api.v1.FinancialService.CreateSmartGoal:output_type -> financial_integration_service_api.v1.CreateSmartGoalResponse
-	78,  // 78: financial_integration_service_api.v1.FinancialService.UpdateSmartGoal:output_type -> financial_integration_service_api.v1.UpdateSmartGoalResponse
-	79,  // 79: financial_integration_service_api.v1.FinancialService.DeleteSmartGoal:output_type -> financial_integration_service_api.v1.DeleteSmartGoalResponse
-	80,  // 80: financial_integration_service_api.v1.FinancialService.CreateMilestone:output_type -> financial_integration_service_api.v1.CreateMilestoneResponse
-	81,  // 81: financial_integration_service_api.v1.FinancialService.DeleteMilestone:output_type -> financial_integration_service_api.v1.DeleteMilestoneResponse
-	82,  // 82: financial_integration_service_api.v1.FinancialService.UpdateMilestone:output_type -> financial_integration_service_api.v1.UpdateMilestoneResponse
-	83,  // 83: financial_integration_service_api.v1.FinancialService.GetMilestone:output_type -> financial_integration_service_api.v1.GetMilestoneResponse
-	84,  // 84: financial_integration_service_api.v1.FinancialService.GetMilestonesBySmartGoalId:output_type -> financial_integration_service_api.v1.GetMilestonesBySmartGoalIdResponse
-	85,  // 85: financial_integration_service_api.v1.FinancialService.GetForecast:output_type -> financial_integration_service_api.v1.GetForecastResponse
-	86,  // 86: financial_integration_service_api.v1.FinancialService.CreateBudget:output_type -> financial_integration_service_api.v1.CreateBudgetResponse
-	87,  // 87: financial_integration_service_api.v1.FinancialService.UpdateBudget:output_type -> financial_integration_service_api.v1.UpdateBudgetResponse
-	88,  // 88: financial_integration_service_api.v1.FinancialService.DeleteBudget:output_type -> financial_integration_service_api.v1.DeleteBudgetResponse
-	89,  // 89: financial_integration_service_api.v1.FinancialService.GetBudget:output_type -> financial_integration_service_api.v1.GetBudgetResponse
-	90,  // 90: financial_integration_service_api.v1.FinancialService.GetAllBudgets:output_type -> financial_integration_service_api.v1.GetAllBudgetsResponse
-	91,  // 91: financial_integration_service_api.v1.FinancialService.HealthCheck:output_type -> financial_integration_service_api.v1.HealthCheckResponse
-	92,  // 92: financial_integration_service_api.v1.FinancialService.ReadynessCheck:output_type -> financial_integration_service_api.v1.ReadynessCheckResponse
-	93,  // 93: financial_integration_service_api.v1.FinancialService.GetInvestmentAcccount:output_type -> financial_integration_service_api.v1.GetInvestmentAcccountResponse
-	94,  // 94: financial_integration_service_api.v1.FinancialService.GetMortgageAccount:output_type -> financial_integration_service_api.v1.GetMortgageAccountResponse
-	95,  // 95: financial_integration_service_api.v1.FinancialService.GetLiabilityAccount:output_type -> financial_integration_service_api.v1.GetLiabilityAccountResponse
-	96,  // 96: financial_integration_service_api.v1.FinancialService.GetStudentLoanAccount:output_type -> financial_integration_service_api.v1.GetStudentLoanAccountResponse
-	97,  // 97: financial_integration_service_api.v1.FinancialService.CreateManualLink:output_type -> financial_integration_service_api.v1.CreateManualLinkResponse
-	98,  // 98: financial_integration_service_api.v1.FinancialService.GetLink:output_type -> financial_integration_service_api.v1.GetLinkResponse
-	99,  // 99: financial_integration_service_api.v1.FinancialService.GetLinks:output_type -> financial_integration_service_api.v1.GetLinksResponse
-	100, // 100: financial_integration_service_api.v1.FinancialService.DeleteLink:output_type -> financial_integration_service_api.v1.DeleteLinkResponse
-	101, // 101: financial_integration_service_api.v1.FinancialService.GetReCurringTransactions:output_type -> financial_integration_service_api.v1.GetReCurringTransactionsResponse
-	102, // 102: financial_integration_service_api.v1.FinancialService.GetTransactions:output_type -> financial_integration_service_api.v1.GetTransactionsResponse
-	103, // 103: financial_integration_service_api.v1.FinancialService.ProcessWebhook:output_type -> financial_integration_service_api.v1.ProcessWebhookResponse
-	104, // 104: financial_integration_service_api.v1.FinancialService.StripeWebhook:output_type -> financial_integration_service_api.v1.StripeWebhookResponse
-	105, // 105: financial_integration_service_api.v1.FinancialService.CreateSubscription:output_type -> financial_integration_service_api.v1.CreateSubscriptionResponse
-	106, // 106: financial_integration_service_api.v1.FinancialService.GetTransactionAggregates:output_type -> financial_integration_service_api.v1.GetTransactionAggregatesResponse
-	107, // 107: financial_integration_service_api.v1.FinancialService.GetUserAccountBalanceHistory:output_type -> financial_integration_service_api.v1.GetUserAccountBalanceHistoryResponse
-	108, // 108: financial_integration_service_api.v1.FinancialService.GetAccountBalanceHistory:output_type -> financial_integration_service_api.v1.GetAccountBalanceHistoryResponse
-	109, // 109: financial_integration_service_api.v1.FinancialService.GetUserCategoryMonthlyExpenditure:output_type -> financial_integration_service_api.v1.GetUserCategoryMonthlyExpenditureResponse
-	110, // 110: financial_integration_service_api.v1.FinancialService.GetUserCategoryMonthlyIncome:output_type -> financial_integration_service_api.v1.GetUserCategoryMonthlyIncomeResponse
-	111, // 111: financial_integration_service_api.v1.FinancialService.GetCategoryMonthlyTransactionCount:output_type -> financial_integration_service_api.v1.GetCategoryMonthlyTransactionCountResponse
-	112, // 112: financial_integration_service_api.v1.FinancialService.GetDebtToIncomeRatio:output_type -> financial_integration_service_api.v1.GetDebtToIncomeRatioResponse
-	113, // 113: financial_integration_service_api.v1.FinancialService.GetExpenseMetrics:output_type -> financial_integration_service_api.v1.GetExpenseMetricsResponse
-	114, // 114: financial_integration_service_api.v1.FinancialService.GetFinancialProfile:output_type -> financial_integration_service_api.v1.GetFinancialProfileResponse
-	115, // 115: financial_integration_service_api.v1.FinancialService.GetIncomeExpenseRatio:output_type -> financial_integration_service_api.v1.GetIncomeExpenseRatioResponse
-	116, // 116: financial_integration_service_api.v1.FinancialService.GetIncomeMetrics:output_type -> financial_integration_service_api.v1.GetIncomeMetricsResponse
-	117, // 117: financial_integration_service_api.v1.FinancialService.GetMerchantMonthlyExpenditure:output_type -> financial_integration_service_api.v1.GetMerchantMonthlyExpenditureResponse
-	118, // 118: financial_integration_service_api.v1.FinancialService.GetMonthlyBalance:output_type -> financial_integration_service_api.v1.GetMonthlyBalanceResponse
-	119, // 119: financial_integration_service_api.v1.FinancialService.GetMonthlyExpenditure:output_type -> financial_integration_service_api.v1.GetMonthlyExpenditureResponse
-	120, // 120: financial_integration_service_api.v1.FinancialService.GetMonthlyIncome:output_type -> financial_integration_service_api.v1.GetMonthlyIncomeResponse
-	121, // 121: financial_integration_service_api.v1.FinancialService.GetMonthlySavings:output_type -> financial_integration_service_api.v1.GetMonthlySavingsResponse
-	122, // 122: financial_integration_service_api.v1.FinancialService.GetMonthlyTotalQuantityBySecurityAndUser:output_type -> financial_integration_service_api.v1.GetMonthlyTotalQuantityBySecurityAndUserResponse
-	123, // 123: financial_integration_service_api.v1.FinancialService.GetMonthlyTransactionCount:output_type -> financial_integration_service_api.v1.GetMonthlyTransactionCountResponse
-	124, // 124: financial_integration_service_api.v1.FinancialService.GetPaymentChannelMonthlyExpenditure:output_type -> financial_integration_service_api.v1.GetPaymentChannelMonthlyExpenditureResponse
-	125, // 125: financial_integration_service_api.v1.FinancialService.GetTotalInvestmentBySecurity:output_type -> financial_integration_service_api.v1.GetTotalInvestmentBySecurityResponse
-	126, // 126: financial_integration_service_api.v1.FinancialService.GetMelodyFinancialContext:output_type -> financial_integration_service_api.v1.GetMelodyFinancialContextResponse
-	127, // 127: financial_integration_service_api.v1.FinancialService.GetTransactionsForBankAccount:output_type -> financial_integration_service_api.v1.GetTransactionsForBankAccountResponse
-	64,  // [64:128] is the sub-list for method output_type
-	0,   // [0:64] is the sub-list for method input_type
+	64,  // 64: financial_integration_service_api.v1.FinancialService.GetHistoricalAccountBalance:input_type -> financial_integration_service_api.v1.GetHistoricalAccountBalanceRequest
+	65,  // 65: financial_integration_service_api.v1.FinancialService.PlaidInitiateTokenExchange:output_type -> financial_integration_service_api.v1.PlaidInitiateTokenExchangeResponse
+	66,  // 66: financial_integration_service_api.v1.FinancialService.PlaidInitiateTokenUpdate:output_type -> financial_integration_service_api.v1.PlaidInitiateTokenUpdateResponse
+	67,  // 67: financial_integration_service_api.v1.FinancialService.PlaidExchangeToken:output_type -> financial_integration_service_api.v1.PlaidExchangeTokenResponse
+	68,  // 68: financial_integration_service_api.v1.FinancialService.CreateUserProfile:output_type -> financial_integration_service_api.v1.CreateUserProfileResponse
+	69,  // 69: financial_integration_service_api.v1.FinancialService.GetUserProfile:output_type -> financial_integration_service_api.v1.GetUserProfileResponse
+	70,  // 70: financial_integration_service_api.v1.FinancialService.DeleteUserProfile:output_type -> financial_integration_service_api.v1.DeleteUserProfileResponse
+	71,  // 71: financial_integration_service_api.v1.FinancialService.UpdateUserProfile:output_type -> financial_integration_service_api.v1.UpdateUserProfileResponse
+	72,  // 72: financial_integration_service_api.v1.FinancialService.CreateBankAccount:output_type -> financial_integration_service_api.v1.CreateBankAccountResponse
+	73,  // 73: financial_integration_service_api.v1.FinancialService.GetBankAccount:output_type -> financial_integration_service_api.v1.GetBankAccountResponse
+	74,  // 74: financial_integration_service_api.v1.FinancialService.UpdateBankAccount:output_type -> financial_integration_service_api.v1.UpdateBankAccountResponse
+	75,  // 75: financial_integration_service_api.v1.FinancialService.DeleteBankAccount:output_type -> financial_integration_service_api.v1.DeleteBankAccountResponse
+	76,  // 76: financial_integration_service_api.v1.FinancialService.GetPocket:output_type -> financial_integration_service_api.v1.GetPocketResponse
+	77,  // 77: financial_integration_service_api.v1.FinancialService.GetSmartGoalsByPocketId:output_type -> financial_integration_service_api.v1.GetSmartGoalsByPocketIdResponse
+	78,  // 78: financial_integration_service_api.v1.FinancialService.CreateSmartGoal:output_type -> financial_integration_service_api.v1.CreateSmartGoalResponse
+	79,  // 79: financial_integration_service_api.v1.FinancialService.UpdateSmartGoal:output_type -> financial_integration_service_api.v1.UpdateSmartGoalResponse
+	80,  // 80: financial_integration_service_api.v1.FinancialService.DeleteSmartGoal:output_type -> financial_integration_service_api.v1.DeleteSmartGoalResponse
+	81,  // 81: financial_integration_service_api.v1.FinancialService.CreateMilestone:output_type -> financial_integration_service_api.v1.CreateMilestoneResponse
+	82,  // 82: financial_integration_service_api.v1.FinancialService.DeleteMilestone:output_type -> financial_integration_service_api.v1.DeleteMilestoneResponse
+	83,  // 83: financial_integration_service_api.v1.FinancialService.UpdateMilestone:output_type -> financial_integration_service_api.v1.UpdateMilestoneResponse
+	84,  // 84: financial_integration_service_api.v1.FinancialService.GetMilestone:output_type -> financial_integration_service_api.v1.GetMilestoneResponse
+	85,  // 85: financial_integration_service_api.v1.FinancialService.GetMilestonesBySmartGoalId:output_type -> financial_integration_service_api.v1.GetMilestonesBySmartGoalIdResponse
+	86,  // 86: financial_integration_service_api.v1.FinancialService.GetForecast:output_type -> financial_integration_service_api.v1.GetForecastResponse
+	87,  // 87: financial_integration_service_api.v1.FinancialService.CreateBudget:output_type -> financial_integration_service_api.v1.CreateBudgetResponse
+	88,  // 88: financial_integration_service_api.v1.FinancialService.UpdateBudget:output_type -> financial_integration_service_api.v1.UpdateBudgetResponse
+	89,  // 89: financial_integration_service_api.v1.FinancialService.DeleteBudget:output_type -> financial_integration_service_api.v1.DeleteBudgetResponse
+	90,  // 90: financial_integration_service_api.v1.FinancialService.GetBudget:output_type -> financial_integration_service_api.v1.GetBudgetResponse
+	91,  // 91: financial_integration_service_api.v1.FinancialService.GetAllBudgets:output_type -> financial_integration_service_api.v1.GetAllBudgetsResponse
+	92,  // 92: financial_integration_service_api.v1.FinancialService.HealthCheck:output_type -> financial_integration_service_api.v1.HealthCheckResponse
+	93,  // 93: financial_integration_service_api.v1.FinancialService.ReadynessCheck:output_type -> financial_integration_service_api.v1.ReadynessCheckResponse
+	94,  // 94: financial_integration_service_api.v1.FinancialService.GetInvestmentAcccount:output_type -> financial_integration_service_api.v1.GetInvestmentAcccountResponse
+	95,  // 95: financial_integration_service_api.v1.FinancialService.GetMortgageAccount:output_type -> financial_integration_service_api.v1.GetMortgageAccountResponse
+	96,  // 96: financial_integration_service_api.v1.FinancialService.GetLiabilityAccount:output_type -> financial_integration_service_api.v1.GetLiabilityAccountResponse
+	97,  // 97: financial_integration_service_api.v1.FinancialService.GetStudentLoanAccount:output_type -> financial_integration_service_api.v1.GetStudentLoanAccountResponse
+	98,  // 98: financial_integration_service_api.v1.FinancialService.CreateManualLink:output_type -> financial_integration_service_api.v1.CreateManualLinkResponse
+	99,  // 99: financial_integration_service_api.v1.FinancialService.GetLink:output_type -> financial_integration_service_api.v1.GetLinkResponse
+	100, // 100: financial_integration_service_api.v1.FinancialService.GetLinks:output_type -> financial_integration_service_api.v1.GetLinksResponse
+	101, // 101: financial_integration_service_api.v1.FinancialService.DeleteLink:output_type -> financial_integration_service_api.v1.DeleteLinkResponse
+	102, // 102: financial_integration_service_api.v1.FinancialService.GetReCurringTransactions:output_type -> financial_integration_service_api.v1.GetReCurringTransactionsResponse
+	103, // 103: financial_integration_service_api.v1.FinancialService.GetTransactions:output_type -> financial_integration_service_api.v1.GetTransactionsResponse
+	104, // 104: financial_integration_service_api.v1.FinancialService.ProcessWebhook:output_type -> financial_integration_service_api.v1.ProcessWebhookResponse
+	105, // 105: financial_integration_service_api.v1.FinancialService.StripeWebhook:output_type -> financial_integration_service_api.v1.StripeWebhookResponse
+	106, // 106: financial_integration_service_api.v1.FinancialService.CreateSubscription:output_type -> financial_integration_service_api.v1.CreateSubscriptionResponse
+	107, // 107: financial_integration_service_api.v1.FinancialService.GetTransactionAggregates:output_type -> financial_integration_service_api.v1.GetTransactionAggregatesResponse
+	108, // 108: financial_integration_service_api.v1.FinancialService.GetUserAccountBalanceHistory:output_type -> financial_integration_service_api.v1.GetUserAccountBalanceHistoryResponse
+	109, // 109: financial_integration_service_api.v1.FinancialService.GetAccountBalanceHistory:output_type -> financial_integration_service_api.v1.GetAccountBalanceHistoryResponse
+	110, // 110: financial_integration_service_api.v1.FinancialService.GetUserCategoryMonthlyExpenditure:output_type -> financial_integration_service_api.v1.GetUserCategoryMonthlyExpenditureResponse
+	111, // 111: financial_integration_service_api.v1.FinancialService.GetUserCategoryMonthlyIncome:output_type -> financial_integration_service_api.v1.GetUserCategoryMonthlyIncomeResponse
+	112, // 112: financial_integration_service_api.v1.FinancialService.GetCategoryMonthlyTransactionCount:output_type -> financial_integration_service_api.v1.GetCategoryMonthlyTransactionCountResponse
+	113, // 113: financial_integration_service_api.v1.FinancialService.GetDebtToIncomeRatio:output_type -> financial_integration_service_api.v1.GetDebtToIncomeRatioResponse
+	114, // 114: financial_integration_service_api.v1.FinancialService.GetExpenseMetrics:output_type -> financial_integration_service_api.v1.GetExpenseMetricsResponse
+	115, // 115: financial_integration_service_api.v1.FinancialService.GetFinancialProfile:output_type -> financial_integration_service_api.v1.GetFinancialProfileResponse
+	116, // 116: financial_integration_service_api.v1.FinancialService.GetIncomeExpenseRatio:output_type -> financial_integration_service_api.v1.GetIncomeExpenseRatioResponse
+	117, // 117: financial_integration_service_api.v1.FinancialService.GetIncomeMetrics:output_type -> financial_integration_service_api.v1.GetIncomeMetricsResponse
+	118, // 118: financial_integration_service_api.v1.FinancialService.GetMerchantMonthlyExpenditure:output_type -> financial_integration_service_api.v1.GetMerchantMonthlyExpenditureResponse
+	119, // 119: financial_integration_service_api.v1.FinancialService.GetMonthlyBalance:output_type -> financial_integration_service_api.v1.GetMonthlyBalanceResponse
+	120, // 120: financial_integration_service_api.v1.FinancialService.GetMonthlyExpenditure:output_type -> financial_integration_service_api.v1.GetMonthlyExpenditureResponse
+	121, // 121: financial_integration_service_api.v1.FinancialService.GetMonthlyIncome:output_type -> financial_integration_service_api.v1.GetMonthlyIncomeResponse
+	122, // 122: financial_integration_service_api.v1.FinancialService.GetMonthlySavings:output_type -> financial_integration_service_api.v1.GetMonthlySavingsResponse
+	123, // 123: financial_integration_service_api.v1.FinancialService.GetMonthlyTotalQuantityBySecurityAndUser:output_type -> financial_integration_service_api.v1.GetMonthlyTotalQuantityBySecurityAndUserResponse
+	124, // 124: financial_integration_service_api.v1.FinancialService.GetMonthlyTransactionCount:output_type -> financial_integration_service_api.v1.GetMonthlyTransactionCountResponse
+	125, // 125: financial_integration_service_api.v1.FinancialService.GetPaymentChannelMonthlyExpenditure:output_type -> financial_integration_service_api.v1.GetPaymentChannelMonthlyExpenditureResponse
+	126, // 126: financial_integration_service_api.v1.FinancialService.GetTotalInvestmentBySecurity:output_type -> financial_integration_service_api.v1.GetTotalInvestmentBySecurityResponse
+	127, // 127: financial_integration_service_api.v1.FinancialService.GetMelodyFinancialContext:output_type -> financial_integration_service_api.v1.GetMelodyFinancialContextResponse
+	128, // 128: financial_integration_service_api.v1.FinancialService.GetTransactionsForBankAccount:output_type -> financial_integration_service_api.v1.GetTransactionsForBankAccountResponse
+	129, // 129: financial_integration_service_api.v1.FinancialService.GetHistoricalAccountBalance:output_type -> financial_integration_service_api.v1.GetHistoricalAccountBalanceResponse
+	65,  // [65:130] is the sub-list for method output_type
+	0,   // [0:65] is the sub-list for method input_type
 	0,   // [0:0] is the sub-list for extension type_name
 	0,   // [0:0] is the sub-list for extension extendee
 	0,   // [0:0] is the sub-list for field type_name

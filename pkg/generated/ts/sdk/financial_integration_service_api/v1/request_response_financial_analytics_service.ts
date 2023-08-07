@@ -338,6 +338,15 @@ export interface GetMelodyFinancialContextResponse {
   melodyFinancialContext: MelodyFinancialContext | undefined;
 }
 
+export interface GetHistoricalAccountBalanceRequest {
+  plaidAccountId: string;
+  userId: number;
+}
+
+export interface GetHistoricalAccountBalanceResponse {
+  historicalAccountBalance: AccountBalanceHistory[];
+}
+
 function createBaseGetTransactionAggregatesRequest(): GetTransactionAggregatesRequest {
   return {
     userId: 0,
@@ -4326,6 +4335,150 @@ export const GetMelodyFinancialContextResponse = {
       (object.melodyFinancialContext !== undefined && object.melodyFinancialContext !== null)
         ? MelodyFinancialContext.fromPartial(object.melodyFinancialContext)
         : undefined;
+    return message;
+  },
+};
+
+function createBaseGetHistoricalAccountBalanceRequest(): GetHistoricalAccountBalanceRequest {
+  return { plaidAccountId: "", userId: 0 };
+}
+
+export const GetHistoricalAccountBalanceRequest = {
+  encode(message: GetHistoricalAccountBalanceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.plaidAccountId !== "") {
+      writer.uint32(10).string(message.plaidAccountId);
+    }
+    if (message.userId !== 0) {
+      writer.uint32(16).uint64(message.userId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetHistoricalAccountBalanceRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetHistoricalAccountBalanceRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.plaidAccountId = reader.string();
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.userId = longToNumber(reader.uint64() as Long);
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetHistoricalAccountBalanceRequest {
+    return {
+      plaidAccountId: isSet(object.plaidAccountId) ? String(object.plaidAccountId) : "",
+      userId: isSet(object.userId) ? Number(object.userId) : 0,
+    };
+  },
+
+  toJSON(message: GetHistoricalAccountBalanceRequest): unknown {
+    const obj: any = {};
+    if (message.plaidAccountId !== "") {
+      obj.plaidAccountId = message.plaidAccountId;
+    }
+    if (message.userId !== 0) {
+      obj.userId = Math.round(message.userId);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetHistoricalAccountBalanceRequest>, I>>(
+    base?: I,
+  ): GetHistoricalAccountBalanceRequest {
+    return GetHistoricalAccountBalanceRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetHistoricalAccountBalanceRequest>, I>>(
+    object: I,
+  ): GetHistoricalAccountBalanceRequest {
+    const message = createBaseGetHistoricalAccountBalanceRequest();
+    message.plaidAccountId = object.plaidAccountId ?? "";
+    message.userId = object.userId ?? 0;
+    return message;
+  },
+};
+
+function createBaseGetHistoricalAccountBalanceResponse(): GetHistoricalAccountBalanceResponse {
+  return { historicalAccountBalance: [] };
+}
+
+export const GetHistoricalAccountBalanceResponse = {
+  encode(message: GetHistoricalAccountBalanceResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.historicalAccountBalance) {
+      AccountBalanceHistory.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetHistoricalAccountBalanceResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetHistoricalAccountBalanceResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.historicalAccountBalance.push(AccountBalanceHistory.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetHistoricalAccountBalanceResponse {
+    return {
+      historicalAccountBalance: Array.isArray(object?.historicalAccountBalance)
+        ? object.historicalAccountBalance.map((e: any) => AccountBalanceHistory.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: GetHistoricalAccountBalanceResponse): unknown {
+    const obj: any = {};
+    if (message.historicalAccountBalance?.length) {
+      obj.historicalAccountBalance = message.historicalAccountBalance.map((e) => AccountBalanceHistory.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetHistoricalAccountBalanceResponse>, I>>(
+    base?: I,
+  ): GetHistoricalAccountBalanceResponse {
+    return GetHistoricalAccountBalanceResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetHistoricalAccountBalanceResponse>, I>>(
+    object: I,
+  ): GetHistoricalAccountBalanceResponse {
+    const message = createBaseGetHistoricalAccountBalanceResponse();
+    message.historicalAccountBalance =
+      object.historicalAccountBalance?.map((e) => AccountBalanceHistory.fromPartial(e)) || [];
     return message;
   },
 };

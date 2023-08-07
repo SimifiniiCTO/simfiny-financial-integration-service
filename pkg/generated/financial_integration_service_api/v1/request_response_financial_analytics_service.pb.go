@@ -2717,6 +2717,108 @@ func (x *GetMelodyFinancialContextResponse) GetMelodyFinancialContext() *MelodyF
 	return nil
 }
 
+type GetHistoricalAccountBalanceRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	PlaidAccountId string `protobuf:"bytes,1,opt,name=plaid_account_id,json=plaidAccountId,proto3" json:"plaid_account_id,omitempty"`
+	UserId         uint64 `protobuf:"varint,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+}
+
+func (x *GetHistoricalAccountBalanceRequest) Reset() {
+	*x = GetHistoricalAccountBalanceRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_financial_integration_service_api_v1_request_response_financial_analytics_service_proto_msgTypes[42]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetHistoricalAccountBalanceRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetHistoricalAccountBalanceRequest) ProtoMessage() {}
+
+func (x *GetHistoricalAccountBalanceRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_financial_integration_service_api_v1_request_response_financial_analytics_service_proto_msgTypes[42]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetHistoricalAccountBalanceRequest.ProtoReflect.Descriptor instead.
+func (*GetHistoricalAccountBalanceRequest) Descriptor() ([]byte, []int) {
+	return file_financial_integration_service_api_v1_request_response_financial_analytics_service_proto_rawDescGZIP(), []int{42}
+}
+
+func (x *GetHistoricalAccountBalanceRequest) GetPlaidAccountId() string {
+	if x != nil {
+		return x.PlaidAccountId
+	}
+	return ""
+}
+
+func (x *GetHistoricalAccountBalanceRequest) GetUserId() uint64 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+type GetHistoricalAccountBalanceResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	HistoricalAccountBalance []*AccountBalanceHistory `protobuf:"bytes,1,rep,name=historical_account_balance,json=historicalAccountBalance,proto3" json:"historical_account_balance,omitempty"`
+}
+
+func (x *GetHistoricalAccountBalanceResponse) Reset() {
+	*x = GetHistoricalAccountBalanceResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_financial_integration_service_api_v1_request_response_financial_analytics_service_proto_msgTypes[43]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetHistoricalAccountBalanceResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetHistoricalAccountBalanceResponse) ProtoMessage() {}
+
+func (x *GetHistoricalAccountBalanceResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_financial_integration_service_api_v1_request_response_financial_analytics_service_proto_msgTypes[43]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetHistoricalAccountBalanceResponse.ProtoReflect.Descriptor instead.
+func (*GetHistoricalAccountBalanceResponse) Descriptor() ([]byte, []int) {
+	return file_financial_integration_service_api_v1_request_response_financial_analytics_service_proto_rawDescGZIP(), []int{43}
+}
+
+func (x *GetHistoricalAccountBalanceResponse) GetHistoricalAccountBalance() []*AccountBalanceHistory {
+	if x != nil {
+		return x.HistoricalAccountBalance
+	}
+	return nil
+}
+
 var File_financial_integration_service_api_v1_request_response_financial_analytics_service_proto protoreflect.FileDescriptor
 
 var file_financial_integration_service_api_v1_request_response_financial_analytics_service_proto_rawDesc = []byte{
@@ -3234,38 +3336,55 @@ var file_financial_integration_service_api_v1_request_response_financial_analyti
 	0x72, 0x76, 0x69, 0x63, 0x65, 0x5f, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x4d, 0x65, 0x6c,
 	0x6f, 0x64, 0x79, 0x46, 0x69, 0x6e, 0x61, 0x6e, 0x63, 0x69, 0x61, 0x6c, 0x43, 0x6f, 0x6e, 0x74,
 	0x65, 0x78, 0x74, 0x52, 0x16, 0x6d, 0x65, 0x6c, 0x6f, 0x64, 0x79, 0x46, 0x69, 0x6e, 0x61, 0x6e,
-	0x63, 0x69, 0x61, 0x6c, 0x43, 0x6f, 0x6e, 0x74, 0x65, 0x78, 0x74, 0x42, 0xe6, 0x03, 0x0a, 0x28,
-	0x63, 0x6f, 0x6d, 0x2e, 0x66, 0x69, 0x6e, 0x61, 0x6e, 0x63, 0x69, 0x61, 0x6c, 0x5f, 0x69, 0x6e,
+	0x63, 0x69, 0x61, 0x6c, 0x43, 0x6f, 0x6e, 0x74, 0x65, 0x78, 0x74, 0x22, 0x67, 0x0a, 0x22, 0x47,
+	0x65, 0x74, 0x48, 0x69, 0x73, 0x74, 0x6f, 0x72, 0x69, 0x63, 0x61, 0x6c, 0x41, 0x63, 0x63, 0x6f,
+	0x75, 0x6e, 0x74, 0x42, 0x61, 0x6c, 0x61, 0x6e, 0x63, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
+	0x74, 0x12, 0x28, 0x0a, 0x10, 0x70, 0x6c, 0x61, 0x69, 0x64, 0x5f, 0x61, 0x63, 0x63, 0x6f, 0x75,
+	0x6e, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0e, 0x70, 0x6c, 0x61,
+	0x69, 0x64, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x49, 0x64, 0x12, 0x17, 0x0a, 0x07, 0x75,
+	0x73, 0x65, 0x72, 0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x04, 0x52, 0x06, 0x75, 0x73,
+	0x65, 0x72, 0x49, 0x64, 0x22, 0xa0, 0x01, 0x0a, 0x23, 0x47, 0x65, 0x74, 0x48, 0x69, 0x73, 0x74,
+	0x6f, 0x72, 0x69, 0x63, 0x61, 0x6c, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x42, 0x61, 0x6c,
+	0x61, 0x6e, 0x63, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x79, 0x0a, 0x1a,
+	0x68, 0x69, 0x73, 0x74, 0x6f, 0x72, 0x69, 0x63, 0x61, 0x6c, 0x5f, 0x61, 0x63, 0x63, 0x6f, 0x75,
+	0x6e, 0x74, 0x5f, 0x62, 0x61, 0x6c, 0x61, 0x6e, 0x63, 0x65, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b,
+	0x32, 0x3b, 0x2e, 0x66, 0x69, 0x6e, 0x61, 0x6e, 0x63, 0x69, 0x61, 0x6c, 0x5f, 0x69, 0x6e, 0x74,
+	0x65, 0x67, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65,
+	0x5f, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x2e, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x42,
+	0x61, 0x6c, 0x61, 0x6e, 0x63, 0x65, 0x48, 0x69, 0x73, 0x74, 0x6f, 0x72, 0x79, 0x52, 0x18, 0x68,
+	0x69, 0x73, 0x74, 0x6f, 0x72, 0x69, 0x63, 0x61, 0x6c, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74,
+	0x42, 0x61, 0x6c, 0x61, 0x6e, 0x63, 0x65, 0x42, 0xe6, 0x03, 0x0a, 0x28, 0x63, 0x6f, 0x6d, 0x2e,
+	0x66, 0x69, 0x6e, 0x61, 0x6e, 0x63, 0x69, 0x61, 0x6c, 0x5f, 0x69, 0x6e, 0x74, 0x65, 0x67, 0x72,
+	0x61, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x5f, 0x61, 0x70,
+	0x69, 0x2e, 0x76, 0x31, 0x42, 0x2d, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x52, 0x65, 0x73,
+	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x46, 0x69, 0x6e, 0x61, 0x6e, 0x63, 0x69, 0x61, 0x6c, 0x41, 0x6e,
+	0x61, 0x6c, 0x79, 0x74, 0x69, 0x63, 0x73, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x50, 0x72,
+	0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0xb9, 0x01, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63,
+	0x6f, 0x6d, 0x2f, 0x53, 0x69, 0x6d, 0x69, 0x66, 0x69, 0x6e, 0x69, 0x69, 0x43, 0x54, 0x4f, 0x2f,
+	0x73, 0x69, 0x6d, 0x66, 0x69, 0x6e, 0x79, 0x2d, 0x66, 0x69, 0x6e, 0x61, 0x6e, 0x63, 0x69, 0x61,
+	0x6c, 0x2d, 0x69, 0x6e, 0x74, 0x65, 0x67, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2d, 0x73, 0x65,
+	0x72, 0x76, 0x69, 0x63, 0x65, 0x2f, 0x70, 0x6b, 0x67, 0x2f, 0x67, 0x65, 0x6e, 0x65, 0x72, 0x61,
+	0x74, 0x65, 0x64, 0x2f, 0x66, 0x69, 0x6e, 0x61, 0x6e, 0x63, 0x69, 0x61, 0x6c, 0x5f, 0x69, 0x6e,
 	0x74, 0x65, 0x67, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63,
-	0x65, 0x5f, 0x61, 0x70, 0x69, 0x2e, 0x76, 0x31, 0x42, 0x2d, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
-	0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x46, 0x69, 0x6e, 0x61, 0x6e, 0x63, 0x69,
-	0x61, 0x6c, 0x41, 0x6e, 0x61, 0x6c, 0x79, 0x74, 0x69, 0x63, 0x73, 0x53, 0x65, 0x72, 0x76, 0x69,
-	0x63, 0x65, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0xb9, 0x01, 0x67, 0x69, 0x74, 0x68,
-	0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x53, 0x69, 0x6d, 0x69, 0x66, 0x69, 0x6e, 0x69, 0x69,
-	0x43, 0x54, 0x4f, 0x2f, 0x73, 0x69, 0x6d, 0x66, 0x69, 0x6e, 0x79, 0x2d, 0x66, 0x69, 0x6e, 0x61,
-	0x6e, 0x63, 0x69, 0x61, 0x6c, 0x2d, 0x69, 0x6e, 0x74, 0x65, 0x67, 0x72, 0x61, 0x74, 0x69, 0x6f,
-	0x6e, 0x2d, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x2f, 0x70, 0x6b, 0x67, 0x2f, 0x67, 0x65,
-	0x6e, 0x65, 0x72, 0x61, 0x74, 0x65, 0x64, 0x2f, 0x66, 0x69, 0x6e, 0x61, 0x6e, 0x63, 0x69, 0x61,
-	0x6c, 0x5f, 0x69, 0x6e, 0x74, 0x65, 0x67, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x73, 0x65,
-	0x72, 0x76, 0x69, 0x63, 0x65, 0x5f, 0x61, 0x70, 0x69, 0x2f, 0x76, 0x31, 0x2f, 0x66, 0x69, 0x6e,
-	0x61, 0x6e, 0x63, 0x69, 0x61, 0x6c, 0x5f, 0x69, 0x6e, 0x74, 0x65, 0x67, 0x72, 0x61, 0x74, 0x69,
-	0x6f, 0x6e, 0x5f, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x5f, 0x61, 0x70, 0x69, 0x2f, 0x76,
-	0x31, 0x3b, 0x66, 0x69, 0x6e, 0x61, 0x6e, 0x63, 0x69, 0x61, 0x6c, 0x5f, 0x69, 0x6e, 0x74, 0x65,
-	0x67, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x5f,
-	0x61, 0x70, 0x69, 0x76, 0x31, 0xa2, 0x02, 0x03, 0x46, 0x58, 0x58, 0xaa, 0x02, 0x21, 0x46, 0x69,
+	0x65, 0x5f, 0x61, 0x70, 0x69, 0x2f, 0x76, 0x31, 0x2f, 0x66, 0x69, 0x6e, 0x61, 0x6e, 0x63, 0x69,
+	0x61, 0x6c, 0x5f, 0x69, 0x6e, 0x74, 0x65, 0x67, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x73,
+	0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x5f, 0x61, 0x70, 0x69, 0x2f, 0x76, 0x31, 0x3b, 0x66, 0x69,
+	0x6e, 0x61, 0x6e, 0x63, 0x69, 0x61, 0x6c, 0x5f, 0x69, 0x6e, 0x74, 0x65, 0x67, 0x72, 0x61, 0x74,
+	0x69, 0x6f, 0x6e, 0x5f, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x5f, 0x61, 0x70, 0x69, 0x76,
+	0x31, 0xa2, 0x02, 0x03, 0x46, 0x58, 0x58, 0xaa, 0x02, 0x21, 0x46, 0x69, 0x6e, 0x61, 0x6e, 0x63,
+	0x69, 0x61, 0x6c, 0x49, 0x6e, 0x74, 0x65, 0x67, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x53, 0x65,
+	0x72, 0x76, 0x69, 0x63, 0x65, 0x41, 0x70, 0x69, 0x2e, 0x56, 0x31, 0xca, 0x02, 0x21, 0x46, 0x69,
 	0x6e, 0x61, 0x6e, 0x63, 0x69, 0x61, 0x6c, 0x49, 0x6e, 0x74, 0x65, 0x67, 0x72, 0x61, 0x74, 0x69,
-	0x6f, 0x6e, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x41, 0x70, 0x69, 0x2e, 0x56, 0x31, 0xca,
-	0x02, 0x21, 0x46, 0x69, 0x6e, 0x61, 0x6e, 0x63, 0x69, 0x61, 0x6c, 0x49, 0x6e, 0x74, 0x65, 0x67,
+	0x6f, 0x6e, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x41, 0x70, 0x69, 0x5c, 0x56, 0x31, 0xe2,
+	0x02, 0x2d, 0x46, 0x69, 0x6e, 0x61, 0x6e, 0x63, 0x69, 0x61, 0x6c, 0x49, 0x6e, 0x74, 0x65, 0x67,
 	0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x41, 0x70, 0x69,
-	0x5c, 0x56, 0x31, 0xe2, 0x02, 0x2d, 0x46, 0x69, 0x6e, 0x61, 0x6e, 0x63, 0x69, 0x61, 0x6c, 0x49,
-	0x6e, 0x74, 0x65, 0x67, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63,
-	0x65, 0x41, 0x70, 0x69, 0x5c, 0x56, 0x31, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64,
-	0x61, 0x74, 0x61, 0xea, 0x02, 0x22, 0x46, 0x69, 0x6e, 0x61, 0x6e, 0x63, 0x69, 0x61, 0x6c, 0x49,
-	0x6e, 0x74, 0x65, 0x67, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63,
-	0x65, 0x41, 0x70, 0x69, 0x3a, 0x3a, 0x56, 0x31, 0xd8, 0xe1, 0x1e, 0x00, 0xe0, 0xe1, 0x1e, 0x01,
-	0xf0, 0xe1, 0x1e, 0x01, 0xf8, 0xe1, 0x1e, 0x01, 0x80, 0xe2, 0x1e, 0x01, 0xa8, 0xe2, 0x1e, 0x01,
-	0xb8, 0xe2, 0x1e, 0x01, 0xc0, 0xe2, 0x1e, 0x01, 0xc8, 0xe2, 0x1e, 0x01, 0xd0, 0xe2, 0x1e, 0x01,
-	0xe0, 0xe2, 0x1e, 0x01, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x5c, 0x56, 0x31, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea,
+	0x02, 0x22, 0x46, 0x69, 0x6e, 0x61, 0x6e, 0x63, 0x69, 0x61, 0x6c, 0x49, 0x6e, 0x74, 0x65, 0x67,
+	0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x41, 0x70, 0x69,
+	0x3a, 0x3a, 0x56, 0x31, 0xd8, 0xe1, 0x1e, 0x00, 0xe0, 0xe1, 0x1e, 0x01, 0xf0, 0xe1, 0x1e, 0x01,
+	0xf8, 0xe1, 0x1e, 0x01, 0x80, 0xe2, 0x1e, 0x01, 0xa8, 0xe2, 0x1e, 0x01, 0xb8, 0xe2, 0x1e, 0x01,
+	0xc0, 0xe2, 0x1e, 0x01, 0xc8, 0xe2, 0x1e, 0x01, 0xd0, 0xe2, 0x1e, 0x01, 0xe0, 0xe2, 0x1e, 0x01,
+	0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -3280,7 +3399,7 @@ func file_financial_integration_service_api_v1_request_response_financial_analyt
 	return file_financial_integration_service_api_v1_request_response_financial_analytics_service_proto_rawDescData
 }
 
-var file_financial_integration_service_api_v1_request_response_financial_analytics_service_proto_msgTypes = make([]protoimpl.MessageInfo, 42)
+var file_financial_integration_service_api_v1_request_response_financial_analytics_service_proto_msgTypes = make([]protoimpl.MessageInfo, 44)
 var file_financial_integration_service_api_v1_request_response_financial_analytics_service_proto_goTypes = []interface{}{
 	(*GetTransactionAggregatesRequest)(nil),                  // 0: financial_integration_service_api.v1.GetTransactionAggregatesRequest
 	(*GetTransactionAggregatesResponse)(nil),                 // 1: financial_integration_service_api.v1.GetTransactionAggregatesResponse
@@ -3324,54 +3443,57 @@ var file_financial_integration_service_api_v1_request_response_financial_analyti
 	(*GetTotalInvestmentBySecurityResponse)(nil),             // 39: financial_integration_service_api.v1.GetTotalInvestmentBySecurityResponse
 	(*GetMelodyFinancialContextRequest)(nil),                 // 40: financial_integration_service_api.v1.GetMelodyFinancialContextRequest
 	(*GetMelodyFinancialContextResponse)(nil),                // 41: financial_integration_service_api.v1.GetMelodyFinancialContextResponse
-	(*TransactionAggregatesByMonth)(nil),                     // 42: financial_integration_service_api.v1.TransactionAggregatesByMonth
-	(*AccountBalanceHistory)(nil),                            // 43: financial_integration_service_api.v1.AccountBalanceHistory
-	(*CategoryMonthlyExpenditure)(nil),                       // 44: financial_integration_service_api.v1.CategoryMonthlyExpenditure
-	(*CategoryMonthlyIncome)(nil),                            // 45: financial_integration_service_api.v1.CategoryMonthlyIncome
-	(*CategoryMonthlyTransactionCount)(nil),                  // 46: financial_integration_service_api.v1.CategoryMonthlyTransactionCount
-	(*DebtToIncomeRatio)(nil),                                // 47: financial_integration_service_api.v1.DebtToIncomeRatio
-	(*ExpenseMetrics)(nil),                                   // 48: financial_integration_service_api.v1.ExpenseMetrics
-	(*FinancialProfile)(nil),                                 // 49: financial_integration_service_api.v1.FinancialProfile
-	(*IncomeExpenseRatio)(nil),                               // 50: financial_integration_service_api.v1.IncomeExpenseRatio
-	(*IncomeMetrics)(nil),                                    // 51: financial_integration_service_api.v1.IncomeMetrics
-	(*MerchantMonthlyExpenditure)(nil),                       // 52: financial_integration_service_api.v1.MerchantMonthlyExpenditure
-	(*MonthlyBalance)(nil),                                   // 53: financial_integration_service_api.v1.MonthlyBalance
-	(*MonthlyExpenditure)(nil),                               // 54: financial_integration_service_api.v1.MonthlyExpenditure
-	(*MonthlyIncome)(nil),                                    // 55: financial_integration_service_api.v1.MonthlyIncome
-	(*MonthlySavings)(nil),                                   // 56: financial_integration_service_api.v1.MonthlySavings
-	(*MonthlyTotalQuantityBySecurityAndUser)(nil),            // 57: financial_integration_service_api.v1.MonthlyTotalQuantityBySecurityAndUser
-	(*MonthlyTransactionCount)(nil),                          // 58: financial_integration_service_api.v1.MonthlyTransactionCount
-	(*PaymentChannelMonthlyExpenditure)(nil),                 // 59: financial_integration_service_api.v1.PaymentChannelMonthlyExpenditure
-	(*TotalInvestmentBySecurity)(nil),                        // 60: financial_integration_service_api.v1.TotalInvestmentBySecurity
-	(*MelodyFinancialContext)(nil),                           // 61: financial_integration_service_api.v1.MelodyFinancialContext
+	(*GetHistoricalAccountBalanceRequest)(nil),               // 42: financial_integration_service_api.v1.GetHistoricalAccountBalanceRequest
+	(*GetHistoricalAccountBalanceResponse)(nil),              // 43: financial_integration_service_api.v1.GetHistoricalAccountBalanceResponse
+	(*TransactionAggregatesByMonth)(nil),                     // 44: financial_integration_service_api.v1.TransactionAggregatesByMonth
+	(*AccountBalanceHistory)(nil),                            // 45: financial_integration_service_api.v1.AccountBalanceHistory
+	(*CategoryMonthlyExpenditure)(nil),                       // 46: financial_integration_service_api.v1.CategoryMonthlyExpenditure
+	(*CategoryMonthlyIncome)(nil),                            // 47: financial_integration_service_api.v1.CategoryMonthlyIncome
+	(*CategoryMonthlyTransactionCount)(nil),                  // 48: financial_integration_service_api.v1.CategoryMonthlyTransactionCount
+	(*DebtToIncomeRatio)(nil),                                // 49: financial_integration_service_api.v1.DebtToIncomeRatio
+	(*ExpenseMetrics)(nil),                                   // 50: financial_integration_service_api.v1.ExpenseMetrics
+	(*FinancialProfile)(nil),                                 // 51: financial_integration_service_api.v1.FinancialProfile
+	(*IncomeExpenseRatio)(nil),                               // 52: financial_integration_service_api.v1.IncomeExpenseRatio
+	(*IncomeMetrics)(nil),                                    // 53: financial_integration_service_api.v1.IncomeMetrics
+	(*MerchantMonthlyExpenditure)(nil),                       // 54: financial_integration_service_api.v1.MerchantMonthlyExpenditure
+	(*MonthlyBalance)(nil),                                   // 55: financial_integration_service_api.v1.MonthlyBalance
+	(*MonthlyExpenditure)(nil),                               // 56: financial_integration_service_api.v1.MonthlyExpenditure
+	(*MonthlyIncome)(nil),                                    // 57: financial_integration_service_api.v1.MonthlyIncome
+	(*MonthlySavings)(nil),                                   // 58: financial_integration_service_api.v1.MonthlySavings
+	(*MonthlyTotalQuantityBySecurityAndUser)(nil),            // 59: financial_integration_service_api.v1.MonthlyTotalQuantityBySecurityAndUser
+	(*MonthlyTransactionCount)(nil),                          // 60: financial_integration_service_api.v1.MonthlyTransactionCount
+	(*PaymentChannelMonthlyExpenditure)(nil),                 // 61: financial_integration_service_api.v1.PaymentChannelMonthlyExpenditure
+	(*TotalInvestmentBySecurity)(nil),                        // 62: financial_integration_service_api.v1.TotalInvestmentBySecurity
+	(*MelodyFinancialContext)(nil),                           // 63: financial_integration_service_api.v1.MelodyFinancialContext
 }
 var file_financial_integration_service_api_v1_request_response_financial_analytics_service_proto_depIdxs = []int32{
-	42, // 0: financial_integration_service_api.v1.GetTransactionAggregatesResponse.transaction_aggregates:type_name -> financial_integration_service_api.v1.TransactionAggregatesByMonth
-	43, // 1: financial_integration_service_api.v1.GetUserAccountBalanceHistoryResponse.account_balance_history:type_name -> financial_integration_service_api.v1.AccountBalanceHistory
-	43, // 2: financial_integration_service_api.v1.GetAccountBalanceHistoryResponse.account_balance_history:type_name -> financial_integration_service_api.v1.AccountBalanceHistory
-	44, // 3: financial_integration_service_api.v1.GetUserCategoryMonthlyExpenditureResponse.category_monthly_expenditure:type_name -> financial_integration_service_api.v1.CategoryMonthlyExpenditure
-	45, // 4: financial_integration_service_api.v1.GetUserCategoryMonthlyIncomeResponse.category_monthly_income:type_name -> financial_integration_service_api.v1.CategoryMonthlyIncome
-	46, // 5: financial_integration_service_api.v1.GetCategoryMonthlyTransactionCountResponse.category_monthly_transaction_count:type_name -> financial_integration_service_api.v1.CategoryMonthlyTransactionCount
-	47, // 6: financial_integration_service_api.v1.GetDebtToIncomeRatioResponse.debt_to_income_ratios:type_name -> financial_integration_service_api.v1.DebtToIncomeRatio
-	48, // 7: financial_integration_service_api.v1.GetExpenseMetricsResponse.expense_metrics:type_name -> financial_integration_service_api.v1.ExpenseMetrics
-	49, // 8: financial_integration_service_api.v1.GetFinancialProfileResponse.financial_profiles:type_name -> financial_integration_service_api.v1.FinancialProfile
-	50, // 9: financial_integration_service_api.v1.GetIncomeExpenseRatioResponse.income_expense_ratios:type_name -> financial_integration_service_api.v1.IncomeExpenseRatio
-	51, // 10: financial_integration_service_api.v1.GetIncomeMetricsResponse.income_metrics:type_name -> financial_integration_service_api.v1.IncomeMetrics
-	52, // 11: financial_integration_service_api.v1.GetMerchantMonthlyExpenditureResponse.merchant_monthly_expenditures:type_name -> financial_integration_service_api.v1.MerchantMonthlyExpenditure
-	53, // 12: financial_integration_service_api.v1.GetMonthlyBalanceResponse.monthly_balances:type_name -> financial_integration_service_api.v1.MonthlyBalance
-	54, // 13: financial_integration_service_api.v1.GetMonthlyExpenditureResponse.monthly_expenditures:type_name -> financial_integration_service_api.v1.MonthlyExpenditure
-	55, // 14: financial_integration_service_api.v1.GetMonthlyIncomeResponse.monthly_incomes:type_name -> financial_integration_service_api.v1.MonthlyIncome
-	56, // 15: financial_integration_service_api.v1.GetMonthlySavingsResponse.monthly_savings:type_name -> financial_integration_service_api.v1.MonthlySavings
-	57, // 16: financial_integration_service_api.v1.GetMonthlyTotalQuantityBySecurityAndUserResponse.monthly_total_quantity_by_security_and_user:type_name -> financial_integration_service_api.v1.MonthlyTotalQuantityBySecurityAndUser
-	58, // 17: financial_integration_service_api.v1.GetMonthlyTransactionCountResponse.monthly_transaction_counts:type_name -> financial_integration_service_api.v1.MonthlyTransactionCount
-	59, // 18: financial_integration_service_api.v1.GetPaymentChannelMonthlyExpenditureResponse.payment_channel_monthly_expenditure:type_name -> financial_integration_service_api.v1.PaymentChannelMonthlyExpenditure
-	60, // 19: financial_integration_service_api.v1.GetTotalInvestmentBySecurityResponse.total_investment_by_security:type_name -> financial_integration_service_api.v1.TotalInvestmentBySecurity
-	61, // 20: financial_integration_service_api.v1.GetMelodyFinancialContextResponse.melody_financial_context:type_name -> financial_integration_service_api.v1.MelodyFinancialContext
-	21, // [21:21] is the sub-list for method output_type
-	21, // [21:21] is the sub-list for method input_type
-	21, // [21:21] is the sub-list for extension type_name
-	21, // [21:21] is the sub-list for extension extendee
-	0,  // [0:21] is the sub-list for field type_name
+	44, // 0: financial_integration_service_api.v1.GetTransactionAggregatesResponse.transaction_aggregates:type_name -> financial_integration_service_api.v1.TransactionAggregatesByMonth
+	45, // 1: financial_integration_service_api.v1.GetUserAccountBalanceHistoryResponse.account_balance_history:type_name -> financial_integration_service_api.v1.AccountBalanceHistory
+	45, // 2: financial_integration_service_api.v1.GetAccountBalanceHistoryResponse.account_balance_history:type_name -> financial_integration_service_api.v1.AccountBalanceHistory
+	46, // 3: financial_integration_service_api.v1.GetUserCategoryMonthlyExpenditureResponse.category_monthly_expenditure:type_name -> financial_integration_service_api.v1.CategoryMonthlyExpenditure
+	47, // 4: financial_integration_service_api.v1.GetUserCategoryMonthlyIncomeResponse.category_monthly_income:type_name -> financial_integration_service_api.v1.CategoryMonthlyIncome
+	48, // 5: financial_integration_service_api.v1.GetCategoryMonthlyTransactionCountResponse.category_monthly_transaction_count:type_name -> financial_integration_service_api.v1.CategoryMonthlyTransactionCount
+	49, // 6: financial_integration_service_api.v1.GetDebtToIncomeRatioResponse.debt_to_income_ratios:type_name -> financial_integration_service_api.v1.DebtToIncomeRatio
+	50, // 7: financial_integration_service_api.v1.GetExpenseMetricsResponse.expense_metrics:type_name -> financial_integration_service_api.v1.ExpenseMetrics
+	51, // 8: financial_integration_service_api.v1.GetFinancialProfileResponse.financial_profiles:type_name -> financial_integration_service_api.v1.FinancialProfile
+	52, // 9: financial_integration_service_api.v1.GetIncomeExpenseRatioResponse.income_expense_ratios:type_name -> financial_integration_service_api.v1.IncomeExpenseRatio
+	53, // 10: financial_integration_service_api.v1.GetIncomeMetricsResponse.income_metrics:type_name -> financial_integration_service_api.v1.IncomeMetrics
+	54, // 11: financial_integration_service_api.v1.GetMerchantMonthlyExpenditureResponse.merchant_monthly_expenditures:type_name -> financial_integration_service_api.v1.MerchantMonthlyExpenditure
+	55, // 12: financial_integration_service_api.v1.GetMonthlyBalanceResponse.monthly_balances:type_name -> financial_integration_service_api.v1.MonthlyBalance
+	56, // 13: financial_integration_service_api.v1.GetMonthlyExpenditureResponse.monthly_expenditures:type_name -> financial_integration_service_api.v1.MonthlyExpenditure
+	57, // 14: financial_integration_service_api.v1.GetMonthlyIncomeResponse.monthly_incomes:type_name -> financial_integration_service_api.v1.MonthlyIncome
+	58, // 15: financial_integration_service_api.v1.GetMonthlySavingsResponse.monthly_savings:type_name -> financial_integration_service_api.v1.MonthlySavings
+	59, // 16: financial_integration_service_api.v1.GetMonthlyTotalQuantityBySecurityAndUserResponse.monthly_total_quantity_by_security_and_user:type_name -> financial_integration_service_api.v1.MonthlyTotalQuantityBySecurityAndUser
+	60, // 17: financial_integration_service_api.v1.GetMonthlyTransactionCountResponse.monthly_transaction_counts:type_name -> financial_integration_service_api.v1.MonthlyTransactionCount
+	61, // 18: financial_integration_service_api.v1.GetPaymentChannelMonthlyExpenditureResponse.payment_channel_monthly_expenditure:type_name -> financial_integration_service_api.v1.PaymentChannelMonthlyExpenditure
+	62, // 19: financial_integration_service_api.v1.GetTotalInvestmentBySecurityResponse.total_investment_by_security:type_name -> financial_integration_service_api.v1.TotalInvestmentBySecurity
+	63, // 20: financial_integration_service_api.v1.GetMelodyFinancialContextResponse.melody_financial_context:type_name -> financial_integration_service_api.v1.MelodyFinancialContext
+	45, // 21: financial_integration_service_api.v1.GetHistoricalAccountBalanceResponse.historical_account_balance:type_name -> financial_integration_service_api.v1.AccountBalanceHistory
+	22, // [22:22] is the sub-list for method output_type
+	22, // [22:22] is the sub-list for method input_type
+	22, // [22:22] is the sub-list for extension type_name
+	22, // [22:22] is the sub-list for extension extendee
+	0,  // [0:22] is the sub-list for field type_name
 }
 
 func init() {
@@ -3887,6 +4009,30 @@ func file_financial_integration_service_api_v1_request_response_financial_analyt
 				return nil
 			}
 		}
+		file_financial_integration_service_api_v1_request_response_financial_analytics_service_proto_msgTypes[42].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetHistoricalAccountBalanceRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_financial_integration_service_api_v1_request_response_financial_analytics_service_proto_msgTypes[43].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetHistoricalAccountBalanceResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -3894,7 +4040,7 @@ func file_financial_integration_service_api_v1_request_response_financial_analyt
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_financial_integration_service_api_v1_request_response_financial_analytics_service_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   42,
+			NumMessages:   44,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
