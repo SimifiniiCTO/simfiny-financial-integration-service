@@ -370,6 +370,7 @@ For example, the &#34;Housing&#34; category might have subcategories for &#34;Re
 | last_statement_balance | [double](#double) |  | the last statement balance |
 | minimum_payment_amount | [double](#double) |  | the minimum payment amount |
 | next_payment_due_date | [string](#string) |  | the next payment due date |
+| status | [BankAccountStatus](#financial_integration_service_api-v1-BankAccountStatus) |  | the bank account status |
 
 
 
@@ -443,6 +444,7 @@ This allows the user to track how well they are progressing towards their goal a
 | subtype | [string](#string) |  | accoint subtype |
 | holdings | [InvesmentHolding](#financial_integration_service_api-v1-InvesmentHolding) | repeated | invesment holding is the set of securities this account witholds |
 | securities | [InvestmentSecurity](#financial_integration_service_api-v1-InvestmentSecurity) | repeated | the set of securities this account witholds |
+| status | [BankAccountStatus](#financial_integration_service_api-v1-BankAccountStatus) |  | the bank account status |
 
 
 
@@ -585,6 +587,7 @@ and achievable. A milestone is a sub goal of a goal and is tied to a goal by the
 | property_country | [string](#string) |  |  |
 | interest_rate_percentage | [double](#double) |  |  |
 | interest_rate_type | [string](#string) |  |  |
+| status | [BankAccountStatus](#financial_integration_service_api-v1-BankAccountStatus) |  | the bank account status |
 
 
 
@@ -751,6 +754,7 @@ StripeSubscription stores high level stripe subscription details of which the us
 | servicer_address_country | [string](#string) |  |  |
 | user_id | [uint64](#uint64) |  | the user id to which this bank account is tied to |
 | name | [string](#string) |  | the account name |
+| status | [BankAccountStatus](#financial_integration_service_api-v1-BankAccountStatus) |  | the bank account status |
 
 
 

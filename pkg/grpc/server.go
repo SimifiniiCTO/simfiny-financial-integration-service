@@ -42,6 +42,7 @@ type Server struct {
 	redisDb                     *redis.Client
 	Taskprocessor               *taskprocessor.TaskProcessor
 	OpenAiClient                *openai.Client
+	th                          *taskhandler.TaskHandler
 }
 
 // Config is the config for the grpc server initialization
@@ -172,6 +173,7 @@ func NewServer(param *Params) (*Server, error) {
 		clickhouseConn:              param.ClickhouseDb,
 		redisDb:                     param.RedisDb,
 		Taskprocessor:               tp,
+		th:                          th,
 	}
 
 	if param.OpenAiToken == nil {

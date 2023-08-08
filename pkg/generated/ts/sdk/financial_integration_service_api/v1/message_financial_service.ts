@@ -634,6 +634,8 @@ export interface StudentLoanAccount {
   userId: number;
   /** the account name */
   name: string;
+  /** the bank account status */
+  status: BankAccountStatus;
 }
 
 export interface CreditAccount {
@@ -677,6 +679,8 @@ export interface CreditAccount {
   minimumPaymentAmount: number;
   /** the next payment due date */
   nextPaymentDueDate: string;
+  /** the bank account status */
+  status: BankAccountStatus;
 }
 
 export interface MortgageAccount {
@@ -712,6 +716,8 @@ export interface MortgageAccount {
   propertyCountry: string;
   interestRatePercentage: number;
   interestRateType: string;
+  /** the bank account status */
+  status: BankAccountStatus;
 }
 
 export interface InvestmentAccount {
@@ -737,6 +743,8 @@ export interface InvestmentAccount {
   holdings: InvesmentHolding[];
   /** the set of securities this account witholds */
   securities: InvestmentSecurity[];
+  /** the bank account status */
+  status: BankAccountStatus;
 }
 
 export interface BankAccount {
@@ -2269,6 +2277,7 @@ function createBaseStudentLoanAccount(): StudentLoanAccount {
     servicerAddressCountry: "",
     userId: 0,
     name: "",
+    status: 0,
   };
 }
 
@@ -2378,6 +2387,9 @@ export const StudentLoanAccount = {
     }
     if (message.name !== "") {
       writer.uint32(306).string(message.name);
+    }
+    if (message.status !== 0) {
+      writer.uint32(312).int32(message.status);
     }
     return writer;
   },
@@ -2634,6 +2646,13 @@ export const StudentLoanAccount = {
 
           message.name = reader.string();
           continue;
+        case 39:
+          if (tag !== 312) {
+            break;
+          }
+
+          message.status = reader.int32() as any;
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -2690,6 +2709,7 @@ export const StudentLoanAccount = {
       servicerAddressCountry: isSet(object.servicerAddressCountry) ? String(object.servicerAddressCountry) : "",
       userId: isSet(object.userId) ? Number(object.userId) : 0,
       name: isSet(object.name) ? String(object.name) : "",
+      status: isSet(object.status) ? bankAccountStatusFromJSON(object.status) : 0,
     };
   },
 
@@ -2800,6 +2820,9 @@ export const StudentLoanAccount = {
     if (message.name !== "") {
       obj.name = message.name;
     }
+    if (message.status !== 0) {
+      obj.status = bankAccountStatusToJSON(message.status);
+    }
     return obj;
   },
 
@@ -2843,6 +2866,7 @@ export const StudentLoanAccount = {
     message.servicerAddressCountry = object.servicerAddressCountry ?? "";
     message.userId = object.userId ?? 0;
     message.name = object.name ?? "";
+    message.status = object.status ?? 0;
     return message;
   },
 };
@@ -2869,6 +2893,7 @@ function createBaseCreditAccount(): CreditAccount {
     lastStatementBalance: 0,
     minimumPaymentAmount: 0,
     nextPaymentDueDate: "",
+    status: 0,
   };
 }
 
@@ -2933,6 +2958,9 @@ export const CreditAccount = {
     }
     if (message.nextPaymentDueDate !== "") {
       writer.uint32(186).string(message.nextPaymentDueDate);
+    }
+    if (message.status !== 0) {
+      writer.uint32(192).int32(message.status);
     }
     return writer;
   },
@@ -3084,6 +3112,13 @@ export const CreditAccount = {
 
           message.nextPaymentDueDate = reader.string();
           continue;
+        case 24:
+          if (tag !== 192) {
+            break;
+          }
+
+          message.status = reader.int32() as any;
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -3115,6 +3150,7 @@ export const CreditAccount = {
       lastStatementBalance: isSet(object.lastStatementBalance) ? Number(object.lastStatementBalance) : 0,
       minimumPaymentAmount: isSet(object.minimumPaymentAmount) ? Number(object.minimumPaymentAmount) : 0,
       nextPaymentDueDate: isSet(object.nextPaymentDueDate) ? String(object.nextPaymentDueDate) : "",
+      status: isSet(object.status) ? bankAccountStatusFromJSON(object.status) : 0,
     };
   },
 
@@ -3180,6 +3216,9 @@ export const CreditAccount = {
     if (message.nextPaymentDueDate !== "") {
       obj.nextPaymentDueDate = message.nextPaymentDueDate;
     }
+    if (message.status !== 0) {
+      obj.status = bankAccountStatusToJSON(message.status);
+    }
     return obj;
   },
 
@@ -3208,6 +3247,7 @@ export const CreditAccount = {
     message.lastStatementBalance = object.lastStatementBalance ?? 0;
     message.minimumPaymentAmount = object.minimumPaymentAmount ?? 0;
     message.nextPaymentDueDate = object.nextPaymentDueDate ?? "";
+    message.status = object.status ?? 0;
     return message;
   },
 };
@@ -3246,6 +3286,7 @@ function createBaseMortgageAccount(): MortgageAccount {
     propertyCountry: "",
     interestRatePercentage: 0,
     interestRateType: "",
+    status: 0,
   };
 }
 
@@ -3346,6 +3387,9 @@ export const MortgageAccount = {
     }
     if (message.interestRateType !== "") {
       writer.uint32(306).string(message.interestRateType);
+    }
+    if (message.status !== 0) {
+      writer.uint32(312).int32(message.status);
     }
     return writer;
   },
@@ -3581,6 +3625,13 @@ export const MortgageAccount = {
 
           message.interestRateType = reader.string();
           continue;
+        case 39:
+          if (tag !== 312) {
+            break;
+          }
+
+          message.status = reader.int32() as any;
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -3630,6 +3681,7 @@ export const MortgageAccount = {
       propertyCountry: isSet(object.propertyCountry) ? String(object.propertyCountry) : "",
       interestRatePercentage: isSet(object.interestRatePercentage) ? Number(object.interestRatePercentage) : 0,
       interestRateType: isSet(object.interestRateType) ? String(object.interestRateType) : "",
+      status: isSet(object.status) ? bankAccountStatusFromJSON(object.status) : 0,
     };
   },
 
@@ -3731,6 +3783,9 @@ export const MortgageAccount = {
     if (message.interestRateType !== "") {
       obj.interestRateType = message.interestRateType;
     }
+    if (message.status !== 0) {
+      obj.status = bankAccountStatusToJSON(message.status);
+    }
     return obj;
   },
 
@@ -3771,6 +3826,7 @@ export const MortgageAccount = {
     message.propertyCountry = object.propertyCountry ?? "";
     message.interestRatePercentage = object.interestRatePercentage ?? 0;
     message.interestRateType = object.interestRateType ?? "";
+    message.status = object.status ?? 0;
     return message;
   },
 };
@@ -3789,6 +3845,7 @@ function createBaseInvestmentAccount(): InvestmentAccount {
     subtype: "",
     holdings: [],
     securities: [],
+    status: 0,
   };
 }
 
@@ -3829,6 +3886,9 @@ export const InvestmentAccount = {
     }
     for (const v of message.securities) {
       InvestmentSecurity.encode(v!, writer.uint32(66).fork()).ldelim();
+    }
+    if (message.status !== 0) {
+      writer.uint32(112).int32(message.status);
     }
     return writer;
   },
@@ -3924,6 +3984,13 @@ export const InvestmentAccount = {
 
           message.securities.push(InvestmentSecurity.decode(reader, reader.uint32()));
           continue;
+        case 14:
+          if (tag !== 112) {
+            break;
+          }
+
+          message.status = reader.int32() as any;
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -3949,6 +4016,7 @@ export const InvestmentAccount = {
       securities: Array.isArray(object?.securities)
         ? object.securities.map((e: any) => InvestmentSecurity.fromJSON(e))
         : [],
+      status: isSet(object.status) ? bankAccountStatusFromJSON(object.status) : 0,
     };
   },
 
@@ -3990,6 +4058,9 @@ export const InvestmentAccount = {
     if (message.securities?.length) {
       obj.securities = message.securities.map((e) => InvestmentSecurity.toJSON(e));
     }
+    if (message.status !== 0) {
+      obj.status = bankAccountStatusToJSON(message.status);
+    }
     return obj;
   },
 
@@ -4010,6 +4081,7 @@ export const InvestmentAccount = {
     message.subtype = object.subtype ?? "";
     message.holdings = object.holdings?.map((e) => InvesmentHolding.fromPartial(e)) || [];
     message.securities = object.securities?.map((e) => InvestmentSecurity.fromPartial(e)) || [];
+    message.status = object.status ?? 0;
     return message;
   },
 };

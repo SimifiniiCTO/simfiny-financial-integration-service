@@ -1304,6 +1304,8 @@ func (m *StudentLoanAccount) validate(all bool) error {
 
 	// no validation rules for Name
 
+	// no validation rules for Status
+
 	if len(errors) > 0 {
 		return StudentLoanAccountMultiError(errors)
 	}
@@ -1478,6 +1480,8 @@ func (m *CreditAccount) validate(all bool) error {
 
 	// no validation rules for NextPaymentDueDate
 
+	// no validation rules for Status
+
 	if len(errors) > 0 {
 		return CreditAccountMultiError(errors)
 	}
@@ -1641,6 +1645,8 @@ func (m *MortgageAccount) validate(all bool) error {
 	// no validation rules for InterestRatePercentage
 
 	// no validation rules for InterestRateType
+
+	// no validation rules for Status
 
 	if len(errors) > 0 {
 		return MortgageAccountMultiError(errors)
@@ -1829,6 +1835,8 @@ func (m *InvestmentAccount) validate(all bool) error {
 		}
 
 	}
+
+	// no validation rules for Status
 
 	if len(errors) > 0 {
 		return InvestmentAccountMultiError(errors)

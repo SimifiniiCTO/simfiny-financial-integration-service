@@ -53,5 +53,6 @@ func (th *TaskHandler) syncInvestmentAccountsHelper(
 			th.logger.Error("failed to get investment account transactions", zap.Error(err))
 		}
 	}
+
 	return newSyncedInvestmentAccounts, nil
 }

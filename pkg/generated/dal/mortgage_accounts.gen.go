@@ -59,6 +59,7 @@ func newMortgageAccountORM(db *gorm.DB, opts ...gen.DOOption) mortgageAccountORM
 	_mortgageAccountORM.PropertyAddressStreet = field.NewString(tableName, "property_address_street")
 	_mortgageAccountORM.PropertyCountry = field.NewString(tableName, "property_country")
 	_mortgageAccountORM.PropertyRegion = field.NewString(tableName, "property_region")
+	_mortgageAccountORM.Status = field.NewString(tableName, "status")
 	_mortgageAccountORM.YtdInterestPaid = field.NewFloat64(tableName, "ytd_interest_paid")
 	_mortgageAccountORM.YtdPrincipalPaid = field.NewFloat64(tableName, "ytd_principal_paid")
 
@@ -102,6 +103,7 @@ type mortgageAccountORM struct {
 	PropertyAddressStreet       field.String
 	PropertyCountry             field.String
 	PropertyRegion              field.String
+	Status                      field.String
 	YtdInterestPaid             field.Float64
 	YtdPrincipalPaid            field.Float64
 
@@ -151,6 +153,7 @@ func (m *mortgageAccountORM) updateTableName(table string) *mortgageAccountORM {
 	m.PropertyAddressStreet = field.NewString(table, "property_address_street")
 	m.PropertyCountry = field.NewString(table, "property_country")
 	m.PropertyRegion = field.NewString(table, "property_region")
+	m.Status = field.NewString(table, "status")
 	m.YtdInterestPaid = field.NewFloat64(table, "ytd_interest_paid")
 	m.YtdPrincipalPaid = field.NewFloat64(table, "ytd_principal_paid")
 
@@ -169,7 +172,7 @@ func (m *mortgageAccountORM) GetFieldByName(fieldName string) (field.OrderExpr, 
 }
 
 func (m *mortgageAccountORM) fillFieldMap() {
-	m.fieldMap = make(map[string]field.Expr, 33)
+	m.fieldMap = make(map[string]field.Expr, 34)
 	m.fieldMap["account_number"] = m.AccountNumber
 	m.fieldMap["current_late_fee"] = m.CurrentLateFee
 	m.fieldMap["escrow_balance"] = m.EscrowBalance
@@ -201,6 +204,7 @@ func (m *mortgageAccountORM) fillFieldMap() {
 	m.fieldMap["property_address_street"] = m.PropertyAddressStreet
 	m.fieldMap["property_country"] = m.PropertyCountry
 	m.fieldMap["property_region"] = m.PropertyRegion
+	m.fieldMap["status"] = m.Status
 	m.fieldMap["ytd_interest_paid"] = m.YtdInterestPaid
 	m.fieldMap["ytd_principal_paid"] = m.YtdPrincipalPaid
 }

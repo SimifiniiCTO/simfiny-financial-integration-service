@@ -4635,6 +4635,10 @@
         "nextPaymentDueDate": {
           "type": "string",
           "title": "the next payment due date"
+        },
+        "status": {
+          "$ref": "#/definitions/BankAccountStatus",
+          "title": "the bank account status"
         }
       }
     },
@@ -5585,6 +5589,10 @@
             "$ref": "#/definitions/InvestmentSecurity"
           },
           "title": "the set of securities this account witholds"
+        },
+        "status": {
+          "$ref": "#/definitions/BankAccountStatus",
+          "title": "the bank account status"
         }
       }
     },
@@ -6244,6 +6252,10 @@
         },
         "interestRateType": {
           "type": "string"
+        },
+        "status": {
+          "$ref": "#/definitions/BankAccountStatus",
+          "title": "the bank account status"
         }
       }
     },
@@ -7039,6 +7051,10 @@
         "name": {
           "type": "string",
           "title": "the account name"
+        },
+        "status": {
+          "$ref": "#/definitions/BankAccountStatus",
+          "title": "the bank account status"
         }
       }
     },

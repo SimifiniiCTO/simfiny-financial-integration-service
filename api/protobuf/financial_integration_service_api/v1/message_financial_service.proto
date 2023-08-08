@@ -276,6 +276,8 @@ message StudentLoanAccount {
   uint64 user_id = 37 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
   // the account name
   string name = 38 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+   // the bank account status
+  BankAccountStatus status = 39;
 }
 
 message CreditAccount {
@@ -328,6 +330,8 @@ message CreditAccount {
   double minimum_payment_amount = 22;
   // the next payment due date
   string next_payment_due_date = 23;
+   // the bank account status
+  BankAccountStatus status = 24;
 }
 
 message MortgageAccount {
@@ -364,6 +368,8 @@ message MortgageAccount {
   string property_country = 36 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
   double interest_rate_percentage = 37 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
   string interest_rate_type = 38 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {example: ""}];
+   // the bank account status
+  BankAccountStatus status = 39;
 }
 
 message InvestmentAccount {
@@ -398,6 +404,8 @@ message InvestmentAccount {
   repeated InvesmentHolding holdings = 7 [ (gorm.field).has_many = {disable_association_autocreate: false disable_association_autoupdate: false preload: true}];  
   // the set of securities this account witholds
   repeated InvestmentSecurity securities = 8 [ (gorm.field).has_many = {disable_association_autocreate: false disable_association_autoupdate: false preload: true}];
+   // the bank account status
+  BankAccountStatus status = 14;
 }
 
 message BankAccount {

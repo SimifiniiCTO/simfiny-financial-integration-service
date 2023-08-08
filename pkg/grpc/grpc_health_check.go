@@ -44,15 +44,8 @@ func (s *Server) HealthCheck(ctx context.Context, req *proto.HealthCheckRequest)
 	// 	return nil, err
 	// }
 
-	// generateRecurringTransactionsBatchJob, err := taskhandler.NewSyncRecurringTransactions()
-	// if err != nil {
-	// 	return nil, err
-	// }
-
-	// _, err = s.Taskprocessor.EnqueueTask(
-	// 	context.Background(),
-	// 	generateRecurringTransactionsBatchJob)
-	// if err != nil {
+	// trigger := "grpc-health-check"
+	// if err := s.th.ExecuteBatchSync(ctx, &trigger); err != nil {
 	// 	return nil, err
 	// }
 
