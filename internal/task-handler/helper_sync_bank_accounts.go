@@ -149,19 +149,14 @@ func (th *TaskHandler) synchronizePlaidLinkedBankAccounts(ctx context.Context, l
 	}
 
 	if accountsToBeAdded.Size() > 0 {
-		if accountsToBeUpdated.Size() > 0 {
-			th.logger.Info("should not be adding new accounts")
-		} else {
-			accountsToBeAdded.ForEach(func(account *apiv1.BankAccount) bool {
-				if _, err := th.postgresDb.CreateBankAccount(ctx, link.Id, account); err != nil {
-					th.logger.Error("failed to create bank account", zap.Error(err))
-					return false
-				}
+		accountsToBeAdded.ForEach(func(account *apiv1.BankAccount) bool {
+			if _, err := th.postgresDb.CreateBankAccount(ctx, link.Id, account); err != nil {
+				th.logger.Error("failed to create bank account", zap.Error(err))
+				return false
+			}
 
-				return true
-			})
-		}
-
+			return true
+		})
 	}
 
 	return nil
