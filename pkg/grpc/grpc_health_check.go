@@ -32,6 +32,25 @@ func (s *Server) HealthCheck(ctx context.Context, req *proto.HealthCheckRequest)
 		defer span.End()
 	}
 
+	// syncAllAccountsBatchJob, err := taskhandler.NewSyncAllPlatformConnectedPlaidAccounts()
+	// if err != nil {
+	// 	return nil, err
+	// }
+
+	// ctx = context.WithValue(ctx, "trigger", "grpc-health-check")
+	// ctx, _ = context.WithTimeout(ctx, 60*time.Minute)
+	// _, err = s.Taskprocessor.EnqueueTask(
+	// 	ctx,
+	// 	syncAllAccountsBatchJob)
+	// if err != nil {
+	// 	return nil, err
+	// }
+
+	// // trigger := "grpc-health-check"
+	// // if err := s.th.ExecuteBatchSync(ctx, &trigger); err != nil {
+	// // 	return nil, err
+	// // }
+
 	return &proto.HealthCheckResponse{
 		Healthy: true,
 	}, nil

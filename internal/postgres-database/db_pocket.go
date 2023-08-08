@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
+	"go.uber.org/zap"
 	"gorm.io/gen/field"
 )
 
@@ -87,6 +88,8 @@ func (db *Db) DeletePocket(ctx context.Context, pocketID uint64) error {
 	if result.RowsAffected == 0 {
 		return fmt.Errorf("no rows affected")
 	}
+
+	db.Logger.Info("deleted pocket", zap.Uint64("pocket_id", pocketID))
 
 	return nil
 }

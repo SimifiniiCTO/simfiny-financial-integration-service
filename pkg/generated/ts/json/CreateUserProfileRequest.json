@@ -305,6 +305,25 @@
                 "next_payment_due_date": {
                     "type": "string",
                     "description": "the next payment due date"
+                },
+                "status": {
+                    "enum": [
+                        "BANK_ACCOUNT_STATUS_UNSPECIFIED",
+                        0,
+                        "BANK_ACCOUNT_STATUS_ACTIVE",
+                        1,
+                        "BANK_ACCOUNT_STATUS_INACTIVE",
+                        2
+                    ],
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "integer"
+                        }
+                    ],
+                    "title": "Bank Account Status"
                 }
             },
             "additionalProperties": true,
@@ -434,6 +453,25 @@
                     },
                     "type": "array",
                     "description": "the set of securities this account witholds"
+                },
+                "status": {
+                    "enum": [
+                        "BANK_ACCOUNT_STATUS_UNSPECIFIED",
+                        0,
+                        "BANK_ACCOUNT_STATUS_ACTIVE",
+                        1,
+                        "BANK_ACCOUNT_STATUS_INACTIVE",
+                        2
+                    ],
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "integer"
+                        }
+                    ],
+                    "title": "Bank Account Status"
                 }
             },
             "additionalProperties": true,
@@ -779,6 +817,25 @@
                 },
                 "interest_rate_type": {
                     "type": "string"
+                },
+                "status": {
+                    "enum": [
+                        "BANK_ACCOUNT_STATUS_UNSPECIFIED",
+                        0,
+                        "BANK_ACCOUNT_STATUS_ACTIVE",
+                        1,
+                        "BANK_ACCOUNT_STATUS_INACTIVE",
+                        2
+                    ],
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "integer"
+                        }
+                    ],
+                    "title": "Bank Account Status"
                 }
             },
             "additionalProperties": true,
@@ -1151,6 +1208,25 @@
                 "name": {
                     "type": "string",
                     "description": "the account name"
+                },
+                "status": {
+                    "enum": [
+                        "BANK_ACCOUNT_STATUS_UNSPECIFIED",
+                        0,
+                        "BANK_ACCOUNT_STATUS_ACTIVE",
+                        1,
+                        "BANK_ACCOUNT_STATUS_INACTIVE",
+                        2
+                    ],
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "integer"
+                        }
+                    ],
+                    "title": "Bank Account Status"
                 }
             },
             "additionalProperties": true,

@@ -7,6 +7,7 @@ import (
 
 	"github.com/SimifiniiCTO/asynq"
 	apiv1 "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
+	"github.com/hashicorp/go-set"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 )
@@ -60,56 +61,65 @@ func (th *TaskHandler) RunSyncNewLiabilityAccountsTask(ctx context.Context, task
 	return nil
 }
 
+// processAndStoreInvestmentAccount is a helper function that will process the synced investment accounts and store them
+// in the database. This function will also update the existing investment accounts if they have changed.
 func (th *TaskHandler) processAndStoreInvestmentAccount(ctx context.Context, link *apiv1.Link, investmentAccts []*apiv1.InvestmentAccount) error {
 	if len(investmentAccts) > 0 {
-		syncedInvestmentAccounts := investmentAccts
-		currentInvestmentAccounts := link.GetInvestmentAccounts()
+		// we ensure we have a unique set of investment accounts to account for the newly synced investment accounts
+		syncedInvestmentAccounts := set.New[*apiv1.InvestmentAccount](len(investmentAccts))
+		syncedInvestmentAccounts.InsertSlice(investmentAccts)
 
-		th.logger.Info("current investment accounts", zap.Any("accounts", currentInvestmentAccounts))
-		th.logger.Info("synced investment accounts", zap.Any("accounts", syncedInvestmentAccounts))
+		// we ensure we have a unique set of investment accounts to account for the existing investment accounts
+		currentInvestmentAccounts := set.New[*apiv1.InvestmentAccount](len(link.InvestmentAccounts))
+		currentInvestmentAccounts.InsertSlice(link.InvestmentAccounts)
+
+		th.logger.Info("current investment accounts", zap.Any("accounts", currentInvestmentAccounts.Size()))
+		th.logger.Info("synced investment accounts", zap.Any("accounts", syncedInvestmentAccounts.Size()))
+
+		// create a hasmap of plaid account id and the investment account stored in the database
+		// this will be used to cross reference the synced investment accounts with the existing investment accounts
+		// to determine which investment accounts need to be updated and which ones need to be added
+		plaidAccountIdToInvestmentAccountHashMap := make(map[string]*apiv1.InvestmentAccount, currentInvestmentAccounts.Size())
+		for _, investmentAccount := range currentInvestmentAccounts.Slice() {
+			plaidAccountIdToInvestmentAccountHashMap[investmentAccount.PlaidAccountId] = investmentAccount
+		}
 
 		// iterate over the syncred investment accounts and cross reference them with the existing investment accounts
 		// if the synced investment account is not found in the existing investment accounts, then add it to the existing
 		// investment accounts
-		investmentAccountsToUpdate := make([]*apiv1.InvestmentAccountORM, 0, len(syncedInvestmentAccounts))
-		investmentAccountsToAdd := make([]*apiv1.InvestmentAccountORM, 0, len(syncedInvestmentAccounts))
-		for _, syncedInvestmentAccount := range syncedInvestmentAccounts {
-			found := false
-			if len(currentInvestmentAccounts) == 0 {
-				acctOrm, err := syncedInvestmentAccount.ToORM(ctx)
+		accountsToUpdate := set.New[*apiv1.InvestmentAccountORM](syncedInvestmentAccounts.Size())
+		accountsToAdd := set.New[*apiv1.InvestmentAccountORM](syncedInvestmentAccounts.Size())
+
+		syncedInvestmentAccounts.ForEach(func(item *apiv1.InvestmentAccount) bool {
+			if currentInvestmentAccounts.Size() == 0 {
+				record, err := item.ToORM(ctx)
 				if err != nil {
-					return err
+					th.logger.Error("failed to convert investment account to orm", zap.Error(err))
+					return false
 				}
-
-				th.logger.Info("adding new investment account to set", zap.Any("account", acctOrm))
-				investmentAccountsToAdd = append(investmentAccountsToAdd, &acctOrm)
-				continue
+				accountsToAdd.Insert(&record)
+				return true
 			}
 
-			for idx, currentInvestmentAccount := range currentInvestmentAccounts {
-				if syncedInvestmentAccount.PlaidAccountId == currentInvestmentAccount.PlaidAccountId {
-					found = true
-					break
-				} else if syncedInvestmentAccount.PlaidAccountId != currentInvestmentAccount.PlaidAccountId && idx == len(currentInvestmentAccounts)-1 {
-					acctOrm, err := syncedInvestmentAccount.ToORM(ctx)
-					if err != nil {
-						return err
-					}
-
-					th.logger.Info("adding new investment account to set", zap.Any("account", acctOrm))
-					investmentAccountsToAdd = append(investmentAccountsToAdd, &acctOrm)
-				}
-			}
-
-			if found {
-				acctOrm, err := syncedInvestmentAccount.ToORM(ctx)
+			if _, ok := plaidAccountIdToInvestmentAccountHashMap[item.PlaidAccountId]; ok {
+				record, err := item.ToORM(ctx)
 				if err != nil {
-					return err
+					th.logger.Error("failed to convert investment account to orm", zap.Error(err))
+					return false
 				}
-
-				investmentAccountsToUpdate = append(investmentAccountsToUpdate, &acctOrm)
+				accountsToUpdate.Insert(&record)
+				return true
 			}
-		}
+
+			record, err := item.ToORM(ctx)
+			if err != nil {
+				th.logger.Error("failed to convert investment account to orm", zap.Error(err))
+				return false
+			}
+
+			accountsToAdd.Insert(&record)
+			return true
+		})
 
 		l := th.postgresDb.QueryOperator.LinkORM
 		linkOrm, err := link.ToORM(ctx)
@@ -117,18 +127,20 @@ func (th *TaskHandler) processAndStoreInvestmentAccount(ctx context.Context, lin
 			return err
 		}
 
+		th.logger.Info("updated investment accounts", zap.Any("accounts", accountsToUpdate))
+
 		// update the investment accounts in the database
-		if len(investmentAccountsToUpdate) > 0 {
-			if err := l.InvestmentAccounts.Model(&linkOrm).Replace(investmentAccountsToUpdate...); err != nil {
+		if accountsToUpdate.Size() > 0 {
+			if err := l.InvestmentAccounts.Model(&linkOrm).Replace(accountsToUpdate.Slice()...); err != nil {
 				return err
 			}
 		}
 
-		th.logger.Info("new investment accounts", zap.Any("accounts", investmentAccountsToAdd))
+		th.logger.Info("new investment accounts", zap.Any("accounts", accountsToAdd))
 
 		// add the new investment accounts to the database
-		if len(investmentAccountsToAdd) > 0 {
-			if err := l.InvestmentAccounts.Model(&linkOrm).Append(investmentAccountsToAdd...); err != nil {
+		if accountsToAdd.Size() > 0 {
+			if err := l.InvestmentAccounts.Model(&linkOrm).Append(accountsToAdd.Slice()...); err != nil {
 				return err
 			}
 		}

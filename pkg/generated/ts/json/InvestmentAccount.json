@@ -55,6 +55,25 @@
                     },
                     "type": "array",
                     "description": "the set of securities this account witholds"
+                },
+                "status": {
+                    "enum": [
+                        "BANK_ACCOUNT_STATUS_UNSPECIFIED",
+                        0,
+                        "BANK_ACCOUNT_STATUS_ACTIVE",
+                        1,
+                        "BANK_ACCOUNT_STATUS_INACTIVE",
+                        2
+                    ],
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "integer"
+                        }
+                    ],
+                    "title": "Bank Account Status"
                 }
             },
             "additionalProperties": true,

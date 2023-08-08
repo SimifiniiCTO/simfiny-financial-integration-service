@@ -876,6 +876,7 @@ type StudentLoanAccountORM struct {
 	ServicerAddressRegion              string
 	ServicerAddressState               string
 	ServicerAddressStreet              string
+	Status                             string
 	UserId                             uint64
 	YtdInterestPaid                    float64
 	YtdPrincipalPaid                   float64
@@ -934,6 +935,7 @@ func (m *StudentLoanAccount) ToORM(ctx context.Context) (StudentLoanAccountORM, 
 	to.ServicerAddressCountry = m.ServicerAddressCountry
 	to.UserId = m.UserId
 	to.Name = m.Name
+	to.Status = BankAccountStatus_name[int32(m.Status)]
 	if posthook, ok := interface{}(m).(StudentLoanAccountWithAfterToORM); ok {
 		err = posthook.AfterToORM(ctx, &to)
 	}
@@ -988,6 +990,7 @@ func (m *StudentLoanAccountORM) ToPB(ctx context.Context) (StudentLoanAccount, e
 	to.ServicerAddressCountry = m.ServicerAddressCountry
 	to.UserId = m.UserId
 	to.Name = m.Name
+	to.Status = BankAccountStatus(BankAccountStatus_value[m.Status])
 	if posthook, ok := interface{}(m).(StudentLoanAccountWithAfterToPB); ok {
 		err = posthook.AfterToPB(ctx, &to)
 	}
@@ -1036,6 +1039,7 @@ type CreditAccountORM struct {
 	NextPaymentDueDate     string
 	Number                 string
 	PlaidAccountId         string
+	Status                 string
 	Subtype                string
 	Type                   string
 	UserId                 uint64
@@ -1086,6 +1090,7 @@ func (m *CreditAccount) ToORM(ctx context.Context) (CreditAccountORM, error) {
 	to.LastStatementBalance = m.LastStatementBalance
 	to.MinimumPaymentAmount = m.MinimumPaymentAmount
 	to.NextPaymentDueDate = m.NextPaymentDueDate
+	to.Status = BankAccountStatus_name[int32(m.Status)]
 	if posthook, ok := interface{}(m).(CreditAccountWithAfterToORM); ok {
 		err = posthook.AfterToORM(ctx, &to)
 	}
@@ -1132,6 +1137,7 @@ func (m *CreditAccountORM) ToPB(ctx context.Context) (CreditAccount, error) {
 	to.LastStatementBalance = m.LastStatementBalance
 	to.MinimumPaymentAmount = m.MinimumPaymentAmount
 	to.NextPaymentDueDate = m.NextPaymentDueDate
+	to.Status = BankAccountStatus(BankAccountStatus_value[m.Status])
 	if posthook, ok := interface{}(m).(CreditAccountWithAfterToPB); ok {
 		err = posthook.AfterToPB(ctx, &to)
 	}
@@ -1193,6 +1199,7 @@ type MortgageAccountORM struct {
 	PropertyAddressStreet       string
 	PropertyCountry             string
 	PropertyRegion              string
+	Status                      string
 	YtdInterestPaid             float64
 	YtdPrincipalPaid            float64
 }
@@ -1244,6 +1251,7 @@ func (m *MortgageAccount) ToORM(ctx context.Context) (MortgageAccountORM, error)
 	to.PropertyCountry = m.PropertyCountry
 	to.InterestRatePercentage = m.InterestRatePercentage
 	to.InterestRateType = m.InterestRateType
+	to.Status = BankAccountStatus_name[int32(m.Status)]
 	if posthook, ok := interface{}(m).(MortgageAccountWithAfterToORM); ok {
 		err = posthook.AfterToORM(ctx, &to)
 	}
@@ -1292,6 +1300,7 @@ func (m *MortgageAccountORM) ToPB(ctx context.Context) (MortgageAccount, error) 
 	to.PropertyCountry = m.PropertyCountry
 	to.InterestRatePercentage = m.InterestRatePercentage
 	to.InterestRateType = m.InterestRateType
+	to.Status = BankAccountStatus(BankAccountStatus_value[m.Status])
 	if posthook, ok := interface{}(m).(MortgageAccountWithAfterToPB); ok {
 		err = posthook.AfterToPB(ctx, &to)
 	}
@@ -1332,6 +1341,7 @@ type InvestmentAccountORM struct {
 	Number         string
 	PlaidAccountId string
 	Securities     []*InvestmentSecurityORM `gorm:"foreignkey:InvestmentAccountId;association_foreignkey:Id;preload:true"`
+	Status         string
 	Subtype        string
 	Type           string
 	UserId         uint64
@@ -1384,6 +1394,7 @@ func (m *InvestmentAccount) ToORM(ctx context.Context) (InvestmentAccountORM, er
 			to.Securities = append(to.Securities, nil)
 		}
 	}
+	to.Status = BankAccountStatus_name[int32(m.Status)]
 	if posthook, ok := interface{}(m).(InvestmentAccountWithAfterToORM); ok {
 		err = posthook.AfterToORM(ctx, &to)
 	}
@@ -1432,6 +1443,7 @@ func (m *InvestmentAccountORM) ToPB(ctx context.Context) (InvestmentAccount, err
 			to.Securities = append(to.Securities, nil)
 		}
 	}
+	to.Status = BankAccountStatus(BankAccountStatus_value[m.Status])
 	if posthook, ok := interface{}(m).(InvestmentAccountWithAfterToPB); ok {
 		err = posthook.AfterToPB(ctx, &to)
 	}
@@ -5682,6 +5694,10 @@ func DefaultApplyFieldMaskStudentLoanAccount(ctx context.Context, patchee *Stude
 			patchee.Name = patcher.Name
 			continue
 		}
+		if f == prefix+"Status" {
+			patchee.Status = patcher.Status
+			continue
+		}
 	}
 	if err != nil {
 		return nil, err
@@ -6109,6 +6125,10 @@ func DefaultApplyFieldMaskCreditAccount(ctx context.Context, patchee *CreditAcco
 		}
 		if f == prefix+"NextPaymentDueDate" {
 			patchee.NextPaymentDueDate = patcher.NextPaymentDueDate
+			continue
+		}
+		if f == prefix+"Status" {
+			patchee.Status = patcher.Status
 			continue
 		}
 	}
@@ -6579,6 +6599,10 @@ func DefaultApplyFieldMaskMortgageAccount(ctx context.Context, patchee *Mortgage
 			patchee.InterestRateType = patcher.InterestRateType
 			continue
 		}
+		if f == prefix+"Status" {
+			patchee.Status = patcher.Status
+			continue
+		}
 	}
 	if err != nil {
 		return nil, err
@@ -6983,6 +7007,10 @@ func DefaultApplyFieldMaskInvestmentAccount(ctx context.Context, patchee *Invest
 		}
 		if f == prefix+"Securities" {
 			patchee.Securities = patcher.Securities
+			continue
+		}
+		if f == prefix+"Status" {
+			patchee.Status = patcher.Status
 			continue
 		}
 	}

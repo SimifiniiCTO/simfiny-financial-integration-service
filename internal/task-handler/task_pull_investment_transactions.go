@@ -6,6 +6,7 @@ import (
 	"time"
 
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
+	"go.uber.org/zap"
 
 	"github.com/SimifiniiCTO/asynq"
 	"github.com/pkg/errors"
@@ -78,14 +79,14 @@ func (th *TaskHandler) RunPullInvestmentTransactionsTask(ctx context.Context, t 
 	// save deleted transactions
 	// save updated transactions
 	// save new transactions
-	if err := th.queryInvestmentTransactions(ctx, accessToken, userId, link, accountIds); err != nil {
+	if err := th.queryAndUpdateInvestmentTransactions(ctx, accessToken, userId, link, accountIds); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func (th *TaskHandler) queryInvestmentTransactions(ctx context.Context, accessToken string, userId uint64, link *schema.Link, accountIds []string) error {
+func (th *TaskHandler) queryAndUpdateInvestmentTransactions(ctx context.Context, accessToken string, userId uint64, link *schema.Link, accountIds []string) error {
 	// get investment transactions
 	// get last 2 weeks worth of transactions
 	// TODO: track offset and number of transactions fetched in database
@@ -106,16 +107,19 @@ func (th *TaskHandler) queryInvestmentTransactions(ctx context.Context, accessTo
 	startTime := time.Now().AddDate(0, 0, -14).Format("2006-01-02")
 	endTime := time.Now().Format("2006-01-02")
 
+	th.logger.Info("getting investment transactions via plaid")
 	transactions, err := plaidClient.GetInvestmentTransactions(ctx, &accessToken, &userId, link, startTime, endTime, accountIds, 0, 0)
 	if err != nil {
 		return err
 	}
 
+	th.logger.Info("got investment transactions via plaid", zap.Int("count", len(transactions)))
 	currentTransactions, err := clickhouseClient.GetAllInvestmentTransactions(ctx, &userId)
 	if err != nil {
 		return err
 	}
 
+	th.logger.Info("got current investment transactions", zap.Int("count", len(currentTransactions)))
 	newTransactions := make([]*schema.InvestmentTransaction, 0, len(transactions))
 	for _, transaction := range transactions {
 		if !isTransactionInSlice(transaction, currentTransactions) {
@@ -130,12 +134,16 @@ func (th *TaskHandler) queryInvestmentTransactions(ctx context.Context, accessTo
 		}
 	}
 
+	th.logger.Info("got updated investment transactions", zap.Int("count", len(updatedTransactions)))
+
 	deletedTransactionIds := make([]string, 0, len(currentTransactions))
 	for _, transaction := range currentTransactions {
 		if !isTransactionInSlice(transaction, transactions) {
 			deletedTransactionIds = append(deletedTransactionIds, transaction.Id)
 		}
 	}
+
+	th.logger.Info("got deleted investment transactions", zap.Int("count", len(deletedTransactionIds)))
 
 	if len(deletedTransactionIds) > 0 {
 		if err := clickhouseClient.DeleteInvestmentTransactions(ctx, deletedTransactionIds...); err != nil {
