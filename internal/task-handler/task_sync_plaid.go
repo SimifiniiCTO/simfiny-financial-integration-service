@@ -108,8 +108,7 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, userId, linkId 
 		th.logger.Warn("no accounts found for user", zap.Uint64("user_id", userId))
 		return nil, nil
 	} else {
-		currentBankAccounts := link.GetBankAccounts()
-		if err := th.syncBankAccountsHelper(ctx, link, syncBankAccounts, currentBankAccounts); err != nil {
+		if err := th.syncBankAccountsHelper(ctx, link, syncBankAccounts); err != nil {
 			return nil, err
 		}
 
@@ -125,10 +124,8 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, userId, linkId 
 				Id:              "",
 			}
 
-			th.logger.Info("adding account balance", zap.Any("accountBalance", accountBalance))
 			accountBalances = append(accountBalances, accountBalance)
 		}
-
 	}
 
 	plaidAccountIds := make([]string, 0, len(syncBankAccounts))
@@ -144,31 +141,25 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, userId, linkId 
 	// 	th.logger.Error("failed to sync recurring transactions", zap.Error(err))
 	// }
 
-	// get the liability accounts
-	// TODO: need to figure out wether to update the existing investment account or add a new one
-	investmentAccounts, err := plaidClient.GetInvestmentAccount(ctx, userId, accessToken)
-	if err == nil {
-		if len(investmentAccounts) > 0 {
-			th.logger.Info("found investment accounts", zap.Int("count", len(investmentAccounts)))
-			if err := th.processAndStoreInvestmentAccount(ctx, link, investmentAccounts); err != nil {
-				return nil, err
-			}
-		}
-	} else {
-		th.logger.Error("failed to get investment accounts", zap.Error(err))
+	// here we pull all investment accounts if authorized against the provided accesstoken
+	// get the investment account ids
+	newlySyncedInvestmentAccounts, err := th.syncInvestmentAccountsHelper(ctx, userId, accessToken, link)
+	if err != nil {
+		th.logger.Error("failed to sync investment accounts .. possibily because no investment account is tied to the following lin", zap.Error(err))
 	}
 
-	// get the investment account ids
-	investmentAccountIds := make([]string, 0, len(link.InvestmentAccounts))
-	for _, investmentAccount := range link.InvestmentAccounts {
-		investmentAccountIds = append(investmentAccountIds, investmentAccount.PlaidAccountId)
-	}
-
-	// get the investment account ids
-	if len(investmentAccountIds) > 0 {
-		if err := th.queryInvestmentTransactions(ctx, accessToken, userId, link, investmentAccountIds); err != nil {
-			th.logger.Error("failed to get investment account transactions", zap.Error(err))
+	// add to the balance history
+	for _, account := range newlySyncedInvestmentAccounts {
+		accountBalance := &apiv1.AccountBalanceHistory{
+			AccountId: account.PlaidAccountId,
+			Balance:   float64(account.Balance),
+			UserId:    userId,
+			Sign:      1,
+			Id:        "",
+			Time:      timestamppb.Now(),
 		}
+
+		accountBalances = append(accountBalances, accountBalance)
 	}
 
 	// link contains liability accounts hence sync them
@@ -181,8 +172,7 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, userId, linkId 
 	} else {
 		if len(creditAccountsSet.CrediCardAccounts) > 0 {
 			syncedCreditAccounts := creditAccountsSet.CrediCardAccounts
-			currentCreditAccounts := link.GetCreditAccounts()
-			if err := th.syncCreditAccountsHelper(ctx, link, syncedCreditAccounts, currentCreditAccounts); err != nil {
+			if err := th.syncCreditAccountsHelper(ctx, link, syncedCreditAccounts); err != nil {
 				return nil, err
 			}
 
@@ -202,8 +192,7 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, userId, linkId 
 
 		if len(creditAccountsSet.MortgageLoanAccts) > 0 {
 			syncedMortgageLoanAccounts := creditAccountsSet.MortgageLoanAccts
-			currentMortgageLoanAccounts := link.GetMortgageAccounts()
-			if err := th.syncMortgageAccountsHelper(ctx, link, syncedMortgageLoanAccounts, currentMortgageLoanAccounts); err != nil {
+			if err := th.syncMortgageAccountsHelper(ctx, link, syncedMortgageLoanAccounts); err != nil {
 				return nil, err
 			}
 
@@ -223,8 +212,7 @@ func (th *TaskHandler) processSyncOperation(ctx context.Context, userId, linkId 
 
 		if len(creditAccountsSet.StudentLoanAccts) > 0 {
 			syncedStudentLoanAccounts := creditAccountsSet.StudentLoanAccts
-			currentStudentLoanAccounts := link.GetStudentLoanAccounts()
-			if err := th.syncStudentLoanAccountsHelper(ctx, link, syncedStudentLoanAccounts, currentStudentLoanAccounts); err != nil {
+			if err := th.syncStudentLoanAccountsHelper(ctx, link, syncedStudentLoanAccounts); err != nil {
 				return nil, err
 			}
 

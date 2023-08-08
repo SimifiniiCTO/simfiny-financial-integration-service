@@ -39,6 +39,15 @@ func (th *TaskHandler) RunSyncAllPlatformConnectedPlaidAccounts(ctx context.Cont
 		return err
 	}
 
+	// ensure operation finished in time
+	if err := th.ExecuteBatchSync(ctx, payload.String()); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (th *TaskHandler) ExecuteBatchSync(ctx context.Context, trigger *string) error {
 	// query the database for all connected accounts
 	profiles, err := th.postgresDb.GetAllUserProfiles(ctx)
 	if err != nil {
@@ -50,8 +59,6 @@ func (th *TaskHandler) RunSyncAllPlatformConnectedPlaidAccounts(ctx context.Cont
 			// TODO: might need to be more intelligent about how we perform this as it will take a long time
 			// Just monitor this as much as possible
 			if link.PlaidLink != nil {
-				trigger := payload.String()
-
 				// decrypt the access token
 				accessToken, err := encryptdecrypt.DecryptUserAccessToken(ctx, link.Token, th.postgresDb.Kms, th.logger)
 				if err != nil {
@@ -68,20 +75,7 @@ func (th *TaskHandler) RunSyncAllPlatformConnectedPlaidAccounts(ctx context.Cont
 
 				// log a warning if no accounts were found
 				if len(accts) == 0 {
-					th.logger.Warn("no accounts found for user", zap.Uint64("user_id", payload.UserId))
-				}
-
-				if len(link.InvestmentAccounts) > 0 {
-					// get all the account ids
-					accountIds := make([]string, 0, len(link.InvestmentAccounts))
-					for _, investmentAccount := range link.InvestmentAccounts {
-						accountIds = append(accountIds, investmentAccount.PlaidAccountId)
-					}
-
-					if err := th.queryInvestmentTransactions(ctx, *accessToken, profile.UserId, link, accountIds); err != nil {
-						th.logger.Error("error syncing investment transaction", zap.Error(err))
-					}
-
+					th.logger.Warn("no accounts found for user with the following linked account", zap.Uint64("link_id", link.GetId()))
 				}
 			}
 		}

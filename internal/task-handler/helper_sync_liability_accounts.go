@@ -11,13 +11,14 @@ import (
 // It takes in two slices of credit accounts, one that has been synced and one that is currently
 // in the database. It then compares the two slices and updates the database accordingly.
 // It returns an error if there is an error.
-func (t *TaskHandler) syncCreditAccountsHelper(ctx context.Context, link *apiv1.Link, syncedCreditAccounts, currentCreditAccounts []*apiv1.CreditAccount) error {
+func (t *TaskHandler) syncCreditAccountsHelper(ctx context.Context, link *apiv1.Link, syncedCreditAccounts []*apiv1.CreditAccount) error {
 	// check the size of the synced credit accounts
 	// and return if no new synced accounts are available
 	if len(syncedCreditAccounts) == 0 {
 		return nil
 	}
 
+	currentCreditAccounts := link.GetCreditAccounts()
 	// log the current and synced accounts
 	t.logger.Info("syncing liability accounts", zap.Any("syncedCreditAccounts", syncedCreditAccounts), zap.Any("currentCreditAccounts", currentCreditAccounts))
 
@@ -50,7 +51,7 @@ func (t *TaskHandler) syncCreditAccountsHelper(ctx context.Context, link *apiv1.
 
 		// if the synced credit account is not found in the current credit accounts set, then we know it is a new account that must be added
 		// to the database
-		if _, ok := currentCreditAccountsMap[syncedCreditAccount.PlaidAccountId]; !ok {
+		if storedCreditAccount, ok := currentCreditAccountsMap[syncedCreditAccount.PlaidAccountId]; !ok {
 			record, err := syncedCreditAccount.ToORM(ctx)
 			if err != nil {
 				return err
@@ -60,8 +61,17 @@ func (t *TaskHandler) syncCreditAccountsHelper(ctx context.Context, link *apiv1.
 			accountsToBeAdded = append(accountsToBeAdded, &record)
 			continue
 		} else {
+
+			id := storedCreditAccount.Id
+			UserId := storedCreditAccount.UserId
+
+			// this is the account we update
+			storedCreditAccount = syncedCreditAccount
+			storedCreditAccount.Id = id
+			storedCreditAccount.UserId = UserId
+
 			// if the synced credit account is found in the current credit accounts set, then we know it is an existing account that must be updated
-			record, err := syncedCreditAccount.ToORM(ctx)
+			record, err := storedCreditAccount.ToORM(ctx)
 			if err != nil {
 				return err
 			}
@@ -100,12 +110,14 @@ func (t *TaskHandler) syncCreditAccountsHelper(ctx context.Context, link *apiv1.
 
 // syncMortgageAccountsHelper is a helper function that is used to sync mortgage liability accounts.
 // It takes in two slices of credit accounts, one that has been synced and one that is currently
-func (t *TaskHandler) syncMortgageAccountsHelper(ctx context.Context, link *apiv1.Link, syncedMortgageAccounts, currentMortgageAccounts []*apiv1.MortgageAccount) error {
+func (t *TaskHandler) syncMortgageAccountsHelper(ctx context.Context, link *apiv1.Link, syncedMortgageAccounts []*apiv1.MortgageAccount) error {
 	// check the size of the synced morgage accounts
 	// and return if no new synced accounts are available
 	if len(syncedMortgageAccounts) == 0 {
 		return nil
 	}
+
+	currentMortgageAccounts := link.GetMortgageAccounts()
 
 	// log the current and synced accounts
 	t.logger.Info("syncing mortgage liability accounts", zap.Any("syncedMortgageAccounts", syncedMortgageAccounts), zap.Any("currentMortgageAccounts", currentMortgageAccounts))
@@ -189,13 +201,14 @@ func (t *TaskHandler) syncMortgageAccountsHelper(ctx context.Context, link *apiv
 
 // syncStudentLoanAccountsHelper is a helper function that is used to sync student loan liability accounts.
 // It takes in two slices of student loan accounts, one that has been synced and one that is currently
-func (t *TaskHandler) syncStudentLoanAccountsHelper(ctx context.Context, link *apiv1.Link, syncedStudentLoanAccounts, currentStudentLoanAccounts []*apiv1.StudentLoanAccount) error {
+func (t *TaskHandler) syncStudentLoanAccountsHelper(ctx context.Context, link *apiv1.Link, syncedStudentLoanAccounts []*apiv1.StudentLoanAccount) error {
 	// check the size of the synced morgage accounts
 	// and return if no new synced accounts are available
 	if len(syncedStudentLoanAccounts) == 0 {
 		return nil
 	}
 
+	currentStudentLoanAccounts := link.GetStudentLoanAccounts()
 	// log the current and synced accounts
 	t.logger.Info("syncing student loan liability accounts", zap.Any("syncedStudentLoanAccounts", syncedStudentLoanAccounts), zap.Any("currentStudentLoanAccounts", currentStudentLoanAccounts))
 
