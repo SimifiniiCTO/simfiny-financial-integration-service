@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 	"github.com/stripe/stripe-go/v74"
@@ -226,10 +227,64 @@ func (s *Server) handleStripeWebhook(w http.ResponseWriter, req *http.Request) {
 			return
 		}
 	case "checkout.session.completed":
-	// Sent when a customer clicks the Pay or Subscribe button in Checkout, informing you of a new purchase.
-	// Payment is successful and the subscription is created.
-	// You should provision the subscription and save the customer ID to your database.
-	// handleCheckoutSessionCompleted(payload)
+		// the expectation upon receipt of this webhook is that the customer's email and customer id
+		// will be present in the data object returned
+		// ref: https://stripe.com/docs/api/events/types#event_types-checkout.session.completed
+		var checkoutSession stripe.CheckoutSession
+		err := json.Unmarshal(event.Data.Raw, &checkoutSession)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Error parsing webhook JSON: %v\n", err)
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
+		// extract the customer id from checkout session object as well as the customer email address
+		customerID := checkoutSession.Customer.ID
+		stripeNewSubscription := checkoutSession.Subscription
+		userProfile, err := s.conn.GetUserProfileByCustomerId(ctx, customerID)
+		if err != nil {
+			log.Println("Error retrieving user profile:", err)
+			w.WriteHeader(http.StatusNotFound)
+			return
+		}
+
+		// update the subscription object
+		isTrialing := false
+		if stripeNewSubscription.Status == "trialing" {
+			isTrialing = true
+		}
+
+		// Convert the int64 timestamp to a time.Time value
+		t := time.Unix(stripeNewSubscription.TrialEnd, 0)
+
+		// Format the time.Time value as a string
+		activeUntil := t.Format("2006-01-02 15:04:05")
+
+		// update current subscription
+		currentSubscription := userProfile.StripeSubscriptions
+		if currentSubscription == nil {
+			currentSubscription = &schema.StripeSubscription{
+				StripeSubscriptionId:          stripeNewSubscription.ID,
+				StripeSubscriptionStatus:      schema.StripeSubscriptionStatus_STRIPE_SUBSCRIPTION_STATUS_ACTIVE,
+				StripeSubscriptionActiveUntil: activeUntil,
+				StripeWebhookLatestTimestamp:  time.Now().UTC().Format(time.RFC3339),
+				IsTrialing:                    isTrialing,
+			}
+		} else {
+			currentSubscription.StripeSubscriptionId = stripeNewSubscription.ID
+			currentSubscription.StripeSubscriptionStatus = schema.StripeSubscriptionStatus_STRIPE_SUBSCRIPTION_STATUS_ACTIVE
+			currentSubscription.StripeSubscriptionActiveUntil = activeUntil
+			currentSubscription.StripeWebhookLatestTimestamp = time.Now().UTC().Format(time.RFC3339)
+			currentSubscription.IsTrialing = isTrialing
+		}
+
+		// update the user profile
+		userProfile.StripeSubscriptions = currentSubscription
+		if err := s.conn.UpdateUserProfile(ctx, userProfile); err != nil {
+			log.Println("Error updating user profile:", err)
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
 	default:
 		fmt.Fprintf(os.Stderr, "Unhandled event type: %s\n", event.Type)
 	}

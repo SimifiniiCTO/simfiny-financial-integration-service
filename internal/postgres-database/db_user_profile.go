@@ -248,3 +248,45 @@ func (db *Db) DeleteUserProfileByUserID(ctx context.Context, userID uint64) erro
 
 	return nil
 }
+
+// GetUserProfileByCustomerId obtains a user profile by user_id if it exists within the database
+func (db *Db) GetUserProfileByCustomerId(ctx context.Context, stripeCustomerId string) (*schema.UserProfile, error) {
+	// instrument operation
+	if span := db.startDatastoreSpan(ctx, "dbtxn-get-profile"); span != nil {
+		defer span.End()
+	}
+
+	// validate the request
+	if stripeCustomerId == "" {
+		return nil, fmt.Errorf("invalid stripe customer id. stripe customer id cannot be empty")
+	}
+
+	// preload all dependencies
+	// meaning for all connected accounts, obtain all accounts and subaccounts
+	u := db.QueryOperator.UserProfileORM
+	record, err := u.
+		WithContext(ctx).
+		Where(u.StripeCustomerId.Eq(stripeCustomerId)).
+		Preload(u.Link.BankAccounts.Pockets.Goals.Forecasts).
+		Preload(u.Link.BankAccounts.Pockets.Goals.Milestones.Budget).
+		Preload(u.Link.CreditAccounts.Aprs).
+		Preload(u.Link.MortgageAccounts).
+		Preload(u.Link.StudentLoanAccounts).
+		Preload(u.Link.InvestmentAccounts.Holdings).
+		Preload(u.Link.InvestmentAccounts.Securities).
+		Preload(u.Link.Token).
+		Preload(u.Link.PlaidLink).
+		Preload(u.StripeSubscriptions).
+		Preload(u.ActionableInsights).
+		First()
+	if err != nil {
+		return nil, err
+	}
+
+	profile, err := record.ToPB(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &profile, nil
+}

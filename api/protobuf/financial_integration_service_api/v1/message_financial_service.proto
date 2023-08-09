@@ -117,6 +117,7 @@ message UserProfile {
   // a user profile can have many links (connected institutions) of which finanical accounts are tied to (checking, savings, etc)
   repeated Link link = 6 [(gorm.field).has_many = {disable_association_autocreate: false disable_association_autoupdate: false preload: true}];
   repeated ActionableInsight actionable_insights = 7 [(gorm.field).has_many = {disable_association_autocreate: false disable_association_autoupdate: false preload: true}];
+  string email = 8;
 }
 
 // An actionable insight serves as a basic insight users 

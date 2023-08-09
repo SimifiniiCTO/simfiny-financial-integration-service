@@ -1287,6 +1287,9 @@
                         "$ref": "#/definitions/financial_integration_service_api.v1.ActionableInsight"
                     },
                     "type": "array"
+                },
+                "email": {
+                    "type": "string"
                 }
             },
             "additionalProperties": true,

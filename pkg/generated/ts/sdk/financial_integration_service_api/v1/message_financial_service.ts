@@ -481,6 +481,7 @@ export interface UserProfile {
   /** a user profile can have many links (connected institutions) of which finanical accounts are tied to (checking, savings, etc) */
   link: Link[];
   actionableInsights: ActionableInsight[];
+  email: string;
 }
 
 /**
@@ -1128,7 +1129,15 @@ export const StripeSubscription = {
 };
 
 function createBaseUserProfile(): UserProfile {
-  return { id: 0, userId: 0, stripeCustomerId: "", stripeSubscriptions: undefined, link: [], actionableInsights: [] };
+  return {
+    id: 0,
+    userId: 0,
+    stripeCustomerId: "",
+    stripeSubscriptions: undefined,
+    link: [],
+    actionableInsights: [],
+    email: "",
+  };
 }
 
 export const UserProfile = {
@@ -1150,6 +1159,9 @@ export const UserProfile = {
     }
     for (const v of message.actionableInsights) {
       ActionableInsight.encode(v!, writer.uint32(58).fork()).ldelim();
+    }
+    if (message.email !== "") {
+      writer.uint32(66).string(message.email);
     }
     return writer;
   },
@@ -1203,6 +1215,13 @@ export const UserProfile = {
 
           message.actionableInsights.push(ActionableInsight.decode(reader, reader.uint32()));
           continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.email = reader.string();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1224,6 +1243,7 @@ export const UserProfile = {
       actionableInsights: Array.isArray(object?.actionableInsights)
         ? object.actionableInsights.map((e: any) => ActionableInsight.fromJSON(e))
         : [],
+      email: isSet(object.email) ? String(object.email) : "",
     };
   },
 
@@ -1247,6 +1267,9 @@ export const UserProfile = {
     if (message.actionableInsights?.length) {
       obj.actionableInsights = message.actionableInsights.map((e) => ActionableInsight.toJSON(e));
     }
+    if (message.email !== "") {
+      obj.email = message.email;
+    }
     return obj;
   },
 
@@ -1263,6 +1286,7 @@ export const UserProfile = {
       : undefined;
     message.link = object.link?.map((e) => Link.fromPartial(e)) || [];
     message.actionableInsights = object.actionableInsights?.map((e) => ActionableInsight.fromPartial(e)) || [];
+    message.email = object.email ?? "";
     return message;
   },
 };

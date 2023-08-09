@@ -29,6 +29,7 @@ func newUserProfileORM(db *gorm.DB, opts ...gen.DOOption) userProfileORM {
 
 	tableName := _userProfileORM.userProfileORMDo.TableName()
 	_userProfileORM.ALL = field.NewAsterisk(tableName)
+	_userProfileORM.Email = field.NewString(tableName, "email")
 	_userProfileORM.Id = field.NewUint64(tableName, "id")
 	_userProfileORM.StripeCustomerId = field.NewString(tableName, "stripe_customer_id")
 	_userProfileORM.UserId = field.NewUint64(tableName, "user_id")
@@ -207,6 +208,7 @@ type userProfileORM struct {
 	userProfileORMDo
 
 	ALL                 field.Asterisk
+	Email               field.String
 	Id                  field.Uint64
 	StripeCustomerId    field.String
 	UserId              field.Uint64
@@ -231,6 +233,7 @@ func (u userProfileORM) As(alias string) *userProfileORM {
 
 func (u *userProfileORM) updateTableName(table string) *userProfileORM {
 	u.ALL = field.NewAsterisk(table)
+	u.Email = field.NewString(table, "email")
 	u.Id = field.NewUint64(table, "id")
 	u.StripeCustomerId = field.NewString(table, "stripe_customer_id")
 	u.UserId = field.NewUint64(table, "user_id")
@@ -250,7 +253,8 @@ func (u *userProfileORM) GetFieldByName(fieldName string) (field.OrderExpr, bool
 }
 
 func (u *userProfileORM) fillFieldMap() {
-	u.fieldMap = make(map[string]field.Expr, 6)
+	u.fieldMap = make(map[string]field.Expr, 7)
+	u.fieldMap["email"] = u.Email
 	u.fieldMap["id"] = u.Id
 	u.fieldMap["stripe_customer_id"] = u.StripeCustomerId
 	u.fieldMap["user_id"] = u.UserId

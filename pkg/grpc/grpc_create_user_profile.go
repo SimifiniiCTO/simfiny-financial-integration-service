@@ -43,6 +43,11 @@ func (s *Server) CreateUserProfile(ctx context.Context, req *proto.CreateUserPro
 
 	req.Profile.StripeCustomerId = customer.ID
 
+	// store email address
+	if req.Profile.Email == "" && req.Email != "" {
+		req.Profile.Email = req.Email
+	}
+
 	// save the user profile
 	res, err := s.conn.CreateUserProfile(ctx, req.Profile)
 	if err != nil {

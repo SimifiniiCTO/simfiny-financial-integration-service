@@ -97,6 +97,7 @@ type StripeSubscriptionWithAfterToPB interface {
 
 type UserProfileORM struct {
 	ActionableInsights  []*ActionableInsightORM `gorm:"foreignkey:UserProfileId;association_foreignkey:Id;preload:true"`
+	Email               string
 	Id                  uint64
 	Link                []*LinkORM `gorm:"foreignkey:UserProfileId;association_foreignkey:Id;preload:true"`
 	StripeCustomerId    string
@@ -151,6 +152,7 @@ func (m *UserProfile) ToORM(ctx context.Context) (UserProfileORM, error) {
 			to.ActionableInsights = append(to.ActionableInsights, nil)
 		}
 	}
+	to.Email = m.Email
 	if posthook, ok := interface{}(m).(UserProfileWithAfterToORM); ok {
 		err = posthook.AfterToORM(ctx, &to)
 	}
@@ -199,6 +201,7 @@ func (m *UserProfileORM) ToPB(ctx context.Context) (UserProfile, error) {
 			to.ActionableInsights = append(to.ActionableInsights, nil)
 		}
 	}
+	to.Email = m.Email
 	if posthook, ok := interface{}(m).(UserProfileWithAfterToPB); ok {
 		err = posthook.AfterToPB(ctx, &to)
 	}
@@ -3178,6 +3181,10 @@ func DefaultApplyFieldMaskUserProfile(ctx context.Context, patchee *UserProfile,
 		}
 		if f == prefix+"ActionableInsights" {
 			patchee.ActionableInsights = patcher.ActionableInsights
+			continue
+		}
+		if f == prefix+"Email" {
+			patchee.Email = patcher.Email
 			continue
 		}
 	}

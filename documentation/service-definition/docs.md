@@ -795,6 +795,7 @@ such as the id, user_id tied to the profile, and many more
 | stripe_subscriptions | [StripeSubscription](#financial_integration_service_api-v1-StripeSubscription) |  | the stripe subscriptions the user profile actively maintains |
 | link | [Link](#financial_integration_service_api-v1-Link) | repeated | a user profile can have many links (connected institutions) of which finanical accounts are tied to (checking, savings, etc) |
 | actionable_insights | [ActionableInsight](#financial_integration_service_api-v1-ActionableInsight) | repeated |  |
+| email | [string](#string) |  |  |
 
 
 

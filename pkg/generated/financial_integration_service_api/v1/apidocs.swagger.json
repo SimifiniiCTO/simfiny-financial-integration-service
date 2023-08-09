@@ -7446,6 +7446,9 @@
             "type": "object",
             "$ref": "#/definitions/ActionableInsight"
           }
+        },
+        "email": {
+          "type": "string"
         }
       },
       "title": "UserProfile stores high level user profile details\nsuch as the id, user_id tied to the profile, and many more"

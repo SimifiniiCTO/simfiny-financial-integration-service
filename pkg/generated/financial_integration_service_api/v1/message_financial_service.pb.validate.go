@@ -283,6 +283,8 @@ func (m *UserProfile) validate(all bool) error {
 
 	}
 
+	// no validation rules for Email
+
 	if len(errors) > 0 {
 		return UserProfileMultiError(errors)
 	}
