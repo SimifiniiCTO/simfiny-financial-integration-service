@@ -11,8 +11,8 @@ import (
 	"time"
 
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
+	"github.com/pkg/errors"
 	"github.com/stripe/stripe-go/v74"
-	"github.com/stripe/stripe-go/v74/subscription"
 	"github.com/stripe/stripe-go/v74/webhook"
 	"go.uber.org/zap"
 )
@@ -84,29 +84,14 @@ func (s *Server) handleStripeWebhook(w http.ResponseWriter, req *http.Request) {
 		// be incomplete if customer authentication is required to complete the payment
 		// or if you set payment_behavior to default_incomplete
 		// ref: https://stripe.com/docs/billing/subscriptions/overview#subscription-payment-behavior
-		subscription, storedSubscription, shouldReturn := s.processSubscriptionEventAndQueryStoreSubscription(event, w, ctx)
-		if shouldReturn {
-			return
-		}
-
-		// update the subscription status in the database
-		storedSubscription.StripeSubscriptionStatus = schema.StripeSubscriptionStatus_STRIPE_SUBSCRIPTION_STATUS_CREATED
-		if err := s.conn.UpdateSubscription(ctx, &subscription.ID, storedSubscription); err != nil {
-			log.Println("Error updating subscription:", err)
+		if err := s.handleSubscription(event, schema.StripeSubscriptionStatus_STRIPE_SUBSCRIPTION_STATUS_ACTIVE); err != nil {
+			log.Println("Error handling deleted subscription:", err)
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
 	case "customer.subscription.deleted":
-		// Sent when the subscription is deleted.
-		subscription, storedSubscription, shouldReturn := s.processSubscriptionEventAndQueryStoreSubscription(event, w, ctx)
-		if shouldReturn {
-			return
-		}
-
-		// update the subscription status in the database
-		storedSubscription.StripeSubscriptionStatus = schema.StripeSubscriptionStatus_STRIPE_SUBSCRIPTION_STATUS_CANCELED
-		if err := s.conn.UpdateSubscription(ctx, &subscription.ID, storedSubscription); err != nil {
-			log.Println("Error updating subscription:", err)
+		if err := s.handleSubscription(event, schema.StripeSubscriptionStatus_STRIPE_SUBSCRIPTION_STATUS_CANCELED); err != nil {
+			log.Println("Error handling deleted subscription:", err)
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
@@ -122,33 +107,18 @@ func (s *Server) handleStripeWebhook(w http.ResponseWriter, req *http.Request) {
 
 		// TODO: Perform the below operations
 		// 2. We send an email to the user informing them that their subscription has been paused
-		subscription, storedSubscription, shouldReturn := s.processSubscriptionEventAndQueryStoreSubscription(event, w, ctx)
-		if shouldReturn {
-			return
-		}
-
-		// update the subscription status in the database
-		storedSubscription.StripeSubscriptionStatus = schema.StripeSubscriptionStatus_STRIPE_SUBSCRIPTION_STATUS_PAUSED
-		if err := s.conn.UpdateSubscription(ctx, &subscription.ID, storedSubscription); err != nil {
-			log.Println("Error updating subscription:", err)
+		if err := s.handleSubscription(event, schema.StripeSubscriptionStatus_STRIPE_SUBSCRIPTION_STATUS_PAUSED); err != nil {
+			log.Println("Error handling deleted subscription:", err)
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
-
 	case "customer.subscription.resumed":
 		// Sent when a subscription’s status changes to active after it has been paused.
 		// ref: https://stripe.com/docs/billing/subscriptions/pause#unpausing
 		// TODO: Perform the below operations
 		// 2. We send an email to the user informing them that their subscription has been resumed
-		subscription, storedSubscription, shouldReturn := s.processSubscriptionEventAndQueryStoreSubscription(event, w, ctx)
-		if shouldReturn {
-			return
-		}
-
-		// update the subscription status in the database
-		storedSubscription.StripeSubscriptionStatus = schema.StripeSubscriptionStatus_STRIPE_SUBSCRIPTION_STATUS_ACTIVE
-		if err := s.conn.UpdateSubscription(ctx, &subscription.ID, storedSubscription); err != nil {
-			log.Println("Error updating subscription:", err)
+		if err := s.handleSubscription(event, schema.StripeSubscriptionStatus_STRIPE_SUBSCRIPTION_STATUS_ACTIVE); err != nil {
+			log.Println("Error handling deleted subscription:", err)
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
@@ -166,133 +136,13 @@ func (s *Server) handleStripeWebhook(w http.ResponseWriter, req *http.Request) {
 		// Sent when the subscription is successfully started, after the payment is confirmed. Also sent whenever a
 		// subscription is changed. For example, adding a coupon, applying a discount, adding an invoice item,
 		// and changing plans all trigger this event.
-	case "invoice.paid": // Sent each billing interval when a payment succeeds.
-		// Continue to provision the subscription as payments continue to be made.
-		// Store the status in your database and check when a user accesses your service.
-		// This approach helps you avoid hitting rate limits.
-		// Sent when the invoice is successfully paid. You can provision access to your product when you receive this event
-		// and the subscription status is active.
-		// TODO: just update the subscription status in the database
-		subscription, storedSubscription, shouldReturn := s.processSubscriptionEventAndQueryStoreSubscription(event, w, ctx)
-		if shouldReturn {
-			return
-		}
-
-		// update the subscription status in the database
-		storedSubscription.StripeSubscriptionStatus = schema.StripeSubscriptionStatus_STRIPE_SUBSCRIPTION_STATUS_ACTIVE
-		if err := s.conn.UpdateSubscription(ctx, &subscription.ID, storedSubscription); err != nil {
-			log.Println("Error updating subscription:", err)
-			w.WriteHeader(http.StatusBadRequest)
-			return
-		}
-	case "invoice.payment_failed": // Sent each billing interval if there is an issue with your customer’s payment method.
-		// The payment failed or the customer does not have a valid payment method.
-		// The subscription becomes past_due. Notify your customer and send them to the
-		// customer portal to update their payment information.
-		// A payment for an invoice failed. The PaymentIntent status changes to requires_action. The status of the subscription
-		// continues to be incomplete only for the subscription’s first invoice. If a payment fails, there are several possible actions to take:
-		// Notify the customer. Read about how you can configure subscription settings to enable Smart Retries and other revenue recovery features.
-		// If you’re using PaymentIntents, collect new payment information and confirm the PaymentIntent.
-		// Update the default payment method on the subscription.
-		subscription, storedSubscription, shouldReturn := s.processSubscriptionEventAndQueryStoreSubscription(event, w, ctx)
-		if shouldReturn {
-			return
-		}
-
-		// update the subscription status in the database
-		storedSubscription.StripeSubscriptionStatus = schema.StripeSubscriptionStatus_STRIPE_SUBSCRIPTION_STATUS_INCOMPLETE
-		if err := s.conn.UpdateSubscription(ctx, &subscription.ID, storedSubscription); err != nil {
-			log.Println("Error updating subscription:", err)
-			w.WriteHeader(http.StatusBadRequest)
-			return
-		}
-	case "invoice.upcoming":
-		// Sent a few days prior to the renewal of the subscription. The number of days is based on the number set for Upcoming renewal
-		// events in the Dashboard. You can still add extra invoice items, if needed.
-		// TODO: send an email to the user informing them that their subscription is about to be renewed
-	case "payment_intent.succeeded":
-		var paymentIntent stripe.PaymentIntent
-		err := json.Unmarshal(event.Data.Raw, &paymentIntent)
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "Error parsing webhook JSON: %v\n", err)
-			w.WriteHeader(http.StatusBadRequest)
-			return
-		}
-		log.Printf("Successful payment for %d.", paymentIntent.Amount)
-	case "payment_method.attached":
-		var paymentMethod stripe.PaymentMethod
-		err := json.Unmarshal(event.Data.Raw, &paymentMethod)
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "Error parsing webhook JSON: %v\n", err)
-			w.WriteHeader(http.StatusBadRequest)
-			return
-		}
+		// Nothing to do here for now
 	case "checkout.session.completed":
 		// the expectation upon receipt of this webhook is that the customer's email and customer id
 		// will be present in the data object returned
 		// ref: https://stripe.com/docs/api/events/types#event_types-checkout.session.completed
-		var checkoutSession stripe.CheckoutSession
-		s.logger.Info("checkout session completed", zap.Any("checkoutSession", checkoutSession))
-		err := json.Unmarshal(event.Data.Raw, &checkoutSession)
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "Error parsing webhook JSON: %v\n", err)
-			w.WriteHeader(http.StatusBadRequest)
-			return
-		}
-
-		if checkoutSession.Customer == nil || checkoutSession.Subscription == nil {
-			log.Println("Error retrieving customer or subscription from checkout session")
-			w.WriteHeader(http.StatusBadRequest)
-			return
-		}
-
-		// extract the customer id from checkout session object as well as the customer email address
-		customerID := checkoutSession.Customer.ID
-		customerEmail := checkoutSession.Customer.Email
-		stripeNewSubscription := checkoutSession.Subscription
-		userProfile, err := s.conn.GetUserProfileByEmail(ctx, customerEmail)
-		if err != nil {
-			log.Println("Error retrieving user profile:", err)
-			w.WriteHeader(http.StatusNotFound)
-			return
-		}
-
-		// update the subscription object
-		isTrialing := false
-		if stripeNewSubscription.Status == "trialing" {
-			isTrialing = true
-		}
-
-		// Convert the int64 timestamp to a time.Time value
-		t := time.Unix(stripeNewSubscription.TrialEnd, 0)
-
-		// Format the time.Time value as a string
-		activeUntil := t.Format("2006-01-02 15:04:05")
-
-		// update current subscription
-		currentSubscription := userProfile.StripeSubscriptions
-		if currentSubscription == nil {
-			currentSubscription = &schema.StripeSubscription{
-				StripeSubscriptionId:          stripeNewSubscription.ID,
-				StripeSubscriptionStatus:      schema.StripeSubscriptionStatus_STRIPE_SUBSCRIPTION_STATUS_ACTIVE,
-				StripeSubscriptionActiveUntil: activeUntil,
-				StripeWebhookLatestTimestamp:  time.Now().UTC().Format(time.RFC3339),
-				IsTrialing:                    isTrialing,
-			}
-		} else {
-			currentSubscription.StripeSubscriptionId = stripeNewSubscription.ID
-			currentSubscription.StripeSubscriptionStatus = schema.StripeSubscriptionStatus_STRIPE_SUBSCRIPTION_STATUS_ACTIVE
-			currentSubscription.StripeSubscriptionActiveUntil = activeUntil
-			currentSubscription.StripeWebhookLatestTimestamp = time.Now().UTC().Format(time.RFC3339)
-			currentSubscription.IsTrialing = isTrialing
-		}
-
-		// update the user profile
-		userProfile.StripeSubscriptions = currentSubscription
-		// associate the customer ID to the user profile
-		userProfile.StripeCustomerId = customerID
-		if err := s.conn.UpdateUserProfile(ctx, userProfile); err != nil {
-			log.Println("Error updating user profile:", err)
+		if err := s.handleCheckoutSessionCompleted(ctx, event); err != nil {
+			log.Println("Error handling checkout session completed:", err)
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
@@ -303,73 +153,115 @@ func (s *Server) handleStripeWebhook(w http.ResponseWriter, req *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }
 
-// The processSubscriptionEventAndQueryStoreSubscription function  processes a Stripe subscription event and queries
-// the database to retrieve the corresponding stored subscription. It takes in the Stripe event, a HTTP
-// response writer, and a context as parameters. It first unmarshals the event data into a Stripe
-// subscription object, and then queries the database using the subscription ID to retrieve the stored
-// subscription. If there is an error in either of these steps, it returns an error response. The
-// function returns the Stripe subscription object, the stored subscription object, and a boolean
-// indicating whether there was an error.
-func (s *Server) processSubscriptionEventAndQueryStoreSubscription(event stripe.Event, w http.ResponseWriter, ctx context.Context) (stripe.Subscription, *schema.StripeSubscription, bool) {
-	var subscription stripe.Subscription
-	err := json.Unmarshal(event.Data.Raw, &subscription)
+func (s *Server) handleCheckoutSessionCompleted(ctx context.Context, event stripe.Event) error {
+	checkoutSession, err := s.extractCheckoutSessionFromEvent(event)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error parsing webhook JSON: %v\n", err)
-		w.WriteHeader(http.StatusBadRequest)
-		return stripe.Subscription{}, nil, true
+		return err
 	}
 
+	customerID := checkoutSession.Customer.ID
+	customerEmail := checkoutSession.Customer.Email
+	stripeNewSubscription := checkoutSession.Subscription
+	if customerEmail == "" {
+		log.Println("Error retrieving customer email from checkout session")
+		return errors.New("error retrieving customer email from checkout session")
+	}
+
+	userProfile, err := s.conn.GetUserProfileByEmail(ctx, customerEmail)
+	if err != nil {
+		log.Println("Error retrieving user profile:", err)
+		return nil
+	}
+
+	isTrialing := false
+	if stripeNewSubscription.Status == "trialing" {
+		isTrialing = true
+	}
+
+	t := time.Unix(stripeNewSubscription.TrialEnd, 0)
+
+	activeUntil := t.Format("2006-01-02 15:04:05")
+
+	currentSubscription := userProfile.StripeSubscriptions
+	if currentSubscription == nil {
+		currentSubscription = &schema.StripeSubscription{
+			StripeSubscriptionId:          stripeNewSubscription.ID,
+			StripeSubscriptionStatus:      schema.StripeSubscriptionStatus_STRIPE_SUBSCRIPTION_STATUS_ACTIVE,
+			StripeSubscriptionActiveUntil: activeUntil,
+			StripeWebhookLatestTimestamp:  time.Now().UTC().Format(time.RFC3339),
+			IsTrialing:                    isTrialing,
+		}
+	} else {
+		currentSubscription.StripeSubscriptionId = stripeNewSubscription.ID
+		currentSubscription.StripeSubscriptionStatus = schema.StripeSubscriptionStatus_STRIPE_SUBSCRIPTION_STATUS_ACTIVE
+		currentSubscription.StripeSubscriptionActiveUntil = activeUntil
+		currentSubscription.StripeWebhookLatestTimestamp = time.Now().UTC().Format(time.RFC3339)
+		currentSubscription.IsTrialing = isTrialing
+	}
+
+	userProfile.StripeSubscriptions = currentSubscription
+
+	userProfile.StripeCustomerId = customerID
+	if err := s.conn.UpdateUserProfile(ctx, userProfile); err != nil {
+		log.Println("Error updating user profile:", err)
+		return err
+	}
+
+	return nil
+}
+
+func (s *Server) extractCheckoutSessionFromEvent(event stripe.Event) (*stripe.CheckoutSession, error) {
+	var checkoutSession stripe.CheckoutSession
+	s.logger.Info("checkout session completed", zap.Any("checkoutSession", checkoutSession))
+	err := json.Unmarshal(event.Data.Raw, &checkoutSession)
+	if err != nil {
+		return nil, err
+	}
+
+	if checkoutSession.Customer == nil || checkoutSession.Subscription == nil {
+		log.Println("Error retrieving customer or subscription from checkout session")
+		return nil, err
+	}
+
+	return &checkoutSession, nil
+}
+
+// process delete subscription request
+func (s *Server) handleSubscription(event stripe.Event, status schema.StripeSubscriptionStatus) error {
+	subscription, err := s.getSubscriptionFromEvent(event)
+	if err != nil {
+		return err
+	}
+
+	if subscription.ID == "" {
+		log.Println("Error retrieving subscription id from event")
+		return errors.New("error retrieving subscription id from event")
+	}
+
+	// query the backend for the subscription by its id
+	// if the subscription is found, update the subscription status to canceled
+	// if the subscription is not found, return an error
+	ctx := context.Background()
 	storedSubscription, err := s.conn.GetSubscriptionBySubscriptionId(ctx, &subscription.ID)
 	if err != nil {
 		log.Println("Error retrieving subscription:", err)
-		w.WriteHeader(http.StatusBadRequest)
-		return stripe.Subscription{}, nil, true
+		return errors.New("error retrieving subscription")
 	}
-	return subscription, storedSubscription, false
+
+	storedSubscription.StripeSubscriptionStatus = status
+	if err := s.conn.UpdateSubscription(ctx, &subscription.ID, storedSubscription); err != nil {
+		log.Println("Error updating subscription:", err)
+		return errors.New("error updating subscription")
+	}
+
+	return nil
 }
 
-// handleSubscriptionCreated handles a Stripe event for a new subscription creation and retrieves the latest
-// subscription for a customer.
-func handleSubscriptionCreated(payload *stripe.Event) {
-	var data SubscriptionData
-	err := json.Unmarshal(payload.Data.Raw, &data)
+func (s *Server) getSubscriptionFromEvent(event stripe.Event) (*stripe.Subscription, error) {
+	var subscription stripe.Subscription
+	err := json.Unmarshal(event.Data.Raw, &subscription)
 	if err != nil {
-		log.Println("Error unmarshaling subscription data:", err)
-		return
+		return nil, err
 	}
-
-	customerID := data.CustomerID
-	subscription, err := retrieveLatestSubscription(customerID)
-	if err != nil {
-		log.Println("Error retrieving subscription:", err)
-		return
-	}
-
-	// Handle the new subscription
-	fmt.Println("New subscription created for customer:", customerID)
-	fmt.Println("Subscription ID:", subscription.ID)
-}
-
-// retrieveLatestSubscription retrieves the latest active subscription for a given customer ID using the Stripe API
-// in Go.
-func retrieveLatestSubscription(customerID string) (*stripe.Subscription, error) {
-	activeSubscription := string(stripe.SubscriptionStatusActive)
-	subscriptionListParams := &stripe.SubscriptionListParams{
-		Customer: &customerID,
-		Status:   &activeSubscription,
-	}
-
-	iter := subscription.List(subscriptionListParams)
-	for iter.Next() {
-		subscription := iter.Subscription()
-		if subscription.Status == "active" {
-			return subscription, nil
-		}
-	}
-
-	if iter.Err() != nil {
-		return nil, iter.Err()
-	}
-
-	return nil, fmt.Errorf("no active subscriptions found for customer: %s", customerID)
+	return &subscription, nil
 }

@@ -32,16 +32,6 @@ func (s *Server) CreateUserProfile(ctx context.Context, req *proto.CreateUserPro
 		defer span.End()
 	}
 
-	// // TODO: create the account as a distributed transaction with stripe
-	// customer, err := s.stripeClient.Customers.New(&stripe.CustomerParams{
-	// 	Email: &req.Email,
-	// })
-	// if err != nil {
-	// 	return nil, status.Error(codes.Internal, err.Error())
-	// }
-
-	// req.Profile.StripeCustomerId = customer.ID
-
 	// store email address
 	if req.Profile.Email == "" && req.Email != "" {
 		req.Profile.Email = req.Email
