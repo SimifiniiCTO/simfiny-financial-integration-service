@@ -249,15 +249,15 @@ func (db *Db) DeleteUserProfileByUserID(ctx context.Context, userID uint64) erro
 	return nil
 }
 
-// GetUserProfileByCustomerId obtains a user profile by user_id if it exists within the database
-func (db *Db) GetUserProfileByCustomerId(ctx context.Context, stripeCustomerId string) (*schema.UserProfile, error) {
+// GetUserProfileByEmail obtains a user profile by user_id if it exists within the database
+func (db *Db) GetUserProfileByEmail(ctx context.Context, email string) (*schema.UserProfile, error) {
 	// instrument operation
 	if span := db.startDatastoreSpan(ctx, "dbtxn-get-profile"); span != nil {
 		defer span.End()
 	}
 
 	// validate the request
-	if stripeCustomerId == "" {
+	if email == "" {
 		return nil, fmt.Errorf("invalid stripe customer id. stripe customer id cannot be empty")
 	}
 
@@ -266,7 +266,7 @@ func (db *Db) GetUserProfileByCustomerId(ctx context.Context, stripeCustomerId s
 	u := db.QueryOperator.UserProfileORM
 	record, err := u.
 		WithContext(ctx).
-		Where(u.StripeCustomerId.Eq(stripeCustomerId)).
+		Where(u.Email.Eq(email)).
 		Preload(u.Link.BankAccounts.Pockets.Goals.Forecasts).
 		Preload(u.Link.BankAccounts.Pockets.Goals.Milestones.Budget).
 		Preload(u.Link.CreditAccounts.Aprs).

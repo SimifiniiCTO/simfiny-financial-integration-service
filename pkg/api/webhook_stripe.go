@@ -14,6 +14,7 @@ import (
 	"github.com/stripe/stripe-go/v74"
 	"github.com/stripe/stripe-go/v74/subscription"
 	"github.com/stripe/stripe-go/v74/webhook"
+	"go.uber.org/zap"
 )
 
 // The type SubscriptionData contains a single field for customer ID represented as a string in JSON
@@ -231,6 +232,7 @@ func (s *Server) handleStripeWebhook(w http.ResponseWriter, req *http.Request) {
 		// will be present in the data object returned
 		// ref: https://stripe.com/docs/api/events/types#event_types-checkout.session.completed
 		var checkoutSession stripe.CheckoutSession
+		s.logger.Info("checkout session completed", zap.Any("checkoutSession", checkoutSession))
 		err := json.Unmarshal(event.Data.Raw, &checkoutSession)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "Error parsing webhook JSON: %v\n", err)
@@ -238,10 +240,17 @@ func (s *Server) handleStripeWebhook(w http.ResponseWriter, req *http.Request) {
 			return
 		}
 
+		if checkoutSession.Customer == nil || checkoutSession.Subscription == nil {
+			log.Println("Error retrieving customer or subscription from checkout session")
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
 		// extract the customer id from checkout session object as well as the customer email address
 		customerID := checkoutSession.Customer.ID
+		customerEmail := checkoutSession.Customer.Email
 		stripeNewSubscription := checkoutSession.Subscription
-		userProfile, err := s.conn.GetUserProfileByCustomerId(ctx, customerID)
+		userProfile, err := s.conn.GetUserProfileByEmail(ctx, customerEmail)
 		if err != nil {
 			log.Println("Error retrieving user profile:", err)
 			w.WriteHeader(http.StatusNotFound)
@@ -280,6 +289,8 @@ func (s *Server) handleStripeWebhook(w http.ResponseWriter, req *http.Request) {
 
 		// update the user profile
 		userProfile.StripeSubscriptions = currentSubscription
+		// associate the customer ID to the user profile
+		userProfile.StripeCustomerId = customerID
 		if err := s.conn.UpdateUserProfile(ctx, userProfile); err != nil {
 			log.Println("Error updating user profile:", err)
 			w.WriteHeader(http.StatusBadRequest)
