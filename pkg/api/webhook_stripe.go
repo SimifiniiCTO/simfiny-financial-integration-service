@@ -80,7 +80,7 @@ func (s *Server) handleStripeWebhook(w http.ResponseWriter, req *http.Request) {
 	// Make sure that your integration properly handles the events. For example, you may want to email
 	//  a customer if a payment fails or revoke a customer’s access when a subscription is canceled.
 	case "customer.subscription.created":
-		// 	Sent when the subscription is created. The subscription status might
+		// Sent when the subscription is created. The subscription status might
 		// be incomplete if customer authentication is required to complete the payment
 		// or if you set payment_behavior to default_incomplete
 		// ref: https://stripe.com/docs/billing/subscriptions/overview#subscription-payment-behavior
