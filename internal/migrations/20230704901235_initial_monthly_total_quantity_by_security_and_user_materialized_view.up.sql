@@ -5,6 +5,9 @@ SELECT
     toYYYYMM(Time) as Month,
     UserId,
     SecurityId,
-    sum(Quantity) as TotalQuantity
+    sum(Quantity * Sign) as TotalQuantity
 FROM InvestmentTransactionInternal
-GROUP BY Month, UserId, SecurityId;
+WHERE
+    Sign = 1
+GROUP BY
+    Month, UserId, SecurityId;

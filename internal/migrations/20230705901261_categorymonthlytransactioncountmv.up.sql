@@ -5,10 +5,10 @@ SELECT
     toYYYYMM(Time) as Month,
     PersonalFinanceCategoryPrimary,
     UserId,
-    count() as TransactionCount
+    sum(Sign) as TransactionCount
 FROM
     TransactionInternal
+WHERE
+    Sign = 1
 GROUP BY
-    Month,
-    PersonalFinanceCategoryPrimary,
-    UserId;
+    Month, PersonalFinanceCategoryPrimary, UserId;

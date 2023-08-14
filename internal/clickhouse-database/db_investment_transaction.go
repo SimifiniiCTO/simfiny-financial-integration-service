@@ -114,7 +114,7 @@ func (db *Db) GetInvestmentTransactions(ctx context.Context, userId *uint64, pag
 
 	offset := int(pageSize * (pageNumber - 1))
 	queryLimit := int(pageSize)
-	query := fmt.Sprintf(`UserId = %d`, *userId)
+	query := fmt.Sprintf(`UserId = %d AND Sign = 1`, *userId)
 	var transactions []schema.InvestmentTransactionInternal
 	if err := db.
 		queryEngine.

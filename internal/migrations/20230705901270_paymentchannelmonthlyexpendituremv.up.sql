@@ -5,10 +5,10 @@ SELECT
     toYYYYMM(Time) as Month,
     PaymentChannel,
     UserId,
-    sum(Amount) as TotalSpending
+    sum(Sign * Amount) as TotalSpending
 FROM
     TransactionInternal
 WHERE
-    Amount > 0
+    Amount > 0 AND Sign = 1
 GROUP BY
     Month, PaymentChannel, UserId;

@@ -226,6 +226,7 @@ func (db *Db) GetTransactions(ctx context.Context, userId *uint64, pagenumber in
 		NewSelect().
 		Model(&transactions).
 		Where("UserId = ?", *userId).
+		Where("Sign = 1").
 		Offset(offset).
 		Limit(queryLimit).
 		Order("Time DESC").
@@ -281,6 +282,7 @@ func (db *Db) GetTransactionsForAccount(ctx context.Context, userId *uint64, pag
 		Model(&transactions).
 		Where("UserId = ?", *userId).
 		Where("AccountId = ?", accountId).
+		Where("Sign = 1").
 		Offset(offset).
 		Limit(queryLimit).
 		Order("Time DESC").
@@ -516,7 +518,7 @@ func (db *Db) GetTransactionById(ctx context.Context, txId *string) (*schema.Tra
 	}
 
 	tx := new(schema.TransactionInternal)
-	if err := db.queryEngine.NewSelect().Model(tx).Where("ID = ?", *txId).Scan(ctx); err != nil {
+	if err := db.queryEngine.NewSelect().Model(tx).Where("ID = ?", *txId).Where("Sign = 1").Scan(ctx); err != nil {
 		return nil, err
 	}
 
@@ -538,7 +540,7 @@ func (db *Db) GetTransactionByUserId(ctx context.Context, userId *uint64) (*sche
 	}
 
 	tx := new(schema.TransactionInternal)
-	if err := db.queryEngine.NewSelect().Model(tx).Where("UserId = ?", *userId).Scan(ctx); err != nil {
+	if err := db.queryEngine.NewSelect().Model(tx).Where("UserId = ?", *userId).Where("Sign = 1").Scan(ctx); err != nil {
 		return nil, err
 	}
 

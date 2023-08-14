@@ -4,9 +4,11 @@ AS
 SELECT
     toYYYYMM(Time) AS Month,
     UserId,
-    count() AS TransactionCount
+    sum(Sign) AS TransactionCount
 FROM
     TransactionInternal
+WHERE
+    Sign = 1
 GROUP BY
     Month,
     UserId;
