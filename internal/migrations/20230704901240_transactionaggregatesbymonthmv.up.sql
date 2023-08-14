@@ -21,7 +21,6 @@
 --     LocationCity,
 --     PaymentChannel,
 --     MerchantName;
-
 CREATE MATERIALIZED VIEW IF NOT EXISTS TransactionAggregatesByMonthMV
 TO TransactionAggregatesByMonth
 AS
@@ -32,10 +31,12 @@ SELECT
     PaymentChannel,
     MerchantName,
     UserId,
-    count() AS TransactionCount,
-    sum(Amount) AS TotalAmount
+    sum(Sign) AS TransactionCount,
+    sum(Amount * Sign) AS TotalAmount
 FROM
     TransactionInternal
+WHERE
+    Sign = 1
 GROUP BY
     Month,
     PersonalFinanceCategoryPrimary,

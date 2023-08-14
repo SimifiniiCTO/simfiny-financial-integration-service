@@ -8,10 +8,10 @@ SELECT
     toYYYYMM(Time) as Month,
     PersonalFinanceCategoryPrimary,
     UserId,
-    sum(Amount) as TotalIncome
+    -sum(Amount * Sign) as TotalIncome  -- Make income positive for reporting
 FROM
     TransactionInternal
 WHERE
-    Amount < 0
+    Amount < 0 AND Sign = 1
 GROUP BY
     Month, PersonalFinanceCategoryPrimary, UserId;

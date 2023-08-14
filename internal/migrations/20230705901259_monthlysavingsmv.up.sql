@@ -4,8 +4,10 @@ AS
 SELECT
     toYYYYMM(Time) as Month,
     UserId,
-    sum(Amount) as NetSavings
+    sum(Amount * Sign) as NetSavings
 FROM
     TransactionInternal
+WHERE
+    Sign = 1
 GROUP BY
     Month, UserId;

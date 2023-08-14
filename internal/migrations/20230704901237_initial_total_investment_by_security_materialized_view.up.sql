@@ -4,6 +4,9 @@ AS
 SELECT
     UserId,
     SecurityId,
-    sum(Amount) as TotalInvestment
+    sum(Amount * Sign) as TotalInvestment
 FROM InvestmentTransactionInternal
-GROUP BY SecurityId, UserId;
+WHERE
+    Sign = 1
+GROUP BY
+    SecurityId, UserId;

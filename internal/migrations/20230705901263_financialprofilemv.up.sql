@@ -4,8 +4,10 @@ AS
 SELECT
     toYYYYMM(Time) as Month,
     UserId,
-    sumIf(Amount, Amount > 0) as TotalIncome,
-    -sumIf(Amount, Amount < 0) as TotalExpenses,
-    count() as NumberOfTransactions
+    sumIf(Amount * Sign, Amount > 0) as TotalIncome,
+    -sumIf(Amount * Sign, Amount < 0) as TotalExpenses,
+    sum(Sign) as NumberOfTransactions
 FROM TransactionInternal
+WHERE
+    Sign = 1
 GROUP BY Month, UserId;

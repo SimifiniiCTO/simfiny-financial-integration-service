@@ -227,7 +227,7 @@ func (db *Db) GetReOcurringTransactions(ctx context.Context, userId *uint64, pag
 
 	offset := int(pageSize * (pageNumber - 1))
 	queryLimit := int(pageSize)
-	query := fmt.Sprintf(`UserId = %d`, *userId)
+	query := fmt.Sprintf(`UserId = %d AND Sign = 1`, *userId)
 	var transactions []schema.ReOccuringTransactionInternal
 	if err := db.
 		queryEngine.
@@ -376,7 +376,7 @@ func (db *Db) UpdateReOccurringTransactions(ctx context.Context, userId *uint64,
 
 	var oldTransactions []schema.ReOccuringTransactionInternal
 	ids := "'" + strings.Join(txIds, "', '") + "'"
-	sqlQuery := fmt.Sprintf("SELECT * FROM ReOccuringTransactionInternal WHERE ID IN (%s)", ids)
+	sqlQuery := fmt.Sprintf("SELECT * FROM ReOccuringTransactionInternal WHERE ID IN (%s) AND Sign = 1", ids)
 	if err := db.queryEngine.
 		NewRaw(sqlQuery).
 		Scan(ctx, &oldTransactions); err != nil {
@@ -424,7 +424,7 @@ func (db *Db) GetReOcurringTransactionById(ctx context.Context, txId *string) (*
 	}
 
 	tx := new(schema.ReOccuringTransactionInternal)
-	if err := db.queryEngine.NewSelect().Model(tx).Where("ID = ?", *txId).Scan(ctx); err != nil {
+	if err := db.queryEngine.NewSelect().Model(tx).Where("ID = ?", *txId).Where("Sign = 1").Scan(ctx); err != nil {
 		return nil, err
 	}
 
@@ -446,7 +446,7 @@ func (db *Db) GetUserReOccurringTransactions(ctx context.Context, userId *uint64
 	}
 
 	var result []schema.ReOccuringTransactionInternal
-	sqlQuery := fmt.Sprintf("SELECT * FROM ReOccuringTransactionInternal WHERE UserId = %d", *userId)
+	sqlQuery := fmt.Sprintf("SELECT * FROM ReOccuringTransactionInternal WHERE UserId = %d AND Sign = 1", *userId)
 	if err := db.queryEngine.
 		NewRaw(sqlQuery).
 		Scan(ctx, &result); err != nil {

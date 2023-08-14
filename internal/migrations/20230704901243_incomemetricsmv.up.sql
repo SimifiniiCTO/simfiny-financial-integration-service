@@ -6,8 +6,10 @@ SELECT
     toYYYYMM(Time) as Month,
     PersonalFinanceCategoryPrimary,
     UserId,
-    count() as TransactionCount,
-    sum(Amount) as TotalIncome
+    -- ref: https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/collapsingmergetree
+    -- we calculate the transaction count differently for collapsing merge tree engine tables
+    sum(Sign) as TransactionCount,
+    sum(Sign * Amount) as TotalIncome
 FROM
     TransactionInternal
 WHERE
