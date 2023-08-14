@@ -52,27 +52,27 @@ func ReadEnvVars() {
 	fs.Int("stress-memory", 0, "MB of data to load into memory")
 	// local: redis://:@redis_db:6379
 	// production: rediss://default:AVNS_B0xiuGf7QSnREFG@simfiny-redis-cluster-do-user-11446161-0.b.db.ondigitalocean.com:25061
-	fs.String("cache-server", "redis://:@redis_db:6379", "Redis address in the format <host>:<port>")
+	fs.String("cache-server", "rediss://default:AVNS_B0xiuGf7QSnREFG@simfiny-redis-cluster-do-user-11446161-0.b.db.ondigitalocean.com:25061", "Redis address in the format <host>:<port>")
 	fs.String("newrelic-api-key", "62fd721c712d5863a4e75b8f547b7c1ea884NRAL", "new relic license key")
 	// database connection environment variables
 	// local: service_db
 	// production: simfiny-db-cluster-do-user-11446161-0.b.db.ondigitalocean.com
-	fs.String("dbhost", "service_db", "database host string")
+	fs.String("dbhost", "simfiny-db-cluster-do-user-11446161-0.b.db.ondigitalocean.com", "database host string")
 	// local: 5432
 	// production: 25061
-	fs.Int("dbport", 5432, "database port")
+	fs.Int("dbport", 25061, "database port")
 	// local: service_db
 	// production: doadmin
-	fs.String("dbuser", "service_db", "database user string")
+	fs.String("dbuser", "doadmin", "database user string")
 	// local: service_db
 	// production: AVNS_QIibiEIbI5JVODo
-	fs.String("dbpassword", "service_db", "database password string")
+	fs.String("dbpassword", "AVNS_QIibiEIbI5JVODo", "database password string")
 	// local: service_db
 	// production: fis-service-pool
-	fs.String("dbname", "service_db", "database name")
+	fs.String("dbname", "fis-service-pool", "database name")
 	// local: disable
 	// production: require
-	fs.String("dbsslmode", "disable", "wether tls connection is enabled")
+	fs.String("dbsslmode", "require", "wether tls connection is enabled")
 	fs.Int("max-db-conn-attempts", 1, "max database connection attempts")
 	fs.Int("max-db-conn-retries", 1, "max database connection attempts")
 	fs.Duration("max-db-retry-timeout", 500*time.Millisecond, "max time until a db connection request is seen as timing out")
@@ -81,7 +81,7 @@ func ReadEnvVars() {
 	fs.Int("cache-ttl-in-seconds", 3600, "time data lives in the cache")
 	// local: false
 	// production: true
-	fs.Bool("cache-tls-enabled", false, "whether tls connection is enabled")
+	fs.Bool("cache-tls-enabled", true, "whether tls connection is enabled")
 
 	fs.String("max-db-idle-connections", "10", "max number of idle connections to the database")            // exists
 	fs.String("max-db-open-connections", "10", "max number of open connections to the database")            // exists

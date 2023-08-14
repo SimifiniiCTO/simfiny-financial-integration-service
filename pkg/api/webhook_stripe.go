@@ -249,7 +249,7 @@ func (s *Server) handleSubscription(event stripe.Event, status schema.StripeSubs
 	}
 
 	storedSubscription.StripeSubscriptionStatus = status
-	if err := s.conn.UpdateSubscription(ctx, &subscription.ID, storedSubscription); err != nil {
+	if err := s.conn.UpdateSubscription(ctx, &storedSubscription.StripeSubscriptionId, storedSubscription); err != nil {
 		log.Println("Error updating subscription:", err)
 		return errors.New("error updating subscription")
 	}

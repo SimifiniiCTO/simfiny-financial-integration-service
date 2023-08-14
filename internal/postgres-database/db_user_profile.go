@@ -203,7 +203,9 @@ func (db *Db) GetAllUserProfiles(ctx context.Context) ([]*schema.UserProfile, er
 		Preload(u.Link.InvestmentAccounts.Securities).
 		Preload(u.Link.Token).
 		Preload(u.Link.PlaidLink).
-		Preload(u.StripeSubscriptions).Find()
+		Preload(u.StripeSubscriptions).
+		Preload(u.ActionableInsights).
+		Find()
 	if err != nil {
 		return nil, err
 	}
