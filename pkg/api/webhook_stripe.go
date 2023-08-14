@@ -84,13 +84,13 @@ func (s *Server) handleStripeWebhook(w http.ResponseWriter, req *http.Request) {
 		// be incomplete if customer authentication is required to complete the payment
 		// or if you set payment_behavior to default_incomplete
 		// ref: https://stripe.com/docs/billing/subscriptions/overview#subscription-payment-behavior
-		if err := s.handleSubscription(event, schema.StripeSubscriptionStatus_STRIPE_SUBSCRIPTION_STATUS_ACTIVE); err != nil {
+		if err := s.handleSubscription(ctx, event, schema.StripeSubscriptionStatus_STRIPE_SUBSCRIPTION_STATUS_ACTIVE); err != nil {
 			log.Println("Error handling deleted subscription:", err)
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
 	case "customer.subscription.deleted":
-		if err := s.handleSubscription(event, schema.StripeSubscriptionStatus_STRIPE_SUBSCRIPTION_STATUS_CANCELED); err != nil {
+		if err := s.handleSubscription(ctx, event, schema.StripeSubscriptionStatus_STRIPE_SUBSCRIPTION_STATUS_CANCELED); err != nil {
 			log.Println("Error handling deleted subscription:", err)
 			w.WriteHeader(http.StatusBadRequest)
 			return
@@ -107,7 +107,7 @@ func (s *Server) handleStripeWebhook(w http.ResponseWriter, req *http.Request) {
 
 		// TODO: Perform the below operations
 		// 2. We send an email to the user informing them that their subscription has been paused
-		if err := s.handleSubscription(event, schema.StripeSubscriptionStatus_STRIPE_SUBSCRIPTION_STATUS_PAUSED); err != nil {
+		if err := s.handleSubscription(ctx, event, schema.StripeSubscriptionStatus_STRIPE_SUBSCRIPTION_STATUS_PAUSED); err != nil {
 			log.Println("Error handling deleted subscription:", err)
 			w.WriteHeader(http.StatusBadRequest)
 			return
@@ -117,7 +117,7 @@ func (s *Server) handleStripeWebhook(w http.ResponseWriter, req *http.Request) {
 		// ref: https://stripe.com/docs/billing/subscriptions/pause#unpausing
 		// TODO: Perform the below operations
 		// 2. We send an email to the user informing them that their subscription has been resumed
-		if err := s.handleSubscription(event, schema.StripeSubscriptionStatus_STRIPE_SUBSCRIPTION_STATUS_ACTIVE); err != nil {
+		if err := s.handleSubscription(ctx, event, schema.StripeSubscriptionStatus_STRIPE_SUBSCRIPTION_STATUS_ACTIVE); err != nil {
 			log.Println("Error handling deleted subscription:", err)
 			w.WriteHeader(http.StatusBadRequest)
 			return
@@ -159,9 +159,39 @@ func (s *Server) handleCheckoutSessionCompleted(ctx context.Context, event strip
 		return err
 	}
 
-	customerID := checkoutSession.Customer.ID
-	customerEmail := checkoutSession.Customer.Email
-	stripeNewSubscription := checkoutSession.Subscription
+	if checkoutSession.Customer == nil || checkoutSession.Subscription == nil {
+		log.Println("Error retrieving customer or subscription from checkout session")
+		return errors.New("error retrieving customer or subscription from checkout session")
+	}
+
+	if err := s.updateCustomerSubscription(ctx, checkoutSession.Customer, checkoutSession.Subscription); err != nil {
+		log.Println("Error updating customer subscription:", err)
+		return err
+	}
+
+	return nil
+}
+
+// process delete subscription request
+func (s *Server) handleSubscription(ctx context.Context, event stripe.Event, status schema.StripeSubscriptionStatus) error {
+	subscription, err := s.getSubscriptionFromEvent(event)
+	if err != nil {
+		return err
+	}
+
+	customer := subscription.Customer
+
+	if err := s.updateCustomerSubscription(ctx, customer, subscription); err != nil {
+		log.Println("Error updating customer subscription:", err)
+		return err
+	}
+	return nil
+}
+
+func (s *Server) updateCustomerSubscription(ctx context.Context, customer *stripe.Customer, subscription *stripe.Subscription) error {
+	customerID := customer.ID
+	customerEmail := customer.Email
+	stripeNewSubscription := subscription
 	if customerEmail == "" {
 		log.Println("Error retrieving customer email from checkout session")
 		return errors.New("error retrieving customer email from checkout session")
@@ -191,6 +221,10 @@ func (s *Server) handleCheckoutSessionCompleted(ctx context.Context, event strip
 			StripeWebhookLatestTimestamp:  time.Now().UTC().Format(time.RFC3339),
 			IsTrialing:                    isTrialing,
 		}
+
+		// associate the customer id with the user profile since
+		// we can assume this is a new subscription being created
+		userProfile.StripeCustomerId = customerID
 	} else {
 		currentSubscription.StripeSubscriptionId = stripeNewSubscription.ID
 		currentSubscription.StripeSubscriptionStatus = schema.StripeSubscriptionStatus_STRIPE_SUBSCRIPTION_STATUS_ACTIVE
@@ -201,7 +235,6 @@ func (s *Server) handleCheckoutSessionCompleted(ctx context.Context, event strip
 
 	userProfile.StripeSubscriptions = currentSubscription
 
-	userProfile.StripeCustomerId = customerID
 	if err := s.conn.UpdateUserProfile(ctx, userProfile); err != nil {
 		log.Println("Error updating user profile:", err)
 		return err
@@ -224,37 +257,6 @@ func (s *Server) extractCheckoutSessionFromEvent(event stripe.Event) (*stripe.Ch
 	}
 
 	return &checkoutSession, nil
-}
-
-// process delete subscription request
-func (s *Server) handleSubscription(event stripe.Event, status schema.StripeSubscriptionStatus) error {
-	subscription, err := s.getSubscriptionFromEvent(event)
-	if err != nil {
-		return err
-	}
-
-	if subscription.ID == "" {
-		log.Println("Error retrieving subscription id from event")
-		return errors.New("error retrieving subscription id from event")
-	}
-
-	// query the backend for the subscription by its id
-	// if the subscription is found, update the subscription status to canceled
-	// if the subscription is not found, return an error
-	ctx := context.Background()
-	storedSubscription, err := s.conn.GetSubscriptionBySubscriptionId(ctx, &subscription.ID)
-	if err != nil {
-		log.Println("Error retrieving subscription:", err)
-		return errors.New("error retrieving subscription")
-	}
-
-	storedSubscription.StripeSubscriptionStatus = status
-	if err := s.conn.UpdateSubscription(ctx, &storedSubscription.StripeSubscriptionId, storedSubscription); err != nil {
-		log.Println("Error updating subscription:", err)
-		return errors.New("error updating subscription")
-	}
-
-	return nil
 }
 
 func (s *Server) getSubscriptionFromEvent(event stripe.Event) (*stripe.Subscription, error) {
