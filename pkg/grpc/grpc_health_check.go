@@ -2,6 +2,7 @@ package grpc
 
 import (
 	"context"
+	"time"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -23,7 +24,7 @@ func (s *Server) HealthCheck(ctx context.Context, req *proto.HealthCheckRequest)
 	}
 
 	// ensure operation finished in time
-	ctx, cancel := context.WithTimeout(ctx, s.config.RpcTimeout)
+	ctx, cancel := context.WithTimeout(ctx, 10*time.Minute)
 	defer cancel()
 
 	if s.instrumentation != nil {

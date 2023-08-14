@@ -67,6 +67,8 @@ func (p *PlaidWrapper) CreateLinkToken(ctx context.Context, options *LinkTokenOp
 		user,
 	)
 
+	p.Logger.Info("disclose enabled products", zap.Any("enabled products", p.EnabledProducts), zap.Any("required produects", p.RequiredProductsIfSupported))
+
 	request.SetProducts(p.EnabledProducts)
 	request.SetLinkCustomizationName(PlaidClientName)
 	request.SetWebhook(*webhooksUrl)

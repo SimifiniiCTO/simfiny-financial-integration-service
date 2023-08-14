@@ -110,10 +110,10 @@ func New(ctx context.Context, opts ...Option) (*Db, error) {
 	db := ch.Connect(
 		// clickhouse://<user>:<password>@<host>:<port>/<database>?sslmode=disable
 		ch.WithDSN(database.connectionUri),
-		ch.WithTimeout(5*time.Second),
-		ch.WithDialTimeout(5*time.Second),
-		ch.WithReadTimeout(5*time.Second),
-		ch.WithWriteTimeout(5*time.Second),
+		ch.WithTimeout(8*time.Second),
+		ch.WithDialTimeout(8*time.Second),
+		ch.WithReadTimeout(8*time.Second),
+		ch.WithWriteTimeout(8*time.Second),
 		// ch.WithTLSConfig(&tls.Config{InsecureSkipVerify: true}),
 	)
 

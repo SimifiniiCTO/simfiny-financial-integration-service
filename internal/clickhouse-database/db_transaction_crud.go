@@ -350,105 +350,10 @@ func (db *Db) UpdateTransaction(ctx context.Context, userId *uint64, txId *strin
 
 	// now we add the updated transaction
 	tx.Sign = 1
+	tx.Id = *txId
 	if _, err := db.AddTransaction(ctx, userId, tx); err != nil {
 		return err
 	}
-
-	// query := `
-	// 	ALTER TABLE TransactionInternal UPDATE
-	// 	AccountId = ?,
-	// 	AccountOwner = ?,
-	// 	Amount = ?,
-	// 	AuthorizedDate = ?,
-	// 	AuthorizedDatetime = ?,
-	// 	CategoryId = ?,
-	// 	CheckNumber = ?,
-	// 	CurrentDate = ?,
-	// 	CurrentDatetime = ?,
-	// 	IsoCurrencyCode = ?,
-	// 	LinkId = ?,
-	// 	LocationAddress = ?,
-	// 	LocationCity = ?,
-	// 	LocationCountry = ?,
-	// 	LocationLat = ?,
-	// 	LocationLon = ?,
-	// 	LocationPostalCode = ?,
-	// 	LocationRegion = ?,
-	// 	LocationStoreNumber = ?,
-	// 	MerchantName = ?,
-	// 	Name = ?,
-	// 	PaymentChannel = ?,
-	// 	PaymentMetaByOrderOf = ?,
-	// 	PaymentMetaPayee = ?,
-	// 	PaymentMetaPayer = ?,
-	// 	PaymentMetaPaymentMethod = ?,
-	// 	PaymentMetaPaymentProcessor = ?,
-	// 	PaymentMetaPpdId = ?,
-	// 	PaymentMetaReason = ?,
-	// 	PaymentMetaReferenceNumber = ?,
-	// 	Pending = ?,
-	// 	PendingTransactionId = ?,
-	// 	PersonalFinanceCategoryDetailed = ?,
-	// 	PersonalFinanceCategoryPrimary = ?,
-	// 	TransactionCode = ?,
-	// 	UnofficialCurrencyCode = ?,
-	// 	UserId = ?,
-	// 	Categories = ?
-	// 	WHERE TransactionId = ?;
-	// `
-
-	// transactionPendingBinaryRef := func(b bool) int {
-	// 	if b {
-	// 		return 1
-	// 	} else {
-	// 		return 0
-	// 	}
-	// }(tx.Pending)
-
-	// // we first delete the old row
-
-	// if err := db.queryEngine.NewRaw(query,
-	// 	tx.AccountId,
-	// 	tx.AccountOwner,
-	// 	tx.Amount,
-	// 	tx.AuthorizedDate,
-	// 	tx.AuthorizedDatetime,
-	// 	tx.CategoryId,
-	// 	tx.CheckNumber,
-	// 	tx.CurrentDate,
-	// 	tx.CurrentDatetime,
-	// 	tx.IsoCurrencyCode,
-	// 	tx.LinkId,
-	// 	tx.LocationAddress,
-	// 	tx.LocationCity,
-	// 	tx.LocationCountry,
-	// 	tx.LocationLat,
-	// 	tx.LocationLon,
-	// 	tx.LocationPostalCode,
-	// 	tx.LocationRegion,
-	// 	tx.LocationStoreNumber,
-	// 	tx.MerchantName,
-	// 	tx.Name,
-	// 	tx.PaymentChannel,
-	// 	tx.PaymentMetaByOrderOf,
-	// 	tx.PaymentMetaPayee,
-	// 	tx.PaymentMetaPayer,
-	// 	tx.PaymentMetaPaymentMethod,
-	// 	tx.PaymentMetaPaymentProcessor,
-	// 	tx.PaymentMetaPpdId,
-	// 	tx.PaymentMetaReason,
-	// 	tx.PaymentMetaReferenceNumber,
-	// 	transactionPendingBinaryRef,
-	// 	tx.PendingTransactionId,
-	// 	tx.PersonalFinanceCategoryDetailed,
-	// 	tx.PersonalFinanceCategoryPrimary,
-	// 	tx.TransactionCode,
-	// 	tx.UnofficialCurrencyCode,
-	// 	tx.UserId,
-	// 	Stringify(tx.GetCategories()),
-	// 	tx.TransactionId).Scan(ctx); err != nil {
-	// 	return err
-	// }
 
 	return nil
 }
@@ -469,6 +374,7 @@ func (db *Db) UpdateTransactions(ctx context.Context, userId *uint64, txs []*sch
 
 	// GetTransactionsByPlaidTransactionIds
 	transactionIds := make([]string, 0, len(txs))
+	transactionIdToOldTransaction := make(map[string]*schema.Transaction, 0)
 
 	// we first iterate over the transactions and get the transaction ids
 	for _, tx := range txs {
@@ -476,9 +382,6 @@ func (db *Db) UpdateTransactions(ctx context.Context, userId *uint64, txs []*sch
 		if err := tx.Validate(); err != nil {
 			return err
 		}
-
-		// ensure the tx sign is positive
-		tx.Sign = 1
 
 		transactionIds = append(transactionIds, tx.TransactionId)
 	}
@@ -492,6 +395,18 @@ func (db *Db) UpdateTransactions(ctx context.Context, userId *uint64, txs []*sch
 	// now we iterate over the old transactions and ensure they have a negative sign
 	for _, tx := range oldTransactions {
 		tx.Sign = -1
+		transactionIdToOldTransaction[tx.TransactionId] = tx
+	}
+
+	// iterate over the new transactions and ensure they have a positive sign
+	for _, tx := range txs {
+		tx.Sign = 1
+
+		// We should have a strategy to determine what a "duplicate" is.
+		// One common way is to use a unique identifier like Id
+		if oldTx, ok := transactionIdToOldTransaction[tx.TransactionId]; ok {
+			tx.Id = oldTx.Id
+		}
 	}
 
 	// save this to the database

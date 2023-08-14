@@ -3,6 +3,7 @@ package plaidhandler
 import (
 	"fmt"
 
+	"github.com/hashicorp/go-set"
 	"github.com/plaid/plaid-go/v14/plaid"
 	"go.uber.org/zap"
 
@@ -93,20 +94,35 @@ func WithProducts(products []string) Option {
 		string(plaid.PRODUCTS_RECURRING_TRANSACTIONS): plaid.PRODUCTS_RECURRING_TRANSACTIONS,
 	}
 	return func(p *PlaidWrapper) {
+		// ref: https://plaid.com/docs/link/initializing-products/#required-if-supported-products
+
 		// iterate over set of strings and convert to plaid product
-		res := make([]plaid.Products, 0)
+		enabledProducts := set.New[plaid.Products](0)
+		requiredProductsIfSupported := set.New[plaid.Products](0)
+		requiredProductsIfSupported.Insert(plaid.PRODUCTS_INVESTMENTS)
+		requiredProductsIfSupported.Insert(plaid.PRODUCTS_LIABILITIES)
+
 		for _, element := range products {
 			if value, ok := plaidProducts[element]; ok {
-				res = append(res, value)
+				enabledProducts.Insert(value)
 			}
 		}
 
-		p.EnabledProducts = res
-		// ref: https://plaid.com/docs/link/initializing-products/#required-if-supported-products
-		p.RequiredProductsIfSupported = []plaid.Products{
-			plaid.PRODUCTS_INVESTMENTS,
-			plaid.PRODUCTS_LIABILITIES,
-		}
+		requiredProductsIfSupported.ForEach(func(element plaid.Products) bool {
+			if enabledProducts.Contains(element) {
+				fmt.Printf("removing %s from enabled products\n", element)
+				enabledProducts.Remove(element)
+				return true
+			}
+
+			return false
+		})
+
+		fmt.Println("enabled products: ", enabledProducts.Slice())
+		fmt.Println("required if enabled products: ", requiredProductsIfSupported.Slice())
+
+		p.RequiredProductsIfSupported = requiredProductsIfSupported.Slice()
+		p.EnabledProducts = enabledProducts.Slice()
 	}
 }
 

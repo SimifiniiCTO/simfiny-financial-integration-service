@@ -67,6 +67,7 @@ func (th *TaskHandler) syncTransactions(ctx context.Context, userId uint64, link
 
 	transactionsToUpdate := make([]*apiv1.Transaction, 0, len(plaidTransactions))
 	transactionsToInsert := make([]*apiv1.Transaction, 0, len(plaidTransactions))
+
 	for _, plaidTransaction := range plaidTransactions {
 		amount := plaidTransaction.GetAmount()
 		transactionName := plaidTransaction.GetName()
@@ -97,51 +98,38 @@ func (th *TaskHandler) syncTransactions(ctx context.Context, userId uint64, link
 			plaidTransaction.Name = transactionName
 
 			transactionsToInsert = append(transactionsToInsert, plaidTransaction)
-			continue
 		} else {
-			// due to clickhouse's collapsing merge tree deduplication logic, we need to
-			// also append the old transactions that was updated but with a sign bit that is negative
-			/**
-			CollapsingMergeTree: This engine collapses rows with the same sorting key during the merge operation based on the sign column.
-
-			To insert a row: sign = 1
-			To delete a row: sign = -1
-			*/
-			var shouldUpdate bool = false
-
 			var newTransaction = existingTransaction
 			newTransaction.Sign = 1
 			if newTransaction.Amount != amount {
 				newTransaction.Amount = amount
-				shouldUpdate = true
 			}
 
 			if newTransaction.Pending != plaidTransaction.GetPending() {
 				newTransaction.Pending = plaidTransaction.GetPending()
-				shouldUpdate = true
 			}
 
 			if strings.EqualFold(newTransaction.PendingTransactionId, plaidTransaction.GetPendingTransactionId()) {
 				newTransaction.PendingTransactionId = plaidTransaction.GetPendingTransactionId()
-				shouldUpdate = true
 			}
 
-			if shouldUpdate {
-				transactionsToUpdate = append(transactionsToUpdate, newTransaction)
-			}
+			transactionsToUpdate = append(transactionsToUpdate, newTransaction)
 		}
 
 	}
 
 	if len(transactionsToUpdate) > 0 {
 		th.logger.Info("updating transactions", zap.Int("count", len(transactionsToUpdate)))
+		// The commented code is calling the `UpdateTransactions` method of the `clickhouseClient` to update
+		// the transactions in the ClickHouse database. It passes the `userId` and the `transactionsToUpdate`
+		// slice as arguments to the method. If there is an error during the update, it returns the error.
 		if err = clickhouseClient.UpdateTransactions(ctx, &userId, transactionsToUpdate); err != nil {
 			return err
 		}
 	}
 
 	if len(transactionsToInsert) > 0 {
-		th.logger.Info("updating transactions", zap.Int("count", len(transactionsToInsert)))
+		th.logger.Info("inserting transactions", zap.Int("count", len(transactionsToInsert)))
 		if err := clickhouseClient.AddTransactions(ctx, &userId, transactionsToInsert); err != nil {
 			th.logger.Error("failed to insert transactions", zap.Error(err))
 			return err
