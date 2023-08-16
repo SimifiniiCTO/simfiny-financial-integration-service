@@ -7,6 +7,7 @@ import (
 
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 	"github.com/google/uuid"
+	"go.uber.org/zap"
 )
 
 // AddTransaction adds a single transaction to the Clickhouse database.
@@ -392,30 +393,39 @@ func (db *Db) UpdateTransactions(ctx context.Context, userId *uint64, txs []*sch
 		return err
 	}
 
+	transactionSetForUpdate := make([]*schema.Transaction, 0, len(oldTransactions))
 	// now we iterate over the old transactions and ensure they have a negative sign
 	for _, tx := range oldTransactions {
-		tx.Sign = -1
-		transactionIdToOldTransaction[tx.TransactionId] = tx
+		currentTx := tx
+		currentTx.Sign = -1
+		transactionIdToOldTransaction[currentTx.TransactionId] = currentTx
+
+		db.Logger.Info("old transactions", zap.Any("transactions", currentTx))
+		transactionSetForUpdate = append(transactionSetForUpdate, currentTx)
 	}
 
+	transactionsSetForWrite := make([]*schema.Transaction, 0, len(txs))
 	// iterate over the new transactions and ensure they have a positive sign
 	for _, tx := range txs {
-		tx.Sign = 1
+		currentTx := tx
+		currentTx.Sign = 1
 
 		// We should have a strategy to determine what a "duplicate" is.
 		// One common way is to use a unique identifier like Id
-		if oldTx, ok := transactionIdToOldTransaction[tx.TransactionId]; ok {
-			tx.Id = oldTx.Id
+		if oldTx, ok := transactionIdToOldTransaction[currentTx.TransactionId]; ok {
+			currentTx.Id = oldTx.Id
 		}
+
+		transactionsSetForWrite = append(transactionsSetForWrite, currentTx)
 	}
 
 	// save this to the database
-	if err := db.AddTransactions(ctx, userId, oldTransactions); err != nil {
+	if err := db.AddTransactions(ctx, userId, transactionSetForUpdate); err != nil {
 		return err
 	}
 
 	// now updated transactions are added
-	if err := db.AddTransactions(ctx, userId, txs); err != nil {
+	if err := db.AddTransactions(ctx, userId, transactionsSetForWrite); err != nil {
 		return err
 	}
 

@@ -61,61 +61,67 @@ func (th *TaskHandler) syncTransactions(ctx context.Context, userId uint64, link
 		return err
 	}
 
+	th.logger.Info("found transactions in clickhouse", zap.Int("count", len(txnFound)))
+
 	for _, txn := range txnFound {
 		plaidTxnIdToTxnMap[txn.GetTransactionId()] = txn
 	}
+
+	th.logger.Info("transaction map created", zap.Int("count", len(plaidTxnIdToTxnMap)))
 
 	transactionsToUpdate := make([]*apiv1.Transaction, 0, len(plaidTransactions))
 	transactionsToInsert := make([]*apiv1.Transaction, 0, len(plaidTransactions))
 
 	for _, plaidTransaction := range plaidTransactions {
+		currentTransaction := plaidTransaction
 		amount := plaidTransaction.GetAmount()
 		transactionName := plaidTransaction.GetName()
 		// We only want to make the transaction name be the merchant name if the merchant name is shorter. This is
 		// due to something I observed with a dominos transaction, where the merchant was improperly parsed and the
 		// transaction ended up being called `Mnuslindstrom` rather than `Domino's`. This should fix that problem.
-		if plaidTransaction.GetMerchantName() != "" && len(plaidTransaction.GetMerchantName()) < len(transactionName) {
-			transactionName = plaidTransaction.GetMerchantName()
+		if currentTransaction.GetMerchantName() != "" && len(currentTransaction.GetMerchantName()) < len(transactionName) {
+			transactionName = currentTransaction.GetMerchantName()
 		}
 
 		// if we have no present transactions in the database for the user of interest
 		// then we know that we need to insert all of the transactions
 		if len(txnFound) == 0 {
-			plaidTransaction.UserId = userId
-			plaidTransaction.LinkId = linkId
-			plaidTransaction.Sign = 1
-			plaidTransaction.Name = transactionName
+			currentTransaction.UserId = userId
+			currentTransaction.LinkId = linkId
+			currentTransaction.Sign = 1
+			currentTransaction.Name = transactionName
 
-			transactionsToInsert = append(transactionsToInsert, plaidTransaction)
+			transactionsToInsert = append(transactionsToInsert, currentTransaction)
 			continue
 		}
 
-		existingTransaction, ok := plaidTxnIdToTxnMap[plaidTransaction.GetTransactionId()]
+		existingTransaction, ok := plaidTxnIdToTxnMap[currentTransaction.GetTransactionId()]
 		if !ok {
-			plaidTransaction.UserId = userId
-			plaidTransaction.LinkId = linkId
-			plaidTransaction.Sign = 1
-			plaidTransaction.Name = transactionName
+			th.logger.Info("transaction not found in clickhouse", zap.String("transactionId", currentTransaction.GetTransactionId()))
+			currentTransaction.UserId = userId
+			currentTransaction.LinkId = linkId
+			currentTransaction.Sign = 1
+			currentTransaction.Name = transactionName
 
-			transactionsToInsert = append(transactionsToInsert, plaidTransaction)
+			transactionsToInsert = append(transactionsToInsert, currentTransaction)
 		} else {
+			th.logger.Info("transaction found in clickhouse", zap.String("transactionId", currentTransaction.GetTransactionId()))
 			var newTransaction = existingTransaction
 			newTransaction.Sign = 1
 			if newTransaction.Amount != amount {
 				newTransaction.Amount = amount
 			}
 
-			if newTransaction.Pending != plaidTransaction.GetPending() {
-				newTransaction.Pending = plaidTransaction.GetPending()
+			if newTransaction.Pending != currentTransaction.GetPending() {
+				newTransaction.Pending = currentTransaction.GetPending()
 			}
 
-			if strings.EqualFold(newTransaction.PendingTransactionId, plaidTransaction.GetPendingTransactionId()) {
-				newTransaction.PendingTransactionId = plaidTransaction.GetPendingTransactionId()
+			if strings.EqualFold(newTransaction.PendingTransactionId, currentTransaction.GetPendingTransactionId()) {
+				newTransaction.PendingTransactionId = currentTransaction.GetPendingTransactionId()
 			}
 
 			transactionsToUpdate = append(transactionsToUpdate, newTransaction)
 		}
-
 	}
 
 	if len(transactionsToUpdate) > 0 {
