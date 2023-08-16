@@ -113,7 +113,7 @@ func New(ctx context.Context, opts ...Option) (*Db, error) {
 		ch.WithTimeout(8*time.Second),
 		ch.WithDialTimeout(8*time.Second),
 		ch.WithReadTimeout(8*time.Second),
-		ch.WithWriteTimeout(8*time.Second),
+		ch.WithWriteTimeout(15*time.Second),
 		// ch.WithTLSConfig(&tls.Config{InsecureSkipVerify: true}),
 	)
 

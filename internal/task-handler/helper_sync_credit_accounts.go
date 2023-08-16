@@ -109,7 +109,7 @@ func (th *TaskHandler) synchronizePlaidLinkedCreditAccounts(ctx context.Context,
 
 	// add the new accountsToBeAdded
 	if accountsToBeUpdated.Size() > 0 {
-		if err := th.postgresDb.UpdateCreditAccounts(ctx, accountsToBeUpdated.Slice()); err != nil {
+		if err := th.postgresDb.UpdateCreditAccounts(ctx, link, accountsToBeUpdated.Slice()); err != nil {
 			th.logger.Error("failed to update credit accounts", zap.Error(err))
 			return err
 		}

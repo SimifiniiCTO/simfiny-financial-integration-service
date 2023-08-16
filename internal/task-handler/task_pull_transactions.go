@@ -278,7 +278,7 @@ func (th *TaskHandler) RunPullTransactionsTask(ctx context.Context, task *asynq.
 			}
 		}
 
-		if err = postgresClient.UpdateBankAccounts(ctx, updatedBankAccounts); err != nil {
+		if err = postgresClient.UpdateBankAccounts(ctx, link, updatedBankAccounts); err != nil {
 			th.logger.Error("failed to update bank accounts", zap.Error(err))
 		}
 	}

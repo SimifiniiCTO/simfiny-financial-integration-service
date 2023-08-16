@@ -86,7 +86,6 @@ func (th *TaskHandler) syncAllAccounts(ctx context.Context, userId uint64, link 
 		mortgageAccounts    []*apiv1.MortgageAccount    = make([]*apiv1.MortgageAccount, 0)
 		studentloanAccounts []*apiv1.StudentLoanAccount = make([]*apiv1.StudentLoanAccount, 0)
 	)
-
 	bankAccounts, err := th.syncBankAccounts(ctx, userId, link, *accessToken)
 	if err != nil {
 		th.logger.Error(fmt.Sprintf("failed to sync transactions for link %d", link.Id))
@@ -115,7 +114,6 @@ func (th *TaskHandler) syncAllAccounts(ctx context.Context, userId uint64, link 
 	}
 
 	th.logger.Info("Sucessfully updated account balances")
-
 	if err := th.syncTransactions(ctx, userId, link, *accessToken, *trigger); err != nil {
 		th.logger.Error(fmt.Sprintf("failed to sync transactions for link %d", link.Id))
 	}

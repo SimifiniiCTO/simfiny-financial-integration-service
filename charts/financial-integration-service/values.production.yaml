@@ -70,10 +70,10 @@ database:
 
 batchJobs:
   recurringTransactions:
-    interval: "@every 3h"
+    interval: "@every 6h"
     enabled: true
   syncAllAccounts:
-    interval: "@every 1h"
+    interval: "@every 6h"
     enabled: true
   actionableInsights:
     interval: "@weekly"

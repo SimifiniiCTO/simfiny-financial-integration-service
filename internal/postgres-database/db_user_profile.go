@@ -203,6 +203,7 @@ func (db *Db) GetAllUserProfiles(ctx context.Context) ([]*schema.UserProfile, er
 		Preload(u.Link.InvestmentAccounts.Securities).
 		Preload(u.Link.Token).
 		Preload(u.Link.PlaidLink).
+		Preload(u.Link.PlaidSync).
 		Preload(u.StripeSubscriptions).
 		Preload(u.ActionableInsights).
 		Find()
