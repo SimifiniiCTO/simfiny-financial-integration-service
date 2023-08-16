@@ -17,6 +17,7 @@ jobs:
       matrix:
         helm-version:
           - 3.8.1
+        operating-system: [linux/amd64,linux/arm64/v8]
     runs-on: ubuntu-latest
     steps:
       - name: Get Release Version
@@ -126,7 +127,7 @@ jobs:
           builder: ${{ steps.buildx.outputs.name }}
           context: .
           file: ./Dockerfile
-          platforms: linux/amd64,linux/arm64/v8
+          platforms: ${{matrix.operating-system}}
           build-args: |
             REVISION=${{ steps.prep.outputs.REVISION }}
           tags: ${{ steps.meta.outputs.tags }}
@@ -139,7 +140,7 @@ jobs:
           push: true
           builder: ${{ steps.buildx.outputs.name }}
           context: .
-          platforms: linux/amd64,linux/arm64/v8
+          platforms: ${{matrix.operating-system}}
           file: ./Dockerfile.base
           tags: docker.io/feelguuds/financial-integration-service-base:latest
           build-args: |
