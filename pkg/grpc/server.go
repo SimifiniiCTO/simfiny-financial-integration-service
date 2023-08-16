@@ -47,35 +47,38 @@ type Server struct {
 
 // Config is the config for the grpc server initialization
 type Config struct {
-	Port                     int              `mapstructure:"grpc-port"`
-	GatewayPort              int              `mapstructure:"grpc-gateway-port"`
-	ServiceName              string           `mapstructure:"grpc-service-name"`
-	NewRelicLicense          string           `mapstructure:"newrelic-api-key"`
-	Environment              string           `mapstructure:"env"`
-	PlaidProducts            []plaid.Products `mapstructure:"plaid-products"`
-	RpcTimeout               time.Duration    `mapstructure:"rpc-timeout"`
-	StripeApiKey             string           `mapstructure:"stripe-api-key"`
-	PlaidClientID            string           `mapstructure:"plaid-client-id"`
-	PlaidSecretKey           string           `mapstructure:"plaid-secret-key"`
-	PlaidEnv                 string           `mapstructure:"plaid-env"`
-	PlaidOauthDomain         string           `mapstructure:"plaid-oauth-domain"`
-	PlaidWebhooksEnabled     bool             `mapstructure:"plaid-webhooks-enabled"`
-	PlaidWebhookOauthDomain  string           `mapstructure:"plaid-webhook-oauth-domain"`
-	AwsAccessKeyID           string           `mapstructure:"aws-access-key-id"`
-	AwsRegion                string           `mapstructure:"aws-region"`
-	AwsSecretAccessKey       string           `mapstructure:"aws-secret-access-key"`
-	AwsKmsKeyID              string           `mapstructure:"aws-kms-key-id"`
-	MaxPlaidLinks            int              `mapstructure:"max-plaid-links"`
-	BillingEnabled           bool             `mapstructure:"stripe-enabled"`
-	WorkflowExecutionTimeout time.Duration    `mapstructure:"workflow-execution-timeout"`
-	WorkflowTaskTimeout      time.Duration    `mapstructure:"workflow-task-timeout"`
-	WorkflowRunTimeout       time.Duration    `mapstructure:"workflow-run-timeout"`
-	TaskProcessorWorkers     int              `mapstructure:"task-processor-workers"`
-	OpenAiMaxTokens          int32            `mapstructure:"openai-max-tokens"`
-	OpenAiTopP               float32          `mapstructure:"openai-top-p"`
-	OpenAiFrequencyPenalty   float32          `mapstructure:"openai-frequency-penalty"`
-	OpenAiPresencePenalty    int              `mapstructure:"openai-presence-penalty"`
-	OpenAiTemperature        float32          `mapstructure:"openai-temperature"`
+	Port                                  int              `mapstructure:"grpc-port"`
+	GatewayPort                           int              `mapstructure:"grpc-gateway-port"`
+	ServiceName                           string           `mapstructure:"grpc-service-name"`
+	NewRelicLicense                       string           `mapstructure:"newrelic-api-key"`
+	Environment                           string           `mapstructure:"env"`
+	PlaidProducts                         []plaid.Products `mapstructure:"plaid-products"`
+	RpcTimeout                            time.Duration    `mapstructure:"rpc-timeout"`
+	StripeApiKey                          string           `mapstructure:"stripe-api-key"`
+	PlaidClientID                         string           `mapstructure:"plaid-client-id"`
+	PlaidSecretKey                        string           `mapstructure:"plaid-secret-key"`
+	PlaidEnv                              string           `mapstructure:"plaid-env"`
+	PlaidOauthDomain                      string           `mapstructure:"plaid-oauth-domain"`
+	PlaidWebhooksEnabled                  bool             `mapstructure:"plaid-webhooks-enabled"`
+	PlaidWebhookOauthDomain               string           `mapstructure:"plaid-webhook-oauth-domain"`
+	AwsAccessKeyID                        string           `mapstructure:"aws-access-key-id"`
+	AwsRegion                             string           `mapstructure:"aws-region"`
+	AwsSecretAccessKey                    string           `mapstructure:"aws-secret-access-key"`
+	AwsKmsKeyID                           string           `mapstructure:"aws-kms-key-id"`
+	MaxPlaidLinks                         int              `mapstructure:"max-plaid-links"`
+	BillingEnabled                        bool             `mapstructure:"stripe-enabled"`
+	WorkflowExecutionTimeout              time.Duration    `mapstructure:"workflow-execution-timeout"`
+	WorkflowTaskTimeout                   time.Duration    `mapstructure:"workflow-task-timeout"`
+	WorkflowRunTimeout                    time.Duration    `mapstructure:"workflow-run-timeout"`
+	TaskProcessorWorkers                  int              `mapstructure:"task-processor-workers"`
+	OpenAiMaxTokens                       int32            `mapstructure:"openai-max-tokens"`
+	OpenAiTopP                            float32          `mapstructure:"openai-top-p"`
+	OpenAiFrequencyPenalty                float32          `mapstructure:"openai-frequency-penalty"`
+	OpenAiPresencePenalty                 int              `mapstructure:"openai-presence-penalty"`
+	OpenAiTemperature                     float32          `mapstructure:"openai-temperature"`
+	BatchJobIntervalRecurringTransactions string           `mapstructure:"batch-job-interval-recurring-transactions"`
+	BatchJobIntervalActionableInsights    string           `mapstructure:"batch-job-interval-actionable-insights"`
+	BatchJobIntervalSyncAllAccounts       string           `mapstructure:"batch-job-interval-sync-all-accounts"`
 }
 
 var _ proto.FinancialServiceServer = (*Server)(nil)
@@ -208,12 +211,19 @@ func (s *Server) registerBatchJobs() error {
 	}
 
 	// TODO: we enqueue the task to compute the net worth of all users across all accounts (this should run every 24 hours) (net worth)
+	_, err = s.Taskprocessor.EnqueueRecurringTask(
+		context.Background(),
+		generateRecurringTransactionsBatchJob,
+		stringToProcessingInterval(&s.config.BatchJobIntervalRecurringTransactions))
+	if err != nil {
+		return err
+	}
 
 	// TODO: this should be config driven
 	_, err = s.Taskprocessor.EnqueueRecurringTask(
 		context.Background(),
 		syncAllAccountsBatchJob,
-		taskprocessor.Every12Hours)
+		stringToProcessingInterval(&s.config.BatchJobIntervalSyncAllAccounts))
 	if err != nil {
 		return err
 	}
@@ -222,18 +232,58 @@ func (s *Server) registerBatchJobs() error {
 	_, err = s.Taskprocessor.EnqueueRecurringTask(
 		context.Background(),
 		generateActionableInsightsBatchJob,
-		taskprocessor.EveryWeek)
-	if err != nil {
-		return err
-	}
-
-	_, err = s.Taskprocessor.EnqueueRecurringTask(
-		context.Background(),
-		generateRecurringTransactionsBatchJob,
-		taskprocessor.EveryDay)
+		stringToProcessingInterval(&s.config.BatchJobIntervalActionableInsights))
 	if err != nil {
 		return err
 	}
 
 	return nil
+}
+
+// stringToProcessingInterval converts a string to a processing interval
+func stringToProcessingInterval(str *string) taskprocessor.ProcessingInterval {
+	if str == nil {
+		// handle nil input in some way, I'll return EveryDay as a default for this example
+		return taskprocessor.EveryDay
+	}
+	switch *str {
+	case "@yearly":
+		return taskprocessor.EveryYear
+	case "@monthly":
+		return taskprocessor.EveryMonth
+	case "@weekly":
+		return taskprocessor.EveryWeek
+	case "@midnight":
+		return taskprocessor.EveryDayAtMidnight
+	case "@daily":
+		return taskprocessor.EveryDay
+	case "@every 24h":
+		return taskprocessor.Every24Hours
+	case "@every 12h":
+		return taskprocessor.Every12Hours
+	case "@every 6h":
+		return taskprocessor.Every6Hours
+	case "@every 3h":
+		return taskprocessor.Every3Hours
+	case "@every 1h":
+		return taskprocessor.EveryHour
+	case "@every 30m":
+		return taskprocessor.Every30Minutes
+	case "@every 15m":
+		return taskprocessor.Every15Minutes
+	case "@every 10m":
+		return taskprocessor.Every10Minutes
+	case "@every 5m":
+		return taskprocessor.Every5Minutes
+	case "@every 3m":
+		return taskprocessor.Every3Minutes
+	case "@every 1m":
+		return taskprocessor.Every1Minutes
+	case "@every 30s":
+		return taskprocessor.Every30Seconds
+	default:
+		// If the string doesn't match any of the predefined intervals, handle it accordingly.
+		// I'll return EveryDay as a default for this example.
+		return taskprocessor.EveryDay
+	}
 }

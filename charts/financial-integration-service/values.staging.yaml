@@ -68,6 +68,17 @@ database:
   maxOpenConnections: 10
   connectionMaxLifetime: 10h
 
+batch-jobs:
+  recurring-transactions:
+    interval: "@daily"
+    enabled: true
+  sync-all-accounts:
+    interval: "@every 1h"
+    enabled: true
+  actionable-insights:
+    interval: "@weekly"
+    enabled: true
+
 aws:
   # access key id for credentials provisioning
   accessKeyID: AKIA5HFOAJRN7YDEYPST

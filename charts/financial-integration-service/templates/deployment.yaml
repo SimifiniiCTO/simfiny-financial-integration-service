@@ -177,6 +177,9 @@ spec:
             - --openai-frequency-penalty={{ .Values.openai.configs.frequencyPenalty }}
             - --openai-top-p={{ .Values.openai.configs.topP }}
             - --openai-max-tokens={{ .Values.openai.configs.maxToken }}
+            - --batch-job-interval-recurring-transactions={{ .Values.batch-jobs.recurring-transactions.interval }}
+            - --batch-job-interval-actionable-insights={{ .Values.batch-jobs.actionable-insights.interval }}
+            - --batch-job-interval-sync-all-accounts={{ .Values.batch-jobs.sync-all-accounts.interval }}
           env:
           {{- if .Values.ui.message }}
           - name: fis_UI_MESSAGE

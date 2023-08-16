@@ -149,6 +149,9 @@ func ReadEnvVars() {
 	fs.Int("openai-presence-penalty", 1, "how much to penalize new token")                          // exists
 	fs.Float32("openai-temperature", 0.7, "controls the degree of randomness in the text")          // exists
 
+	fs.String("batch-job-interval-recurring-transactions", "@daily", "cron expression for recurring transactions")
+	fs.String("batch-job-interval-actionable-insights", "@daily", "cron expression for actionable insights")
+	fs.String("batch-job-interval-sync-all-accounts", "@daily", "cron expression for syncing all accounts")
 	defaultLogger := zap.L()
 
 	// parse flags
