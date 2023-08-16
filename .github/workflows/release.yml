@@ -101,6 +101,7 @@ jobs:
       #    flux tag artifact oci://ghcr.io/simifiniicto/financial-integration-service-deploy:${{ steps.prep.outputs.HELM_VERSION }} --tag latest
       - name: Publish Service Helm Chart
         uses: stefanprodan/helm-gh-pages@master
+        continue-on-error: true
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           charts_dir: ./charts
