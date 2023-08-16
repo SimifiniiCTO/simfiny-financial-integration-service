@@ -134,7 +134,7 @@ stripe:
   enabled: true
   # api key
   apiKey: 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
-  endpointSigningKey: whsec_09exib1e5wYYlPJYUc8rNx28bM2Dwx0r
+  endpointSigningKey: whsec_vCoLvHA2R76QygUhsHEI8gEhtK91v8Wh
 
 newRelic:
   # wether or not to enable metrics and traces
