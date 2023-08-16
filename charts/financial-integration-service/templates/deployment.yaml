@@ -83,7 +83,7 @@ spec:
             - --port-metrics={{ .Values.service.metricsPort }}
             {{- end }}
             {{- if .Values.service.grpcPort }}
-            - --grpc-port={{ .Values.service.grpcPort }}
+            - --grpc-port={{ .Values.service.grpcPort | default 9896 }}
             {{- end }}
             {{- if .Values.service.grpcService }}
             - --grpc-service-name={{ .Values.service.grpcService }}
@@ -201,6 +201,16 @@ spec:
             {{- if .Values.service.grpcPort }}
             - name: grpc
               containerPort: {{ .Values.service.grpcPort }}
+              protocol: TCP
+            {{- end }}
+            {{- if .Values.service.httpPort }}
+            - name: http
+              containerPort: {{ .Values.service.httpPort }}
+              protocol: TCP
+            {{- end }}
+            {{- if .Values.service.metricsPort }}
+            - name: metrics
+              containerPort: {{ .Values.service.metricsPort }}
               protocol: TCP
             {{- end }}
           volumeMounts:
