@@ -6,6 +6,7 @@ import (
 	"time"
 
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
+	"go.uber.org/zap"
 )
 
 func (db *Db) GetLastPlaidSync(ctx context.Context, userId, linkId uint64) (*schema.PlaidSync, error) {
@@ -52,7 +53,10 @@ func (db *Db) RecordPlaidSync(ctx context.Context, userId, plaidLinkId uint64, t
 		Removed:    removed,
 		TimeStamp:  time.Now().String(),
 		Trigger:    trigger,
+		LinkId:     &plaidLinkId,
 	}
+
+	db.Logger.Info("appending plaid sync to link yoan", zap.Any("sync", plaidSync))
 
 	// update the link
 	l := db.QueryOperator.LinkORM

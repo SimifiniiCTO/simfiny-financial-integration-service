@@ -122,7 +122,7 @@ func (db *Db) UpdateBankAccount(ctx context.Context, bankAccount *schema.BankAcc
 	return nil
 }
 
-func (db *Db) UpdateBankAccounts(ctx context.Context, bankAccounts []*schema.BankAccount) error {
+func (db *Db) UpdateBankAccounts(ctx context.Context, link *schema.Link, bankAccounts []*schema.BankAccount) error {
 	// instrument operation
 	if span := db.startDatastoreSpan(ctx, "dbtxn-update-bank-accounts"); span != nil {
 		defer span.End()
@@ -132,18 +132,26 @@ func (db *Db) UpdateBankAccounts(ctx context.Context, bankAccounts []*schema.Ban
 		return fmt.Errorf("bank accounts must be provided. got: %v", bankAccounts)
 	}
 
+	if link == nil {
+		return fmt.Errorf("link must be provided. got: %v", link)
+	}
+
+	// convert link to ORM
+	linkOrm, err := link.ToORM(ctx)
+	if err != nil {
+		return err
+	}
+
 	for _, bankAccount := range bankAccounts {
 		// validate the bankAccount
 		if err := bankAccount.ValidateAll(); err != nil {
 			return err
 		}
-
-		db.Logger.Info("validated bank account", zap.Any("bank_account", bankAccount))
-
 	}
 
-	b := db.QueryOperator.BankAccountORM
+	l := db.QueryOperator.LinkORM
 	bankAcctsOrm := make([]*schema.BankAccountORM, 0, len(bankAccounts))
+
 	for _, bankAccount := range bankAccounts {
 		acctOrm, err := bankAccount.ToORM(ctx)
 		if err != nil {
@@ -153,8 +161,12 @@ func (db *Db) UpdateBankAccounts(ctx context.Context, bankAccounts []*schema.Ban
 		bankAcctsOrm = append(bankAcctsOrm, &acctOrm)
 	}
 
+	if err := l.BankAccounts.Model(&linkOrm).Replace(bankAcctsOrm...); err != nil {
+		return fmt.Errorf("failed to update credit accounts: %v", err)
+	}
+
 	// perform the update operation
-	result, err := b.WithContext(ctx).Updates(bankAcctsOrm)
+	result, err := l.WithContext(ctx).Updates(&linkOrm)
 	if err != nil {
 		return err
 	}
@@ -320,7 +332,7 @@ func (db *Db) CreateCreditAccount(ctx context.Context, linkID uint64, creditAcco
 	return &res, nil
 }
 
-func (db *Db) UpdateCreditAccounts(ctx context.Context, creditAccounts []*schema.CreditAccount) error {
+func (db *Db) UpdateCreditAccounts(ctx context.Context, link *schema.Link, creditAccounts []*schema.CreditAccount) error {
 	// instrument operation
 	if span := db.startDatastoreSpan(ctx, "dbtxn-update-credit-accounts"); span != nil {
 		defer span.End()
@@ -328,6 +340,16 @@ func (db *Db) UpdateCreditAccounts(ctx context.Context, creditAccounts []*schema
 
 	if len(creditAccounts) == 0 {
 		return fmt.Errorf("credit accounts must be provided. got: %v", creditAccounts)
+	}
+
+	if link == nil {
+		return fmt.Errorf("link must be provided. got: %v", link)
+	}
+
+	// convert link to ORM
+	linkOrm, err := link.ToORM(ctx)
+	if err != nil {
+		return err
 	}
 
 	for _, account := range creditAccounts {
@@ -340,7 +362,7 @@ func (db *Db) UpdateCreditAccounts(ctx context.Context, creditAccounts []*schema
 
 	}
 
-	c := db.QueryOperator.CreditAccountORM
+	l := db.QueryOperator.LinkORM
 	creditAcctsOrm := make([]*schema.CreditAccountORM, 0, len(creditAccounts))
 	for _, creditAccount := range creditAccounts {
 		acctOrm, err := creditAccount.ToORM(ctx)
@@ -351,8 +373,12 @@ func (db *Db) UpdateCreditAccounts(ctx context.Context, creditAccounts []*schema
 		creditAcctsOrm = append(creditAcctsOrm, &acctOrm)
 	}
 
+	if err := l.CreditAccounts.Model(&linkOrm).Replace(creditAcctsOrm...); err != nil {
+		return fmt.Errorf("failed to update credit accounts: %v", err)
+	}
+
 	// perform the update operation
-	result, err := c.WithContext(ctx).Updates(creditAcctsOrm)
+	result, err := l.WithContext(ctx).Updates(&linkOrm)
 	if err != nil {
 		return err
 	}
@@ -437,7 +463,7 @@ func (db *Db) CreateStudentLoantAccount(ctx context.Context, linkID uint64, stud
 	return &res, nil
 }
 
-func (db *Db) UpdateStudentLoanAccounts(ctx context.Context, studentLoanAccounts []*schema.StudentLoanAccount) error {
+func (db *Db) UpdateStudentLoanAccounts(ctx context.Context, link *schema.Link, studentLoanAccounts []*schema.StudentLoanAccount) error {
 	// instrument operation
 	if span := db.startDatastoreSpan(ctx, "dbtxn-update-student-loan-accounts"); span != nil {
 		defer span.End()
@@ -445,6 +471,16 @@ func (db *Db) UpdateStudentLoanAccounts(ctx context.Context, studentLoanAccounts
 
 	if len(studentLoanAccounts) == 0 {
 		return fmt.Errorf("student loan accounts must be provided. got: %v", studentLoanAccounts)
+	}
+
+	if link == nil {
+		return fmt.Errorf("link must be provided. got: %v", link)
+	}
+
+	// convert link to ORM
+	linkOrm, err := link.ToORM(ctx)
+	if err != nil {
+		return err
 	}
 
 	for _, account := range studentLoanAccounts {
@@ -457,7 +493,7 @@ func (db *Db) UpdateStudentLoanAccounts(ctx context.Context, studentLoanAccounts
 
 	}
 
-	c := db.QueryOperator.StudentLoanAccountORM
+	l := db.QueryOperator.LinkORM
 	studentLoanAcctsOrm := make([]*schema.StudentLoanAccountORM, 0, len(studentLoanAccounts))
 	for _, studentLoanAccount := range studentLoanAccounts {
 		acctOrm, err := studentLoanAccount.ToORM(ctx)
@@ -468,8 +504,12 @@ func (db *Db) UpdateStudentLoanAccounts(ctx context.Context, studentLoanAccounts
 		studentLoanAcctsOrm = append(studentLoanAcctsOrm, &acctOrm)
 	}
 
+	if err := l.StudentLoanAccounts.Model(&linkOrm).Replace(studentLoanAcctsOrm...); err != nil {
+		return fmt.Errorf("failed to update credit accounts: %v", err)
+	}
+
 	// perform the update operation
-	result, err := c.WithContext(ctx).Updates(studentLoanAcctsOrm)
+	result, err := l.WithContext(ctx).Updates(&linkOrm)
 	if err != nil {
 		return err
 	}
@@ -555,7 +595,7 @@ func (db *Db) CreateMortgageLoantAccount(ctx context.Context, linkID uint64, mor
 	return &res, nil
 }
 
-func (db *Db) UpdateMortgageLoanAccounts(ctx context.Context, mortgageLoanAccounts []*schema.MortgageAccount) error {
+func (db *Db) UpdateMortgageLoanAccounts(ctx context.Context, link *schema.Link, mortgageLoanAccounts []*schema.MortgageAccount) error {
 	// instrument operation
 	if span := db.startDatastoreSpan(ctx, "dbtxn-update-mortgage-loan-accounts"); span != nil {
 		defer span.End()
@@ -563,6 +603,16 @@ func (db *Db) UpdateMortgageLoanAccounts(ctx context.Context, mortgageLoanAccoun
 
 	if len(mortgageLoanAccounts) == 0 {
 		return fmt.Errorf("mortgage loan accounts must be provided. got: %v", mortgageLoanAccounts)
+	}
+
+	if link == nil {
+		return fmt.Errorf("link must be provided. got: %v", link)
+	}
+
+	// convert link to ORM
+	linkOrm, err := link.ToORM(ctx)
+	if err != nil {
+		return err
 	}
 
 	for _, account := range mortgageLoanAccounts {
@@ -575,7 +625,7 @@ func (db *Db) UpdateMortgageLoanAccounts(ctx context.Context, mortgageLoanAccoun
 
 	}
 
-	c := db.QueryOperator.MortgageAccountORM
+	l := db.QueryOperator.LinkORM
 	mortgageLoanAcctsOrm := make([]*schema.MortgageAccountORM, 0, len(mortgageLoanAccounts))
 	for _, account := range mortgageLoanAccounts {
 		acctOrm, err := account.ToORM(ctx)
@@ -586,8 +636,12 @@ func (db *Db) UpdateMortgageLoanAccounts(ctx context.Context, mortgageLoanAccoun
 		mortgageLoanAcctsOrm = append(mortgageLoanAcctsOrm, &acctOrm)
 	}
 
+	if err := l.MortgageAccounts.Model(&linkOrm).Replace(mortgageLoanAcctsOrm...); err != nil {
+		return fmt.Errorf("failed to update credit accounts: %v", err)
+	}
+
 	// perform the update operation
-	result, err := c.WithContext(ctx).Updates(mortgageLoanAcctsOrm)
+	result, err := l.WithContext(ctx).Updates(&linkOrm)
 	if err != nil {
 		return err
 	}

@@ -304,7 +304,7 @@ func TestDb_UpdateBankAccounts(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if err := tt.db.UpdateBankAccounts(tt.args.ctx, tt.args.bankAccounts); (err != nil) != tt.wantErr {
+			if err := tt.db.UpdateBankAccounts(tt.args.ctx, nil, tt.args.bankAccounts); (err != nil) != tt.wantErr {
 				t.Errorf("Db.UpdateBankAccounts() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})

@@ -16,38 +16,43 @@ func (th *TaskHandler) syncTransactions(ctx context.Context, userId uint64, link
 		postgresClient   = th.postgresDb
 		clickhouseClient = th.clickhouseDb
 		plaidClient      = th.plaidClient
-		cursor           *string
+		cursor           string
 	)
 
 	// get the last plaid sync
 	lasPlaidSync := link.GetPlaidSync()
 	if lasPlaidSync != nil {
-		cursor = &lasPlaidSync.NextCursor
+		cursor = lasPlaidSync.NextCursor
 	}
 
-	syncResult, err := plaidClient.Sync(ctx, cursor, &accessToken)
+	syncResult, err := plaidClient.Sync(ctx, &cursor, &accessToken)
 	if err != nil {
 		return errors.Wrap(err, "failed to sync with plaid")
 	}
 
-	// record the sync event in the database
+	// // record the sync event in the database
 	linkId := link.Id
 	nextCursor := syncResult.NextCursor
 	added := len(syncResult.New)
 	deleted := len(syncResult.Deleted)
 	modified := len(syncResult.Updated)
+
+	th.logger.Info("recording plaid sync", zap.Uint64("userId", userId), zap.Uint64("linkId", linkId), zap.String("trigger", trigger), zap.String("nextCursor", nextCursor), zap.Int("added", added), zap.Int("modified", modified), zap.Int("deleted", deleted))
 	if err := postgresClient.RecordPlaidSync(ctx, userId, linkId, trigger, nextCursor, int64(added), int64(modified), int64(deleted)); err != nil {
 		return err
 	}
 
 	// If we received nothing to insert/update/remove then do nothing
 	if len(syncResult.New)+len(syncResult.Updated)+len(syncResult.Deleted) == 0 {
-		log.Info("no new data from plaid, nothing to be done")
+		th.logger.Info("no new data from plaid, nothing to be done")
 		return nil
 	}
 
 	plaidTransactions := append(syncResult.New, syncResult.Updated...)
 	th.logger.Info("received new transactions from plaid", zap.Int("count", len(syncResult.New)))
+	th.logger.Info("received updated transactions from plaid", zap.Int("count", len(syncResult.Updated)))
+	th.logger.Info("received deleted transactions from plaid", zap.Int("count", len(syncResult.Deleted)))
+	th.logger.Info("total transactions to process", zap.Int("count", len(plaidTransactions)))
 
 	plaidTransactionIds := make([]string, 0, len(syncResult.Updated))
 	for _, transaction := range syncResult.Updated {
@@ -64,7 +69,8 @@ func (th *TaskHandler) syncTransactions(ctx context.Context, userId uint64, link
 	th.logger.Info("found transactions in clickhouse", zap.Int("count", len(txnFound)))
 
 	for _, txn := range txnFound {
-		plaidTxnIdToTxnMap[txn.GetTransactionId()] = txn
+		currentTxn := txn
+		plaidTxnIdToTxnMap[currentTxn.GetTransactionId()] = currentTxn
 	}
 
 	th.logger.Info("transaction map created", zap.Int("count", len(plaidTxnIdToTxnMap)))

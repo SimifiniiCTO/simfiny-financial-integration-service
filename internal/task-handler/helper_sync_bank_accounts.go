@@ -142,7 +142,7 @@ func (th *TaskHandler) synchronizePlaidLinkedBankAccounts(ctx context.Context, l
 
 	// add the new accountsToBeAdded
 	if accountsToBeUpdated.Size() > 0 {
-		if err := th.postgresDb.UpdateBankAccounts(ctx, accountsToBeUpdated.Slice()); err != nil {
+		if err := th.postgresDb.UpdateBankAccounts(ctx, link, accountsToBeUpdated.Slice()); err != nil {
 			th.logger.Error("failed to update bank accounts", zap.Error(err))
 			return err
 		}
@@ -168,14 +168,8 @@ func copyBankAccount(src *apiv1.BankAccount, dest *apiv1.BankAccount) {
 		return
 	}
 
-	dest.Name = src.Name
-	dest.Number = src.Number
-	dest.Type = src.Type
 	dest.Balance = src.Balance
 	dest.Currency = src.Currency
 	dest.CurrentFunds = src.CurrentFunds
 	dest.BalanceLimit = src.BalanceLimit
-	dest.PlaidAccountId = src.PlaidAccountId
-	dest.Subtype = src.Subtype
-	dest.Status = src.Status
 }
