@@ -158,6 +158,8 @@ func (s *Server) handleCheckoutSessionCompleted(ctx context.Context, event strip
 		return err
 	}
 
+	s.logger.Info("checkout session completed", zap.Any("checkoutSession", checkoutSession))
+
 	if checkoutSession.Customer == nil || checkoutSession.Subscription == nil {
 		log.Println("Error retrieving customer or subscription from checkout session")
 		return errors.New("error retrieving customer or subscription from checkout session")
@@ -250,7 +252,7 @@ func (s *Server) extractCheckoutSessionFromEvent(event stripe.Event) (*stripe.Ch
 		return nil, err
 	}
 
-	if checkoutSession.Customer == nil || checkoutSession.Subscription == nil {
+	if checkoutSession.CustomerDetails == nil || checkoutSession.Subscription == nil {
 		log.Println("Error retrieving customer or subscription from checkout session")
 		return nil, err
 	}
