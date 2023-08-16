@@ -118,8 +118,10 @@ jobs:
             type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
             type=raw,value=staging,enable=${{ github.ref == format('refs/heads/{0}', 'release') }}
       - name: Publish Multi-Arch Image Social Service
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3
         with:
+          sbom: true
+          provenance: true
           push: ${{ github.event_name != 'pull_request' }}
           builder: ${{ steps.buildx.outputs.name }}
           context: .
@@ -130,14 +132,19 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
       - name: Publish base image of Service
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3
         with:
+          sbom: true
+          provenance: true
           push: true
           builder: ${{ steps.buildx.outputs.name }}
           context: .
           platforms: linux/amd64,linux/arm64/v8
           file: ./Dockerfile.base
           tags: docker.io/feelguuds/financial-integration-service-base:latest
+          build-args: |
+            REVISION=${{ steps.prep.outputs.REVISION }}
+          labels: ${{ steps.meta.outputs.labels }}
       - name: Debug failure
         if: failure()
         run: |
