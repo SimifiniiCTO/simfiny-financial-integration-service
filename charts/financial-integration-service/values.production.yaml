@@ -68,14 +68,14 @@ database:
   maxOpenConnections: 10
   connectionMaxLifetime: 10h
 
-batch-jobs:
-  recurring-transactions:
+batchJobs:
+  recurringTransactions:
     interval: "@every 3h"
     enabled: true
-  sync-all-accounts:
+  syncAllAccounts:
     interval: "@every 1h"
     enabled: true
-  actionable-insights:
+  actionableInsights:
     interval: "@weekly"
     enabled: true
 
