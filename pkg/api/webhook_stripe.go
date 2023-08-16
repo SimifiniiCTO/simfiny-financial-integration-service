@@ -13,7 +13,6 @@ import (
 	schema "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
 	"github.com/pkg/errors"
 	"github.com/stripe/stripe-go/v74"
-	"github.com/stripe/stripe-go/v74/webhook"
 	"go.uber.org/zap"
 )
 
@@ -53,24 +52,24 @@ func (s *Server) handleStripeWebhook(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	// Replace this endpoint secret with your endpoint's unique secret
-	// If you are testing with the CLI, find the secret by running 'stripe listen'
-	// If you are using an endpoint defined with the API or dashboard, look in your webhook settings
-	// at https://dashboard.stripe.com/webhooks
-	var endpointSecret string
-	if s.config.Environment == "dev" {
-		endpointSecret = "whsec_21441814697a4a51dc01395a030498131d56ec4d7155bb216cc75f36548c86bf"
-	} else {
-		endpointSecret = s.config.StripeEndpointSigningSecretKey
-	}
+	// // Replace this endpoint secret with your endpoint's unique secret
+	// // If you are testing with the CLI, find the secret by running 'stripe listen'
+	// // If you are using an endpoint defined with the API or dashboard, look in your webhook settings
+	// // at https://dashboard.stripe.com/webhooks
+	// var endpointSecret string
+	// if s.config.Environment == "dev" {
+	// 	endpointSecret = "whsec_21441814697a4a51dc01395a030498131d56ec4d7155bb216cc75f36548c86bf"
+	// } else {
+	// 	endpointSecret = s.config.StripeEndpointSigningSecretKey
+	// }
 
-	signatureHeader := req.Header.Get("Stripe-Signature")
-	event, err = webhook.ConstructEvent(payload, signatureHeader, endpointSecret)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "⚠️  Webhook signature verification failed. %v\n", err)
-		w.WriteHeader(http.StatusBadRequest) // Return a 400 error on a bad signature
-		return
-	}
+	// signatureHeader := req.Header.Get("Stripe-Signature")
+	// event, err = webhook.ConstructEvent(payload, signatureHeader, endpointSecret)
+	// if err != nil {
+	// 	fmt.Fprintf(os.Stderr, "⚠️  Webhook signature verification failed. %v\n", err)
+	// 	w.WriteHeader(http.StatusBadRequest) // Return a 400 error on a bad signature
+	// 	return
+	// }
 	// Unmarshal the event data into an appropriate struct depending on its Type
 	switch event.Type {
 	// subscribption events - ref: https://stripe.com/docs/billing/subscriptions/overview#subscription-statuses
