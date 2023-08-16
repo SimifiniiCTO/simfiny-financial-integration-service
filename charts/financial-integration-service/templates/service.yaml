@@ -24,6 +24,12 @@ spec:
       protocol: TCP
       name: http
     {{- end }}
+    {{- if .Values.service.metricsPort }}
+    - port: {{ .Values.service.metricsPort }}
+      targetPort: metrics
+      protocol: TCP
+      name: metrics
+    {{- end }}
   selector:
     {{- include "fis.selectorLabels" . | nindent 4 }}
 {{- end }}
