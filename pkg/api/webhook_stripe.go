@@ -152,6 +152,7 @@ func (s *Server) handleStripeWebhook(w http.ResponseWriter, req *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }
 
+// handleCheckoutSessionCompleted handles the checkout session completed event
 func (s *Server) handleCheckoutSessionCompleted(ctx context.Context, event stripe.Event) error {
 	checkoutSession, err := s.extractCheckoutSessionFromEvent(event)
 	if err != nil {
@@ -160,12 +161,12 @@ func (s *Server) handleCheckoutSessionCompleted(ctx context.Context, event strip
 
 	s.logger.Info("checkout session completed", zap.Any("checkoutSession", checkoutSession))
 
-	if checkoutSession.Customer == nil || checkoutSession.Subscription == nil {
+	if checkoutSession == nil || checkoutSession.Customer == nil || checkoutSession.Subscription == nil {
 		log.Println("Error retrieving customer or subscription from checkout session")
 		return errors.New("error retrieving customer or subscription from checkout session")
 	}
 
-	if err := s.updateCustomerSubscription(ctx, checkoutSession.Customer, checkoutSession.Subscription); err != nil {
+	if err := s.updateCustomerSubscription(ctx, checkoutSession.Subscription); err != nil {
 		log.Println("Error updating customer subscription:", err)
 		return err
 	}
@@ -173,26 +174,39 @@ func (s *Server) handleCheckoutSessionCompleted(ctx context.Context, event strip
 	return nil
 }
 
-// process delete subscription request
+// handleSubscription updates the subscription status in the database based on the event type
 func (s *Server) handleSubscription(ctx context.Context, event stripe.Event, status schema.StripeSubscriptionStatus) error {
 	subscription, err := s.getSubscriptionFromEvent(event)
 	if err != nil {
 		return err
 	}
 
-	customer := subscription.Customer
+	if subscription == nil || subscription.Customer == nil {
+		return errors.New("subscription is nil and customer is nil")
+	}
 
-	if err := s.updateCustomerSubscription(ctx, customer, subscription); err != nil {
-		log.Println("Error updating customer subscription:", err)
+	s.logger.Info("subscription", zap.Any("data", subscription))
+
+	if err := s.updateCustomerSubscription(
+		ctx,
+		subscription); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (s *Server) updateCustomerSubscription(ctx context.Context, customer *stripe.Customer, subscription *stripe.Subscription) error {
-	customerID := customer.ID
-	customerEmail := customer.Email
-	stripeNewSubscription := subscription
+// updateCustomerSubscription updates customer subscription information in the database
+func (s *Server) updateCustomerSubscription(ctx context.Context, subscription *stripe.Subscription) error {
+	if subscription == nil {
+		return errors.New("subscription is nil")
+	}
+
+	if subscription.Customer == nil {
+		return errors.New("subscription customer is nil")
+	}
+
+	customer := subscription.Customer
+	customerID, customerEmail := customer.ID, customer.Email
 	if customerEmail == "" {
 		log.Println("Error retrieving customer email from checkout session")
 		return errors.New("error retrieving customer email from checkout session")
@@ -205,18 +219,18 @@ func (s *Server) updateCustomerSubscription(ctx context.Context, customer *strip
 	}
 
 	isTrialing := false
-	if stripeNewSubscription.Status == "trialing" {
+	if subscription.Status == "trialing" {
 		isTrialing = true
 	}
 
-	t := time.Unix(stripeNewSubscription.TrialEnd, 0)
+	t := time.Unix(subscription.TrialEnd, 0)
 
 	activeUntil := t.Format("2006-01-02 15:04:05")
 
 	currentSubscription := userProfile.StripeSubscriptions
 	if currentSubscription == nil {
 		currentSubscription = &schema.StripeSubscription{
-			StripeSubscriptionId:          stripeNewSubscription.ID,
+			StripeSubscriptionId:          subscription.ID,
 			StripeSubscriptionStatus:      schema.StripeSubscriptionStatus_STRIPE_SUBSCRIPTION_STATUS_ACTIVE,
 			StripeSubscriptionActiveUntil: activeUntil,
 			StripeWebhookLatestTimestamp:  time.Now().UTC().Format(time.RFC3339),
@@ -227,7 +241,7 @@ func (s *Server) updateCustomerSubscription(ctx context.Context, customer *strip
 		// we can assume this is a new subscription being created
 		userProfile.StripeCustomerId = customerID
 	} else {
-		currentSubscription.StripeSubscriptionId = stripeNewSubscription.ID
+		currentSubscription.StripeSubscriptionId = subscription.ID
 		currentSubscription.StripeSubscriptionStatus = schema.StripeSubscriptionStatus_STRIPE_SUBSCRIPTION_STATUS_ACTIVE
 		currentSubscription.StripeSubscriptionActiveUntil = activeUntil
 		currentSubscription.StripeWebhookLatestTimestamp = time.Now().UTC().Format(time.RFC3339)
@@ -235,7 +249,6 @@ func (s *Server) updateCustomerSubscription(ctx context.Context, customer *strip
 	}
 
 	userProfile.StripeSubscriptions = currentSubscription
-
 	if err := s.conn.UpdateUserProfile(ctx, userProfile); err != nil {
 		log.Println("Error updating user profile:", err)
 		return err
@@ -244,6 +257,7 @@ func (s *Server) updateCustomerSubscription(ctx context.Context, customer *strip
 	return nil
 }
 
+// extractCheckoutSessionFromEvent is used to extract the checkout session from an event
 func (s *Server) extractCheckoutSessionFromEvent(event stripe.Event) (*stripe.CheckoutSession, error) {
 	var checkoutSession stripe.CheckoutSession
 	s.logger.Info("checkout session completed", zap.Any("checkoutSession", checkoutSession))
@@ -252,7 +266,7 @@ func (s *Server) extractCheckoutSessionFromEvent(event stripe.Event) (*stripe.Ch
 		return nil, err
 	}
 
-	if checkoutSession.CustomerDetails == nil || checkoutSession.Subscription == nil {
+	if checkoutSession.Customer == nil || checkoutSession.Subscription == nil {
 		log.Println("Error retrieving customer or subscription from checkout session")
 		return nil, err
 	}
@@ -260,6 +274,7 @@ func (s *Server) extractCheckoutSessionFromEvent(event stripe.Event) (*stripe.Ch
 	return &checkoutSession, nil
 }
 
+// getSubscriptionFromEvent returns a subscription object from a Stripe event
 func (s *Server) getSubscriptionFromEvent(event stripe.Event) (*stripe.Subscription, error) {
 	var subscription stripe.Subscription
 	err := json.Unmarshal(event.Data.Raw, &subscription)
