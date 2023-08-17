@@ -294,6 +294,49 @@ func (db *Db) GetUserProfileByEmail(ctx context.Context, email string) (*schema.
 	return &profile, nil
 }
 
+// GetUserProfileByEmailOrCustomerId obtains a user profile by email or customer id if it exists within the database
+func (db *Db) GetUserProfileByEmailOrCustomerId(ctx context.Context, email, customerId string) (*schema.UserProfile, error) {
+	// instrument operation
+	if span := db.startDatastoreSpan(ctx, "dbtxn-get-profile"); span != nil {
+		defer span.End()
+	}
+
+	// validate the request
+	if email == "" && customerId == "" {
+		return nil, fmt.Errorf("invalid stripe customer id and email. stripe customer id and email cannot be empty")
+	}
+
+	// preload all dependencies
+	// meaning for all connected accounts, obtain all accounts and subaccounts
+	u := db.QueryOperator.UserProfileORM
+	record, err := u.
+		WithContext(ctx).
+		Where(u.Email.Eq(email)).
+		Or(u.StripeCustomerId.Eq(customerId)).
+		Preload(u.Link.BankAccounts.Pockets.Goals.Forecasts).
+		Preload(u.Link.BankAccounts.Pockets.Goals.Milestones.Budget).
+		Preload(u.Link.CreditAccounts.Aprs).
+		Preload(u.Link.MortgageAccounts).
+		Preload(u.Link.StudentLoanAccounts).
+		Preload(u.Link.InvestmentAccounts.Holdings).
+		Preload(u.Link.InvestmentAccounts.Securities).
+		Preload(u.Link.Token).
+		Preload(u.Link.PlaidLink).
+		Preload(u.StripeSubscriptions).
+		Preload(u.ActionableInsights).
+		First()
+	if err != nil {
+		return nil, err
+	}
+
+	profile, err := record.ToPB(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &profile, nil
+}
+
 // GetUserProfileByEmail obtains a user profile by user_id if it exists within the database
 func (db *Db) GetUserProfileByStripeSubscriptionId(ctx context.Context, subscriptionId string) (*schema.UserProfile, error) {
 	// instrument operation

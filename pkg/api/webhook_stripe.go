@@ -185,9 +185,9 @@ func (s *Server) handleCheckoutSessionCompleted(ctx context.Context, event strip
 		return errors.New("error retrieving customer email from checkout session")
 	}
 
-	userProfile, err := s.conn.GetUserProfileByEmail(ctx, customerEmail)
+	userProfile, err := s.conn.GetUserProfileByEmailOrCustomerId(ctx, customerEmail, clientReferenceId)
 	if err != nil {
-		log.Println("Error retrieving user profile:", err)
+		log.Println("Error retrieving user profile by customer id or email:", err)
 		return nil
 	}
 
