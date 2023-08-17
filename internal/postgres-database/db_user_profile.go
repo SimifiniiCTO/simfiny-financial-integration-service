@@ -293,3 +293,52 @@ func (db *Db) GetUserProfileByEmail(ctx context.Context, email string) (*schema.
 
 	return &profile, nil
 }
+
+// GetUserProfileByEmail obtains a user profile by user_id if it exists within the database
+func (db *Db) GetUserProfileByStripeSubscriptionId(ctx context.Context, subscriptionId string) (*schema.UserProfile, error) {
+	// instrument operation
+	if span := db.startDatastoreSpan(ctx, "dbtxn-get-profile"); span != nil {
+		defer span.End()
+	}
+
+	// validate the request
+	if subscriptionId == "" {
+		return nil, fmt.Errorf("invalid stripe subscription id. stripe subscription id cannot be empty")
+	}
+
+	// preload all dependencies
+	// meaning for all connected accounts, obtain all accounts and subaccounts
+	s := db.QueryOperator.StripeSubscriptionORM
+	record, err := s.WithContext(ctx).Where(s.StripeSubscriptionId.Eq(subscriptionId)).First()
+	if err != nil {
+		return nil, err
+	}
+
+	u := db.QueryOperator.UserProfileORM
+	userProfile, err := u.
+		WithContext(ctx).
+		Where(u.Id.Eq(*record.UserProfileId)).
+		Preload(u.Link.BankAccounts.Pockets.Goals.Forecasts).
+		Preload(u.Link.BankAccounts.Pockets.Goals.Milestones.Budget).
+		Preload(u.Link.CreditAccounts.Aprs).
+		Preload(u.Link.MortgageAccounts).
+		Preload(u.Link.StudentLoanAccounts).
+		Preload(u.Link.InvestmentAccounts.Holdings).
+		Preload(u.Link.InvestmentAccounts.Securities).
+		Preload(u.Link.Token).
+		Preload(u.Link.PlaidLink).
+		Preload(u.Link.PlaidSync).
+		Preload(u.StripeSubscriptions).
+		Preload(u.ActionableInsights).
+		First()
+	if err != nil {
+		return nil, err
+	}
+
+	profile, err := userProfile.ToPB(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &profile, nil
+}

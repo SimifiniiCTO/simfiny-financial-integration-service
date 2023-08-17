@@ -161,52 +161,25 @@ func (s *Server) handleCheckoutSessionCompleted(ctx context.Context, event strip
 
 	s.logger.Info("checkout session completed", zap.Any("checkoutSession", checkoutSession))
 
-	if checkoutSession == nil || checkoutSession.Customer == nil || checkoutSession.Subscription == nil {
+	if checkoutSession == nil || checkoutSession.CustomerDetails == nil || checkoutSession.Subscription == nil {
 		log.Println("Error retrieving customer or subscription from checkout session")
 		return errors.New("error retrieving customer or subscription from checkout session")
 	}
 
-	if err := s.updateCustomerSubscription(ctx, checkoutSession.Subscription); err != nil {
-		log.Println("Error updating customer subscription:", err)
-		return err
+	if checkoutSession == nil {
+		return errors.New("checkoutSession is nil")
 	}
 
-	return nil
-}
-
-// handleSubscription updates the subscription status in the database based on the event type
-func (s *Server) handleSubscription(ctx context.Context, event stripe.Event, status schema.StripeSubscriptionStatus) error {
-	subscription, err := s.getSubscriptionFromEvent(event)
-	if err != nil {
-		return err
+	customer, subscription, clientReferenceId := checkoutSession.CustomerDetails, checkoutSession.Subscription, checkoutSession.ClientReferenceID
+	if customer == nil {
+		return errors.New("checkout session customer details field is nil")
 	}
 
-	if subscription == nil || subscription.Customer == nil {
-		return errors.New("subscription is nil and customer is nil")
-	}
-
-	s.logger.Info("subscription", zap.Any("data", subscription))
-
-	if err := s.updateCustomerSubscription(
-		ctx,
-		subscription); err != nil {
-		return err
-	}
-	return nil
-}
-
-// updateCustomerSubscription updates customer subscription information in the database
-func (s *Server) updateCustomerSubscription(ctx context.Context, subscription *stripe.Subscription) error {
 	if subscription == nil {
-		return errors.New("subscription is nil")
+		return errors.New("checkout session subscription field is nil")
 	}
 
-	if subscription.Customer == nil {
-		return errors.New("subscription customer is nil")
-	}
-
-	customer := subscription.Customer
-	customerID, customerEmail := customer.ID, customer.Email
+	customerEmail := customer.Email
 	if customerEmail == "" {
 		log.Println("Error retrieving customer email from checkout session")
 		return errors.New("error retrieving customer email from checkout session")
@@ -239,10 +212,70 @@ func (s *Server) updateCustomerSubscription(ctx context.Context, subscription *s
 
 		// associate the customer id with the user profile since
 		// we can assume this is a new subscription being created
-		userProfile.StripeCustomerId = customerID
+		userProfile.StripeCustomerId = clientReferenceId
 	} else {
 		currentSubscription.StripeSubscriptionId = subscription.ID
 		currentSubscription.StripeSubscriptionStatus = schema.StripeSubscriptionStatus_STRIPE_SUBSCRIPTION_STATUS_ACTIVE
+		currentSubscription.StripeSubscriptionActiveUntil = activeUntil
+		currentSubscription.StripeWebhookLatestTimestamp = time.Now().UTC().Format(time.RFC3339)
+		currentSubscription.IsTrialing = isTrialing
+	}
+
+	userProfile.StripeSubscriptions = currentSubscription
+	if err := s.conn.UpdateUserProfile(ctx, userProfile); err != nil {
+		log.Println("Error updating user profile:", err)
+		return err
+	}
+
+	return nil
+}
+
+// handleSubscription updates the subscription status in the database based on the event type
+func (s *Server) handleSubscription(ctx context.Context, event stripe.Event, status schema.StripeSubscriptionStatus) error {
+	subscription, err := s.getSubscriptionFromEvent(event)
+	if err != nil {
+		return err
+	}
+
+	if subscription == nil || subscription.Customer == nil {
+		return errors.New("subscription is nil and customer is nil")
+	}
+
+	s.logger.Info("subscription", zap.Any("data", subscription))
+
+	// query the backend for user profile by subscription id
+	userProfile, err := s.conn.GetUserProfileByStripeSubscriptionId(ctx, subscription.ID)
+	if err != nil {
+		log.Println("Error retrieving user profile:", err)
+		return err
+	}
+
+	// update user profile
+	if userProfile == nil {
+		return errors.New("user profile is nil")
+	}
+
+	isTrialing := false
+	if subscription.Status == "trialing" {
+		isTrialing = true
+	}
+
+	t := time.Unix(subscription.TrialEnd, 0)
+
+	activeUntil := t.Format("2006-01-02 15:04:05")
+
+	currentSubscription := userProfile.StripeSubscriptions
+	if currentSubscription == nil {
+		currentSubscription = &schema.StripeSubscription{
+			StripeSubscriptionId:          subscription.ID,
+			StripeSubscriptionStatus:      status,
+			StripeSubscriptionActiveUntil: activeUntil,
+			StripeWebhookLatestTimestamp:  time.Now().UTC().Format(time.RFC3339),
+			IsTrialing:                    isTrialing,
+		}
+	} else {
+		currentSubscription.StripeSubscriptionId = subscription.ID
+		currentSubscription.StripeSubscriptionStatus = status
 		currentSubscription.StripeSubscriptionActiveUntil = activeUntil
 		currentSubscription.StripeWebhookLatestTimestamp = time.Now().UTC().Format(time.RFC3339)
 		currentSubscription.IsTrialing = isTrialing
