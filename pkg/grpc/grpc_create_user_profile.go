@@ -7,6 +7,7 @@ import (
 	"google.golang.org/grpc/status"
 
 	proto "github.com/SimifiniiCTO/simfiny-financial-integration-service/pkg/generated/financial_integration_service_api/v1"
+	"github.com/stripe/stripe-go/v74"
 )
 
 // CreateUserProfile implements apiv1.FinancialServiceServer
@@ -31,6 +32,16 @@ func (s *Server) CreateUserProfile(ctx context.Context, req *proto.CreateUserPro
 		span := s.instrumentation.StartSegment(txn, "grpc-create-profile")
 		defer span.End()
 	}
+
+	// TODO: create the account as a distributed transaction with stripe
+	customer, err := s.stripeClient.Customers.New(&stripe.CustomerParams{
+		Email: &req.Email,
+	})
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	req.Profile.StripeCustomerId = customer.ID
 
 	// store email address
 	if req.Profile.Email == "" && req.Email != "" {
