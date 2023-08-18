@@ -60,20 +60,11 @@ jobs:
           owner: SimifiniiCTO
           repository: simfiny-financial-integration-service
           branch: gh-pages
-      - name: Sample Publish
-        run: |
-          helm chart save ${{ github.workspace }}/charts/financial-integration-service ${{ github.workspace }}/charts/financial-integration-service-${{ steps.prep.outputs.VERSION }}.tgz
-          helm chart push ${{ env.GCR_IMAGE }}:${{ github.sha }}
       - name: Publish Helm chart to GHCR
         run: |
-          helm package charts/financial-integration-service
-          helm push financial-integration-service-${{ steps.prep.outputs.VERSION }}.tgz oci://ghcr.io/simifiniicto/charts
-          rm financial-integration-service-${{ steps.prep.outputs.VERSION }}.tgz
-      - name: Publish Helm chart to GHCR
-        run: |
-          helm package charts/financial-integration-service
-          helm push financial-integration-service-${{ steps.prep.outputs.VERSION }}.tgz oci://ghcr.io/stefanprodan/charts
-          rm financial-integration-service-${{ steps.prep.outputs.VERSION }}.tgz
+          helm package charts/financial-integration-service --app-version ${{  github.ref_name }}
+          helm push financial-integration-service-${{  github.ref_name }}.tgz oci://ghcr.io/simifiniicto/charts
+          rm financial-integration-service-${{  github.ref_name }}.tgz
       - name: Publish Flux OCI artifact to GHCR
         run: |
           flux push artifact oci://ghcr.io/stefanprodan/manifests/financial-integration-service:${{ steps.prep.outputs.VERSION }} \
