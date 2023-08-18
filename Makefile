@@ -126,6 +126,7 @@ get-deps:
 gen:
 	buf generate
 	cp proto/fis_service.swagger.json proto/swagger/swagger.json
+	cp charts/financial-integration-service/README.md ./docs/content/4.service/3.service-helm-chart-definition.md
 
 gen-service-profile:
 	linkerd profile --proto api/protobuf/financial_integration_service_api/v1/service_financial_service.proto financial-integration-service

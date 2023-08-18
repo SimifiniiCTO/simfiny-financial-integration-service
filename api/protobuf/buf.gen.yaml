@@ -34,9 +34,9 @@ plugins:
   - plugin: buf.build/community/chrusty-jsonschema
     out: ../../pkg/generated/ts/json
   - plugin: buf.build/community/pseudomuto-doc
-    out: ../../documentation/service-definition
+    out: ../../docs/content/4.service
     opt:
-      - markdown,docs.md
+      - markdown,2.service-definition.md
   - plugin: buf.build/grpc-ecosystem/gateway:v2.16.0
     out: ../../pkg/generated
     opt:
