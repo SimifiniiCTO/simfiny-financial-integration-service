@@ -54,7 +54,7 @@ jobs:
       - name: Prepare
         id: prep
         run: |
-          HELM_VERSION=$(grep 'VERSION' version | awk '{ print $4 }' | tr -d '"')
+          HELM_VERSION=$(grep 'version:' ./example-chart/Chart.yaml | tail -n1 | awk '{ print $2}')
           VERSION=sha-${GITHUB_SHA::8}
           echo "BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_OUTPUT
           echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
