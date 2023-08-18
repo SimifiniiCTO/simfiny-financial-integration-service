@@ -3,9 +3,9 @@ entries:
   financial-integration-service:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2023-08-18T17:31:26.60353105Z"
+    created: "2023-08-18T17:31:30.343520296Z"
     description: Financial Integration Service Helm chart for Kubernetes
-    digest: d6a48fe2d5dd135dba373a5a55ecf1bceaa9ba4aa15619cef50278e9bad18149
+    digest: d4c91ef61bd2f45e1837c55fa3e3ff29e6c50dae514d8a867e04dda2276b37c2
     kubeVersion: '>=1.19.0-0'
     maintainers:
     - email: yoan@simfinii.com
@@ -15,4 +15,4 @@ entries:
     urls:
     - https://charts.melodiy.io/financial-integration-service-0.1.1.tgz
     version: 0.1.1
-generated: "2023-08-18T17:31:26.600745655Z"
+generated: "2023-08-18T17:31:30.340798521Z"
