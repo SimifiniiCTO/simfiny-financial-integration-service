@@ -106,10 +106,20 @@ The command removes all the Kubernetes components associated with the chart and 
 | cache | string | `""` |  |
 | cacheTLSEnabled | bool | `true` |  |
 | cacheTTLInSeconds | int | `3600` |  |
-| certificate.create | bool | `false` |  |
-| certificate.dnsNames[0] | string | `"financial-integration-service"` |  |
-| certificate.issuerRef.kind | string | `"ClusterIssuer"` |  |
-| certificate.issuerRef.name | string | `"self-signed"` |  |
+| certificate | object | `{"create":false,"dnsNames":["financial-integration-service"],"duration":"24h","ipAddresses":{},"issuerRef":{"kind":"ClusterIssuer","name":"self-signed"},"key":{"algorithm":"rsa","rotationPolicy":"Never","size":"2048"},"namespace":"","renewBefore":"12h","usages":["server auth","client auth"]}` | Create a Certificate Manager certificate (cert-manager required). |
+| certificate.dnsNames | list | `["financial-integration-service"]` | The hostname and any subject alternative names for the certificate. |
+| certificate.duration | string | `"24h"` | The validity duration of the certificate. |
+| certificate.ipAddresses | object | `{}` | IP addresses to associate with the certificate (usually for internal services). |
+| certificate.issuerRef | object | `{"kind":"ClusterIssuer","name":"self-signed"}` | Reference to the Issuer or ClusterIssuer resource that will issue the certificate. |
+| certificate.issuerRef.kind | string | `"ClusterIssuer"` | Type of the issuer resource. Can be either 'Issuer' (namespace-scoped) or 'ClusterIssuer' (cluster-scoped). |
+| certificate.issuerRef.name | string | `"self-signed"` | Name of the issuer resource. |
+| certificate.key | object | `{"algorithm":"rsa","rotationPolicy":"Never","size":"2048"}` | Configuration related to the private key of the certificate. |
+| certificate.key.algorithm | string | `"rsa"` | Cryptographic algorithm used for the key. |
+| certificate.key.rotationPolicy | string | `"Never"` | Policy that determines when to rotate the private key. 'Never' means no automatic rotation. |
+| certificate.key.size | string | `"2048"` | Size (in bits) of the key. Common sizes are 2048, 3072 or 4096 for RSA. |
+| certificate.namespace | string | `""` | The namespace in which the certificate should be created. Leave empty for default namespace. |
+| certificate.renewBefore | string | `"12h"` | Duration before the certificate expiration to renew it. |
+| certificate.usages | list | `["server auth","client auth"]` | Intended usage of the certificate, determining its key usages and extended key usages. |
 | clickhouse.host | string | `"l77zn1po0n.us-east-1.aws.clickhouse.cloud"` |  |
 | clickhouse.maxConnectionAttempts | int | `4` |  |
 | clickhouse.maxConnectionRetries | int | `4` |  |

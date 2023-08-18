@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/norwoodj/helm-docs
-    rev: v1.10.0
+    rev: v1.11.1
     hooks:
       - id: helm-docs
         args:
@@ -8,20 +8,23 @@ repos:
           - --template-files=./_templates.gotmpl
           - --template-files=README.md.gotmpl
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v0.7.1
+    rev: v4.4.0
     hooks:
       -   id: check-merge-conflict
-      -   id: check-yaml
-      -   id: end-of-file-fixer
+      -   id: no-commit-to-branch
+          args:
+            - -b
+            - main
+      # -   id: end-of-file-fixer
       -   id: trailing-whitespace
   - repo: https://github.com/talos-systems/conform
-    rev: v0.1.0-alpha.25
+    rev: v0.1.0-alpha.27
     hooks:
       - id: conform
         stages:
           - commit-msg
   - repo: https://github.com/tekwizely/pre-commit-golang
-    rev: master
+    rev: v1.0.0-rc.1
     hooks:
     #
     # Go Build

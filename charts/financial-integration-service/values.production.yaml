@@ -102,7 +102,7 @@ plaid:
   # If you don't see the institution you want in Link, remove any products you aren't using.
   # Important: When moving to Production, make sure to update this list with only the products
   # you plan to use. Otherwise, you may be billed for unneeded products.
-  products: transactions 
+  products: transactions
   # Only required for OAuth:
   # For sandbox, set PLAID_REDIRECT_URI to 'http://localhost:3000/'
   # The OAuth redirect flow requires an endpoint on the developer's website
@@ -209,17 +209,6 @@ tls:
   # in local clusters such as kind without port forwarding
   hostPort:
 
-# create a certificate manager certificate (cert-manager required)
-certificate:
-  create: false
-  # the issuer used to issue the certificate
-  issuerRef:
-    kind: ClusterIssuer
-    name: self-signed
-  # the hostname / subject alternative names for the certificate
-  dnsNames:
-    - financial-integration-service
-
 # metrics-server add-on required
 autoscaling:
   enabled: true
@@ -308,3 +297,48 @@ linkerd:
     prometheus.io/path: "/metrics"
 
 taskProcessorWorkers: 5
+
+# Create a Certificate Manager certificate (cert-manager required).
+certificate:
+  # Whether to create the Certificate resource.
+  create: false
+
+  # The namespace in which the certificate should be created. Leave empty for default namespace.
+  namespace: "" # optional
+
+  # The validity duration of the certificate.
+  duration: "24h"
+
+  # Duration before the certificate expiration to renew it.
+  renewBefore: "12h"
+
+  # IP addresses to associate with the certificate (usually for internal services).
+  ipAddresses: {}
+
+  # The hostname and any subject alternative names for the certificate.
+  dnsNames:
+    - financial-integration-service
+
+  # Reference to the Issuer or ClusterIssuer resource that will issue the certificate.
+  issuerRef:
+    # Name of the issuer resource.
+    name: "self-signed"
+
+    # Type of the issuer resource. Can be either 'Issuer' (namespace-scoped) or 'ClusterIssuer' (cluster-scoped).
+    kind: "ClusterIssuer"
+
+  # Intended usage of the certificate, determining its key usages and extended key usages.
+  usages:
+    - "server auth"
+    - "client auth"
+
+  # Configuration related to the private key of the certificate.
+  key:
+    # Cryptographic algorithm used for the key.
+    algorithm: "rsa"
+
+    # Size (in bits) of the key. Common sizes are 2048, 3072 or 4096 for RSA.
+    size: "2048"
+
+    # Policy that determines when to rotate the private key. 'Never' means no automatic rotation.
+    rotationPolicy: "Never"

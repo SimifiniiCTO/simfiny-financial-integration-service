@@ -39,7 +39,7 @@ openai:
     frequencyPenalty: 0.0
     # how much to penalize new token based on wether they exist already in the text
     presencePenalty: 1
-    
+
 clickhouse:
   host: l77zn1po0n.us-east-1.aws.clickhouse.cloud
   port: 8443
@@ -51,7 +51,7 @@ clickhouse:
   maxConnectionRetrySleepInterval: 100ms
   maxQueryTimeout: 500ms
   uri: https://default:8OnfmVp~U6xnZ@l77zn1po0n.us-east-1.aws.clickhouse.cloud:8443/default?secure=true&skip_verify=true
-  
+
 database:
   host: financial-integration-service-db
   port: 5432
@@ -193,17 +193,6 @@ tls:
   # in local clusters such as kind without port forwarding
   hostPort:
 
-# create a certificate manager certificate (cert-manager required)
-certificate:
-  create: false
-  # the issuer used to issue the certificate
-  issuerRef:
-    kind: ClusterIssuer
-    name: self-signed
-  # the hostname / subject alternative names for the certificate
-  dnsNames:
-    - financial-integration-service
-
 # metrics-server add-on required
 autoscaling:
   enabled: true
@@ -221,7 +210,7 @@ cache: ""
 cacheTLSEnabled: true
 
 cacheTTLInSeconds: 3600
-  
+
 # Redis deployment
 redis:
   enabled: false
@@ -292,3 +281,49 @@ linkerd:
 
 # -- number of task processor worker threads to spin up
 taskProcessorWorkers: 5
+
+
+# -- Create a Certificate Manager certificate (cert-manager required).
+certificate:
+  # Whether to create the Certificate resource.
+  create: false
+
+  # -- The namespace in which the certificate should be created. Leave empty for default namespace.
+  namespace: "" # optional
+
+  # -- The validity duration of the certificate.
+  duration: "24h"
+
+  # -- Duration before the certificate expiration to renew it.
+  renewBefore: "12h"
+
+  # -- IP addresses to associate with the certificate (usually for internal services).
+  ipAddresses: {}
+
+  # -- The hostname and any subject alternative names for the certificate.
+  dnsNames:
+    - financial-integration-service
+
+  # -- Reference to the Issuer or ClusterIssuer resource that will issue the certificate.
+  issuerRef:
+    # -- Name of the issuer resource.
+    name: "self-signed"
+
+    # -- Type of the issuer resource. Can be either 'Issuer' (namespace-scoped) or 'ClusterIssuer' (cluster-scoped).
+    kind: "ClusterIssuer"
+
+  # -- Intended usage of the certificate, determining its key usages and extended key usages.
+  usages:
+    - "server auth"
+    - "client auth"
+
+  # -- Configuration related to the private key of the certificate.
+  key:
+    # -- Cryptographic algorithm used for the key.
+    algorithm: "rsa"
+
+    # -- Size (in bits) of the key. Common sizes are 2048, 3072 or 4096 for RSA.
+    size: "2048"
+
+    # -- Policy that determines when to rotate the private key. 'Never' means no automatic rotation.
+    rotationPolicy: "Never"
