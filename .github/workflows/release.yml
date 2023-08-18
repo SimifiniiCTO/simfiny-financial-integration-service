@@ -74,6 +74,12 @@ jobs:
           echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
           echo "REVISION=${GITHUB_SHA}" >> $GITHUB_OUTPUT
           echo "HELM_VERSION=${HELM_VERSION}" >> $GITHUB_OUTPUT
+      - name: validate
+        id: validation
+        uses: elifesciences/helm-validator-action@master
+        with:
+          chartPath: 'charts/financial-integration-service'
+          kubernetesVersion: '1.28.0'
       - name: Validate Service Helm Chart
         uses: stefanprodan/kube-tools@v1
         with:
