@@ -47,7 +47,7 @@ func (p *PlaidWrapper) Sync(ctx context.Context, cursor, accessToken *string) (*
 	for {
 		reqCtx := plaid.TransactionsSyncRequest{
 			AccessToken: *accessToken,
-			Count:       pointer.Int32P(500),
+			Count:       pointer.Int32P(1000),
 			Options: &plaid.TransactionsSyncRequestOptions{
 				IncludePersonalFinanceCategory: &includePersonalFinanceCategory,
 			},
