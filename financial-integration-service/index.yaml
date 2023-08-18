@@ -3,9 +3,9 @@ entries:
   financial-integration-service:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2023-08-18T18:10:00.385859547Z"
+    created: "2023-08-18T18:10:52.951053837Z"
     description: Financial Integration Service Helm chart for Kubernetes
-    digest: 4d50a6c226a577bd1941284f857dc454d5b30e0e23e1e388786fdf1ce5630532
+    digest: 5ef2209fdf7fa3f2ca9b6564100e561acfa7726ee70a92cbc05bef59376f85fa
     kubeVersion: '>=1.19.0-0'
     maintainers:
     - email: yoan@simfinii.com
@@ -15,4 +15,4 @@ entries:
     urls:
     - https://SimifiniiCTO.github.io/simfiny-financial-integration-service/financial-integration-service/financial-integration-service-0.1.1.tgz
     version: 0.1.1
-generated: "2023-08-18T18:10:00.382183204Z"
+generated: "2023-08-18T18:10:52.947640233Z"
