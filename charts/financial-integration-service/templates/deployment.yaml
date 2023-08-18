@@ -215,6 +215,19 @@ spec:
           - name: fis_BACKEND_URL
             value: {{ .Values.backend }}
           {{- end }}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.probes.liveliness.httpGet.path }}
+              port: {{ .Values.probes.liveliness.httpGet.port }}
+            initialDelaySeconds: {{ .Values.probes.liveliness.initialDelaySeconds }}
+            periodSeconds: {{ .Values.probes.liveliness.periodSeconds }}
+            timeoutSeconds: {{ .Values.probes.liveliness.timeoutSeconds }}
+            failureThreshold: {{ .Values.probes.liveliness.failurethreshold }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.probes.readiness.httpGet.path }}
+              port: {{ .Values.probes.readiness.httpGet.port }}
+            successThreshold: {{ .Values.probes.readiness.successThresholds }}
           ports:
             {{- if .Values.service.grpcPort }}
             - name: grpc

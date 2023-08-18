@@ -216,6 +216,25 @@ The command removes all the Kubernetes components associated with the chart and 
 | plaid.webhookOauthDomain | string | `"simfiny"` |  |
 | podAnnotations | object | `{}` |  |
 | postgresLocalDB.enabled | bool | `true` |  |
+| probes | object | `{"liveliness":{"failurethreshold":3,"httpGet":{"path":"/api/v1/health","port":9896,"scheme":"HTTP"},"initialDelaySeconds":10,"periodSeconds":30,"timeoutSeconds":5},"readiness":{"httpGet":{"path":"/api/v1/ready","port":9896,"scheme":"HTTP"},"initialDelaySeconds":5,"periodSeconds":15,"successThresholds":3,"timeoutSeconds":3}}` | Configuration for probes to check the health and readiness of a container. |
+| probes.liveliness | object | `{"failurethreshold":3,"httpGet":{"path":"/api/v1/health","port":9896,"scheme":"HTTP"},"initialDelaySeconds":10,"periodSeconds":30,"timeoutSeconds":5}` | Liveliness probe configuration to ensure the container is running and healthy. |
+| probes.liveliness.failurethreshold | int | `3` | the probe should be retried before marking the pod as unhealthy. |
+| probes.liveliness.httpGet | object | `{"path":"/api/v1/health","port":9896,"scheme":"HTTP"}` | Liveliness probe uses an HTTP GET request to check the health of the app. |
+| probes.liveliness.httpGet.path | string | `"/api/v1/health"` | The endpoint which the probe hits to check health. |
+| probes.liveliness.httpGet.port | int | `9896` | The port where the app is running and will receive probe requests. |
+| probes.liveliness.httpGet.scheme | string | `"HTTP"` | Optional: Defines if the request is HTTP or HTTPS. |
+| probes.liveliness.initialDelaySeconds | int | `10` | Number of seconds after the container starts before starting the liveliness probe. |
+| probes.liveliness.periodSeconds | int | `30` | How often (in seconds) to perform the liveliness probe. |
+| probes.liveliness.timeoutSeconds | int | `5` | Number of seconds after which the probe times out. |
+| probes.readiness | object | `{"httpGet":{"path":"/api/v1/ready","port":9896,"scheme":"HTTP"},"initialDelaySeconds":5,"periodSeconds":15,"successThresholds":3,"timeoutSeconds":3}` | Readiness probe configuration to check if the container is ready to serve requests. |
+| probes.readiness.httpGet | object | `{"path":"/api/v1/ready","port":9896,"scheme":"HTTP"}` | Readiness probe uses an HTTP GET request to check if the app is ready to receive traffic. |
+| probes.readiness.httpGet.path | string | `"/api/v1/ready"` | The endpoint which the probe hits to check readiness. |
+| probes.readiness.httpGet.port | int | `9896` | The port where the app is running and will receive probe requests. |
+| probes.readiness.httpGet.scheme | string | `"HTTP"` | Optional: Defines if the request is HTTP or HTTPS. |
+| probes.readiness.initialDelaySeconds | int | `5` | Number of seconds after the container starts before starting the readiness probe. |
+| probes.readiness.periodSeconds | int | `15` | How often (in seconds) to perform the readiness probe. |
+| probes.readiness.successThresholds | int | `3` | Number of consecutive successes required to mark the pod as ready. |
+| probes.readiness.timeoutSeconds | int | `3` | Number of seconds after which the probe times out. |
 | progressDeadlineInSeconds | int | `600` |  |
 | redis.enabled | bool | `false` |  |
 | redis.repository | string | `"redis"` |  |

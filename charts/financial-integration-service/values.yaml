@@ -415,3 +415,44 @@ certificate:
 
     # -- Policy that determines when to rotate the private key. 'Never' means no automatic rotation.
     rotationPolicy: "Never"
+
+# -- Configuration for probes to check the health and readiness of a container.
+probes:
+  # -- Liveliness probe configuration to ensure the container is running and healthy.
+  liveliness:
+    # -- Number of seconds after the container starts before starting the liveliness probe.
+    initialDelaySeconds: 10
+    # -- How often (in seconds) to perform the liveliness probe.
+    periodSeconds: 30
+    # -- Number of seconds after which the probe times out.
+    timeoutSeconds: 5
+    # -- When a probe fails, 'failurethreshold' determines how many times
+    # -- the probe should be retried before marking the pod as unhealthy.
+    failurethreshold: 3
+    # -- Liveliness probe uses an HTTP GET request to check the health of the app.
+    httpGet:
+      # -- The endpoint which the probe hits to check health.
+      path:  /api/v1/health
+      # -- The port where the app is running and will receive probe requests.
+      port: 9896
+      # -- Optional: Defines if the request is HTTP or HTTPS.
+      scheme: HTTP
+
+  # -- Readiness probe configuration to check if the container is ready to serve requests.
+  readiness:
+    # -- Number of seconds after the container starts before starting the readiness probe.
+    initialDelaySeconds: 5
+    # -- How often (in seconds) to perform the readiness probe.
+    periodSeconds: 15
+    # -- Number of seconds after which the probe times out.
+    timeoutSeconds: 3
+    # -- Number of consecutive successes required to mark the pod as ready.
+    successThresholds: 3
+    # -- Readiness probe uses an HTTP GET request to check if the app is ready to receive traffic.
+    httpGet:
+      # -- The endpoint which the probe hits to check readiness.
+      path: /api/v1/ready
+      # -- The port where the app is running and will receive probe requests.
+      port: 9896
+      # -- Optional: Defines if the request is HTTP or HTTPS.
+      scheme: HTTP

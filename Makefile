@@ -127,6 +127,9 @@ gen:
 	buf generate
 	cp proto/fis_service.swagger.json proto/swagger/swagger.json
 
+gen-service-profile:
+	linkerd profile --proto api/protobuf/financial_integration_service_api/v1/service_financial_service.proto financial-integration-service
+
 .PHONY: start-skaffold
 dev:
 	minikube start
@@ -164,7 +167,7 @@ test: run-background
 	echo "waiting for services to be ready to accept connections"
 	sleep 60
 	go test ./... -coverprofile cover.out
-	docker ps -a 
+	docker ps -a
 	make stop
 
 generate:
@@ -178,7 +181,7 @@ deploy:
 	./deploy/deploy.sh
 
 stop.cluster: ## Delete kind cluster
-	kind delete cluster 
+	kind delete cluster
 
 start.cluster: ## Starts a local kind cluster
 	kind create cluster || true
@@ -217,7 +220,7 @@ clean.files: ## Remove
 	rm -f ./junit-report.xml checkstyle-report.xml ./coverage.xml ./profile.cov
 
 kill.docker.desktop:
-	pkill -SIGHUP -f /Applications/Docker.app 'docker serve' 
+	pkill -SIGHUP -f /Applications/Docker.app 'docker serve'
 
 start.docker.desktop:
 	./integration-test/docker-desktop.sh
