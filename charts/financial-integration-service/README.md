@@ -189,9 +189,9 @@ The command removes all the Kubernetes components associated with the chart and 
 | redis.repository | string | `"redis"` |  |
 | redis.tag | string | `"6.0.8"` |  |
 | replicaCount | int | `3` | Number of replicas for the pod |
-| resources.limits | string | `nil` |  |
-| resources.requests.cpu | string | `"1m"` |  |
-| resources.requests.memory | string | `"16Mi"` |  |
+| resources | object | `{"limits":{"cpu":"100m","memory":"256Mi"},"requests":{"cpu":"100m","memory":"64Mi"}}` | Resources allocated for the pod |
+| resources.limits | object | `{"cpu":"100m","memory":"256Mi"}` | Maximum resources a pod can use |
+| resources.requests | object | `{"cpu":"100m","memory":"64Mi"}` | Minimum resources the pod needs to run |
 | revisionHistoryLimit | int | `3` | Number of old ReplicaSets to retain to allow rollback |
 | securityContext | object | `{}` |  |
 | service | object | `{"annotations":{},"enabled":true,"env":"dev","environment":"local","externalPort":9898,"grpcPort":9896,"grpcService":"financial-integration-service","hostPort":null,"http":{"client":{"timeout":"1s"},"server":{"shutdownTimeout":"5s","timeout":"1s"}},"httpPort":9898,"metricsPort":9797,"nodePort":31198,"rpc":{"timeout":"1s"},"type":"ClusterIP"}` | Kubernetes service related configurations |

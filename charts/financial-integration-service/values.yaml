@@ -363,11 +363,16 @@ serviceMonitor:
     service: financial-integration-service
     function: service-monitoring
 
+# -- Resources allocated for the pod
 resources:
+  # -- Maximum resources a pod can use
   limits:
+    cpu: 100m  # -- Setting CPU limit to 100 milli-cores
+    memory: 256Mi  # -- Setting memory limit to 128 MiB
+  # -- Minimum resources the pod needs to run
   requests:
-    cpu: 1m
-    memory: 16Mi
+    cpu: 100m  # -- Requesting a minimum of 1 milli-core of CPU
+    memory: 64Mi  # -- Requesting a minimum of 16 MiB memory
 
 nodeSelector: { }
 
