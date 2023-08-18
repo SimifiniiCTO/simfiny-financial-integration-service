@@ -35,7 +35,6 @@ require (
 	github.com/plaid/plaid-go/v14 v14.0.0
 	github.com/prometheus/client_golang v1.14.0
 	github.com/rookie-ninja/rk-boot/v2 v2.2.18
-	github.com/rookie-ninja/rk-entry/v2 v2.2.18
 	github.com/rookie-ninja/rk-grpc/v2 v2.2.18
 	github.com/sashabaranov/go-openai v1.13.0
 	github.com/spf13/cobra v1.6.1
@@ -74,6 +73,7 @@ require (
 	github.com/newrelic/go-agent/v3/integrations/nrgrpc v1.4.0 // indirect
 	github.com/redis/go-redis/v9 v9.0.5 // indirect
 	github.com/robfig/cron/v3 v3.0.1 // indirect
+	github.com/rookie-ninja/rk-entry/v2 v2.2.18 // indirect
 	github.com/rookie-ninja/rk-grpc v1.2.25 // indirect
 	github.com/yuin/gopher-lua v1.1.0 // indirect
 	go.opentelemetry.io/otel/metric v1.16.0 // indirect

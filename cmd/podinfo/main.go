@@ -8,7 +8,6 @@ import (
 	"github.com/newrelic/go-agent/v3/newrelic"
 	"github.com/plaid/plaid-go/v14/plaid"
 	rkboot "github.com/rookie-ninja/rk-boot/v2"
-	rkentry "github.com/rookie-ninja/rk-entry/v2/entry"
 	rkgrpc "github.com/rookie-ninja/rk-grpc/v2/boot"
 	"github.com/spf13/viper"
 	"go.temporal.io/sdk/client"
@@ -47,16 +46,14 @@ func main() {
 	// Create a new boot instance.
 	boot := rkboot.NewBoot()
 	// configure logging
-	logLevel := viper.GetString("level")
-	loggerCoreRef := rkentry.GlobalAppCtx.GetLoggerEntry("zap-logger").Logger
-	log, err := enforceLoggerLevel(loggerCoreRef, logLevel)
+	log, err := initLogger(
+		viper.GetString("level"))
 	if err != nil {
-		loggerCoreRef.Panic(err.Error())
+		panic(err.Error())
 	}
 
 	log.Info("starting service ....")
 
-	log.Info("successfully initialized newrelic sdk ....")
 	instrumentation, err := configureInstrumentationClient(log)
 	if err != nil {
 		log.Panic(err.Error())
@@ -531,7 +528,7 @@ func configureInstrumentationClient(logger *zap.Logger) (*instrumentation.Client
 
 // EnsureLoggerLevel ensures that the logger only logs messages at the given level and above.
 // The level string can be one of "debug", "info", "warn", "error", "dpanic", "panic", or "fatal".
-func enforceLoggerLevel(logger *zap.Logger, logLevel string) (*zap.Logger, error) {
+func initLogger(logLevel string) (*zap.Logger, error) {
 	var level zapcore.Level
 
 	switch logLevel {
@@ -553,11 +550,18 @@ func enforceLoggerLevel(logger *zap.Logger, logLevel string) (*zap.Logger, error
 		level = zapcore.InfoLevel
 	}
 
-	cfg := zap.NewProductionConfig()
-	cfg.Level = zap.NewAtomicLevelAt(level)
+	cfg := zap.Config{
+		Level:       zap.NewAtomicLevelAt(level),
+		Development: false,
+		Sampling: &zap.SamplingConfig{
+			Initial:    100,
+			Thereafter: 100,
+		},
+		Encoding:         "json",
+		EncoderConfig:    zap.NewProductionEncoderConfig(),
+		OutputPaths:      []string{"stdout"},
+		ErrorOutputPaths: []string{"stderr"},
+	}
 
-	// Build a new logger using the original logger's core, but with the desired level.
-	newLogger := zap.New(logger.Core(), zap.AddStacktrace(level))
-
-	return newLogger, nil
+	return cfg.Build()
 }
