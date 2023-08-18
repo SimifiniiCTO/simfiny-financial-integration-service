@@ -1,6 +1,14 @@
 name: release-chart
 on: [push, pull_request]
 
+permissions:
+  contents: write # needed to write releases
+  id-token: write # needed for keyless signing
+  packages: write # needed for ghcr access
+
+env:
+  KUBERNETES_VERSION: 1.26.0
+
 jobs:
   release-chart:
     env:
@@ -34,6 +42,7 @@ jobs:
       - name: Prepare
         id: prep
         run: |
+          HELM_VERSION=$(grep 'VERSION' version | awk '{ print $4 }' | tr -d '"')
           VERSION=sha-${GITHUB_SHA::8}
           if [[ $GITHUB_REF == refs/tags/* ]]; then
             VERSION=${GITHUB_REF/refs\/tags\//}
@@ -41,7 +50,6 @@ jobs:
           echo "BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_OUTPUT
           echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
           echo "REVISION=${GITHUB_SHA}" >> $GITHUB_OUTPUT
-          echo "CHART_VERSION=$(grep 'version:' ./charts/financial-integration-service/Chart.yaml | tail -n1 | awk '{ print $2 }')" >> $GITHUB_OUTPUT
       - name: Generate images meta
         id: meta
         uses: docker/metadata-action@v4
@@ -52,6 +60,16 @@ jobs:
           tags: |
             type=raw,value=${{ steps.prep.outputs.VERSION }}
             type=raw,value=latest
+      - name: Validate Service Helm Chart
+        run: |
+          helm lint ./charts/financialaiservice
+          helm template ./charts/financial-integration-service | kubeconform -strict -summary -kubernetes-version ${{ env.KUBERNETES_VERSION }}
+      - name: Publish Helm chart to GHCR
+        run: |
+          HELM_EXPERIMENTAL_OCI=1
+          helm package charts/financial-integration-service --version ${{ steps.prep.outputs.HELM_VERSION }}
+          helm push financial-integration-service-${{ steps.prep.outputs.HELM_VERSION }}.tgz oci://ghcr.io/simifiniicto/charts
+          rm financial-integration-service-${{ steps.prep.outputs.HELM_VERSION }}.tgz
       # - name: Publish Helm chart
       #   uses: stefanprodan/helm-gh-pages@master
       #   with:
@@ -61,11 +79,6 @@ jobs:
       #     owner: SimifiniiCTO
       #     repository: simfiny-financial-integration-service
       #     branch: gh-pages
-      - name: Publish Helm chart to GHCR
-        run: |
-          helm package charts/financial-integration-service
-          helm push financial-integration-service-${{ steps.prep.outputs.CHART_VERSION }}.tgz oci://ghcr.io/simifiniicto/charts
-          rm financial-integration-service-${{ steps.prep.outputs.CHART_VERSION }}.tgz
       - name: Publish Flux OCI artifact to GHCR
         run: |
           flux push artifact oci://ghcr.io/stefanprodan/manifests/financial-integration-service:${{ steps.prep.outputs.VERSION }} \
