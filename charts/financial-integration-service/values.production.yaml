@@ -271,22 +271,39 @@ serviceAccount:
 # set container security context
 securityContext: { }
 
+# -- This section configures the ingress for your Kubernetes deployment
 ingress:
+  # -- Specifies whether the ingress is enabled or not
   enabled: false
+
+  # -- This can be used to specify a specific class for the ingress. It's empty by default.
   className: ""
+
+  # -- Annotations allow you to specify additional metadata for the ingress
   annotations:
-    { }
-  # kubernetes.io/ingress.class: nginx
-  # kubernetes.io/tls-acme: "true"
+    # -- The annotations are empty by default.
+    # -- This one specifies which ingress controller to use (in this case, nginx)
+    # kubernetes.io/ingress.class: nginx
+
+    # -- This one specifies if you want to use automated certificate management with ACME
+    # kubernetes.io/tls-acme: "true"
+
+  # -- 'hosts' define which domain names this ingress will respond to
   hosts:
     - host: financial-integration-service.local
       paths:
+        # -- The specific path or endpoint the ingress will route traffic to.
         - path: /
+          # -- Specifies the type of the path. 'ImplementationSpecific' means the interpretation
+          # -- of the path is up to the ingress controller.
           pathType: ImplementationSpecific
-  tls: [ ]
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - chart-example.local
+
+  # -- 'tls' section is for specifying SSL/TLS certificates for secure connections
+  tls:
+    - secretName: financial-integration-service-tls  # -- Name of the secret storing the TLS cert
+      hosts:
+        # -- Specifies for which host the certificate is valid
+        - financial-integration-service.local
 
 # create Prometheus Operator monitor
 serviceMonitor:

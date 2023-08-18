@@ -180,13 +180,15 @@ The command removes all the Kubernetes components associated with the chart and 
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.repository | string | `"feelguuds/financial-integration-service"` |  |
 | image.tag | string | `"latest"` |  |
-| ingress.annotations | object | `{}` |  |
-| ingress.className | string | `""` |  |
-| ingress.enabled | bool | `false` |  |
-| ingress.hosts[0].host | string | `"financial-integration-service.local"` |  |
-| ingress.hosts[0].paths[0].path | string | `"/"` |  |
-| ingress.hosts[0].paths[0].pathType | string | `"ImplementationSpecific"` |  |
-| ingress.tls | list | `[]` |  |
+| ingress | object | `{"annotations":null,"className":"","enabled":false,"hosts":[{"host":"financial-integration-service.local","paths":[{"path":"/","pathType":"ImplementationSpecific"}]}],"tls":[{"hosts":["financial-integration-service.local"],"secretName":"financial-integration-service-tls"}]}` | This section configures the ingress for your Kubernetes deployment |
+| ingress.annotations | string | `nil` | Annotations allow you to specify additional metadata for the ingress |
+| ingress.className | string | `""` | This can be used to specify a specific class for the ingress. It's empty by default. |
+| ingress.enabled | bool | `false` | Specifies whether the ingress is enabled or not |
+| ingress.hosts | list | `[{"host":"financial-integration-service.local","paths":[{"path":"/","pathType":"ImplementationSpecific"}]}]` | 'hosts' define which domain names this ingress will respond to |
+| ingress.hosts[0].paths[0] | object | `{"path":"/","pathType":"ImplementationSpecific"}` | The specific path or endpoint the ingress will route traffic to. |
+| ingress.hosts[0].paths[0].pathType | string | `"ImplementationSpecific"` | of the path is up to the ingress controller. |
+| ingress.tls | list | `[{"hosts":["financial-integration-service.local"],"secretName":"financial-integration-service-tls"}]` | 'tls' section is for specifying SSL/TLS certificates for secure connections |
+| ingress.tls[0].hosts[0] | string | `"financial-integration-service.local"` | Specifies for which host the certificate is valid |
 | integrationTests.enabled | bool | `false` |  |
 | linkerd.annotations."linkerd.io/inject" | string | `"enabled"` |  |
 | linkerd.annotations."prometheus.io/path" | string | `"/metrics"` |  |

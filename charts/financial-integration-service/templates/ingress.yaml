@@ -1,18 +1,41 @@
 {{- if .Values.ingress.enabled -}}
 {{- $fullName := include "fis.fullname" . -}}
-{{- $svcPort := .Values.service.externalPort -}}
+{{- $svcPort := .Values.service.httpPort -}}
+
+# Kubernetes version check and setting ingress class annotation for versions < 1.18
+{{- if and .Values.ingress.className (not (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion)) }}
+  {{- if not (hasKey .Values.ingress.annotations "kubernetes.io/ingress.class") }}
+  {{- $_ := set .Values.ingress.annotations "kubernetes.io/ingress.class" .Values.ingress.className}}
+  {{- end }}
+{{- end }}
+
+# Determine the right API version based on the Kubernetes version in use.
+{{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion -}}
 apiVersion: networking.k8s.io/v1
+{{- else if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1beta1
+{{- else -}}
+apiVersion: extensions/v1beta1
+{{- end }}
+
 kind: Ingress
 metadata:
   name: {{ $fullName }}
   labels:
     {{- include "fis.labels" . | nindent 4 }}
+  # Add custom annotations to the Ingress resource.
   {{- with .Values.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
+
 spec:
+  # Set ingressClassName for Kubernetes versions >= 1.18
+  {{- if and .Values.ingress.className (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion) }}
   ingressClassName: {{ .Values.ingress.className }}
+  {{- end }}
+
+  # Define TLS configuration if specified in values.
   {{- if .Values.ingress.tls }}
   tls:
     {{- range .Values.ingress.tls }}
@@ -23,6 +46,8 @@ spec:
       secretName: {{ .secretName }}
     {{- end }}
   {{- end }}
+
+  # Define Ingress rules.
   rules:
     {{- range .Values.ingress.hosts }}
     - host: {{ .host | quote }}
@@ -30,12 +55,22 @@ spec:
         paths:
           {{- range .paths }}
           - path: {{ .path }}
+            {{- if and .pathType (semverCompare ">=1.18-0" $.Capabilities.KubeVersion.GitVersion) }}
+            # Set pathType for Kubernetes versions >= 1.18
             pathType: {{ .pathType }}
+            {{- end }}
             backend:
+              {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
+              # New backend format introduced in Kubernetes v1.19
               service:
                 name: {{ $fullName }}
                 port:
                   number: {{ $svcPort }}
+              {{- else }}
+              # Legacy backend format for Kubernetes versions < 1.19
+              serviceName: {{ $fullName }}
+              servicePort: {{ $svcPort }}
+              {{- end }}
           {{- end }}
     {{- end }}
 {{- end }}
