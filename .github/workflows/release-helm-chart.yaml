@@ -51,15 +51,15 @@ jobs:
           tags: |
             type=raw,value=${{ steps.prep.outputs.VERSION }}
             type=raw,value=latest
-      - name: Publish Helm chart
-        uses: stefanprodan/helm-gh-pages@master
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          charts_dir: charts
-          charts_url: https://charts.melodiy.io
-          owner: SimifiniiCTO
-          repository: simfiny-financial-integration-service
-          branch: gh-pages
+      # - name: Publish Helm chart
+      #   uses: stefanprodan/helm-gh-pages@master
+      #   with:
+      #     token: ${{ secrets.GITHUB_TOKEN }}
+      #     charts_dir: charts
+      #     charts_url: https://charts.melodiy.io
+      #     owner: SimifiniiCTO
+      #     repository: simfiny-financial-integration-service
+      #     branch: gh-pages
       - name: Publish Helm chart to GHCR
         run: |
           helm package charts/financial-integration-service --app-version ${{ steps.prep.outputs.VERSION }}
