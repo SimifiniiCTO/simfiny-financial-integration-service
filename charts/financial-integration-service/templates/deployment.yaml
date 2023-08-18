@@ -32,10 +32,10 @@ spec:
       # Setting this to 0 ensures that all pods are available during the update,
       # and the update will wait if a pod cannot be replaced.
       maxUnavailable: 0
-    # minReadySeconds specifies the number of seconds a pod should be ready (without any of its
-    # containers crashing) to be considered available. This affects the duration the pod is considered
-    # unavailable during the rolling update.
-    minReadySeconds: 10
+  # minReadySeconds specifies the number of seconds a pod should be ready (without any of its
+  # containers crashing) to be considered available. This affects the duration the pod is considered
+  # unavailable during the rolling update.
+  minReadySeconds: 10
   selector:
     matchLabels:
       {{- include "fis.selectorLabels" . | nindent 6 }}
