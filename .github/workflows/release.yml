@@ -25,6 +25,9 @@ jobs:
           - 3.8.1
         operating-system: [linux/amd64] #, linux/arm/v8
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     steps:
       - name: Get Release Version
         run: |
