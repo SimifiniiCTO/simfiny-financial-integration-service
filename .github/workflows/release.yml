@@ -65,7 +65,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Login to Docker Hub
-        uses: docker/login-action@v1
+        uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
@@ -96,12 +96,12 @@ jobs:
           owner: SimifiniiCTO
           repository: simfiny-financial-integration-service
           branch: gh-pages
-        continue-on-error: true
       - name: Publish Helm chart to GHCR
         run: |
           helm package charts/financial-integration-service
           helm push financial-integration-service-${{ steps.prep.outputs.HELM_VERSION }}.tgz oci://ghcr.io/simifiniicto/charts
           rm financial-integration-service-${{ steps.prep.outputs.HELM_VERSION }}.tgz
+        continue-on-error: true
       - name: Publish Flux OCI artifact to GHCR
         run: |
           flux push artifact oci://ghcr.io/simifiniicto/manifests/financial-integration-service:${{ steps.prep.outputs.HELM_VERSION }} \
@@ -109,6 +109,7 @@ jobs:
             --source="${{ github.event.repository.html_url }}" \
             --revision="${GITHUB_REF_NAME}/${GITHUB_SHA}"
           flux tag artifact oci://ghcr.io/simifiniicto/manifests/financial-integration-service:${{ steps.prep.outputs.HELM_VERSION }} --tag latest
+        continue-on-error: true
       - name: Publish config artifact
         run: |
           flux push artifact oci://ghcr.io/simifiniicto/financial-integration-service-deploy:${{ steps.prep.outputs.HELM_VERSION }} \
@@ -116,15 +117,7 @@ jobs:
             --source="${{ github.event.repository.html_url }}" \
             --revision="${GITHUB_REF_NAME}/${GITHUB_SHA}"
           flux tag artifact oci://ghcr.io/simifiniicto/financial-integration-service-deploy:${{ steps.prep.outputs.HELM_VERSION }} --tag latest
-      - name: Publish Service Helm Chart
-        uses: stefanprodan/helm-gh-pages@master
         continue-on-error: true
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          charts_dir: ./charts
-          target_dir: ./financial-integration-service
-          commit_username: yoanyombapro1234
-          commit_email: yoanyombapro@gmail.com
       - name: Generate images meta
         id: meta
         uses: docker/metadata-action@v4
