@@ -1,16 +1,29 @@
 {{- if .Values.service.enabled -}}
+# Define the Kubernetes Service object for the platform.
 apiVersion: v1
 kind: Service
 metadata:
   name: {{ template "fis.fullname" . }}
+
+  # Attach standard labels for the service. Helps in categorizing and filtering resources.
   labels:
     {{- include "fis.labels" . | nindent 4 }}
+
+# Allow for custom annotations, which can be used for cloud provider-specific configurations or other metadata.
 {{- with .Values.service.annotations }}
   annotations:
 {{ toYaml . | indent 4 }}
 {{- end }}
 spec:
+  # Define the type of service, e.g., ClusterIP, NodePort, LoadBalancer, etc.
   type: {{ .Values.service.type }}
+
+  # Configure session affinity if it's provided in values.
+  {{- if .Values.service.sessionAffinity }}
+  sessionAffinity: {{ .Values.service.sessionAffinity }}
+  {{- end }}
+
+  # List of ports that this service will expose. The primary is gRPC, but others can be added.
   ports:
     {{- if .Values.service.grpcPort }}
     - port: {{ .Values.service.grpcPort }}
@@ -30,6 +43,22 @@ spec:
       protocol: TCP
       name: metrics
     {{- end }}
+      {{- /* Optional support for additional ports */}}
+      {{- if .Values.service.additionalPorts }}
+      {{- range .Values.service.additionalPorts }}
+    - port: {{ .port }}
+      targetPort: {{ .targetPort }}
+      protocol: {{ default "TCP" .protocol }}
+      name: {{ .name }}
+      {{- end }}
+      {{- end }}
+
+  # Health check configurations to ensure service is healthy.
+  {{- if .Values.service.healthCheck }}
+  healthCheckNodePort: {{ .Values.service.healthCheck.nodePort }}
+  {{- end }}
+
+  # Label selectors to determine which pods will respond behind this service.
   selector:
     {{- include "fis.selectorLabels" . | nindent 4 }}
 {{- end }}

@@ -168,6 +168,23 @@ service:
       shutdownTimeout: 5s
   rpc:
     timeout: 1s
+  # Optional: Define additional ports.
+  # additionalPorts:
+  # - port: 8080
+  #   targetPort: http
+  #   protocol: TCP
+  #   name: http
+
+  # Optional: Configure session affinity for service.
+  # Valid options are "None" or "ClientIP".
+  # sessionAffinity: None
+
+  # Optional: Configure health checks.
+  # healthCheck:
+  #   nodePort: 30200
+  # the port used to bind the http port to the host
+  # NOTE: requires privileged container with NET_BIND_SERVICE capability -- this is useful for testing
+  # in local clusters such as kind without port forwarding
 
 dependencies:
   temporal:
