@@ -64,7 +64,6 @@ jobs:
         run: |
           helm package charts/financial-integration-service --app-version ${{ steps.prep.outputs.VERSION }}
           helm push financial-integration-service-${{ steps.prep.outputs.VERSION }}.tgz oci://ghcr.io/simifiniicto/charts
-          rm financial-integration-service-${{ steps.prep.outputs.VERSION }}.tgz
       - name: Publish Flux OCI artifact to GHCR
         run: |
           flux push artifact oci://ghcr.io/stefanprodan/manifests/financial-integration-service:${{ steps.prep.outputs.VERSION }} \
