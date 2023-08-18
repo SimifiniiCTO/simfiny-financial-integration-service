@@ -1,10 +1,10 @@
 {{- if .Values.autoscaling.enabled -}}
-apiVersion: autoscaling/v2beta2
+apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: {{ template "fis.fullname" . }}
   labels:
-    {{- include "fis.labels" . | nindent 4 }}  
+    {{- include "fis.labels" . | nindent 4 }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
@@ -13,29 +13,40 @@ spec:
   minReplicas: {{ .Values.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.autoscaling.maxReplicas }}
   metrics:
-  {{- if .Values.autoscaling.cpu }}
-  - type: Resource
-    resource:
-      name: cpu
-      target:
-        type: Utilization
-        averageUtilization: {{ .Values.autoscaling.cpu }}
-  {{- end }}
-  {{- if .Values.autoscaling.memory }}
-  - type: Resource
-    resource:
-      name: memory
-      target:
-        type: AverageValue
-        averageValue: {{ .Values.autoscaling.memory }}
-  {{- end }}
-  {{- if .Values.autoscaling.requests }}
-  - type: Pods
-    pods:
-      metric:
-        name: http_requests
-      target:
-        type: AverageValue
-        averageValue: {{ .Values.autoscaling.requests }}
-  {{- end }}
+    {{- if .Values.autoscaling.cpu }}
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.autoscaling.cpu }}
+    {{- end }}
+    {{- if .Values.autoscaling.memory }}
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.autoscaling.memory }}
+    {{- end }}
+  behavior:
+    scaleUp:
+      # stabilizationWindowSeconds: The amount of time the autoscaler should consider previous
+      # recommendations to prevent rapid fluctuations in scaling. For scale-up, I set a default
+      # of 0 seconds, which means it can scale up instantly. For scale-down, I set a default of
+      #  300 seconds (5 minutes) to prevent rapid scale-downs that can cause service disruptions.
+      stabilizationWindowSeconds: {{ .Values.autoscaling.behavior.scaleUp.stabilizationWindowSeconds | default "0" }}
+      # policies: Define how scaling should be performed. I've included Percent policies with defaults.
+      # The value is the percentage by which the replicas are allowed to be increased or decreased,
+      # and the periodSeconds is the time window for the given scaling percentage.
+      policies:
+      - type: Percent
+        value: {{ .Values.autoscaling.behavior.scaleUp.percent | default "100" }}
+        periodSeconds: {{ .Values.autoscaling.behavior.scaleUp.periodSeconds | default "15" }}
+    scaleDown:
+      stabilizationWindowSeconds: {{ .Values.autoscaling.behavior.scaleDown.stabilizationWindowSeconds | default "300" }}
+      policies:
+      - type: Percent
+        value: {{ .Values.autoscaling.behavior.scaleDown.percent | default "100" }}
+        periodSeconds: {{ .Values.autoscaling.behavior.scaleDown.periodSeconds | default "15" }}
 {{- end }}

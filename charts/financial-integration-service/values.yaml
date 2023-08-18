@@ -195,15 +195,36 @@ tls:
 
 # metrics-server add-on required
 autoscaling:
+  # Whether the autoscaler should be applied or not.
   enabled: true
-  minReplicas: 3
-  maxReplicas: 5
-  # average total CPU usage per pod (1-100)
-  cpu: 80
-  # average memory usage per pod (100Mi-1Gi)
-  memory: 80
-  # average http requests per second per pod (k8s-prometheus-adapter)
-  requests: 10000
+  # Minium replicas for the deployment
+  minReplicas: 1
+  # Maximum replicas for the deployment
+  maxReplicas: 10
+  #  Target average utilizations for CPU and Memory, respectively.
+  # These are thresholds that, when surpassed, will trigger the autoscaler
+  # to increase the pod count, or decrease if the utilization is below the threshold for a certain time.
+  cpu: 90   # Target average utilization for CPU in percentage
+  memory: 90  # Target average utilization for Memory in percentage
+  # Define the scaling policies and behavior for scaling up and scaling down.
+  # This is particularly useful to avoid rapid fluctuations in pod counts.
+  behavior:
+    scaleUp:
+      # The number of seconds for which past recommendations
+      # should be considered when scaling up or down.
+      stabilizationWindowSeconds: 0
+      # The percentage by which the autoscaler can increase or decrease the current replica count.
+      percent: 100
+      # The time window to consider when applying the percent scaling policy.
+      periodSeconds: 15
+    scaleDown:
+      # The number of seconds for which past recommendations
+      # should be considered when scaling up or down.
+      stabilizationWindowSeconds: 300
+      # The percentage by which the autoscaler can increase or decrease the current replica count.
+      percent: 100
+      # The time window to consider when applying the percent scaling policy.
+      periodSeconds: 15
 
 # Redis address in the format <host>:<port>
 cache: ""

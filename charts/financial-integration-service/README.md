@@ -85,12 +85,17 @@ The command removes all the Kubernetes components associated with the chart and 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | affinity | object | `{}` |  |
-| autoscaling.cpu | int | `80` |  |
+| autoscaling.behavior.scaleDown.percent | int | `100` |  |
+| autoscaling.behavior.scaleDown.periodSeconds | int | `15` |  |
+| autoscaling.behavior.scaleDown.stabilizationWindowSeconds | int | `300` |  |
+| autoscaling.behavior.scaleUp.percent | int | `100` |  |
+| autoscaling.behavior.scaleUp.periodSeconds | int | `15` |  |
+| autoscaling.behavior.scaleUp.stabilizationWindowSeconds | int | `0` |  |
+| autoscaling.cpu | int | `90` |  |
 | autoscaling.enabled | bool | `true` |  |
-| autoscaling.maxReplicas | int | `5` |  |
-| autoscaling.memory | int | `80` |  |
-| autoscaling.minReplicas | int | `3` |  |
-| autoscaling.requests | int | `10000` |  |
+| autoscaling.maxReplicas | int | `10` |  |
+| autoscaling.memory | int | `90` |  |
+| autoscaling.minReplicas | int | `1` |  |
 | aws.accessKeyID | string | `"AKIA5HFOAJRN7YDEYPST"` |  |
 | aws.kmsID | string | `"mrk-e44f269bc0034feb95ede34154c3cfe4"` |  |
 | aws.region | string | `"us-east-2"` |  |
