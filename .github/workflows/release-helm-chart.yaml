@@ -48,7 +48,7 @@ jobs:
       - name: Prepare
         id: prep
         run: |
-          HELM_VERSION=$(grep 'VERSION' version | awk '{ print $4 }' | tr -d '"')
+          HELM_VERSION=$(grep 'version:' ./charts/financial-integration-service/Chart.yaml | tail -n1 | awk '{ print $2}')
           VERSION=sha-${GITHUB_SHA::8}
           if [[ $GITHUB_REF == refs/tags/* ]]; then
             VERSION=${GITHUB_REF/refs\/tags\//}
