@@ -13,6 +13,7 @@ import (
 	"github.com/spf13/viper"
 	"go.temporal.io/sdk/client"
 	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
 
 	postgresdb "github.com/SimifiniiCTO/simfiny-core-lib/database/postgres"
 	"github.com/SimifiniiCTO/simfiny-core-lib/instrumentation"
@@ -46,65 +47,71 @@ func main() {
 	// Create a new boot instance.
 	boot := rkboot.NewBoot()
 	// configure logging
-	logger := rkentry.GlobalAppCtx.GetLoggerEntry("zap-logger").Logger
-	logger.Info("starting service ....")
-
-	logger.Info("successfully initialized newrelic sdk ....")
-	instrumentation, err := configureInstrumentationClient(logger)
+	logLevel := viper.GetString("level")
+	loggerCoreRef := rkentry.GlobalAppCtx.GetLoggerEntry("zap-logger").Logger
+	log, err := enforceLoggerLevel(loggerCoreRef, logLevel)
 	if err != nil {
-		logger.Panic(err.Error())
+		loggerCoreRef.Panic(err.Error())
+	}
+
+	log.Info("starting service ....")
+
+	log.Info("successfully initialized newrelic sdk ....")
+	instrumentation, err := configureInstrumentationClient(log)
+	if err != nil {
+		log.Panic(err.Error())
 	}
 
 	// load gRPC server config
 	var grpcCfg grpc.Config
 	if err := viper.Unmarshal(&grpcCfg); err != nil {
-		logger.Panic("config unmarshal failed", zap.Error(err))
+		log.Panic("config unmarshal failed", zap.Error(err))
 	}
 
 	var httpCfg api.Config
 	if err := viper.Unmarshal(&httpCfg); err != nil {
-		logger.Panic("config unmarshal failed", zap.Error(err))
+		log.Panic("config unmarshal failed", zap.Error(err))
 	}
 
-	keyManagement, err := configureKeyManagement(logger)
+	keyManagement, err := configureKeyManagement(log)
 	if err != nil {
-		logger.Panic(err.Error())
+		log.Panic(err.Error())
 	}
 
-	redisConn, err := configureRedisConn(logger, instrumentation)
+	redisConn, err := configureRedisConn(log, instrumentation)
 	if err != nil {
-		logger.Panic(err.Error())
+		log.Panic(err.Error())
 	}
 	defer redisConn.Close()
 
-	db, err := configureDatabaseConn(ctx, logger, instrumentation, keyManagement)
+	db, err := configureDatabaseConn(ctx, log, instrumentation, keyManagement)
 	if err != nil {
-		logger.Panic(err.Error())
+		log.Panic(err.Error())
 	}
 
 	conn, err := db.Conn.Engine.DB()
 	if err != nil {
-		logger.Panic(err.Error())
+		log.Panic(err.Error())
 	}
 	defer conn.Close()
 
-	plaidWrapper, err := configurePlaidWrapper(instrumentation, logger)
+	plaidWrapper, err := configurePlaidWrapper(instrumentation, log)
 	if err != nil {
-		logger.Panic(err.Error())
+		log.Panic(err.Error())
 	}
 
-	logger.Info("successfully initialized plaid wrapper ....")
+	log.Info("successfully initialized plaid wrapper ....")
 
-	transactionManager, err := configureTransactionManager(logger, db, instrumentation)
+	transactionManager, err := configureTransactionManager(log, db, instrumentation)
 	if err != nil {
-		logger.Panic(err.Error())
+		log.Panic(err.Error())
 	}
 
-	logger.Info("successfully initialized temporal client ....")
+	log.Info("successfully initialized temporal client ....")
 
-	clickHouseDb, err := configureClickhouseConn(ctx, logger, instrumentation)
+	clickHouseDb, err := configureClickhouseConn(ctx, log, instrumentation)
 	if err != nil {
-		logger.Panic(err.Error())
+		log.Panic(err.Error())
 	}
 
 	defer clickHouseDb.Close()
@@ -113,7 +120,7 @@ func main() {
 	openAiToken := viper.GetString("openai-token")
 	grpcSrv, err := grpc.NewServer(&grpc.Params{
 		Config:             &grpcCfg,
-		Logger:             logger,
+		Logger:             log,
 		Db:                 db,
 		Instrumentation:    instrumentation,
 		KeyManagement:      keyManagement,
@@ -124,10 +131,10 @@ func main() {
 		OpenAiToken:        &openAiToken,
 	})
 	if err != nil {
-		logger.Panic(err.Error())
+		log.Panic(err.Error())
 	}
 
-	logger.Info("successfully initialized grpc server ....")
+	log.Info("successfully initialized grpc server ....")
 
 	serviceName := viper.GetString("grpc-service-name")
 
@@ -135,7 +142,7 @@ func main() {
 	grpcEntry.AddRegFuncGrpc(grpcSrv.RegisterGrpcServer)
 	grpcEntry.AddRegFuncGw(proto.RegisterFinancialServiceHandlerFromEndpoint)
 
-	logger.Info("successfully configured grpc server ....")
+	log.Info("successfully configured grpc server ....")
 
 	// TODO: add grpc interceptor middleware to emit metrics on various gRPC calls
 	// Bootstrap
@@ -149,11 +156,11 @@ func main() {
 	// load HTTP server config
 	var srvCfg api.Config
 	if err := viper.Unmarshal(&srvCfg); err != nil {
-		logger.Panic("config unmarshal failed", zap.Error(err))
+		log.Panic("config unmarshal failed", zap.Error(err))
 	}
 
 	// log version and port
-	logger.Info("Starting financial integration service (grpc and http service)",
+	log.Info("Starting financial integration service (grpc and http service)",
 		zap.String("version", viper.GetString("version")),
 		zap.String("revision", viper.GetString("revision")),
 		zap.String("port", srvCfg.Port),
@@ -163,14 +170,14 @@ func main() {
 	defer grpcSrv.Taskprocessor.Close()
 
 	// TODO: clean this up
-	srv, err := api.NewServer(&httpCfg, logger, instrumentation, db, nil, plaidWrapper, keyManagement, grpcSrv.Taskprocessor)
+	srv, err := api.NewServer(&httpCfg, log, instrumentation, db, nil, plaidWrapper, keyManagement, grpcSrv.Taskprocessor)
 	if err != nil {
-		logger.Panic(err.Error())
+		log.Panic(err.Error())
 	}
 
 	httpServer, httpSecureServer := srv.ListenAndServe()
 
-	logger.Info("successfully initialized http server ....", zap.Any("srv", srv))
+	log.Info("successfully initialized http server ....", zap.Any("srv", srv))
 
 	boot.Bootstrap(context.Background())
 	boot.AddShutdownHookFunc("shutdown http server", func() {
@@ -520,4 +527,37 @@ func configureInstrumentationClient(logger *zap.Logger) (*instrumentation.Client
 	}
 
 	return instrumentation.New(opts...)
+}
+
+// EnsureLoggerLevel ensures that the logger only logs messages at the given level and above.
+// The level string can be one of "debug", "info", "warn", "error", "dpanic", "panic", or "fatal".
+func enforceLoggerLevel(logger *zap.Logger, logLevel string) (*zap.Logger, error) {
+	var level zapcore.Level
+
+	switch logLevel {
+	case "debug":
+		level = zapcore.DebugLevel
+	case "info":
+		level = zapcore.InfoLevel
+	case "warn":
+		level = zapcore.WarnLevel
+	case "error":
+		level = zapcore.ErrorLevel
+	case "dpanic":
+		level = zapcore.DPanicLevel
+	case "panic":
+		level = zapcore.PanicLevel
+	case "fatal":
+		level = zapcore.FatalLevel
+	default:
+		level = zapcore.InfoLevel
+	}
+
+	cfg := zap.NewProductionConfig()
+	cfg.Level = zap.NewAtomicLevelAt(level)
+
+	// Build a new logger using the original logger's core, but with the desired level.
+	newLogger := zap.New(logger.Core(), zap.AddStacktrace(level))
+
+	return newLogger, nil
 }
