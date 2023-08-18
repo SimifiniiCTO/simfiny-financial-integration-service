@@ -1,13 +1,13 @@
-# Docus Starter
+# Financial Integration Service
 
-Starter template for [Docus](https://docus.dev).
+[Melodiy Financial Integration Service ](https://simfiny-financial-integration-service.vercel.app/) for the melodiy platform.
 
 ## Clone
 
 Clone the repository (using `nuxi`):
 
-```bash
-npx nuxi init -t themes/docus
+```bash {3} copy
+git clone git@github.com:SimifiniiCTO/simfiny-financial-integration-service.git
 ```
 
 ## Setup
