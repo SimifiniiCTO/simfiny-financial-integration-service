@@ -65,7 +65,7 @@ jobs:
       - name: Prepare
         id: prep
         run: |
-          HELM_VERSION=$(grep 'VERSION' pkg/version/version.go | awk '{ print $4 }' | tr -d '"')
+          HELM_VERSION=$(grep 'version:' ./charts/financial-integration-service/Chart.yaml | tail -n1 | awk '{ print $2}')
           VERSION=sha-${GITHUB_SHA::8}
           if [[ $GITHUB_REF == refs/tags/* ]]; then
             VERSION=${GITHUB_REF/refs\/tags\//}
@@ -82,25 +82,34 @@ jobs:
           helmv3: 3.6.0
           command: |
             helmv3 template ./charts/financial-integration-service --set linkerd.profile.enabled=false --set hpa.enabled=false | kubeval --strict --kubernetes-version 1.19.11 --schema-location https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master
-      #- name: Publish Helm chart to GHCR
-        #run: |
-          #helm package charts/financial-integration-service
-          #helm push financial-integration-service-${{ steps.prep.outputs.HELM_VERSION }}.tgz oci://ghcr.io/simifiniicto/charts
-          #rm financial-integration-service-${{ steps.prep.outputs.HELM_VERSION }}.tgz
-      #- name: Publish Flux OCI artifact to GHCR
-      #  run: |
-      #    flux push artifact oci://ghcr.io/simifiniicto/manifests/financial-integration-service:${{ steps.prep.outputs.HELM_VERSION }} \
-      #      --path="./kustomize" \
-      #      --source="${{ github.event.repository.html_url }}" \
-      #      --revision="${GITHUB_REF_NAME}/${GITHUB_SHA}"
-      #    flux tag artifact oci://ghcr.io/simifiniicto/manifests/financial-integration-service:${{ steps.prep.outputs.HELM_VERSION }} --tag latest
-      #- name: Publish config artifact
-      #  run: |
-      #    flux push artifact oci://ghcr.io/simifiniicto/financial-integration-service-deploy:${{ steps.prep.outputs.HELM_VERSION }} \
-      #      --path="./kustomize" \
-      #      --source="${{ github.event.repository.html_url }}" \
-      #      --revision="${GITHUB_REF_NAME}/${GITHUB_SHA}"
-      #    flux tag artifact oci://ghcr.io/simifiniicto/financial-integration-service-deploy:${{ steps.prep.outputs.HELM_VERSION }} --tag latest
+      - name: Publish Helm chart
+        uses: stefanprodan/helm-gh-pages@master
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          charts_dir: charts
+          charts_url: https://charts.melodiy.io
+          owner: SimifiniiCTO
+          repository: simfiny-financial-integration-service
+          branch: gh-pages
+      - name: Publish Helm chart to GHCR
+        run: |
+          helm package charts/financial-integration-service
+          helm push financial-integration-service-${{ steps.prep.outputs.HELM_VERSION }}.tgz oci://ghcr.io/simifiniicto/charts
+          rm financial-integration-service-${{ steps.prep.outputs.HELM_VERSION }}.tgz
+      - name: Publish Flux OCI artifact to GHCR
+        run: |
+          flux push artifact oci://ghcr.io/simifiniicto/manifests/financial-integration-service:${{ steps.prep.outputs.HELM_VERSION }} \
+            --path="./kustomize" \
+            --source="${{ github.event.repository.html_url }}" \
+            --revision="${GITHUB_REF_NAME}/${GITHUB_SHA}"
+          flux tag artifact oci://ghcr.io/simifiniicto/manifests/financial-integration-service:${{ steps.prep.outputs.HELM_VERSION }} --tag latest
+      - name: Publish config artifact
+        run: |
+          flux push artifact oci://ghcr.io/simifiniicto/financial-integration-service-deploy:${{ steps.prep.outputs.HELM_VERSION }} \
+            --path="./kustomize" \
+            --source="${{ github.event.repository.html_url }}" \
+            --revision="${GITHUB_REF_NAME}/${GITHUB_SHA}"
+          flux tag artifact oci://ghcr.io/simifiniicto/financial-integration-service-deploy:${{ steps.prep.outputs.HELM_VERSION }} --tag latest
       - name: Publish Service Helm Chart
         uses: stefanprodan/helm-gh-pages@master
         continue-on-error: true
