@@ -290,4 +290,5 @@ linkerd:
     prometheus.io/port: 4191"
     prometheus.io/path: "/metrics"
 
+# -- number of task processor worker threads to spin up
 taskProcessorWorkers: 5
