@@ -15,7 +15,7 @@ repos:
           args:
             - -b
             - main
-      -   id: end-of-file-fixer
+      -   id: trailing-whitespace
   - repo: https://github.com/talos-systems/conform
     rev: v0.1.0-alpha.27
     hooks:

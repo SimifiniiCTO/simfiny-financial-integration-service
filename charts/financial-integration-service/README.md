@@ -85,17 +85,21 @@ The command removes all the Kubernetes components associated with the chart and 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | affinity | object | `{}` |  |
-| autoscaling.behavior.scaleDown.percent | int | `100` |  |
-| autoscaling.behavior.scaleDown.periodSeconds | int | `15` |  |
-| autoscaling.behavior.scaleDown.stabilizationWindowSeconds | int | `300` |  |
-| autoscaling.behavior.scaleUp.percent | int | `100` |  |
-| autoscaling.behavior.scaleUp.periodSeconds | int | `15` |  |
-| autoscaling.behavior.scaleUp.stabilizationWindowSeconds | int | `0` |  |
-| autoscaling.cpu | int | `90` |  |
-| autoscaling.enabled | bool | `true` |  |
-| autoscaling.maxReplicas | int | `10` |  |
-| autoscaling.memory | int | `90` |  |
-| autoscaling.minReplicas | int | `1` |  |
+| autoscaling | object | `{"behavior":{"scaleDown":{"percent":100,"periodSeconds":15,"stabilizationWindowSeconds":300},"scaleUp":{"percent":100,"periodSeconds":15,"stabilizationWindowSeconds":0}},"cpu":90,"enabled":true,"maxReplicas":10,"memory":90,"minReplicas":1}` | autoscaling configuration for pod traffic scalibility |
+| autoscaling.behavior | object | `{"scaleDown":{"percent":100,"periodSeconds":15,"stabilizationWindowSeconds":300},"scaleUp":{"percent":100,"periodSeconds":15,"stabilizationWindowSeconds":0}}` | Define the scaling policies and behavior for scaling up and scaling down. This is particularly useful to avoid rapid fluctuations in pod counts. |
+| autoscaling.behavior.scaleDown | object | `{"percent":100,"periodSeconds":15,"stabilizationWindowSeconds":300}` | Scale down configuration |
+| autoscaling.behavior.scaleDown.percent | int | `100` | The percentage by which the autoscaler can increase or decrease the current replica count. |
+| autoscaling.behavior.scaleDown.periodSeconds | int | `15` | The time window to consider when applying the percent scaling policy. |
+| autoscaling.behavior.scaleDown.stabilizationWindowSeconds | int | `300` | The number of seconds for which past recommendations should be considered when scaling up or down. |
+| autoscaling.behavior.scaleUp | object | `{"percent":100,"periodSeconds":15,"stabilizationWindowSeconds":0}` | Scale up configuration |
+| autoscaling.behavior.scaleUp.percent | int | `100` | The percentage by which the autoscaler can increase or decrease the current replica count. |
+| autoscaling.behavior.scaleUp.periodSeconds | int | `15` | The time window to consider when applying the percent scaling policy. |
+| autoscaling.behavior.scaleUp.stabilizationWindowSeconds | int | `0` | The number of seconds for which past recommendations should be considered when scaling up or down. |
+| autoscaling.cpu | int | `90` | Target average utilizations for CPU and Memory, respectively. These are thresholds that, when surpassed, will trigger the autoscaler to increase the pod count, or decrease if the utilization is below the threshold for a certain time. |
+| autoscaling.enabled | bool | `true` | Whether the autoscaler should be applied or not. |
+| autoscaling.maxReplicas | int | `10` | Maximum replicas for the deployment |
+| autoscaling.memory | int | `90` | Target average utilization for Memory in percentage |
+| autoscaling.minReplicas | int | `1` | Minimum replicas for the deployment |
 | aws.accessKeyID | string | `"AKIA5HFOAJRN7YDEYPST"` |  |
 | aws.kmsID | string | `"mrk-e44f269bc0034feb95ede34154c3cfe4"` |  |
 | aws.region | string | `"us-east-2"` |  |

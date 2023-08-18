@@ -211,36 +211,40 @@ tls:
   hostPort:
 
 # metrics-server add-on required
+# -- autoscaling configuration for pod traffic scalibility
 autoscaling:
-  # Whether the autoscaler should be applied or not.
+  # -- Whether the autoscaler should be applied or not.
   enabled: true
-  # Minium replicas for the deployment
+  # -- Minimum replicas for the deployment
   minReplicas: 1
-  # Maximum replicas for the deployment
+  # -- Maximum replicas for the deployment
   maxReplicas: 10
-  #  Target average utilizations for CPU and Memory, respectively.
+  # -- Target average utilizations for CPU and Memory, respectively.
   # These are thresholds that, when surpassed, will trigger the autoscaler
   # to increase the pod count, or decrease if the utilization is below the threshold for a certain time.
   cpu: 90   # Target average utilization for CPU in percentage
-  memory: 90  # Target average utilization for Memory in percentage
-  # Define the scaling policies and behavior for scaling up and scaling down.
+  # -- Target average utilization for Memory in percentage
+  memory: 90
+  # -- Define the scaling policies and behavior for scaling up and scaling down.
   # This is particularly useful to avoid rapid fluctuations in pod counts.
   behavior:
+    # -- Scale up configuration
     scaleUp:
-      # The number of seconds for which past recommendations
+      # -- The number of seconds for which past recommendations
       # should be considered when scaling up or down.
       stabilizationWindowSeconds: 0
-      # The percentage by which the autoscaler can increase or decrease the current replica count.
+      # -- The percentage by which the autoscaler can increase or decrease the current replica count.
       percent: 100
-      # The time window to consider when applying the percent scaling policy.
+      # -- The time window to consider when applying the percent scaling policy.
       periodSeconds: 15
+    # -- Scale down configuration
     scaleDown:
-      # The number of seconds for which past recommendations
+      # -- The number of seconds for which past recommendations
       # should be considered when scaling up or down.
       stabilizationWindowSeconds: 300
-      # The percentage by which the autoscaler can increase or decrease the current replica count.
+      # -- The percentage by which the autoscaler can increase or decrease the current replica count.
       percent: 100
-      # The time window to consider when applying the percent scaling policy.
+      # -- The time window to consider when applying the percent scaling policy.
       periodSeconds: 15
 
 # Redis address in the format <host>:<port>
