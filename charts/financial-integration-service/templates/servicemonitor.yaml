@@ -3,19 +3,34 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: {{ template "fis.fullname" . }}
+  # Namespace to deploy the ServiceMonitor, useful in environments with custom Prometheus Operator deployments.
+  {{- if .Values.serviceMonitor.namespace }}
+  namespace: {{ .Values.serviceMonitor.namespace }}
+  {{- end }}
   labels:
     {{- include "fis.labels" . | nindent 4 }}
+    # Additional labels can be added to the ServiceMonitor, providing more flexibility in querying or managing it.
     {{- with .Values.serviceMonitor.additionalLabels }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
 spec:
+  # Endpoints to scrape metrics from.
   endpoints:
-    - path: /metrics
-      port: http
+    - path: {{ .Values.serviceMonitor.path | default "/metrics" }}
+      port: {{ .Values.serviceMonitor.port | default "http" }}
       interval: {{ .Values.serviceMonitor.interval }}
+      {{- if .Values.serviceMonitor.scrapeTimeout }}
+      scrapeTimeout: {{ .Values.serviceMonitor.scrapeTimeout }}
+      {{- end }}
+      {{- if .Values.serviceMonitor.honorLabels }}
+      honorLabels: {{ .Values.serviceMonitor.honorLabels }}
+      {{- end }}
+
+  # Namespace selection to monitor.
   namespaceSelector:
     matchNames:
       - {{ .Release.Namespace }}
+  # Label selector to target services to monitor.
   selector:
     matchLabels:
       {{- include "fis.selectorLabels" . | nindent 6 }}

@@ -245,9 +245,15 @@ The command removes all the Kubernetes components associated with the chart and 
 | serviceAccount.imagePullSecrets | object | `{}` | we can now specify image pull secrets. |
 | serviceAccount.name | string | `""` | If not set and create is true, a name is generated using the fullname template |
 | serviceAccount.namespace | string | `""` | should we desire to organize our service accounts that way. |
-| serviceMonitor.additionalLabels | object | `{}` |  |
-| serviceMonitor.enabled | bool | `false` |  |
-| serviceMonitor.interval | string | `"15s"` |  |
+| serviceMonitor.additionalLabels.function | string | `"service-monitoring"` |  |
+| serviceMonitor.additionalLabels.service | string | `"financial-integration-service"` |  |
+| serviceMonitor.enabled | bool | `true` |  |
+| serviceMonitor.honorLabels | bool | `true` |  |
+| serviceMonitor.interval | string | `"30s"` |  |
+| serviceMonitor.namespace | string | `"monitoring"` |  |
+| serviceMonitor.path | string | `"/metrics"` |  |
+| serviceMonitor.port | string | `"http"` |  |
+| serviceMonitor.scrapeTimeout | string | `"10s"` |  |
 | stripe.apiKey | string | `"sk_test_4eC39HqLyjWDarjtT1zdp7dc"` |  |
 | stripe.enabled | bool | `true` |  |
 | stripe.endpointSigningKey | string | `"whsec_21441814697a4a51dc01395a030498131d56ec4d7155bb216cc75f36548c86bf"` |  |
