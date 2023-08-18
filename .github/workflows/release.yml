@@ -1,10 +1,12 @@
 name: release
 
 on:
-  push:
+  pull_request:
+    types:
+      - closed
     branches:
-      - "main"
-      - "release"
+      - main
+      - release
 
 permissions:
   contents: write # needed to write releases
@@ -226,16 +228,18 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   bump-tags:
-    if: github.ref == 'refs/heads/main'
+    if: github.event.pull_request.merged == true
     needs: [publish-artifacts, deploy, release-notes]
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
         with:
-          ref: ${{ github.event.pull_request.head.sha }}
+          ref: ${{ github.event.pull_request.merge_commit_sha }}
           fetch-depth: "0"
       - name: Bump version and push tag
-        uses: anothrNick/github-tag-action@v1
+        uses: anothrNick/github-tag-action@1.64.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WITH_V: true
+          PRERELEASE: true
+
