@@ -248,7 +248,7 @@ gen-helm-docs:
 	helm-docs
 
 ci-lint:
-	golangci-lint run --fix
+	golangci-lint run
 
 # sanitizes stops any running docker compose file, formats the codebase,
 precommit: clean tidy fmt build-container gen-helm-docs lint-chart
