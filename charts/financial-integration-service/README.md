@@ -252,7 +252,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | serviceMonitor.interval | string | `"30s"` |  |
 | serviceMonitor.namespace | string | `"monitoring"` |  |
 | serviceMonitor.path | string | `"/metrics"` |  |
-| serviceMonitor.port | string | `"http"` |  |
+| serviceMonitor.port | string | `"9898"` |  |
 | serviceMonitor.scrapeTimeout | string | `"10s"` |  |
 | stripe.apiKey | string | `"sk_test_4eC39HqLyjWDarjtT1zdp7dc"` |  |
 | stripe.enabled | bool | `true` |  |

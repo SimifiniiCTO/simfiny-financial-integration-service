@@ -310,7 +310,7 @@ serviceMonitor:
   # The default path to scrape Prometheus metrics from
   path: "/metrics"
   # Default port for the service to scrape metrics from
-  port: "http"
+  port: "9898"
   # Scrape interval; how often to fetch metrics
   interval: "30s"
   # Optional timeout after which the scrape is ended
