@@ -41,7 +41,7 @@ jobs:
           echo "BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_OUTPUT
           echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
           echo "REVISION=${GITHUB_SHA}" >> $GITHUB_OUTPUT
-          echo "tag=${GITHUB_REF#refs/*/}" >> $GITHUB_OUTPUT
+          echo "tag=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_OUTPUT
       - name: Generate images meta
         id: meta
         uses: docker/metadata-action@v4
@@ -63,7 +63,7 @@ jobs:
           branch: gh-pages
       - name: Publish Helm chart to GHCR
         run: |
-          helm package charts/financial-integration-service  --app-version ${{ steps.prep.outputs.tag }}
+          helm package charts/financial-integration-service --app-version ${{ steps.prep.outputs.tag }}
           helm push financial-integration-service-${{ steps.prep.outputs.tag }}.tgz oci://ghcr.io/simifiniicto/charts
           rm financial-integration-service-${{ steps.prep.outputs.tag }}.tgz
       - name: Publish Flux OCI artifact to GHCR
