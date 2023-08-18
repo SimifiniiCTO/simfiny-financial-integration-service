@@ -87,7 +87,7 @@ jobs:
         with:
           chartPath: 'charts/financial-integration-service'
           kubernetesVersion: '1.28.0'
-      - name: Publish Helm chart
+      - name: Publish Helm charts
         uses: stefanprodan/helm-gh-pages@master
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
