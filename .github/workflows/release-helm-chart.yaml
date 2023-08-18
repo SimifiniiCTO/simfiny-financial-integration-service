@@ -1,5 +1,8 @@
-name: release-chart
-on: [push, pull_request]
+name: chart-release
+
+on:
+  pull_request:
+
 
 permissions:
   contents: write # needed to write releases
@@ -10,28 +13,26 @@ env:
   KUBERNETES_VERSION: 1.26.0
 
 jobs:
-  release-chart:
-    env:
-      GCR_IMAGE: ghcr.io/${{ github.repository_owner }}/financial-integration-service
+  publish-artifacts:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: sigstore/cosign-installer@v3
       - uses: fluxcd/flux2/action@main
+      - uses: sigstore/cosign-installer@main
       - name: Setup Go
         uses: actions/setup-go@v3
         with:
-          go-version: 1.21.x
+          go-version: 1.19.x
+      - name: Setup Helm
+        uses: azure/setup-helm@v3
+        with:
+          version: v3.10.3
       - name: Setup kubeconform
         uses: ./.github/actions/kubeconform
       - name: Setup kubectl
         uses: azure/setup-kubectl@v3
         with:
           version: v${{ env.KUBERNETES_VERSION }}
-      - name: Setup Helm
-        uses: azure/setup-helm@v3
-        with:
-          version: v3.10.3
       - name: Setup QEMU
         uses: docker/setup-qemu-action@v2
         with:
@@ -45,52 +46,62 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: feelguuds
+          password: Granada123!
       - name: Prepare
         id: prep
         run: |
-          HELM_VERSION=$(grep 'version:' ./charts/financial-integration-service/Chart.yaml | tail -n1 | awk '{ print $2}')
+          HELM_VERSION=$(grep 'VERSION' version | awk '{ print $4 }' | tr -d '"')
           VERSION=sha-${GITHUB_SHA::8}
-          if [[ $GITHUB_REF == refs/tags/* ]]; then
-            VERSION=${GITHUB_REF/refs\/tags\//}
-          fi
           echo "BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_OUTPUT
           echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
           echo "REVISION=${GITHUB_SHA}" >> $GITHUB_OUTPUT
           echo "HELM_VERSION=${HELM_VERSION}" >> $GITHUB_OUTPUT
-      - name: Generate images meta
-        id: meta
-        uses: docker/metadata-action@v4
-        with:
-          images: |
-            docker.io/feelguuds/financial-integration-service
-            ghcr.io/simfiniicto/financial-integration-service
-          tags: |
-            type=raw,value=${{ steps.prep.outputs.VERSION }}
-            type=raw,value=latest
       - name: Validate Service Helm Chart
         run: |
           helm lint ./charts/financial-integration-service
           helm template ./charts/financial-integration-service | kubeconform -strict -summary -kubernetes-version ${{ env.KUBERNETES_VERSION }}
-        continue-on-error: true
       - name: Publish Helm chart to GHCR
         run: |
           HELM_EXPERIMENTAL_OCI=1
           helm package charts/financial-integration-service --version ${{ steps.prep.outputs.HELM_VERSION }}
           helm push financial-integration-service-${{ steps.prep.outputs.HELM_VERSION }}.tgz oci://ghcr.io/simifiniicto/charts
           rm financial-integration-service-${{ steps.prep.outputs.HELM_VERSION }}.tgz
-      # - name: Publish Helm chart
-      #   uses: stefanprodan/helm-gh-pages@master
-      #   with:
-      #     token: ${{ secrets.GITHUB_TOKEN }}
-      #     charts_dir: charts
-      #     charts_url: https://charts.melodiy.io
-      #     owner: SimifiniiCTO
-      #     repository: simfiny-financial-integration-service
-      #     branch: gh-pages
-      - name: Publish Flux OCI artifact to GHCR
+        continue-on-error: true
+      - name: Publish Service Helm Chart
+        uses: stefanprodan/helm-gh-pages@master
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          charts_dir: ./charts
+          target_dir: ./financial-integration-service
+          commit_username: yoanyombapro1234
+          commit_email: yoanyombapro@gmail.com
+      - name: Generate images meta
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: |
+            docker.io/feelguuds/financial-integration-service
+          tags: |
+            type=raw,value=${{ steps.prep.outputs.VERSION }}
+            type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'master') }}
+            type=raw,value=staging,enable=${{ github.ref == format('refs/heads/{0}', 'release') }}
+      - name: Publish Multi-Arch Image Financail AI Service
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          builder: ${{ steps.buildx.outputs.name }}
+          context: .
+          file: ./Dockerfile
+          platforms: linux/amd64,linux/arm64/v8
+          build-args: |
+            REVISION=${{ steps.prep.outputs.REVISION }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+      - name: Debug failure
+        if: failure()
         run: |
-          flux push artifact oci://ghcr.io/stefanprodan/manifests/financial-integration-service:${{ steps.prep.outputs.VERSION }} \
-            --path="./kustomize" \
-            --source="${{ github.event.repository.html_url }}" \
-            --revision="${GITHUB_REF_NAME}/${GITHUB_SHA}"
-          flux tag artifact oci://ghcr.io/stefanprodan/manifests/financial-integration-service:${{ steps.prep.outputs.VERSION }} --tag latest
+          kubectl logs -l app=financial-integration-service || true
