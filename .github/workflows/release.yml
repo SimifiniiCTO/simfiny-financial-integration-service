@@ -96,6 +96,7 @@ jobs:
           owner: SimifiniiCTO
           repository: simfiny-financial-integration-service
           branch: gh-pages
+        continue-on-error: true
       - name: Publish Helm chart to GHCR
         run: |
           helm package charts/financial-integration-service
