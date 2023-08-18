@@ -61,8 +61,8 @@ jobs:
       - name: Publish Helm chart to GHCR
         run: |
           helm package charts/financial-integration-service
-          helm push financial-integration-service-${{ steps.prep.outputs.HELM_VERSION }}.tgz oci://ghcr.io/simifiniicto/charts
-          rm financial-integration-service-${{ steps.prep.outputs.HELM_VERSION }}.tgz
+          helm push financial-integration-service-${{ steps.prep.outputs.VERSION }}.tgz oci://ghcr.io/simifiniicto/charts
+          rm financial-integration-service-${{ steps.prep.outputs.VERSION }}.tgz
       - name: Publish Helm chart to GHCR
         run: |
           helm package charts/financial-integration-service
