@@ -240,8 +240,11 @@ The command removes all the Kubernetes components associated with the chart and 
 | service.nodePort | int | `31198` |  |
 | service.rpc.timeout | string | `"1s"` |  |
 | service.type | string | `"ClusterIP"` |  |
-| serviceAccount.enabled | bool | `true` |  |
-| serviceAccount.name | string | `nil` |  |
+| serviceAccount.annotations | object | `{"melodiy/service":"financial-integration-service"}` | Annotations to add to the service account |
+| serviceAccount.create | bool | `true` | Specifies whether a service account should be created |
+| serviceAccount.imagePullSecrets | object | `{}` | we can now specify image pull secrets. |
+| serviceAccount.name | string | `""` | If not set and create is true, a name is generated using the fullname template |
+| serviceAccount.namespace | string | `""` | should we desire to organize our service accounts that way. |
 | serviceMonitor.additionalLabels | object | `{}` |  |
 | serviceMonitor.enabled | bool | `false` |  |
 | serviceMonitor.interval | string | `"15s"` |  |

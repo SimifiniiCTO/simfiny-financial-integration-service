@@ -262,11 +262,24 @@ postgresLocalDB:
   enabled: false
 
 serviceAccount:
-  # Specifies whether a service account should be created
-  enabled: true
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
-  name:
+  # -- Specifies whether a service account should be created
+  create: true
+
+  # -- The name of the service account to use.
+  # -- If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+  # -- This allows the service account to be created in a specific namespace,
+  # -- should we desire to organize our service accounts that way.
+  namespace: ""  # -- optional
+
+  # -- Annotations to add to the service account
+  annotations:
+    melodiy/service: "financial-integration-service"
+
+  # -- If the pods using this service account need to pull images from a private registry,
+  # -- we can now specify image pull secrets.
+  imagePullSecrets: {} # -- optional
 
 # set container security context
 securityContext: { }
