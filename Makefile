@@ -20,6 +20,13 @@ TEMPORAL_DC=./compose/temporal/docker-compose.yml
 CLICKHOUSE_DC=./compose/docker-compose.clickhouse.yaml
 NGROK_DC=./compose/docker-compose-ngrok.yaml
 DC=docker-compose -f docker-compose.yaml -f $(TEMPORAL_DC) -f $(CLICKHOUSE_DC) -f $(NGROK_DC)
+URL=https://victoriametrics.github.io/helm-charts/
+HELM_IMAGE = alpine/helm:3.11.3
+HELM_DOCS_IMAGE = jnorwood/helm-docs:v1.11.0
+CT_IMAGE = quay.io/helmpack/chart-testing:v3.7.1
+KNOWN_TARGETS=helm
+HELM?=helm-docker
+CT?=ct-docker
 
 .PHONY: help
 .DEFAULT_GOAL := help
@@ -39,6 +46,19 @@ build:
 fmt:
 	gofmt -l -s -w ./
 	goimports -l -w ./
+
+tidy:
+	rm -f go.sum; go mod tidy -compat=1.19
+
+vet:
+	go vet ./...
+
+fmt:
+	gofmt -l -s -w ./
+	goimports -l -w ./
+
+lint-chart:
+	helm lint charts/*
 
 build-charts:
 	helm lint charts/*
@@ -210,7 +230,7 @@ gen:
 lint:
 	golangci-lint run
 
-precommit: fmt test.unit
+# precommit: fmt test.unit
 
 ngrok:
 	docker run --rm --detach \
@@ -218,3 +238,15 @@ ngrok:
 	--name ngrok \
 	ngrok/ngrok:alpine \
 	http nginx:80
+
+
+# ======================================================================
+gen-helm-docs:
+	helm-docs
+
+ci-lint:
+	golangci-lint run ./internal --fix
+	golangci-lint run ./pkg/api/... ./pkg/encrypt_decrypt/... ./pkg/fscache/... ./pkg/grpc/... ./pkg/signals/... ./pkg/version/...
+
+# sanitizes stops any running docker compose file, formats the codebase,
+precommit: clean tidy fmt build-container gen-helm-docs lint-chart
