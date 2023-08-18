@@ -1,8 +1,0 @@
-authtoken: 2JwfMUzmEbQBW2iH599MuX9bAeq_6MqUZtf6kCEkcjPci7SH9
-web_addr: 0.0.0.0:4040
-region: au
-version: 2
-tunnels:
-  myapp:
-    addr: myapp:8080
-    proto: http
