@@ -62,7 +62,7 @@ jobs:
             type=raw,value=latest
       - name: Validate Service Helm Chart
         run: |
-          helm lint ./charts/financialaiservice
+          helm lint ./charts/financial-integration-service
           helm template ./charts/financial-integration-service | kubeconform -strict -summary -kubernetes-version ${{ env.KUBERNETES_VERSION }}
       - name: Publish Helm chart to GHCR
         run: |
