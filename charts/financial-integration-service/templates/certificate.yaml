@@ -3,9 +3,24 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: {{ template "fis.fullname" . }}
+  {{- if .Values.certificate.namespace }}
+  namespace: {{ .Values.certificate.namespace }}
+  {{- end }}
   labels:
     {{- include "fis.labels" . | nindent 4 }}
 spec:
+  {{- with .Values.certificate.duration }}
+  duration: {{ . }}
+  {{- end }}
+  {{- with .Values.certificate.renewBefore }}
+  renewBefore: {{ . }}
+  {{- end }}
+  {{- if .Values.certificate.ipAddresses }}
+  ipAddresses:
+  {{- range .Values.certificate.ipAddresses }}
+    - {{ . }}
+  {{- end }}
+  {{- end }}
   dnsNames:
   {{- range .Values.certificate.dnsNames }}
     - {{ . | quote }}
@@ -13,4 +28,14 @@ spec:
   secretName: {{ template "fis.tlsSecretName" . }}
   issuerRef:
   {{- .Values.certificate.issuerRef | toYaml | trimSuffix "\n" | nindent 4 }}
+  {{- with .Values.certificate.usages }}
+  usages:
+  {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.certificate.key }}
+  privateKey:
+    algorithm: {{ .algorithm | default "rsa" }}
+    size: {{ .size | default "2048" }}
+    rotationPolicy: {{ .rotationPolicy | default "Never" }}
+  {{- end }}
 {{- end }}

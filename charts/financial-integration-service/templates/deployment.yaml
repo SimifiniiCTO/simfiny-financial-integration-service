@@ -9,15 +9,33 @@ metadata:
   name: {{ template "fis.fullname" . }}
   labels:
     {{- include "fis.labels" . | nindent 4 }}
+  annotations:
+    service-name: {{ template "fis.fullname" . }}
 spec:
+  progressDeadlineSeconds: {{ .Values.progressDeadlineInSeconds }}
+  revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   strategy:
+    # RollingUpdate ensures that the deployment rolls out the change progressively in such a way
+    # that at any given point in time, not all instances are being upgraded simultaneously.
     type: RollingUpdate
     rollingUpdate:
-        maxSurge: 2
-        maxUnavailable: 0
+      # maxSurge indicates the maximum number of pods that can be created over the desired number of pods.
+      # This can be specified as an absolute number or a percentage.
+      # For instance, if you have 5 replicas and set maxSurge to 2, then during the update,
+      # you can have up to 7 pods running simultaneously.
+      maxSurge: 2
+      # maxUnavailable indicates the maximum number of pods that can be unavailable
+      # during the update process. This can be an absolute number or a percentage.
+      # Setting this to 0 ensures that all pods are available during the update,
+      # and the update will wait if a pod cannot be replaced.
+      maxUnavailable: 0
+    # minReadySeconds specifies the number of seconds a pod should be ready (without any of its
+    # containers crashing) to be considered available. This affects the duration the pod is considered
+    # unavailable during the rolling update.
+    minReadySeconds: 10
   selector:
     matchLabels:
       {{- include "fis.selectorLabels" . | nindent 6 }}
@@ -197,6 +215,19 @@ spec:
           - name: fis_BACKEND_URL
             value: {{ .Values.backend }}
           {{- end }}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.probes.liveliness.httpGet.path }}
+              port: {{ .Values.probes.liveliness.httpGet.port }}
+            initialDelaySeconds: {{ .Values.probes.liveliness.initialDelaySeconds }}
+            periodSeconds: {{ .Values.probes.liveliness.periodSeconds }}
+            timeoutSeconds: {{ .Values.probes.liveliness.timeoutSeconds }}
+            failureThreshold: {{ .Values.probes.liveliness.failurethreshold }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.probes.readiness.httpGet.path }}
+              port: {{ .Values.probes.readiness.httpGet.port }}
+            successThreshold: {{ .Values.probes.readiness.successThresholds }}
           ports:
             {{- if .Values.service.grpcPort }}
             - name: grpc

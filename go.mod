@@ -22,6 +22,7 @@ require (
 	github.com/gorilla/mux v1.8.0
 	github.com/gorilla/websocket v1.5.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.15.2
+	github.com/hashicorp/go-set v0.1.13
 	github.com/infobloxopen/atlas-app-toolkit v1.4.0
 	github.com/infobloxopen/protoc-gen-gorm v1.1.2
 	github.com/jinzhu/gorm v1.9.16
@@ -31,7 +32,7 @@ require (
 	github.com/newrelic/go-agent/v3/integrations/nrzap v1.0.1
 	github.com/pborman/uuid v1.2.1
 	github.com/pkg/errors v0.9.1
-	github.com/plaid/plaid-go/v12 v12.0.0
+	github.com/plaid/plaid-go/v14 v14.0.0
 	github.com/prometheus/client_golang v1.14.0
 	github.com/rookie-ninja/rk-boot/v2 v2.2.18
 	github.com/rookie-ninja/rk-entry/v2 v2.2.18
@@ -67,12 +68,10 @@ require (
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.0.0-rc.5 // indirect
-	github.com/hashicorp/go-set v0.1.13 // indirect
 	github.com/jackc/pgx/v5 v5.4.1 // indirect
 	github.com/microsoft/go-mssqldb v1.0.0 // indirect
 	github.com/newrelic/go-agent/v3/integrations/nrgorilla v1.1.1 // indirect
 	github.com/newrelic/go-agent/v3/integrations/nrgrpc v1.4.0 // indirect
-	github.com/plaid/plaid-go/v14 v14.0.0 // indirect
 	github.com/redis/go-redis/v9 v9.0.5 // indirect
 	github.com/robfig/cron/v3 v3.0.1 // indirect
 	github.com/rookie-ninja/rk-grpc v1.2.25 // indirect

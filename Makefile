@@ -20,6 +20,13 @@ TEMPORAL_DC=./compose/temporal/docker-compose.yml
 CLICKHOUSE_DC=./compose/docker-compose.clickhouse.yaml
 NGROK_DC=./compose/docker-compose-ngrok.yaml
 DC=docker-compose -f docker-compose.yaml -f $(TEMPORAL_DC) -f $(CLICKHOUSE_DC) -f $(NGROK_DC)
+URL=https://victoriametrics.github.io/helm-charts/
+HELM_IMAGE = alpine/helm:3.11.3
+HELM_DOCS_IMAGE = jnorwood/helm-docs:v1.11.0
+CT_IMAGE = quay.io/helmpack/chart-testing:v3.7.1
+KNOWN_TARGETS=helm
+HELM?=helm-docker
+CT?=ct-docker
 
 .PHONY: help
 .DEFAULT_GOAL := help
@@ -39,6 +46,19 @@ build:
 fmt:
 	gofmt -l -s -w ./
 	goimports -l -w ./
+
+tidy:
+	rm -f go.sum; go mod tidy -compat=1.19
+
+vet:
+	go vet ./...
+
+fmt:
+	gofmt -l -s -w ./
+	goimports -l -w ./
+
+lint-chart:
+	helm lint charts/*
 
 build-charts:
 	helm lint charts/*
@@ -107,6 +127,9 @@ gen:
 	buf generate
 	cp proto/fis_service.swagger.json proto/swagger/swagger.json
 
+gen-service-profile:
+	linkerd profile --proto api/protobuf/financial_integration_service_api/v1/service_financial_service.proto financial-integration-service
+
 .PHONY: start-skaffold
 dev:
 	minikube start
@@ -144,7 +167,7 @@ test: run-background
 	echo "waiting for services to be ready to accept connections"
 	sleep 60
 	go test ./... -coverprofile cover.out
-	docker ps -a 
+	docker ps -a
 	make stop
 
 generate:
@@ -158,7 +181,7 @@ deploy:
 	./deploy/deploy.sh
 
 stop.cluster: ## Delete kind cluster
-	kind delete cluster 
+	kind delete cluster
 
 start.cluster: ## Starts a local kind cluster
 	kind create cluster || true
@@ -197,7 +220,7 @@ clean.files: ## Remove
 	rm -f ./junit-report.xml checkstyle-report.xml ./coverage.xml ./profile.cov
 
 kill.docker.desktop:
-	pkill -SIGHUP -f /Applications/Docker.app 'docker serve' 
+	pkill -SIGHUP -f /Applications/Docker.app 'docker serve'
 
 start.docker.desktop:
 	./integration-test/docker-desktop.sh
@@ -210,7 +233,7 @@ gen:
 lint:
 	golangci-lint run
 
-precommit: fmt test.unit
+# precommit: fmt test.unit
 
 ngrok:
 	docker run --rm --detach \
@@ -218,3 +241,14 @@ ngrok:
 	--name ngrok \
 	ngrok/ngrok:alpine \
 	http nginx:80
+
+
+# ======================================================================
+gen-helm-docs:
+	helm-docs
+
+ci-lint:
+	golangci-lint run
+
+# sanitizes stops any running docker compose file, formats the codebase,
+precommit: clean tidy fmt build-container gen-helm-docs lint-chart

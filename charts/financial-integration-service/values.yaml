@@ -1,22 +1,39 @@
 # Default values for fis.
 
+# -- Number of replicas for the pod
 replicaCount: 3
+
+# -- Maximum time allowed for the new pod to start
+progressDeadlineInSeconds: 600
+
+# -- Number of old ReplicaSets to retain to allow rollback
+revisionHistoryLimit: 3
+
+# -- Logging level
 logLevel: info
+
+# -- Default host value
 host: #0.0.0.0
+
+# -- Backend URL for the service
 backend: #http://backend-fis:9898/echo
+
+# -- List of backend services
 backends: [ ]
 
+# -- Docker image configuration
 image:
   repository: feelguuds/financial-integration-service
   tag: latest
   pullPolicy: IfNotPresent
 
+# -- User Interface configurations
 ui:
   color: "#34577c"
   message: ""
   logo: ""
 
-# failure conditions
+# -- Conditions to simulate failures
 faults:
   delay: false
   error: false
@@ -25,6 +42,7 @@ faults:
   test_fail: false
   test_timeout: false
 
+# -- OpenAI API settings
 openai:
   apiKey: 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
   configs:
@@ -39,7 +57,8 @@ openai:
     frequencyPenalty: 0.0
     # how much to penalize new token based on wether they exist already in the text
     presencePenalty: 1
-    
+
+# -- Clickhouse configuration
 clickhouse:
   host: l77zn1po0n.us-east-1.aws.clickhouse.cloud
   port: 8443
@@ -51,7 +70,8 @@ clickhouse:
   maxConnectionRetrySleepInterval: 100ms
   maxQueryTimeout: 500ms
   uri: https://default:8OnfmVp~U6xnZ@l77zn1po0n.us-east-1.aws.clickhouse.cloud:8443/default?secure=true&skip_verify=true
-  
+
+# -- Postgres Database connection details
 database:
   host: financial-integration-service-db
   port: 5432
@@ -68,6 +88,7 @@ database:
   maxOpenConnections: 10
   connectionMaxLifetime: 10h
 
+# -- Configuration for scheduled batch jobs
 batchJobs:
   recurringTransactions:
     interval: "@every 3h"
@@ -79,7 +100,7 @@ batchJobs:
     interval: "@weekly"
     enabled: true
 
-
+# -- AWS API credentials and configuration
 aws:
   # access key id for credentials provisioning
   accessKeyID: AKIA5HFOAJRN7YDEYPST
@@ -90,6 +111,7 @@ aws:
   # aws key management id
   kmsID: mrk-e44f269bc0034feb95ede34154c3cfe4
 
+# -- Plaid API configurations
 plaid:
   enabled: true
   clientID: 61eb5d49ea3b4700127560d1
@@ -113,6 +135,7 @@ plaid:
   webhookOauthDomain: simfiny
   webhookEnabled: true
 
+# -- Stripe API settings
 stripe:
   # wether or not stripe api level interactions are available
   enabled: true
@@ -120,13 +143,14 @@ stripe:
   apiKey: sk_test_4eC39HqLyjWDarjtT1zdp7dc
   endpointSigningKey: whsec_21441814697a4a51dc01395a030498131d56ec4d7155bb216cc75f36548c86bf
 
+# -- New Relic API configurations
 newRelic:
   # wether or not to enable metrics and traces
   enabled: true
   # new-relic api key
   apiKey: 62fd721c712d5863a4e75b8f547b7c1ea884NRAL
 
-# Kubernetes Service settings
+# -- Kubernetes service related configurations
 service:
   enabled: true
   # environment can either take values: local, dev, staging, prod
@@ -152,6 +176,23 @@ service:
       shutdownTimeout: 5s
   rpc:
     timeout: 1s
+  # Optional: Define additional ports.
+  # additionalPorts:
+  # - port: 8080
+  #   targetPort: http
+  #   protocol: TCP
+  #   name: http
+
+  # Optional: Configure session affinity for service.
+  # Valid options are "None" or "ClientIP".
+  # sessionAffinity: None
+
+  # Optional: Configure health checks.
+  # healthCheck:
+  #   nodePort: 30200
+  # the port used to bind the http port to the host
+  # NOTE: requires privileged container with NET_BIND_SERVICE capability -- this is useful for testing
+  # in local clusters such as kind without port forwarding
 
 dependencies:
   temporal:
@@ -193,35 +234,49 @@ tls:
   # in local clusters such as kind without port forwarding
   hostPort:
 
-# create a certificate manager certificate (cert-manager required)
-certificate:
-  create: false
-  # the issuer used to issue the certificate
-  issuerRef:
-    kind: ClusterIssuer
-    name: self-signed
-  # the hostname / subject alternative names for the certificate
-  dnsNames:
-    - financial-integration-service
-
 # metrics-server add-on required
+# -- autoscaling configuration for pod traffic scalibility
 autoscaling:
+  # -- Whether the autoscaler should be applied or not.
   enabled: true
-  minReplicas: 3
-  maxReplicas: 5
-  # average total CPU usage per pod (1-100)
-  cpu: 80
-  # average memory usage per pod (100Mi-1Gi)
-  memory: 80
-  # average http requests per second per pod (k8s-prometheus-adapter)
-  requests: 10000
+  # -- Minimum replicas for the deployment
+  minReplicas: 1
+  # -- Maximum replicas for the deployment
+  maxReplicas: 10
+  # -- Target average utilizations for CPU and Memory, respectively.
+  # These are thresholds that, when surpassed, will trigger the autoscaler
+  # to increase the pod count, or decrease if the utilization is below the threshold for a certain time.
+  cpu: 90   # Target average utilization for CPU in percentage
+  # -- Target average utilization for Memory in percentage
+  memory: 90
+  # -- Define the scaling policies and behavior for scaling up and scaling down.
+  # This is particularly useful to avoid rapid fluctuations in pod counts.
+  behavior:
+    # -- Scale up configuration
+    scaleUp:
+      # -- The number of seconds for which past recommendations
+      # should be considered when scaling up or down.
+      stabilizationWindowSeconds: 0
+      # -- The percentage by which the autoscaler can increase or decrease the current replica count.
+      percent: 100
+      # -- The time window to consider when applying the percent scaling policy.
+      periodSeconds: 15
+    # -- Scale down configuration
+    scaleDown:
+      # -- The number of seconds for which past recommendations
+      # should be considered when scaling up or down.
+      stabilizationWindowSeconds: 300
+      # -- The percentage by which the autoscaler can increase or decrease the current replica count.
+      percent: 100
+      # -- The time window to consider when applying the percent scaling policy.
+      periodSeconds: 15
 
 # Redis address in the format <host>:<port>
 cache: ""
 cacheTLSEnabled: true
 
 cacheTTLInSeconds: 3600
-  
+
 # Redis deployment
 redis:
   enabled: false
@@ -232,43 +287,92 @@ postgresLocalDB:
   enabled: true
 
 serviceAccount:
-  # Specifies whether a service account should be created
-  enabled: true
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
-  name:
+  # -- Specifies whether a service account should be created
+  create: true
+
+  # -- The name of the service account to use.
+  # -- If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+  # -- This allows the service account to be created in a specific namespace,
+  # -- should we desire to organize our service accounts that way.
+  namespace: ""  # -- optional
+
+  # -- Annotations to add to the service account
+  annotations:
+    melodiy/service: "financial-integration-service"
+
+  # -- If the pods using this service account need to pull images from a private registry,
+  # -- we can now specify image pull secrets.
+  imagePullSecrets: {} # -- optional
 
 # set container security context
 securityContext: { }
 
+# -- This section configures the ingress for your Kubernetes deployment
 ingress:
+  # -- Specifies whether the ingress is enabled or not
   enabled: false
+
+  # -- This can be used to specify a specific class for the ingress. It's empty by default.
   className: ""
+
+  # -- Annotations allow you to specify additional metadata for the ingress
   annotations:
-    { }
-  # kubernetes.io/ingress.class: nginx
-  # kubernetes.io/tls-acme: "true"
+    # -- The annotations are empty by default.
+    # -- This one specifies which ingress controller to use (in this case, nginx)
+    # kubernetes.io/ingress.class: nginx
+
+    # -- This one specifies if you want to use automated certificate management with ACME
+    # kubernetes.io/tls-acme: "true"
+
+  # -- 'hosts' define which domain names this ingress will respond to
   hosts:
     - host: financial-integration-service.local
       paths:
+        # -- The specific path or endpoint the ingress will route traffic to.
         - path: /
+          # -- Specifies the type of the path. 'ImplementationSpecific' means the interpretation
+          # -- of the path is up to the ingress controller.
           pathType: ImplementationSpecific
-  tls: [ ]
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - chart-example.local
+
+  # -- 'tls' section is for specifying SSL/TLS certificates for secure connections
+  tls:
+    - secretName: financial-integration-service-tls  # -- Name of the secret storing the TLS cert
+      hosts:
+        # -- Specifies for which host the certificate is valid
+        - financial-integration-service.local
 
 # create Prometheus Operator monitor
 serviceMonitor:
-  enabled: false
-  interval: 15s
-  additionalLabels: { }
+  enabled: true
+  # Optional specific namespace to deploy ServiceMonitor
+  namespace: monitoring
+  # The default path to scrape Prometheus metrics from
+  path: "/metrics"
+  # Default port for the service to scrape metrics from
+  port: "9898"
+  # Scrape interval; how often to fetch metrics
+  interval: "30s"
+  # Optional timeout after which the scrape is ended
+  scrapeTimeout: "10s"
+  # Optional boolean that preserves user configured labels
+  honorLabels: true
+  # Optional additional labels for the ServiceMonitor
+  additionalLabels:
+    service: financial-integration-service
+    function: service-monitoring
 
+# -- Resources allocated for the pod
 resources:
+  # -- Maximum resources a pod can use
   limits:
+    cpu: 100m  # -- Setting CPU limit to 100 milli-cores
+    memory: 256Mi  # -- Setting memory limit to 128 MiB
+  # -- Minimum resources the pod needs to run
   requests:
-    cpu: 1m
-    memory: 16Mi
+    cpu: 100m  # -- Requesting a minimum of 1 milli-core of CPU
+    memory: 64Mi  # -- Requesting a minimum of 16 MiB memory
 
 nodeSelector: { }
 
@@ -290,4 +394,92 @@ linkerd:
     prometheus.io/port: 4191"
     prometheus.io/path: "/metrics"
 
+# -- number of task processor worker threads to spin up
 taskProcessorWorkers: 5
+
+
+# -- Create a Certificate Manager certificate (cert-manager required).
+certificate:
+  # Whether to create the Certificate resource.
+  create: false
+
+  # -- The namespace in which the certificate should be created. Leave empty for default namespace.
+  namespace: "" # optional
+
+  # -- The validity duration of the certificate.
+  duration: "24h"
+
+  # -- Duration before the certificate expiration to renew it.
+  renewBefore: "12h"
+
+  # -- IP addresses to associate with the certificate (usually for internal services).
+  ipAddresses: {}
+
+  # -- The hostname and any subject alternative names for the certificate.
+  dnsNames:
+    - financial-integration-service
+
+  # -- Reference to the Issuer or ClusterIssuer resource that will issue the certificate.
+  issuerRef:
+    # -- Name of the issuer resource.
+    name: "self-signed"
+
+    # -- Type of the issuer resource. Can be either 'Issuer' (namespace-scoped) or 'ClusterIssuer' (cluster-scoped).
+    kind: "ClusterIssuer"
+
+  # -- Intended usage of the certificate, determining its key usages and extended key usages.
+  usages:
+    - "server auth"
+    - "client auth"
+
+  # -- Configuration related to the private key of the certificate.
+  key:
+    # -- Cryptographic algorithm used for the key.
+    algorithm: "rsa"
+
+    # -- Size (in bits) of the key. Common sizes are 2048, 3072 or 4096 for RSA.
+    size: "2048"
+
+    # -- Policy that determines when to rotate the private key. 'Never' means no automatic rotation.
+    rotationPolicy: "Never"
+
+# -- Configuration for probes to check the health and readiness of a container.
+probes:
+  # -- Liveliness probe configuration to ensure the container is running and healthy.
+  liveliness:
+    # -- Number of seconds after the container starts before starting the liveliness probe.
+    initialDelaySeconds: 10
+    # -- How often (in seconds) to perform the liveliness probe.
+    periodSeconds: 30
+    # -- Number of seconds after which the probe times out.
+    timeoutSeconds: 5
+    # -- When a probe fails, 'failurethreshold' determines how many times
+    # -- the probe should be retried before marking the pod as unhealthy.
+    failurethreshold: 3
+    # -- Liveliness probe uses an HTTP GET request to check the health of the app.
+    httpGet:
+      # -- The endpoint which the probe hits to check health.
+      path:  /api/v1/health
+      # -- The port where the app is running and will receive probe requests.
+      port: 9896
+      # -- Optional: Defines if the request is HTTP or HTTPS.
+      scheme: HTTP
+
+  # -- Readiness probe configuration to check if the container is ready to serve requests.
+  readiness:
+    # -- Number of seconds after the container starts before starting the readiness probe.
+    initialDelaySeconds: 5
+    # -- How often (in seconds) to perform the readiness probe.
+    periodSeconds: 15
+    # -- Number of seconds after which the probe times out.
+    timeoutSeconds: 3
+    # -- Number of consecutive successes required to mark the pod as ready.
+    successThresholds: 3
+    # -- Readiness probe uses an HTTP GET request to check if the app is ready to receive traffic.
+    httpGet:
+      # -- The endpoint which the probe hits to check readiness.
+      path: /api/v1/ready
+      # -- The port where the app is running and will receive probe requests.
+      port: 9896
+      # -- Optional: Defines if the request is HTTP or HTTPS.
+      scheme: HTTP

@@ -15,6 +15,8 @@ $ helm install my-release simfinii/{{ template "chart.name" . }}
 
 {{ template "chart.versionBadge" . }}{{ template "chart.typeBadge" . }}{{ template "chart.appVersionBadge" . }}{{ template "chart.badgesSection" . }}
 
+{{ template "extra.flower" . }}
+
 ## Service Background
 
 Simfinii provides a medium by which numerous stakeholders can not only track the health of their finances, but
@@ -27,8 +29,8 @@ Through the financial integration service, users are able to obtain a holistic v
 spanning investments, liabilities, and past transactions. This will serve as the core service driving all 
 features requiring user financial data.
 
-## Introduction 
-This chart bootstraps the financial integration service deployment on a Kubernetes cluster using the Helm package manager.
+## Introduction
+This chart bootstraps the headless authentication service deployment on a Kubernetes cluster using the Helm package manager.
 
 This chart can be used with Kubeapps for deployment and management of Helm Charts in clusters. This Helm chart has been tested on top of a Kubernetes Runtime.
 
@@ -48,7 +50,7 @@ $ helm repo add simfinii https://github.com/SimifiniiCTO/simfinii
 $ helm install my-release simfinii/{{ template "chart.name" . }}
 ```
 
-These commands deploy the financial-integration-service on the Kubernetes cluster in the default configuration. The Parameters section lists the parameters that can be configured during installation.
+These commands deploy the financial integration service on the Kubernetes cluster in the default configuration. The Parameters section lists the parameters that can be configured during installation.
 
 > **Tip**: List all releases using `helm list`
 
@@ -68,11 +70,11 @@ Specify each parameter using the `--set key=value[,key=value]` argument to `helm
 
 ```console
 $ helm install my-release \
-  --set image.repository=keratin/authn-server \
-    simfinii/authentication-service
+  --set image.repository=feelguuds/financial-integration-service \
+    simfinii/financial-integration-service
 ```
 
-The above command sets the repository from which to get the container user of interest.
+The above command sets the repository from which to get the container of interest.
 
 > NOTE: Once this chart is deployed, it is not possible to change the application's access credentials, such as usernames or passwords, using Helm. To change these application credentials after deployment, delete any persistent volumes (PVs) used by the chart and re-deploy it, or use the application's built-in administrative tools if available.
 
@@ -86,7 +88,7 @@ $ helm install my-release -f values.yaml simfinii/financial-integration-service
 
 ## Troubleshooting
 
-Find more information about how to deal with common errors related to Bitnami's Helm charts in [this troubleshooting guide](https://docs.bitnami.com/general/how-to/troubleshoot-helm-chart-issues).
+Find more information about how to deal with common errors related to Melodiy's Helm charts in [this troubleshooting guide](https://docs.bitnami.com/general/how-to/troubleshoot-helm-chart-issues).
 
 ## Upgrading
 
@@ -96,7 +98,7 @@ Base chart version
 ---
 ## License
 
-Copyright &copy; 2022 Simfinii
+Copyright &copy; 2022 Melodiy
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
