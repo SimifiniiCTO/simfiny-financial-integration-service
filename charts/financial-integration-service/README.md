@@ -158,7 +158,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | linkerd.annotations."prometheus.io/path" | string | `"/metrics"` |  |
 | linkerd.annotations."prometheus.io/port" | string | `"4191\""` |  |
 | linkerd.annotations."prometheus.io/scrape" | string | `"true"` |  |
-| linkerd.profile.enabled | bool | `true` |  |
+| linkerd.profile.enabled | bool | `false` |  |
 | logLevel | string | `"info"` | Logging level |
 | newRelic | object | `{"apiKey":"62fd721c712d5863a4e75b8f547b7c1ea884NRAL","enabled":true}` | New Relic API configurations |
 | nodeSelector | object | `{}` |  |
@@ -203,7 +203,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | serviceAccount.namespace | string | `""` | should we desire to organize our service accounts that way. |
 | serviceMonitor.additionalLabels.function | string | `"service-monitoring"` |  |
 | serviceMonitor.additionalLabels.service | string | `"financial-integration-service"` |  |
-| serviceMonitor.enabled | bool | `true` |  |
+| serviceMonitor.enabled | bool | `false` |  |
 | serviceMonitor.honorLabels | bool | `true` |  |
 | serviceMonitor.interval | string | `"30s"` |  |
 | serviceMonitor.namespace | string | `"monitoring"` |  |
