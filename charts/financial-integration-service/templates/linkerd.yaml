@@ -1,3 +1,4 @@
+{{- if .Values.linkerd.profile.enabled -}}
 apiVersion: linkerd.io/v1alpha2
 kind: ServiceProfile
 metadata:
@@ -266,3 +267,4 @@ spec:
       method: POST
       pathRegex: /financial_integration_service_api\.v1\.FinancialService/GetHistoricalAccountBalance
     name: GetHistoricalAccountBalance
+{{- end }}
