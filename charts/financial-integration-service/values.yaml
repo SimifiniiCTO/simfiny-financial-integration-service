@@ -1,24 +1,39 @@
 # Default values for fis.
 
+# -- Number of replicas for the pod
 replicaCount: 3
+
+# -- Maximum time allowed for the new pod to start
 progressDeadlineInSeconds: 600
+
+# -- Number of old ReplicaSets to retain to allow rollback
 revisionHistoryLimit: 3
+
+# -- Logging level
 logLevel: info
+
+# -- Default host value
 host: #0.0.0.0
+
+# -- Backend URL for the service
 backend: #http://backend-fis:9898/echo
+
+# -- List of backend services
 backends: [ ]
 
+# -- Docker image configuration
 image:
   repository: feelguuds/financial-integration-service
   tag: latest
   pullPolicy: IfNotPresent
 
+# -- User Interface configurations
 ui:
   color: "#34577c"
   message: ""
   logo: ""
 
-# failure conditions
+# -- Conditions to simulate failures
 faults:
   delay: false
   error: false
@@ -27,6 +42,7 @@ faults:
   test_fail: false
   test_timeout: false
 
+# -- OpenAI API settings
 openai:
   apiKey: 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
   configs:
@@ -42,6 +58,7 @@ openai:
     # how much to penalize new token based on wether they exist already in the text
     presencePenalty: 1
 
+# -- Clickhouse configuration
 clickhouse:
   host: l77zn1po0n.us-east-1.aws.clickhouse.cloud
   port: 8443
@@ -54,6 +71,7 @@ clickhouse:
   maxQueryTimeout: 500ms
   uri: https://default:8OnfmVp~U6xnZ@l77zn1po0n.us-east-1.aws.clickhouse.cloud:8443/default?secure=true&skip_verify=true
 
+# -- Postgres Database connection details
 database:
   host: financial-integration-service-db
   port: 5432
@@ -70,6 +88,7 @@ database:
   maxOpenConnections: 10
   connectionMaxLifetime: 10h
 
+# -- Configuration for scheduled batch jobs
 batchJobs:
   recurringTransactions:
     interval: "@every 3h"
@@ -81,7 +100,7 @@ batchJobs:
     interval: "@weekly"
     enabled: true
 
-
+# -- AWS API credentials and configuration
 aws:
   # access key id for credentials provisioning
   accessKeyID: AKIA5HFOAJRN7YDEYPST
@@ -92,6 +111,7 @@ aws:
   # aws key management id
   kmsID: mrk-e44f269bc0034feb95ede34154c3cfe4
 
+# -- Plaid API configurations
 plaid:
   enabled: true
   clientID: 61eb5d49ea3b4700127560d1
@@ -115,6 +135,7 @@ plaid:
   webhookOauthDomain: simfiny
   webhookEnabled: true
 
+# -- Stripe API settings
 stripe:
   # wether or not stripe api level interactions are available
   enabled: true
@@ -122,13 +143,14 @@ stripe:
   apiKey: sk_test_4eC39HqLyjWDarjtT1zdp7dc
   endpointSigningKey: whsec_21441814697a4a51dc01395a030498131d56ec4d7155bb216cc75f36548c86bf
 
+# -- New Relic API configurations
 newRelic:
   # wether or not to enable metrics and traces
   enabled: true
   # new-relic api key
   apiKey: 62fd721c712d5863a4e75b8f547b7c1ea884NRAL
 
-# Kubernetes Service settings
+# -- Kubernetes service related configurations
 service:
   enabled: true
   # environment can either take values: local, dev, staging, prod

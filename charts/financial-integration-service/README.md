@@ -100,18 +100,10 @@ The command removes all the Kubernetes components associated with the chart and 
 | autoscaling.maxReplicas | int | `10` | Maximum replicas for the deployment |
 | autoscaling.memory | int | `90` | Target average utilization for Memory in percentage |
 | autoscaling.minReplicas | int | `1` | Minimum replicas for the deployment |
-| aws.accessKeyID | string | `"AKIA5HFOAJRN7YDEYPST"` |  |
-| aws.kmsID | string | `"mrk-e44f269bc0034feb95ede34154c3cfe4"` |  |
-| aws.region | string | `"us-east-2"` |  |
-| aws.secretAccessKey | string | `"c4XOO/7RLxjonKrmZIvdIOef8TiG4C/fnOgm3JsL"` |  |
-| backend | string | `nil` |  |
-| backends | list | `[]` |  |
-| batchJobs.actionableInsights.enabled | bool | `true` |  |
-| batchJobs.actionableInsights.interval | string | `"@weekly"` |  |
-| batchJobs.recurringTransactions.enabled | bool | `true` |  |
-| batchJobs.recurringTransactions.interval | string | `"@every 3h"` |  |
-| batchJobs.syncAllAccounts.enabled | bool | `true` |  |
-| batchJobs.syncAllAccounts.interval | string | `"@every 1h"` |  |
+| aws | object | `{"accessKeyID":"AKIA5HFOAJRN7YDEYPST","kmsID":"mrk-e44f269bc0034feb95ede34154c3cfe4","region":"us-east-2","secretAccessKey":"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"}` | AWS API credentials and configuration |
+| backend | string | `nil` | Backend URL for the service |
+| backends | list | `[]` | List of backend services |
+| batchJobs | object | `{"actionableInsights":{"enabled":true,"interval":"@weekly"},"recurringTransactions":{"enabled":true,"interval":"@every 3h"},"syncAllAccounts":{"enabled":true,"interval":"@every 1h"}}` | Configuration for scheduled batch jobs |
 | cache | string | `""` |  |
 | cacheTLSEnabled | bool | `true` |  |
 | cacheTTLInSeconds | int | `3600` |  |
@@ -129,30 +121,8 @@ The command removes all the Kubernetes components associated with the chart and 
 | certificate.namespace | string | `""` | The namespace in which the certificate should be created. Leave empty for default namespace. |
 | certificate.renewBefore | string | `"12h"` | Duration before the certificate expiration to renew it. |
 | certificate.usages | list | `["server auth","client auth"]` | Intended usage of the certificate, determining its key usages and extended key usages. |
-| clickhouse.host | string | `"l77zn1po0n.us-east-1.aws.clickhouse.cloud"` |  |
-| clickhouse.maxConnectionAttempts | int | `4` |  |
-| clickhouse.maxConnectionRetries | int | `4` |  |
-| clickhouse.maxConnectionRetrySleepInterval | string | `"100ms"` |  |
-| clickhouse.maxConnectionRetryTimeout | string | `"500ms"` |  |
-| clickhouse.maxQueryTimeout | string | `"500ms"` |  |
-| clickhouse.password | string | `"8OnfmVp~U6xnZ"` |  |
-| clickhouse.port | int | `8443` |  |
-| clickhouse.uri | string | `"https://default:8OnfmVp~U6xnZ@l77zn1po0n.us-east-1.aws.clickhouse.cloud:8443/default?secure=true&skip_verify=true"` |  |
-| clickhouse.user | string | `"default"` |  |
-| database.connectionMaxLifetime | string | `"10h"` |  |
-| database.host | string | `"financial-integration-service-db"` |  |
-| database.maxConnectionAttempts | int | `4` |  |
-| database.maxConnectionRetries | int | `4` |  |
-| database.maxConnectionRetrySleepInterval | string | `"100ms"` |  |
-| database.maxConnectionRetryTimeout | string | `"500ms"` |  |
-| database.maxIdleConnections | int | `10` |  |
-| database.maxOpenConnections | int | `10` |  |
-| database.maxQueryTimeout | string | `"500ms"` |  |
-| database.name | string | `"financial_integration_service"` |  |
-| database.password | string | `"financial_integration_service"` |  |
-| database.port | int | `5432` |  |
-| database.sslMode | string | `"disable"` |  |
-| database.user | string | `"financial_integration_service"` |  |
+| clickhouse | object | `{"host":"l77zn1po0n.us-east-1.aws.clickhouse.cloud","maxConnectionAttempts":4,"maxConnectionRetries":4,"maxConnectionRetrySleepInterval":"100ms","maxConnectionRetryTimeout":"500ms","maxQueryTimeout":"500ms","password":"8OnfmVp~U6xnZ","port":8443,"uri":"https://default:8OnfmVp~U6xnZ@l77zn1po0n.us-east-1.aws.clickhouse.cloud:8443/default?secure=true&skip_verify=true","user":"default"}` | Clickhouse configuration |
+| database | object | `{"connectionMaxLifetime":"10h","host":"financial-integration-service-db","maxConnectionAttempts":4,"maxConnectionRetries":4,"maxConnectionRetrySleepInterval":"100ms","maxConnectionRetryTimeout":"500ms","maxIdleConnections":10,"maxOpenConnections":10,"maxQueryTimeout":"500ms","name":"financial_integration_service","password":"financial_integration_service","port":5432,"sslMode":"disable","user":"financial_integration_service"}` | Postgres Database connection details |
 | dependencies.temporal.clusterNamespace | string | `"temporal"` |  |
 | dependencies.temporal.config.concurrentActivityExecutionSize | int | `5000` |  |
 | dependencies.temporal.config.concurrentWorkflowTaskPollers | int | `100` |  |
@@ -169,17 +139,10 @@ The command removes all the Kubernetes components associated with the chart and 
 | dependencies.temporal.retry.maxRetryInterval | string | `"1s"` |  |
 | dependencies.temporal.retry.retryInterval | string | `"100ms"` |  |
 | dependencies.temporal.rpc.timeout | string | `"700ms"` |  |
-| faults.delay | bool | `false` |  |
-| faults.error | bool | `false` |  |
-| faults.test_fail | bool | `false` |  |
-| faults.test_timeout | bool | `false` |  |
-| faults.unhealthy | bool | `false` |  |
-| faults.unready | bool | `false` |  |
+| faults | object | `{"delay":false,"error":false,"test_fail":false,"test_timeout":false,"unhealthy":false,"unready":false}` | Conditions to simulate failures |
 | h2c.enabled | bool | `false` |  |
-| host | string | `nil` |  |
-| image.pullPolicy | string | `"IfNotPresent"` |  |
-| image.repository | string | `"feelguuds/financial-integration-service"` |  |
-| image.tag | string | `"latest"` |  |
+| host | string | `nil` | Default host value |
+| image | object | `{"pullPolicy":"IfNotPresent","repository":"feelguuds/financial-integration-service","tag":"latest"}` | Docker image configuration |
 | ingress | object | `{"annotations":null,"className":"","enabled":false,"hosts":[{"host":"financial-integration-service.local","paths":[{"path":"/","pathType":"ImplementationSpecific"}]}],"tls":[{"hosts":["financial-integration-service.local"],"secretName":"financial-integration-service-tls"}]}` | This section configures the ingress for your Kubernetes deployment |
 | ingress.annotations | string | `nil` | Annotations allow you to specify additional metadata for the ingress |
 | ingress.className | string | `""` | This can be used to specify a specific class for the ingress. It's empty by default. |
@@ -195,25 +158,11 @@ The command removes all the Kubernetes components associated with the chart and 
 | linkerd.annotations."prometheus.io/port" | string | `"4191\""` |  |
 | linkerd.annotations."prometheus.io/scrape" | string | `"true"` |  |
 | linkerd.profile.enabled | bool | `true` |  |
-| logLevel | string | `"info"` |  |
-| newRelic.apiKey | string | `"62fd721c712d5863a4e75b8f547b7c1ea884NRAL"` |  |
-| newRelic.enabled | bool | `true` |  |
+| logLevel | string | `"info"` | Logging level |
+| newRelic | object | `{"apiKey":"62fd721c712d5863a4e75b8f547b7c1ea884NRAL","enabled":true}` | New Relic API configurations |
 | nodeSelector | object | `{}` |  |
-| openai.apiKey | string | `"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"` |  |
-| openai.configs.frequencyPenalty | float | `0` |  |
-| openai.configs.maxToken | int | `2000` |  |
-| openai.configs.model | string | `"text-davinci-003"` |  |
-| openai.configs.presencePenalty | int | `1` |  |
-| openai.configs.temperature | float | `0.7` |  |
-| openai.configs.topP | float | `1` |  |
-| plaid.clientID | string | `"61eb5d49ea3b4700127560d1"` |  |
-| plaid.enabled | bool | `true` |  |
-| plaid.env | string | `"sandbox"` |  |
-| plaid.oauthDomain | string | `"simfiny"` |  |
-| plaid.products | string | `"transactions,auth,balance,investments,liabilities"` |  |
-| plaid.secretKey | string | `"465686056e8fd1b87db3d993d096d8"` |  |
-| plaid.webhookEnabled | bool | `true` |  |
-| plaid.webhookOauthDomain | string | `"simfiny"` |  |
+| openai | object | `{"apiKey":"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","configs":{"frequencyPenalty":0,"maxToken":2000,"model":"text-davinci-003","presencePenalty":1,"temperature":0.7,"topP":1}}` | OpenAI API settings |
+| plaid | object | `{"clientID":"61eb5d49ea3b4700127560d1","enabled":true,"env":"sandbox","oauthDomain":"simfiny","products":"transactions,auth,balance,investments,liabilities","secretKey":"465686056e8fd1b87db3d993d096d8","webhookEnabled":true,"webhookOauthDomain":"simfiny"}` | Plaid API configurations |
 | podAnnotations | object | `{}` |  |
 | postgresLocalDB.enabled | bool | `true` |  |
 | probes | object | `{"liveliness":{"failurethreshold":3,"httpGet":{"path":"/api/v1/health","port":9896,"scheme":"HTTP"},"initialDelaySeconds":10,"periodSeconds":30,"timeoutSeconds":5},"readiness":{"httpGet":{"path":"/api/v1/ready","port":9896,"scheme":"HTTP"},"initialDelaySeconds":5,"periodSeconds":15,"successThresholds":3,"timeoutSeconds":3}}` | Configuration for probes to check the health and readiness of a container. |
@@ -235,32 +184,17 @@ The command removes all the Kubernetes components associated with the chart and 
 | probes.readiness.periodSeconds | int | `15` | How often (in seconds) to perform the readiness probe. |
 | probes.readiness.successThresholds | int | `3` | Number of consecutive successes required to mark the pod as ready. |
 | probes.readiness.timeoutSeconds | int | `3` | Number of seconds after which the probe times out. |
-| progressDeadlineInSeconds | int | `600` |  |
+| progressDeadlineInSeconds | int | `600` | Maximum time allowed for the new pod to start |
 | redis.enabled | bool | `false` |  |
 | redis.repository | string | `"redis"` |  |
 | redis.tag | string | `"6.0.8"` |  |
-| replicaCount | int | `3` |  |
+| replicaCount | int | `3` | Number of replicas for the pod |
 | resources.limits | string | `nil` |  |
 | resources.requests.cpu | string | `"1m"` |  |
 | resources.requests.memory | string | `"16Mi"` |  |
-| revisionHistoryLimit | int | `3` |  |
+| revisionHistoryLimit | int | `3` | Number of old ReplicaSets to retain to allow rollback |
 | securityContext | object | `{}` |  |
-| service.annotations | object | `{}` |  |
-| service.enabled | bool | `true` |  |
-| service.env | string | `"dev"` |  |
-| service.environment | string | `"local"` |  |
-| service.externalPort | int | `9898` |  |
-| service.grpcPort | int | `9896` |  |
-| service.grpcService | string | `"financial-integration-service"` |  |
-| service.hostPort | string | `nil` |  |
-| service.http.client.timeout | string | `"1s"` |  |
-| service.http.server.shutdownTimeout | string | `"5s"` |  |
-| service.http.server.timeout | string | `"1s"` |  |
-| service.httpPort | int | `9898` |  |
-| service.metricsPort | int | `9797` |  |
-| service.nodePort | int | `31198` |  |
-| service.rpc.timeout | string | `"1s"` |  |
-| service.type | string | `"ClusterIP"` |  |
+| service | object | `{"annotations":{},"enabled":true,"env":"dev","environment":"local","externalPort":9898,"grpcPort":9896,"grpcService":"financial-integration-service","hostPort":null,"http":{"client":{"timeout":"1s"},"server":{"shutdownTimeout":"5s","timeout":"1s"}},"httpPort":9898,"metricsPort":9797,"nodePort":31198,"rpc":{"timeout":"1s"},"type":"ClusterIP"}` | Kubernetes service related configurations |
 | serviceAccount.annotations | object | `{"melodiy/service":"financial-integration-service"}` | Annotations to add to the service account |
 | serviceAccount.create | bool | `true` | Specifies whether a service account should be created |
 | serviceAccount.imagePullSecrets | object | `{}` | we can now specify image pull secrets. |
@@ -275,9 +209,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | serviceMonitor.path | string | `"/metrics"` |  |
 | serviceMonitor.port | string | `"9898"` |  |
 | serviceMonitor.scrapeTimeout | string | `"10s"` |  |
-| stripe.apiKey | string | `"sk_test_4eC39HqLyjWDarjtT1zdp7dc"` |  |
-| stripe.enabled | bool | `true` |  |
-| stripe.endpointSigningKey | string | `"whsec_21441814697a4a51dc01395a030498131d56ec4d7155bb216cc75f36548c86bf"` |  |
+| stripe | object | `{"apiKey":"sk_test_4eC39HqLyjWDarjtT1zdp7dc","enabled":true,"endpointSigningKey":"whsec_21441814697a4a51dc01395a030498131d56ec4d7155bb216cc75f36548c86bf"}` | Stripe API settings |
 | taskProcessorWorkers | int | `5` | number of task processor worker threads to spin up |
 | tls.certPath | string | `"/data/cert"` |  |
 | tls.enabled | bool | `false` |  |
@@ -285,9 +217,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | tls.port | int | `9899` |  |
 | tls.secretName | string | `nil` |  |
 | tolerations | list | `[]` |  |
-| ui.color | string | `"#34577c"` |  |
-| ui.logo | string | `""` |  |
-| ui.message | string | `""` |  |
+| ui | object | `{"color":"#34577c","logo":"","message":""}` | User Interface configurations |
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example,
 
