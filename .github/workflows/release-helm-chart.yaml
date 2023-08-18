@@ -12,6 +12,6 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           charts_dir: charts
           charts_url: https://charts.melodiy.io
-          owner: melodiy
-          repository: charts
+          owner: SimifiniiCTO
+          repository: simfiny-financial-integration-service
           branch: gh-pages
