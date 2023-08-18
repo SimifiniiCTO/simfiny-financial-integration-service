@@ -41,6 +41,7 @@ jobs:
           echo "BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_OUTPUT
           echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
           echo "REVISION=${GITHUB_SHA}" >> $GITHUB_OUTPUT
+          echo "CHART_VERSION=$(grep 'version:' ./charts/financial-integration-service/Chart.yaml | tail -n1 | awk '{ print $2 }')" >> $GITHUB_OUTPUT
       - name: Generate images meta
         id: meta
         uses: docker/metadata-action@v4
@@ -62,8 +63,9 @@ jobs:
       #     branch: gh-pages
       - name: Publish Helm chart to GHCR
         run: |
-          helm package charts/financial-integration-service --app-version ${{ steps.prep.outputs.VERSION }}
-          helm push financial-integration-service-${{ steps.prep.outputs.VERSION }}.tgz oci://ghcr.io/simifiniicto/charts
+          helm package charts/financial-integration-service
+          helm push financial-integration-service-${{ steps.prep.outputs.CHART_VERSION }}.tgz oci://ghcr.io/simifiniicto/charts
+          rm financial-integration-service-${{ steps.prep.outputs.CHART_VERSION }}.tgz
       - name: Publish Flux OCI artifact to GHCR
         run: |
           flux push artifact oci://ghcr.io/stefanprodan/manifests/financial-integration-service:${{ steps.prep.outputs.VERSION }} \
