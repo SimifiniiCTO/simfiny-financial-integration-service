@@ -248,8 +248,7 @@ gen-helm-docs:
 	helm-docs
 
 ci-lint:
-	golangci-lint run ./internal --fix
-	golangci-lint run ./pkg/api/... ./pkg/encrypt_decrypt/... ./pkg/fscache/... ./pkg/grpc/... ./pkg/signals/... ./pkg/version/...
+	golangci-lint run --fix
 
 # sanitizes stops any running docker compose file, formats the codebase,
 precommit: clean tidy fmt build-container gen-helm-docs lint-chart
