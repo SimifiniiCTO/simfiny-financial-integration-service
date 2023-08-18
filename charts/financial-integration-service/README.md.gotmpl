@@ -3,7 +3,7 @@
 
 {{ template "chart.deprecationWarning" . }}
 
-## TL;DR 
+## TL;DR
 ```console
 $ helm repo add simfinii https://github.com/SimifiniiCTO/simfinii
 $ helm install my-release simfinii/{{ template "chart.name" . }}
@@ -15,18 +15,32 @@ $ helm install my-release simfinii/{{ template "chart.name" . }}
 
 {{ template "chart.versionBadge" . }}{{ template "chart.typeBadge" . }}{{ template "chart.appVersionBadge" . }}{{ template "chart.badgesSection" . }}
 
-{{ template "extra.flower" . }}
+```
+          ,-.
+ ,     ,-.   ,-.
+/ \   (   )-(   )
+\ |  ,.>-(   )-<
+ \|,' (   )-(   )
+  Y ___`-'   `-'
+  |/__/   `-'
+  |
+  |
+  |    SIMFINY PLATFORM - This platform is attempting to revolutionize the finacial gamification as well
+  |                        as the social experience users consumers by both enabling them to better reach their
+  |                        target goals as well as allowing such consumers to share ideas and progress in communities
+__|_____________
+```
 
 ## Service Background
 
 Simfinii provides a medium by which numerous stakeholders can not only track the health of their finances, but
- leverage their peers and our various offerings to achieve all conceivable financial goals they may withhold. 
- Given the nature of the platform we are building, properly architecting the flow of financial data across 
- the Simfinii ecosystem is a component critical to providing the value we believe our users need. The financial 
+ leverage their peers and our various offerings to achieve all conceivable financial goals they may withhold.
+ Given the nature of the platform we are building, properly architecting the flow of financial data across
+ the Simfinii ecosystem is a component critical to providing the value we believe our users need. The financial
  integration service plays an instrumental role in this realm from the context of the backend.
 
-Through the financial integration service, users are able to obtain a holistic view of their financial health 
-spanning investments, liabilities, and past transactions. This will serve as the core service driving all 
+Through the financial integration service, users are able to obtain a holistic view of their financial health
+spanning investments, liabilities, and past transactions. This will serve as the core service driving all
 features requiring user financial data.
 
 ## Introduction

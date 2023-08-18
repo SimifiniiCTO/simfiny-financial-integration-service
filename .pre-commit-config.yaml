@@ -5,7 +5,6 @@ repos:
       - id: helm-docs
         args:
           - --chart-search-root=.
-          - --template-files=./_templates.gotmpl
           - --template-files=README.md.gotmpl
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.4.0
