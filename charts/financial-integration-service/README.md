@@ -216,6 +216,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | plaid.webhookOauthDomain | string | `"simfiny"` |  |
 | podAnnotations | object | `{}` |  |
 | postgresLocalDB.enabled | bool | `true` |  |
+| progressDeadlineInSeconds | int | `600` |  |
 | redis.enabled | bool | `false` |  |
 | redis.repository | string | `"redis"` |  |
 | redis.tag | string | `"6.0.8"` |  |
@@ -223,6 +224,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | resources.limits | string | `nil` |  |
 | resources.requests.cpu | string | `"1m"` |  |
 | resources.requests.memory | string | `"16Mi"` |  |
+| revisionHistoryLimit | int | `3` |  |
 | securityContext | object | `{}` |  |
 | service.annotations | object | `{}` |  |
 | service.enabled | bool | `true` |  |
