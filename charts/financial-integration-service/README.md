@@ -1,4 +1,5 @@
-# financial-integration-service
+# Financial Integration Service Helm Chart
+service: # financial-integration-service
 
 Financial Integration Service Helm chart for Kubernetes
 
