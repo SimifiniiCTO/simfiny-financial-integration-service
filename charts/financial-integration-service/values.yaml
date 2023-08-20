@@ -345,7 +345,7 @@ ingress:
 
 # create Prometheus Operator monitor
 serviceMonitor:
-  enabled: true
+  enabled: false
   # Optional specific namespace to deploy ServiceMonitor
   namespace: monitoring
   # The default path to scrape Prometheus metrics from
@@ -387,7 +387,7 @@ integrationTests:
 
 linkerd:
   profile:
-    enabled: true
+    enabled: false
   annotations:
     linkerd.io/inject: enabled # Controls whether or not a pod should be injected; accepted values are enabled, disabled and ingress
     prometheus.io/scrape: "true"

@@ -26,7 +26,7 @@ func ReadEnvVars() {
 	fs.Int("port-metrics", 0, "metrics port")
 	fs.Int("grpc-port", 9896, "gRPC port")
 	fs.String("grpc-service-name", "financial-integration-service", "gPRC service name")
-	fs.String("level", "info", "log level debug, info, warn, error, flat or panic")
+	fs.String("level", "error", "log level debug, info, warn, error, flat or panic")
 	fs.StringSlice("backend-url", []string{}, "backend service URL")
 	fs.Duration("http-client-timeout", 2*time.Minute, "client timeout duration")
 	fs.Duration("rpc-timeout", 30*time.Second, "client timeout duration")

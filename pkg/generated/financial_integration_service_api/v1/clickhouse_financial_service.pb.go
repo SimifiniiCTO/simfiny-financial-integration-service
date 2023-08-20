@@ -7,6 +7,9 @@
 package financial_integration_service_apiv1
 
 import (
+	reflect "reflect"
+	sync "sync"
+
 	_ "github.com/cosmos/gogoproto/gogoproto"
 	_ "github.com/envoyproxy/protoc-gen-validate/validate"
 	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
@@ -15,8 +18,6 @@ import (
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	anypb "google.golang.org/protobuf/types/known/anypb"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
-	reflect "reflect"
-	sync "sync"
 )
 
 const (
