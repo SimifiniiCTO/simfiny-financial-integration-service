@@ -282,7 +282,7 @@ postgresLocalDB:
 
 serviceAccount:
   # -- Specifies whether a service account should be created
-  create: true
+  create: false
 
   # -- The name of the service account to use.
   # -- If not set and create is true, a name is generated using the fullname template
@@ -294,7 +294,7 @@ serviceAccount:
 
   # -- Annotations to add to the service account
   annotations:
-    meta.helm.sh/release-name: "financial-integration-service"
+    melodiy/service: "financial-integration-service"
 
   # -- If the pods using this service account need to pull images from a private registry,
   # -- we can now specify image pull secrets.
