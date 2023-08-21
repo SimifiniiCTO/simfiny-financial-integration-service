@@ -294,7 +294,7 @@ serviceAccount:
 
   # -- Annotations to add to the service account
   annotations:
-    melodiy/service: "financial-integration-service"
+    meta.helm.sh/release-name: "financial-integration-service"
 
   # -- If the pods using this service account need to pull images from a private registry,
   # -- we can now specify image pull secrets.
