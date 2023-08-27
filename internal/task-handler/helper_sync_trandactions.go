@@ -36,6 +36,14 @@ func (th *TaskHandler) syncTransactions(ctx context.Context, userId uint64, link
 	added := len(syncResult.New)
 	deleted := len(syncResult.Deleted)
 	modified := len(syncResult.Updated)
+	shouldLinkBeSetToUpdateMode := syncResult.ItemLoginRequiredForLink
+
+	// if the link object should be updated, it mean we need to put the user through the link
+	// update flow via plaid
+	// ref: https://plaid.com/docs/link/update-mode/#resolving-item_login_required-or-pending_expiration-errors
+	if shouldLinkBeSetToUpdateMode {
+		link.LinkStatus = apiv1.LinkStatus_LINK_STATUS_ITEM_LOGIN_REQUIRED
+	}
 
 	th.logger.Info("recording plaid sync", zap.Uint64("userId", userId), zap.Uint64("linkId", linkId), zap.String("trigger", trigger), zap.String("nextCursor", nextCursor), zap.Int("added", added), zap.Int("modified", modified), zap.Int("deleted", deleted))
 	if err := postgresClient.RecordPlaidSync(ctx, userId, linkId, trigger, nextCursor, int64(added), int64(modified), int64(deleted)); err != nil {
@@ -44,7 +52,7 @@ func (th *TaskHandler) syncTransactions(ctx context.Context, userId uint64, link
 
 	// If we received nothing to insert/update/remove then do nothing
 	if len(syncResult.New)+len(syncResult.Updated)+len(syncResult.Deleted) == 0 {
-		th.logger.Info("no new data from plaid, nothing to be done")
+		th.logger.Info("no new data from plaid, nothing to be done", zap.Any("sync", syncResult))
 		return nil
 	}
 
