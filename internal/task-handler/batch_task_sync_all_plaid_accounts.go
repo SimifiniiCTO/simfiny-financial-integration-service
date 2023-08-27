@@ -88,17 +88,17 @@ func (th *TaskHandler) syncAllAccounts(ctx context.Context, userId uint64, link 
 	)
 	bankAccounts, err := th.syncBankAccounts(ctx, userId, link, *accessToken)
 	if err != nil {
-		th.logger.Error(fmt.Sprintf("failed to sync transactions for link %d", link.Id))
+		th.logger.Error(fmt.Sprintf("failed to sync transactions for link %d. bank account sync job failed", link.Id), zap.Error(err))
 	}
 
 	liabilityAccountSet, err := th.syncCreditAccounts(ctx, userId, link, *accessToken)
 	if err != nil {
-		th.logger.Error(fmt.Sprintf("failed to sync transactions for link %d", link.Id))
+		th.logger.Error(fmt.Sprintf("failed to sync transactions for link %d. liability account sync job failed", link.Id), zap.Error(err))
 	}
 
 	investmentAccounts, err := th.syncInvestmentAccountsHelper(ctx, userId, *accessToken, link)
 	if err != nil {
-		th.logger.Error("failed to sync investment accounts .. possibily because no investment account is tied to the following lin", zap.Error(err))
+		th.logger.Error("failed to sync investment accounts .. possibily because no investment account is tied to the following link", zap.Error(err))
 	}
 
 	th.logger.Info("extraced investment accounts now updating account balances")
@@ -115,7 +115,7 @@ func (th *TaskHandler) syncAllAccounts(ctx context.Context, userId uint64, link 
 
 	th.logger.Info("Sucessfully updated account balances")
 	if err := th.syncTransactions(ctx, userId, link, *accessToken, *trigger); err != nil {
-		th.logger.Error(fmt.Sprintf("failed to sync transactions for link %d", link.Id))
+		th.logger.Error(fmt.Sprintf("failed to sync transactions for link %d. transaction sync failed", link.Id), zap.Error(err))
 	}
 }
 
