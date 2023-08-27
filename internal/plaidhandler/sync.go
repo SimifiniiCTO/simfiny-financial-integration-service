@@ -29,11 +29,12 @@ import (
 // @property {[]string} Deleted - The `Deleted` property is a slice of strings that contains the IDs of
 // the transactions that were deleted in the synchronization process.
 type SyncResult struct {
-	NextCursor string
-	HasMore    bool
-	New        []*schema.Transaction
-	Updated    []*schema.Transaction
-	Deleted    []string
+	NextCursor               string
+	HasMore                  bool
+	New                      []*schema.Transaction
+	Updated                  []*schema.Transaction
+	Deleted                  []string
+	ItemLoginRequiredForLink bool
 }
 
 // Sync is used to sync transactions from the Plaid API for a given set of account IDs
@@ -43,11 +44,13 @@ func (p *PlaidWrapper) Sync(ctx context.Context, cursor, accessToken *string) (*
 	added := make([]*schema.Transaction, 0)
 	modified := make([]*schema.Transaction, 0)
 	removed := make([]string, 0)
+	linkShouldBeInUpdateMode := false
 
 	for {
 		reqCtx := plaid.TransactionsSyncRequest{
 			AccessToken: *accessToken,
-			Count:       pointer.Int32P(1000),
+			// make sure this is the max count ... anything higher will cause the write operations against an account to fail due to timeout
+			Count: pointer.Int32P(500),
 			Options: &plaid.TransactionsSyncRequestOptions{
 				IncludePersonalFinanceCategory: &includePersonalFinanceCategory,
 			},
@@ -66,12 +69,18 @@ func (p *PlaidWrapper) Sync(ctx context.Context, cursor, accessToken *string) (*
 
 		if err != nil {
 			if plaidErr, currerr := plaid.ToPlaidError(err); currerr == nil {
+				p.Logger.Error("failed to sync transaction data with Plaid", zap.Error(err), zap.Any("plaid-error", plaidErr))
 				if plaidErr.ErrorCode == "TRANSACTIONS_SYNC_MUTATION_DURING_PAGINATION" {
 					// Restart the loop by setting the transactions slice to be empty
 					added = []*schema.Transaction{}
 					modified = []*schema.Transaction{}
 					removed = []string{}
 					continue
+				}
+
+				if plaidErr.ErrorCode == "ITEM_LOGIN_REQUIRED" {
+					// link should be set to be updated
+					linkShouldBeInUpdateMode = true
 				}
 			} else {
 				p.Logger.Error("failed to sync data with Plaid", zap.Error(err), zap.Any("request", request))
@@ -114,10 +123,11 @@ func (p *PlaidWrapper) Sync(ctx context.Context, cursor, accessToken *string) (*
 	}
 
 	return &SyncResult{
-		NextCursor: *cursor,
-		HasMore:    false,
-		New:        added,
-		Updated:    modified,
-		Deleted:    removed,
+		NextCursor:               *cursor,
+		HasMore:                  false,
+		New:                      added,
+		Updated:                  modified,
+		Deleted:                  removed,
+		ItemLoginRequiredForLink: linkShouldBeInUpdateMode,
 	}, nil
 }

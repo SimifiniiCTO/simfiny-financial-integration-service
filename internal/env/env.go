@@ -139,7 +139,7 @@ func ReadEnvVars() {
 
 	// production: clickhouse://default:8OnfmVp~U6xnZ@l77zn1po0n.us-east-1.aws.clickhouse.cloud:9440/Production
 	// local: clickhouse://gorm:gorm@clickhouse-database:9000/gorm?sslmode=disable&dial_timeout=10s&read_timeout=20s
-	fs.String("clickhouse-connection-uri", "clickhouse://default:8OnfmVp~U6xnZ@l77zn1po0n.us-east-1.aws.clickhouse.cloud:9440/Production", "clickhouse-connection-uri")
+	fs.String("clickhouse-connection-uri", "clickhouse://default:Avt4gt_epqtBx@ijyeeljlci.us-central1.gcp.clickhouse.cloud:9440/Production", "clickhouse-connection-uri")
 	fs.Int("task-processor-workers", 5, "task-processor-workers")
 
 	fs.String("openai-token", "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", "openai-token")
