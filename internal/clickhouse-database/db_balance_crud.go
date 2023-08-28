@@ -17,8 +17,8 @@ func (db *Db) GetBalanceHistoryByAccountID(ctx context.Context, accountId *strin
 		return nil, fmt.Errorf("account ID cannot be nil")
 	}
 
-	var result []schema.AccountBalanceHistoryInternal
-	if err := db.queryEngine.NewSelect().Model(result).Where("AccountId = ?", *accountId).Scan(ctx); err != nil {
+	result := make([]schema.AccountBalanceHistoryInternal, 0)
+	if err := db.queryEngine.NewSelect().Model(&result).Where("AccountId = ?", *accountId).Scan(ctx); err != nil {
 		return nil, err
 	}
 
