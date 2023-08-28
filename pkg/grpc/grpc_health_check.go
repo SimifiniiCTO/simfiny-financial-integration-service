@@ -47,10 +47,10 @@ func (s *Server) HealthCheck(ctx context.Context, req *proto.HealthCheckRequest)
 	// 	return nil, err
 	// }
 
-	trigger := "grpc-health-check"
-	if err := s.th.ExecuteBatchSync(ctx, &trigger); err != nil {
-		return nil, err
-	}
+	// trigger := "grpc-health-check"
+	// if err := s.th.ExecuteBatchSync(ctx, &trigger); err != nil {
+	//	return nil, err
+	// }
 
 	return &proto.HealthCheckResponse{
 		Healthy: true,
