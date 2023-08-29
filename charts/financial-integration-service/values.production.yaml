@@ -234,7 +234,7 @@ autoscaling:
   # -- Whether the autoscaler should be applied or not.
   enabled: true
   # -- Minimum replicas for the deployment
-  minReplicas: 1
+  minReplicas: 2
   # -- Maximum replicas for the deployment
   maxReplicas: 10
   # -- Target average utilizations for CPU and Memory, respectively.
