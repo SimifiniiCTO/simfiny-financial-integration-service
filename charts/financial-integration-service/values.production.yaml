@@ -240,9 +240,9 @@ autoscaling:
   # -- Target average utilizations for CPU and Memory, respectively.
   # These are thresholds that, when surpassed, will trigger the autoscaler
   # to increase the pod count, or decrease if the utilization is below the threshold for a certain time.
-  cpu: 90   # Target average utilization for CPU in percentage
+  cpu: 99   # Target average utilization for CPU in percentage
   # -- Target average utilization for Memory in percentage
-  memory: 90
+  memory: 99
   # -- Define the scaling policies and behavior for scaling up and scaling down.
   # This is particularly useful to avoid rapid fluctuations in pod counts.
   behavior:
